@@ -3,4 +3,14 @@
 [[package]]
 name = "docx-core"
 version = "0.1.0"
+dependencies = [
+ "xml-rs 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
+[[package]]
+name = "xml-rs"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[metadata]
+"checksum xml-rs 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)" = "541b12c998c5b56aa2b4e6f18f03664eef9a4fd0a246a55594efae6cc2d964b5"

@@ -1,4 +1,4 @@
-use super::xml_builder::*;
+use crate::xml_builder::*;
 
 pub struct ContentTypes {}
 
@@ -9,7 +9,7 @@ impl ContentTypes {
 
     pub fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.add_declaration()
+        b.declaration()
             .open_types("http://schemas.openxmlformats.org/package/2006/content-types")
             .add_override(
                 "/_rels/.rels",
@@ -60,7 +60,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<?xml version="1.0" encoding="UTF-8" />
+            r#"<?xml version="1.0" encoding="UTF-8"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
   <Override PartName="/_rels/.rels" ContentType="application/vnd.openxmlformats-package.relationships+xml" />
   <Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml" />

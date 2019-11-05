@@ -1,6 +1,8 @@
 mod documents;
+mod xml_builder;
 
 use documents::*;
+use xml_builder::*;
 
 use std::fs::File;
 use std::io::{self, Write};

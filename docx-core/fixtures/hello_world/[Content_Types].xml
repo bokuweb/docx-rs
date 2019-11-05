@@ -1,1 +1,17 @@
-<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default ContentType="image/png" Extension="png"></Default><Default ContentType="image/jpeg" Extension="jpeg"></Default><Default ContentType="image/jpeg" Extension="jpg"></Default><Default ContentType="image/bmp" Extension="bmp"></Default><Default ContentType="image/gif" Extension="gif"></Default><Default ContentType="application/vnd.openxmlformats-package.relationships+xml" Extension="rels"></Default><Default ContentType="application/xml" Extension="xml"></Default><Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml" PartName="/word/document.xml"></Override><Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml" PartName="/word/styles.xml"></Override><Override ContentType="application/vnd.openxmlformats-package.core-properties+xml" PartName="/docProps/core.xml"></Override><Override ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml" PartName="/docProps/app.xml"></Override><Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml" PartName="/word/numbering.xml"></Override><Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footnotes+xml" PartName="/word/footnotes.xml"></Override><Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml" PartName="/word/header1.xml"></Override><Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml" PartName="/word/footer1.xml"></Override></Types>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+    <Default ContentType="image/png" Extension="png"></Default>
+    <Default ContentType="image/jpeg" Extension="jpeg"></Default>
+    <Default ContentType="image/jpeg" Extension="jpg"></Default>
+    <Default ContentType="image/bmp" Extension="bmp"></Default>
+    <Default ContentType="image/gif" Extension="gif"></Default>
+    <Default ContentType="application/vnd.openxmlformats-package.relationships+xml" Extension="rels"></Default>
+    <Default ContentType="application/xml" Extension="xml"></Default>
+    <Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml" PartName="/word/document.xml"></Override>
+    <Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml" PartName="/word/styles.xml"></Override>
+    <Override ContentType="application/vnd.openxmlformats-package.core-properties+xml" PartName="/docProps/core.xml"></Override>
+    <Override ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml" PartName="/docProps/app.xml"></Override>
+    <Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml" PartName="/word/numbering.xml"></Override>
+    <Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footnotes+xml" PartName="/word/footnotes.xml"></Override>
+    <Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml" PartName="/word/header1.xml"></Override>
+    <Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml" PartName="/word/footer1.xml"></Override>
+</Types>

@@ -9,7 +9,7 @@ impl ContentTypes {
 
     pub fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.declaration()
+        b.declaration(None)
             .open_types("http://schemas.openxmlformats.org/package/2006/content-types")
             .add_override(
                 "/_rels/.rels",

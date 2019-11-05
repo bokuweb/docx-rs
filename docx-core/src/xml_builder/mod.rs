@@ -1,6 +1,7 @@
 #[macro_use]
 mod macros;
 mod declaration;
+mod properties;
 mod relationship;
 
 use xml::common::XmlVersion;

@@ -9,7 +9,7 @@ impl Rels {
 
     pub fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.declaration()
+        b.declaration(None)
             .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships")
             .relationship(
                 "rId1",

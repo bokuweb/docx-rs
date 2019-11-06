@@ -1,17 +1,17 @@
 #[macro_use]
 mod macros;
+
 mod core_properties;
 mod declaration;
 mod elements;
 mod properties;
 mod relationship;
 
-use std::io::BufReader;
 use std::str;
 use xml::common::XmlVersion;
 use xml::writer::{EmitterConfig, EventWriter, XmlEvent};
 
-use xml::reader::EventReader;
+pub use elements::*;
 
 pub struct XMLBuilder {
     writer: EventWriter<Vec<u8>>,

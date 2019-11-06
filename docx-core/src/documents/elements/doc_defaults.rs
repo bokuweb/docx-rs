@@ -31,6 +31,8 @@ impl BuildXML for DocDefaults {
 mod tests {
 
     use super::*;
+    #[cfg(test)]
+    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
@@ -39,7 +41,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:docDefaults><w:rPrDefault /></w:docDefaults>"#
+            r#"<w:docDefaults><w:rPrDefault><w:rPr /></w:rPrDefault></w:docDefaults>"#
         );
     }
 }

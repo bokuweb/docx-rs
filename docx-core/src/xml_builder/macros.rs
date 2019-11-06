@@ -97,6 +97,14 @@ macro_rules! closed_el_with_child {
 }
 
 macro_rules! closed_el {
+    ($name: ident, $el_name: expr) => {
+        pub(crate) fn $name(mut self) -> Self {
+            self.writer
+                .write(XmlEvent::start_element($el_name))
+                .expect("should write to buf");
+            self.close()
+        }
+    };
     ($name: ident, $el_name: expr, $attr0: expr) => {
         pub(crate) fn $name(mut self, arg0: &str) -> Self {
             self.writer

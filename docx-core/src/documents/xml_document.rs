@@ -1,4 +1,5 @@
 use super::Document;
+use crate::documents::BuildXML;
 
 pub(crate) struct XMLDocument {
     content_type: Vec<u8>,

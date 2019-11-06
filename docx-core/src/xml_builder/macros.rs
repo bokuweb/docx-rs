@@ -15,6 +15,30 @@ macro_rules! opened_el {
             self
         }
     };
+    ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr, $attr2: expr) => {
+        pub(crate) fn $name(mut self, arg0: &str, arg1: &str, arg2: &str) -> Self {
+            self.writer
+                .write(super::XmlEvent::start_element($el_name).attr($attr0, arg0).attr($attr1, arg1).attr($attr2, arg2))
+                .expect("should write to buf");
+            self
+        }
+    };
+    ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr, $attr2: expr, $attr3: expr) => {
+        pub(crate) fn $name(mut self, arg0: &str, arg1: &str, arg2: &str, arg3: &str) -> Self {
+            self.writer
+                .write(super::XmlEvent::start_element($el_name).attr($attr0, arg0).attr($attr1, arg1).attr($attr2, arg2).attr($attr3, arg3))
+                .expect("should write to buf");
+            self
+        }
+    };
+    ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr, $attr2: expr, $attr3: expr, $attr4: expr) => {
+        pub(crate) fn $name(mut self, arg0: &str, arg1: &str, arg2: &str, arg3: &str, arg4: &str) -> Self {
+            self.writer
+                .write(super::XmlEvent::start_element($el_name).attr($attr0, arg0).attr($attr1, arg1).attr($attr2, arg2).attr($attr3, arg3).attr($attr4, arg4))
+                .expect("should write to buf");
+            self
+        }
+    };
 }
 
 macro_rules! closed_el_with_child {

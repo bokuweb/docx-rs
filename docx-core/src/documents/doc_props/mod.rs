@@ -1,14 +1,21 @@
 mod app;
+mod core;
 
-pub use app::*;
+pub use self::app::*;
+pub use self::core::*;
 
 pub(crate) struct DocProps {
     app: AppProps,
+    core: CoreProps,
 }
 
 impl DocProps {
-    pub(crate) fn new(appConfig: Option<AppPropsConfig>) -> DocProps {
-        let app = AppProps::new(appConfig);
-        DocProps { app }
+    pub(crate) fn new(
+        app_config: Option<AppPropsConfig>,
+        core_config: Option<CorePropsConfig>,
+    ) -> DocProps {
+        let app = AppProps::new(app_config);
+        let core = CoreProps::new(core_config);
+        DocProps { app, core }
     }
 }

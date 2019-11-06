@@ -1,3 +1,4 @@
+use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 pub struct AppProps {
@@ -19,8 +20,10 @@ impl AppProps {
     pub fn new(config: Option<AppPropsConfig>) -> AppProps {
         AppProps { config }
     }
+}
 
-    pub(crate) fn build(&self) -> Vec<u8> {
+impl BuildXML for AppProps {
+    fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         let base = b.declaration(Some(true)).open_properties(
             "http://schemas.openxmlformats.org/officeDocument/2006/extended-properties",

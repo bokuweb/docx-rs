@@ -1,3 +1,4 @@
+use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 pub struct ContentTypes {}
@@ -6,8 +7,10 @@ impl ContentTypes {
     pub fn new() -> ContentTypes {
         ContentTypes {}
     }
+}
 
-    pub fn build(&self) -> Vec<u8> {
+impl BuildXML for ContentTypes {
+    fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         b.declaration(None)
             .open_types("http://schemas.openxmlformats.org/package/2006/content-types")

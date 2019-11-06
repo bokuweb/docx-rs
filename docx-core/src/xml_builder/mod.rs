@@ -1,5 +1,6 @@
 #[macro_use]
 mod macros;
+mod core_properties;
 mod declaration;
 mod properties;
 mod relationship;

@@ -1,3 +1,4 @@
+use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 pub struct Rels {}
@@ -6,8 +7,10 @@ impl Rels {
     pub fn new() -> Rels {
         Rels {}
     }
+}
 
-    pub fn build(&self) -> Vec<u8> {
+impl BuildXML for Rels {
+    fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         b.declaration(None)
             .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships")

@@ -1,4 +1,5 @@
 use super::XMLBuilder;
+use super::XmlEvent;
 
 impl XMLBuilder {
     // Build RelationShips element

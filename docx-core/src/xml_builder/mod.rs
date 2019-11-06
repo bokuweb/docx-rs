@@ -2,11 +2,16 @@
 mod macros;
 mod core_properties;
 mod declaration;
+mod elements;
 mod properties;
 mod relationship;
 
+use std::io::BufReader;
+use std::str;
 use xml::common::XmlVersion;
 use xml::writer::{EmitterConfig, EventWriter, XmlEvent};
+
+use xml::reader::EventReader;
 
 pub struct XMLBuilder {
     writer: EventWriter<Vec<u8>>,
@@ -15,10 +20,11 @@ pub struct XMLBuilder {
 impl XMLBuilder {
     pub(crate) fn new() -> XMLBuilder {
         let buf = Vec::new();
-        let writer = EmitterConfig::new()
+        let mut config = EmitterConfig::new()
             .write_document_declaration(false)
-            .perform_indent(true)
-            .create_writer(buf);
+            .perform_indent(true);
+        config.perform_escaping = false;
+        let writer = config.create_writer(buf);
         XMLBuilder { writer }
     }
 
@@ -44,6 +50,12 @@ impl XMLBuilder {
         self.close()
     }
 
+    pub(crate) fn add_child_buffer(mut self, buf: &[u8]) -> Self {
+        let text = str::from_utf8(buf).unwrap();
+        self.writer.write(text).expect("should write to buf");
+        self
+    }
+
     // Close tag
     pub(crate) fn close(mut self) -> Self {
         self.writer
@@ -67,7 +79,6 @@ impl XMLBuilder {
 mod tests {
 
     use super::*;
-    use std::str;
 
     #[test]
     fn test_open_types() {

@@ -1,4 +1,5 @@
 use super::XMLBuilder;
+use super::XmlEvent;
 
 impl XMLBuilder {
     // i.e. <cp:properties xmlns:vt="http://schemas.openxmlformats.org/package/2006/relationships">

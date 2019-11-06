@@ -1,4 +1,5 @@
 use super::XMLBuilder;
+use super::XmlEvent;
 
 impl XMLBuilder {
     // Build Properties element
@@ -45,7 +46,7 @@ mod tests {
     #[test]
     fn test_application() {
         let b = XMLBuilder::new();
-        let r = b.template("Lawgue").build();
+        let r = b.application("Lawgue").build();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<Application>Lawgue</Application>"#

@@ -1,12 +1,15 @@
 mod build_xml;
 mod content_types;
 mod doc_props;
+mod elements;
 mod rels;
 mod xml_document;
 
-use build_xml::*;
+pub(crate) use build_xml::*;
+
 use content_types::*;
 use doc_props::*;
+use elements::*;
 use rels::*;
 
 pub(crate) struct Document {

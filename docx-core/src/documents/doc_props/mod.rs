@@ -3,6 +3,7 @@ mod core;
 
 pub use self::app::*;
 pub use self::core::*;
+use crate::documents::BuildXML;
 
 pub(crate) struct DocProps {
     app: AppProps,
@@ -18,4 +19,16 @@ impl DocProps {
         let core = CoreProps::new(core_config);
         DocProps { app, core }
     }
+
+    pub(crate) fn build(&self) -> XMLDocProps {
+        XMLDocProps {
+            app: self.app.build(),
+            core: self.core.build(),
+        }
+    }
+}
+
+pub struct XMLDocProps {
+    pub app: Vec<u8>,
+    pub core: Vec<u8>,
 }

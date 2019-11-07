@@ -3,3 +3,5 @@ target
 dist
 node_modules
 pkg
+*.docx#
+test.docx

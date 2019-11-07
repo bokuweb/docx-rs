@@ -25,11 +25,11 @@ impl Paragraph {
 
 impl BuildXML for Paragraph {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new().open_paragraph();
-        for r in self.runs.iter() {
-            b = b.add_child(r)
-        }
-        b.close().build()
+        XMLBuilder::new()
+            .open_paragraph()
+            .add_children(&self.runs)
+            .close()
+            .build()
     }
 }
 

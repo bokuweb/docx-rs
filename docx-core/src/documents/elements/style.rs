@@ -11,18 +11,14 @@ pub struct Style {
     paragraph_property: ParagraphProperty,
 }
 
-impl Style {
-    pub fn new(
-        style_id: impl Into<String>,
-        name: impl Into<String>,
-        style_type: StyleType,
-    ) -> Style {
-        let name = Name::new(name.into());
+impl Default for Style {
+    fn default() -> Style {
+        let name = Name::new("");
         let rpr = RunProperty::new();
         let ppr = ParagraphProperty::new();
         Style {
-            style_id: style_id.into(),
-            style_type,
+            style_id: "".to_owned(),
+            style_type: StyleType::Paragraph,
             name,
             run_property: rpr,
             paragraph_property: ppr,
@@ -30,22 +26,34 @@ impl Style {
     }
 }
 
+impl Style {
+    pub fn new(
+        style_id: impl Into<String>,
+        name: impl Into<String>,
+        style_type: StyleType,
+    ) -> Style {
+        let name = Name::new(name.into());
+        let default = Default::default();
+        Style {
+            style_id: style_id.into(),
+            style_type,
+            name,
+            ..default
+        }
+    }
+}
+
 impl BuildXML for Style {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        let name = self.name.build();
-        let rpr = self.run_property.build();
-        let ppr = self.paragraph_property.build();
-        let based_on = BasedOn::new("Normal").build();
-        let next = Next::new("Normal").build();
-        let q_format = QFormat::new().build();
+        // Set "Normal" as default if you need change these values please fix it
         b.open_style(self.style_type, &self.style_id)
-            .add_child_buffer(&name)
-            .add_child_buffer(&rpr)
-            .add_child_buffer(&ppr)
-            .add_child_buffer(&based_on)
-            .add_child_buffer(&next)
-            .add_child_buffer(&q_format)
+            .add_child(&self.name)
+            .add_child(&self.run_property)
+            .add_child(&self.paragraph_property)
+            .add_child(&BasedOn::new("Normal"))
+            .add_child(&Next::new("Normal"))
+            .add_child(&QFormat::new())
             .close()
             .build()
     }

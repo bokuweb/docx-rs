@@ -19,9 +19,8 @@ impl DocDefaults {
 impl BuildXML for DocDefaults {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        let run_property_default = self.run_property_default.build();
         b.open_doc_defaults()
-            .add_child_buffer(&run_property_default)
+            .add_child(&self.run_property_default)
             .close()
             .build()
     }

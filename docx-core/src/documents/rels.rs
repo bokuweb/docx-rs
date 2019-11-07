@@ -39,6 +39,8 @@ mod tests {
 
     use super::*;
     use std::str;
+    #[cfg(test)]
+    use pretty_assertions::assert_eq;
 
     #[test]
     fn test_build() {

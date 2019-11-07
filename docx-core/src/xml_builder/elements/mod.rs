@@ -2,6 +2,7 @@
 mod macros;
 
 mod based_on;
+mod color;
 mod doc_defaults;
 mod name;
 mod next;
@@ -13,6 +14,7 @@ mod style;
 mod sz;
 
 pub use based_on::*;
+pub use color::*;
 pub use doc_defaults::*;
 pub use name::*;
 pub use next::*;

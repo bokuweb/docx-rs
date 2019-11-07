@@ -16,9 +16,8 @@ impl RunPropertyDefault {
 impl BuildXML for RunPropertyDefault {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        let run_property = self.run_property.build();
         b.open_run_property_default()
-            .add_child_buffer(&run_property)
+            .add_child(&self.run_property)
             .close()
             .build()
     }
@@ -28,6 +27,8 @@ impl BuildXML for RunPropertyDefault {
 mod tests {
 
     use super::*;
+    #[cfg(test)]
+    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]

@@ -6,7 +6,9 @@ mod declaration;
 mod elements;
 mod properties;
 mod relationship;
+mod styles;
 
+use crate::BuildXML;
 use std::str;
 use xml::common::XmlVersion;
 use xml::writer::{EmitterConfig, EventWriter, XmlEvent};
@@ -50,9 +52,33 @@ impl XMLBuilder {
         self.close()
     }
 
-    pub(crate) fn add_child_buffer(mut self, buf: &[u8]) -> Self {
-        let text = str::from_utf8(buf).unwrap();
+    pub(crate) fn add_child<T>(mut self, child: &T) -> Self
+    where
+        T: BuildXML,
+    {
+        let buf = child.build();
+        let text = str::from_utf8(&buf).unwrap();
         self.writer.write(text).expect("should write to buf");
+        self
+    }
+
+    pub(crate) fn add_optional_child<T>(mut self, child: &Option<T>) -> Self
+    where
+        T: BuildXML,
+    {
+        if let Some(c) = child {
+            self = self.add_child(c)
+        }
+        self
+    }
+
+    pub(crate) fn add_children<T>(mut self, children: &[T]) -> Self
+    where
+        T: BuildXML,
+    {
+        for c in children {
+            self = self.add_child(c);
+        }
         self
     }
 

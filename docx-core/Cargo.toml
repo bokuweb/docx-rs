@@ -8,7 +8,7 @@ edition = "2018"
 
 [dependencies]
 xml-rs = "0.8.0"
-zip = "0.5.3"
+zip = { version = "0.5", default-features = false }
 
 [dev-dependencies]
 pretty_assertions = "*"

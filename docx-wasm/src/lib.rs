@@ -1,3 +1,6 @@
+extern crate docx_core;
+
+use docx_core::*;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]

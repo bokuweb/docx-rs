@@ -1,6 +1,7 @@
 mod build_xml;
 mod content_types;
 mod doc_props;
+mod document;
 mod elements;
 mod rels;
 mod styles;
@@ -8,25 +9,26 @@ mod xml_document;
 
 pub(crate) use build_xml::*;
 
-use crate::xml_builder::*;
-use content_types::*;
-use doc_props::*;
-use elements::*;
-use rels::*;
-use styles::*;
+pub use crate::xml_builder::*;
+pub use content_types::*;
+pub use doc_props::*;
+pub use document::*;
+pub use elements::*;
+pub use rels::*;
+pub use styles::*;
 
-pub(crate) struct Document {
+pub(crate) struct Docx {
     content_type: ContentTypes,
     rels: Rels,
     doc_props: DocProps,
 }
 
-impl Document {
-    pub fn new() -> Document {
+impl Docx {
+    pub fn new() -> Docx {
         let content_type = ContentTypes::new();
         let rels = Rels::new();
         let doc_props = DocProps::new(None, None /* TODO: */);
-        Document {
+        Docx {
             content_type,
             rels,
             doc_props,

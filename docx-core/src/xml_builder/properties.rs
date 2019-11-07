@@ -27,7 +27,7 @@ mod tests {
         let b = XMLBuilder::new();
         let r = b
             .open_properties("http://example", "http://example2")
-            .text("child")
+            .plain_text("child")
             .close()
             .build();
         assert_eq!(

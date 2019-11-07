@@ -3,12 +3,14 @@ mod macros;
 
 mod core_properties;
 mod declaration;
+mod document;
 mod elements;
 mod properties;
 mod relationship;
 mod styles;
 
 use crate::BuildXML;
+
 use std::str;
 use xml::common::XmlVersion;
 use xml::writer::{EmitterConfig, EventWriter, XmlEvent};
@@ -91,7 +93,7 @@ impl XMLBuilder {
     }
 
     // Write plain text
-    pub(crate) fn text(mut self, t: &str) -> Self {
+    pub(crate) fn plain_text(mut self, t: &str) -> Self {
         self.writer.write(t).unwrap();
         self
     }
@@ -109,7 +111,11 @@ mod tests {
     #[test]
     fn test_open_types() {
         let b = XMLBuilder::new();
-        let r = b.open_types("http://example").text("child").close().build();
+        let r = b
+            .open_types("http://example")
+            .plain_text("child")
+            .close()
+            .build();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<Types xmlns="http://example">child</Types>"#

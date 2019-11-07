@@ -21,7 +21,7 @@ mod tests {
         let b = XMLBuilder::new();
         let r = b
             .open_relationships("http://example")
-            .text("child")
+            .plain_text("child")
             .close()
             .build();
         assert_eq!(

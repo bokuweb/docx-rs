@@ -1,4 +1,4 @@
-use super::Document;
+use super::Docx;
 use crate::documents::BuildXML;
 
 pub(crate) struct XMLDocument {
@@ -6,8 +6,8 @@ pub(crate) struct XMLDocument {
     rels: Vec<u8>,
 }
 
-impl From<Document> for XMLDocument {
-    fn from(doc: Document) -> XMLDocument {
+impl From<Docx> for XMLDocument {
+    fn from(doc: Docx) -> XMLDocument {
         let content_type = doc.content_type.build();
         XMLDocument {
             content_type,

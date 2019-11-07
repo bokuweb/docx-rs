@@ -1,22 +1,5 @@
-use std::fmt;
-
-use super::XMLBuilder;
-use super::XmlEvent;
-
-#[derive(Copy, Clone, Debug)]
-pub enum StyleType {
-    Paragraph,
-    Character,
-}
-
-impl fmt::Display for StyleType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match *self {
-            StyleType::Paragraph => write!(f, "paragraph"),
-            StyleType::Character => write!(f, "character"),
-        }
-    }
-}
+use super::{XMLBuilder, XmlEvent};
+use crate::StyleType;
 
 impl XMLBuilder {
     // Build w:style element

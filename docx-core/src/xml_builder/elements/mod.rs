@@ -1,29 +1,20 @@
 #[macro_use]
 mod macros;
 
-mod based_on;
-mod color;
-mod doc_defaults;
-mod name;
-mod next;
-mod paragraph_property;
-mod q_format;
-mod run_property;
-mod run_property_default;
-mod style;
-mod sz;
+pub mod based_on;
+pub mod body;
+pub mod color;
+pub mod doc_defaults;
+pub mod name;
+pub mod next;
+pub mod paragraph;
+pub mod paragraph_property;
+pub mod q_format;
+pub mod run;
+pub mod run_property;
+pub mod run_property_default;
+pub mod style;
+pub mod sz;
+pub mod text;
 
-pub use based_on::*;
-pub use color::*;
-pub use doc_defaults::*;
-pub use name::*;
-pub use next::*;
-pub use paragraph_property::*;
-pub use q_format::*;
-pub use run_property::*;
-pub use run_property_default::*;
-pub use style::*;
-pub use sz::*;
-
-use super::XMLBuilder;
-use super::XmlEvent;
+use super::{XMLBuilder, XmlEvent};

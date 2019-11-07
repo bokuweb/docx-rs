@@ -1,5 +1,6 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use crate::StyleType;
 
 use super::{BasedOn, Name, Next, ParagraphProperty, QFormat, RunProperty};
 

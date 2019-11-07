@@ -1,7 +1,7 @@
+use super::{DocDefaults, Style};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
-
-use super::{DocDefaults, Style, StyleType};
+use crate::StyleType;
 
 pub struct Styles {
     doc_defaults: DocDefaults,

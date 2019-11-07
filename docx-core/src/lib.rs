@@ -1,4 +1,5 @@
 mod documents;
+mod types;
 mod xml_builder;
 
 use documents::*;
@@ -6,11 +7,12 @@ use xml_builder::*;
 
 use std::fs::File;
 use std::io::{self, Write};
+use types::*;
 
 use xml::writer::{EmitterConfig, EventWriter, Result, XmlEvent};
 
 pub fn simple() {
-    let doc = Document::new();
+    let doc = Docx::new();
     let mut file = File::create("./dist/output.xml").unwrap();
     // let mut b = Vec::new();
     // let mut w = EmitterConfig::new()

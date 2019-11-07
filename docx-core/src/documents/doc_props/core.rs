@@ -1,10 +1,12 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
+#[derive(Debug)]
 pub struct CoreProps {
     config: Option<CorePropsConfig>,
 }
 
+#[derive(Debug)]
 pub struct CorePropsConfig {
     created: Option<String>,
     creator: Option<String>,

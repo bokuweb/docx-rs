@@ -3,6 +3,7 @@ use crate::xml_builder::*;
 
 use super::run_property_default::*;
 
+#[derive(Debug)]
 pub struct DocDefaults {
     run_property_default: RunPropertyDefault,
 }

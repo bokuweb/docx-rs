@@ -3,6 +3,7 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 use crate::StyleType;
 
+#[derive(Debug)]
 pub struct Styles {
     doc_defaults: DocDefaults,
     styles: Vec<Style>,

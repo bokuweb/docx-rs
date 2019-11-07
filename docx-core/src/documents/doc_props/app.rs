@@ -1,10 +1,12 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
+#[derive(Debug)]
 pub struct AppProps {
     config: Option<AppPropsConfig>,
 }
 
+#[derive(Debug)]
 pub struct AppPropsConfig {
     template: Option<&'static str>,
     total_time: Option<usize>,

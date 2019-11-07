@@ -2,6 +2,7 @@ use super::{RunProperty, Text};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
+#[derive(Debug)]
 pub struct Run {
     run_property: RunProperty,
     text: Text,

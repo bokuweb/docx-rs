@@ -4,6 +4,7 @@ use crate::StyleType;
 
 use super::{BasedOn, Name, Next, ParagraphProperty, QFormat, RunProperty};
 
+#[derive(Debug)]
 pub struct Style {
     style_id: String,
     name: Name,

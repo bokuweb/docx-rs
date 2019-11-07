@@ -1,6 +1,7 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
+#[derive(Debug)]
 pub struct ContentTypes {}
 
 impl ContentTypes {

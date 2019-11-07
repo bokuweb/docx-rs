@@ -5,6 +5,7 @@ mod document;
 mod elements;
 mod rels;
 mod styles;
+mod xml_docx;
 
 pub(crate) use crate::xml_builder::*;
 pub(crate) use build_xml::*;
@@ -15,7 +16,9 @@ pub use document::*;
 pub use elements::*;
 pub use rels::*;
 pub use styles::*;
+pub use xml_docx::*;
 
+#[derive(Debug)]
 pub struct Docx {
     content_type: ContentTypes,
     rels: Rels,
@@ -41,14 +44,6 @@ impl Default for Docx {
     }
 }
 
-pub struct XMLDocx {
-    pub content_type: Vec<u8>,
-    pub rels: Vec<u8>,
-    pub doc_props: XMLDocProps,
-    pub styles: Vec<u8>,
-    pub document: Vec<u8>,
-}
-
 impl Docx {
     pub fn new() -> Docx {
         Default::default()
@@ -59,7 +54,7 @@ impl Docx {
         self
     }
 
-    pub(crate) fn build(&self) -> XMLDocx {
+    pub fn build(&self) -> XMLDocx {
         XMLDocx {
             content_type: self.content_type.build(),
             rels: self.rels.build(),

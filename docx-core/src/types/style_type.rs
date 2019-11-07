@@ -1,5 +1,7 @@
 use std::fmt;
+use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
 #[derive(Copy, Clone, Debug)]
 pub enum StyleType {
     Paragraph,

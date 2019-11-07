@@ -2,6 +2,7 @@ use super::{RunProperty, Sz};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
+#[derive(Debug)]
 pub struct Text {
     text: String,
 }

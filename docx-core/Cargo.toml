@@ -8,6 +8,7 @@ edition = "2018"
 
 [dependencies]
 xml-rs = "0.8.0"
+wasm-bindgen = "0.2.50"
 zip = { version = "0.5", default-features = false }
 
 [dev-dependencies]

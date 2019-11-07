@@ -1,12 +1,14 @@
 use crate::XMLDocx;
 
 use std::io::prelude::*;
+use std::io::Seek;
 use zip::write::FileOptions;
 
-pub fn zip(filename: &str, xml: XMLDocx) -> zip::result::ZipResult<()> {
-    let path = std::path::Path::new(filename);
-    let file = std::fs::File::create(&path).unwrap();
-    let mut zip = zip::ZipWriter::new(file);
+pub fn zip<W>(w: W, xml: XMLDocx) -> zip::result::ZipResult<()>
+where
+    W: Write + Seek,
+{
+    let mut zip = zip::ZipWriter::new(w);
 
     zip.add_directory("word/", Default::default())?;
     zip.add_directory("word/_rels", Default::default())?;

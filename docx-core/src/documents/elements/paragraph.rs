@@ -2,6 +2,7 @@ use super::{Run, RunProperty, Text};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
+#[derive(Debug)]
 pub struct Paragraph {
     runs: Vec<Run>,
 }

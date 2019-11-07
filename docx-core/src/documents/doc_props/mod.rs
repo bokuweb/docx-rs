@@ -5,6 +5,7 @@ pub use self::app::*;
 pub use self::core::*;
 use crate::documents::BuildXML;
 
+#[derive(Debug)]
 pub(crate) struct DocProps {
     app: AppProps,
     core: CoreProps,
@@ -28,6 +29,7 @@ impl DocProps {
     }
 }
 
+#[derive(Debug)]
 pub struct XMLDocProps {
     pub app: Vec<u8>,
     pub core: Vec<u8>,

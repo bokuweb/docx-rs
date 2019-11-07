@@ -1,37 +1,34 @@
-extern crate docx_core;
-
-use docx_core::*;
+use docx_core;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-extern "C" {
-    fn alert(s: &str);
-}
-
-#[wasm_bindgen]
-pub fn greet(name: &str) {
-    alert(&format!("Hello, {}!", name));
-}
-
-#[wasm_bindgen]
 #[derive(Debug)]
-pub struct Hoge {
-    pub inner: u32,
-    pub fuga: u32,
+pub struct Docx(docx_core::Docx);
+
+#[wasm_bindgen]
+#[allow(non_snake_case)]
+pub fn createDocx() -> Docx {
+    Docx(docx_core::Docx::new())
 }
 
 #[wasm_bindgen]
-pub fn create(inner: u32) -> Hoge {
-    Hoge { inner, fuga: 0 }
-}
-
-#[wasm_bindgen]
-impl Hoge {
-    pub fn add(&mut self) {
-        self.fuga = 10;
+impl Docx {
+    pub fn add_paragraph(mut self) -> Self {
+        self.0 = self
+            .0
+            .add_paragraph(docx_core::Paragraph::new().add_run(docx_core::Run::new("Hello")));
+        self
     }
 
-    pub fn log(&self) {
-        alert(&format!("Hello, {:?}!", self));
+    pub fn build(&self) -> Vec<u8> {
+        let buf = Vec::new();
+        let mut cur = std::io::Cursor::new(buf);
+        let b = self.0.build();
+        docx_core::zip(&mut cur, b).unwrap();
+        cur.into_inner()
+    }
+
+    pub fn test(&self, t: docx_core::StyleType) {
+        ()
     }
 }

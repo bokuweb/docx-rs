@@ -1,6 +1,7 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
+#[derive(Debug)]
 pub struct ParagraphProperty {}
 
 // 17.3.1.26

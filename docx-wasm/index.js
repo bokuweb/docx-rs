@@ -6,10 +6,7 @@ const rust = import("./pkg");
 
 rust
   .then(m => {
-    m.greet("World!");
-    let hoge = m.create(2);
-    console.log(hoge);
-    hoge.add();
-    hoge.log();
+    let docx = m.createDocx().add_paragraph();
+    saveAs(new Blob([docx.build()]), "example.docx");
   })
   .catch(console.error);

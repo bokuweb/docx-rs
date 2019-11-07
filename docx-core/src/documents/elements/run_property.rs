@@ -2,6 +2,7 @@ use super::{Color, Sz};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
+#[derive(Debug)]
 pub struct RunProperty {
     sz: Option<Sz>,
     color: Option<Color>,

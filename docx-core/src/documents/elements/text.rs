@@ -5,18 +5,21 @@ use crate::xml_builder::*;
 #[derive(Debug)]
 pub struct Text {
     text: String,
+    preserve_space: bool,
 }
 
 impl Text {
     pub fn new(text: impl Into<String>) -> Text {
-        Text { text: text.into() }
+        Text {
+            text: text.into(),
+            preserve_space: true,
+        }
     }
 }
 
 impl BuildXML for Text {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.text(&self.text).build()
+        XMLBuilder::new().text(&self.text, true).build()
     }
 }
 

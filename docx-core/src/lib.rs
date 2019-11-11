@@ -11,7 +11,11 @@ pub fn simple() {
     let path = std::path::Path::new("./test.docx");
     let file = std::fs::File::create(&path).unwrap();
     Docx::new()
-        .add_paragraph(Paragraph::new().add_run(Run::new("Hello")))
+        .add_paragraph(
+            Paragraph::new()
+                .add_run(Run::new("Hello"))
+                .add_run(Run::new(" World")),
+        )
         .build()
         .pack(file);
 }

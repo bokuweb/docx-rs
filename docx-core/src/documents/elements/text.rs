@@ -34,6 +34,9 @@ mod tests {
     #[test]
     fn test_build() {
         let b = Text::new("Hello").build();
-        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:t>Hello</w:t>"#);
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:t xml:space="preserve">Hello</w:t>"#
+        );
     }
 }

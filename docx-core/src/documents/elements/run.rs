@@ -49,7 +49,7 @@ mod tests {
         let b = Run::new("Hello").build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:r><w:rPr /><w:t>Hello</w:t></w:r>"#
+            r#"<w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r>"#
         );
     }
 }

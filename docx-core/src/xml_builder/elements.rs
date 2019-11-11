@@ -33,6 +33,10 @@ impl XMLBuilder {
     opened_el!(open_doc_defaults, "w:docDefaults");
     // i.e. <w:name ... >
     only_str_val_el!(name, "w:name");
+    // i.e. <w:jc ... >
+    only_str_val_el!(justification, "w:jc");
+    // i.e. <w:pStyle ... >
+    only_str_val_el!(p_style, "w:pStyle");
     // i.e. <w:sz ... >
     pub(crate) fn sz(mut self, val: usize) -> Self {
         self.writer

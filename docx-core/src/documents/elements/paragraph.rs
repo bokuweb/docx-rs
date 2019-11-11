@@ -1,15 +1,20 @@
-use super::{Run, RunProperty, Text};
+use super::{ParagraphProperty, Run, RunProperty, Text};
 use crate::documents::BuildXML;
+use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug)]
 pub struct Paragraph {
     runs: Vec<Run>,
+    property: ParagraphProperty,
 }
 
 impl Default for Paragraph {
     fn default() -> Self {
-        Self { runs: Vec::new() }
+        Self {
+            runs: Vec::new(),
+            property: ParagraphProperty::new(),
+        }
     }
 }
 
@@ -22,12 +27,18 @@ impl Paragraph {
         self.runs.push(run);
         self
     }
+
+    pub fn align(mut self, alignment_type: AlignmentType) -> Paragraph {
+        self.property = self.property.align(alignment_type);
+        self
+    }
 }
 
 impl BuildXML for Paragraph {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_paragraph()
+            .add_child(&self.property)
             .add_children(&self.runs)
             .close()
             .build()

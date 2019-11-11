@@ -1,6 +1,7 @@
 mod based_on;
 mod color;
 mod doc_defaults;
+mod justification;
 mod name;
 mod next;
 mod paragraph;
@@ -16,6 +17,7 @@ mod text;
 pub use based_on::*;
 pub use color::*;
 pub use doc_defaults::*;
+pub use justification::*;
 pub use name::*;
 pub use next::*;
 pub use paragraph::*;

@@ -1,8 +1,18 @@
+use super::Justification;
 use crate::documents::BuildXML;
+use crate::types::AlignmentType;
 use crate::xml_builder::*;
 
 #[derive(Debug)]
-pub struct ParagraphProperty {}
+pub struct ParagraphProperty {
+    alignment: Option<Justification>,
+}
+
+impl Default for ParagraphProperty {
+    fn default() -> Self {
+        ParagraphProperty { alignment: None }
+    }
+}
 
 // 17.3.1.26
 // pPr (Paragraph Properties)
@@ -11,14 +21,22 @@ pub struct ParagraphProperty {}
 // as direct formatting, since they are directly applied to the paragraph and supersede any formatting from styles.
 impl ParagraphProperty {
     pub fn new() -> ParagraphProperty {
-        ParagraphProperty {}
+        Default::default()
+    }
+
+    pub fn align(mut self, alignment_type: AlignmentType) -> ParagraphProperty {
+        self.alignment = Some(Justification::new(alignment_type.to_string()));
+        self
     }
 }
 
 impl BuildXML for ParagraphProperty {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.open_paragraph_property().close().build()
+        let p = b
+            .open_paragraph_property()
+            .add_optional_child(&self.alignment);
+        p.close().build()
     }
 }
 

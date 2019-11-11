@@ -1,4 +1,4 @@
-use super::{ParagraphProperty, ParagraphStyle, Run};
+use super::{ParagraphProperty, Run};
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -7,16 +7,13 @@ use crate::xml_builder::*;
 pub struct Paragraph {
     runs: Vec<Run>,
     property: ParagraphProperty,
-    style: ParagraphStyle,
 }
 
 impl Default for Paragraph {
     fn default() -> Self {
-        let s: Option<&str> = None;
         Self {
             runs: Vec::new(),
             property: ParagraphProperty::new(),
-            style: ParagraphStyle::new(s),
         }
     }
 }
@@ -35,6 +32,16 @@ impl Paragraph {
         self.property = self.property.align(alignment_type);
         self
     }
+
+    pub fn size(mut self, size: usize) -> Paragraph {
+        self.runs = self.runs.into_iter().map(|r| r.size(size)).collect();
+        self
+    }
+
+    pub fn style(mut self, style_id: &str) -> Paragraph {
+        self.property = self.property.style(style_id);
+        self
+    }
 }
 
 impl BuildXML for Paragraph {
@@ -42,7 +49,6 @@ impl BuildXML for Paragraph {
         XMLBuilder::new()
             .open_paragraph()
             .add_child(&self.property)
-            .add_child(&self.style)
             .add_children(&self.runs)
             .close()
             .build()
@@ -63,6 +69,15 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:p><w:pPr /><w:pStyle w:val="Normal" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
+        );
+    }
+
+    #[test]
+    fn test_paragraph_size() {
+        let b = Paragraph::new().add_run(Run::new("Hello")).size(60).build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:p><w:pPr /><w:r><w:rPr><w:sz w:val="60" /><w:szCs w:val="60" /></w:rPr><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );
     }
 }

@@ -8,7 +8,6 @@ impl XMLBuilder {
     // i.e. <w:basedOn ... >
     only_str_val_el!(based_on, "w:basedOn");
     // i.e. <w:t ... >
-    // i.e. <w:sz ... >
     pub(crate) fn text(mut self, text: &str, preserve_space: bool) -> Self {
         let space = if preserve_space {
             "preserve"
@@ -38,12 +37,9 @@ impl XMLBuilder {
     // i.e. <w:pStyle ... >
     only_str_val_el!(paragraph_style, "w:pStyle");
     // i.e. <w:sz ... >
-    pub(crate) fn sz(mut self, val: usize) -> Self {
-        self.writer
-            .write(XmlEvent::start_element("w:sz").attr("w:val", &format!("{}", val)))
-            .expect("should write to buf");
-        self.close()
-    }
+    only_usize_val_el!(sz, "w:sz");
+    // i.e. <w:szCs ... >
+    only_usize_val_el!(sz_cs, "w:szCs");
     // Build w:style element
     // i.e. <w:style ... >
     pub(crate) fn open_style(mut self, style_type: StyleType, id: &str) -> Self {

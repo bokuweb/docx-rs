@@ -15,6 +15,11 @@ impl Run {
             ..Default::default()
         }
     }
+
+    pub fn size(mut self, size: usize) -> Run {
+        self.run_property = self.run_property.size(size);
+        self
+    }
 }
 
 impl Default for Run {

@@ -13,6 +13,7 @@ mod run_property;
 mod run_property_default;
 mod style;
 mod sz;
+mod sz_cs;
 mod text;
 
 pub use based_on::*;
@@ -30,4 +31,5 @@ pub use run_property::*;
 pub use run_property_default::*;
 pub use style::*;
 pub use sz::*;
+pub use sz_cs::*;
 pub use text::*;

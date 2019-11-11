@@ -1,4 +1,4 @@
-use super::{Justification, RunProperty};
+use super::{Justification, ParagraphStyle, RunProperty, Sz, SzCs};
 use crate::documents::BuildXML;
 use crate::types::AlignmentType;
 use crate::xml_builder::*;
@@ -7,13 +7,16 @@ use crate::xml_builder::*;
 pub struct ParagraphProperty {
     alignment: Option<Justification>,
     run_property: RunProperty,
+    style: ParagraphStyle,
 }
 
 impl Default for ParagraphProperty {
     fn default() -> Self {
+        let s: Option<&str> = None;
         ParagraphProperty {
             alignment: None,
             run_property: RunProperty::new(),
+            style: ParagraphStyle::new(s),
         }
     }
 }
@@ -32,15 +35,20 @@ impl ParagraphProperty {
         self.alignment = Some(Justification::new(alignment_type.to_string()));
         self
     }
+
+    pub fn style(mut self, style_id: &str) -> ParagraphProperty {
+        self.style = ParagraphStyle::new(Some(style_id));
+        self
+    }
 }
 
 impl BuildXML for ParagraphProperty {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let p = b
+        XMLBuilder::new()
             .open_paragraph_property()
-            .add_optional_child(&self.alignment);
-        p.close().build()
+            .add_optional_child(&self.alignment)
+            .close()
+            .build()
     }
 }
 
@@ -53,9 +61,19 @@ mod tests {
     use std::str;
 
     #[test]
-    fn test_build() {
+    fn test_default() {
         let c = ParagraphProperty::new();
         let b = c.build();
         assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:pPr />"#);
+    }
+
+    #[test]
+    fn test_alignment() {
+        let c = ParagraphProperty::new();
+        let b = c.align(AlignmentType::Right).build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:pPr><w:jc w:val="right" /></w:pPr>"#
+        );
     }
 }

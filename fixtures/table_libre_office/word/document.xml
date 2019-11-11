@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:o="urn:schemas-microsoft-com:office:office" 
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" 
+    xmlns:v="urn:schemas-microsoft-com:vml" 
+    xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" 
+    xmlns:w10="urn:schemas-microsoft-com:office:word" 
+    xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" 
+    xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" 
+    xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" 
+    xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" mc:Ignorable="w14 wp14">
+    <w:body>
+        <w:tbl>
+            <w:tblPr>
+                <w:tblW w:w="9638" w:type="dxa"/>
+                <w:jc w:val="left"/>
+                <w:tblInd w:w="0" w:type="dxa"/>
+                <w:tblBorders>
+                    <w:top w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                    <w:left w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                    <w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                    <w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                </w:tblBorders>
+                <w:tblCellMar>
+                    <w:top w:w="55" w:type="dxa"/>
+                    <w:left w:w="54" w:type="dxa"/>
+                    <w:bottom w:w="55" w:type="dxa"/>
+                    <w:right w:w="55" w:type="dxa"/>
+                </w:tblCellMar>
+            </w:tblPr>
+            <w:tblGrid>
+                <w:gridCol w:w="4818"/>
+                <w:gridCol w:w="4820"/>
+            </w:tblGrid>
+            <w:tr>
+                <w:trPr></w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="4818" w:type="dxa"/>
+                        <w:tcBorders>
+                            <w:top w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:left w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                        </w:tcBorders>
+                        <w:shd w:fill="auto" w:val="clear"/>
+                    </w:tcPr>
+                    <w:p>
+                        <w:pPr>
+                            <w:pStyle w:val="Style19"/>
+                            <w:rPr></w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr></w:rPr>
+                            <w:t>0</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="4820" w:type="dxa"/>
+                        <w:tcBorders>
+                            <w:top w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:left w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:right w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                        </w:tcBorders>
+                        <w:shd w:fill="auto" w:val="clear"/>
+                    </w:tcPr>
+                    <w:p>
+                        <w:pPr>
+                            <w:pStyle w:val="Style19"/>
+                            <w:rPr></w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr></w:rPr>
+                            <w:t>1</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+            <w:tr>
+                <w:trPr></w:trPr>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="4818" w:type="dxa"/>
+                        <w:tcBorders>
+                            <w:left w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                        </w:tcBorders>
+                        <w:shd w:fill="auto" w:val="clear"/>
+                    </w:tcPr>
+                    <w:p>
+                        <w:pPr>
+                            <w:pStyle w:val="Style19"/>
+                            <w:rPr></w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr></w:rPr>
+                            <w:t>2</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="4820" w:type="dxa"/>
+                        <w:tcBorders>
+                            <w:left w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:right w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                            <w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+                        </w:tcBorders>
+                        <w:shd w:fill="auto" w:val="clear"/>
+                    </w:tcPr>
+                    <w:p>
+                        <w:pPr>
+                            <w:pStyle w:val="Style19"/>
+                            <w:rPr></w:rPr>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr></w:rPr>
+                            <w:t>3</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+        </w:tbl>
+        <w:p>
+            <w:pPr>
+                <w:pStyle w:val="Normal"/>
+                <w:rPr></w:rPr>
+            </w:pPr>
+            <w:r>
+                <w:rPr></w:rPr>
+            </w:r>
+        </w:p>
+    </w:body>
+</w:document>

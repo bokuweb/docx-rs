@@ -1,5 +1,8 @@
 use super::XMLDocProps;
-use wasm_bindgen::prelude::*;
+
+use crate::zipper;
+use std::io::prelude::*;
+use std::io::Seek;
 
 #[derive(Debug)]
 pub struct XMLDocx {
@@ -8,4 +11,13 @@ pub struct XMLDocx {
     pub doc_props: XMLDocProps,
     pub styles: Vec<u8>,
     pub document: Vec<u8>,
+}
+
+impl XMLDocx {
+    pub fn pack<W>(self, w: W) -> zip::result::ZipResult<()>
+    where
+        W: Write + Seek,
+    {
+        zipper::zip(w, self)
+    }
 }

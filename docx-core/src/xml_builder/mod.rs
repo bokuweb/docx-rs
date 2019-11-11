@@ -93,6 +93,7 @@ impl XMLBuilder {
     }
 
     // Write plain text
+    #[allow(dead_code)]
     pub(crate) fn plain_text(mut self, t: &str) -> Self {
         self.writer.write(t).unwrap();
         self

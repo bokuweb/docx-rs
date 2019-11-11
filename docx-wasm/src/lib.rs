@@ -20,12 +20,14 @@ impl Docx {
         self
     }
 
-    pub fn build(&self) -> Vec<u8> {
+    pub fn build(&self) -> Result<Vec<u8>, JsValue> {
         let buf = Vec::new();
         let mut cur = std::io::Cursor::new(buf);
-        let b = self.0.build();
-        docx_core::zip(&mut cur, b).unwrap();
-        cur.into_inner()
+        let res = self.0.build().pack(&mut cur);
+        if res.is_err() {
+            return Err(format!("{:?}", res).into());
+        }
+        Ok(cur.into_inner())
     }
 
     pub fn test(&self, t: docx_core::StyleType) {

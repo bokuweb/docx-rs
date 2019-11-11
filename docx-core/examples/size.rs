@@ -1,6 +1,6 @@
 use docx_core::*;
 
-pub fn main() {
+pub fn main() -> Result<(), DocxError> {
   let path = std::path::Path::new("./output/size.docx");
   let file = std::fs::File::create(&path).unwrap();
   Docx::new()
@@ -11,5 +11,6 @@ pub fn main() {
         .add_run(Run::new("ld")),
     )
     .build()
-    .pack(file);
+    .pack(file)?;
+  Ok(())
 }

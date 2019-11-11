@@ -45,6 +45,7 @@ name = "docx-core"
 version = "0.1.0"
 dependencies = [
  "pretty_assertions 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "thiserror 1.0.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "wasm-bindgen 0.2.53 (registry+https://github.com/rust-lang/crates.io-index)",
  "xml-rs 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "zip 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -119,6 +120,24 @@ dependencies = [
  "proc-macro2 1.0.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "quote 1.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "unicode-xid 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "thiserror"
+version = "1.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "thiserror-impl 1.0.5 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "thiserror-impl"
+version = "1.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "proc-macro2 1.0.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "quote 1.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn 1.0.7 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -223,6 +242,8 @@ dependencies = [
 "checksum proc-macro2 1.0.6 (registry+https://github.com/rust-lang/crates.io-index)" = "9c9e470a8dc4aeae2dee2f335e8f533e2d4b347e1434e5671afc49b054592f27"
 "checksum quote 1.0.2 (registry+https://github.com/rust-lang/crates.io-index)" = "053a8c8bcc71fcce321828dc897a98ab9760bef03a4fc36693c231e5b3216cfe"
 "checksum syn 1.0.7 (registry+https://github.com/rust-lang/crates.io-index)" = "0e7bedb3320d0f3035594b0b723c8a28d7d336a3eda3881db79e61d676fb644c"
+"checksum thiserror 1.0.5 (registry+https://github.com/rust-lang/crates.io-index)" = "f9fb62ff737e573b1e677459bea6fd023cd5d6e868c3242d3cdf3ef2f0554824"
+"checksum thiserror-impl 1.0.5 (registry+https://github.com/rust-lang/crates.io-index)" = "24069c0ba08aab54289d6a25f5036d94afc61e1538bbc42ae5501df141c9027d"
 "checksum unicode-xid 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "826e7639553986605ec5979c7dd957c7895e93eabed50ab2ffa7f6128a75097c"
 "checksum wasm-bindgen 0.2.53 (registry+https://github.com/rust-lang/crates.io-index)" = "4c29d57d5c3b3bc53bbe35c5a4f4a0df994d870b7d3cb0ad1c2065e21822ae41"
 "checksum wasm-bindgen-backend 0.2.53 (registry+https://github.com/rust-lang/crates.io-index)" = "aa2868fa93e5bf36a9364d1277a0f97392748a8217d9aa0ec3f1cdbdf7ad1a60"

@@ -1,11 +1,12 @@
 mod documents;
+mod errors;
 mod types;
 mod xml_builder;
 mod zipper;
 
 pub use documents::*;
+pub use errors::*;
 pub use types::*;
-pub use zipper::*;
 
 pub fn simple() {
     let path = std::path::Path::new("./test.docx");

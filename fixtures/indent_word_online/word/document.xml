@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:o="urn:schemas-microsoft-com:office:office" 
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" 
+    xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" 
+    xmlns:v="urn:schemas-microsoft-com:vml" 
+    xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" 
+    xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" 
+    xmlns:w10="urn:schemas-microsoft-com:office:word" 
+    xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" 
+    xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" 
+    xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" 
+    xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" 
+    xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" 
+    xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" 
+    xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 wp14">
+    <w:body>
+        <w:p w:rsidR="370DCFF3" w:rsidP="370DCFF3" w:rsidRDefault="370DCFF3" w14:paraId="5231A740" w14:textId="31D108F5">
+            <w:pPr>
+                <w:pStyle w:val="Normal" />
+                <w:ind w:left="0" />
+            </w:pPr>
+        </w:p>
+        <w:p w:rsidR="370DCFF3" w:rsidP="370DCFF3" w:rsidRDefault="370DCFF3" w14:paraId="6DA0584E" w14:textId="7A419A20">
+            <w:pPr>
+                <w:pStyle w:val="Normal" />
+                <w:ind w:left="840" w:firstLine="0" />
+            </w:pPr>
+            <w:r w:rsidRPr="370DCFF3" w:rsidR="370DCFF3">
+                <w:rPr>
+                    <w:rFonts w:ascii="Century" w:hAnsi="Century" w:eastAsia="Century" w:cs="Century" />
+                    <w:noProof w:val="0" />
+                    <w:color w:val="222222" />
+                    <w:sz w:val="22" />
+                    <w:szCs w:val="22" />
+                    <w:lang w:eastAsia="ja-JP" />
+                </w:rPr>
+                <w:t>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</w:t>
+            </w:r>
+        </w:p>
+        <w:p w:rsidR="370DCFF3" w:rsidP="370DCFF3" w:rsidRDefault="370DCFF3" w14:paraId="448AC37F" w14:textId="31D108F5">
+            <w:pPr>
+                <w:pStyle w:val="Normal" />
+                <w:ind w:left="0" />
+            </w:pPr>
+        </w:p>
+        <w:p w:rsidR="370DCFF3" w:rsidP="370DCFF3" w:rsidRDefault="370DCFF3" w14:paraId="015A501D" w14:textId="229A5E10">
+            <w:pPr>
+                <w:pStyle w:val="Normal" />
+                <w:ind w:left="840" w:firstLine="720" />
+            </w:pPr>
+            <w:r w:rsidRPr="370DCFF3" w:rsidR="370DCFF3">
+                <w:rPr>
+                    <w:rFonts w:ascii="Century" w:hAnsi="Century" w:eastAsia="Century" w:cs="Century" />
+                    <w:noProof w:val="0" />
+                    <w:color w:val="222222" />
+                    <w:sz w:val="22" />
+                    <w:szCs w:val="22" />
+                    <w:lang w:eastAsia="ja-JP" />
+                </w:rPr>
+                <w:t>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</w:t>
+            </w:r>
+        </w:p>
+        <w:p w:rsidR="370DCFF3" w:rsidP="370DCFF3" w:rsidRDefault="370DCFF3" w14:paraId="564F799D" w14:textId="412B57E0">
+            <w:pPr>
+                <w:pStyle w:val="Normal" />
+                <w:ind w:left="840" w:firstLine="720" />
+            </w:pPr>
+        </w:p>
+        <w:p w:rsidR="370DCFF3" w:rsidP="370DCFF3" w:rsidRDefault="370DCFF3" w14:paraId="640CFBC2" w14:textId="5C0A5D68">
+            <w:pPr>
+                <w:pStyle w:val="Normal" />
+                <w:rPr>
+                    <w:rFonts w:ascii="Century" w:hAnsi="Century" w:eastAsia="Century" w:cs="Century" />
+                    <w:noProof w:val="0" />
+                    <w:sz w:val="21" />
+                    <w:szCs w:val="21" />
+                    <w:lang w:eastAsia="ja-JP" />
+                </w:rPr>
+            </w:pPr>
+        </w:p>
+        <w:p w:rsidR="370DCFF3" w:rsidP="370DCFF3" w:rsidRDefault="370DCFF3" w14:paraId="4C665373" w14:textId="3E000D23">
+            <w:pPr>
+                <w:pStyle w:val="Normal" />
+                <w:ind w:left="1560" w:hanging="720" />
+            </w:pPr>
+            <w:r w:rsidRPr="370DCFF3" w:rsidR="370DCFF3">
+                <w:rPr>
+                    <w:rFonts w:ascii="Century" w:hAnsi="Century" w:eastAsia="Century" w:cs="Century" />
+                    <w:noProof w:val="0" />
+                    <w:sz w:val="21" />
+                    <w:szCs w:val="21" />
+                    <w:lang w:eastAsia="ja-JP" />
+                </w:rPr>
+                <w:t>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</w:t>
+            </w:r>
+        </w:p>
+        <w:sectPr>
+            <w:pgSz w:w="11906" w:h="16838" w:orient="portrait" />
+            <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0" />
+            <w:cols w:space="720" />
+            <w:docGrid w:type="lines" w:linePitch="360" />
+        </w:sectPr>
+    </w:body>
+</w:document>

@@ -1,22 +1,24 @@
-use super::{Justification, ParagraphStyle, RunProperty, Sz, SzCs};
+use super::{Indent, Justification, ParagraphStyle, RunProperty};
 use crate::documents::BuildXML;
-use crate::types::AlignmentType;
+use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;
 
 #[derive(Debug)]
 pub struct ParagraphProperty {
-    alignment: Option<Justification>,
     run_property: RunProperty,
     style: ParagraphStyle,
+    alignment: Option<Justification>,
+    indent: Option<Indent>,
 }
 
 impl Default for ParagraphProperty {
     fn default() -> Self {
         let s: Option<&str> = None;
         ParagraphProperty {
-            alignment: None,
             run_property: RunProperty::new(),
             style: ParagraphStyle::new(s),
+            alignment: None,
+            indent: None,
         }
     }
 }
@@ -40,13 +42,25 @@ impl ParagraphProperty {
         self.style = ParagraphStyle::new(Some(style_id));
         self
     }
+
+    pub fn indent(
+        mut self,
+        left: usize,
+        special_indent: Option<SpecialIndentType>,
+    ) -> ParagraphProperty {
+        self.indent = Some(Indent::new(left, special_indent));
+        self
+    }
 }
 
 impl BuildXML for ParagraphProperty {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_paragraph_property()
+            .add_child(&self.style)
+            .add_child(&self.run_property)
             .add_optional_child(&self.alignment)
+            .add_optional_child(&self.indent)
             .close()
             .build()
     }
@@ -64,7 +78,10 @@ mod tests {
     fn test_default() {
         let c = ParagraphProperty::new();
         let b = c.build();
-        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:pPr />"#);
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr>"#
+        );
     }
 
     #[test]
@@ -73,7 +90,17 @@ mod tests {
         let b = c.align(AlignmentType::Right).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPr><w:jc w:val="right" /></w:pPr>"#
+            r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:jc w:val="right" /></w:pPr>"#
+        );
+    }
+
+    #[test]
+    fn test_indent() {
+        let c = ParagraphProperty::new();
+        let b = c.indent(20, None).build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="20" /></w:pPr>"#
         );
     }
 }

@@ -2,6 +2,8 @@ use super::XMLBuilder;
 use super::XmlEvent;
 use crate::types::*;
 
+const EXPECT_MESSAGE: &str = "should write buf";
+
 impl XMLBuilder {
     // i.e. <w:body... >
     opened_el!(open_body, "w:body");
@@ -16,8 +18,8 @@ impl XMLBuilder {
         };
         self.writer
             .write(XmlEvent::start_element("w:t").attr("xml:space", space))
-            .expect("should write to buf");
-        self.writer.write(text).expect("should write to buf");
+            .expect(EXPECT_MESSAGE);
+        self.writer.write(text).expect(EXPECT_MESSAGE);
         self.close()
     }
     // i.e. <w:r ... >
@@ -49,14 +51,14 @@ impl XMLBuilder {
                     .attr("w:type", &style_type.to_string())
                     .attr("w:styleId", id),
             )
-            .expect("should write to buf");
+            .expect(EXPECT_MESSAGE);
         self
     }
     // i.e. <w:next ... >
     pub(crate) fn next(mut self, val: &str) -> Self {
         self.writer
             .write(XmlEvent::start_element("w:next").attr("w:val", val))
-            .expect("should write to buf");
+            .expect(EXPECT_MESSAGE);
         self.close()
     }
 
@@ -64,7 +66,25 @@ impl XMLBuilder {
     pub(crate) fn color(mut self, val: &str) -> Self {
         self.writer
             .write(XmlEvent::start_element("w:color").attr("w:val", val))
-            .expect("should write to buf");
+            .expect(EXPECT_MESSAGE);
+        self.close()
+    }
+
+    // i.e. <w:ind ... >
+    pub(crate) fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Self {
+        let left = &format!("{}", left);
+        let base = XmlEvent::start_element("w:ind").attr("w:left", left);
+        match special_indent {
+            Some(SpecialIndentType::FirstLine(v)) => self
+                .writer
+                .write(base.attr("w:firstLine", &format!("{}", v)))
+                .expect(EXPECT_MESSAGE),
+            Some(SpecialIndentType::Hanging(v)) => self
+                .writer
+                .write(base.attr("w:hanging", &format!("{}", v)))
+                .expect(EXPECT_MESSAGE),
+            _ => self.writer.write(base).expect(EXPECT_MESSAGE),
+        };
         self.close()
     }
 }

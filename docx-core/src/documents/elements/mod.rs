@@ -1,6 +1,7 @@
 mod based_on;
 mod color;
 mod doc_defaults;
+mod indent;
 mod justification;
 mod name;
 mod next;
@@ -19,6 +20,7 @@ mod text;
 pub use based_on::*;
 pub use color::*;
 pub use doc_defaults::*;
+pub use indent::*;
 pub use justification::*;
 pub use name::*;
 pub use next::*;

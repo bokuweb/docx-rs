@@ -42,6 +42,11 @@ impl Paragraph {
         self.property = self.property.style(style_id);
         self
     }
+
+    pub fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Paragraph {
+        self.property = self.property.indent(left, special_indent);
+        self
+    }
 }
 
 impl BuildXML for Paragraph {

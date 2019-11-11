@@ -1,5 +1,3 @@
-use std::fmt;
-
 use super::XMLBuilder;
 use super::XmlEvent;
 

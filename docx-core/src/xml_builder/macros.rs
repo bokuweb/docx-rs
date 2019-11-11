@@ -142,6 +142,7 @@ macro_rules! only_str_val_el {
     };
 }
 
+/*
 macro_rules! only_usize_val_el {
     ($name: ident, $el_name: expr) => {
         pub(crate) fn $name(mut self, val: usize) -> Self {
@@ -152,3 +153,4 @@ macro_rules! only_usize_val_el {
         }
     };
 }
+*/

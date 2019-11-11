@@ -1,4 +1,3 @@
-use super::{RunProperty, Sz};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 

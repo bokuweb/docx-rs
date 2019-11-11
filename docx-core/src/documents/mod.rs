@@ -7,7 +7,6 @@ mod rels;
 mod styles;
 mod xml_docx;
 
-pub(crate) use crate::xml_builder::*;
 pub(crate) use build_xml::*;
 
 pub use content_types::*;

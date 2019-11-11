@@ -1,7 +1,6 @@
-use super::{DocDefaults, Paragraph, Run, Style};
+use super::Paragraph;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
-use crate::StyleType;
 
 #[derive(Debug)]
 pub struct Document {
@@ -43,6 +42,7 @@ impl BuildXML for Document {
 #[cfg(test)]
 mod tests {
 
+    use super::super::Run;
     use super::*;
     #[cfg(test)]
     use pretty_assertions::assert_eq;

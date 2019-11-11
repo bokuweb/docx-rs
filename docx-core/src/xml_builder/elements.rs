@@ -36,7 +36,7 @@ impl XMLBuilder {
     // i.e. <w:jc ... >
     only_str_val_el!(justification, "w:jc");
     // i.e. <w:pStyle ... >
-    only_str_val_el!(p_style, "w:pStyle");
+    only_str_val_el!(paragraph_style, "w:pStyle");
     // i.e. <w:sz ... >
     pub(crate) fn sz(mut self, val: usize) -> Self {
         self.writer

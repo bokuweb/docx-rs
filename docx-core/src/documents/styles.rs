@@ -1,7 +1,6 @@
 use super::{DocDefaults, Style};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
-use crate::StyleType;
 
 #[derive(Debug)]
 pub struct Styles {
@@ -44,6 +43,7 @@ impl BuildXML for Styles {
 mod tests {
 
     use super::*;
+    use crate::types::StyleType;
     #[cfg(test)]
     use pretty_assertions::assert_eq;
     use std::str;

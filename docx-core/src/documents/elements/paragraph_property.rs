@@ -1,4 +1,4 @@
-use super::Justification;
+use super::{Justification, RunProperty};
 use crate::documents::BuildXML;
 use crate::types::AlignmentType;
 use crate::xml_builder::*;
@@ -6,11 +6,15 @@ use crate::xml_builder::*;
 #[derive(Debug)]
 pub struct ParagraphProperty {
     alignment: Option<Justification>,
+    run_property: RunProperty,
 }
 
 impl Default for ParagraphProperty {
     fn default() -> Self {
-        ParagraphProperty { alignment: None }
+        ParagraphProperty {
+            alignment: None,
+            run_property: RunProperty::new(),
+        }
     }
 }
 

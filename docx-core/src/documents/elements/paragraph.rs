@@ -1,4 +1,4 @@
-use super::{ParagraphProperty, Run, RunProperty, Text};
+use super::{ParagraphProperty, ParagraphStyle, Run};
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -7,13 +7,16 @@ use crate::xml_builder::*;
 pub struct Paragraph {
     runs: Vec<Run>,
     property: ParagraphProperty,
+    style: ParagraphStyle,
 }
 
 impl Default for Paragraph {
     fn default() -> Self {
+        let s: Option<&str> = None;
         Self {
             runs: Vec::new(),
             property: ParagraphProperty::new(),
+            style: ParagraphStyle::new(s),
         }
     }
 }
@@ -39,6 +42,7 @@ impl BuildXML for Paragraph {
         XMLBuilder::new()
             .open_paragraph()
             .add_child(&self.property)
+            .add_child(&self.style)
             .add_children(&self.runs)
             .close()
             .build()
@@ -58,7 +62,7 @@ mod tests {
         let b = Paragraph::new().add_run(Run::new("Hello")).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p><w:r><w:rPr /><w:t>Hello</w:t></w:r></w:p>"#
+            r#"<w:p><w:pPr /><w:pStyle w:val="Normal" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );
     }
 }

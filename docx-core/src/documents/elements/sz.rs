@@ -1,8 +1,6 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-use super::Name;
-
 #[derive(Debug)]
 pub struct Sz {
     val: usize,

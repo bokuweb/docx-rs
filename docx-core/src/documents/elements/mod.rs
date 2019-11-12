@@ -24,6 +24,8 @@ mod table_cell_width;
 mod table_grid;
 mod table_indent;
 mod table_property;
+mod table_row;
+mod table_row_property;
 mod table_width;
 mod text;
 
@@ -53,5 +55,7 @@ pub use table_cell_width::*;
 pub use table_grid::*;
 pub use table_indent::*;
 pub use table_property::*;
+pub use table_row::*;
+pub use table_row_property::*;
 pub use table_width::*;
 pub use text::*;

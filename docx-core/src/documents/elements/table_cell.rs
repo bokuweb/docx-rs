@@ -1,4 +1,4 @@
-use super::{Paragraph, Run, TableCellProperty};
+use super::{Paragraph, TableCellProperty};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
@@ -14,8 +14,8 @@ pub enum TableCellContent {
 }
 
 impl TableCell {
-    pub fn new(w: usize) -> TableCell {
-        let property = TableCellProperty::new(w);
+    pub fn new() -> TableCell {
+        let property = TableCellProperty::new();
         let contents = vec![];
         Self { property, contents }
     }
@@ -42,6 +42,7 @@ impl BuildXML for TableCell {
 #[cfg(test)]
 mod tests {
 
+    use super::super::*;
     use super::*;
     #[cfg(test)]
     use pretty_assertions::assert_eq;
@@ -49,21 +50,21 @@ mod tests {
 
     #[test]
     fn test_cell() {
-        let b = TableCell::new(200).build();
+        let b = TableCell::new().build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tc><w:tcPr><w:tcW w:w="200" w:type="dxa" /><w:tcBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tcBorders></w:tcPr></w:tc>"#
+            r#"<w:tc><w:tcPr><w:tcBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tcBorders></w:tcPr></w:tc>"#
         );
     }
 
     #[test]
     fn test_cell_add_p() {
-        let b = TableCell::new(200)
+        let b = TableCell::new()
             .add_paragraph(Paragraph::new().add_run(Run::new("Hello")))
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tc><w:tcPr><w:tcW w:w="200" w:type="dxa" /><w:tcBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tcBorders></w:tcPr><w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p></w:tc>"#
+            r#"<w:tc><w:tcPr><w:tcBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tcBorders></w:tcPr><w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p></w:tc>"#
         );
     }
 }

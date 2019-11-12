@@ -1,0 +1,14 @@
+{
+  "name": "docx-rs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/bokuweb/docx-rs.git",
+  "author": "bokuweb <bokuweb12@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "libreoffice-convert": "^1.0.3"
+  },
+  "dependencies": {
+    "glob": "^7.1.6"
+  }
+}

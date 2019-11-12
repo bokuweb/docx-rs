@@ -152,3 +152,33 @@ macro_rules! only_usize_val_el {
         }
     };
 }
+
+macro_rules! closed_w_with_type_el {
+    ($name: ident, $el_name: expr) => {
+        pub(crate) fn $name(mut self, w: usize, t: WidthType) -> Self {
+        self.writer
+            .write(
+                XmlEvent::start_element($el_name)
+                    .attr("w:w", &format!("{}", w))
+                    .attr("w:type", &t.to_string()),
+            )
+            .expect(EXPECT_MESSAGE);
+        self.close()
+        }
+    };
+}
+
+macro_rules! closed_border_el {
+    ($name: ident, $el_name: expr) => {
+        pub(crate) fn $name(mut self, size: usize, space: usize, color: &str) -> Self {
+        self.writer
+            .write(
+                XmlEvent::start_element($el_name)
+                    .attr("w:w", &format!("{}", w))
+                    .attr("w:type", &t.to_string()),
+            )
+            .expect(EXPECT_MESSAGE);
+        self.close()
+        }
+    };
+}

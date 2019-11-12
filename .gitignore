@@ -6,3 +6,8 @@ pkg
 *.docx#
 test.docx
 output/*.docx
+vrt/screenshot/actual
+vrt/screenshot/diff
+vrt/report.html
+reg.json
+docx-core/tests/output/*.docx

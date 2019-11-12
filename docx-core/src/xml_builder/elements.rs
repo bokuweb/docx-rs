@@ -87,6 +87,29 @@ impl XMLBuilder {
         };
         self.close()
     }
+
+    //
+    // Table elements
+    //
+    opened_el!(open_table, "w:tbl");
+    opened_el!(open_table_property, "w:tblPr");
+    opened_el!(open_table_grid, "w:tblGrid");
+    opened_el!(open_table_row, "w:tr");
+    opened_el!(open_table_row_property, "w:trPr");
+    opened_el!(open_table_cell, "w:tc");
+    opened_el!(open_table_cell_property, "w:tcPr");
+    opened_el!(open_table_borders, "w:tblBorders");
+    opened_el!(open_table_cell_margins, "w:tblCellMar");
+
+    closed_w_with_type_el!(table_width, "w:tblW");
+    closed_w_with_type_el!(table_indent, "w:tblInd");
+    closed_w_with_type_el!(grid_column, "w:gridCol");
+    closed_w_with_type_el!(table_cell_width, "w:tcW");
+
+    // TODO:
+    // w:shd
+    // w:top/left/bottom/right
+    // w:insideH/insideV
 }
 
 #[cfg(test)]

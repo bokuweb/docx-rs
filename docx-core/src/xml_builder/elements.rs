@@ -98,6 +98,7 @@ impl XMLBuilder {
     opened_el!(open_table_row_property, "w:trPr");
     opened_el!(open_table_cell, "w:tc");
     opened_el!(open_table_cell_property, "w:tcPr");
+    opened_el!(open_table_cell_borders, "w:tcBorders");
     opened_el!(open_table_borders, "w:tblBorders");
     opened_el!(open_table_cell_margins, "w:tblCellMar");
 

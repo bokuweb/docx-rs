@@ -2,7 +2,7 @@ use super::{Color, Sz, SzCs};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct RunProperty {
     sz: Option<Sz>,
     sz_cs: Option<SzCs>,

@@ -3,7 +3,7 @@ use crate::documents::BuildXML;
 use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ParagraphProperty {
     run_property: RunProperty,
     style: ParagraphStyle,

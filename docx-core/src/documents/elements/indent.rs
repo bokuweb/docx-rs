@@ -2,7 +2,7 @@ use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Indent {
     left: usize,
     special_indent: Option<SpecialIndentType>,

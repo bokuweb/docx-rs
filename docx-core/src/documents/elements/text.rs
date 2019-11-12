@@ -1,7 +1,7 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Text {
     text: String,
     preserve_space: bool,

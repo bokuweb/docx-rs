@@ -2,17 +2,43 @@
 // Please see p3813 <xsd:simpleType name="ST_Border">
 //
 
+use std::fmt;
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+#[derive(Copy, Clone, Debug)]
+pub enum BorderType {
+    None,
+    Single,
+    Thick,
+    Double,
+    Dotted,
+    Dashed,
+    DotDash,
+    DotDotDash,
+    Triple,
+}
+
+impl fmt::Display for BorderType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            BorderType::None => write!(f, "none"),
+            BorderType::Single => write!(f, "single"),
+            BorderType::Thick => write!(f, "thick"),
+            BorderType::Double => write!(f, "double"),
+            BorderType::Dotted => write!(f, "dotted"),
+            BorderType::Dashed => write!(f, "dashed"),
+            BorderType::DotDash => write!(f, "dotDash"),
+            BorderType::DotDotDash => write!(f, "dotDotDash"),
+            BorderType::Triple => write!(f, "triple"),
+        }
+    }
+}
+
 /*
+  Unsupported types
 "nil"
 "none"
-"single"
-"thick"
-"double"
-"dotted"
-"dashed"
-"dotDash"
-"dotDotDash"
-"triple"
 "thinThickSmallGap"
 "thickThinSmallGap"
 "thinThickThinSmallGap"

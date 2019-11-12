@@ -106,10 +106,19 @@ impl XMLBuilder {
     closed_w_with_type_el!(grid_column, "w:gridCol");
     closed_w_with_type_el!(table_cell_width, "w:tcW");
 
-    // TODO:
-    // w:shd
-    // w:top/left/bottom/right
-    // w:insideH/insideV
+    closed_w_with_type_el!(margin_top, "w:top");
+    closed_w_with_type_el!(margin_left, "w:left");
+    closed_w_with_type_el!(margin_bottom, "w:bottom");
+    closed_w_with_type_el!(margin_right, "w:right");
+
+    closed_border_el!(border_top, "w:top");
+    closed_border_el!(border_left, "w:left");
+    closed_border_el!(border_bottom, "w:bottom");
+    closed_border_el!(border_right, "w:right");
+    closed_border_el!(border_inside_h, "w:insideH");
+    closed_border_el!(border_inside_v, "w:insideV");
+
+    closed_el!(shd, "w:shd", "w:fill", "w:val");
 }
 
 #[cfg(test)]

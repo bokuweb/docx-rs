@@ -170,12 +170,14 @@ macro_rules! closed_w_with_type_el {
 
 macro_rules! closed_border_el {
     ($name: ident, $el_name: expr) => {
-        pub(crate) fn $name(mut self, size: usize, space: usize, color: &str) -> Self {
+        pub(crate) fn $name(mut self, val: BorderType, size: usize, space: usize, color: &str) -> Self {
         self.writer
             .write(
                 XmlEvent::start_element($el_name)
-                    .attr("w:w", &format!("{}", w))
-                    .attr("w:type", &t.to_string()),
+                    .attr("w:val", &val.to_string())
+                    .attr("w:sz", &format!("{}", size))
+                    .attr("w:space", &format!("{}", space))
+                    .attr("w:color", color),
             )
             .expect(EXPECT_MESSAGE);
         self.close()

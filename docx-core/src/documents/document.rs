@@ -1,10 +1,16 @@
-use super::Paragraph;
+use super::{Paragraph, Table};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug)]
 pub struct Document {
-    paragraphs: Vec<Paragraph>,
+    children: Vec<DocumentContent>,
+}
+
+#[derive(Debug, Clone)]
+pub enum DocumentContent {
+    Paragraph(Paragraph),
+    Table(Table),
 }
 
 impl Document {
@@ -13,7 +19,12 @@ impl Document {
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> Self {
-        self.paragraphs.push(p);
+        self.children.push(DocumentContent::Paragraph(p));
+        self
+    }
+
+    pub fn add_table(mut self, t: Table) -> Self {
+        self.children.push(DocumentContent::Table(t));
         self
     }
 }
@@ -21,21 +32,24 @@ impl Document {
 impl Default for Document {
     fn default() -> Self {
         Self {
-            paragraphs: Vec::new(),
+            children: Vec::new(),
         }
     }
 }
 
 impl BuildXML for Document {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.declaration(Some(true))
+        let mut b = XMLBuilder::new()
+            .declaration(Some(true))
             .open_document()
-            .open_body()
-            .add_children(&self.paragraphs)
-            .close()
-            .close()
-            .build()
+            .open_body();
+        for c in &self.children {
+            match c {
+                DocumentContent::Paragraph(p) => b = b.add_child(p),
+                DocumentContent::Table(t) => b = b.add_child(t),
+            }
+        }
+        b.close().close().build()
     }
 }
 

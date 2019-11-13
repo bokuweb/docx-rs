@@ -77,3 +77,23 @@ pub fn table() -> Result<(), DocxError> {
   Docx::new().add_table(table).build().pack(file)?;
   Ok(())
 }
+
+#[test]
+pub fn table_with_grid() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/table_with_grid.docx");
+  let file = std::fs::File::create(&path).unwrap();
+
+  let table = Table::new(vec![
+    TableRow::new(vec![
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Hello"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("World"))),
+    ]),
+    TableRow::new(vec![
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Foo"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Bar"))),
+    ]),
+  ])
+  .set_grid(vec![3000, 3000]);
+  Docx::new().add_table(table).build().pack(file)?;
+  Ok(())
+}

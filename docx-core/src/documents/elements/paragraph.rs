@@ -70,7 +70,9 @@ mod tests {
 
     #[test]
     fn test_paragraph() {
-        let b = Paragraph::new().add_run(Run::new("Hello")).build();
+        let b = Paragraph::new()
+            .add_run(Run::new().add_text("Hello"))
+            .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
@@ -79,7 +81,10 @@ mod tests {
 
     #[test]
     fn test_paragraph_size() {
-        let b = Paragraph::new().add_run(Run::new("Hello")).size(60).build();
+        let b = Paragraph::new()
+            .add_run(Run::new().add_text("Hello"))
+            .size(60)
+            .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:r><w:rPr><w:sz w:val="60" /><w:szCs w:val="60" /></w:rPr><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#

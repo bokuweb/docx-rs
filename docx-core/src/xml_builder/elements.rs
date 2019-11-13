@@ -122,6 +122,9 @@ impl XMLBuilder {
     closed_border_el!(border_inside_v, "w:insideV");
 
     closed_el!(shd, "w:shd", "w:fill", "w:val");
+
+    closed_el!(tab, "w:tab");
+    closed_el!(br, "w:br", "w:type");
 }
 
 #[cfg(test)]

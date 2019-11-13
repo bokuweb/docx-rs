@@ -19,62 +19,10 @@
       <w:r>
         <w:rPr />
         <w:t xml:space="preserve">Hello</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr>
-          <w:b />
-          <w:bCs />
-        </w:rPr>
-        <w:t xml:space="preserve"> World</w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:pPr>
-        <w:pStyle w:val="Normal" />
-        <w:rPr />
-      </w:pPr>
-      <w:r>
-        <w:rPr />
-        <w:t xml:space="preserve">Hello</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr>
-          <w:highlight w:val="CCCCCC" />
-        </w:rPr>
-        <w:t xml:space="preserve"> World</w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:pPr>
-        <w:pStyle w:val="Normal" />
-        <w:rPr />
-      </w:pPr>
-      <w:r>
-        <w:rPr />
-        <w:t xml:space="preserve">Hello</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr>
-          <w:i />
-          <w:iCs />
-        </w:rPr>
-        <w:t xml:space="preserve"> World</w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:pPr>
-        <w:pStyle w:val="Normal" />
-        <w:rPr />
-      </w:pPr>
-      <w:r>
-        <w:rPr />
-        <w:t xml:space="preserve">Hello</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr>
-          <w:color w:val="FF0000" />
-        </w:rPr>
-        <w:t xml:space="preserve"> World</w:t>
+        <w:tab />
+        <w:t xml:space="preserve">World</w:t>
+        <w:br w:val="page" />
+        <w:t xml:space="preserve">Foo</w:t>
       </w:r>
     </w:p>
   </w:body>

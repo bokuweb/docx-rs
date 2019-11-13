@@ -6,17 +6,21 @@ pub fn main() -> Result<(), DocxError> {
   let path = std::path::Path::new("./output/indent.docx");
   let file = std::fs::File::create(&path).unwrap();
   Docx::new()
-    .add_paragraph(Paragraph::new().add_run(Run::new(DUMMY)).indent(840, None))
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new().add_text(DUMMY))
+        .indent(840, None),
+    )
     .add_paragraph(Paragraph::new())
     .add_paragraph(
       Paragraph::new()
-        .add_run(Run::new(DUMMY))
+        .add_run(Run::new().add_text(DUMMY))
         .indent(840, Some(SpecialIndentType::FirstLine(720))),
     )
     .add_paragraph(Paragraph::new())
     .add_paragraph(
       Paragraph::new()
-        .add_run(Run::new(DUMMY))
+        .add_run(Run::new().add_text(DUMMY))
         .indent(1560, Some(SpecialIndentType::Hanging(720))),
     )
     .build()

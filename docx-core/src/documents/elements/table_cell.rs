@@ -68,7 +68,7 @@ mod tests {
     #[test]
     fn test_cell_add_p() {
         let b = TableCell::new()
-            .add_paragraph(Paragraph::new().add_run(Run::new("Hello")))
+            .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

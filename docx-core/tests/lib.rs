@@ -9,17 +9,21 @@ pub fn indent() -> Result<(), DocxError> {
   let path = std::path::Path::new("./tests/output/indent.docx");
   let file = std::fs::File::create(&path).unwrap();
   Docx::new()
-    .add_paragraph(Paragraph::new().add_run(Run::new(DUMMY)).indent(840, None))
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new().add_text(DUMMY))
+        .indent(840, None),
+    )
     .add_paragraph(Paragraph::new())
     .add_paragraph(
       Paragraph::new()
-        .add_run(Run::new(DUMMY))
+        .add_run(Run::new().add_text(DUMMY))
         .indent(840, Some(SpecialIndentType::FirstLine(720))),
     )
     .add_paragraph(Paragraph::new())
     .add_paragraph(
       Paragraph::new()
-        .add_run(Run::new(DUMMY))
+        .add_run(Run::new().add_text(DUMMY))
         .indent(1560, Some(SpecialIndentType::Hanging(720))),
     )
     .build()
@@ -32,11 +36,15 @@ pub fn size() -> Result<(), DocxError> {
   let path = std::path::Path::new("./tests/output/size.docx");
   let file = std::fs::File::create(&path).unwrap();
   Docx::new()
-    .add_paragraph(Paragraph::new().add_run(Run::new("Hello")).size(60))
     .add_paragraph(
       Paragraph::new()
-        .add_run(Run::new(" Wor").size(50))
-        .add_run(Run::new("ld")),
+        .add_run(Run::new().add_text("Hello"))
+        .size(60),
+    )
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new().add_text(" Wor").size(50))
+        .add_run(Run::new().add_text("ld")),
     )
     .build()
     .pack(file)?;
@@ -48,10 +56,10 @@ pub fn alignment() -> Result<(), DocxError> {
   let path = std::path::Path::new("./tests/output/alignment.docx");
   let file = std::fs::File::create(&path).unwrap();
   Docx::new()
-    .add_paragraph(Paragraph::new().add_run(Run::new("Hello")))
+    .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
     .add_paragraph(
       Paragraph::new()
-        .add_run(Run::new(" World"))
+        .add_run(Run::new().add_text(" World"))
         .align(AlignmentType::Right),
     )
     .build()
@@ -66,12 +74,12 @@ pub fn table() -> Result<(), DocxError> {
 
   let table = Table::new(vec![
     TableRow::new(vec![
-      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Hello"))),
-      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("World"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("World"))),
     ]),
     TableRow::new(vec![
-      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Foo"))),
-      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Bar"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Foo"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Bar"))),
     ]),
   ]);
   Docx::new().add_table(table).build().pack(file)?;
@@ -85,12 +93,12 @@ pub fn table_with_grid() -> Result<(), DocxError> {
 
   let table = Table::new(vec![
     TableRow::new(vec![
-      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Hello"))),
-      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("World"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("World"))),
     ]),
     TableRow::new(vec![
-      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Foo"))),
-      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Bar"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Foo"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Bar"))),
     ]),
   ])
   .set_grid(vec![3000, 3000]);
@@ -109,7 +117,7 @@ pub fn table_merged() -> Result<(), DocxError> {
         .add_paragraph(Paragraph::new())
         .grid_span(2),
       TableCell::new()
-        .add_paragraph(Paragraph::new().add_run(Run::new("Hello")))
+        .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
         .vertical_merge(VMergeType::Restart),
     ]),
     TableRow::new(vec![
@@ -143,23 +151,43 @@ pub fn decoration() -> Result<(), DocxError> {
   Docx::new()
     .add_paragraph(
       Paragraph::new()
-        .add_run(Run::new("Hello"))
-        .add_run(Run::new(" World").bold()),
+        .add_run(Run::new().add_text("Hello"))
+        .add_run(Run::new().add_text(" World").bold()),
     )
     .add_paragraph(
       Paragraph::new()
-        .add_run(Run::new("Hello"))
-        .add_run(Run::new(" World").highlight("yellow")),
+        .add_run(Run::new().add_text("Hello"))
+        .add_run(Run::new().add_text(" World").highlight("yellow")),
     )
     .add_paragraph(
       Paragraph::new()
-        .add_run(Run::new("Hello"))
-        .add_run(Run::new(" World").italic()),
+        .add_run(Run::new().add_text("Hello"))
+        .add_run(Run::new().add_text(" World").italic()),
     )
     .add_paragraph(
       Paragraph::new()
-        .add_run(Run::new("Hello"))
-        .add_run(Run::new(" World").color("FF0000")),
+        .add_run(Run::new().add_text("Hello"))
+        .add_run(Run::new().add_text(" World").color("FF0000")),
+    )
+    .build()
+    .pack(file)?;
+  Ok(())
+}
+
+#[test]
+pub fn tab_and_break() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/tab_and_break.docx");
+  let file = std::fs::File::create(&path).unwrap();
+  Docx::new()
+    .add_paragraph(
+      Paragraph::new().add_run(
+        Run::new()
+          .add_text("Hello")
+          .add_tab()
+          .add_text("World")
+          .add_break(BreakType::Page)
+          .add_text("Foo"),
+      ),
     )
     .build()
     .pack(file)?;

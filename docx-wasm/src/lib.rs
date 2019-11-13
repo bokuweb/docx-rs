@@ -14,9 +14,9 @@ pub fn createDocx() -> Docx {
 #[wasm_bindgen]
 impl Docx {
     pub fn add_paragraph(mut self) -> Self {
-        self.0 = self
-            .0
-            .add_paragraph(docx_core::Paragraph::new().add_run(docx_core::Run::new("Hello")));
+        self.0 = self.0.add_paragraph(
+            docx_core::Paragraph::new().add_run(docx_core::Run::new().add_text("Hello")),
+        );
         self
     }
 

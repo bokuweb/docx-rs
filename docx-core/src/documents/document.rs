@@ -4,11 +4,11 @@ use crate::xml_builder::*;
 
 #[derive(Debug)]
 pub struct Document {
-    children: Vec<DocumentContent>,
+    children: Vec<DocumentChild>,
 }
 
 #[derive(Debug, Clone)]
-pub enum DocumentContent {
+pub enum DocumentChild {
     Paragraph(Paragraph),
     Table(Table),
 }
@@ -19,12 +19,12 @@ impl Document {
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> Self {
-        self.children.push(DocumentContent::Paragraph(p));
+        self.children.push(DocumentChild::Paragraph(p));
         self
     }
 
     pub fn add_table(mut self, t: Table) -> Self {
-        self.children.push(DocumentContent::Table(t));
+        self.children.push(DocumentChild::Table(t));
         self
     }
 }
@@ -45,8 +45,8 @@ impl BuildXML for Document {
             .open_body();
         for c in &self.children {
             match c {
-                DocumentContent::Paragraph(p) => b = b.add_child(p),
-                DocumentContent::Table(t) => b = b.add_child(t),
+                DocumentChild::Paragraph(p) => b = b.add_child(p),
+                DocumentChild::Table(t) => b = b.add_child(t),
             }
         }
         b.close().close().build()
@@ -65,7 +65,7 @@ mod tests {
     #[test]
     fn test_document() {
         let b = Document::new()
-            .add_paragraph(Paragraph::new().add_run(Run::new("Hello")))
+            .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

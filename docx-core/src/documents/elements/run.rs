@@ -1,19 +1,51 @@
-use super::{RunProperty, Text};
+use super::{Break, RunProperty, Tab, Text};
 use crate::documents::BuildXML;
+use crate::types::BreakType;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct Run {
     run_property: RunProperty,
-    text: Text,
+    children: Vec<RunChild>,
+}
+
+impl Default for Run {
+    fn default() -> Self {
+        let run_property = RunProperty::new();
+        Self {
+            run_property,
+            children: vec![],
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub enum RunChild {
+    Text(Text),
+    Tab(Tab),
+    Break(Break),
 }
 
 impl Run {
-    pub fn new(text: impl Into<String>) -> Run {
+    pub fn new() -> Run {
         Run {
-            text: Text::new(text),
             ..Default::default()
         }
+    }
+
+    pub fn add_text(mut self, text: &str) -> Run {
+        self.children.push(RunChild::Text(Text::new(text)));
+        self
+    }
+
+    pub fn add_tab(mut self) -> Run {
+        self.children.push(RunChild::Tab(Tab::new()));
+        self
+    }
+
+    pub fn add_break(mut self, break_type: BreakType) -> Run {
+        self.children.push(RunChild::Break(Break::new(break_type)));
+        self
     }
 
     pub fn size(mut self, size: usize) -> Run {
@@ -42,22 +74,18 @@ impl Run {
     }
 }
 
-impl Default for Run {
-    fn default() -> Self {
-        let run_property = RunProperty::new();
-        let text = Text::new("");
-        Self { run_property, text }
-    }
-}
-
 impl BuildXML for Run {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.open_run()
-            .add_child(&self.run_property)
-            .add_child(&self.text)
-            .close()
-            .build()
+        let mut b = b.open_run().add_child(&self.run_property);
+        for c in &self.children {
+            match c {
+                RunChild::Text(t) => b = b.add_child(t),
+                RunChild::Tab(t) => b = b.add_child(t),
+                RunChild::Break(t) => b = b.add_child(t),
+            }
+        }
+        b.close().build()
     }
 }
 
@@ -71,7 +99,7 @@ mod tests {
 
     #[test]
     fn test_build() {
-        let b = Run::new("Hello").build();
+        let b = Run::new().add_text("Hello").build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r>"#

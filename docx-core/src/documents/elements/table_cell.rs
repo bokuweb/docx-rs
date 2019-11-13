@@ -51,10 +51,7 @@ mod tests {
     #[test]
     fn test_cell() {
         let b = TableCell::new().build();
-        assert_eq!(
-            str::from_utf8(&b).unwrap(),
-            r#"<w:tc><w:tcPr><w:tcBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tcBorders></w:tcPr></w:tc>"#
-        );
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:tc><w:tcPr /></w:tc>"#);
     }
 
     #[test]
@@ -64,7 +61,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tc><w:tcPr><w:tcBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tcBorders></w:tcPr><w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p></w:tc>"#
+            r#"<w:tc><w:tcPr /><w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p></w:tc>"#
         );
     }
 }

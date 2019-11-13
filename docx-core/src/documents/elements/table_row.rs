@@ -38,7 +38,7 @@ mod tests {
         let b = TableRow::new(vec![TableCell::new()]).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tr><w:trPr /><w:tc><w:tcPr><w:tcBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tcBorders></w:tcPr></w:tc></w:tr>"#
+            r#"<w:tr><w:trPr /><w:tc><w:tcPr /></w:tc></w:tr>"#
         );
     }
 }

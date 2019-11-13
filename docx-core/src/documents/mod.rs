@@ -53,6 +53,11 @@ impl Docx {
         self
     }
 
+    pub fn add_table(mut self, t: Table) -> Docx {
+        self.document = self.document.add_table(t);
+        self
+    }
+
     pub fn build(&self) -> XMLDocx {
         XMLDocx {
             content_type: self.content_type.build(),

@@ -96,9 +96,9 @@ impl Default for TableBorders {
             top: Some(TableBorder::new(BorderPosition::Top)),
             left: Some(TableBorder::new(BorderPosition::Left)),
             bottom: Some(TableBorder::new(BorderPosition::Bottom)),
-            right: None,
+            right: Some(TableBorder::new(BorderPosition::Right)),
             inside_h: Some(TableBorder::new(BorderPosition::IndideH)),
-            inside_v: None,
+            inside_v: Some(TableBorder::new(BorderPosition::IndideV)),
         }
     }
 }
@@ -161,7 +161,7 @@ mod tests {
         let b = TableBorders::new().build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders>"#
+            r#"<w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders>"#
         );
     }
 
@@ -173,7 +173,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tblBorders><w:left w:val="single" w:sz="2" w:space="0" w:color="AAAAAA" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders>"#
+            r#"<w:tblBorders><w:left w:val="single" w:sz="2" w:space="0" w:color="AAAAAA" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders>"#
         );
     }
 }

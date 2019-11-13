@@ -84,9 +84,9 @@ impl Default for TableCellBorders {
             top: Some(TableCellBorder::new(BorderPosition::Top)),
             left: Some(TableCellBorder::new(BorderPosition::Left)),
             bottom: Some(TableCellBorder::new(BorderPosition::Bottom)),
-            right: None,
+            right: Some(TableCellBorder::new(BorderPosition::Right)),
             inside_h: Some(TableCellBorder::new(BorderPosition::IndideH)),
-            inside_v: None,
+            inside_v: Some(TableCellBorder::new(BorderPosition::IndideV)),
         }
     }
 }
@@ -133,23 +133,5 @@ impl BuildXML for TableCellBorders {
             .add_optional_child(&self.inside_v)
             .close()
             .build()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-
-    use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
-    use std::str;
-
-    #[test]
-    fn test_table_borders() {
-        let b = TableCellBorders::new().build();
-        assert_eq!(
-            str::from_utf8(&b).unwrap(),
-            r#"<w:tcBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tcBorders>"#
-        );
     }
 }

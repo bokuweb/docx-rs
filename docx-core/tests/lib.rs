@@ -58,3 +58,22 @@ pub fn alignment() -> Result<(), DocxError> {
     .pack(file)?;
   Ok(())
 }
+
+#[test]
+pub fn table() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/table.docx");
+  let file = std::fs::File::create(&path).unwrap();
+
+  let table = Table::new(vec![
+    TableRow::new(vec![
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Hello"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("World"))),
+    ]),
+    TableRow::new(vec![
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Foo"))),
+      TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new("Bar"))),
+    ]),
+  ]);
+  Docx::new().add_table(table).build().pack(file)?;
+  Ok(())
+}

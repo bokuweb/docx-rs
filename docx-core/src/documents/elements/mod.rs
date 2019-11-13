@@ -1,6 +1,7 @@
 mod based_on;
 mod color;
 mod doc_defaults;
+mod grid_span;
 mod indent;
 mod justification;
 mod name;
@@ -29,10 +30,12 @@ mod table_row;
 mod table_row_property;
 mod table_width;
 mod text;
+mod vertical_merge;
 
 pub use based_on::*;
 pub use color::*;
 pub use doc_defaults::*;
+pub use grid_span::*;
 pub use indent::*;
 pub use justification::*;
 pub use name::*;
@@ -61,3 +64,4 @@ pub use table_row::*;
 pub use table_row_property::*;
 pub use table_width::*;
 pub use text::*;
+pub use vertical_merge::*;

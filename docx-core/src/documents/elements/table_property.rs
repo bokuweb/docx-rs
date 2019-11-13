@@ -15,7 +15,7 @@ pub struct TableProperty {
 impl Default for TableProperty {
     fn default() -> Self {
         TableProperty {
-            width: TableWidth::new(0, WidthType::AUTO),
+            width: TableWidth::new(0, WidthType::Auto),
             justification: Justification::new("left"),
             borders: TableBorders::new(),
             margins: TableCellMargins::new(),

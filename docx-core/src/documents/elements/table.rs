@@ -56,7 +56,7 @@ mod tests {
   <w:left w:w="54" w:type="dxa" />
   <w:bottom w:w="55" w:type="dxa" />
   <w:right w:w="55" w:type="dxa" />
-</w:tblCellMar></w:tblPr><w:tr><w:trPr /></w:tr></w:tbl>"#
+</w:tblCellMar></w:tblPr><w:tblGrid /><w:tr><w:trPr /></w:tr></w:tbl>"#
         );
     }
 

@@ -5,14 +5,14 @@ use wasm_bindgen::prelude::*;
 #[derive(Copy, Clone, Debug)]
 pub enum WidthType {
     DXA,
-    AUTO,
+    Auto,
 }
 
 impl fmt::Display for WidthType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             WidthType::DXA => write!(f, "dxa"),
-            WidthType::AUTO => write!(f, "auto"),
+            WidthType::Auto => write!(f, "auto"),
         }
     }
 }

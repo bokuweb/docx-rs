@@ -1,5 +1,6 @@
 use super::{Paragraph, TableCellProperty};
 use crate::documents::BuildXML;
+use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
@@ -22,6 +23,16 @@ impl TableCell {
 
     pub fn add_paragraph(mut self, p: Paragraph) -> TableCell {
         self.contents.push(TableCellContent::Paragraph(p));
+        self
+    }
+
+    pub fn vertical_merge(mut self, t: VMergeType) -> TableCell {
+        self.property = self.property.vertical_merge(t);
+        self
+    }
+
+    pub fn grid_span(mut self, v: usize) -> TableCell {
+        self.property = self.property.grid_span(v);
         self
     }
 }

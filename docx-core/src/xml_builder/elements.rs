@@ -107,6 +107,9 @@ impl XMLBuilder {
     closed_w_with_type_el!(grid_column, "w:gridCol");
     closed_w_with_type_el!(table_cell_width, "w:tcW");
 
+    only_usize_val_el!(grid_span, "w:gridSpan");
+    only_str_val_el!(vertical_merge, "w:vMerge");
+
     closed_w_with_type_el!(margin_top, "w:top");
     closed_w_with_type_el!(margin_left, "w:left");
     closed_w_with_type_el!(margin_bottom, "w:bottom");

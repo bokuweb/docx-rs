@@ -97,3 +97,41 @@ pub fn table_with_grid() -> Result<(), DocxError> {
   Docx::new().add_table(table).build().pack(file)?;
   Ok(())
 }
+
+#[test]
+pub fn table_merged() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/table_merged.docx");
+  let file = std::fs::File::create(&path).unwrap();
+
+  let table = Table::new(vec![
+    TableRow::new(vec![
+      TableCell::new()
+        .add_paragraph(Paragraph::new())
+        .grid_span(2),
+      TableCell::new()
+        .add_paragraph(Paragraph::new().add_run(Run::new("Hello")))
+        .vertical_merge(VMergeType::Restart),
+    ]),
+    TableRow::new(vec![
+      TableCell::new()
+        .add_paragraph(Paragraph::new())
+        .vertical_merge(VMergeType::Restart),
+      TableCell::new().add_paragraph(Paragraph::new()),
+      TableCell::new()
+        .add_paragraph(Paragraph::new())
+        .vertical_merge(VMergeType::Continue),
+    ]),
+    TableRow::new(vec![
+      TableCell::new()
+        .add_paragraph(Paragraph::new())
+        .vertical_merge(VMergeType::Continue),
+      TableCell::new().add_paragraph(Paragraph::new()),
+      TableCell::new()
+        .add_paragraph(Paragraph::new())
+        .vertical_merge(VMergeType::Continue),
+    ]),
+  ])
+  .set_grid(vec![2000, 2000, 2000]);
+  Docx::new().add_table(table).build().pack(file)?;
+  Ok(())
+}

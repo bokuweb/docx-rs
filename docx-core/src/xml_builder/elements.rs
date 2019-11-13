@@ -29,7 +29,8 @@ impl XMLBuilder {
     // i.e. <w:qFormat ... >
     closed_el!(q_format, "w:qFormat");
     // i.e. <w:p ... >
-    opened_el!(open_paragraph, "w:p");
+    // opened_el!(open_paragraph, "w:p");
+    opened_el_with_attrs!(open_paragraph, "w:p");
     opened_el!(open_paragraph_property, "w:pPr");
     opened_el!(open_doc_defaults, "w:docDefaults");
     // i.e. <w:name ... >

@@ -49,6 +49,27 @@ macro_rules! opened_el {
     };
 }
 
+macro_rules! opened_el_with_attrs {
+    ($name: ident, $el_name: expr) => {
+        pub(crate) fn $name(mut self, attrs: &[(String, String)]) -> Self {
+            let mut e = XmlEvent::start_element($el_name);
+            #[allow(unused)]
+            let mut key: &str = "";
+            #[allow(unused)]
+            let mut val: &str = "";
+             for attr in attrs {
+                key = &attr.0;
+                val = &attr.1;
+                e = e.attr(key, val);
+            }
+            self.writer
+                .write(e)
+                .expect("should write to buf");
+            self
+        }
+    };
+}
+
 macro_rules! closed_el_with_child {
     ($name: ident, $el_name: expr) => {
         pub(crate) fn $name(mut self, child: &str) -> Self {

@@ -20,6 +20,26 @@ impl Run {
         self.run_property = self.run_property.size(size);
         self
     }
+
+    pub fn color(mut self, color: &str) -> Run {
+        self.run_property = self.run_property.color(color);
+        self
+    }
+
+    pub fn highlight(mut self, color: &str) -> Run {
+        self.run_property = self.run_property.highlight(color);
+        self
+    }
+
+    pub fn bold(mut self) -> Run {
+        self.run_property = self.run_property.bold();
+        self
+    }
+
+    pub fn italic(mut self) -> Run {
+        self.run_property = self.run_property.italic();
+        self
+    }
 }
 
 impl Default for Run {

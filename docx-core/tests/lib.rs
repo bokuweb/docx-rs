@@ -135,3 +135,33 @@ pub fn table_merged() -> Result<(), DocxError> {
   Docx::new().add_table(table).build().pack(file)?;
   Ok(())
 }
+
+#[test]
+pub fn decoration() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/decoration.docx");
+  let file = std::fs::File::create(&path).unwrap();
+  Docx::new()
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new("Hello"))
+        .add_run(Run::new(" World").bold()),
+    )
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new("Hello"))
+        .add_run(Run::new(" World").highlight("yellow")),
+    )
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new("Hello"))
+        .add_run(Run::new(" World").italic()),
+    )
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new("Hello"))
+        .add_run(Run::new(" World").color("FF0000")),
+    )
+    .build()
+    .pack(file)?;
+  Ok(())
+}

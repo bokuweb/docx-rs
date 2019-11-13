@@ -42,6 +42,12 @@ impl XMLBuilder {
     only_usize_val_el!(sz, "w:sz");
     // i.e. <w:szCs ... >
     only_usize_val_el!(sz_cs, "w:szCs");
+
+    closed_el!(b, "w:b");
+    closed_el!(b_cs, "w:bCs");
+
+    closed_el!(i, "w:i");
+    closed_el!(i_cs, "w:iCs");
     // Build w:style element
     // i.e. <w:style ... >
     pub(crate) fn open_style(mut self, style_type: StyleType, id: &str) -> Self {
@@ -55,20 +61,13 @@ impl XMLBuilder {
         self
     }
     // i.e. <w:next ... >
-    pub(crate) fn next(mut self, val: &str) -> Self {
-        self.writer
-            .write(XmlEvent::start_element("w:next").attr("w:val", val))
-            .expect(EXPECT_MESSAGE);
-        self.close()
-    }
+    only_str_val_el!(next, "w:next");
 
     // i.e. <w:color ... >
-    pub(crate) fn color(mut self, val: &str) -> Self {
-        self.writer
-            .write(XmlEvent::start_element("w:color").attr("w:val", val))
-            .expect(EXPECT_MESSAGE);
-        self.close()
-    }
+    only_str_val_el!(color, "w:color");
+
+    // i.e. <w:highlight ... >
+    only_str_val_el!(highlight, "w:highlight");
 
     // i.e. <w:ind ... >
     pub(crate) fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Self {

@@ -2,6 +2,7 @@ mod build_xml;
 mod content_types;
 mod doc_props;
 mod document;
+mod document_rels;
 mod elements;
 mod rels;
 mod styles;
@@ -12,6 +13,7 @@ pub(crate) use build_xml::*;
 pub use content_types::*;
 pub use doc_props::*;
 pub use document::*;
+pub use document_rels::*;
 pub use elements::*;
 pub use rels::*;
 pub use styles::*;
@@ -21,6 +23,7 @@ pub use xml_docx::*;
 pub struct Docx {
     content_type: ContentTypes,
     rels: Rels,
+    document_rels: DocumentRels,
     doc_props: DocProps,
     styles: Styles,
     document: Document,
@@ -33,12 +36,14 @@ impl Default for Docx {
         let doc_props = DocProps::new(None, None /* TODO: */);
         let styles = Styles::new();
         let document = Document::new();
+        let document_rels = DocumentRels::new();
         Docx {
             content_type,
             rels,
             doc_props,
             styles,
             document,
+            document_rels,
         }
     }
 }
@@ -65,6 +70,7 @@ impl Docx {
             doc_props: self.doc_props.build(),
             styles: self.styles.build(),
             document: self.document.build(),
+            document_rels: self.document_rels.build(),
         }
     }
 }

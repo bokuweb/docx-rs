@@ -28,7 +28,7 @@ where
     zip.start_file("docProps/core.xml", options)?;
     zip.write_all(&xml.doc_props.core)?;
     zip.start_file("word/_rels/document.xml.rels", options)?;
-    zip.write_all(&xml.rels)?;
+    zip.write_all(&xml.document_rels)?;
     zip.start_file("word/document.xml", options)?;
     zip.write_all(&xml.document)?;
     zip.start_file("word/styles.xml", options)?;

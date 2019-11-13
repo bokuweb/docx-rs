@@ -202,7 +202,7 @@ pub fn custom_attr_paragraph() -> Result<(), DocxError> {
     .add_paragraph(
       Paragraph::new()
         .add_run(Run::new().add_text("Hello"))
-        .add_custom_attr("w:customId", "1234-5678"),
+        .add_attr("w:customId", "1234-5678"),
     )
     .build()
     .pack(file)?;

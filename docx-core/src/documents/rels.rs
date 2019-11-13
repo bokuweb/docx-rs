@@ -22,13 +22,13 @@ impl BuildXML for Rels {
             )
             .relationship(
                 "rId2",
-            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
+                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
                 "docProps/app.xml"
             ) 
             .relationship(
                 "rId3",
-            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
-             "word/document.xml"
+                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
+                "word/document.xml"
             )                         
             .close()
             .build()

@@ -33,6 +33,8 @@ where
     zip.write_all(&xml.document)?;
     zip.start_file("word/styles.xml", options)?;
     zip.write_all(&xml.styles)?;
+    zip.start_file("word/settings.xml", options)?;
+    zip.write_all(&xml.settings)?;
     zip.finish()?;
     Ok(())
 }

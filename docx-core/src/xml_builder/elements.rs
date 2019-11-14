@@ -126,6 +126,8 @@ impl XMLBuilder {
 
     closed_el!(tab, "w:tab");
     closed_el!(br, "w:br", "w:type");
+    closed_el!(zoom, "w:zoom", "w:percent");
+    only_usize_val_el!(default_tab_stop, "w:defaultTabStop");
 }
 
 #[cfg(test)]

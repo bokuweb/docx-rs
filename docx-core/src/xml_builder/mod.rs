@@ -7,6 +7,7 @@ mod document;
 mod elements;
 mod properties;
 mod relationship;
+mod settings;
 mod styles;
 
 use crate::BuildXML;

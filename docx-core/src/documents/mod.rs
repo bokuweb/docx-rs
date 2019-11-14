@@ -5,6 +5,7 @@ mod document;
 mod document_rels;
 mod elements;
 mod rels;
+mod settings;
 mod styles;
 mod xml_docx;
 
@@ -16,6 +17,7 @@ pub use document::*;
 pub use document_rels::*;
 pub use elements::*;
 pub use rels::*;
+pub use settings::*;
 pub use styles::*;
 pub use xml_docx::*;
 
@@ -27,6 +29,7 @@ pub struct Docx {
     doc_props: DocProps,
     styles: Styles,
     document: Document,
+    settings: Settings,
 }
 
 impl Default for Docx {
@@ -37,6 +40,7 @@ impl Default for Docx {
         let styles = Styles::new();
         let document = Document::new();
         let document_rels = DocumentRels::new();
+        let settings = Settings::new();
         Docx {
             content_type,
             rels,
@@ -44,6 +48,7 @@ impl Default for Docx {
             styles,
             document,
             document_rels,
+            settings,
         }
     }
 }
@@ -71,6 +76,7 @@ impl Docx {
             styles: self.styles.build(),
             document: self.document.build(),
             document_rels: self.document_rels.build(),
+            settings: self.settings.build(),
         }
     }
 }

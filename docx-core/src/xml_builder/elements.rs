@@ -133,6 +133,21 @@ impl XMLBuilder {
     only_str_val_el!(pitch, "w:pitch");
     only_str_val_el!(family, "w:family");
     only_str_val_el!(charset, "w:charset");
+
+    only_usize_val_el!(section_property, "w:sectPr");
+    only_str_val_el!(type_tag, "w:type");
+    closed_el!(page_size, "w:pgSz", "w:w", "w:h");
+    closed_el!(
+        page_margin,
+        "w:pgMar",
+        "w:left",
+        "w:right",
+        "w:header",
+        "w:top",
+        "w:footer",
+        "w:bottom",
+        "w:gutter"
+    );
 }
 
 #[cfg(test)]

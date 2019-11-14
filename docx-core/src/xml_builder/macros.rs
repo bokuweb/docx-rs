@@ -150,6 +150,54 @@ macro_rules! closed_el {
             self.close()
         }
     };
+    ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr, $attr2: expr, $attr3: expr) => {
+        pub(crate) fn $name(mut self, arg0: &str, arg1: &str, arg2: &str, arg3: &str) -> Self {
+            self.writer
+                .write(XmlEvent::start_element($el_name).attr($attr0, arg0).attr($attr1, arg1).attr($attr2, arg2).attr($attr3, arg3))
+                .expect("should write to buf");
+            self.close()
+        }
+    };
+    ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr, $attr2: expr, $attr3: expr, $attr4: expr) => {
+        pub(crate) fn $name(mut self, arg0: &str, arg1: &str, arg2: &str, arg3: &str, arg4: &str) -> Self {
+            self.writer
+                .write(XmlEvent::start_element($el_name).attr($attr0, arg0).attr($attr1, arg1).attr($attr2, arg2).attr($attr3, arg3).attr($attr4, arg4))
+                .expect("should write to buf");
+            self.close()
+        }
+    };
+    ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr, $attr2: expr, $attr3: expr, $attr4: expr, $attr5: expr) => {
+        pub(crate) fn $name(mut self, arg0: &str, arg1: &str, arg2: &str, arg3: &str, arg4: &str, arg5: &str) -> Self {
+            self.writer
+                .write(XmlEvent::start_element($el_name).attr($attr0, arg0).attr($attr1, arg1).attr($attr2, arg2).attr($attr3, arg3).attr($attr4, arg4).attr($attr5, arg5))
+                .expect("should write to buf");
+            self.close()
+        }
+    };
+    ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr, $attr2: expr, $attr3: expr, $attr4: expr, $attr5: expr, $attr6: expr) => {
+        pub(crate) fn $name(mut self, arg0: &str, arg1: &str, arg2: &str, arg3: &str, arg4: &str, arg5: &str, arg6: &str) -> Self {
+            self.writer
+                .write(XmlEvent::start_element($el_name).attr($attr0, arg0).attr($attr1, arg1).attr($attr2, arg2).attr($attr3, arg3).attr($attr4, arg4).attr($attr5, arg5).attr($attr6, arg6))
+                .expect("should write to buf");
+            self.close()
+        }
+    };
+    ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr, $attr2: expr, $attr3: expr, $attr4: expr, $attr5: expr, $attr6: expr, $attr7: expr) => {
+        pub(crate) fn $name(mut self, arg0: &str, arg1: &str, arg2: &str, arg3: &str, arg4: &str, arg5: &str, arg6: &str, arg7: &str) -> Self {
+            self.writer
+                .write(XmlEvent::start_element($el_name).attr($attr0, arg0).attr($attr1, arg1).attr($attr2, arg2).attr($attr3, arg3).attr($attr4, arg4).attr($attr5, arg5).attr($attr6, arg6).attr($attr7, arg7))
+                .expect("should write to buf");
+            self.close()
+        }
+    };
+    ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr, $attr2: expr, $attr3: expr, $attr4: expr, $attr5: expr, $attr6: expr, $attr7: expr, $attr8: expr) => {
+        pub(crate) fn $name(mut self, arg0: &str, arg1: &str, arg2: &str, arg3: &str, arg4: &str, arg5: &str, arg6: &str, arg7: &str, arg8: &str) -> Self {
+            self.writer
+                .write(XmlEvent::start_element($el_name).attr($attr0, arg0).attr($attr1, arg1).attr($attr2, arg2).attr($attr3, arg3).attr($attr4, arg4).attr($attr5, arg5).attr($attr6, arg6).attr($attr7, arg7).attr($attr8, arg8))
+                .expect("should write to buf");
+            self.close()
+        }
+    };
 }
 
 macro_rules! only_str_val_el {

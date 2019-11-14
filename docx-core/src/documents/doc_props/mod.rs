@@ -12,11 +12,8 @@ pub(crate) struct DocProps {
 }
 
 impl DocProps {
-    pub(crate) fn new(
-        app_config: Option<AppPropsConfig>,
-        core_config: Option<CorePropsConfig>,
-    ) -> DocProps {
-        let app = AppProps::new(app_config);
+    pub(crate) fn new(core_config: CorePropsConfig) -> DocProps {
+        let app = AppProps::new();
         let core = CoreProps::new(core_config);
         DocProps { app, core }
     }

@@ -39,7 +39,7 @@ impl Default for Docx {
     fn default() -> Self {
         let content_type = ContentTypes::new();
         let rels = Rels::new();
-        let doc_props = DocProps::new(None, None /* TODO: */);
+        let doc_props = DocProps::new(CorePropsConfig::new());
         let styles = Styles::new();
         let document = Document::new();
         let document_rels = DocumentRels::new();

@@ -43,6 +43,26 @@ impl Style {
             ..default
         }
     }
+
+    pub fn size(mut self, size: usize) -> Self {
+        self.run_property = self.run_property.size(size);
+        self
+    }
+
+    pub fn color(mut self, color: &str) -> Self {
+        self.run_property = self.run_property.color(color);
+        self
+    }
+
+    pub fn bold(mut self) -> Self {
+        self.run_property = self.run_property.bold();
+        self
+    }
+
+    pub fn italic(mut self) -> Self {
+        self.run_property = self.run_property.italic();
+        self
+    }
 }
 
 impl BuildXML for Style {

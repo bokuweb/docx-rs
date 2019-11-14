@@ -5,6 +5,7 @@ mod core_properties;
 mod declaration;
 mod document;
 mod elements;
+mod fonts;
 mod properties;
 mod relationship;
 mod settings;

@@ -128,6 +128,11 @@ impl XMLBuilder {
     closed_el!(br, "w:br", "w:type");
     closed_el!(zoom, "w:zoom", "w:percent");
     only_usize_val_el!(default_tab_stop, "w:defaultTabStop");
+
+    opened_el!(open_font, "w:font", "w:name");
+    only_str_val_el!(pitch, "w:pitch");
+    only_str_val_el!(family, "w:family");
+    only_str_val_el!(charset, "w:charset");
 }
 
 #[cfg(test)]

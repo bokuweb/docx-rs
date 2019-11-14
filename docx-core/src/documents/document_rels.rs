@@ -30,11 +30,6 @@ impl BuildXML for DocumentRels {
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings",
                 "settings.xml",
             )
-            .relationship(
-                "rId4",
-                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/tag",
-                "tag.xml",
-            )
             .close()
             .build()
     }
@@ -59,7 +54,6 @@ mod tests {
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml" />
   <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable" Target="fontTable.xml" />
   <Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings" Target="settings.xml" />
-  <Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/tag" Target="tag.xml" />
 </Relationships>"#
         );
     }

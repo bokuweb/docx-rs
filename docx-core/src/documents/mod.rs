@@ -4,6 +4,7 @@ mod doc_props;
 mod document;
 mod document_rels;
 mod elements;
+mod font_table;
 mod rels;
 mod settings;
 mod styles;
@@ -16,6 +17,7 @@ pub use doc_props::*;
 pub use document::*;
 pub use document_rels::*;
 pub use elements::*;
+pub use font_table::*;
 pub use rels::*;
 pub use settings::*;
 pub use styles::*;
@@ -30,6 +32,7 @@ pub struct Docx {
     styles: Styles,
     document: Document,
     settings: Settings,
+    font_table: FontTable,
 }
 
 impl Default for Docx {
@@ -41,6 +44,7 @@ impl Default for Docx {
         let document = Document::new();
         let document_rels = DocumentRels::new();
         let settings = Settings::new();
+        let font_table = FontTable::new();
         Docx {
             content_type,
             rels,
@@ -49,6 +53,7 @@ impl Default for Docx {
             document,
             document_rels,
             settings,
+            font_table,
         }
     }
 }
@@ -77,6 +82,7 @@ impl Docx {
             document: self.document.build(),
             document_rels: self.document_rels.build(),
             settings: self.settings.build(),
+            font_table: self.font_table.build(),
         }
     }
 }

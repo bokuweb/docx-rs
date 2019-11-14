@@ -13,6 +13,7 @@ pub struct XMLDocx {
     pub document: Vec<u8>,
     pub document_rels: Vec<u8>,
     pub settings: Vec<u8>,
+    pub font_table: Vec<u8>,
 }
 
 impl XMLDocx {

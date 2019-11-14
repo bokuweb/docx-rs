@@ -35,6 +35,8 @@ where
     zip.write_all(&xml.styles)?;
     zip.start_file("word/settings.xml", options)?;
     zip.write_all(&xml.settings)?;
+    zip.start_file("word/fontTable.xml", options)?;
+    zip.write_all(&xml.font_table)?;
     zip.finish()?;
     Ok(())
 }

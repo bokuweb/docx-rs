@@ -22,6 +22,19 @@ impl XMLBuilder {
         self.writer.write(text).expect(EXPECT_MESSAGE);
         self.close()
     }
+    // i.e. <w:delText ... >
+    pub(crate) fn delete_text(mut self, text: &str, preserve_space: bool) -> Self {
+        let space = if preserve_space {
+            "preserve"
+        } else {
+            "default"
+        };
+        self.writer
+            .write(XmlEvent::start_element("w:delText").attr("xml:space", space))
+            .expect(EXPECT_MESSAGE);
+        self.writer.write(text).expect(EXPECT_MESSAGE);
+        self.close()
+    }
     // i.e. <w:r ... >
     opened_el!(open_run, "w:r");
     opened_el!(open_run_property, "w:rPr");
@@ -148,6 +161,9 @@ impl XMLBuilder {
         "w:bottom",
         "w:gutter"
     );
+
+    opened_el!(open_insert, "w:ins", "w:id", "w:author", "w:data");
+    opened_el!(open_delete, "w:del", "w:id", "w:author", "w:data");
 }
 
 #[cfg(test)]

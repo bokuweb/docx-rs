@@ -5,12 +5,14 @@ mod document;
 mod document_rels;
 mod elements;
 mod font_table;
+mod history_id;
 mod rels;
 mod settings;
 mod styles;
 mod xml_docx;
 
-pub(crate) use build_xml::*;
+pub(crate) use build_xml::BuildXML;
+pub(crate) use history_id::HistoryId;
 
 pub use content_types::*;
 pub use doc_props::*;
@@ -30,7 +32,7 @@ pub struct Docx<'a> {
     document_rels: DocumentRels,
     doc_props: DocProps<'a>,
     styles: Styles,
-    document: Document,
+    document: Document<'a>,
     settings: Settings,
     font_table: FontTable,
 }
@@ -63,12 +65,12 @@ impl<'a> Docx<'a> {
         Default::default()
     }
 
-    pub fn add_paragraph(mut self, p: Paragraph) -> Docx<'a> {
+    pub fn add_paragraph(mut self, p: Paragraph<'a>) -> Docx<'a> {
         self.document = self.document.add_paragraph(p);
         self
     }
 
-    pub fn add_table(mut self, t: Table) -> Docx<'a> {
+    pub fn add_table(mut self, t: Table<'a>) -> Docx<'a> {
         self.document = self.document.add_table(t);
         self
     }

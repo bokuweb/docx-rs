@@ -3,14 +3,14 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct Table {
+pub struct Table<'a> {
     property: TableProperty,
-    rows: Vec<TableRow>,
+    rows: Vec<TableRow<'a>>,
     grid: Vec<usize>,
 }
 
-impl Table {
-    pub fn new(rows: Vec<TableRow>) -> Table {
+impl<'a> Table<'a> {
+    pub fn new(rows: Vec<TableRow<'a>>) -> Table<'a> {
         let property = TableProperty::new();
         let grid = vec![];
         Self {
@@ -20,13 +20,13 @@ impl Table {
         }
     }
 
-    pub fn set_grid(mut self, grid: Vec<usize>) -> Table {
+    pub fn set_grid(mut self, grid: Vec<usize>) -> Table<'a> {
         self.grid = grid;
         self
     }
 }
 
-impl BuildXML for Table {
+impl<'a> BuildXML for Table<'a> {
     fn build(&self) -> Vec<u8> {
         let grid = TableGrid::new(self.grid.clone());
         let b = XMLBuilder::new()

@@ -47,11 +47,7 @@ pub fn size() -> Result<(), DocxError> {
   let path = std::path::Path::new("./tests/output/size.docx");
   let file = std::fs::File::create(&path).unwrap();
   Docx::new()
-    .add_paragraph(
-      Paragraph::new()
-        .add_run(Run::new().add_text("Hello"))
-        .size(60),
-    )
+    .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello").size(60)))
     .add_paragraph(
       Paragraph::new()
         .add_run(Run::new().add_text(" Wor").size(50))
@@ -214,6 +210,21 @@ pub fn custom_attr_paragraph() -> Result<(), DocxError> {
       Paragraph::new()
         .add_run(Run::new().add_text("Hello"))
         .add_attr("w:customId", "1234-5678"),
+    )
+    .build()
+    .pack(file)?;
+  Ok(())
+}
+
+#[test]
+pub fn history() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/history.docx");
+  let file = std::fs::File::create(&path).unwrap();
+  Docx::new()
+    .add_paragraph(
+      Paragraph::new()
+        .add_insert(Insert::new().run(Run::new().add_text("Hello")))
+        .add_delete(Delete::new().run(Run::new().add_delete_text("World"))),
     )
     .build()
     .pack(file)?;

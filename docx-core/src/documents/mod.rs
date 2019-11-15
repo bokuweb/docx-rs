@@ -24,18 +24,18 @@ pub use styles::*;
 pub use xml_docx::*;
 
 #[derive(Debug)]
-pub struct Docx {
+pub struct Docx<'a> {
     content_type: ContentTypes,
     rels: Rels,
     document_rels: DocumentRels,
-    doc_props: DocProps,
+    doc_props: DocProps<'a>,
     styles: Styles,
     document: Document,
     settings: Settings,
     font_table: FontTable,
 }
 
-impl Default for Docx {
+impl<'a> Default for Docx<'a> {
     fn default() -> Self {
         let content_type = ContentTypes::new();
         let rels = Rels::new();
@@ -58,17 +58,17 @@ impl Default for Docx {
     }
 }
 
-impl Docx {
-    pub fn new() -> Docx {
+impl<'a> Docx<'a> {
+    pub fn new() -> Docx<'a> {
         Default::default()
     }
 
-    pub fn add_paragraph(mut self, p: Paragraph) -> Docx {
+    pub fn add_paragraph(mut self, p: Paragraph) -> Docx<'a> {
         self.document = self.document.add_paragraph(p);
         self
     }
 
-    pub fn add_table(mut self, t: Table) -> Docx {
+    pub fn add_table(mut self, t: Table) -> Docx<'a> {
         self.document = self.document.add_table(t);
         self
     }

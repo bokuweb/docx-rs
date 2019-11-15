@@ -3,7 +3,7 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 #[derive(Debug)]
-pub struct Docx(docx_core::Docx);
+pub struct Docx(docx_core::Docx<'static>);
 
 #[wasm_bindgen]
 #[allow(non_snake_case)]

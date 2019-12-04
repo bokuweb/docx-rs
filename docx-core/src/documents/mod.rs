@@ -1,4 +1,5 @@
 mod build_xml;
+mod comments;
 mod content_types;
 mod doc_props;
 mod document;
@@ -14,6 +15,7 @@ mod xml_docx;
 pub(crate) use build_xml::BuildXML;
 pub(crate) use history_id::HistoryId;
 
+pub use comments::*;
 pub use content_types::*;
 pub use doc_props::*;
 pub use document::*;
@@ -33,6 +35,7 @@ pub struct Docx<'a> {
     doc_props: DocProps<'a>,
     styles: Styles,
     document: Document<'a>,
+    comments: Comments,
     settings: Settings,
     font_table: FontTable,
 }
@@ -47,12 +50,14 @@ impl<'a> Default for Docx<'a> {
         let document_rels = DocumentRels::new();
         let settings = Settings::new();
         let font_table = FontTable::new();
+        let comments = Comments::new();
         Docx {
             content_type,
             rels,
             doc_props,
             styles,
             document,
+            comments,
             document_rels,
             settings,
             font_table,

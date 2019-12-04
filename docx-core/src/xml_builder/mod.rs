@@ -1,6 +1,7 @@
 #[macro_use]
 mod macros;
 
+mod comments;
 mod core_properties;
 mod declaration;
 mod document;

@@ -170,6 +170,9 @@ impl XMLBuilder {
 
     closed_el!(bookmark_start, "w:bookmarkStart", "w:id", "w:name");
     closed_el!(bookmark_end, "w:bookmarkEnd", "w:id");
+
+    closed_el!(comment_range_start, "w:commentRangeStart", "w:id");
+    closed_el!(comment_range_end, "w:commentRangeEnd", "w:id");
 }
 
 #[cfg(test)]

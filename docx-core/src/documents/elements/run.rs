@@ -78,6 +78,11 @@ impl Run {
         self.run_property = self.run_property.italic();
         self
     }
+
+    pub fn underline(mut self, line_type: &str) -> Run {
+        self.run_property = self.run_property.underline(line_type);
+        self
+    }
 }
 
 impl BuildXML for Run {
@@ -110,6 +115,15 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r>"#
+        );
+    }
+
+    #[test]
+    fn test_underline() {
+        let b = Run::new().add_text("Hello").underline("single").build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:r><w:rPr><w:u w:val="single" /></w:rPr><w:t xml:space="preserve">Hello</w:t></w:r>"#
         );
     }
 }

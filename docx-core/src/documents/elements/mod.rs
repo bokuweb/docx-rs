@@ -42,6 +42,7 @@ mod table_row;
 mod table_row_property;
 mod table_width;
 mod text;
+mod underline;
 mod vertical_merge;
 mod zoom;
 
@@ -89,5 +90,6 @@ pub use table_row::*;
 pub use table_row_property::*;
 pub use table_width::*;
 pub use text::*;
+pub use underline::*;
 pub use vertical_merge::*;
 pub use zoom::*;

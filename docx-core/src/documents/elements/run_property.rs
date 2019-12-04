@@ -1,4 +1,4 @@
-use super::{Bold, BoldCs, Color, Highlight, Italic, ItalicCs, Sz, SzCs};
+use super::{Bold, BoldCs, Color, Highlight, Italic, ItalicCs, Sz, SzCs, Underline};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
@@ -8,6 +8,7 @@ pub struct RunProperty {
     sz_cs: Option<SzCs>,
     color: Option<Color>,
     highlight: Option<Highlight>,
+    underline: Option<Underline>,
     bold: Option<Bold>,
     bold_cs: Option<BoldCs>,
     italic: Option<Italic>,
@@ -46,6 +47,11 @@ impl RunProperty {
         self.italic_cs = Some(ItalicCs::new());
         self
     }
+
+    pub fn underline(mut self, line_type: &str) -> RunProperty {
+        self.underline = Some(Underline::new(line_type));
+        self
+    }
 }
 
 impl Default for RunProperty {
@@ -55,6 +61,7 @@ impl Default for RunProperty {
             sz: None,
             sz_cs: None,
             highlight: None,
+            underline: None,
             bold: None,
             bold_cs: None,
             italic: None,
@@ -75,6 +82,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.italic)
             .add_optional_child(&self.italic_cs)
             .add_optional_child(&self.highlight)
+            .add_optional_child(&self.underline)
             .close()
             .build()
     }
@@ -115,6 +123,16 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:rPr><w:b /><w:bCs /></w:rPr>"#
+        );
+    }
+
+    #[test]
+    fn test_underline() {
+        let c = RunProperty::new().underline("single");
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rPr><w:u w:val="single" /></w:rPr>"#
         );
     }
 }

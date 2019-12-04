@@ -230,3 +230,29 @@ pub fn history() -> Result<(), DocxError> {
     .pack(file)?;
   Ok(())
 }
+
+#[test]
+pub fn underline() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/underline.docx");
+  let file = std::fs::File::create(&path).unwrap();
+  Docx::new()
+    .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello").underline("single")))
+    .build()
+    .pack(file)?;
+  Ok(())
+}
+
+#[test]
+pub fn highlight() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/highlight.docx");
+  let file = std::fs::File::create(&path).unwrap();
+  Docx::new()
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new().add_text("Hello").highlight("cyan"))
+        .add_run(Run::new().add_text(" World!").highlight("yellow")),
+    )
+    .build()
+    .pack(file)?;
+  Ok(())
+}

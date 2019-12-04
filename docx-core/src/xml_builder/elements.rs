@@ -83,6 +83,9 @@ impl XMLBuilder {
     // i.e. <w:highlight ... >
     only_str_val_el!(highlight, "w:highlight");
 
+    // i.e. <w:u ... >
+    only_str_val_el!(underline, "w:u");
+
     // i.e. <w:ind ... >
     pub(crate) fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Self {
         let left = &format!("{}", left);

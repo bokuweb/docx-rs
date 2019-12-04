@@ -1,6 +1,8 @@
 mod based_on;
 mod bold;
 mod bold_cs;
+mod bookmark_end;
+mod bookmark_start;
 mod br;
 mod color;
 mod default_tab_stop;
@@ -49,6 +51,8 @@ mod zoom;
 pub use based_on::*;
 pub use bold::*;
 pub use bold_cs::*;
+pub use bookmark_end::*;
+pub use bookmark_start::*;
 pub use br::*;
 pub use color::*;
 pub use default_tab_stop::*;

@@ -167,6 +167,9 @@ impl XMLBuilder {
 
     opened_el!(open_insert, "w:ins", "w:id", "w:author", "w:data");
     opened_el!(open_delete, "w:del", "w:id", "w:author", "w:data");
+
+    closed_el!(bookmark_start, "w:bookmarkStart", "w:id", "w:name");
+    closed_el!(bookmark_end, "w:bookmarkEnd", "w:id");
 }
 
 #[cfg(test)]

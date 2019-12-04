@@ -1,4 +1,4 @@
-use super::{Delete, Insert, ParagraphProperty, Run};
+use super::{BookmarkEnd, BookmarkStart, Delete, Insert, ParagraphProperty, Run};
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -25,6 +25,8 @@ pub enum ParagraphChild<'a> {
     Run(Run),
     Insert(Insert<'a>),
     Delete(Delete<'a>),
+    BookmarkStart(BookmarkStart<'a>),
+    BookmarkEnd(BookmarkEnd<'a>),
 }
 
 impl<'a> BuildXML for ParagraphChild<'a> {
@@ -33,6 +35,8 @@ impl<'a> BuildXML for ParagraphChild<'a> {
             ParagraphChild::Run(v) => v.build(),
             ParagraphChild::Insert(v) => v.build(),
             ParagraphChild::Delete(v) => v.build(),
+            ParagraphChild::BookmarkStart(v) => v.build(),
+            ParagraphChild::BookmarkEnd(v) => v.build(),
         }
     }
 }
@@ -59,6 +63,18 @@ impl<'a> Paragraph<'a> {
 
     pub fn add_attr(mut self, key: impl Into<String>, val: impl Into<String>) -> Paragraph<'a> {
         self.attrs.push((key.into(), val.into()));
+        self
+    }
+
+    pub fn add_bookmark_start(mut self, id: &'a str, name: &'a str) -> Paragraph<'a> {
+        self.children
+            .push(ParagraphChild::BookmarkStart(BookmarkStart::new(id, name)));
+        self
+    }
+
+    pub fn add_bookmark_end(mut self, id: &'a str) -> Paragraph<'a> {
+        self.children
+            .push(ParagraphChild::BookmarkEnd(BookmarkEnd::new(id)));
         self
     }
 
@@ -126,6 +142,19 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:p customId="abcd-1234-567890"><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
+        );
+    }
+
+    #[test]
+    fn test_bookmark() {
+        let b = Paragraph::new()
+            .add_bookmark_start("1234-5678", "article")
+            .add_run(Run::new().add_text("Hello"))
+            .add_bookmark_end("1234-5678")
+            .build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:bookmarkStart w:id="1234-5678" w:name="article" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:bookmarkEnd w:id="1234-5678" /></w:p>"#
         );
     }
 }

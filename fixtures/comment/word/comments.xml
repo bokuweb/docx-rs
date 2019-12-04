@@ -10,7 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" 
     xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" mc:Ignorable="w14 wp14">
-    <w:comment w:id="0" w:author="不明な作成者" w:date="2019-12-04T16:58:11Z" w:initials="">
+    <w:comment w:id="0" w:author="不明な作成者" w:date="2019-12-04T18:22:41Z" w:initials="">
         <w:p>
             <w:r>
                 <w:rPr>
@@ -38,6 +38,73 @@
                     <w:vertAlign w:val="baseline"/>
                     <w:em w:val="none"/>
                     <w:lang w:bidi="hi-IN" w:eastAsia="ja-JP" w:val="en-US"/>
+                </w:rPr>
+                <w:t>Comment3</w:t>
+            </w:r>
+        </w:p>
+    </w:comment>
+    <w:comment w:id="1" w:author="不明な作成者" w:date="2019-12-04T18:22:23Z" w:initials="">
+        <w:p>
+            <w:r>
+                <w:rPr>
+                    <w:rFonts w:eastAsia="Noto Sans CJK JP" w:cs="Lohit Devanagari" w:ascii="Liberation Serif" w:hAnsi="Liberation Serif"/>
+                    <w:b w:val="false"/>
+                    <w:bCs w:val="false"/>
+                    <w:i w:val="false"/>
+                    <w:iCs w:val="false"/>
+                    <w:caps w:val="false"/>
+                    <w:smallCaps w:val="false"/>
+                    <w:strike w:val="false"/>
+                    <w:dstrike w:val="false"/>
+                    <w:outline w:val="false"/>
+                    <w:shadow w:val="false"/>
+                    <w:emboss w:val="false"/>
+                    <w:imprint w:val="false"/>
+                    <w:color w:val="auto"/>
+                    <w:spacing w:val="0"/>
+                    <w:w w:val="100"/>
+                    <w:kern w:val="2"/>
+                    <w:position w:val="0"/>
+                    <w:sz w:val="20"/>
+                    <w:szCs w:val="24"/>
+                    <w:u w:val="none"/>
+                    <w:vertAlign w:val="baseline"/>
+                    <w:em w:val="none"/>
+                    <w:lang w:bidi="hi-IN" w:eastAsia="ja-JP" w:val="en-US"/>
+                </w:rPr>
+                <w:t>Comment Added</w:t>
+            </w:r>
+        </w:p>
+    </w:comment>
+    <w:comment w:id="2" w:author="不明な作成者" w:date="2019-12-04T16:58:11Z" w:initials="">
+        <w:p>
+            <w:r>
+                <w:rPr>
+                    <w:rFonts w:cs="Lohit Devanagari" w:ascii="Liberation Serif" w:hAnsi="Liberation Serif" w:eastAsia="Noto Sans CJK JP"/>
+                    <w:b w:val="false"/>
+                    <w:bCs w:val="false"/>
+                    <w:i w:val="false"/>
+                    <w:iCs w:val="false"/>
+                    <w:caps w:val="false"/>
+                    <w:smallCaps w:val="false"/>
+                    <w:strike w:val="false"/>
+                    <w:dstrike w:val="false"/>
+                    <w:outline w:val="false"/>
+                    <w:shadow w:val="false"/>
+                    <w:emboss w:val="false"/>
+                    <w:imprint w:val="false"/>
+                    <w:color w:val="auto"/>
+                    <w:spacing w:val="0"/>
+                    <w:w w:val="100"/>
+                    <w:kern w:val="2"/>
+                    <w:position w:val="0"/>
+                    <w:sz w:val="20"/>
+                    <w:sz w:val="20"/>
+                    <w:szCs w:val="24"/>
+                    <w:u w:val="none"/>
+                    <w:vertAlign w:val="baseline"/>
+                    <w:em w:val="none"/>
+                    <w:lang w:val="en-US" w:bidi="hi-IN" w:eastAsia="ja-JP"/>
                 </w:rPr>
                 <w:t>Hello world!!</w:t>
             </w:r>

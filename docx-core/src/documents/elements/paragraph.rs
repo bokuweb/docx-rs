@@ -22,7 +22,7 @@ impl<'a> Default for Paragraph<'a> {
 
 #[derive(Debug, Clone)]
 pub enum ParagraphChild<'a> {
-    Run(Run),
+    Run(Run<'a>),
     Insert(Insert<'a>),
     Delete(Delete<'a>),
     BookmarkStart(BookmarkStart<'a>),
@@ -46,7 +46,7 @@ impl<'a> Paragraph<'a> {
         Default::default()
     }
 
-    pub fn add_run(mut self, run: Run) -> Paragraph<'a> {
+    pub fn add_run(mut self, run: Run<'a>) -> Paragraph<'a> {
         self.children.push(ParagraphChild::Run(run));
         self
     }

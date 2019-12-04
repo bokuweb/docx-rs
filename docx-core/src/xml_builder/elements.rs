@@ -165,14 +165,15 @@ impl XMLBuilder {
         "w:gutter"
     );
 
-    opened_el!(open_insert, "w:ins", "w:id", "w:author", "w:data");
-    opened_el!(open_delete, "w:del", "w:id", "w:author", "w:data");
+    opened_el!(open_insert, "w:ins", "w:id", "w:author", "w:date");
+    opened_el!(open_delete, "w:del", "w:id", "w:author", "w:date");
 
     closed_el!(bookmark_start, "w:bookmarkStart", "w:id", "w:name");
     closed_el!(bookmark_end, "w:bookmarkEnd", "w:id");
 
     closed_el!(comment_range_start, "w:commentRangeStart", "w:id");
     closed_el!(comment_range_end, "w:commentRangeEnd", "w:id");
+    opened_el!(open_comment, "w:comment", "w:id", "w:author", "w:date");
 }
 
 #[cfg(test)]

@@ -95,17 +95,38 @@ impl<'a> Docx<'a> {
         }
     }
 
+    // Traverse and clone comments from document and add to comments node.
     fn update_comments(&mut self) {
         let mut comments: Vec<Comment<'a>> = vec![];
         for child in &self.document.children {
             match child {
-                DocumentChild::Paragraph(p) => {
-                    for child in &p.children {
+                DocumentChild::Paragraph(paragraph) => {
+                    for child in &paragraph.children {
                         match child {
                             ParagraphChild::CommentStart(c) => {
                                 comments.push(c.comment());
                             }
                             _ => {}
+                        }
+                    }
+                }
+                DocumentChild::Table(table) => {
+                    for row in &table.rows {
+                        for cell in &row.cells {
+                            for content in &cell.contents {
+                                match content {
+                                    TableCellContent::Paragraph(paragraph) => {
+                                        for child in &paragraph.children {
+                                            match child {
+                                                ParagraphChild::CommentStart(c) => {
+                                                    comments.push(c.comment());
+                                                }
+                                                _ => {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

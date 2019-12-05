@@ -16,13 +16,25 @@
         <w:pStyle w:val="Normal" />
         <w:rPr />
       </w:pPr>
+      <w:commentRangeStart w:id="1" />
+      <w:r>
+        <w:rPr>
+          <w:highlight w:val="cyan" />
+        </w:rPr>
+        <w:t xml:space="preserve">Hello</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:highlight w:val="yellow" />
+        </w:rPr>
+        <w:t xml:space="preserve"> World!</w:t>
+      </w:r>
       <w:r>
         <w:rPr />
-        <w:t xml:space="preserve">Hello</w:t>
-        <w:tab />
-        <w:t xml:space="preserve">World</w:t>
-        <w:br w:val="page" />
-        <w:t xml:space="preserve">Foo</w:t>
+      </w:r>
+      <w:commentRangeEnd w:id="1" />
+      <w:r>
+        <w:commentReference w:id="1" />
       </w:r>
     </w:p>
   </w:body>

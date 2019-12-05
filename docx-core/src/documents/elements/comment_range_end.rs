@@ -41,7 +41,10 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:commentRangeEnd w:id="mockid" />
+            r#"<w:r>
+  <w:rPr />
+</w:r>
+<w:commentRangeEnd w:id="mockid" />
 <w:r>
   <w:commentReference w:id="mockid" />
 </w:r>"#

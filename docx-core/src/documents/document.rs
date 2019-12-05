@@ -4,7 +4,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug)]
 pub struct Document<'a> {
-    children: Vec<DocumentChild<'a>>,
+    pub(crate) children: Vec<DocumentChild<'a>>,
 }
 
 #[derive(Debug, Clone)]

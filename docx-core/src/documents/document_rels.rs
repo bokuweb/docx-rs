@@ -22,11 +22,16 @@ impl BuildXML for DocumentRels {
             )
             .relationship(
                 "rId2",
+                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments",
+                "comments.xml",
+            )
+            .relationship(
+                "rId3",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable",
                 "fontTable.xml",
             )
             .relationship(
-                "rId3",
+                "rId4",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings",
                 "settings.xml",
             )

@@ -173,7 +173,15 @@ impl XMLBuilder {
 
     closed_el!(comment_range_start, "w:commentRangeStart", "w:id");
     closed_el!(comment_range_end, "w:commentRangeEnd", "w:id");
-    opened_el!(open_comment, "w:comment", "w:id", "w:author", "w:date");
+    closed_el!(comment_reference, "w:commentReference", "w:id");
+    opened_el!(
+        open_comment,
+        "w:comment",
+        "w:id",
+        "w:author",
+        "w:date",
+        "w:initials"
+    );
 }
 
 #[cfg(test)]

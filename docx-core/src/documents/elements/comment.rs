@@ -28,16 +28,31 @@ impl<'a> Comment<'a> {
         }
     }
 
+    pub fn author(mut self, author: &'a str) -> Comment<'a> {
+        self.author = author;
+        self
+    }
+
+    pub fn date(mut self, date: &'a str) -> Comment<'a> {
+        self.date = date;
+        self
+    }
+
     pub fn paragraph(mut self, p: Paragraph<'a>) -> Comment<'a> {
         self.paragraph = p;
         self
+    }
+
+    pub fn id(&self) -> &'a str {
+        self.id
     }
 }
 
 impl<'a> BuildXML for Comment<'a> {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
-            .open_comment(&self.id, self.author, self.date)
+            .open_comment(&self.id, self.author, self.date, "")
+            .add_child(&self.paragraph)
             .close()
             .build()
     }
@@ -56,7 +71,7 @@ mod tests {
         let b = Comment::new("123").build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:comment w:id="123" w:author="unnamed" w:date="1970-01-01T00:00:00Z" />"#
+            r#"<w:comment w:id="123" w:author="unnamed" w:date="1970-01-01T00:00:00Z" w:initials=""><w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr></w:p></w:comment>"#
         );
     }
 }

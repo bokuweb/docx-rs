@@ -15,7 +15,15 @@ impl<'a> CommentRangeEnd<'a> {
 impl<'a> BuildXML for CommentRangeEnd<'a> {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.comment_range_end(&self.id).build()
+        b.open_run()
+            .open_run_property()
+            .close()
+            .close()
+            .comment_range_end(&self.id)
+            .open_run()
+            .comment_reference(&self.id)
+            .close()
+            .build()
     }
 }
 
@@ -33,7 +41,10 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:commentRangeEnd w:id="mockid" />"#
+            r#"<w:commentRangeEnd w:id="mockid" />
+<w:r>
+  <w:commentReference w:id="mockid" />
+</w:r>"#
         );
     }
 }

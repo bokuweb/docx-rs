@@ -11,6 +11,7 @@ pub struct XMLDocx {
     pub doc_props: XMLDocProps,
     pub styles: Vec<u8>,
     pub document: Vec<u8>,
+    pub comments: Vec<u8>,
     pub document_rels: Vec<u8>,
     pub settings: Vec<u8>,
     pub font_table: Vec<u8>,

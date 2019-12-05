@@ -1,11 +1,11 @@
-use super::{BookmarkEnd, BookmarkStart, Delete, Insert, ParagraphProperty, Run};
+use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct Paragraph<'a> {
-    children: Vec<ParagraphChild<'a>>,
+    pub(crate) children: Vec<ParagraphChild<'a>>,
     property: ParagraphProperty,
     attrs: Vec<(String, String)>,
 }
@@ -27,6 +27,8 @@ pub enum ParagraphChild<'a> {
     Delete(Delete<'a>),
     BookmarkStart(BookmarkStart<'a>),
     BookmarkEnd(BookmarkEnd<'a>),
+    CommentStart(CommentRangeStart<'a>),
+    CommentEnd(CommentRangeEnd<'a>),
 }
 
 impl<'a> BuildXML for ParagraphChild<'a> {
@@ -37,6 +39,8 @@ impl<'a> BuildXML for ParagraphChild<'a> {
             ParagraphChild::Delete(v) => v.build(),
             ParagraphChild::BookmarkStart(v) => v.build(),
             ParagraphChild::BookmarkEnd(v) => v.build(),
+            ParagraphChild::CommentStart(v) => v.build(),
+            ParagraphChild::CommentEnd(v) => v.build(),
         }
     }
 }
@@ -44,6 +48,10 @@ impl<'a> BuildXML for ParagraphChild<'a> {
 impl<'a> Paragraph<'a> {
     pub fn new() -> Paragraph<'a> {
         Default::default()
+    }
+
+    pub fn children(&self) -> &Vec<ParagraphChild> {
+        &self.children
     }
 
     pub fn add_run(mut self, run: Run<'a>) -> Paragraph<'a> {
@@ -78,15 +86,24 @@ impl<'a> Paragraph<'a> {
         self
     }
 
+    pub fn add_comment_start(mut self, comment: Comment<'a>) -> Paragraph<'a> {
+        self.children
+            .push(ParagraphChild::CommentStart(CommentRangeStart::new(
+                comment,
+            )));
+        self
+    }
+
+    pub fn add_comment_end(mut self, id: &'a str) -> Paragraph<'a> {
+        self.children
+            .push(ParagraphChild::CommentEnd(CommentRangeEnd::new(id)));
+        self
+    }
+
     pub fn align(mut self, alignment_type: AlignmentType) -> Paragraph<'a> {
         self.property = self.property.align(alignment_type);
         self
     }
-
-    // pub fn size(mut self, size: usize) -> Paragraph<'a> {
-    //     self.children = self.children.into_iter().map(|r| r.size(size)).collect();
-    //     self
-    // }
 
     pub fn style(mut self, style_id: &str) -> Paragraph<'a> {
         self.property = self.property.style(style_id);
@@ -155,6 +172,24 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:bookmarkStart w:id="1234-5678" w:name="article" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:bookmarkEnd w:id="1234-5678" /></w:p>"#
+        );
+    }
+
+    #[test]
+    fn test_comment() {
+        let b = Paragraph::new()
+            .add_comment_start(
+                Comment::new("1234-5678"), // .paragraph(Paragraph::new().add_run(Run::new().add_text("Comment"))),
+            )
+            .add_run(Run::new().add_text("Hello"))
+            .add_comment_end("1234-5678")
+            .build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:commentRangeStart w:id="1234-5678" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:commentRangeEnd w:id="1234-5678" />
+<w:r>
+  <w:commentReference w:id="1234-5678" />
+</w:r></w:p>"#
         );
     }
 }

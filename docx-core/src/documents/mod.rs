@@ -35,7 +35,7 @@ pub struct Docx<'a> {
     doc_props: DocProps<'a>,
     styles: Styles,
     document: Document<'a>,
-    comments: Comments,
+    comments: Comments<'a>,
     settings: Settings,
     font_table: FontTable,
 }
@@ -80,16 +80,38 @@ impl<'a> Docx<'a> {
         self
     }
 
-    pub fn build(&self) -> XMLDocx {
+    pub fn build(&mut self) -> XMLDocx {
+        self.update_comments();
         XMLDocx {
             content_type: self.content_type.build(),
             rels: self.rels.build(),
             doc_props: self.doc_props.build(),
             styles: self.styles.build(),
             document: self.document.build(),
+            comments: self.comments.build(),
             document_rels: self.document_rels.build(),
             settings: self.settings.build(),
             font_table: self.font_table.build(),
         }
+    }
+
+    fn update_comments(&mut self) {
+        let mut comments: Vec<Comment<'a>> = vec![];
+        for child in &self.document.children {
+            match child {
+                DocumentChild::Paragraph(p) => {
+                    for child in &p.children {
+                        match child {
+                            ParagraphChild::CommentStart(c) => {
+                                comments.push(c.comment());
+                            }
+                            _ => {}
+                        }
+                    }
+                }
+                _ => {}
+            }
+        }
+        self.comments.add_comments(comments);
     }
 }

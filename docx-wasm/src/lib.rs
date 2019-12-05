@@ -20,7 +20,7 @@ impl Docx {
         self
     }
 
-    pub fn build(&self) -> Result<Vec<u8>, JsValue> {
+    pub fn build(&mut self) -> Result<Vec<u8>, JsValue> {
         let buf = Vec::new();
         let mut cur = std::io::Cursor::new(buf);
         let res = self.0.build().pack(&mut cur);

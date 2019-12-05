@@ -47,6 +47,10 @@ impl BuildXML for ContentTypes {
                 "/word/styles.xml",
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
             )
+            .add_override(
+                "/word/comments.xml",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
+            )
             .close()
             .build()
     }

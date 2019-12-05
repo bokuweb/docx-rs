@@ -1,14 +1,23 @@
+use super::Comment;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct CommentRangeStart<'a> {
     id: &'a str,
+    comment: Comment<'a>,
 }
 
 impl<'a> CommentRangeStart<'a> {
-    pub fn new(id: &'a str) -> CommentRangeStart<'a> {
-        CommentRangeStart { id }
+    pub fn new(comment: Comment<'a>) -> CommentRangeStart<'a> {
+        CommentRangeStart {
+            id: comment.id(),
+            comment,
+        }
+    }
+
+    pub(crate) fn comment(&self) -> Comment<'a> {
+        self.comment.clone()
     }
 }
 
@@ -29,7 +38,7 @@ mod tests {
 
     #[test]
     fn test_comment_range_start() {
-        let c = CommentRangeStart::new("mockid");
+        let c = CommentRangeStart::new(Comment::new("mockid"));
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

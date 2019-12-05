@@ -1,4 +1,4 @@
-use super::{Break, Comment, DeleteText, RunProperty, Tab, Text};
+use super::{Break, DeleteText, RunProperty, Tab, Text};
 use crate::documents::BuildXML;
 use crate::types::BreakType;
 use crate::xml_builder::*;
@@ -6,8 +6,7 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone)]
 pub struct Run<'a> {
     run_property: RunProperty,
-    comment: Option<Comment<'a>>,
-    children: Vec<RunChild>,
+    children: Vec<RunChild<'a>>,
 }
 
 impl<'a> Default for Run<'a> {
@@ -16,14 +15,13 @@ impl<'a> Default for Run<'a> {
         Self {
             run_property,
             children: vec![],
-            comment: None,
         }
     }
 }
 
 #[derive(Debug, Clone)]
-pub enum RunChild {
-    Text(Text),
+pub enum RunChild<'a> {
+    Text(Text<'a>),
     DeleteText(DeleteText),
     Tab(Tab),
     Break(Break),
@@ -83,11 +81,6 @@ impl<'a> Run<'a> {
 
     pub fn underline(mut self, line_type: &'a str) -> Run<'a> {
         self.run_property = self.run_property.underline(line_type);
-        self
-    }
-
-    pub fn comment(mut self, line_type: &'a str) -> Run<'a> {
-        // self.run_property = self.run_property.underline(line_type);
         self
     }
 }

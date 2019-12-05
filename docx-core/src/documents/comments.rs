@@ -1,36 +1,40 @@
-use super::{Paragraph, Table};
+use super::Comment;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug)]
-pub struct Comments {}
+pub struct Comments<'a> {
+    comments: Vec<Comment<'a>>,
+}
 
-impl Comments {
-    pub fn new() -> Comments {
+impl<'a> Comments<'a> {
+    pub fn new() -> Self {
         Default::default()
     }
-}
-
-impl Default for Comments {
-    fn default() -> Self {
-        Self {}
+    pub(crate) fn add_comments(&mut self, comments: Vec<Comment<'a>>) {
+        self.comments = comments;
     }
 }
 
-impl BuildXML for Comments {
+impl<'a> Default for Comments<'a> {
+    fn default() -> Self {
+        Self { comments: vec![] }
+    }
+}
+
+impl<'a> BuildXML for Comments<'a> {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .declaration(Some(true))
-            .open_comments()
-            .close()
-            .build()
+        let mut b = XMLBuilder::new().declaration(Some(true)).open_comments();
+        for c in &self.comments {
+            b = b.add_child(c)
+        }
+        b.close().build()
     }
 }
 
 #[cfg(test)]
 mod tests {
 
-    use super::super::Run;
     use super::*;
     #[cfg(test)]
     use pretty_assertions::assert_eq;

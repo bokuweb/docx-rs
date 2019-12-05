@@ -256,3 +256,25 @@ pub fn highlight() -> Result<(), DocxError> {
     .pack(file)?;
   Ok(())
 }
+
+#[test]
+pub fn comments() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/comments.docx");
+  let file = std::fs::File::create(&path).unwrap();
+  Docx::new()
+    .add_paragraph(
+      Paragraph::new()
+        .add_comment_start(
+          Comment::new("1")
+            .author("bokuweb")
+            .date("2019-01-01T00:00:00Z")
+            .paragraph(Paragraph::new().add_run(Run::new().add_text("Hello"))),
+        )
+        .add_run(Run::new().add_text("Hello").highlight("cyan"))
+        .add_run(Run::new().add_text(" World!").highlight("yellow"))
+        .add_comment_end("1"),
+    )
+    .build()
+    .pack(file)?;
+  Ok(())
+}

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:numbering xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" 
+  xmlns:o="urn:schemas-microsoft-com:office:office" 
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" 
+  xmlns:v="urn:schemas-microsoft-com:vml" 
+  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:abstractNum w:abstractNumId="0">
+    <w:lvl w:ilvl="0">
+      <w:start w:val="1" />
+      <w:numFmt w:val="decimal" />
+      <w:lvlText w:val="%1." />
+      <w:lvlJc w:val="left" />
+      <w:pPr>
+        <w:pStyle w:val="Normal" />
+        <w:rPr />
+        <w:ind w:left="420" w:hanging="420" />
+      </w:pPr>
+    </w:lvl>
+    <w:lvl w:ilvl="1">
+      <w:start w:val="1" />
+      <w:numFmt w:val="decimal" />
+      <w:lvlText w:val="(%2)" />
+      <w:lvlJc w:val="left" />
+      <w:pPr>
+        <w:pStyle w:val="Normal" />
+        <w:rPr />
+        <w:ind w:left="840" w:hanging="420" />
+      </w:pPr>
+    </w:lvl>
+    <w:lvl w:ilvl="2">
+      <w:start w:val="1" />
+      <w:numFmt w:val="decimalEnclosedCircle" />
+      <w:lvlText w:val="%3" />
+      <w:lvlJc w:val="left" />
+      <w:pPr>
+        <w:pStyle w:val="Normal" />
+        <w:rPr />
+        <w:ind w:left="1260" w:hanging="420" />
+      </w:pPr>
+    </w:lvl>
+    <w:lvl w:ilvl="3">
+      <w:start w:val="1" />
+      <w:numFmt w:val="decimal" />
+      <w:lvlText w:val="%4." />
+      <w:lvlJc w:val="left" />
+      <w:pPr>
+        <w:pStyle w:val="Normal" />
+        <w:rPr />
+        <w:ind w:left="1680" w:hanging="420" />
+      </w:pPr>
+    </w:lvl>
+    <w:lvl w:ilvl="4">
+      <w:start w:val="1" />
+      <w:numFmt w:val="decimal" />
+      <w:lvlText w:val="(%5)" />
+      <w:lvlJc w:val="left" />
+      <w:pPr>
+        <w:pStyle w:val="Normal" />
+        <w:rPr />
+        <w:ind w:left="2100" w:hanging="420" />
+      </w:pPr>
+    </w:lvl>
+    <w:lvl w:ilvl="5">
+      <w:start w:val="1" />
+      <w:numFmt w:val="decimalEnclosedCircle" />
+      <w:lvlText w:val="%6" />
+      <w:lvlJc w:val="left" />
+      <w:pPr>
+        <w:pStyle w:val="Normal" />
+        <w:rPr />
+        <w:ind w:left="2520" w:hanging="420" />
+      </w:pPr>
+    </w:lvl>
+    <w:lvl w:ilvl="6">
+      <w:start w:val="1" />
+      <w:numFmt w:val="decimal" />
+      <w:lvlText w:val="%7." />
+      <w:lvlJc w:val="left" />
+      <w:pPr>
+        <w:pStyle w:val="Normal" />
+        <w:rPr />
+        <w:ind w:left="2940" w:hanging="420" />
+      </w:pPr>
+    </w:lvl>
+    <w:lvl w:ilvl="7">
+      <w:start w:val="1" />
+      <w:numFmt w:val="decimal" />
+      <w:lvlText w:val="(%8)" />
+      <w:lvlJc w:val="left" />
+      <w:pPr>
+        <w:pStyle w:val="Normal" />
+        <w:rPr />
+        <w:ind w:left="3360" w:hanging="420" />
+      </w:pPr>
+    </w:lvl>
+    <w:lvl w:ilvl="8">
+      <w:start w:val="1" />
+      <w:numFmt w:val="decimalEnclosedCircle" />
+      <w:lvlText w:val="%9" />
+      <w:lvlJc w:val="left" />
+      <w:pPr>
+        <w:pStyle w:val="Normal" />
+        <w:rPr />
+        <w:ind w:left="3780" w:hanging="420" />
+      </w:pPr>
+    </w:lvl>
+  </w:abstractNum>
+  <w:num w:numId="0">
+    <w:abstractNumId w:val="0" />
+  </w:num>
+</w:numbering>

@@ -320,7 +320,26 @@ pub fn default_numbering() -> Result<(), DocxError> {
   let path = std::path::Path::new("./tests/output/default_numbering.docx");
   let file = std::fs::File::create(&path).unwrap();
   Docx::new()
-    .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new().add_text("Hello"))
+        .numbering(NumberingId::new("0"), IndentLevel::new(0)),
+    )
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new().add_text("World!"))
+        .numbering(NumberingId::new("0"), IndentLevel::new(1)),
+    )
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new().add_text("Foooo!"))
+        .numbering(NumberingId::new("0"), IndentLevel::new(2)),
+    )
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new().add_text("Bar!"))
+        .numbering(NumberingId::new("0"), IndentLevel::new(3)),
+    )
     .build()
     .pack(file)?;
   Ok(())

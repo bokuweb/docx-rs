@@ -9,7 +9,7 @@ pub struct Level<'a> {
     format: NumberFormat<'a>,
     text: LevelText<'a>,
     jc: LevelJc<'a>,
-    paragraph_property: ParagraphProperty<'a>,
+    paragraph_property: ParagraphProperty,
 }
 
 impl<'a> Level<'a> {

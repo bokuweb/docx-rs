@@ -35,7 +35,7 @@ pub struct Docx<'a> {
     rels: Rels,
     document_rels: DocumentRels,
     doc_props: DocProps<'a>,
-    styles: Styles<'a>,
+    styles: Styles,
     document: Document<'a>,
     comments: Comments<'a>,
     numberings: Numberings<'a>,

@@ -191,7 +191,7 @@ impl XMLBuilder {
     opened_el!(open_num, "w:num", "w:numId");
     opened_el!(open_numbering_property, "w:numPr");
     only_usize_val_el!(indent_level, "w:ilvl");
-    only_str_val_el!(num_id, "w:numId");
+    only_usize_val_el!(num_id, "w:numId");
     only_usize_val_el!(start, "w:start");
     only_str_val_el!(number_format, "w:numFmt");
     only_str_val_el!(level_text, "w:lvlText");

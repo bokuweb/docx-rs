@@ -3,12 +3,12 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct Numbering<'a> {
-    id: &'a str,
+    id: usize,
     levels: Vec<Level<'a>>,
 }
 
 impl<'a> Numbering<'a> {
-    pub fn new(id: &'a str) -> Self {
+    pub fn new(id: usize) -> Self {
         Self { id, levels: vec![] }
     }
 
@@ -20,16 +20,13 @@ impl<'a> Numbering<'a> {
 
 impl<'a> BuildXML for Numbering<'a> {
     fn build(&self) -> Vec<u8> {
+        let id = format!("{}", self.id);
         let mut b = XMLBuilder::new();
-        b = b.open_abstract_num(self.id);
+        b = b.open_abstract_num(&id);
         for l in &self.levels {
             b = b.add_child(l);
         }
-        b.close()
-            .open_num(self.id)
-            .abstract_num_id(self.id)
-            .close()
-            .build()
+        b.close().open_num(&id).abstract_num_id(&id).close().build()
     }
 }
 
@@ -44,7 +41,7 @@ mod tests {
 
     #[test]
     fn test_numbering() {
-        let mut c = Numbering::new("0");
+        let mut c = Numbering::new(0);
         c = c.add_level(Level::new(
             1,
             Start::new(1),

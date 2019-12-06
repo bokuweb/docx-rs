@@ -5,15 +5,15 @@ use crate::StyleType;
 use super::{BasedOn, Name, Next, ParagraphProperty, QFormat, RunProperty};
 
 #[derive(Debug)]
-pub struct Style<'a> {
+pub struct Style {
     style_id: String,
     name: Name,
     style_type: StyleType,
     run_property: RunProperty,
-    paragraph_property: ParagraphProperty<'a>,
+    paragraph_property: ParagraphProperty,
 }
 
-impl<'a> Default for Style<'a> {
+impl Default for Style {
     fn default() -> Self {
         let name = Name::new("");
         let rpr = RunProperty::new();
@@ -28,7 +28,7 @@ impl<'a> Default for Style<'a> {
     }
 }
 
-impl<'a> Style<'a> {
+impl Style {
     pub fn new(
         style_id: impl Into<String>,
         name: impl Into<String>,
@@ -65,7 +65,7 @@ impl<'a> Style<'a> {
     }
 }
 
-impl<'a> BuildXML for Style<'a> {
+impl BuildXML for Style {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         // Set "Normal" as default if you need change these values please fix it

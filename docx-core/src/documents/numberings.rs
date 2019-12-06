@@ -37,7 +37,7 @@ impl<'a> BuildXML for Numberings<'a> {
 }
 
 fn create_default_numbering() -> Numbering<'static> {
-    Numbering::new("0")
+    Numbering::new(0)
         .add_level(
             Level::new(
                 0,

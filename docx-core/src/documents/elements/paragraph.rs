@@ -6,7 +6,7 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone)]
 pub struct Paragraph<'a> {
     pub(crate) children: Vec<ParagraphChild<'a>>,
-    property: ParagraphProperty<'a>,
+    property: ParagraphProperty,
     attrs: Vec<(String, String)>,
 }
 
@@ -119,7 +119,7 @@ impl<'a> Paragraph<'a> {
         self
     }
 
-    pub fn numbering(mut self, id: NumberingId<'a>, level: IndentLevel) -> Self {
+    pub fn numbering(mut self, id: NumberingId, level: IndentLevel) -> Self {
         self.property = self.property.numbering(id, level);
         self
     }
@@ -205,11 +205,11 @@ mod tests {
     fn test_numbering() {
         let b = Paragraph::new()
             .add_run(Run::new().add_text("Hello"))
-            .numbering(NumberingId::new("abc"), IndentLevel::new(1))
+            .numbering(NumberingId::new(0), IndentLevel::new(1))
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:numPr><w:numId w:val="abc" /><w:ilvl w:val="1" /></w:numPr></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
+            r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:numPr><w:numId w:val="0" /><w:ilvl w:val="1" /></w:numPr></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );
     }
 }

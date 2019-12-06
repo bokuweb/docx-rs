@@ -6,15 +6,15 @@ use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct ParagraphProperty<'a> {
+pub struct ParagraphProperty {
     run_property: RunProperty,
     style: ParagraphStyle,
-    numbering_property: Option<NumberingProperty<'a>>,
+    numbering_property: Option<NumberingProperty>,
     alignment: Option<Justification>,
     indent: Option<Indent>,
 }
 
-impl<'a> Default for ParagraphProperty<'a> {
+impl Default for ParagraphProperty {
     fn default() -> Self {
         let s: Option<&str> = None;
         ParagraphProperty {
@@ -32,8 +32,8 @@ impl<'a> Default for ParagraphProperty<'a> {
 // This element specifies a set of paragraph properties which shall be applied to the contents of the parent
 // paragraph after all style/numbering/table properties have been applied to the text. These properties are defined
 // as direct formatting, since they are directly applied to the paragraph and supersede any formatting from styles.
-impl<'a> ParagraphProperty<'a> {
-    pub fn new() -> ParagraphProperty<'a> {
+impl ParagraphProperty {
+    pub fn new() -> ParagraphProperty {
         Default::default()
     }
 
@@ -52,13 +52,13 @@ impl<'a> ParagraphProperty<'a> {
         self
     }
 
-    pub fn numbering(mut self, id: NumberingId<'a>, level: IndentLevel) -> Self {
+    pub fn numbering(mut self, id: NumberingId, level: IndentLevel) -> Self {
         self.numbering_property = Some(NumberingProperty::new(id, level));
         self
     }
 }
 
-impl<'a> BuildXML for ParagraphProperty<'a> {
+impl BuildXML for ParagraphProperty {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_paragraph_property()

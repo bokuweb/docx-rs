@@ -7,6 +7,7 @@ mod declaration;
 mod document;
 mod elements;
 mod fonts;
+mod numbering;
 mod properties;
 mod relationship;
 mod settings;

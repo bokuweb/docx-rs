@@ -141,6 +141,8 @@ impl XMLBuilder {
     closed_el!(shd, "w:shd", "w:fill", "w:val");
 
     closed_el!(tab, "w:tab");
+    closed_el!(tab_with_pos, "w:tab", "w:val", "w:pos");
+
     closed_el!(br, "w:br", "w:type");
     closed_el!(zoom, "w:zoom", "w:percent");
     only_usize_val_el!(default_tab_stop, "w:defaultTabStop");
@@ -182,6 +184,17 @@ impl XMLBuilder {
         "w:date",
         "w:initials"
     );
+
+    opened_el!(open_abstract_num, "w:abstractNum", "w:abstractNumId");
+    opened_el!(open_level, "w:lvl", "w:ilvl");
+    opened_el!(open_tabs, "w:tabs");
+    opened_el!(open_num, "w:num", "w:numId");
+
+    only_usize_val_el!(start, "w:start");
+    only_str_val_el!(number_format, "w:numFmt");
+    only_str_val_el!(level_text, "w:lvlText");
+    only_str_val_el!(level_justification, "w:lvlJc");
+    only_str_val_el!(abstract_num_id, "w:abstractNumId");
 }
 
 #[cfg(test)]

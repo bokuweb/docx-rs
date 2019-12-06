@@ -39,6 +39,8 @@ where
     zip.write_all(&xml.font_table)?;
     zip.start_file("word/comments.xml", options)?;
     zip.write_all(&xml.comments)?;
+    zip.start_file("word/numberings.xml", options)?;
+    zip.write_all(&xml.numberings)?;
     zip.finish()?;
     Ok(())
 }

@@ -4,23 +4,23 @@ use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug)]
-pub struct Styles {
+pub struct Styles<'a> {
     doc_defaults: DocDefaults,
-    styles: Vec<Style>,
+    styles: Vec<Style<'a>>,
 }
 
-impl Styles {
-    pub fn new() -> Styles {
+impl<'a> Styles<'a> {
+    pub fn new() -> Styles<'a> {
         Default::default()
     }
 
-    pub fn add_style(mut self, style: Style) -> Self {
+    pub fn add_style(mut self, style: Style<'a>) -> Self {
         self.styles.push(style);
         self
     }
 }
 
-impl Default for Styles {
+impl<'a> Default for Styles<'a> {
     fn default() -> Self {
         Self {
             doc_defaults: DocDefaults::new(),
@@ -29,7 +29,7 @@ impl Default for Styles {
     }
 }
 
-impl BuildXML for Styles {
+impl<'a> BuildXML for Styles<'a> {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         let normal = Style::new("Normal", "Normal", StyleType::Paragraph);

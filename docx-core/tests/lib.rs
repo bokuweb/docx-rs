@@ -314,3 +314,14 @@ pub fn comments_to_table() -> Result<(), DocxError> {
     .pack(file)?;
   Ok(())
 }
+
+#[test]
+pub fn default_numbering() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/default_numbering.docx");
+  let file = std::fs::File::create(&path).unwrap();
+  Docx::new()
+    .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
+    .build()
+    .pack(file)?;
+  Ok(())
+}

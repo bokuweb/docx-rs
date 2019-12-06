@@ -1,22 +1,26 @@
-use super::{Indent, Justification, ParagraphStyle, RunProperty};
+use super::{
+    Indent, IndentLevel, Justification, NumberingId, NumberingProperty, ParagraphStyle, RunProperty,
+};
 use crate::documents::BuildXML;
 use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct ParagraphProperty {
+pub struct ParagraphProperty<'a> {
     run_property: RunProperty,
     style: ParagraphStyle,
+    numbering_property: Option<NumberingProperty<'a>>,
     alignment: Option<Justification>,
     indent: Option<Indent>,
 }
 
-impl Default for ParagraphProperty {
+impl<'a> Default for ParagraphProperty<'a> {
     fn default() -> Self {
         let s: Option<&str> = None;
         ParagraphProperty {
             run_property: RunProperty::new(),
             style: ParagraphStyle::new(s),
+            numbering_property: None,
             alignment: None,
             indent: None,
         }
@@ -28,37 +32,39 @@ impl Default for ParagraphProperty {
 // This element specifies a set of paragraph properties which shall be applied to the contents of the parent
 // paragraph after all style/numbering/table properties have been applied to the text. These properties are defined
 // as direct formatting, since they are directly applied to the paragraph and supersede any formatting from styles.
-impl ParagraphProperty {
-    pub fn new() -> ParagraphProperty {
+impl<'a> ParagraphProperty<'a> {
+    pub fn new() -> ParagraphProperty<'a> {
         Default::default()
     }
 
-    pub fn align(mut self, alignment_type: AlignmentType) -> ParagraphProperty {
+    pub fn align(mut self, alignment_type: AlignmentType) -> Self {
         self.alignment = Some(Justification::new(alignment_type.to_string()));
         self
     }
 
-    pub fn style(mut self, style_id: &str) -> ParagraphProperty {
+    pub fn style(mut self, style_id: &str) -> Self {
         self.style = ParagraphStyle::new(Some(style_id));
         self
     }
 
-    pub fn indent(
-        mut self,
-        left: usize,
-        special_indent: Option<SpecialIndentType>,
-    ) -> ParagraphProperty {
+    pub fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Self {
         self.indent = Some(Indent::new(left, special_indent));
+        self
+    }
+
+    pub fn numbering(mut self, id: NumberingId<'a>, level: IndentLevel) -> Self {
+        self.numbering_property = Some(NumberingProperty::new(id, level));
         self
     }
 }
 
-impl BuildXML for ParagraphProperty {
+impl<'a> BuildXML for ParagraphProperty<'a> {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_paragraph_property()
             .add_child(&self.style)
             .add_child(&self.run_property)
+            .add_optional_child(&self.numbering_property)
             .add_optional_child(&self.alignment)
             .add_optional_child(&self.indent)
             .close()

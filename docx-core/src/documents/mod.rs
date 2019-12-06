@@ -7,6 +7,7 @@ mod document_rels;
 mod elements;
 mod font_table;
 mod history_id;
+mod numberings;
 mod rels;
 mod settings;
 mod styles;
@@ -22,6 +23,7 @@ pub use document::*;
 pub use document_rels::*;
 pub use elements::*;
 pub use font_table::*;
+pub use numberings::*;
 pub use rels::*;
 pub use settings::*;
 pub use styles::*;
@@ -33,9 +35,10 @@ pub struct Docx<'a> {
     rels: Rels,
     document_rels: DocumentRels,
     doc_props: DocProps<'a>,
-    styles: Styles,
+    styles: Styles<'a>,
     document: Document<'a>,
     comments: Comments<'a>,
+    numberings: Numberings<'a>,
     settings: Settings,
     font_table: FontTable,
 }
@@ -51,6 +54,7 @@ impl<'a> Default for Docx<'a> {
         let settings = Settings::new();
         let font_table = FontTable::new();
         let comments = Comments::new();
+        let numberings = Numberings::new();
         Docx {
             content_type,
             rels,
@@ -61,6 +65,7 @@ impl<'a> Default for Docx<'a> {
             document_rels,
             settings,
             font_table,
+            numberings,
         }
     }
 }
@@ -80,6 +85,11 @@ impl<'a> Docx<'a> {
         self
     }
 
+    pub fn add_numbering(mut self, num: Numbering<'a>) -> Docx<'a> {
+        self.numberings = self.numberings.add_numbering(num);
+        self
+    }
+
     pub fn build(&mut self) -> XMLDocx {
         self.update_comments();
         XMLDocx {
@@ -92,6 +102,7 @@ impl<'a> Docx<'a> {
             document_rels: self.document_rels.build(),
             settings: self.settings.build(),
             font_table: self.font_table.build(),
+            numberings: self.numberings.build(),
         }
     }
 

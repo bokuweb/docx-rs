@@ -14,7 +14,7 @@ pub struct Style {
 }
 
 impl Default for Style {
-    fn default() -> Style {
+    fn default() -> Self {
         let name = Name::new("");
         let rpr = RunProperty::new();
         let ppr = ParagraphProperty::new();
@@ -33,7 +33,7 @@ impl Style {
         style_id: impl Into<String>,
         name: impl Into<String>,
         style_type: StyleType,
-    ) -> Style {
+    ) -> Self {
         let name = Name::new(name.into());
         let default = Default::default();
         Style {

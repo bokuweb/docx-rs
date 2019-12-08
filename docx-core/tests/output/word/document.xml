@@ -15,26 +15,14 @@
       <w:pPr>
         <w:pStyle w:val="Normal" />
         <w:rPr />
+        <w:numPr>
+          <w:numId w:val="0" />
+          <w:ilvl w:val="1" />
+        </w:numPr>
       </w:pPr>
-      <w:commentRangeStart w:id="1" />
-      <w:r>
-        <w:rPr>
-          <w:highlight w:val="cyan" />
-        </w:rPr>
-        <w:t xml:space="preserve">Hello</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr>
-          <w:highlight w:val="yellow" />
-        </w:rPr>
-        <w:t xml:space="preserve"> World!</w:t>
-      </w:r>
       <w:r>
         <w:rPr />
-      </w:r>
-      <w:commentRangeEnd w:id="1" />
-      <w:r>
-        <w:commentReference w:id="1" />
+        <w:t xml:space="preserve">Hello</w:t>
       </w:r>
     </w:p>
   </w:body>

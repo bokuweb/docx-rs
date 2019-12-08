@@ -7,6 +7,7 @@ use crate::xml_builder::*;
 pub struct ParagraphProperty {
     run_property: RunProperty,
     style: ParagraphStyle,
+    numbering_property: Option<NumberingProperty>,
     alignment: Option<Justification>,
     indent: Option<Indent>,
 }
@@ -17,6 +18,7 @@ impl Default for ParagraphProperty {
         ParagraphProperty {
             run_property: RunProperty::new(),
             style: ParagraphStyle::new(s),
+            numbering_property: None,
             alignment: None,
             indent: None,
         }
@@ -33,22 +35,23 @@ impl ParagraphProperty {
         Default::default()
     }
 
-    pub fn align(mut self, alignment_type: AlignmentType) -> ParagraphProperty {
+    pub fn align(mut self, alignment_type: AlignmentType) -> Self {
         self.alignment = Some(Justification::new(alignment_type.to_string()));
         self
     }
 
-    pub fn style(mut self, style_id: &str) -> ParagraphProperty {
+    pub fn style(mut self, style_id: &str) -> Self {
         self.style = ParagraphStyle::new(Some(style_id));
         self
     }
 
-    pub fn indent(
-        mut self,
-        left: usize,
-        special_indent: Option<SpecialIndentType>,
-    ) -> ParagraphProperty {
+    pub fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Self {
         self.indent = Some(Indent::new(left, special_indent));
+        self
+    }
+
+    pub fn numbering(mut self, id: NumberingId, level: IndentLevel) -> Self {
+        self.numbering_property = Some(NumberingProperty::new(id, level));
         self
     }
 }
@@ -59,6 +62,7 @@ impl BuildXML for ParagraphProperty {
             .open_paragraph_property()
             .add_child(&self.style)
             .add_child(&self.run_property)
+            .add_optional_child(&self.numbering_property)
             .add_optional_child(&self.alignment)
             .add_optional_child(&self.indent)
             .close()

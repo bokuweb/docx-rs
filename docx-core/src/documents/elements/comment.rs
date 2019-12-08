@@ -2,56 +2,56 @@ use crate::documents::{BuildXML, Paragraph};
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct Comment<'a> {
-    id: &'a str,
-    author: &'a str,
-    date: &'a str,
-    paragraph: Paragraph<'a>,
+pub struct Comment {
+    id: String,
+    author: String,
+    date: String,
+    paragraph: Paragraph,
 }
 
-impl<'a> Default for Comment<'a> {
-    fn default() -> Comment<'a> {
+impl Default for Comment {
+    fn default() -> Comment {
         Comment {
-            id: "invalidId",
-            author: "unnamed",
-            date: "1970-01-01T00:00:00Z",
+            id: "invalidId".to_owned(),
+            author: "unnamed".to_owned(),
+            date: "1970-01-01T00:00:00Z".to_owned(),
             paragraph: Paragraph::new(),
         }
     }
 }
 
-impl<'a> Comment<'a> {
-    pub fn new(id: &'a str) -> Comment<'a> {
+impl Comment {
+    pub fn new(id: impl Into<String>) -> Comment {
         Self {
-            id,
+            id: id.into(),
             ..Default::default()
         }
     }
 
-    pub fn author(mut self, author: &'a str) -> Comment<'a> {
-        self.author = author;
+    pub fn author(mut self, author: impl Into<String>) -> Comment {
+        self.author = author.into();
         self
     }
 
-    pub fn date(mut self, date: &'a str) -> Comment<'a> {
-        self.date = date;
+    pub fn date(mut self, date: impl Into<String>) -> Comment {
+        self.date = date.into();
         self
     }
 
-    pub fn paragraph(mut self, p: Paragraph<'a>) -> Comment<'a> {
+    pub fn paragraph(mut self, p: Paragraph) -> Comment {
         self.paragraph = p;
         self
     }
 
-    pub fn id(&self) -> &'a str {
-        self.id
+    pub fn id(&self) -> String {
+        self.id.clone()
     }
 }
 
-impl<'a> BuildXML for Comment<'a> {
+impl BuildXML for Comment {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
-            .open_comment(&self.id, self.author, self.date, "")
+            .open_comment(&self.id, &self.author, &self.date, "")
             .add_child(&self.paragraph)
             .close()
             .build()

@@ -26,12 +26,12 @@ impl RunProperty {
         self
     }
 
-    pub fn color(mut self, color: &str) -> RunProperty {
+    pub fn color(mut self, color: impl Into<String>) -> RunProperty {
         self.color = Some(Color::new(color));
         self
     }
 
-    pub fn highlight(mut self, color: &str) -> RunProperty {
+    pub fn highlight(mut self, color: impl Into<String>) -> RunProperty {
         self.highlight = Some(Highlight::new(color));
         self
     }
@@ -48,7 +48,7 @@ impl RunProperty {
         self
     }
 
-    pub fn underline(mut self, line_type: &str) -> RunProperty {
+    pub fn underline(mut self, line_type: impl Into<String>) -> RunProperty {
         self.underline = Some(Underline::new(line_type));
         self
     }

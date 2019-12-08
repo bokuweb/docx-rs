@@ -3,33 +3,33 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug)]
-pub struct Document<'a> {
-    pub(crate) children: Vec<DocumentChild<'a>>,
+pub struct Document {
+    pub(crate) children: Vec<DocumentChild>,
 }
 
 #[derive(Debug, Clone)]
-pub enum DocumentChild<'a> {
-    Paragraph(Paragraph<'a>),
-    Table(Table<'a>),
+pub enum DocumentChild {
+    Paragraph(Paragraph),
+    Table(Table),
 }
 
-impl<'a> Document<'a> {
-    pub fn new() -> Document<'a> {
+impl Document {
+    pub fn new() -> Document {
         Default::default()
     }
 
-    pub fn add_paragraph(mut self, p: Paragraph<'a>) -> Self {
+    pub fn add_paragraph(mut self, p: Paragraph) -> Self {
         self.children.push(DocumentChild::Paragraph(p));
         self
     }
 
-    pub fn add_table(mut self, t: Table<'a>) -> Self {
+    pub fn add_table(mut self, t: Table) -> Self {
         self.children.push(DocumentChild::Table(t));
         self
     }
 }
 
-impl<'a> Default for Document<'a> {
+impl Default for Document {
     fn default() -> Self {
         Self {
             children: Vec::new(),
@@ -37,7 +37,7 @@ impl<'a> Default for Document<'a> {
     }
 }
 
-impl<'a> BuildXML for Document<'a> {
+impl BuildXML for Document {
     fn build(&self) -> Vec<u8> {
         let mut b = XMLBuilder::new()
             .declaration(Some(true))

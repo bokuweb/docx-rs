@@ -2,17 +2,17 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct CommentRangeEnd<'a> {
-    id: &'a str,
+pub struct CommentRangeEnd {
+    id: String,
 }
 
-impl<'a> CommentRangeEnd<'a> {
-    pub fn new(id: &'a str) -> CommentRangeEnd<'a> {
-        CommentRangeEnd { id }
+impl CommentRangeEnd {
+    pub fn new(id: impl Into<String>) -> CommentRangeEnd {
+        CommentRangeEnd { id: id.into() }
     }
 }
 
-impl<'a> BuildXML for CommentRangeEnd<'a> {
+impl BuildXML for CommentRangeEnd {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         b.open_run()

@@ -2,13 +2,13 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct Text<'a> {
-    text: &'a str,
+pub struct Text {
+    text: String,
     preserve_space: bool,
 }
 
-impl<'a> Text<'a> {
-    pub fn new(text: &'a str) -> Text {
+impl Text {
+    pub fn new(text: impl Into<String>) -> Text {
         Text {
             text: text.into(),
             preserve_space: true,
@@ -16,7 +16,7 @@ impl<'a> Text<'a> {
     }
 }
 
-impl<'a> BuildXML for Text<'a> {
+impl BuildXML for Text {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new().text(&self.text, true).build()
     }

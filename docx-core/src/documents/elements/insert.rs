@@ -2,39 +2,39 @@ use crate::documents::{BuildXML, HistoryId, Run};
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct Insert<'a> {
-    author: &'a str,
-    date: &'a str,
-    run: Run<'a>,
+pub struct Insert {
+    author: String,
+    date: String,
+    run: Run,
 }
 
-impl<'a> Default for Insert<'a> {
-    fn default() -> Insert<'a> {
+impl Default for Insert {
+    fn default() -> Insert {
         Insert {
-            author: "unnamed",
-            date: "1970-01-01T00:00:00Z",
+            author: "unnamed".to_owned(),
+            date: "1970-01-01T00:00:00Z".to_owned(),
             run: Run::new(),
         }
     }
 }
 
-impl<'a> Insert<'a> {
-    pub fn new() -> Insert<'a> {
+impl Insert {
+    pub fn new() -> Insert {
         Default::default()
     }
 
-    pub fn run(mut self, run: Run<'a>) -> Insert<'a> {
+    pub fn run(mut self, run: Run) -> Insert {
         self.run = run;
         self
     }
 }
 
-impl<'a> HistoryId for Insert<'a> {}
+impl HistoryId for Insert {}
 
-impl<'a> BuildXML for Insert<'a> {
+impl BuildXML for Insert {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
-            .open_insert(&self.generate(), self.author, self.date)
+            .open_insert(&self.generate(), &self.author, &self.date)
             .add_child(&self.run)
             .close()
             .build()

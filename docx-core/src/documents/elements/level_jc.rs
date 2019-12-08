@@ -2,20 +2,20 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct LevelJc<'a> {
-    val: &'a str,
+pub struct LevelJc {
+    val: String,
 }
 
-impl<'a> LevelJc<'a> {
-    pub fn new(val: &'a str) -> Self {
-        Self { val }
+impl LevelJc {
+    pub fn new(val: impl Into<String>) -> Self {
+        Self { val: val.into() }
     }
 }
 
-impl<'a> BuildXML for LevelJc<'a> {
+impl BuildXML for LevelJc {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.level_justification(self.val).build()
+        b.level_justification(&self.val).build()
     }
 }
 

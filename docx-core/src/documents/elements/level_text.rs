@@ -2,20 +2,20 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct LevelText<'a> {
-    val: &'a str,
+pub struct LevelText {
+    val: String,
 }
 
-impl<'a> LevelText<'a> {
-    pub fn new(val: &'a str) -> Self {
-        Self { val }
+impl LevelText {
+    pub fn new(val: impl Into<String>) -> Self {
+        Self { val: val.into() }
     }
 }
 
-impl<'a> BuildXML for LevelText<'a> {
+impl BuildXML for LevelText {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.level_text(self.val).build()
+        b.level_text(&self.val).build()
     }
 }
 

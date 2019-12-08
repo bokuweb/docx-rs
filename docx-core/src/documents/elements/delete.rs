@@ -2,39 +2,39 @@ use crate::documents::{BuildXML, HistoryId, Run};
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct Delete<'a> {
-    author: &'a str,
-    date: &'a str,
-    run: Run<'a>,
+pub struct Delete {
+    author: String,
+    date: String,
+    run: Run,
 }
 
-impl<'a> Default for Delete<'a> {
-    fn default() -> Delete<'a> {
+impl Default for Delete {
+    fn default() -> Delete {
         Delete {
-            author: "unnamed",
-            date: "1970-01-01T00:00:00Z",
+            author: "unnamed".to_owned(),
+            date: "1970-01-01T00:00:00Z".to_owned(),
             run: Run::new(),
         }
     }
 }
 
-impl<'a> Delete<'a> {
-    pub fn new() -> Delete<'a> {
+impl Delete {
+    pub fn new() -> Delete {
         Default::default()
     }
 
-    pub fn run(mut self, run: Run<'a>) -> Delete<'a> {
+    pub fn run(mut self, run: Run) -> Delete {
         self.run = run;
         self
     }
 }
 
-impl<'a> HistoryId for Delete<'a> {}
+impl HistoryId for Delete {}
 
-impl<'a> BuildXML for Delete<'a> {
+impl BuildXML for Delete {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
-            .open_delete(&self.generate(), self.author, self.date)
+            .open_delete(&self.generate(), &self.author, &self.date)
             .add_child(&self.run)
             .close()
             .build()

@@ -3,23 +3,23 @@ use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct Level<'a> {
+pub struct Level {
     level: usize,
     start: Start,
-    format: NumberFormat<'a>,
-    text: LevelText<'a>,
-    jc: LevelJc<'a>,
+    format: NumberFormat,
+    text: LevelText,
+    jc: LevelJc,
     paragraph_property: ParagraphProperty,
 }
 
-impl<'a> Level<'a> {
+impl Level {
     pub fn new(
         level: usize,
         start: Start,
-        format: NumberFormat<'a>,
-        text: LevelText<'a>,
-        jc: LevelJc<'a>,
-    ) -> Level<'a> {
+        format: NumberFormat,
+        text: LevelText,
+        jc: LevelJc,
+    ) -> Level {
         Self {
             level,
             start,
@@ -36,7 +36,7 @@ impl<'a> Level<'a> {
     }
 }
 
-impl<'a> BuildXML for Level<'a> {
+impl BuildXML for Level {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_level(&format!("{}", self.level))

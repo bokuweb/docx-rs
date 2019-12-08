@@ -3,19 +3,19 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct TableRow<'a> {
-    pub(crate) cells: Vec<TableCell<'a>>,
+pub struct TableRow {
+    pub(crate) cells: Vec<TableCell>,
     property: TableRowProperty,
 }
 
-impl<'a> TableRow<'a> {
-    pub fn new(cells: Vec<TableCell<'a>>) -> TableRow<'a> {
+impl TableRow {
+    pub fn new(cells: Vec<TableCell>) -> TableRow {
         let property = TableRowProperty::new();
         Self { property, cells }
     }
 }
 
-impl<'a> BuildXML for TableRow<'a> {
+impl BuildXML for TableRow {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new()
             .open_table_row()

@@ -2,23 +2,23 @@ use crate::documents::{BuildXML, Level};
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct Numbering<'a> {
+pub struct Numbering {
     id: usize,
-    levels: Vec<Level<'a>>,
+    levels: Vec<Level>,
 }
 
-impl<'a> Numbering<'a> {
+impl Numbering {
     pub fn new(id: usize) -> Self {
         Self { id, levels: vec![] }
     }
 
-    pub fn add_level(mut self, level: Level<'a>) -> Self {
+    pub fn add_level(mut self, level: Level) -> Self {
         self.levels.push(level);
         self
     }
 }
 
-impl<'a> BuildXML for Numbering<'a> {
+impl BuildXML for Numbering {
     fn build(&self) -> Vec<u8> {
         let id = format!("{}", self.id);
         let mut b = XMLBuilder::new();

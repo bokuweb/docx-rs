@@ -3,26 +3,26 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug)]
-pub struct Comments<'a> {
-    comments: Vec<Comment<'a>>,
+pub struct Comments {
+    comments: Vec<Comment>,
 }
 
-impl<'a> Comments<'a> {
+impl Comments {
     pub fn new() -> Self {
         Default::default()
     }
-    pub(crate) fn add_comments(&mut self, comments: Vec<Comment<'a>>) {
+    pub(crate) fn add_comments(&mut self, comments: Vec<Comment>) {
         self.comments = comments;
     }
 }
 
-impl<'a> Default for Comments<'a> {
+impl Default for Comments {
     fn default() -> Self {
         Self { comments: vec![] }
     }
 }
 
-impl<'a> BuildXML for Comments<'a> {
+impl BuildXML for Comments {
     fn build(&self) -> Vec<u8> {
         let mut b = XMLBuilder::new().declaration(Some(true)).open_comments();
         for c in &self.comments {

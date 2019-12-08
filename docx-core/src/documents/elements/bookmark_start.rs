@@ -2,18 +2,21 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct BookmarkStart<'a> {
-    id: &'a str,
-    name: &'a str,
+pub struct BookmarkStart {
+    id: String,
+    name: String,
 }
 
-impl<'a> BookmarkStart<'a> {
-    pub fn new(id: &'a str, name: &'a str) -> BookmarkStart<'a> {
-        BookmarkStart { id, name }
+impl BookmarkStart {
+    pub fn new(id: impl Into<String>, name: impl Into<String>) -> BookmarkStart {
+        BookmarkStart {
+            id: id.into(),
+            name: name.into(),
+        }
     }
 }
 
-impl<'a> BuildXML for BookmarkStart<'a> {
+impl BuildXML for BookmarkStart {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         b.bookmark_start(&self.id, &self.name).build()

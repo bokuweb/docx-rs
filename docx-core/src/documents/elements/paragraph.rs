@@ -4,13 +4,13 @@ use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct Paragraph<'a> {
-    pub(crate) children: Vec<ParagraphChild<'a>>,
+pub struct Paragraph {
+    pub(crate) children: Vec<ParagraphChild>,
     property: ParagraphProperty,
     attrs: Vec<(String, String)>,
 }
 
-impl<'a> Default for Paragraph<'a> {
+impl Default for Paragraph {
     fn default() -> Self {
         Self {
             children: Vec::new(),
@@ -21,17 +21,17 @@ impl<'a> Default for Paragraph<'a> {
 }
 
 #[derive(Debug, Clone)]
-pub enum ParagraphChild<'a> {
-    Run(Run<'a>),
-    Insert(Insert<'a>),
-    Delete(Delete<'a>),
-    BookmarkStart(BookmarkStart<'a>),
-    BookmarkEnd(BookmarkEnd<'a>),
-    CommentStart(CommentRangeStart<'a>),
-    CommentEnd(CommentRangeEnd<'a>),
+pub enum ParagraphChild {
+    Run(Run),
+    Insert(Insert),
+    Delete(Delete),
+    BookmarkStart(BookmarkStart),
+    BookmarkEnd(BookmarkEnd),
+    CommentStart(CommentRangeStart),
+    CommentEnd(CommentRangeEnd),
 }
 
-impl<'a> BuildXML for ParagraphChild<'a> {
+impl BuildXML for ParagraphChild {
     fn build(&self) -> Vec<u8> {
         match self {
             ParagraphChild::Run(v) => v.build(),
@@ -45,8 +45,8 @@ impl<'a> BuildXML for ParagraphChild<'a> {
     }
 }
 
-impl<'a> Paragraph<'a> {
-    pub fn new() -> Paragraph<'a> {
+impl Paragraph {
+    pub fn new() -> Paragraph {
         Default::default()
     }
 
@@ -54,39 +54,43 @@ impl<'a> Paragraph<'a> {
         &self.children
     }
 
-    pub fn add_run(mut self, run: Run<'a>) -> Paragraph<'a> {
+    pub fn add_run(mut self, run: Run) -> Paragraph {
         self.children.push(ParagraphChild::Run(run));
         self
     }
 
-    pub fn add_insert(mut self, insert: Insert<'a>) -> Paragraph<'a> {
+    pub fn add_insert(mut self, insert: Insert) -> Paragraph {
         self.children.push(ParagraphChild::Insert(insert));
         self
     }
 
-    pub fn add_delete(mut self, delete: Delete<'a>) -> Paragraph<'a> {
+    pub fn add_delete(mut self, delete: Delete) -> Paragraph {
         self.children.push(ParagraphChild::Delete(delete));
         self
     }
 
-    pub fn add_attr(mut self, key: impl Into<String>, val: impl Into<String>) -> Paragraph<'a> {
+    pub fn add_attr(mut self, key: impl Into<String>, val: impl Into<String>) -> Paragraph {
         self.attrs.push((key.into(), val.into()));
         self
     }
 
-    pub fn add_bookmark_start(mut self, id: &'a str, name: &'a str) -> Paragraph<'a> {
+    pub fn add_bookmark_start(
+        mut self,
+        id: impl Into<String>,
+        name: impl Into<String>,
+    ) -> Paragraph {
         self.children
             .push(ParagraphChild::BookmarkStart(BookmarkStart::new(id, name)));
         self
     }
 
-    pub fn add_bookmark_end(mut self, id: &'a str) -> Paragraph<'a> {
+    pub fn add_bookmark_end(mut self, id: impl Into<String>) -> Paragraph {
         self.children
             .push(ParagraphChild::BookmarkEnd(BookmarkEnd::new(id)));
         self
     }
 
-    pub fn add_comment_start(mut self, comment: Comment<'a>) -> Paragraph<'a> {
+    pub fn add_comment_start(mut self, comment: Comment) -> Paragraph {
         self.children
             .push(ParagraphChild::CommentStart(CommentRangeStart::new(
                 comment,
@@ -94,27 +98,23 @@ impl<'a> Paragraph<'a> {
         self
     }
 
-    pub fn add_comment_end(mut self, id: &'a str) -> Paragraph<'a> {
+    pub fn add_comment_end(mut self, id: impl Into<String>) -> Paragraph {
         self.children
             .push(ParagraphChild::CommentEnd(CommentRangeEnd::new(id)));
         self
     }
 
-    pub fn align(mut self, alignment_type: AlignmentType) -> Paragraph<'a> {
+    pub fn align(mut self, alignment_type: AlignmentType) -> Paragraph {
         self.property = self.property.align(alignment_type);
         self
     }
 
-    pub fn style(mut self, style_id: &str) -> Paragraph<'a> {
+    pub fn style(mut self, style_id: &str) -> Paragraph {
         self.property = self.property.style(style_id);
         self
     }
 
-    pub fn indent(
-        mut self,
-        left: usize,
-        special_indent: Option<SpecialIndentType>,
-    ) -> Paragraph<'a> {
+    pub fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Paragraph {
         self.property = self.property.indent(left, special_indent);
         self
     }
@@ -125,7 +125,7 @@ impl<'a> Paragraph<'a> {
     }
 }
 
-impl<'a> BuildXML for Paragraph<'a> {
+impl BuildXML for Paragraph {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_paragraph(&self.attrs)

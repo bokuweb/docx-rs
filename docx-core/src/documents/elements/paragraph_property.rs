@@ -1,6 +1,4 @@
-use super::{
-    Indent, IndentLevel, Justification, NumberingId, NumberingProperty, ParagraphStyle, RunProperty,
-};
+use super::*;
 use crate::documents::BuildXML;
 use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;

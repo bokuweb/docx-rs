@@ -4,12 +4,12 @@ use crate::types::BreakType;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct Run<'a> {
+pub struct Run {
     run_property: RunProperty,
-    children: Vec<RunChild<'a>>,
+    children: Vec<RunChild>,
 }
 
-impl<'a> Default for Run<'a> {
+impl Default for Run {
     fn default() -> Self {
         let run_property = RunProperty::new();
         Self {
@@ -20,72 +20,72 @@ impl<'a> Default for Run<'a> {
 }
 
 #[derive(Debug, Clone)]
-pub enum RunChild<'a> {
-    Text(Text<'a>),
+pub enum RunChild {
+    Text(Text),
     DeleteText(DeleteText),
     Tab(Tab),
     Break(Break),
 }
 
-impl<'a> Run<'a> {
-    pub fn new() -> Run<'a> {
+impl Run {
+    pub fn new() -> Run {
         Run {
             ..Default::default()
         }
     }
 
-    pub fn add_text(mut self, text: &'a str) -> Run<'a> {
+    pub fn add_text(mut self, text: impl Into<String>) -> Run {
         self.children.push(RunChild::Text(Text::new(text)));
         self
     }
 
-    pub fn add_delete_text(mut self, text: &'a str) -> Run<'a> {
+    pub fn add_delete_text(mut self, text: impl Into<String>) -> Run {
         self.children.push(RunChild::Text(Text::new(text)));
         self
     }
 
-    pub fn add_tab(mut self) -> Run<'a> {
+    pub fn add_tab(mut self) -> Run {
         self.children.push(RunChild::Tab(Tab::new()));
         self
     }
 
-    pub fn add_break(mut self, break_type: BreakType) -> Run<'a> {
+    pub fn add_break(mut self, break_type: BreakType) -> Run {
         self.children.push(RunChild::Break(Break::new(break_type)));
         self
     }
 
-    pub fn size(mut self, size: usize) -> Run<'a> {
+    pub fn size(mut self, size: usize) -> Run {
         self.run_property = self.run_property.size(size);
         self
     }
 
-    pub fn color(mut self, color: &'a str) -> Run<'a> {
+    pub fn color(mut self, color: impl Into<String>) -> Run {
         self.run_property = self.run_property.color(color);
         self
     }
 
-    pub fn highlight(mut self, color: &'a str) -> Run<'a> {
+    pub fn highlight(mut self, color: impl Into<String>) -> Run {
         self.run_property = self.run_property.highlight(color);
         self
     }
 
-    pub fn bold(mut self) -> Run<'a> {
+    pub fn bold(mut self) -> Run {
         self.run_property = self.run_property.bold();
         self
     }
 
-    pub fn italic(mut self) -> Run<'a> {
+    pub fn italic(mut self) -> Run {
         self.run_property = self.run_property.italic();
         self
     }
 
-    pub fn underline(mut self, line_type: &'a str) -> Run<'a> {
+    pub fn underline(mut self, line_type: impl Into<String>) -> Run {
         self.run_property = self.run_property.underline(line_type);
         self
     }
 }
 
-impl<'a> BuildXML for Run<'a> {
+impl BuildXML for Run {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         let mut b = b.open_run().add_child(&self.run_property);

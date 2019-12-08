@@ -30,20 +30,20 @@ pub use styles::*;
 pub use xml_docx::*;
 
 #[derive(Debug)]
-pub struct Docx<'a> {
+pub struct Docx {
     content_type: ContentTypes,
     rels: Rels,
     document_rels: DocumentRels,
-    doc_props: DocProps<'a>,
+    doc_props: DocProps,
     styles: Styles,
-    document: Document<'a>,
-    comments: Comments<'a>,
-    numberings: Numberings<'a>,
+    document: Document,
+    comments: Comments,
+    numberings: Numberings,
     settings: Settings,
     font_table: FontTable,
 }
 
-impl<'a> Default for Docx<'a> {
+impl Default for Docx {
     fn default() -> Self {
         let content_type = ContentTypes::new();
         let rels = Rels::new();
@@ -70,22 +70,22 @@ impl<'a> Default for Docx<'a> {
     }
 }
 
-impl<'a> Docx<'a> {
-    pub fn new() -> Docx<'a> {
+impl Docx {
+    pub fn new() -> Docx {
         Default::default()
     }
 
-    pub fn add_paragraph(mut self, p: Paragraph<'a>) -> Docx<'a> {
+    pub fn add_paragraph(mut self, p: Paragraph) -> Docx {
         self.document = self.document.add_paragraph(p);
         self
     }
 
-    pub fn add_table(mut self, t: Table<'a>) -> Docx<'a> {
+    pub fn add_table(mut self, t: Table) -> Docx {
         self.document = self.document.add_table(t);
         self
     }
 
-    pub fn add_numbering(mut self, num: Numbering<'a>) -> Docx<'a> {
+    pub fn add_numbering(mut self, num: Numbering) -> Docx {
         self.numberings = self.numberings.add_numbering(num);
         self
     }
@@ -108,7 +108,7 @@ impl<'a> Docx<'a> {
 
     // Traverse and clone comments from document and add to comments node.
     fn update_comments(&mut self) {
-        let mut comments: Vec<Comment<'a>> = vec![];
+        let mut comments: Vec<Comment> = vec![];
         for child in &self.document.children {
             match child {
                 DocumentChild::Paragraph(paragraph) => {

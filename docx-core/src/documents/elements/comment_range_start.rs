@@ -3,25 +3,25 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct CommentRangeStart<'a> {
-    id: &'a str,
-    comment: Comment<'a>,
+pub struct CommentRangeStart {
+    id: String,
+    comment: Comment,
 }
 
-impl<'a> CommentRangeStart<'a> {
-    pub fn new(comment: Comment<'a>) -> CommentRangeStart<'a> {
+impl CommentRangeStart {
+    pub fn new(comment: Comment) -> CommentRangeStart {
         CommentRangeStart {
             id: comment.id(),
             comment,
         }
     }
 
-    pub(crate) fn comment(&self) -> Comment<'a> {
+    pub(crate) fn comment(&self) -> Comment {
         self.comment.clone()
     }
 }
 
-impl<'a> BuildXML for CommentRangeStart<'a> {
+impl BuildXML for CommentRangeStart {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         b.comment_range_start(&self.id).build()

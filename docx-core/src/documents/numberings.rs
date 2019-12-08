@@ -4,28 +4,28 @@ use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug)]
-pub struct Numberings<'a> {
-    numberings: Vec<Numbering<'a>>,
+pub struct Numberings {
+    numberings: Vec<Numbering>,
 }
 
-impl<'a> Numberings<'a> {
+impl Numberings {
     pub fn new() -> Self {
         Default::default()
     }
 
-    pub fn add_numbering(mut self, n: Numbering<'a>) -> Self {
+    pub fn add_numbering(mut self, n: Numbering) -> Self {
         self.numberings.push(n);
         self
     }
 }
 
-impl<'a> Default for Numberings<'a> {
+impl Default for Numberings {
     fn default() -> Self {
         Self { numberings: vec![] }
     }
 }
 
-impl<'a> BuildXML for Numberings<'a> {
+impl BuildXML for Numberings {
     fn build(&self) -> Vec<u8> {
         let mut b = XMLBuilder::new().declaration(Some(true)).open_numbering();
         b = b.add_child(&create_default_numbering());
@@ -36,7 +36,7 @@ impl<'a> BuildXML for Numberings<'a> {
     }
 }
 
-fn create_default_numbering() -> Numbering<'static> {
+fn create_default_numbering() -> Numbering {
     Numbering::new(0)
         .add_level(
             Level::new(

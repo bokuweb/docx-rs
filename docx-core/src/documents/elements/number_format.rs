@@ -2,20 +2,20 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct NumberFormat<'a> {
-    val: &'a str,
+pub struct NumberFormat {
+    val: String,
 }
 
-impl<'a> NumberFormat<'a> {
-    pub fn new(val: &'a str) -> Self {
-        Self { val }
+impl NumberFormat {
+    pub fn new(val: impl Into<String>) -> Self {
+        Self { val: val.into() }
     }
 }
 
-impl<'a> BuildXML for NumberFormat<'a> {
+impl BuildXML for NumberFormat {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.number_format(self.val).build()
+        b.number_format(&self.val).build()
     }
 }
 

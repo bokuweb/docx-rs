@@ -6,12 +6,12 @@ pub use self::core::*;
 use crate::documents::BuildXML;
 
 #[derive(Debug)]
-pub(crate) struct DocProps<'a> {
+pub(crate) struct DocProps {
     app: AppProps,
-    core: CoreProps<'a>,
+    core: CoreProps,
 }
 
-impl<'a> DocProps<'a> {
+impl DocProps {
     pub(crate) fn new(core_config: CorePropsConfig) -> DocProps {
         let app = AppProps::new();
         let core = CoreProps::new(core_config);

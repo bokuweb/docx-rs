@@ -2,30 +2,30 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug)]
-pub struct CoreProps<'a> {
-    config: CorePropsConfig<'a>,
+pub struct CoreProps {
+    config: CorePropsConfig,
 }
 
 #[derive(Debug)]
-pub struct CorePropsConfig<'a> {
-    created: Option<&'a str>,
-    creator: Option<&'a str>,
-    description: Option<&'a str>,
-    language: Option<&'a str>,
-    last_modified_by: Option<&'a str>,
-    modified: Option<&'a str>,
+pub struct CorePropsConfig {
+    created: Option<String>,
+    creator: Option<String>,
+    description: Option<String>,
+    language: Option<String>,
+    last_modified_by: Option<String>,
+    modified: Option<String>,
     revision: Option<usize>,
-    subject: Option<&'a str>,
-    title: Option<&'a str>,
+    subject: Option<String>,
+    title: Option<String>,
 }
 
-impl<'a> CoreProps<'a> {
-    pub(crate) fn new(config: CorePropsConfig<'a>) -> CoreProps {
+impl CoreProps {
+    pub(crate) fn new(config: CorePropsConfig) -> CoreProps {
         CoreProps { config }
     }
 }
 
-impl<'a> CorePropsConfig<'a> {
+impl CorePropsConfig {
     pub fn new() -> Self {
         CorePropsConfig {
             created: None,
@@ -41,7 +41,7 @@ impl<'a> CorePropsConfig<'a> {
     }
 }
 
-impl<'a> BuildXML for CoreProps<'a> {
+impl BuildXML for CoreProps {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         let base = b.declaration(Some(true)).open_core_properties(
@@ -58,32 +58,40 @@ impl<'a> BuildXML for CoreProps<'a> {
                 "dcterms:W3CDTF",
                 self.config
                     .created
-                    .map_or_else(|| "1970-01-01T00:00:00Z", |v| v),
+                    .as_ref()
+                    .map_or_else(|| "1970-01-01T00:00:00Z", |v| &v),
             )
-            .dc_creator(self.config.creator.map_or_else(|| "unknown", |v| v))
+            .dc_creator(
+                self.config
+                    .creator
+                    .as_ref()
+                    .map_or_else(|| "unknown", |v| &v),
+            )
             .cp_last_modified_by(
                 self.config
                     .last_modified_by
-                    .map_or_else(|| "unknown", |v| v),
+                    .as_ref()
+                    .map_or_else(|| "unknown", |v| &v),
             )
             .dcterms_modified(
                 "dcterms:W3CDTF",
                 self.config
                     .modified
-                    .map_or_else(|| "1970-01-01T00:00:00Z", |v| v),
+                    .as_ref()
+                    .map_or_else(|| "1970-01-01T00:00:00Z", |v| &v),
             )
             .cp_revision(&self.config.revision.map_or_else(|| "1".to_owned(), convert));
-        if let Some(v) = self.config.description {
-            base = base.dc_description(v);
+        if let Some(v) = self.config.description.as_ref() {
+            base = base.dc_description(&v);
         }
-        if let Some(v) = self.config.language {
-            base = base.dc_language(v);
+        if let Some(v) = self.config.language.as_ref() {
+            base = base.dc_language(&v);
         }
-        if let Some(v) = self.config.subject {
-            base = base.dc_subject(v);
+        if let Some(v) = self.config.subject.as_ref() {
+            base = base.dc_subject(&v);
         }
-        if let Some(v) = self.config.title {
-            base = base.dc_title(v);
+        if let Some(v) = self.config.title.as_ref() {
+            base = base.dc_title(&v);
         }
         base.close().build()
     }
@@ -127,15 +135,15 @@ mod tests {
     #[test]
     fn test_configured_doc_props_core_build() {
         let c = CoreProps::new(CorePropsConfig {
-            created: Some("2019-01-01"),
-            creator: Some("foo"),
-            description: Some("bar"),
-            language: Some("en"),
-            last_modified_by: Some("go"),
-            modified: Some("2019-01-01"),
+            created: Some("2019-01-01".to_owned()),
+            creator: Some("foo".to_owned()),
+            description: Some("bar".to_owned()),
+            language: Some("en".to_owned()),
+            last_modified_by: Some("go".to_owned()),
+            modified: Some("2019-01-01".to_owned()),
             revision: Some(1),
-            subject: Some("subject"),
-            title: Some("title"),
+            subject: Some("subject".to_owned()),
+            title: Some("title".to_owned()),
         });
         let b = c.build();
         assert_eq!(

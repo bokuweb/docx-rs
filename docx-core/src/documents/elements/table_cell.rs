@@ -4,40 +4,40 @@ use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
-pub struct TableCell<'a> {
-    pub(crate) contents: Vec<TableCellContent<'a>>,
+pub struct TableCell {
+    pub(crate) contents: Vec<TableCellContent>,
     property: TableCellProperty,
 }
 
 #[derive(Debug, Clone)]
-pub enum TableCellContent<'a> {
-    Paragraph(Paragraph<'a>),
+pub enum TableCellContent {
+    Paragraph(Paragraph),
 }
 
-impl<'a> TableCell<'a> {
-    pub fn new() -> TableCell<'a> {
+impl TableCell {
+    pub fn new() -> TableCell {
         let property = TableCellProperty::new();
         let contents = vec![];
         Self { property, contents }
     }
 
-    pub fn add_paragraph(mut self, p: Paragraph<'a>) -> TableCell<'a> {
+    pub fn add_paragraph(mut self, p: Paragraph) -> TableCell {
         self.contents.push(TableCellContent::Paragraph(p));
         self
     }
 
-    pub fn vertical_merge(mut self, t: VMergeType) -> TableCell<'a> {
+    pub fn vertical_merge(mut self, t: VMergeType) -> TableCell {
         self.property = self.property.vertical_merge(t);
         self
     }
 
-    pub fn grid_span(mut self, v: usize) -> TableCell<'a> {
+    pub fn grid_span(mut self, v: usize) -> TableCell {
         self.property = self.property.grid_span(v);
         self
     }
 }
 
-impl<'a> BuildXML for TableCell<'a> {
+impl BuildXML for TableCell {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         let mut b = b.open_table_cell().add_child(&self.property);

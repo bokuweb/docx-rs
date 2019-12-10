@@ -6,7 +6,7 @@ use wasm_bindgen::prelude::*;
 #[derive(Debug)]
 pub struct Level(docx_core::Level);
 
-#[wasm_bindgen(js_name = createNumbering)]
+#[wasm_bindgen(js_name = createLevel)]
 pub fn create_level(id: usize, start: usize, format: &str, text: &str, jc: &str) -> Level {
     let start = docx_core::Start::new(start);
     let format = docx_core::NumberFormat::new(format);

@@ -12,7 +12,12 @@ rust
         .add_text("Hello World!!")
         .bold()
     );
-    let docx = m.createDocx().add_paragraph(p);
+    const t = m
+      .createTable()
+      .add_row(
+        m.createTableRow().add_cell(m.createTableCell().add_paragraph(p))
+      );
+    let docx = m.createDocx().add_table(t);
     saveAs(new Blob([docx.build()]), "example.docx");
     docx.free();
   })

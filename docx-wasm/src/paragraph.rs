@@ -18,17 +18,17 @@ impl Paragraph {
         self
     }
 
-    pub fn add_insert(mut self, insert: Insert) -> Paragraph {
+    pub fn add_insert(mut self, i: Insert) -> Paragraph {
         self.0
             .children
-            .push(docx_core::ParagraphChild::Insert(insert.take()));
+            .push(docx_core::ParagraphChild::Insert(i.take()));
         self
     }
 
-    pub fn add_delete(mut self, delete: Delete) -> Paragraph {
+    pub fn add_delete(mut self, d: Delete) -> Paragraph {
         self.0
             .children
-            .push(docx_core::ParagraphChild::Delete(delete.take()));
+            .push(docx_core::ParagraphChild::Delete(d.take()));
         self
     }
 

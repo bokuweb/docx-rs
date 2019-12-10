@@ -6,8 +6,8 @@ use wasm_bindgen::prelude::*;
 #[derive(Debug)]
 pub struct Delete(docx_core::Delete);
 
-#[wasm_bindgen(js_name = createInsert)]
-pub fn create_insert() -> Delete {
+#[wasm_bindgen(js_name = createDelete)]
+pub fn create_delete() -> Delete {
     Delete(docx_core::Delete::new())
 }
 

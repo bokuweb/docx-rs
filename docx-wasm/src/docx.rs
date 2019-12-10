@@ -24,10 +24,10 @@ impl Docx {
         self
     }
 
-    // pub fn add_numbering(mut self, num: Numbering) -> Docx {
-    //     self.numberings = self.numberings.add_numbering(num);
-    //     self
-    // }
+    pub fn add_numbering(mut self, num: Numbering) -> Docx {
+        self.0.numberings = self.0.numberings.add_numbering(num.take());
+        self
+    }
 
     pub fn build(&mut self) -> Result<Vec<u8>, JsValue> {
         let buf = Vec::new();

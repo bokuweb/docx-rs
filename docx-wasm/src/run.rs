@@ -18,7 +18,7 @@ impl Run {
         self
     }
 
-    pub fn add_delete_text(mut self, text: String) -> Run {
+    pub fn add_delete_text(mut self, text: &str) -> Run {
         self.0
             .children
             .push(docx_core::RunChild::Text(docx_core::Text::new(text)));
@@ -46,12 +46,12 @@ impl Run {
         self
     }
 
-    pub fn color(mut self, color: String) -> Run {
+    pub fn color(mut self, color: &str) -> Run {
         self.0.run_property = self.0.run_property.color(color);
         self
     }
 
-    pub fn highlight(mut self, color: String) -> Run {
+    pub fn highlight(mut self, color: &str) -> Run {
         self.0.run_property = self.0.run_property.highlight(color);
         self
     }
@@ -66,7 +66,7 @@ impl Run {
         self
     }
 
-    pub fn underline(mut self, line_type: String) -> Run {
+    pub fn underline(mut self, line_type: &str) -> Run {
         self.0.run_property = self.0.run_property.underline(line_type);
         self
     }

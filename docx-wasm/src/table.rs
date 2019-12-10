@@ -15,12 +15,12 @@ impl Table {
     pub fn take(self) -> docx_core::Table {
         self.0
     }
+}
 
+#[wasm_bindgen]
+impl Table {
     pub fn add_row(mut self, row: TableRow) -> Table {
         self.0.rows.push(row.take());
         self
     }
 }
-
-#[wasm_bindgen]
-impl Table {}

@@ -1,18 +1,24 @@
+mod adaptors;
 mod comment;
 mod delete;
 mod docx;
 mod insert;
+mod level;
+mod numbering;
 mod paragraph;
 mod run;
 mod table;
 mod table_cell;
 mod table_row;
 
+pub use adaptors::*;
 pub use comment::*;
 pub use delete::*;
 pub use docx::*;
 pub use docx_core;
 pub use insert::*;
+pub use level::*;
+pub use numbering::*;
 pub use paragraph::*;
 pub use run::*;
 pub use table::*;

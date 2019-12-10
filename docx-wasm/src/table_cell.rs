@@ -15,7 +15,10 @@ impl TableCell {
     pub fn take(self) -> docx_core::TableCell {
         self.0
     }
+}
 
+#[wasm_bindgen]
+impl TableCell {
     pub fn add_paragraph(mut self, p: Paragraph) -> TableCell {
         self.0
             .contents
@@ -33,6 +36,3 @@ impl TableCell {
         self
     }
 }
-
-#[wasm_bindgen]
-impl TableCell {}

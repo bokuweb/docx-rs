@@ -9,7 +9,7 @@ pub struct Level {
     format: NumberFormat,
     text: LevelText,
     jc: LevelJc,
-    paragraph_property: ParagraphProperty,
+    pub paragraph_property: ParagraphProperty,
 }
 
 impl Level {

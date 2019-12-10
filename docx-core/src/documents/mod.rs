@@ -35,12 +35,12 @@ pub struct Docx {
     rels: Rels,
     document_rels: DocumentRels,
     doc_props: DocProps,
-    styles: Styles,
-    document: Document,
-    comments: Comments,
-    numberings: Numberings,
-    settings: Settings,
-    font_table: FontTable,
+    pub styles: Styles,
+    pub document: Document,
+    pub comments: Comments,
+    pub numberings: Numberings,
+    pub settings: Settings,
+    pub font_table: FontTable,
 }
 
 impl Default for Docx {

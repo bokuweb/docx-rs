@@ -5,8 +5,8 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct TableCell {
-    pub(crate) contents: Vec<TableCellContent>,
-    property: TableCellProperty,
+    pub contents: Vec<TableCellContent>,
+    pub property: TableCellProperty,
 }
 
 #[derive(Debug, Clone)]

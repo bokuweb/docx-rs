@@ -6,7 +6,7 @@ use wasm_bindgen::prelude::*;
 #[derive(Debug)]
 pub struct Comment(docx_core::Comment);
 
-#[wasm_bindgen(js_name = createComent)]
+#[wasm_bindgen(js_name = createComment)]
 pub fn create_comment(id: String) -> Comment {
     Comment(docx_core::Comment::new(id))
 }

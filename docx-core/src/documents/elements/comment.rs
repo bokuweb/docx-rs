@@ -3,10 +3,10 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct Comment {
-    id: String,
-    author: String,
-    date: String,
-    paragraph: Paragraph,
+    pub id: String,
+    pub author: String,
+    pub date: String,
+    pub paragraph: Paragraph,
 }
 
 impl Default for Comment {

@@ -1,3 +1,5 @@
+mod comment;
+mod delete;
 mod insert;
 mod paragraph;
 mod run;
@@ -5,6 +7,8 @@ mod run;
 use docx_core;
 use wasm_bindgen::prelude::*;
 
+pub use comment::*;
+pub use delete::*;
 pub use insert::*;
 pub use paragraph::*;
 pub use run::*;

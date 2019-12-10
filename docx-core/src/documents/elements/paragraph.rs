@@ -6,7 +6,7 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone)]
 pub struct Paragraph {
     pub children: Vec<ParagraphChild>,
-    property: ParagraphProperty,
+    pub property: ParagraphProperty,
     attrs: Vec<(String, String)>,
 }
 

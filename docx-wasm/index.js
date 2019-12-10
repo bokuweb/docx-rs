@@ -6,9 +6,12 @@ const rust = import("./pkg");
 
 rust
   .then(m => {
-    const p = m
-      .createParagraph()
-      .add_run(m.createRun().add_text("Hello World!!"));
+    const p = m.createParagraph().add_run(
+      m
+        .createRun()
+        .add_text("Hello World!!")
+        .bold()
+    );
     let docx = m.createDocx().add_paragraph(p);
     saveAs(new Blob([docx.build()]), "example.docx");
     docx.free();

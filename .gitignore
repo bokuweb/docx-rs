@@ -2,7 +2,7 @@ target
 **/*.rs.bk
 dist
 node_modules
-pkg
+# pkg
 *.docx#
 test.docx
 output/*.docx

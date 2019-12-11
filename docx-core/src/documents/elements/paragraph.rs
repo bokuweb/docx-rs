@@ -5,8 +5,8 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct Paragraph {
-    pub(crate) children: Vec<ParagraphChild>,
-    property: ParagraphProperty,
+    pub children: Vec<ParagraphChild>,
+    pub property: ParagraphProperty,
     attrs: Vec<(String, String)>,
 }
 
@@ -183,9 +183,7 @@ mod tests {
     #[test]
     fn test_comment() {
         let b = Paragraph::new()
-            .add_comment_start(
-                Comment::new("1234-5678"), // .paragraph(Paragraph::new().add_run(Run::new().add_text("Comment"))),
-            )
+            .add_comment_start(Comment::new("1234-5678"))
             .add_run(Run::new().add_text("Hello"))
             .add_comment_end("1234-5678")
             .build();

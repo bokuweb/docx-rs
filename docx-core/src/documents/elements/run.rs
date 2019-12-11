@@ -5,8 +5,8 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct Run {
-    run_property: RunProperty,
-    children: Vec<RunChild>,
+    pub run_property: RunProperty,
+    pub children: Vec<RunChild>,
 }
 
 impl Default for Run {

@@ -6,10 +6,18 @@ const rust = import("./pkg");
 
 rust
   .then(m => {
-    const p = m
-      .createParagraph()
-      .add_run(m.createRun().add_text("Hello World!!"));
-    let docx = m.createDocx().add_paragraph(p);
+    const p = m.createParagraph().add_run(
+      m
+        .createRun()
+        .add_text("Hello World!!")
+        .bold()
+    );
+    const t = m
+      .createTable()
+      .add_row(
+        m.createTableRow().add_cell(m.createTableCell().add_paragraph(p))
+      );
+    let docx = m.createDocx().add_table(t);
     saveAs(new Blob([docx.build()]), "example.docx");
     docx.free();
   })

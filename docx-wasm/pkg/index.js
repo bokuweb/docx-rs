@@ -160,6 +160,20 @@ export function createTable() {
     return Table.__wrap(ret);
 }
 
+let cachegetUint32Memory = null;
+function getUint32Memory() {
+    if (cachegetUint32Memory === null || cachegetUint32Memory.buffer !== wasm.memory.buffer) {
+        cachegetUint32Memory = new Uint32Array(wasm.memory.buffer);
+    }
+    return cachegetUint32Memory;
+}
+
+function passArray32ToWasm(arg) {
+    const ptr = wasm.__wbindgen_malloc(arg.length * 4);
+    getUint32Memory().set(arg, ptr / 4);
+    WASM_VECTOR_LEN = arg.length;
+    return ptr;
+}
 /**
 * @param {number} id
 * @returns {Numbering}
@@ -910,6 +924,18 @@ export class Table {
         const ptr0 = row.ptr;
         row.ptr = 0;
         const ret = wasm.table_add_row(ptr, ptr0);
+        return Table.__wrap(ret);
+    }
+    /**
+    * @param {Uint32Array} grid
+    * @returns {Table}
+    */
+    set_grid(grid) {
+        if (this.ptr == 0) throw new Error('Attempt to use a moved value');
+        const ptr = this.ptr;
+        this.ptr = 0;
+        _assertNum(ptr);
+        const ret = wasm.table_set_grid(ptr, passArray32ToWasm(grid), WASM_VECTOR_LEN);
         return Table.__wrap(ret);
     }
 }

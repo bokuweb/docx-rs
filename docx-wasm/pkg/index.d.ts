@@ -321,6 +321,11 @@ export class Table {
 * @returns {Table} 
 */
   add_row(row: TableRow): Table;
+/**
+* @param {Uint32Array} grid 
+* @returns {Table} 
+*/
+  set_grid(grid: Uint32Array): Table;
 }
 /**
 */

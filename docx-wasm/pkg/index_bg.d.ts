@@ -40,6 +40,7 @@ export function createInsert(): number;
 export function __wbg_table_free(a: number): void;
 export function createTable(): number;
 export function table_add_row(a: number, b: number): number;
+export function table_set_grid(a: number, b: number, c: number): number;
 export function __wbg_numbering_free(a: number): void;
 export function createNumbering(a: number): number;
 export function numbering_add_level(a: number, b: number): number;

@@ -23,4 +23,9 @@ impl Table {
         self.0.rows.push(row.take());
         self
     }
+
+    pub fn set_grid(mut self, grid: Vec<usize>) -> Table {
+        self.0.grid = grid;
+        self
+    }
 }

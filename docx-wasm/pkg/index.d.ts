@@ -50,6 +50,13 @@ export function createDelete(): Delete;
 * @returns {Paragraph} 
 */
 export function createParagraph(): Paragraph;
+export enum TableAlignmentType {
+  Center,
+  Left,
+  Right,
+}
+/**
+*/
 export enum SpecialIndentKind {
   FirstLine,
   Hanging,
@@ -92,13 +99,6 @@ export enum BorderType {
   DotDash,
   DotDotDash,
   Triple,
-}
-/**
-*/
-export enum TableAlignmentType {
-  Center,
-  Left,
-  Right,
 }
 /**
 */
@@ -326,6 +326,16 @@ export class Table {
 * @returns {Table} 
 */
   set_grid(grid: Uint32Array): Table;
+/**
+* @param {number} v 
+* @returns {Table} 
+*/
+  indent(v: number): Table;
+/**
+* @param {number} v 
+* @returns {Table} 
+*/
+  align(v: number): Table;
 }
 /**
 */

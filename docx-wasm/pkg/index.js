@@ -234,6 +234,9 @@ function takeObject(idx) {
 }
 /**
 */
+export const TableAlignmentType = Object.freeze({ Center:0,Left:1,Right:2, });
+/**
+*/
 export const SpecialIndentKind = Object.freeze({ FirstLine:0,Hanging:1, });
 /**
 */
@@ -250,9 +253,6 @@ export const WidthType = Object.freeze({ DXA:0,Auto:1, });
 /**
 */
 export const BorderType = Object.freeze({ None:0,Single:1,Thick:2,Double:3,Dotted:4,Dashed:5,DotDash:6,DotDotDash:7,Triple:8, });
-/**
-*/
-export const TableAlignmentType = Object.freeze({ Center:0,Left:1,Right:2, });
 /**
 */
 export const AlignmentType = Object.freeze({ Center:0,Left:1,Right:2,Justified:3, });
@@ -936,6 +936,32 @@ export class Table {
         this.ptr = 0;
         _assertNum(ptr);
         const ret = wasm.table_set_grid(ptr, passArray32ToWasm(grid), WASM_VECTOR_LEN);
+        return Table.__wrap(ret);
+    }
+    /**
+    * @param {number} v
+    * @returns {Table}
+    */
+    indent(v) {
+        if (this.ptr == 0) throw new Error('Attempt to use a moved value');
+        const ptr = this.ptr;
+        this.ptr = 0;
+        _assertNum(ptr);
+        _assertNum(v);
+        const ret = wasm.table_indent(ptr, v);
+        return Table.__wrap(ret);
+    }
+    /**
+    * @param {number} v
+    * @returns {Table}
+    */
+    align(v) {
+        if (this.ptr == 0) throw new Error('Attempt to use a moved value');
+        const ptr = this.ptr;
+        this.ptr = 0;
+        _assertNum(ptr);
+        _assertNum(v);
+        const ret = wasm.table_align(ptr, v);
         return Table.__wrap(ret);
     }
 }

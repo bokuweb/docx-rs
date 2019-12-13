@@ -371,3 +371,18 @@ pub fn user_numbering() -> Result<(), DocxError> {
     .pack(file)?;
   Ok(())
 }
+
+#[test]
+pub fn escape() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/escape.docx");
+  let file = std::fs::File::create(&path).unwrap();
+  Docx::new()
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new().add_text("&&&>>><<"))
+        .numbering(NumberingId::new(2), IndentLevel::new(0)),
+    )
+    .build()
+    .pack(file)?;
+  Ok(())
+}

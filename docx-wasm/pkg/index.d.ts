@@ -311,6 +311,10 @@ export class Run {
 * @returns {Run} 
 */
   underline(line_type: string): Run;
+/**
+* @returns {Run} 
+*/
+  vanish(): Run;
 }
 /**
 */

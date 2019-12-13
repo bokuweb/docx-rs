@@ -28,4 +28,14 @@ impl Table {
         self.0.grid = grid;
         self
     }
+
+    pub fn indent(mut self, v: usize) -> Table {
+        self.0 = self.0.indent(v);
+        self
+    }
+
+    pub fn align(mut self, v: docx_core::TableAlignmentType) -> Table {
+        self.0 = self.0.align(v);
+        self
+    }
 }

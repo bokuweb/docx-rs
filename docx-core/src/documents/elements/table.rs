@@ -1,5 +1,6 @@
 use super::{TableGrid, TableProperty, TableRow};
 use crate::documents::BuildXML;
+use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
@@ -22,6 +23,16 @@ impl Table {
 
     pub fn set_grid(mut self, grid: Vec<usize>) -> Table {
         self.grid = grid;
+        self
+    }
+
+    pub fn indent(mut self, v: usize) -> Table {
+        self.property = self.property.indent(v);
+        self
+    }
+
+    pub fn align(mut self, v: TableAlignmentType) -> Table {
+        self.property = self.property.align(v);
         self
     }
 }

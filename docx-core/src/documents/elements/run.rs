@@ -83,6 +83,11 @@ impl Run {
         self.run_property = self.run_property.underline(line_type);
         self
     }
+
+    pub fn vanish(mut self) -> Run {
+        self.run_property = self.run_property.vanish();
+        self
+    }
 }
 
 impl BuildXML for Run {

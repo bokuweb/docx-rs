@@ -199,6 +199,7 @@ impl XMLBuilder {
     only_str_val_el!(level_text, "w:lvlText");
     only_str_val_el!(level_justification, "w:lvlJc");
     only_str_val_el!(abstract_num_id, "w:abstractNumId");
+    closed_el!(vanish, "w:vanish");
 }
 
 #[cfg(test)]

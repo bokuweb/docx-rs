@@ -386,3 +386,19 @@ pub fn escape() -> Result<(), DocxError> {
     .pack(file)?;
   Ok(())
 }
+
+#[test]
+pub fn vanish() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/vanish.docx");
+  let file = std::fs::File::create(&path).unwrap();
+  Docx::new()
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new().add_text("Hello"))
+        .add_run(Run::new().add_text("Hidden").vanish())
+        .add_run(Run::new().add_text(" World!!")),
+    )
+    .build()
+    .pack(file)?;
+  Ok(())
+}

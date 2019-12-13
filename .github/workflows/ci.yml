@@ -33,7 +33,7 @@ jobs:
         run: |
           sudo add-apt-repository ppa:libreoffice/ppa
           sudo apt-get update
-          sudo apt-get install libreoffice
+          sudo apt-get install libreoffice6.3
           npm i -g reg-cli
           cd vrt && yarn --frozen-lockfile && cd ../
       - name: test

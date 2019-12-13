@@ -1,4 +1,5 @@
 use crate::documents::BuildXML;
+use crate::escape::escape;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
@@ -8,9 +9,9 @@ pub struct Text {
 }
 
 impl Text {
-    pub fn new(text: impl Into<String>) -> Text {
+    pub fn new(text: &str) -> Text {
         Text {
-            text: text.into(),
+            text: escape(text),
             preserve_space: true,
         }
     }

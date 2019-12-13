@@ -12,6 +12,7 @@ export function run_highlight(a: number, b: number, c: number): number;
 export function run_bold(a: number): number;
 export function run_italic(a: number): number;
 export function run_underline(a: number, b: number, c: number): number;
+export function run_vanish(a: number): number;
 export function __wbg_comment_free(a: number): void;
 export function createComment(a: number): number;
 export function comment_author(a: number, b: number, c: number): number;

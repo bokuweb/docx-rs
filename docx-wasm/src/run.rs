@@ -70,6 +70,11 @@ impl Run {
         self.0.run_property = self.0.run_property.underline(line_type);
         self
     }
+
+    pub fn vanish(mut self) -> Run {
+        self.0.run_property = self.0.run_property.vanish();
+        self
+    }
 }
 
 impl Run {

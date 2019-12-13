@@ -883,6 +883,17 @@ export class Run {
         const ret = wasm.run_underline(ptr, passStringToWasm(line_type), WASM_VECTOR_LEN);
         return Run.__wrap(ret);
     }
+    /**
+    * @returns {Run}
+    */
+    vanish() {
+        if (this.ptr == 0) throw new Error('Attempt to use a moved value');
+        const ptr = this.ptr;
+        this.ptr = 0;
+        _assertNum(ptr);
+        const ret = wasm.run_vanish(ptr);
+        return Run.__wrap(ret);
+    }
 }
 /**
 */

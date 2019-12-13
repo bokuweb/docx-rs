@@ -152,20 +152,22 @@ impl XMLBuilder {
     only_str_val_el!(family, "w:family");
     only_str_val_el!(charset, "w:charset");
 
-    only_usize_val_el!(section_property, "w:sectPr");
+    opened_el!(open_section_property, "w:sectPr");
     only_str_val_el!(type_tag, "w:type");
     closed_el!(page_size, "w:pgSz", "w:w", "w:h");
     closed_el!(
         page_margin,
         "w:pgMar",
-        "w:left",
-        "w:right",
-        "w:header",
         "w:top",
-        "w:footer",
+        "w:right",
         "w:bottom",
+        "w:left",
+        "w:header",
+        "w:footer",
         "w:gutter"
     );
+    closed_el!(columns, "w:cols", "w:space");
+    closed_el!(document_grid, "w:docGrid", "w:type", "w:linePitch");
 
     opened_el!(open_insert, "w:ins", "w:id", "w:author", "w:date");
     opened_el!(open_delete, "w:del", "w:id", "w:author", "w:date");

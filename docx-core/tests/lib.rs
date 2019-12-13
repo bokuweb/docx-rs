@@ -265,14 +265,14 @@ pub fn comments() -> Result<(), DocxError> {
     .add_paragraph(
       Paragraph::new()
         .add_comment_start(
-          Comment::new("1")
+          Comment::new(1)
             .author("bokuweb")
             .date("2019-01-01T00:00:00Z")
             .paragraph(Paragraph::new().add_run(Run::new().add_text("Hello"))),
         )
         .add_run(Run::new().add_text("Hello").highlight("cyan"))
         .add_run(Run::new().add_text(" World!").highlight("yellow"))
-        .add_comment_end("1"),
+        .add_comment_end(1),
     )
     .build()
     .pack(file)?;
@@ -287,13 +287,13 @@ pub fn comments_to_table() -> Result<(), DocxError> {
     TableCell::new().add_paragraph(
       Paragraph::new()
         .add_comment_start(
-          Comment::new("1")
+          Comment::new(1)
             .author("bokuweb")
             .date("2019-01-01T00:00:00Z")
             .paragraph(Paragraph::new().add_run(Run::new().add_text("Hello"))),
         )
         .add_run(Run::new().add_text("Hello"))
-        .add_comment_end("1"),
+        .add_comment_end(1),
     ),
     TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("World"))),
   ])]);
@@ -301,13 +301,13 @@ pub fn comments_to_table() -> Result<(), DocxError> {
     .add_paragraph(
       Paragraph::new()
         .add_comment_start(
-          Comment::new("ABCD-1234")
+          Comment::new(1)
             .author("bokuweb")
             .date("2019-01-01T00:00:00Z")
             .paragraph(Paragraph::new().add_run(Run::new().add_text("Comment!!"))),
         )
         .add_run(Run::new().add_text("Hello").highlight("cyan"))
-        .add_comment_end("ABCD-1234"),
+        .add_comment_end(1),
     )
     .add_table(table)
     .build()
@@ -381,6 +381,22 @@ pub fn escape() -> Result<(), DocxError> {
       Paragraph::new()
         .add_run(Run::new().add_text("&&&>>><<"))
         .numbering(NumberingId::new(2), IndentLevel::new(0)),
+    )
+    .build()
+    .pack(file)?;
+  Ok(())
+}
+
+#[test]
+pub fn vanish() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/vanish.docx");
+  let file = std::fs::File::create(&path).unwrap();
+  Docx::new()
+    .add_paragraph(
+      Paragraph::new()
+        .add_run(Run::new().add_text("Hello"))
+        .add_run(Run::new().add_text("Hidden").vanish())
+        .add_run(Run::new().add_text(" World!!")),
     )
     .build()
     .pack(file)?;

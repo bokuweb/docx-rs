@@ -3,12 +3,12 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct CommentRangeEnd {
-    id: String,
+    id: usize,
 }
 
 impl CommentRangeEnd {
-    pub fn new(id: impl Into<String>) -> CommentRangeEnd {
-        CommentRangeEnd { id: id.into() }
+    pub fn new(id: usize) -> CommentRangeEnd {
+        CommentRangeEnd { id }
     }
 }
 
@@ -19,9 +19,9 @@ impl BuildXML for CommentRangeEnd {
             .open_run_property()
             .close()
             .close()
-            .comment_range_end(&self.id)
+            .comment_range_end(&format!("{}", self.id))
             .open_run()
-            .comment_reference(&self.id)
+            .comment_reference(&format!("{}", self.id))
             .close()
             .build()
     }
@@ -37,16 +37,16 @@ mod tests {
 
     #[test]
     fn test_comment_range_end() {
-        let c = CommentRangeEnd::new("mockid");
+        let c = CommentRangeEnd::new(1);
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:r>
   <w:rPr />
 </w:r>
-<w:commentRangeEnd w:id="mockid" />
+<w:commentRangeEnd w:id="1" />
 <w:r>
-  <w:commentReference w:id="mockid" />
+  <w:commentReference w:id="1" />
 </w:r>"#
         );
     }

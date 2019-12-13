@@ -1,4 +1,4 @@
-use super::{Bold, BoldCs, Color, Highlight, Italic, ItalicCs, Sz, SzCs, Underline};
+use super::{Bold, BoldCs, Color, Highlight, Italic, ItalicCs, Sz, SzCs, Underline, Vanish};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
@@ -13,6 +13,7 @@ pub struct RunProperty {
     bold_cs: Option<BoldCs>,
     italic: Option<Italic>,
     italic_cs: Option<ItalicCs>,
+    vanish: Option<Vanish>,
 }
 
 impl RunProperty {
@@ -52,6 +53,11 @@ impl RunProperty {
         self.underline = Some(Underline::new(line_type));
         self
     }
+
+    pub fn vanish(mut self) -> RunProperty {
+        self.vanish = Some(Vanish::new());
+        self
+    }
 }
 
 impl Default for RunProperty {
@@ -66,6 +72,7 @@ impl Default for RunProperty {
             bold_cs: None,
             italic: None,
             italic_cs: None,
+            vanish: None,
         }
     }
 }
@@ -83,6 +90,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.italic_cs)
             .add_optional_child(&self.highlight)
             .add_optional_child(&self.underline)
+            .add_optional_child(&self.vanish)
             .close()
             .build()
     }
@@ -133,6 +141,16 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:rPr><w:u w:val="single" /></w:rPr>"#
+        );
+    }
+
+    #[test]
+    fn test_vanish() {
+        let c = RunProperty::new().vanish();
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rPr><w:vanish /></w:rPr>"#
         );
     }
 }

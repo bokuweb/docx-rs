@@ -69,11 +69,12 @@ function passStringToWasm(arg) {
     return ptr;
 }
 /**
-* @param {string} id
+* @param {number} id
 * @returns {Comment}
 */
 export function createComment(id) {
-    const ret = wasm.createComment(passStringToWasm(id), WASM_VECTOR_LEN);
+    _assertNum(id);
+    const ret = wasm.createComment(id);
     return Comment.__wrap(ret);
 }
 
@@ -82,22 +83,6 @@ function _assertClass(instance, klass) {
         throw new Error(`expected instance of ${klass.name}`);
     }
     return instance.ptr;
-}
-
-let cachegetInt32Memory = null;
-function getInt32Memory() {
-    if (cachegetInt32Memory === null || cachegetInt32Memory.buffer !== wasm.memory.buffer) {
-        cachegetInt32Memory = new Int32Array(wasm.memory.buffer);
-    }
-    return cachegetInt32Memory;
-}
-
-let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
-
-cachedTextDecoder.decode();
-
-function getStringFromWasm(ptr, len) {
-    return cachedTextDecoder.decode(getUint8Memory().subarray(ptr, ptr + len));
 }
 /**
 * @returns {TableCell}
@@ -121,6 +106,14 @@ export function createTableRow() {
 export function createDocx() {
     const ret = wasm.createDocx();
     return Docx.__wrap(ret);
+}
+
+let cachegetInt32Memory = null;
+function getInt32Memory() {
+    if (cachegetInt32Memory === null || cachegetInt32Memory.buffer !== wasm.memory.buffer) {
+        cachegetInt32Memory = new Int32Array(wasm.memory.buffer);
+    }
+    return cachegetInt32Memory;
 }
 
 function getArrayU8FromWasm(ptr, len) {
@@ -198,6 +191,14 @@ export function createDelete() {
 export function createParagraph() {
     const ret = wasm.createParagraph();
     return Paragraph.__wrap(ret);
+}
+
+let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+
+cachedTextDecoder.decode();
+
+function getStringFromWasm(ptr, len) {
+    return cachedTextDecoder.decode(getUint8Memory().subarray(ptr, ptr + len));
 }
 
 const heap = new Array(32);
@@ -323,18 +324,13 @@ export class Comment {
         return Comment.__wrap(ret);
     }
     /**
-    * @returns {string}
+    * @returns {number}
     */
     id() {
-        const retptr = 8;
         if (this.ptr == 0) throw new Error('Attempt to use a moved value');
-        _assertNum(retptr);
         _assertNum(this.ptr);
-        const ret = wasm.comment_id(retptr, this.ptr);
-        const memi32 = getInt32Memory();
-        const v0 = getStringFromWasm(memi32[retptr / 4 + 0], memi32[retptr / 4 + 1]).slice();
-        wasm.__wbindgen_free(memi32[retptr / 4 + 0], memi32[retptr / 4 + 1] * 1);
-        return v0;
+        const ret = wasm.comment_id(this.ptr);
+        return ret >>> 0;
     }
 }
 /**
@@ -673,7 +669,7 @@ export class Paragraph {
         return Paragraph.__wrap(ret);
     }
     /**
-    * @param {string} id
+    * @param {number} id
     * @returns {Paragraph}
     */
     add_comment_end(id) {
@@ -681,7 +677,8 @@ export class Paragraph {
         const ptr = this.ptr;
         this.ptr = 0;
         _assertNum(ptr);
-        const ret = wasm.paragraph_add_comment_end(ptr, passStringToWasm(id), WASM_VECTOR_LEN);
+        _assertNum(id);
+        const ret = wasm.paragraph_add_comment_end(ptr, id);
         return Paragraph.__wrap(ret);
     }
     /**

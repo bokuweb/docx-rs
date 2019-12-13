@@ -4,10 +4,10 @@
 */
 export function createRun(): Run;
 /**
-* @param {string} id 
+* @param {number} id 
 * @returns {Comment} 
 */
-export function createComment(id: string): Comment;
+export function createComment(id: number): Comment;
 /**
 * @returns {TableCell} 
 */
@@ -136,9 +136,9 @@ export class Comment {
 */
   paragraph(p: Paragraph): Comment;
 /**
-* @returns {string} 
+* @returns {number} 
 */
-  id(): string;
+  id(): number;
 }
 /**
 */
@@ -232,10 +232,10 @@ export class Paragraph {
 */
   add_comment_start(comment: Comment): Paragraph;
 /**
-* @param {string} id 
+* @param {number} id 
 * @returns {Paragraph} 
 */
-  add_comment_end(id: string): Paragraph;
+  add_comment_end(id: number): Paragraph;
 /**
 * @param {number} alignment_type 
 * @returns {Paragraph} 

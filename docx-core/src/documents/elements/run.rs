@@ -1,4 +1,4 @@
-use super::{Break, RunProperty, Tab, Text};
+use super::{Break, DeleteText, RunProperty, Tab, Text};
 use crate::documents::BuildXML;
 use crate::types::BreakType;
 use crate::xml_builder::*;
@@ -22,6 +22,7 @@ impl Default for Run {
 #[derive(Debug, Clone)]
 pub enum RunChild {
     Text(Text),
+    DeleteText(DeleteText),
     Tab(Tab),
     Break(Break),
 }
@@ -82,6 +83,11 @@ impl Run {
         self.run_property = self.run_property.underline(line_type);
         self
     }
+
+    pub fn vanish(mut self) -> Run {
+        self.run_property = self.run_property.vanish();
+        self
+    }
 }
 
 impl BuildXML for Run {
@@ -91,6 +97,7 @@ impl BuildXML for Run {
         for c in &self.children {
             match c {
                 RunChild::Text(t) => b = b.add_child(t),
+                RunChild::DeleteText(t) => b = b.add_child(t),
                 RunChild::Tab(t) => b = b.add_child(t),
                 RunChild::Break(t) => b = b.add_child(t),
             }

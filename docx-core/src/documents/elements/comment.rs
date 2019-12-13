@@ -3,7 +3,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct Comment {
-    pub id: String,
+    pub id: usize,
     pub author: String,
     pub date: String,
     pub paragraph: Paragraph,
@@ -12,7 +12,7 @@ pub struct Comment {
 impl Default for Comment {
     fn default() -> Comment {
         Comment {
-            id: "invalidId".to_owned(),
+            id: 1,
             author: "unnamed".to_owned(),
             date: "1970-01-01T00:00:00Z".to_owned(),
             paragraph: Paragraph::new(),
@@ -21,9 +21,9 @@ impl Default for Comment {
 }
 
 impl Comment {
-    pub fn new(id: impl Into<String>) -> Comment {
+    pub fn new(id: usize) -> Comment {
         Self {
-            id: id.into(),
+            id,
             ..Default::default()
         }
     }
@@ -43,15 +43,15 @@ impl Comment {
         self
     }
 
-    pub fn id(&self) -> String {
-        self.id.clone()
+    pub fn id(&self) -> usize {
+        self.id
     }
 }
 
 impl BuildXML for Comment {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
-            .open_comment(&self.id, &self.author, &self.date, "")
+            .open_comment(&format!("{}", self.id), &self.author, &self.date, "")
             .add_child(&self.paragraph)
             .close()
             .build()
@@ -68,10 +68,10 @@ mod tests {
 
     #[test]
     fn test_ins_default() {
-        let b = Comment::new("123").build();
+        let b = Comment::new(1).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:comment w:id="123" w:author="unnamed" w:date="1970-01-01T00:00:00Z" w:initials=""><w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr></w:p></w:comment>"#
+            r#"<w:comment w:id="1" w:author="unnamed" w:date="1970-01-01T00:00:00Z" w:initials=""><w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr></w:p></w:comment>"#
         );
     }
 }

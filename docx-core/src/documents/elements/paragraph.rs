@@ -98,7 +98,7 @@ impl Paragraph {
         self
     }
 
-    pub fn add_comment_end(mut self, id: impl Into<String>) -> Paragraph {
+    pub fn add_comment_end(mut self, id: usize) -> Paragraph {
         self.children
             .push(ParagraphChild::CommentEnd(CommentRangeEnd::new(id)));
         self
@@ -183,18 +183,18 @@ mod tests {
     #[test]
     fn test_comment() {
         let b = Paragraph::new()
-            .add_comment_start(Comment::new("1234-5678"))
+            .add_comment_start(Comment::new(1))
             .add_run(Run::new().add_text("Hello"))
-            .add_comment_end("1234-5678")
+            .add_comment_end(1)
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:commentRangeStart w:id="1234-5678" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:r>
+            r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:commentRangeStart w:id="1" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:r>
   <w:rPr />
 </w:r>
-<w:commentRangeEnd w:id="1234-5678" />
+<w:commentRangeEnd w:id="1" />
 <w:r>
-  <w:commentReference w:id="1234-5678" />
+  <w:commentReference w:id="1" />
 </w:r></w:p>"#
         );
     }

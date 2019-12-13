@@ -4,7 +4,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct CommentRangeStart {
-    id: String,
+    id: usize,
     comment: Comment,
 }
 
@@ -24,7 +24,7 @@ impl CommentRangeStart {
 impl BuildXML for CommentRangeStart {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.comment_range_start(&self.id).build()
+        b.comment_range_start(&format!("{}", self.id)).build()
     }
 }
 
@@ -38,11 +38,11 @@ mod tests {
 
     #[test]
     fn test_comment_range_start() {
-        let c = CommentRangeStart::new(Comment::new("mockid"));
+        let c = CommentRangeStart::new(Comment::new(1));
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:commentRangeStart w:id="mockid" />"#
+            r#"<w:commentRangeStart w:id="1" />"#
         );
     }
 }

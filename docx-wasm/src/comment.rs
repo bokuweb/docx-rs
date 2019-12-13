@@ -7,7 +7,7 @@ use wasm_bindgen::prelude::*;
 pub struct Comment(docx_core::Comment);
 
 #[wasm_bindgen(js_name = createComment)]
-pub fn create_comment(id: String) -> Comment {
+pub fn create_comment(id: usize) -> Comment {
     Comment(docx_core::Comment::new(id))
 }
 
@@ -34,7 +34,7 @@ impl Comment {
         self
     }
 
-    pub fn id(&self) -> String {
-        self.0.id.clone()
+    pub fn id(&self) -> usize {
+        self.0.id
     }
 }

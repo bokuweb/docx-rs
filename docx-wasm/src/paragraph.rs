@@ -57,7 +57,7 @@ impl Paragraph {
         self
     }
 
-    pub fn add_comment_end(mut self, id: &str) -> Paragraph {
+    pub fn add_comment_end(mut self, id: usize) -> Paragraph {
         self.0.children.push(docx_core::ParagraphChild::CommentEnd(
             docx_core::CommentRangeEnd::new(id),
         ));

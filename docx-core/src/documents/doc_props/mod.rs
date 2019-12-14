@@ -18,6 +18,16 @@ impl DocProps {
         DocProps { app, core }
     }
 
+    pub fn created_at(mut self, date: &str) -> Self {
+        self.core = self.core.created_at(date);
+        self
+    }
+
+    pub fn updated_at(mut self, date: &str) -> Self {
+        self.core = self.core.updated_at(date);
+        self
+    }
+
     pub(crate) fn build(&self) -> XMLDocProps {
         XMLDocProps {
             app: self.app.build(),

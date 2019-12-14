@@ -90,6 +90,16 @@ impl Docx {
         self
     }
 
+    pub fn created_at(mut self, date: &str) -> Self {
+        self.doc_props = self.doc_props.created_at(date);
+        self
+    }
+
+    pub fn updated_at(mut self, date: &str) -> Self {
+        self.doc_props = self.doc_props.updated_at(date);
+        self
+    }
+
     pub fn build(&mut self) -> XMLDocx {
         self.update_comments();
         XMLDocx {

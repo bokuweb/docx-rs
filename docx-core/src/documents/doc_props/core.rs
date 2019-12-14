@@ -23,6 +23,16 @@ impl CoreProps {
     pub(crate) fn new(config: CorePropsConfig) -> CoreProps {
         CoreProps { config }
     }
+
+    pub fn created_at(mut self, date: &str) -> Self {
+        self.config.created = Some(date.to_owned());
+        self
+    }
+
+    pub fn updated_at(mut self, date: &str) -> Self {
+        self.config.modified = Some(date.to_owned());
+        self
+    }
 }
 
 impl CorePropsConfig {

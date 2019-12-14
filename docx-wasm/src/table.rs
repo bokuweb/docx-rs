@@ -38,4 +38,9 @@ impl Table {
         self.0 = self.0.align(v);
         self
     }
+
+    pub fn width(mut self, w: usize) -> Table {
+        self.0 = self.0.width(w);
+        self
+    }
 }

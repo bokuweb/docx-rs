@@ -1,16 +1,20 @@
 /* tslint:disable */
 /**
+* @returns {TableCell} 
+*/
+export function createTableCell(): TableCell;
+/**
 * @returns {Docx} 
 */
 export function createDocx(): Docx;
 /**
-* @returns {Delete} 
-*/
-export function createDelete(): Delete;
-/**
 * @returns {Insert} 
 */
 export function createInsert(): Insert;
+/**
+* @returns {Delete} 
+*/
+export function createDelete(): Delete;
 /**
 * @param {number} id 
 * @returns {Numbering} 
@@ -21,22 +25,22 @@ export function createNumbering(id: number): Numbering;
 */
 export function createTable(): Table;
 /**
-* @returns {TableRow} 
-*/
-export function createTableRow(): TableRow;
-/**
 * @returns {Paragraph} 
 */
 export function createParagraph(): Paragraph;
 /**
-* @param {string} id 
-* @returns {Comment} 
-*/
-export function createComment(id: string): Comment;
-/**
 * @returns {Run} 
 */
 export function createRun(): Run;
+/**
+* @param {number} id 
+* @returns {Comment} 
+*/
+export function createComment(id: number): Comment;
+/**
+* @returns {TableRow} 
+*/
+export function createTableRow(): TableRow;
 /**
 * @param {number} id 
 * @param {number} start 
@@ -46,31 +50,9 @@ export function createRun(): Run;
 * @returns {Level} 
 */
 export function createLevel(id: number, start: number, format: string, text: string, jc: string): Level;
-/**
-* @returns {TableCell} 
-*/
-export function createTableCell(): TableCell;
-export enum SpecialIndentKind {
-  FirstLine,
-  Hanging,
-}
-/**
-*/
-export enum StyleType {
-  Paragraph,
-  Character,
-}
-/**
-*/
 export enum VMergeType {
   Continue,
   Restart,
-}
-/**
-*/
-export enum WidthType {
-  DXA,
-  Auto,
 }
 /**
 */
@@ -95,13 +77,6 @@ export enum AlignmentType {
 }
 /**
 */
-export enum FontPitchType {
-  Default,
-  Fixed,
-  Variable,
-}
-/**
-*/
 export enum BreakType {
   Page,
   Column,
@@ -109,10 +84,35 @@ export enum BreakType {
 }
 /**
 */
+export enum FontPitchType {
+  Default,
+  Fixed,
+  Variable,
+}
+/**
+*/
 export enum TableAlignmentType {
   Center,
   Left,
   Right,
+}
+/**
+*/
+export enum SpecialIndentKind {
+  FirstLine,
+  Hanging,
+}
+/**
+*/
+export enum StyleType {
+  Paragraph,
+  Character,
+}
+/**
+*/
+export enum WidthType {
+  DXA,
+  Auto,
 }
 /**
 */
@@ -136,9 +136,9 @@ export class Comment {
 */
   paragraph(p: Paragraph): Comment;
 /**
-* @returns {string} 
+* @returns {number} 
 */
-  id(): string;
+  id(): number;
 }
 /**
 */
@@ -232,10 +232,10 @@ export class Paragraph {
 */
   add_comment_start(comment: Comment): Paragraph;
 /**
-* @param {string} id 
+* @param {number} id 
 * @returns {Paragraph} 
 */
-  add_comment_end(id: string): Paragraph;
+  add_comment_end(id: number): Paragraph;
 /**
 * @param {number} alignment_type 
 * @returns {Paragraph} 
@@ -311,6 +311,10 @@ export class Run {
 * @returns {Run} 
 */
   underline(line_type: string): Run;
+/**
+* @returns {Run} 
+*/
+  vanish(): Run;
 }
 /**
 */
@@ -321,6 +325,26 @@ export class Table {
 * @returns {Table} 
 */
   add_row(row: TableRow): Table;
+/**
+* @param {Uint32Array} grid 
+* @returns {Table} 
+*/
+  set_grid(grid: Uint32Array): Table;
+/**
+* @param {number} v 
+* @returns {Table} 
+*/
+  indent(v: number): Table;
+/**
+* @param {number} v 
+* @returns {Table} 
+*/
+  align(v: number): Table;
+/**
+* @param {number} w 
+* @returns {Table} 
+*/
+  width(w: number): Table;
 }
 /**
 */
@@ -352,14 +376,3 @@ export class TableRow {
 */
   add_cell(cell: TableCell): TableRow;
 }
-
-/**
-* If `module_or_path` is {RequestInfo}, makes a request and
-* for everything else, calls `WebAssembly.instantiate` directly.
-*
-* @param {RequestInfo | BufferSource | WebAssembly.Module} module_or_path
-*
-* @returns {Promise<any>}
-*/
-export default function init (module_or_path?: RequestInfo | BufferSource | WebAssembly.Module): Promise<any>;
-        

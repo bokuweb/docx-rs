@@ -1,12 +1,11 @@
-
-let wasm;
+import * as wasm from './docx_rs_bg.wasm';
 
 /**
-* @returns {Docx}
+* @returns {TableCell}
 */
-export function createDocx() {
-    const ret = wasm.createDocx();
-    return Docx.__wrap(ret);
+export function createTableCell() {
+    const ret = wasm.createTableCell();
+    return TableCell.__wrap(ret);
 }
 
 function _assertClass(instance, klass) {
@@ -14,6 +13,13 @@ function _assertClass(instance, klass) {
         throw new Error(`expected instance of ${klass.name}`);
     }
     return instance.ptr;
+}
+/**
+* @returns {Docx}
+*/
+export function createDocx() {
+    const ret = wasm.createDocx();
+    return Docx.__wrap(ret);
 }
 
 let cachegetInt32Memory = null;
@@ -36,19 +42,19 @@ function getArrayU8FromWasm(ptr, len) {
     return getUint8Memory().subarray(ptr / 1, ptr / 1 + len);
 }
 /**
-* @returns {Delete}
-*/
-export function createDelete() {
-    const ret = wasm.createDelete();
-    return Delete.__wrap(ret);
-}
-
-/**
 * @returns {Insert}
 */
 export function createInsert() {
     const ret = wasm.createInsert();
     return Insert.__wrap(ret);
+}
+
+/**
+* @returns {Delete}
+*/
+export function createDelete() {
+    const ret = wasm.createDelete();
+    return Delete.__wrap(ret);
 }
 
 /**
@@ -68,14 +74,22 @@ export function createTable() {
     return Table.__wrap(ret);
 }
 
-/**
-* @returns {TableRow}
-*/
-export function createTableRow() {
-    const ret = wasm.createTableRow();
-    return TableRow.__wrap(ret);
+let cachegetUint32Memory = null;
+function getUint32Memory() {
+    if (cachegetUint32Memory === null || cachegetUint32Memory.buffer !== wasm.memory.buffer) {
+        cachegetUint32Memory = new Uint32Array(wasm.memory.buffer);
+    }
+    return cachegetUint32Memory;
 }
 
+let WASM_VECTOR_LEN = 0;
+
+function passArray32ToWasm(arg) {
+    const ptr = wasm.__wbindgen_malloc(arg.length * 4);
+    getUint32Memory().set(arg, ptr / 4);
+    WASM_VECTOR_LEN = arg.length;
+    return ptr;
+}
 /**
 * @returns {Paragraph}
 */
@@ -83,8 +97,6 @@ export function createParagraph() {
     const ret = wasm.createParagraph();
     return Paragraph.__wrap(ret);
 }
-
-let WASM_VECTOR_LEN = 0;
 
 let cachedTextEncoder = new TextEncoder('utf-8');
 
@@ -135,27 +147,28 @@ function isLikeNone(x) {
     return x === undefined || x === null;
 }
 /**
-* @param {string} id
-* @returns {Comment}
-*/
-export function createComment(id) {
-    const ret = wasm.createComment(passStringToWasm(id), WASM_VECTOR_LEN);
-    return Comment.__wrap(ret);
-}
-
-let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
-
-cachedTextDecoder.decode();
-
-function getStringFromWasm(ptr, len) {
-    return cachedTextDecoder.decode(getUint8Memory().subarray(ptr, ptr + len));
-}
-/**
 * @returns {Run}
 */
 export function createRun() {
     const ret = wasm.createRun();
     return Run.__wrap(ret);
+}
+
+/**
+* @param {number} id
+* @returns {Comment}
+*/
+export function createComment(id) {
+    const ret = wasm.createComment(id);
+    return Comment.__wrap(ret);
+}
+
+/**
+* @returns {TableRow}
+*/
+export function createTableRow() {
+    const ret = wasm.createTableRow();
+    return TableRow.__wrap(ret);
 }
 
 /**
@@ -171,12 +184,12 @@ export function createLevel(id, start, format, text, jc) {
     return Level.__wrap(ret);
 }
 
-/**
-* @returns {TableCell}
-*/
-export function createTableCell() {
-    const ret = wasm.createTableCell();
-    return TableCell.__wrap(ret);
+let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+
+cachedTextDecoder.decode();
+
+function getStringFromWasm(ptr, len) {
+    return cachedTextDecoder.decode(getUint8Memory().subarray(ptr, ptr + len));
 }
 
 const heap = new Array(32);
@@ -211,16 +224,7 @@ function takeObject(idx) {
 }
 /**
 */
-export const SpecialIndentKind = Object.freeze({ FirstLine:0,Hanging:1, });
-/**
-*/
-export const StyleType = Object.freeze({ Paragraph:0,Character:1, });
-/**
-*/
 export const VMergeType = Object.freeze({ Continue:0,Restart:1, });
-/**
-*/
-export const WidthType = Object.freeze({ DXA:0,Auto:1, });
 /**
 */
 export const BorderType = Object.freeze({ None:0,Single:1,Thick:2,Double:3,Dotted:4,Dashed:5,DotDash:6,DotDotDash:7,Triple:8, });
@@ -229,13 +233,22 @@ export const BorderType = Object.freeze({ None:0,Single:1,Thick:2,Double:3,Dotte
 export const AlignmentType = Object.freeze({ Center:0,Left:1,Right:2,Justified:3, });
 /**
 */
-export const FontPitchType = Object.freeze({ Default:0,Fixed:1,Variable:2, });
-/**
-*/
 export const BreakType = Object.freeze({ Page:0,Column:1,TextWrapping:2, });
 /**
 */
+export const FontPitchType = Object.freeze({ Default:0,Fixed:1,Variable:2, });
+/**
+*/
 export const TableAlignmentType = Object.freeze({ Center:0,Left:1,Right:2, });
+/**
+*/
+export const SpecialIndentKind = Object.freeze({ FirstLine:0,Hanging:1, });
+/**
+*/
+export const StyleType = Object.freeze({ Paragraph:0,Character:1, });
+/**
+*/
+export const WidthType = Object.freeze({ DXA:0,Auto:1, });
 /**
 */
 export class Comment {
@@ -287,15 +300,11 @@ export class Comment {
         return Comment.__wrap(ret);
     }
     /**
-    * @returns {string}
+    * @returns {number}
     */
     id() {
-        const retptr = 8;
-        const ret = wasm.comment_id(retptr, this.ptr);
-        const memi32 = getInt32Memory();
-        const v0 = getStringFromWasm(memi32[retptr / 4 + 0], memi32[retptr / 4 + 1]).slice();
-        wasm.__wbindgen_free(memi32[retptr / 4 + 0], memi32[retptr / 4 + 1] * 1);
-        return v0;
+        const ret = wasm.comment_id(this.ptr);
+        return ret >>> 0;
     }
 }
 /**
@@ -554,13 +563,13 @@ export class Paragraph {
         return Paragraph.__wrap(ret);
     }
     /**
-    * @param {string} id
+    * @param {number} id
     * @returns {Paragraph}
     */
     add_comment_end(id) {
         const ptr = this.ptr;
         this.ptr = 0;
-        const ret = wasm.paragraph_add_comment_end(ptr, passStringToWasm(id), WASM_VECTOR_LEN);
+        const ret = wasm.paragraph_add_comment_end(ptr, id);
         return Paragraph.__wrap(ret);
     }
     /**
@@ -721,6 +730,15 @@ export class Run {
         const ret = wasm.run_underline(ptr, passStringToWasm(line_type), WASM_VECTOR_LEN);
         return Run.__wrap(ret);
     }
+    /**
+    * @returns {Run}
+    */
+    vanish() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+        const ret = wasm.run_vanish(ptr);
+        return Run.__wrap(ret);
+    }
 }
 /**
 */
@@ -750,6 +768,46 @@ export class Table {
         const ptr0 = row.ptr;
         row.ptr = 0;
         const ret = wasm.table_add_row(ptr, ptr0);
+        return Table.__wrap(ret);
+    }
+    /**
+    * @param {Uint32Array} grid
+    * @returns {Table}
+    */
+    set_grid(grid) {
+        const ptr = this.ptr;
+        this.ptr = 0;
+        const ret = wasm.table_set_grid(ptr, passArray32ToWasm(grid), WASM_VECTOR_LEN);
+        return Table.__wrap(ret);
+    }
+    /**
+    * @param {number} v
+    * @returns {Table}
+    */
+    indent(v) {
+        const ptr = this.ptr;
+        this.ptr = 0;
+        const ret = wasm.table_indent(ptr, v);
+        return Table.__wrap(ret);
+    }
+    /**
+    * @param {number} v
+    * @returns {Table}
+    */
+    align(v) {
+        const ptr = this.ptr;
+        this.ptr = 0;
+        const ret = wasm.table_align(ptr, v);
+        return Table.__wrap(ret);
+    }
+    /**
+    * @param {number} w
+    * @returns {Table}
+    */
+    width(w) {
+        const ptr = this.ptr;
+        this.ptr = 0;
+        const ret = wasm.table_width(ptr, w);
         return Table.__wrap(ret);
     }
 }
@@ -836,64 +894,16 @@ export class TableRow {
     }
 }
 
-function init(module) {
-    if (typeof module === 'undefined') {
-        module = import.meta.url.replace(/\.js$/, '_bg.wasm');
-    }
-    let result;
-    const imports = {};
-    imports.wbg = {};
-    imports.wbg.__wbindgen_string_new = function(arg0, arg1) {
-        const ret = getStringFromWasm(arg0, arg1);
-        return addHeapObject(ret);
-    };
-    imports.wbg.__wbindgen_throw = function(arg0, arg1) {
-        throw new Error(getStringFromWasm(arg0, arg1));
-    };
-    imports.wbg.__wbindgen_rethrow = function(arg0) {
-        throw takeObject(arg0);
-    };
+export const __wbindgen_string_new = function(arg0, arg1) {
+    const ret = getStringFromWasm(arg0, arg1);
+    return addHeapObject(ret);
+};
 
-    if ((typeof URL === 'function' && module instanceof URL) || typeof module === 'string' || (typeof Request === 'function' && module instanceof Request)) {
+export const __wbindgen_throw = function(arg0, arg1) {
+    throw new Error(getStringFromWasm(arg0, arg1));
+};
 
-        const response = fetch(module);
-        if (typeof WebAssembly.instantiateStreaming === 'function') {
-            result = WebAssembly.instantiateStreaming(response, imports)
-            .catch(e => {
-                return response
-                .then(r => {
-                    if (r.headers.get('Content-Type') != 'application/wasm') {
-                        console.warn("`WebAssembly.instantiateStreaming` failed because your server does not serve wasm with `application/wasm` MIME type. Falling back to `WebAssembly.instantiate` which is slower. Original error:\n", e);
-                        return r.arrayBuffer();
-                    } else {
-                        throw e;
-                    }
-                })
-                .then(bytes => WebAssembly.instantiate(bytes, imports));
-            });
-        } else {
-            result = response
-            .then(r => r.arrayBuffer())
-            .then(bytes => WebAssembly.instantiate(bytes, imports));
-        }
-    } else {
-
-        result = WebAssembly.instantiate(module, imports)
-        .then(result => {
-            if (result instanceof WebAssembly.Instance) {
-                return { instance: result, module };
-            } else {
-                return result;
-            }
-        });
-    }
-    return result.then(({instance, module}) => {
-        wasm = instance.exports;
-        init.__wbindgen_wasm_module = module;
-
-        return wasm;
-    });
-}
-
-export default init;
+export const __wbindgen_rethrow = function(arg0) {
+    throw takeObject(arg0);
+};
 

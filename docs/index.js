@@ -55,8 +55,17 @@
 /******/ 		"./pkg/index_bg.wasm": function() {
 /******/ 			return {
 /******/ 				"./index.js": {
+/******/ 					"__wbindgen_string_new": function(p0i32,p1i32) {
+/******/ 						return installedModules["./pkg/index.js"].exports["__wbindgen_string_new"](p0i32,p1i32);
+/******/ 					},
+/******/ 					"__wbindgen_object_drop_ref": function(p0i32) {
+/******/ 						return installedModules["./pkg/index.js"].exports["__wbindgen_object_drop_ref"](p0i32);
+/******/ 					},
 /******/ 					"__wbindgen_throw": function(p0i32,p1i32) {
 /******/ 						return installedModules["./pkg/index.js"].exports["__wbindgen_throw"](p0i32,p1i32);
+/******/ 					},
+/******/ 					"__wbindgen_rethrow": function(p0i32) {
+/******/ 						return installedModules["./pkg/index.js"].exports["__wbindgen_rethrow"](p0i32);
 /******/ 					}
 /******/ 				}
 /******/ 			};
@@ -159,7 +168,7 @@
 /******/ 				promises.push(installedWasmModuleData);
 /******/ 			else {
 /******/ 				var importObject = wasmImportObjects[wasmModuleId]();
-/******/ 				var req = fetch(__webpack_require__.p + "" + {"./pkg/index_bg.wasm":"dc980d6e0664fbb7edfc"}[wasmModuleId] + ".module.wasm");
+/******/ 				var req = fetch(__webpack_require__.p + "" + {"./pkg/index_bg.wasm":"cf1f90b2feef7ead7222"}[wasmModuleId] + ".module.wasm");
 /******/ 				var promise;
 /******/ 				if(importObject instanceof Promise && typeof WebAssembly.compileStreaming === 'function') {
 /******/ 					promise = Promise.all([WebAssembly.compileStreaming(req), importObject]).then(function(items) {
@@ -260,7 +269,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("// Note that a dynamic `import` statement here is required due to\n// webpack/webpack#6615, but in theory `import { greet } from './pkg/hello_world';`\n// will work here one day as well!\nconst rust = Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! ./pkg */ \"./pkg/index.js\"));\n// webpack/webpack#6615, but in theory `import { greet } from './pkg/hello_world';`\n\nrust\n  .then(m => {\n    let docx = m.createDocx().add_paragraph();\n    saveAs(new Blob([docx.build()]), \"example.docx\");\n  })\n  .catch(console.error);\n\n\n//# sourceURL=webpack:///./index.js?");
+eval("// Note that a dynamic `import` statement here is required due to\n// webpack/webpack#6615, but in theory `import { greet } from './pkg/hello_world';`\n// will work here one day as well!\nconst rust = Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! ./pkg */ \"./pkg/index.js\"));\n// webpack/webpack#6615, but in theory `import { greet } from './pkg/hello_world';`\n\nrust\n  .then(m => {\n    const p = m.createParagraph().add_run(\n      m\n        .createRun()\n        .add_text(\"Hello World!!\")\n        .bold()\n    );\n    const t = m\n      .createTable()\n      .add_row(\n        m.createTableRow().add_cell(m.createTableCell().add_paragraph(p))\n      );\n    let docx = m.createDocx().add_table(t);\n    saveAs(new Blob([docx.build()]), \"example.docx\");\n    docx.free();\n  })\n  .catch(console.error);\n\n\n//# sourceURL=webpack:///./index.js?");
 
 /***/ })
 

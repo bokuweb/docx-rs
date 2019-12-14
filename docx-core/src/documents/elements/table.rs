@@ -35,6 +35,11 @@ impl Table {
         self.property = self.property.align(v);
         self
     }
+
+    pub fn width(mut self, w: usize) -> Table {
+        self.property = self.property.width(w, WidthType::DXA);
+        self
+    }
 }
 
 impl BuildXML for Table {

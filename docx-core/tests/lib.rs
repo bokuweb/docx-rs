@@ -402,3 +402,16 @@ pub fn vanish() -> Result<(), DocxError> {
     .pack(file)?;
   Ok(())
 }
+
+#[test]
+pub fn date() -> Result<(), DocxError> {
+  let path = std::path::Path::new("./tests/output/date.docx");
+  let file = std::fs::File::create(&path).unwrap();
+  Docx::new()
+    .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
+    .created_at("2019-01-01T00:00:00Z")
+    .updated_at("2019-01-02T10:00:00Z")
+    .build()
+    .pack(file)?;
+  Ok(())
+}

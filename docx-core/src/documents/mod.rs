@@ -154,6 +154,11 @@ impl Docx {
                 _ => {}
             }
         }
+        // If this document has comments, set comments.xml to document_rels.
+        // This is because comments.xml without comment cause an error on word online.
+        if comments.len() > 0 {
+            self.document_rels.has_comments = true;
+        }
         self.comments.add_comments(comments);
     }
 }

@@ -972,6 +972,19 @@ export class Table {
         const ret = wasm.table_align(ptr, v);
         return Table.__wrap(ret);
     }
+    /**
+    * @param {number} w
+    * @returns {Table}
+    */
+    width(w) {
+        if (this.ptr == 0) throw new Error('Attempt to use a moved value');
+        const ptr = this.ptr;
+        this.ptr = 0;
+        _assertNum(ptr);
+        _assertNum(w);
+        const ret = wasm.table_width(ptr, w);
+        return Table.__wrap(ret);
+    }
 }
 /**
 */

@@ -340,6 +340,11 @@ export class Table {
 * @returns {Table} 
 */
   align(v: number): Table;
+/**
+* @param {number} w 
+* @returns {Table} 
+*/
+  width(w: number): Table;
 }
 /**
 */

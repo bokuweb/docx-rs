@@ -35,4 +35,9 @@ impl TableCell {
         self.0.property = self.0.property.grid_span(v);
         self
     }
+
+    pub fn width(mut self, v: usize) -> TableCell {
+        self.0.property = self.0.property.width(v, docx_core::WidthType::DXA);
+        self
+    }
 }

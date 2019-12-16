@@ -37,7 +37,7 @@ impl BuildXML for Numberings {
 }
 
 fn create_default_numbering() -> Numbering {
-    Numbering::new(0)
+    Numbering::new(1)
         .add_level(
             Level::new(
                 0,

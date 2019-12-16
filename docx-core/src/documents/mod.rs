@@ -76,11 +76,21 @@ impl Docx {
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> Docx {
+        if p.has_numbering {
+            // If this document has numbering, set numberings.xml to document_rels.
+            // This is because numberings.xml without numbering cause an error on word online.
+            self.document_rels.has_numberings = true;
+        }
         self.document = self.document.add_paragraph(p);
         self
     }
 
     pub fn add_table(mut self, t: Table) -> Docx {
+        if t.has_numbering {
+            // If this document has numbering, set numberings.xml to document_rels.
+            // This is because numberings.xml without numbering cause an error on word online.
+            self.document_rels.has_numberings = true;
+        }
         self.document = self.document.add_table(t);
         self
     }
@@ -151,7 +161,6 @@ impl Docx {
                         }
                     }
                 }
-                _ => {}
             }
         }
         // If this document has comments, set comments.xml to document_rels.

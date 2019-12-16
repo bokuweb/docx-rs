@@ -7,17 +7,20 @@ use crate::xml_builder::*;
 pub struct Table {
     pub rows: Vec<TableRow>,
     pub grid: Vec<usize>,
+    pub(crate) has_numbering: bool,
     property: TableProperty,
 }
 
 impl Table {
     pub fn new(rows: Vec<TableRow>) -> Table {
         let property = TableProperty::new();
+        let has_numbering = rows.iter().any(|c| c.has_numbering);
         let grid = vec![];
         Self {
             property,
             rows,
             grid,
+            has_numbering,
         }
     }
 

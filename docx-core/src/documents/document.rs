@@ -6,6 +6,7 @@ use crate::xml_builder::*;
 pub struct Document {
     pub(crate) children: Vec<DocumentChild>,
     pub section_property: SectionProperty,
+    pub has_numbering: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -20,11 +21,17 @@ impl Document {
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> Self {
+        if p.has_numbering {
+            self.has_numbering = true
+        }
         self.children.push(DocumentChild::Paragraph(p));
         self
     }
 
     pub fn add_table(mut self, t: Table) -> Self {
+        if t.has_numbering {
+            self.has_numbering = true
+        }
         self.children.push(DocumentChild::Table(t));
         self
     }
@@ -35,6 +42,7 @@ impl Default for Document {
         Self {
             children: Vec::new(),
             section_property: SectionProperty::new(),
+            has_numbering: false,
         }
     }
 }

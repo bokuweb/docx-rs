@@ -7,6 +7,7 @@ use crate::xml_builder::*;
 pub struct Paragraph {
     pub children: Vec<ParagraphChild>,
     pub property: ParagraphProperty,
+    pub has_numbering: bool,
     attrs: Vec<(String, String)>,
 }
 
@@ -15,6 +16,7 @@ impl Default for Paragraph {
         Self {
             children: Vec::new(),
             property: ParagraphProperty::new(),
+            has_numbering: false,
             attrs: Vec::new(),
         }
     }
@@ -121,6 +123,7 @@ impl Paragraph {
 
     pub fn numbering(mut self, id: NumberingId, level: IndentLevel) -> Self {
         self.property = self.property.numbering(id, level);
+        self.has_numbering = true;
         self
     }
 }

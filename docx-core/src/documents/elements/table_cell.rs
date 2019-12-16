@@ -7,6 +7,7 @@ use crate::xml_builder::*;
 pub struct TableCell {
     pub contents: Vec<TableCellContent>,
     pub property: TableCellProperty,
+    pub has_numbering: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -18,10 +19,17 @@ impl TableCell {
     pub fn new() -> TableCell {
         let property = TableCellProperty::new();
         let contents = vec![];
-        Self { property, contents }
+        Self {
+            property,
+            contents,
+            has_numbering: false,
+        }
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> TableCell {
+        if p.has_numbering {
+            self.has_numbering = true
+        }
         self.contents.push(TableCellContent::Paragraph(p));
         self
     }

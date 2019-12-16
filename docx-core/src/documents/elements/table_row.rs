@@ -5,13 +5,19 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone)]
 pub struct TableRow {
     pub cells: Vec<TableCell>,
+    pub(crate) has_numbering: bool,
     property: TableRowProperty,
 }
 
 impl TableRow {
     pub fn new(cells: Vec<TableCell>) -> TableRow {
         let property = TableRowProperty::new();
-        Self { property, cells }
+        let has_numbering = cells.iter().any(|c| c.has_numbering);
+        Self {
+            property,
+            cells,
+            has_numbering,
+        }
     }
 }
 

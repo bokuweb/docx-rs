@@ -323,22 +323,22 @@ pub fn default_numbering() -> Result<(), DocxError> {
     .add_paragraph(
       Paragraph::new()
         .add_run(Run::new().add_text("Hello"))
-        .numbering(NumberingId::new(0), IndentLevel::new(0)),
+        .numbering(NumberingId::new(1), IndentLevel::new(0)),
     )
     .add_paragraph(
       Paragraph::new()
         .add_run(Run::new().add_text("World!"))
-        .numbering(NumberingId::new(0), IndentLevel::new(1)),
+        .numbering(NumberingId::new(1), IndentLevel::new(1)),
     )
     .add_paragraph(
       Paragraph::new()
         .add_run(Run::new().add_text("Foooo!"))
-        .numbering(NumberingId::new(0), IndentLevel::new(2)),
+        .numbering(NumberingId::new(1), IndentLevel::new(2)),
     )
     .add_paragraph(
       Paragraph::new()
         .add_run(Run::new().add_text("Bar!"))
-        .numbering(NumberingId::new(0), IndentLevel::new(3)),
+        .numbering(NumberingId::new(1), IndentLevel::new(3)),
     )
     .build()
     .pack(file)?;

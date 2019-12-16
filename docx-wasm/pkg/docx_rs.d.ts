@@ -50,9 +50,21 @@ export function createTableRow(): TableRow;
 * @returns {Level} 
 */
 export function createLevel(id: number, start: number, format: string, text: string, jc: string): Level;
+export enum StyleType {
+  Paragraph,
+  Character,
+}
+/**
+*/
 export enum VMergeType {
   Continue,
   Restart,
+}
+/**
+*/
+export enum WidthType {
+  DXA,
+  Auto,
 }
 /**
 */
@@ -101,18 +113,6 @@ export enum TableAlignmentType {
 export enum SpecialIndentKind {
   FirstLine,
   Hanging,
-}
-/**
-*/
-export enum StyleType {
-  Paragraph,
-  Character,
-}
-/**
-*/
-export enum WidthType {
-  DXA,
-  Auto,
 }
 /**
 */

@@ -224,7 +224,13 @@ function takeObject(idx) {
 }
 /**
 */
+export const StyleType = Object.freeze({ Paragraph:0,Character:1, });
+/**
+*/
 export const VMergeType = Object.freeze({ Continue:0,Restart:1, });
+/**
+*/
+export const WidthType = Object.freeze({ DXA:0,Auto:1, });
 /**
 */
 export const BorderType = Object.freeze({ None:0,Single:1,Thick:2,Double:3,Dotted:4,Dashed:5,DotDash:6,DotDotDash:7,Triple:8, });
@@ -243,12 +249,6 @@ export const TableAlignmentType = Object.freeze({ Center:0,Left:1,Right:2, });
 /**
 */
 export const SpecialIndentKind = Object.freeze({ FirstLine:0,Hanging:1, });
-/**
-*/
-export const StyleType = Object.freeze({ Paragraph:0,Character:1, });
-/**
-*/
-export const WidthType = Object.freeze({ DXA:0,Auto:1, });
 /**
 */
 export class Comment {

@@ -43,6 +43,11 @@ impl TableCell {
         self.property = self.property.grid_span(v);
         self
     }
+
+    pub fn width(mut self, v: usize) -> TableCell {
+        self.property = self.property.width(v, WidthType::DXA);
+        self
+    }
 }
 
 impl BuildXML for TableCell {

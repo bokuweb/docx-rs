@@ -1,8 +1,13 @@
 /* tslint:disable */
 /**
-* @returns {TableCell} 
+* @param {number} id 
+* @param {number} start 
+* @param {string} format 
+* @param {string} text 
+* @param {string} jc 
+* @returns {Level} 
 */
-export function createTableCell(): TableCell;
+export function createLevel(id: number, start: number, format: string, text: string, jc: string): Level;
 /**
 * @returns {Docx} 
 */
@@ -33,23 +38,18 @@ export function createParagraph(): Paragraph;
 */
 export function createRun(): Run;
 /**
-* @param {number} id 
-* @returns {Comment} 
+* @returns {TableCell} 
 */
-export function createComment(id: number): Comment;
+export function createTableCell(): TableCell;
 /**
 * @returns {TableRow} 
 */
 export function createTableRow(): TableRow;
 /**
 * @param {number} id 
-* @param {number} start 
-* @param {string} format 
-* @param {string} text 
-* @param {string} jc 
-* @returns {Level} 
+* @returns {Comment} 
 */
-export function createLevel(id: number, start: number, format: string, text: string, jc: string): Level;
+export function createComment(id: number): Comment;
 export enum StyleType {
   Paragraph,
   Character,
@@ -365,6 +365,11 @@ export class TableCell {
 * @returns {TableCell} 
 */
   grid_span(v: number): TableCell;
+/**
+* @param {number} v 
+* @returns {TableCell} 
+*/
+  width(v: number): TableCell;
 }
 /**
 */

@@ -1,18 +1,74 @@
 import * as wasm from './docx_rs_bg.wasm';
 
-/**
-* @returns {TableCell}
-*/
-export function createTableCell() {
-    const ret = wasm.createTableCell();
-    return TableCell.__wrap(ret);
+let WASM_VECTOR_LEN = 0;
+
+let cachedTextEncoder = new TextEncoder('utf-8');
+
+const encodeString = (typeof cachedTextEncoder.encodeInto === 'function'
+    ? function (arg, view) {
+    return cachedTextEncoder.encodeInto(arg, view);
+}
+    : function (arg, view) {
+    const buf = cachedTextEncoder.encode(arg);
+    view.set(buf);
+    return {
+        read: arg.length,
+        written: buf.length
+    };
+});
+
+let cachegetUint8Memory = null;
+function getUint8Memory() {
+    if (cachegetUint8Memory === null || cachegetUint8Memory.buffer !== wasm.memory.buffer) {
+        cachegetUint8Memory = new Uint8Array(wasm.memory.buffer);
+    }
+    return cachegetUint8Memory;
 }
 
-function _assertClass(instance, klass) {
-    if (!(instance instanceof klass)) {
-        throw new Error(`expected instance of ${klass.name}`);
+function passStringToWasm(arg) {
+
+    let len = arg.length;
+    let ptr = wasm.__wbindgen_malloc(len);
+
+    const mem = getUint8Memory();
+
+    let offset = 0;
+
+    for (; offset < len; offset++) {
+        const code = arg.charCodeAt(offset);
+        if (code > 0x7F) break;
+        mem[ptr + offset] = code;
     }
-    return instance.ptr;
+
+    if (offset !== len) {
+        if (offset !== 0) {
+            arg = arg.slice(offset);
+        }
+        ptr = wasm.__wbindgen_realloc(ptr, len, len = offset + arg.length * 3);
+        const view = getUint8Memory().subarray(ptr + offset, ptr + len);
+        const ret = encodeString(arg, view);
+
+        offset += ret.written;
+    }
+
+    WASM_VECTOR_LEN = offset;
+    return ptr;
+}
+/**
+* @param {number} id
+* @param {number} start
+* @param {string} format
+* @param {string} text
+* @param {string} jc
+* @returns {Level}
+*/
+export function createLevel(id, start, format, text, jc) {
+    const ret = wasm.createLevel(id, start, passStringToWasm(format), WASM_VECTOR_LEN, passStringToWasm(text), WASM_VECTOR_LEN, passStringToWasm(jc), WASM_VECTOR_LEN);
+    return Level.__wrap(ret);
+}
+
+function isLikeNone(x) {
+    return x === undefined || x === null;
 }
 /**
 * @returns {Docx}
@@ -22,20 +78,19 @@ export function createDocx() {
     return Docx.__wrap(ret);
 }
 
+function _assertClass(instance, klass) {
+    if (!(instance instanceof klass)) {
+        throw new Error(`expected instance of ${klass.name}`);
+    }
+    return instance.ptr;
+}
+
 let cachegetInt32Memory = null;
 function getInt32Memory() {
     if (cachegetInt32Memory === null || cachegetInt32Memory.buffer !== wasm.memory.buffer) {
         cachegetInt32Memory = new Int32Array(wasm.memory.buffer);
     }
     return cachegetInt32Memory;
-}
-
-let cachegetUint8Memory = null;
-function getUint8Memory() {
-    if (cachegetUint8Memory === null || cachegetUint8Memory.buffer !== wasm.memory.buffer) {
-        cachegetUint8Memory = new Uint8Array(wasm.memory.buffer);
-    }
-    return cachegetUint8Memory;
 }
 
 function getArrayU8FromWasm(ptr, len) {
@@ -82,8 +137,6 @@ function getUint32Memory() {
     return cachegetUint32Memory;
 }
 
-let WASM_VECTOR_LEN = 0;
-
 function passArray32ToWasm(arg) {
     const ptr = wasm.__wbindgen_malloc(arg.length * 4);
     getUint32Memory().set(arg, ptr / 4);
@@ -98,54 +151,6 @@ export function createParagraph() {
     return Paragraph.__wrap(ret);
 }
 
-let cachedTextEncoder = new TextEncoder('utf-8');
-
-const encodeString = (typeof cachedTextEncoder.encodeInto === 'function'
-    ? function (arg, view) {
-    return cachedTextEncoder.encodeInto(arg, view);
-}
-    : function (arg, view) {
-    const buf = cachedTextEncoder.encode(arg);
-    view.set(buf);
-    return {
-        read: arg.length,
-        written: buf.length
-    };
-});
-
-function passStringToWasm(arg) {
-
-    let len = arg.length;
-    let ptr = wasm.__wbindgen_malloc(len);
-
-    const mem = getUint8Memory();
-
-    let offset = 0;
-
-    for (; offset < len; offset++) {
-        const code = arg.charCodeAt(offset);
-        if (code > 0x7F) break;
-        mem[ptr + offset] = code;
-    }
-
-    if (offset !== len) {
-        if (offset !== 0) {
-            arg = arg.slice(offset);
-        }
-        ptr = wasm.__wbindgen_realloc(ptr, len, len = offset + arg.length * 3);
-        const view = getUint8Memory().subarray(ptr + offset, ptr + len);
-        const ret = encodeString(arg, view);
-
-        offset += ret.written;
-    }
-
-    WASM_VECTOR_LEN = offset;
-    return ptr;
-}
-
-function isLikeNone(x) {
-    return x === undefined || x === null;
-}
 /**
 * @returns {Run}
 */
@@ -155,12 +160,11 @@ export function createRun() {
 }
 
 /**
-* @param {number} id
-* @returns {Comment}
+* @returns {TableCell}
 */
-export function createComment(id) {
-    const ret = wasm.createComment(id);
-    return Comment.__wrap(ret);
+export function createTableCell() {
+    const ret = wasm.createTableCell();
+    return TableCell.__wrap(ret);
 }
 
 /**
@@ -173,15 +177,11 @@ export function createTableRow() {
 
 /**
 * @param {number} id
-* @param {number} start
-* @param {string} format
-* @param {string} text
-* @param {string} jc
-* @returns {Level}
+* @returns {Comment}
 */
-export function createLevel(id, start, format, text, jc) {
-    const ret = wasm.createLevel(id, start, passStringToWasm(format), WASM_VECTOR_LEN, passStringToWasm(text), WASM_VECTOR_LEN, passStringToWasm(jc), WASM_VECTOR_LEN);
-    return Level.__wrap(ret);
+export function createComment(id) {
+    const ret = wasm.createComment(id);
+    return Comment.__wrap(ret);
 }
 
 let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
@@ -859,6 +859,16 @@ export class TableCell {
         const ptr = this.ptr;
         this.ptr = 0;
         const ret = wasm.tablecell_grid_span(ptr, v);
+        return TableCell.__wrap(ret);
+    }
+    /**
+    * @param {number} v
+    * @returns {TableCell}
+    */
+    width(v) {
+        const ptr = this.ptr;
+        this.ptr = 0;
+        const ret = wasm.tablecell_width(ptr, v);
         return TableCell.__wrap(ret);
     }
 }

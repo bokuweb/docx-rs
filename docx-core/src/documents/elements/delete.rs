@@ -3,9 +3,9 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone)]
 pub struct Delete {
-    author: String,
-    date: String,
-    run: Run,
+    pub author: String,
+    pub date: String,
+    pub run: Run,
 }
 
 impl Default for Delete {
@@ -25,6 +25,16 @@ impl Delete {
 
     pub fn run(mut self, run: Run) -> Delete {
         self.run = run;
+        self
+    }
+
+    pub fn author(mut self, author: impl Into<String>) -> Delete {
+        self.author = author.into();
+        self
+    }
+
+    pub fn date(mut self, date: impl Into<String>) -> Delete {
+        self.date = date.into();
         self
     }
 }

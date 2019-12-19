@@ -15,4 +15,19 @@ impl Delete {
     pub fn take(self) -> docx_core::Delete {
         self.0
     }
+
+    pub fn run(mut self, run: Run) -> Delete {
+        self.0.run = run.take();
+        self
+    }
+
+    pub fn author(mut self, author: String) -> Delete {
+        self.0.author = author;
+        self
+    }
+
+    pub fn date(mut self, date: String) -> Delete {
+        self.0.date = date;
+        self
+    }
 }

@@ -15,4 +15,19 @@ impl Insert {
     pub fn take(self) -> docx_core::Insert {
         self.0
     }
+
+    pub fn run(mut self, run: Run) -> Insert {
+        self.0.run = run.take();
+        self
+    }
+
+    pub fn author(mut self, author: String) -> Insert {
+        self.0.author = author;
+        self
+    }
+
+    pub fn date(mut self, date: String) -> Insert {
+        self.0.date = date;
+        self
+    }
 }

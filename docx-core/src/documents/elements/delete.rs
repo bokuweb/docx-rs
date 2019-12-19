@@ -19,10 +19,12 @@ impl Default for Delete {
 }
 
 impl Delete {
-    pub fn new() -> Delete {
-        Default::default()
+    pub fn new(run: Run) -> Delete {
+        Self {
+            run,
+            ..Default::default()
+        }
     }
-
     pub fn run(mut self, run: Run) -> Delete {
         self.run = run;
         self
@@ -61,7 +63,7 @@ mod tests {
 
     #[test]
     fn test_delete_default() {
-        let b = Delete::new().build();
+        let b = Delete::new(Run::new()).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:del w:id="123" w:author="unnamed" w:date="1970-01-01T00:00:00Z"><w:r><w:rPr /></w:r></w:del>"#

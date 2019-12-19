@@ -223,8 +223,8 @@ pub fn history() -> Result<(), DocxError> {
   Docx::new()
     .add_paragraph(
       Paragraph::new()
-        .add_insert(Insert::new().run(Run::new().add_text("Hello")))
-        .add_delete(Delete::new().run(Run::new().add_delete_text("World"))),
+        .add_insert(Insert::new(Run::new().add_text("Hello")))
+        .add_delete(Delete::new(Run::new().add_delete_text("World"))),
     )
     .build()
     .pack(file)?;

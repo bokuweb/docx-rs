@@ -9,17 +9,19 @@
 */
 export function createLevel(id: number, start: number, format: string, text: string, jc: string): Level;
 /**
+* @param {Run} run 
+* @returns {Delete} 
+*/
+export function createDelete(run: Run): Delete;
+/**
+* @param {Run} run 
+* @returns {Insert} 
+*/
+export function createInsert(run: Run): Insert;
+/**
 * @returns {Docx} 
 */
 export function createDocx(): Docx;
-/**
-* @returns {Insert} 
-*/
-export function createInsert(): Insert;
-/**
-* @returns {Delete} 
-*/
-export function createDelete(): Delete;
 /**
 * @param {number} id 
 * @returns {Numbering} 

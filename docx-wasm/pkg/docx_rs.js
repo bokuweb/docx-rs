@@ -70,19 +70,43 @@ export function createLevel(id, start, format, text, jc) {
 function isLikeNone(x) {
     return x === undefined || x === null;
 }
-/**
-* @returns {Docx}
-*/
-export function createDocx() {
-    const ret = wasm.createDocx();
-    return Docx.__wrap(ret);
-}
 
 function _assertClass(instance, klass) {
     if (!(instance instanceof klass)) {
         throw new Error(`expected instance of ${klass.name}`);
     }
     return instance.ptr;
+}
+/**
+* @param {Run} run
+* @returns {Delete}
+*/
+export function createDelete(run) {
+    _assertClass(run, Run);
+    const ptr0 = run.ptr;
+    run.ptr = 0;
+    const ret = wasm.createDelete(ptr0);
+    return Delete.__wrap(ret);
+}
+
+/**
+* @param {Run} run
+* @returns {Insert}
+*/
+export function createInsert(run) {
+    _assertClass(run, Run);
+    const ptr0 = run.ptr;
+    run.ptr = 0;
+    const ret = wasm.createInsert(ptr0);
+    return Insert.__wrap(ret);
+}
+
+/**
+* @returns {Docx}
+*/
+export function createDocx() {
+    const ret = wasm.createDocx();
+    return Docx.__wrap(ret);
 }
 
 let cachegetInt32Memory = null;
@@ -96,22 +120,6 @@ function getInt32Memory() {
 function getArrayU8FromWasm(ptr, len) {
     return getUint8Memory().subarray(ptr / 1, ptr / 1 + len);
 }
-/**
-* @returns {Insert}
-*/
-export function createInsert() {
-    const ret = wasm.createInsert();
-    return Insert.__wrap(ret);
-}
-
-/**
-* @returns {Delete}
-*/
-export function createDelete() {
-    const ret = wasm.createDelete();
-    return Delete.__wrap(ret);
-}
-
 /**
 * @param {number} id
 * @returns {Numbering}

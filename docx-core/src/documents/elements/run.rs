@@ -40,7 +40,8 @@ impl Run {
     }
 
     pub fn add_delete_text(mut self, text: &str) -> Run {
-        self.children.push(RunChild::Text(Text::new(text)));
+        self.children
+            .push(RunChild::DeleteText(DeleteText::new(text)));
         self
     }
 

@@ -21,7 +21,9 @@ impl Run {
     pub fn add_delete_text(mut self, text: &str) -> Run {
         self.0
             .children
-            .push(docx_core::RunChild::Text(docx_core::Text::new(text)));
+            .push(docx_core::RunChild::DeleteText(docx_core::DeleteText::new(
+                text,
+            )));
         self
     }
 

@@ -36,9 +36,9 @@ export function createParagraph(): Paragraph;
 */
 export function createNumbering(id: number): Numbering;
 /**
-* @returns {TableCell} 
+* @returns {TableRow} 
 */
-export function createTableCell(): TableCell;
+export function createTableRow(): TableRow;
 /**
 * @returns {Run} 
 */
@@ -49,9 +49,9 @@ export function createRun(): Run;
 */
 export function createComment(id: number): Comment;
 /**
-* @returns {TableRow} 
+* @returns {TableCell} 
 */
-export function createTableRow(): TableRow;
+export function createTableCell(): TableCell;
 export enum StyleType {
   Paragraph,
   Character,

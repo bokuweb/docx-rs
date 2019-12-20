@@ -160,11 +160,11 @@ export function createNumbering(id) {
 }
 
 /**
-* @returns {TableCell}
+* @returns {TableRow}
 */
-export function createTableCell() {
-    const ret = wasm.createTableCell();
-    return TableCell.__wrap(ret);
+export function createTableRow() {
+    const ret = wasm.createTableRow();
+    return TableRow.__wrap(ret);
 }
 
 /**
@@ -185,11 +185,11 @@ export function createComment(id) {
 }
 
 /**
-* @returns {TableRow}
+* @returns {TableCell}
 */
-export function createTableRow() {
-    const ret = wasm.createTableRow();
-    return TableRow.__wrap(ret);
+export function createTableCell() {
+    const ret = wasm.createTableCell();
+    return TableCell.__wrap(ret);
 }
 
 let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });

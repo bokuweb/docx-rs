@@ -79,18 +79,6 @@ function _assertClass(instance, klass) {
 }
 /**
 * @param {Run} run
-* @returns {Delete}
-*/
-export function createDelete(run) {
-    _assertClass(run, Run);
-    const ptr0 = run.ptr;
-    run.ptr = 0;
-    const ret = wasm.createDelete(ptr0);
-    return Delete.__wrap(ret);
-}
-
-/**
-* @param {Run} run
 * @returns {Insert}
 */
 export function createInsert(run) {
@@ -121,12 +109,15 @@ function getArrayU8FromWasm(ptr, len) {
     return getUint8Memory().subarray(ptr / 1, ptr / 1 + len);
 }
 /**
-* @param {number} id
-* @returns {Numbering}
+* @param {Run} run
+* @returns {Delete}
 */
-export function createNumbering(id) {
-    const ret = wasm.createNumbering(id);
-    return Numbering.__wrap(ret);
+export function createDelete(run) {
+    _assertClass(run, Run);
+    const ptr0 = run.ptr;
+    run.ptr = 0;
+    const ret = wasm.createDelete(ptr0);
+    return Delete.__wrap(ret);
 }
 
 /**
@@ -160,11 +151,12 @@ export function createParagraph() {
 }
 
 /**
-* @returns {Run}
+* @param {number} id
+* @returns {Numbering}
 */
-export function createRun() {
-    const ret = wasm.createRun();
-    return Run.__wrap(ret);
+export function createNumbering(id) {
+    const ret = wasm.createNumbering(id);
+    return Numbering.__wrap(ret);
 }
 
 /**
@@ -176,11 +168,11 @@ export function createTableCell() {
 }
 
 /**
-* @returns {TableRow}
+* @returns {Run}
 */
-export function createTableRow() {
-    const ret = wasm.createTableRow();
-    return TableRow.__wrap(ret);
+export function createRun() {
+    const ret = wasm.createRun();
+    return Run.__wrap(ret);
 }
 
 /**
@@ -190,6 +182,14 @@ export function createTableRow() {
 export function createComment(id) {
     const ret = wasm.createComment(id);
     return Comment.__wrap(ret);
+}
+
+/**
+* @returns {TableRow}
+*/
+export function createTableRow() {
+    const ret = wasm.createTableRow();
+    return TableRow.__wrap(ret);
 }
 
 let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
@@ -332,6 +332,26 @@ export class Delete {
 
         wasm.__wbg_delete_free(ptr);
     }
+    /**
+    * @param {string} author
+    * @returns {Delete}
+    */
+    author(author) {
+        const ptr = this.ptr;
+        this.ptr = 0;
+        const ret = wasm.delete_author(ptr, passStringToWasm(author), WASM_VECTOR_LEN);
+        return Delete.__wrap(ret);
+    }
+    /**
+    * @param {string} date
+    * @returns {Delete}
+    */
+    date(date) {
+        const ptr = this.ptr;
+        this.ptr = 0;
+        const ret = wasm.delete_date(ptr, passStringToWasm(date), WASM_VECTOR_LEN);
+        return Delete.__wrap(ret);
+    }
 }
 /**
 */
@@ -417,6 +437,26 @@ export class Insert {
         this.ptr = 0;
 
         wasm.__wbg_insert_free(ptr);
+    }
+    /**
+    * @param {string} author
+    * @returns {Insert}
+    */
+    author(author) {
+        const ptr = this.ptr;
+        this.ptr = 0;
+        const ret = wasm.insert_author(ptr, passStringToWasm(author), WASM_VECTOR_LEN);
+        return Insert.__wrap(ret);
+    }
+    /**
+    * @param {string} date
+    * @returns {Insert}
+    */
+    date(date) {
+        const ptr = this.ptr;
+        this.ptr = 0;
+        const ret = wasm.insert_date(ptr, passStringToWasm(date), WASM_VECTOR_LEN);
+        return Insert.__wrap(ret);
     }
 }
 /**

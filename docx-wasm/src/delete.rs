@@ -15,7 +15,10 @@ impl Delete {
     pub fn take(self) -> docx_core::Delete {
         self.0
     }
+}
 
+#[wasm_bindgen]
+impl Delete {
     pub fn author(mut self, author: String) -> Delete {
         self.0.author = author;
         self

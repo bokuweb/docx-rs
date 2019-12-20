@@ -15,7 +15,10 @@ impl Insert {
     pub fn take(self) -> docx_core::Insert {
         self.0
     }
+}
 
+#[wasm_bindgen]
+impl Insert {
     pub fn author(mut self, author: String) -> Insert {
         self.0.author = author;
         self

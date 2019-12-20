@@ -10,11 +10,6 @@
 export function createLevel(id: number, start: number, format: string, text: string, jc: string): Level;
 /**
 * @param {Run} run 
-* @returns {Delete} 
-*/
-export function createDelete(run: Run): Delete;
-/**
-* @param {Run} run 
 * @returns {Insert} 
 */
 export function createInsert(run: Run): Insert;
@@ -23,10 +18,10 @@ export function createInsert(run: Run): Insert;
 */
 export function createDocx(): Docx;
 /**
-* @param {number} id 
-* @returns {Numbering} 
+* @param {Run} run 
+* @returns {Delete} 
 */
-export function createNumbering(id: number): Numbering;
+export function createDelete(run: Run): Delete;
 /**
 * @returns {Table} 
 */
@@ -36,22 +31,27 @@ export function createTable(): Table;
 */
 export function createParagraph(): Paragraph;
 /**
-* @returns {Run} 
+* @param {number} id 
+* @returns {Numbering} 
 */
-export function createRun(): Run;
+export function createNumbering(id: number): Numbering;
 /**
 * @returns {TableCell} 
 */
 export function createTableCell(): TableCell;
 /**
-* @returns {TableRow} 
+* @returns {Run} 
 */
-export function createTableRow(): TableRow;
+export function createRun(): Run;
 /**
 * @param {number} id 
 * @returns {Comment} 
 */
 export function createComment(id: number): Comment;
+/**
+* @returns {TableRow} 
+*/
+export function createTableRow(): TableRow;
 export enum StyleType {
   Paragraph,
   Character,
@@ -146,6 +146,16 @@ export class Comment {
 */
 export class Delete {
   free(): void;
+/**
+* @param {string} author 
+* @returns {Delete} 
+*/
+  author(author: string): Delete;
+/**
+* @param {string} date 
+* @returns {Delete} 
+*/
+  date(date: string): Delete;
 }
 /**
 */
@@ -175,6 +185,16 @@ export class Docx {
 */
 export class Insert {
   free(): void;
+/**
+* @param {string} author 
+* @returns {Insert} 
+*/
+  author(author: string): Insert;
+/**
+* @param {string} date 
+* @returns {Insert} 
+*/
+  date(date: string): Insert;
 }
 /**
 */

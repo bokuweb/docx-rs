@@ -19,6 +19,30 @@ pub struct CorePropsConfig {
     title: Option<String>,
 }
 
+impl Default for CorePropsConfig {
+    fn default() -> Self {
+        Self {
+            created: None,
+            creator: None,
+            description: None,
+            language: None,
+            last_modified_by: None,
+            modified: None,
+            revision: None,
+            subject: None,
+            title: None,
+        }
+    }
+}
+
+impl Default for CoreProps {
+    fn default() -> Self {
+        Self {
+            config: CorePropsConfig::default(),
+        }
+    }
+}
+
 impl CoreProps {
     pub(crate) fn new(config: CorePropsConfig) -> CoreProps {
         CoreProps { config }

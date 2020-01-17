@@ -29,7 +29,7 @@ pub enum ParagraphChild {
     Delete(Delete),
     BookmarkStart(BookmarkStart),
     BookmarkEnd(BookmarkEnd),
-    CommentStart(CommentRangeStart),
+    CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
 }
 
@@ -93,10 +93,9 @@ impl Paragraph {
     }
 
     pub fn add_comment_start(mut self, comment: Comment) -> Paragraph {
-        self.children
-            .push(ParagraphChild::CommentStart(CommentRangeStart::new(
-                comment,
-            )));
+        self.children.push(ParagraphChild::CommentStart(Box::new(
+            CommentRangeStart::new(comment),
+        )));
         self
     }
 

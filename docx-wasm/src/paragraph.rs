@@ -51,9 +51,9 @@ impl Paragraph {
     pub fn add_comment_start(mut self, comment: Comment) -> Paragraph {
         self.0
             .children
-            .push(docx_core::ParagraphChild::CommentStart(
+            .push(docx_core::ParagraphChild::CommentStart(Box::new(
                 docx_core::CommentRangeStart::new(comment.take()),
-            ));
+            )));
         self
     }
 

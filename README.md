@@ -24,6 +24,10 @@ pub fn hello() -> Result<(), DocxError> {
 }
 ```
 
+### More examples
+
+* [Indent](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/indent.rs)
+
 ## Features
 
 - [x] Paragraph

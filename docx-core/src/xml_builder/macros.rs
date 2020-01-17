@@ -1,5 +1,6 @@
-macro_rules! opened_el {
+macro_rules! open {
     ($name: ident, $el_name: expr) => {
+        #[allow(dead_code)]
         pub(crate) fn $name(mut self) -> Self {
             self.writer
                 .write(XmlEvent::start_element($el_name))
@@ -49,7 +50,7 @@ macro_rules! opened_el {
     };
 }
 
-macro_rules! opened_el_with_attrs {
+macro_rules! open_with_attrs {
     ($name: ident, $el_name: expr) => {
         pub(crate) fn $name(mut self, attrs: &[(String, String)]) -> Self {
             let mut e = XmlEvent::start_element($el_name);
@@ -57,7 +58,7 @@ macro_rules! opened_el_with_attrs {
             let mut key: &str = "";
             #[allow(unused)]
             let mut val: &str = "";
-             for attr in attrs {
+            for attr in attrs {
                 key = &attr.0;
                 val = &attr.1;
                 e = e.attr(key, val);
@@ -70,8 +71,9 @@ macro_rules! opened_el_with_attrs {
     };
 }
 
-macro_rules! closed_el_with_child {
+macro_rules! closed_with_child {
     ($name: ident, $el_name: expr) => {
+        #[allow(dead_code)]
         pub(crate) fn $name(mut self, child: &str) -> Self {
             self.writer
                 .write(XmlEvent::start_element($el_name))
@@ -117,7 +119,7 @@ macro_rules! closed_el_with_child {
     };
 }
 
-macro_rules! closed_el {
+macro_rules! closed {
     ($name: ident, $el_name: expr) => {
         pub(crate) fn $name(mut self) -> Self {
             self.writer
@@ -135,6 +137,7 @@ macro_rules! closed_el {
         }
     };
     ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr) => {
+        #[allow(dead_code)]
         pub(crate) fn $name(mut self, arg0: &str, arg1: &str) -> Self {
             self.writer
                 .write(XmlEvent::start_element($el_name).attr($attr0, arg0).attr($attr1, arg1))
@@ -200,8 +203,9 @@ macro_rules! closed_el {
     };
 }
 
-macro_rules! only_str_val_el {
+macro_rules! closed_with_str {
     ($name: ident, $el_name: expr) => {
+        #[allow(dead_code)]
         pub(crate) fn $name(mut self, val: &str) -> Self {
             self.writer
                 .write(XmlEvent::start_element($el_name).attr("w:val", val))
@@ -211,7 +215,7 @@ macro_rules! only_str_val_el {
     };
 }
 
-macro_rules! only_usize_val_el {
+macro_rules! closed_with_usize {
     ($name: ident, $el_name: expr) => {
         pub(crate) fn $name(mut self, val: usize) -> Self {
             self.writer

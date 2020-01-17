@@ -7,5 +7,4 @@ mod zipper;
 
 pub use documents::*;
 pub use errors::*;
-pub(crate) use escape::*;
 pub use types::*;

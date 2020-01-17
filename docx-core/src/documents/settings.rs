@@ -1,4 +1,4 @@
-use super::{DefaultTabStop, Style, Zoom};
+use super::{DefaultTabStop, Zoom};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 

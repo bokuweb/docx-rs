@@ -4,10 +4,10 @@ use super::XmlEvent;
 impl XMLBuilder {
     // Build RelationShips element
     // i.e. <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-    opened_el!(open_relationships, "Relationships", "xmlns");
+    open!(open_relationships, "Relationships", "xmlns");
 
     // Build Relationship
-    closed_el!(relationship, "Relationship", "Id", "Type", "Target");
+    closed!(relationship, "Relationship", "Id", "Type", "Target");
 }
 
 #[cfg(test)]

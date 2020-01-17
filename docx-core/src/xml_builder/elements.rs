@@ -6,9 +6,9 @@ const EXPECT_MESSAGE: &str = "should write buf";
 
 impl XMLBuilder {
     // i.e. <w:body... >
-    opened_el!(open_body, "w:body");
+    open!(open_body, "w:body");
     // i.e. <w:basedOn ... >
-    only_str_val_el!(based_on, "w:basedOn");
+    closed_with_str!(based_on, "w:basedOn");
     // i.e. <w:t ... >
     pub(crate) fn text(mut self, text: &str, preserve_space: bool) -> Self {
         let space = if preserve_space {
@@ -36,32 +36,32 @@ impl XMLBuilder {
         self.close()
     }
     // i.e. <w:r ... >
-    opened_el!(open_run, "w:r");
-    opened_el!(open_run_property, "w:rPr");
-    opened_el!(open_run_property_default, "w:rPrDefault");
+    open!(open_run, "w:r");
+    open!(open_run_property, "w:rPr");
+    open!(open_run_property_default, "w:rPrDefault");
     // i.e. <w:qFormat ... >
-    closed_el!(q_format, "w:qFormat");
+    closed!(q_format, "w:qFormat");
     // i.e. <w:p ... >
-    // opened_el!(open_paragraph, "w:p");
-    opened_el_with_attrs!(open_paragraph, "w:p");
-    opened_el!(open_paragraph_property, "w:pPr");
-    opened_el!(open_doc_defaults, "w:docDefaults");
+    // open!(open_paragraph, "w:p");
+    open_with_attrs!(open_paragraph, "w:p");
+    open!(open_paragraph_property, "w:pPr");
+    open!(open_doc_defaults, "w:docDefaults");
     // i.e. <w:name ... >
-    only_str_val_el!(name, "w:name");
+    closed_with_str!(name, "w:name");
     // i.e. <w:jc ... >
-    only_str_val_el!(justification, "w:jc");
+    closed_with_str!(justification, "w:jc");
     // i.e. <w:pStyle ... >
-    only_str_val_el!(paragraph_style, "w:pStyle");
+    closed_with_str!(paragraph_style, "w:pStyle");
     // i.e. <w:sz ... >
-    only_usize_val_el!(sz, "w:sz");
+    closed_with_usize!(sz, "w:sz");
     // i.e. <w:szCs ... >
-    only_usize_val_el!(sz_cs, "w:szCs");
+    closed_with_usize!(sz_cs, "w:szCs");
 
-    closed_el!(b, "w:b");
-    closed_el!(b_cs, "w:bCs");
+    closed!(b, "w:b");
+    closed!(b_cs, "w:bCs");
 
-    closed_el!(i, "w:i");
-    closed_el!(i_cs, "w:iCs");
+    closed!(i, "w:i");
+    closed!(i_cs, "w:iCs");
     // Build w:style element
     // i.e. <w:style ... >
     pub(crate) fn open_style(mut self, style_type: StyleType, id: &str) -> Self {
@@ -75,16 +75,16 @@ impl XMLBuilder {
         self
     }
     // i.e. <w:next ... >
-    only_str_val_el!(next, "w:next");
+    closed_with_str!(next, "w:next");
 
     // i.e. <w:color ... >
-    only_str_val_el!(color, "w:color");
+    closed_with_str!(color, "w:color");
 
     // i.e. <w:highlight ... >
-    only_str_val_el!(highlight, "w:highlight");
+    closed_with_str!(highlight, "w:highlight");
 
     // i.e. <w:u ... >
-    only_str_val_el!(underline, "w:u");
+    closed_with_str!(underline, "w:u");
 
     // i.e. <w:ind ... >
     pub(crate) fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Self {
@@ -107,24 +107,24 @@ impl XMLBuilder {
     //
     // Table elements
     //
-    opened_el!(open_table, "w:tbl");
-    opened_el!(open_table_property, "w:tblPr");
-    opened_el!(open_table_grid, "w:tblGrid");
-    opened_el!(open_table_row, "w:tr");
-    opened_el!(open_table_row_property, "w:trPr");
-    opened_el!(open_table_cell, "w:tc");
-    opened_el!(open_table_cell_property, "w:tcPr");
-    opened_el!(open_table_cell_borders, "w:tcBorders");
-    opened_el!(open_table_borders, "w:tblBorders");
-    opened_el!(open_table_cell_margins, "w:tblCellMar");
+    open!(open_table, "w:tbl");
+    open!(open_table_property, "w:tblPr");
+    open!(open_table_grid, "w:tblGrid");
+    open!(open_table_row, "w:tr");
+    open!(open_table_row_property, "w:trPr");
+    open!(open_table_cell, "w:tc");
+    open!(open_table_cell_property, "w:tcPr");
+    open!(open_table_cell_borders, "w:tcBorders");
+    open!(open_table_borders, "w:tblBorders");
+    open!(open_table_cell_margins, "w:tblCellMar");
 
     closed_w_with_type_el!(table_width, "w:tblW");
     closed_w_with_type_el!(table_indent, "w:tblInd");
     closed_w_with_type_el!(grid_column, "w:gridCol");
     closed_w_with_type_el!(table_cell_width, "w:tcW");
 
-    only_usize_val_el!(grid_span, "w:gridSpan");
-    only_str_val_el!(vertical_merge, "w:vMerge");
+    closed_with_usize!(grid_span, "w:gridSpan");
+    closed_with_str!(vertical_merge, "w:vMerge");
 
     closed_w_with_type_el!(margin_top, "w:top");
     closed_w_with_type_el!(margin_left, "w:left");
@@ -138,24 +138,24 @@ impl XMLBuilder {
     closed_border_el!(border_inside_h, "w:insideH");
     closed_border_el!(border_inside_v, "w:insideV");
 
-    closed_el!(shd, "w:shd", "w:fill", "w:val");
+    closed!(shd, "w:shd", "w:fill", "w:val");
 
-    closed_el!(tab, "w:tab");
-    closed_el!(tab_with_pos, "w:tab", "w:val", "w:pos");
+    closed!(tab, "w:tab");
+    closed!(tab_with_pos, "w:tab", "w:val", "w:pos");
 
-    closed_el!(br, "w:br", "w:type");
-    closed_el!(zoom, "w:zoom", "w:percent");
-    only_usize_val_el!(default_tab_stop, "w:defaultTabStop");
+    closed!(br, "w:br", "w:type");
+    closed!(zoom, "w:zoom", "w:percent");
+    closed_with_usize!(default_tab_stop, "w:defaultTabStop");
 
-    opened_el!(open_font, "w:font", "w:name");
-    only_str_val_el!(pitch, "w:pitch");
-    only_str_val_el!(family, "w:family");
-    only_str_val_el!(charset, "w:charset");
+    open!(open_font, "w:font", "w:name");
+    closed_with_str!(pitch, "w:pitch");
+    closed_with_str!(family, "w:family");
+    closed_with_str!(charset, "w:charset");
 
-    opened_el!(open_section_property, "w:sectPr");
-    only_str_val_el!(type_tag, "w:type");
-    closed_el!(page_size, "w:pgSz", "w:w", "w:h");
-    closed_el!(
+    open!(open_section_property, "w:sectPr");
+    closed_with_str!(type_tag, "w:type");
+    closed!(page_size, "w:pgSz", "w:w", "w:h");
+    closed!(
         page_margin,
         "w:pgMar",
         "w:top",
@@ -166,19 +166,19 @@ impl XMLBuilder {
         "w:footer",
         "w:gutter"
     );
-    closed_el!(columns, "w:cols", "w:space");
-    closed_el!(document_grid, "w:docGrid", "w:type", "w:linePitch");
+    closed!(columns, "w:cols", "w:space");
+    closed!(document_grid, "w:docGrid", "w:type", "w:linePitch");
 
-    opened_el!(open_insert, "w:ins", "w:id", "w:author", "w:date");
-    opened_el!(open_delete, "w:del", "w:id", "w:author", "w:date");
+    open!(open_insert, "w:ins", "w:id", "w:author", "w:date");
+    open!(open_delete, "w:del", "w:id", "w:author", "w:date");
 
-    closed_el!(bookmark_start, "w:bookmarkStart", "w:id", "w:name");
-    closed_el!(bookmark_end, "w:bookmarkEnd", "w:id");
+    closed!(bookmark_start, "w:bookmarkStart", "w:id", "w:name");
+    closed!(bookmark_end, "w:bookmarkEnd", "w:id");
 
-    closed_el!(comment_range_start, "w:commentRangeStart", "w:id");
-    closed_el!(comment_range_end, "w:commentRangeEnd", "w:id");
-    closed_el!(comment_reference, "w:commentReference", "w:id");
-    opened_el!(
+    closed!(comment_range_start, "w:commentRangeStart", "w:id");
+    closed!(comment_range_end, "w:commentRangeEnd", "w:id");
+    closed!(comment_reference, "w:commentReference", "w:id");
+    open!(
         open_comment,
         "w:comment",
         "w:id",
@@ -187,19 +187,19 @@ impl XMLBuilder {
         "w:initials"
     );
 
-    opened_el!(open_abstract_num, "w:abstractNum", "w:abstractNumId");
-    opened_el!(open_level, "w:lvl", "w:ilvl");
-    opened_el!(open_tabs, "w:tabs");
-    opened_el!(open_num, "w:num", "w:numId");
-    opened_el!(open_numbering_property, "w:numPr");
-    only_usize_val_el!(indent_level, "w:ilvl");
-    only_usize_val_el!(num_id, "w:numId");
-    only_usize_val_el!(start, "w:start");
-    only_str_val_el!(number_format, "w:numFmt");
-    only_str_val_el!(level_text, "w:lvlText");
-    only_str_val_el!(level_justification, "w:lvlJc");
-    only_str_val_el!(abstract_num_id, "w:abstractNumId");
-    closed_el!(vanish, "w:vanish");
+    open!(open_abstract_num, "w:abstractNum", "w:abstractNumId");
+    open!(open_level, "w:lvl", "w:ilvl");
+    open!(open_tabs, "w:tabs");
+    open!(open_num, "w:num", "w:numId");
+    open!(open_numbering_property, "w:numPr");
+    closed_with_usize!(indent_level, "w:ilvl");
+    closed_with_usize!(num_id, "w:numId");
+    closed_with_usize!(start, "w:start");
+    closed_with_str!(number_format, "w:numFmt");
+    closed_with_str!(level_text, "w:lvlText");
+    closed_with_str!(level_justification, "w:lvlJc");
+    closed_with_str!(abstract_num_id, "w:abstractNumId");
+    closed!(vanish, "w:vanish");
 }
 
 #[cfg(test)]

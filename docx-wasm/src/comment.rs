@@ -20,12 +20,12 @@ impl Comment {
 #[wasm_bindgen]
 impl Comment {
     pub fn author(mut self, author: String) -> Comment {
-        self.0.author = author.into();
+        self.0.author = author;
         self
     }
 
     pub fn date(mut self, date: String) -> Comment {
-        self.0.date = date.into();
+        self.0.date = date;
         self
     }
 

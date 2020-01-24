@@ -6,7 +6,13 @@ pub struct AppProps {}
 
 impl AppProps {
     pub fn new() -> AppProps {
-        AppProps {}
+        Default::default()
+    }
+}
+
+impl Default for AppProps {
+    fn default() -> Self {
+        Self {}
     }
 }
 

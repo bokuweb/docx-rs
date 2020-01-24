@@ -17,13 +17,7 @@ pub enum TableCellContent {
 
 impl TableCell {
     pub fn new() -> TableCell {
-        let property = TableCellProperty::new();
-        let contents = vec![];
-        Self {
-            property,
-            contents,
-            has_numbering: false,
-        }
+        Default::default()
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> TableCell {
@@ -47,6 +41,18 @@ impl TableCell {
     pub fn width(mut self, v: usize) -> TableCell {
         self.property = self.property.width(v, WidthType::DXA);
         self
+    }
+}
+
+impl Default for TableCell {
+    fn default() -> Self {
+        let property = TableCellProperty::new();
+        let contents = vec![];
+        Self {
+            property,
+            contents,
+            has_numbering: false,
+        }
     }
 }
 

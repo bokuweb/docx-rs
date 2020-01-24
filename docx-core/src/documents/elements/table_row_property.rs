@@ -6,6 +6,12 @@ pub struct TableRowProperty {}
 
 impl TableRowProperty {
     pub fn new() -> TableRowProperty {
+        Default::default()
+    }
+}
+
+impl Default for TableRowProperty {
+    fn default() -> Self {
         TableRowProperty {}
     }
 }

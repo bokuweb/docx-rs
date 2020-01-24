@@ -6,7 +6,13 @@ pub struct BoldCs {}
 
 impl BoldCs {
     pub fn new() -> BoldCs {
-        BoldCs {}
+        Default::default()
+    }
+}
+
+impl Default for BoldCs {
+    fn default() -> Self {
+        Self {}
     }
 }
 

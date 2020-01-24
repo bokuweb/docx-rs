@@ -10,6 +10,12 @@ impl Vanish {
     }
 }
 
+impl Default for Vanish {
+    fn default() -> Self {
+        Vanish {}
+    }
+}
+
 impl BuildXML for Vanish {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();

@@ -6,6 +6,12 @@ pub struct ContentTypes {}
 
 impl ContentTypes {
     pub fn new() -> ContentTypes {
+        Default::default()
+    }
+}
+
+impl Default for ContentTypes {
+    fn default() -> Self {
         ContentTypes {}
     }
 }

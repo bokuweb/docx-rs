@@ -133,11 +133,8 @@ impl Docx {
             match child {
                 DocumentChild::Paragraph(paragraph) => {
                     for child in &paragraph.children {
-                        match child {
-                            ParagraphChild::CommentStart(c) => {
-                                comments.push(c.comment());
-                            }
-                            _ => {}
+                        if let ParagraphChild::CommentStart(c) = child {
+                            comments.push(c.comment());
                         }
                     }
                 }
@@ -148,11 +145,8 @@ impl Docx {
                                 match content {
                                     TableCellContent::Paragraph(paragraph) => {
                                         for child in &paragraph.children {
-                                            match child {
-                                                ParagraphChild::CommentStart(c) => {
-                                                    comments.push(c.comment());
-                                                }
-                                                _ => {}
+                                            if let ParagraphChild::CommentStart(c) = child {
+                                                comments.push(c.comment());
                                             }
                                         }
                                     }
@@ -165,7 +159,7 @@ impl Docx {
         }
         // If this document has comments, set comments.xml to document_rels.
         // This is because comments.xml without comment cause an error on word online.
-        if comments.len() > 0 {
+        if !comments.is_empty() {
             self.document_rels.has_comments = true;
         }
         self.comments.add_comments(comments);

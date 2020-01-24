@@ -1,18 +1,18 @@
 use super::*;
-use docx;
+use docx_rs;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 #[derive(Debug)]
-pub struct Numbering(docx::Numbering);
+pub struct Numbering(docx_rs::Numbering);
 
 #[wasm_bindgen(js_name = createNumbering)]
 pub fn create_numbering(id: usize) -> Numbering {
-    Numbering(docx::Numbering::new(id))
+    Numbering(docx_rs::Numbering::new(id))
 }
 
 impl Numbering {
-    pub fn take(self) -> docx::Numbering {
+    pub fn take(self) -> docx_rs::Numbering {
         self.0
     }
 }

@@ -1,15 +1,15 @@
 use super::*;
-use docx;
+use docx_rs;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 #[derive(Debug)]
-pub struct Docx(docx::Docx);
+pub struct Docx(docx_rs::Docx);
 
 #[wasm_bindgen]
 #[allow(non_snake_case)]
 pub fn createDocx() -> Docx {
-    Docx(docx::Docx::new())
+    Docx(docx_rs::Docx::new())
 }
 
 #[wasm_bindgen]

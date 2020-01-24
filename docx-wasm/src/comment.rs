@@ -1,18 +1,18 @@
 use super::*;
-use docx;
+use docx_rs;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 #[derive(Debug)]
-pub struct Comment(docx::Comment);
+pub struct Comment(docx_rs::Comment);
 
 #[wasm_bindgen(js_name = createComment)]
 pub fn create_comment(id: usize) -> Comment {
-    Comment(docx::Comment::new(id))
+    Comment(docx_rs::Comment::new(id))
 }
 
 impl Comment {
-    pub fn take(self) -> docx::Comment {
+    pub fn take(self) -> docx_rs::Comment {
         self.0
     }
 }

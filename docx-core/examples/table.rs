@@ -1,4 +1,4 @@
-use docx::*;
+use docx_rs::*;
 
 pub fn main() -> Result<(), DocxError> {
     let path = std::path::Path::new("./table.docx");
@@ -33,6 +33,6 @@ pub fn main() -> Result<(), DocxError> {
         ]),
     ])
     .set_grid(vec![2000, 2000, 2000]);
-    Docx::new().add_table(table).build().pack(file)?;
+   Docx::new().add_table(table).build().pack(file)?;
     Ok(())
 }

@@ -1,18 +1,18 @@
 use super::*;
-use docx;
+use docx_rs;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 #[derive(Debug)]
-pub struct Insert(docx::Insert);
+pub struct Insert(docx_rs::Insert);
 
 #[wasm_bindgen(js_name = createInsert)]
 pub fn create_insert(run: Run) -> Insert {
-    Insert(docx::Insert::new(run.take()))
+    Insert(docx_rs::Insert::new(run.take()))
 }
 
 impl Insert {
-    pub fn take(self) -> docx::Insert {
+    pub fn take(self) -> docx_rs::Insert {
         self.0
     }
 }

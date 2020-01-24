@@ -1,14 +1,13 @@
-use super::*;
-use docx;
+use docx_rs;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 #[derive(Debug)]
-pub struct Run(docx::Run);
+pub struct Run(docx_rs::Run);
 
 #[wasm_bindgen(js_name = createRun)]
 pub fn create_run() -> Run {
-    Run(docx::Run::new())
+    Run(docx_rs::Run::new())
 }
 
 #[wasm_bindgen]
@@ -21,19 +20,19 @@ impl Run {
     pub fn add_delete_text(mut self, text: &str) -> Run {
         self.0
             .children
-            .push(docx::RunChild::DeleteText(docx::DeleteText::new(text)));
+            .push(docx_rs::RunChild::DeleteText(docx_rs::DeleteText::new(text)));
         self
     }
 
     pub fn add_tab(mut self) -> Run {
-        self.0.children.push(docx::RunChild::Tab(docx::Tab::new()));
+        self.0.children.push(docx_rs::RunChild::Tab(docx_rs::Tab::new()));
         self
     }
 
-    pub fn add_break(mut self, break_type: docx::BreakType) -> Run {
+    pub fn add_break(mut self, break_type: docx_rs::BreakType) -> Run {
         self.0
             .children
-            .push(docx::RunChild::Break(docx::Break::new(break_type)));
+            .push(docx_rs::RunChild::Break(docx_rs::Break::new(break_type)));
         self
     }
 
@@ -74,7 +73,7 @@ impl Run {
 }
 
 impl Run {
-    pub fn take(self) -> docx::Run {
+    pub fn take(self) -> docx_rs::Run {
         self.0
     }
 }

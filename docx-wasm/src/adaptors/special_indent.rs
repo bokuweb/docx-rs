@@ -1,18 +1,14 @@
-use docx_core;
+use docx;
 
 pub fn create_special_indent(
-    special_indent_kind: Option<docx_core::SpecialIndentKind>,
+    special_indent_kind: Option<docx::SpecialIndentKind>,
     special_indent_size: Option<usize>,
-) -> Option<docx_core::SpecialIndentType> {
+) -> Option<docx::SpecialIndentType> {
     if let Some(kind) = special_indent_kind {
         let size = special_indent_size.unwrap_or_else(|| 0);
         match kind {
-            docx_core::SpecialIndentKind::FirstLine => {
-                Some(docx_core::SpecialIndentType::FirstLine(size))
-            }
-            docx_core::SpecialIndentKind::Hanging => {
-                Some(docx_core::SpecialIndentType::Hanging(size))
-            }
+            docx::SpecialIndentKind::FirstLine => Some(docx::SpecialIndentType::FirstLine(size)),
+            docx::SpecialIndentKind::Hanging => Some(docx::SpecialIndentType::Hanging(size)),
         }
     } else {
         None

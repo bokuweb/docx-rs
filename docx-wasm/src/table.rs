@@ -1,18 +1,18 @@
 use super::*;
-use docx_core;
+use docx;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 #[derive(Debug)]
-pub struct Table(docx_core::Table);
+pub struct Table(docx::Table);
 
 #[wasm_bindgen(js_name = createTable)]
 pub fn create_table() -> Table {
-    Table(docx_core::Table::new(vec![]))
+    Table(docx::Table::new(vec![]))
 }
 
 impl Table {
-    pub fn take(self) -> docx_core::Table {
+    pub fn take(self) -> docx::Table {
         self.0
     }
 }
@@ -34,7 +34,7 @@ impl Table {
         self
     }
 
-    pub fn align(mut self, v: docx_core::TableAlignmentType) -> Table {
+    pub fn align(mut self, v: docx::TableAlignmentType) -> Table {
         self.0 = self.0.align(v);
         self
     }

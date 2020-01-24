@@ -1,18 +1,18 @@
 use super::*;
-use docx_core;
+use docx;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 #[derive(Debug)]
-pub struct Delete(docx_core::Delete);
+pub struct Delete(docx::Delete);
 
 #[wasm_bindgen(js_name = createDelete)]
 pub fn create_delete(run: Run) -> Delete {
-    Delete(docx_core::Delete::new(run.take()))
+    Delete(docx::Delete::new(run.take()))
 }
 
 impl Delete {
-    pub fn take(self) -> docx_core::Delete {
+    pub fn take(self) -> docx::Delete {
         self.0
     }
 }

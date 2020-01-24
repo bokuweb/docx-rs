@@ -10,8 +10,8 @@
 
 ## Example
 
-``` rust
-use docx_core::*;
+```rust
+use docx::*;
 
 pub fn hello() -> Result<(), DocxError> {
   let path = std::path::Path::new("./tests/output/hello.docx");
@@ -26,7 +26,7 @@ pub fn hello() -> Result<(), DocxError> {
 
 ### More examples
 
-* [Indent](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/indent.rs)
+- [Indent](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/indent.rs)
 
 ## Features
 

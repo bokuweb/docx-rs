@@ -1,5 +1,5 @@
 [package]
-name = "docx-core"
+name = "docx"
 version = "0.1.0"
 authors = ["bokuweb <bokuweb12@gmail.com>"]
 edition = "2018"

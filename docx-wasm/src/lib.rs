@@ -1,7 +1,7 @@
 mod adaptors;
 mod comment;
 mod delete;
-mod docx;
+mod doc;
 mod insert;
 mod level;
 mod numbering;
@@ -14,8 +14,7 @@ mod table_row;
 pub use adaptors::*;
 pub use comment::*;
 pub use delete::*;
-pub use docx::*;
-pub use docx_core;
+pub use doc::*;
 pub use insert::*;
 pub use level::*;
 pub use numbering::*;

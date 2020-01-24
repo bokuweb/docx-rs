@@ -223,7 +223,11 @@ pub fn history() -> Result<(), DocxError> {
   Docx::new()
     .add_paragraph(
       Paragraph::new()
-        .add_insert(Insert::new(Run::new().add_text("Hello")))
+        .add_insert(
+          Insert::new(Run::new().add_text("Hello"))
+            .author("bokuweb")
+            .date("2019-01-01T00:00:00Z"),
+        )
         .add_delete(Delete::new(Run::new().add_delete_text("World"))),
     )
     .build()

@@ -52,7 +52,6 @@ pub fn hello() -> Result<(), DocxError> {
 - [ ] Header
 - [ ] Footer
 - [x] Comment
-- [x]
 - [ ] Image
 - [x] Style
 - [x] Table

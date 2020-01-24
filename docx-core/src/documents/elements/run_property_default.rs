@@ -9,6 +9,12 @@ pub struct RunPropertyDefault {
 
 impl RunPropertyDefault {
     pub fn new() -> RunPropertyDefault {
+        Default::default()
+    }
+}
+
+impl Default for RunPropertyDefault {
+    fn default() -> Self {
         let run_property = RunProperty::new();
         RunPropertyDefault { run_property }
     }

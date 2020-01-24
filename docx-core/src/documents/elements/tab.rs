@@ -6,6 +6,12 @@ pub struct Tab {}
 
 impl Tab {
     pub fn new() -> Tab {
+        Default::default()
+    }
+}
+
+impl Default for Tab {
+    fn default() -> Self {
         Tab {}
     }
 }

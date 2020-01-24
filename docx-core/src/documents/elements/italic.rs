@@ -6,7 +6,13 @@ pub struct Italic {}
 
 impl Italic {
     pub fn new() -> Italic {
-        Italic {}
+        Default::default()
+    }
+}
+
+impl Default for Italic {
+    fn default() -> Self {
+        Self {}
     }
 }
 

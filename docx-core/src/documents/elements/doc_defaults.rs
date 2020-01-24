@@ -10,6 +10,12 @@ pub struct DocDefaults {
 
 impl DocDefaults {
     pub fn new() -> DocDefaults {
+        Default::default()
+    }
+}
+
+impl Default for DocDefaults {
+    fn default() -> Self {
         let run_property_default = RunPropertyDefault::new();
         DocDefaults {
             run_property_default,

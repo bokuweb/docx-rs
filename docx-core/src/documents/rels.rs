@@ -6,6 +6,12 @@ pub struct Rels {}
 
 impl Rels {
     pub fn new() -> Rels {
+        Default::default()
+    }
+}
+
+impl Default for Rels {
+    fn default() -> Self {
         Rels {}
     }
 }
@@ -24,12 +30,12 @@ impl BuildXML for Rels {
                 "rId2",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
                 "docProps/app.xml"
-            ) 
+            )
             .relationship(
                 "rId3",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
                 "word/document.xml"
-            )                         
+            )
             .close()
             .build()
     }
@@ -39,9 +45,9 @@ impl BuildXML for Rels {
 mod tests {
 
     use super::*;
-    use std::str;
     #[cfg(test)]
     use pretty_assertions::assert_eq;
+    use std::str;
 
     #[test]
     fn test_build() {

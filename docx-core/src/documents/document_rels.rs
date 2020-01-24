@@ -9,7 +9,13 @@ pub struct DocumentRels {
 
 impl DocumentRels {
     pub fn new() -> DocumentRels {
-        DocumentRels {
+        Default::default()
+    }
+}
+
+impl Default for DocumentRels {
+    fn default() -> Self {
+        Self {
             has_comments: false,
             has_numberings: false,
         }

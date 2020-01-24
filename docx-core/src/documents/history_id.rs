@@ -1,12 +1,13 @@
-#[allow(unused)]
-use std::sync::atomic::{AtomicUsize, Ordering};
-
-#[allow(dead_code)]
+#[cfg(not(test))]
+use std::sync::atomic::AtomicUsize;
+#[cfg(not(test))]
 static HISTORY_ID: AtomicUsize = AtomicUsize::new(0);
 
 #[cfg(not(test))]
 pub trait HistoryId {
     fn generate(&self) -> String {
+        use std::sync::atomic::Ordering;
+
         let id = HISTORY_ID.load(Ordering::Relaxed);
         HISTORY_ID.store(id + 1, Ordering::Relaxed);
         format!("{}", id)

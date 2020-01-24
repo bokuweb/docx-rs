@@ -11,7 +11,13 @@ pub struct QFormat {}
 
 impl QFormat {
     pub fn new() -> QFormat {
-        QFormat {}
+        Default::default()
+    }
+}
+
+impl Default for QFormat {
+    fn default() -> Self {
+        Self {}
     }
 }
 

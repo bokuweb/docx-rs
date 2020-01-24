@@ -13,12 +13,7 @@ pub struct TableCellProperty {
 
 impl TableCellProperty {
     pub fn new() -> TableCellProperty {
-        TableCellProperty {
-            width: None,
-            borders: None,
-            grid_span: None,
-            vertical_merge: None,
-        }
+        Default::default()
     }
 
     pub fn width(mut self, v: usize, t: WidthType) -> TableCellProperty {
@@ -34,6 +29,17 @@ impl TableCellProperty {
     pub fn grid_span(mut self, v: usize) -> TableCellProperty {
         self.grid_span = Some(GridSpan::new(v));
         self
+    }
+}
+
+impl Default for TableCellProperty {
+    fn default() -> Self {
+        TableCellProperty {
+            width: None,
+            borders: None,
+            grid_span: None,
+            vertical_merge: None,
+        }
     }
 }
 

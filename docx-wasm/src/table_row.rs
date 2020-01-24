@@ -1,18 +1,18 @@
 use super::*;
-use docx_core;
+use docx_rs;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 #[derive(Debug)]
-pub struct TableRow(docx_core::TableRow);
+pub struct TableRow(docx_rs::TableRow);
 
 #[wasm_bindgen(js_name = createTableRow)]
 pub fn create_table_row() -> TableRow {
-    TableRow(docx_core::TableRow::new(vec![]))
+    TableRow(docx_rs::TableRow::new(vec![]))
 }
 
 impl TableRow {
-    pub fn take(self) -> docx_core::TableRow {
+    pub fn take(self) -> docx_rs::TableRow {
         self.0
     }
 }

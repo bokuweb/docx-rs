@@ -10,12 +10,22 @@
 
 ## Installation
 
+### Rust
+
 ```
 [dependencies]
 docx-rs = "0.2.0"
 ```
 
+### Browser
+
+```
+yarn add docx-wasm
+```
+
 ## Example
+
+### Rust
 
 ```rust
 use docx_rs::*;
@@ -29,6 +39,22 @@ pub fn hello() -> Result<(), DocxError> {
         .pack(file)?;
     Ok(())
 }
+```
+
+### Browser
+
+```javascript
+import { saveAs } from "file-saver";
+
+// // Note that a dynamic `import` statement here is required due to webpack/webpack#6615,
+import("docx-wasm").then(w => {
+  const buf = new w.Docx()
+    .addParagraph(
+      new w.Paragraph().addRun(new w.Run().addText("Hello world!!"))
+    )
+    .build();
+  saveAs(new Blob([buf]), "hello.docx");
+});
 ```
 
 ### More examples

@@ -1,15 +1,15 @@
 {
-  "name": "docx-rs",
+  "name": "docx-wasm",
   "collaborators": [
     "bokuweb <bokuweb12@gmail.com>"
   ],
   "version": "0.1.0",
   "files": [
-    "docx_rs_bg.wasm",
-    "docx_rs.js",
-    "docx_rs.d.ts"
+    "index_bg.wasm",
+    "index.js",
+    "index.d.ts"
   ],
-  "module": "docx_rs.js",
-  "types": "docx_rs.d.ts",
+  "module": "index.js",
+  "types": "index.d.ts",
   "sideEffects": "false"
 }

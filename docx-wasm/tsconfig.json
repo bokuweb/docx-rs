@@ -14,5 +14,6 @@
     "esModuleInterop": true,
     "outDir": "dist",
     "declaration": true
-  }
+  },
+  "include": ["js"]
 }

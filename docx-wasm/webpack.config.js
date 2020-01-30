@@ -4,7 +4,7 @@ const webpack = require("webpack");
 const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
 
 module.exports = {
-  entry: "./docx.ts",
+  entry: "./js/docx.ts",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "index.js"

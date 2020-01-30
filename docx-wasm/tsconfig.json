@@ -13,6 +13,5 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "outDir": "dist"
-  },
-  "files": ["docx.ts"]
+  }
 }

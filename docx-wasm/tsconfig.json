@@ -12,6 +12,7 @@
     "target": "es6",
     "sourceMap": true,
     "esModuleInterop": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "declaration": true
   }
 }

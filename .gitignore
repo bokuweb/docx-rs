@@ -11,3 +11,4 @@ vrt/screenshot/diff
 vrt/report.html
 reg.json
 docx-core/tests/output/*.docx
+docx-wasm/*.tgz

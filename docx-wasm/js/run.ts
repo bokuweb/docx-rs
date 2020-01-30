@@ -19,8 +19,8 @@ export class Run {
   children: RunChild[] = [];
   property: RunProperty;
 
-  addText(text: Text) {
-    this.children.push(text);
+  addText(text: string) {
+    this.children.push(new Text(text));
     return this;
   }
 

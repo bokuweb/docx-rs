@@ -17,7 +17,7 @@ export type RunProperty = {
 
 export class Run {
   children: RunChild[] = [];
-  property: RunProperty;
+  property: RunProperty = {};
 
   addText(text: string) {
     this.children.push(new Text(text));

@@ -1,10 +1,13 @@
 import { Paragraph } from "./paragraph";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
+import { DeleteText } from "./delete-text";
 import { Table } from "./table";
 import { TableCell } from "./table-cell";
 import { Run } from "./run";
 import { Text } from "./text";
+import { Tab } from "./tab";
+import { Break } from "./break";
 import { Comment } from "./comment";
 import { CommentEnd } from "./comment-end";
 import { Numbering } from "./numbering";
@@ -37,8 +40,49 @@ export class Docx {
     r.children.forEach(child => {
       if (child instanceof Text) {
         run = run.add_text(child.text);
+      } else if (child instanceof DeleteText) {
+        run = run.add_delete_text(child.text);
+      } else if (child instanceof Tab) {
+        run = run.add_tab();
+      } else if (child instanceof Break) {
+        if (child.type === "column") {
+          run = run.add_break(wasm.BreakType.Column);
+        } else if (child.type === "page") {
+          run = run.add_break(wasm.BreakType.Page);
+        } else if (child.type === "textWrapping") {
+          run = run.add_break(wasm.BreakType.TextWrapping);
+        }
       }
     });
+
+    if (typeof r.property.size !== "undefined") {
+      run = run.size(r.property.size);
+    }
+
+    if (r.property.color) {
+      run = run.color(r.property.color);
+    }
+
+    if (r.property.highlight) {
+      run = run.highlight(r.property.highlight);
+    }
+
+    if (r.property.bold) {
+      run = run.bold();
+    }
+
+    if (r.property.italic) {
+      run = run.italic();
+    }
+
+    if (r.property.underline) {
+      run = run.underline(r.property.underline);
+    }
+
+    if (r.property.vanish) {
+      run = run.vanish();
+    }
+
     return run;
   }
 

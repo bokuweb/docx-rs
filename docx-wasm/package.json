@@ -1,6 +1,6 @@
 {
   "name": "docx-wasm",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "main": "dist/index.js",
   "author": "bokuweb <bokuweb12@gmail.com>",
   "license": "MIT",
@@ -28,8 +28,8 @@
     "pkg/docx_wasm.d.ts",
     "pkg/docx_wasm.js"
   ],
-  "module": "dist/js/index.js",
-  "types": "dist/js/index.d.ts",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "@bokuweb/docx-wasm": "0.1.0",
     "docx-wasm": "0.0.10"

@@ -176,7 +176,7 @@ export class Docx {
           break;
         }
         case "hanging": {
-          paragraph = paragraph.align(wasm.SpecialIndentKind.Hanging);
+          kind = wasm.SpecialIndentKind.Hanging;
           break;
         }
       }
@@ -203,6 +203,7 @@ export class Docx {
         const cell = this.buildCell(c);
         row = row.add_cell(cell);
       });
+      table = table.add_row(row);
     });
     table = table.set_grid(new Uint32Array(t.grid));
 

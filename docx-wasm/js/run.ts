@@ -40,37 +40,37 @@ export class Run {
   }
 
   size(size: number) {
-    this.property.size = size;
+    this.property = { ...this.property, size };
     return this;
   }
 
   color(color: string) {
-    this.property.color = color;
+    this.property = { ...this.property, color };
     return this;
   }
 
   highlight(color: string) {
-    this.property.highlight = color;
+    this.property = { ...this.property, highlight: color };
     return this;
   }
 
   bold() {
-    this.property.bold = true;
+    this.property = { ...this.property, bold: true };
     return this;
   }
 
   italic() {
-    this.property.italic = true;
+    this.property = { ...this.property, italic: true };
     return this;
   }
 
   underline(type: string) {
-    this.property.underline = type;
+    this.property = { ...this.property, underline: type };
     return this;
   }
 
   vanish() {
-    this.property.vanish = true;
+    this.property = { ...this.property, vanish: true };
     return this;
   }
 }

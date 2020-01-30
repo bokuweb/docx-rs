@@ -11,7 +11,7 @@ export type TableProperty = {
 export class Table {
   rows: TableRow[] = [];
   grid: number[] = [];
-  property: TableProperty;
+  property: TableProperty = {};
 
   addRow(row: TableRow) {
     this.rows.push(row);

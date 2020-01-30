@@ -10,7 +10,7 @@ export type CellProperty = {
 
 export class TableCell {
   children: Paragraph[] = [];
-  property: CellProperty;
+  property: CellProperty = {};
 
   addParagraph(p: Paragraph) {
     this.children.push(p);

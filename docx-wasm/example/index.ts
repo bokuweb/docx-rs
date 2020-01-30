@@ -9,6 +9,7 @@ import("../js").then(w => {
           .bold()
           .highlight("yellow")
           .color("FF0000")
+          .size(40)
       )
     )
     .build();

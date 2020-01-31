@@ -6,6 +6,7 @@ mod document;
 mod document_rels;
 mod elements;
 mod font_table;
+mod from_xml;
 mod history_id;
 mod numberings;
 mod rels;
@@ -23,6 +24,7 @@ pub use document::*;
 pub use document_rels::*;
 pub use elements::*;
 pub use font_table::*;
+pub use from_xml::*;
 pub use numberings::*;
 pub use rels::*;
 pub use settings::*;
@@ -45,7 +47,7 @@ pub struct Docx {
 
 impl Default for Docx {
     fn default() -> Self {
-        let content_type = ContentTypes::new();
+        let content_type = ContentTypes::new().set_default();
         let rels = Rels::new();
         let doc_props = DocProps::new(CorePropsConfig::new());
         let styles = Styles::new();

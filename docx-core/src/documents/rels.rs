@@ -1,43 +1,106 @@
-use crate::documents::BuildXML;
+use std::collections::HashMap;
+use std::io::Read;
+use xml::reader::{EventReader, XmlEvent};
+
+use crate::documents::{BuildXML, FromXML};
+use crate::reader::ReaderError;
 use crate::xml_builder::*;
 
-#[derive(Debug)]
-pub struct Rels {}
+#[derive(Debug, PartialEq)]
+pub struct Rels {
+    rels: HashMap<String, (String, String)>,
+}
 
 impl Rels {
     pub fn new() -> Rels {
         Default::default()
     }
+
+    pub fn set_default(mut self) -> Self {
+        self.rels.insert(
+            "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"
+                .to_owned(),
+            ("rId1".to_owned(), "docProps/core.xml".to_owned()),
+        );
+        self.rels.insert(
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties".to_owned(),
+            ("rId2".to_owned(), "docProps/app.xml".to_owned()),
+        );
+        self.rels.insert(
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument"
+                .to_owned(),
+            ("rId3".to_owned(), "word/document.xml".to_owned()),
+        );
+        self
+    }
+
+    pub fn add_rel(
+        mut self,
+        id: impl Into<String>,
+        rel_type: impl Into<String>,
+        target: impl Into<String>,
+    ) -> Self {
+        self.rels
+            .insert(rel_type.into(), (id.into(), target.into()));
+        self
+    }
 }
 
 impl Default for Rels {
     fn default() -> Self {
-        Rels {}
+        Rels {
+            rels: HashMap::new(),
+        }
     }
 }
 
 impl BuildXML for Rels {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.declaration(None)
-            .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships")
-            .relationship(
-                "rId1",
-                "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties",
-                "docProps/core.xml"
-            )
-            .relationship(
-                "rId2",
-                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
-                "docProps/app.xml"
-            )
-            .relationship(
-                "rId3",
-                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
-                "word/document.xml"
-            )
-            .close()
-            .build()
+        let mut b = b
+            .declaration(None)
+            .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships");
+        for (k, (id, v)) in self.rels.iter() {
+            b = b.relationship(id, k, v);
+        }
+        b.close().build()
+    }
+}
+
+impl FromXML for Rels {
+    fn from_xml<R: Read>(reader: R) -> Result<Self, ReaderError> {
+        let parser = EventReader::new(reader);
+        let mut s = Self::default();
+        let mut depth = 0;
+        for e in parser {
+            match e {
+                Ok(XmlEvent::StartElement { attributes, .. }) => {
+                    if depth == 1 {
+                        let mut id = "".to_owned();
+                        let mut rel_type = "".to_owned();
+                        let mut target = "".to_owned();
+                        for attr in attributes {
+                            let name: &str = &attr.name.local_name;
+                            if name == "Id" {
+                                id = attr.value.clone();
+                            } else if name == "Type" {
+                                rel_type = attr.value.clone();
+                            } else if name == "Target" {
+                                target = attr.value.clone();
+                            }
+                        }
+                        s = s.add_rel(id, rel_type, target);
+                    }
+                    depth += 1;
+                }
+                Ok(XmlEvent::EndElement { .. }) => {
+                    depth -= 1;
+                }
+                Err(_) => return Err(ReaderError::XMLReadError),
+                _ => {}
+            }
+        }
+        Ok(s)
     }
 }
 
@@ -51,7 +114,7 @@ mod tests {
 
     #[test]
     fn test_build() {
-        let c = Rels::new();
+        let c = Rels::new().set_default();
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
@@ -62,5 +125,21 @@ mod tests {
   <Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml" />
 </Relationships>"#
         );
+    }
+
+    #[test]
+    fn test_from_xml() {
+        let xml = r#"<?xml version="1.0" encoding="UTF-8"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml" />
+</Relationships>"#;
+        let c = Rels::from_xml(xml.as_bytes()).unwrap();
+        let mut rels = HashMap::new();
+        rels.insert(
+            "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"
+                .to_owned(),
+            ("rId1".to_owned(), "docProps/core.xml".to_owned()),
+        );
+        assert_eq!(Rels { rels }, c);
     }
 }

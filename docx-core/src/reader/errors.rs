@@ -6,6 +6,8 @@ pub enum ReaderError {
     ZipError(#[from] zip::result::ZipError),
     #[error("Failed to read xml.")]
     XMLReadError,
+    #[error("Failed to find document.")]
+    DocumentNotFoundError,
     #[error("Unknown error")]
     Unknown,
 }

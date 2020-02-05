@@ -1,8 +1,10 @@
+use serde::{Deserialize, Serialize};
+
 use super::{Bold, BoldCs, Color, Highlight, Italic, ItalicCs, Sz, SzCs, Underline, Vanish};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct RunProperty {
     sz: Option<Sz>,
     sz_cs: Option<SzCs>,

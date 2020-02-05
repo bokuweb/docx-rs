@@ -1,7 +1,8 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct SzCs {
     val: usize,
 }

@@ -1,7 +1,9 @@
+use serde::{Deserialize, Serialize, Serializer};
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Vanish {}
 
 impl Vanish {
@@ -23,6 +25,15 @@ impl BuildXML for Vanish {
     }
 }
 
+impl Serialize for Vanish {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_bool(true)
+    }
+}
+
 #[cfg(test)]
 mod tests {
 
@@ -35,6 +46,5 @@ mod tests {
     fn test_build() {
         let c = Vanish::new();
         let b = c.build();
-        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:vanish />"#);
     }
 }

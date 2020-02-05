@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+
 //
 // Please see <xsd:simpleType name="ST_BrType">
 //
@@ -6,7 +8,7 @@ use std::fmt;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, Deserialize, Serialize)]
 pub enum BreakType {
     Page,
     Column,

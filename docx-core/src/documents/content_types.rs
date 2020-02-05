@@ -3,8 +3,8 @@ use std::collections::HashMap;
 use std::io::Read;
 use xml::reader::{EventReader, XmlEvent};
 
-use crate::documents::{BuildXML, FromXML};
-use crate::reader::ReaderError;
+use crate::documents::BuildXML;
+use crate::reader::{FromXML, ReaderError};
 use crate::xml_builder::*;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]

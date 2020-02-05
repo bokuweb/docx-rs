@@ -1,17 +1,19 @@
+use serde::{Deserialize, Serialize};
+
 use crate::documents::BuildXML;
 use crate::escape::escape;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Text {
     text: String,
     preserve_space: bool,
 }
 
 impl Text {
-    pub fn new(text: &str) -> Text {
+    pub fn new(text: impl Into<String>) -> Text {
         Text {
-            text: escape(text),
+            text: escape(&text.into()),
             preserve_space: true,
         }
     }

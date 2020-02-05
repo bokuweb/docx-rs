@@ -1,14 +1,14 @@
-use std::collections::HashMap;
+use serde::{Deserialize, Serialize};
 use std::io::Read;
 use xml::reader::{EventReader, XmlEvent};
 
-use crate::documents::{BuildXML, FromXML};
-use crate::reader::ReaderError;
+use crate::documents::BuildXML;
+use crate::reader::{FromXML, ReaderError};
 use crate::xml_builder::*;
 
-#[derive(Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Rels {
-    rels: HashMap<String, (String, String)>,
+    rels: Vec<(String, String, String)>,
 }
 
 impl Rels {
@@ -17,20 +17,22 @@ impl Rels {
     }
 
     pub fn set_default(mut self) -> Self {
-        self.rels.insert(
+        self.rels.push((
             "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"
                 .to_owned(),
-            ("rId1".to_owned(), "docProps/core.xml".to_owned()),
+            "rId1".to_owned(),
+            "docProps/core.xml".to_owned(),
+        ));
+        self.rels.push(
+            ("http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties".to_owned(),
+            "rId2".to_owned(), "docProps/app.xml".to_owned()),
         );
-        self.rels.insert(
-            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties".to_owned(),
-            ("rId2".to_owned(), "docProps/app.xml".to_owned()),
-        );
-        self.rels.insert(
+        self.rels.push((
             "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument"
                 .to_owned(),
-            ("rId3".to_owned(), "word/document.xml".to_owned()),
-        );
+            "rId3".to_owned(),
+            "word/document.xml".to_owned(),
+        ));
         self
     }
 
@@ -40,17 +42,18 @@ impl Rels {
         rel_type: impl Into<String>,
         target: impl Into<String>,
     ) -> Self {
-        self.rels
-            .insert(rel_type.into(), (id.into(), target.into()));
+        self.rels.push((rel_type.into(), id.into(), target.into()));
         self
+    }
+
+    pub fn find_target(&self, rel_type: &str) -> Option<&(String, String, String)> {
+        self.rels.iter().find(|rel| rel.0 == rel_type)
     }
 }
 
 impl Default for Rels {
     fn default() -> Self {
-        Rels {
-            rels: HashMap::new(),
-        }
+        Rels { rels: Vec::new() }
     }
 }
 
@@ -60,7 +63,7 @@ impl BuildXML for Rels {
         let mut b = b
             .declaration(None)
             .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships");
-        for (k, (id, v)) in self.rels.iter() {
+        for (k, id, v) in self.rels.iter() {
             b = b.relationship(id, k, v);
         }
         b.close().build()
@@ -134,12 +137,13 @@ mod tests {
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml" />
 </Relationships>"#;
         let c = Rels::from_xml(xml.as_bytes()).unwrap();
-        let mut rels = HashMap::new();
-        rels.insert(
+        let mut rels = Vec::new();
+        rels.push((
             "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"
                 .to_owned(),
-            ("rId1".to_owned(), "docProps/core.xml".to_owned()),
-        );
+            "rId1".to_owned(),
+            "docProps/core.xml".to_owned(),
+        ));
         assert_eq!(Rels { rels }, c);
     }
 }

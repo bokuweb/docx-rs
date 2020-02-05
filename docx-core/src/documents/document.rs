@@ -15,6 +15,16 @@ pub enum DocumentChild {
     Table(Table),
 }
 
+impl Default for Document {
+    fn default() -> Self {
+        Self {
+            children: Vec::new(),
+            section_property: SectionProperty::new(),
+            has_numbering: false,
+        }
+    }
+}
+
 impl Document {
     pub fn new() -> Document {
         Default::default()
@@ -34,16 +44,6 @@ impl Document {
         }
         self.children.push(DocumentChild::Table(t));
         self
-    }
-}
-
-impl Default for Document {
-    fn default() -> Self {
-        Self {
-            children: Vec::new(),
-            section_property: SectionProperty::new(),
-            has_numbering: false,
-        }
     }
 }
 

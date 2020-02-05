@@ -1,9 +1,11 @@
 use super::{Break, DeleteText, RunProperty, Tab, Text};
+use serde::{Deserialize, Serialize};
+
 use crate::documents::BuildXML;
 use crate::types::BreakType;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Run {
     pub run_property: RunProperty,
     pub children: Vec<RunChild>,
@@ -19,7 +21,7 @@ impl Default for Run {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub enum RunChild {
     Text(Text),
     DeleteText(DeleteText),
@@ -34,12 +36,12 @@ impl Run {
         }
     }
 
-    pub fn add_text(mut self, text: &str) -> Run {
+    pub fn add_text(mut self, text: impl Into<String>) -> Run {
         self.children.push(RunChild::Text(Text::new(text)));
         self
     }
 
-    pub fn add_delete_text(mut self, text: &str) -> Run {
+    pub fn add_delete_text(mut self, text: impl Into<String>) -> Run {
         self.children
             .push(RunChild::DeleteText(DeleteText::new(text)));
         self

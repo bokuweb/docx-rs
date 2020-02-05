@@ -1,8 +1,10 @@
+use serde::{Deserialize, Serialize};
+
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Break {
     break_type: BreakType,
 }

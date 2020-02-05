@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize, Serializer};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct Vanish {}
 
 impl Vanish {
@@ -46,5 +46,6 @@ mod tests {
     fn test_build() {
         let c = Vanish::new();
         let b = c.build();
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:vanish />"#);
     }
 }

@@ -1,9 +1,9 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Serializer};
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct Italic {}
 
 impl Italic {
@@ -15,6 +15,15 @@ impl Italic {
 impl Default for Italic {
     fn default() -> Self {
         Self {}
+    }
+}
+
+impl Serialize for Italic {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_bool(true)
     }
 }
 

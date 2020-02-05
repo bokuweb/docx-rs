@@ -5,7 +5,7 @@ use crate::documents::BuildXML;
 use crate::types::BreakType;
 use crate::xml_builder::*;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct Run {
     pub run_property: RunProperty,
     pub children: Vec<RunChild>,
@@ -21,7 +21,7 @@ impl Default for Run {
     }
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub enum RunChild {
     Text(Text),
     DeleteText(DeleteText),

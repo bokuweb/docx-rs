@@ -19,8 +19,16 @@
             <w:r>
                 <w:rPr>
                     <w:color w:val="C9211E"/>
+                    <w:sz w:val="30"/>
+                    <w:szCs w:val="30"/>
                 </w:rPr>
-                <w:t>Hello</w:t>
+                <w:t>H</w:t>
+            </w:r>
+            <w:r>
+                <w:rPr>
+                    <w:color w:val="C9211E"/>
+                </w:rPr>
+                <w:t>ello</w:t>
             </w:r>
             <w:r>
                 <w:rPr></w:rPr>
@@ -30,14 +38,56 @@
                 <w:rPr>
                     <w:highlight w:val="yellow"/>
                 </w:rPr>
-                <w:t>World</w:t>
+                <w:t>Wo</w:t>
+            </w:r>
+            <w:r>
+                <w:br w:type="page"/>
+            </w:r>
+        </w:p>
+        <w:p>
+            <w:pPr>
+                <w:pStyle w:val="Normal"/>
+                <w:rPr>
+                    <w:highlight w:val="yellow"/>
+                </w:rPr>
+            </w:pPr>
+            <w:r>
+                <w:rPr></w:rPr>
+            </w:r>
+        </w:p>
+        <w:p>
+            <w:pPr>
+                <w:pStyle w:val="Normal"/>
+                <w:rPr></w:rPr>
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:highlight w:val="yellow"/>
+                </w:rPr>
+                <w:t>rld</w:t>
+                <w:tab/>
             </w:r>
             <w:r>
                 <w:rPr>
                     <w:b/>
                     <w:bCs/>
+                    <w:u w:val="single"/>
                 </w:rPr>
-                <w:t>!!</w:t>
+                <w:t>!</w:t>
+            </w:r>
+        </w:p>
+        <w:p>
+            <w:pPr>
+                <w:pStyle w:val="Normal"/>
+                <w:rPr></w:rPr>
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:b/>
+                    <w:bCs/>
+                    <w:u w:val="single"/>
+                </w:rPr>
+                <w:t>!</w:t>
             </w:r>
         </w:p>
         <w:sectPr>
@@ -47,6 +97,7 @@
             <w:pgNumType w:fmt="decimal"/>
             <w:formProt w:val="false"/>
             <w:textDirection w:val="lrTb"/>
+            <w:docGrid w:type="default" w:linePitch="100" w:charSpace="0"/>
         </w:sectPr>
     </w:body>
 </w:document>

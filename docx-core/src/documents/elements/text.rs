@@ -4,7 +4,7 @@ use crate::documents::BuildXML;
 use crate::escape::escape;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct Text {
     text: String,
     preserve_space: bool,

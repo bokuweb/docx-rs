@@ -1,7 +1,7 @@
 use std::io::Read;
 use std::str::FromStr;
 
-use xml::reader::{EventReader, XmlEvent};
+use xml::reader::EventReader;
 
 use crate::reader::ReaderError;
 
@@ -11,6 +11,19 @@ pub enum XMLElement {
     Paragraph,
     Run,
     RunProperty,
+    Color,
+    Underline,
+    Size,
+    SizeCs,
+    Vanish,
+    Italic,
+    Text,
+    Style,
+    Highlight,
+    Bold,
+    BoldCS,
+    Break,
+    Tab,
     Unsupported,
 }
 
@@ -22,6 +35,19 @@ impl FromStr for XMLElement {
             "p" => Ok(XMLElement::Paragraph),
             "r" => Ok(XMLElement::Run),
             "rPr" => Ok(XMLElement::RunProperty),
+            "color" => Ok(XMLElement::Color),
+            "t" => Ok(XMLElement::Text),
+            "sz" => Ok(XMLElement::Size),
+            "szCs" => Ok(XMLElement::SizeCs),
+            "u" => Ok(XMLElement::Underline),
+            "style" => Ok(XMLElement::Style),
+            "highlight" => Ok(XMLElement::Highlight),
+            "b" => Ok(XMLElement::Bold),
+            "bCs" => Ok(XMLElement::BoldCS),
+            "vanish" => Ok(XMLElement::Vanish),
+            "italic" => Ok(XMLElement::Italic),
+            "tab" => Ok(XMLElement::Tab),
+            "br" => Ok(XMLElement::Break),
             _ => Ok(XMLElement::Unsupported),
         }
     }

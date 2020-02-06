@@ -1,9 +1,9 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Serializer};
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct Underline {
     val: String,
 }
@@ -17,6 +17,15 @@ impl Underline {
 impl BuildXML for Underline {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new().underline(&self.val).build()
+    }
+}
+
+impl Serialize for Underline {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.val)
     }
 }
 

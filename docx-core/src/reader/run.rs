@@ -41,7 +41,7 @@ impl ElementReader for Run {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::Run => {
-                            dbg!(serde_json::to_string(&run).unwrap());
+                            // dbg!(serde_json::to_string(&run).unwrap());
                             return Ok(run);
                         }
                         _ => {}

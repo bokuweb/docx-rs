@@ -1,4 +1,5 @@
 use super::{Break, DeleteText, RunProperty, Tab, Text};
+use serde::ser::{SerializeStruct, Serializer};
 use serde::{Deserialize, Serialize};
 
 use crate::documents::BuildXML;
@@ -21,12 +22,45 @@ impl Default for Run {
     }
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, PartialEq)]
 pub enum RunChild {
     Text(Text),
     DeleteText(DeleteText),
     Tab(Tab),
     Break(Break),
+}
+
+impl Serialize for RunChild {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            RunChild::Text(ref s) => {
+                let mut t = serializer.serialize_struct("Text", 2)?;
+                t.serialize_field("type", "text")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+            RunChild::DeleteText(ref s) => {
+                let mut t = serializer.serialize_struct("DeleteText", 2)?;
+                t.serialize_field("type", "deleteText")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+            RunChild::Tab(ref s) => {
+                let mut t = serializer.serialize_struct("Tab", 1)?;
+                t.serialize_field("type", "tab")?;
+                t.end()
+            }
+            RunChild::Break(ref s) => {
+                let mut t = serializer.serialize_struct("Break", 2)?;
+                t.serialize_field("type", "break")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+        }
+    }
 }
 
 impl Run {
@@ -112,6 +146,7 @@ impl BuildXML for Run {
 #[cfg(test)]
 mod tests {
 
+    use super::super::*;
     use super::*;
     #[cfg(test)]
     use pretty_assertions::assert_eq;
@@ -132,6 +167,43 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:r><w:rPr><w:u w:val="single" /></w:rPr><w:t xml:space="preserve">Hello</w:t></w:r>"#
+        );
+    }
+
+    #[test]
+    fn test_child_json() {
+        let c = RunChild::Text(Text::new("Hello"));
+        assert_eq!(
+            serde_json::to_string(&c).unwrap(),
+            r#"{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}"#
+        );
+    }
+
+    #[test]
+    fn test_run_json() {
+        let run = Run {
+            children: vec![
+                RunChild::Tab(Tab::new()),
+                RunChild::Text(Text::new("Hello")),
+                RunChild::Break(Break::new(BreakType::Page)),
+                RunChild::DeleteText(DeleteText::new("deleted")),
+            ],
+            run_property: RunProperty {
+                sz: Some(Sz::new(30)),
+                sz_cs: Some(SzCs::new(30)),
+                color: Some(Color::new("C9211E")),
+                highlight: Some(Highlight::new("yellow")),
+                underline: Some(Underline::new("single")),
+                bold: Some(Bold::new()),
+                bold_cs: Some(BoldCs::new()),
+                italic: Some(Italic::new()),
+                italic_cs: Some(ItalicCs::new()),
+                vanish: Some(Vanish::new()),
+            },
+        };
+        assert_eq!(
+            serde_json::to_string(&run).unwrap(),
+            r#"{"run_property":{"sz":30,"sz_cs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"bold_cs":true,"italic":true,"italic_cs":true,"vanish":true},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#
         );
     }
 }

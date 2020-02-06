@@ -35,7 +35,7 @@ impl FromXML for Document {
                             continue;
                         }
                         XMLElement::Paragraph => {
-                            let p = Paragraph::read(&mut parser)?;
+                            let p = Paragraph::read(&mut parser, &attributes)?;
                             doc = doc.add_paragraph(p);
                             continue;
                         }

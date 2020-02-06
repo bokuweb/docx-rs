@@ -3,12 +3,12 @@ use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Paragraph {
     pub children: Vec<ParagraphChild>,
     pub property: ParagraphProperty,
     pub has_numbering: bool,
-    attrs: Vec<(String, String)>,
+    pub attrs: Vec<(String, String)>,
 }
 
 impl Default for Paragraph {
@@ -22,7 +22,7 @@ impl Default for Paragraph {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum ParagraphChild {
     Run(Run),
     Insert(Insert),
@@ -115,8 +115,13 @@ impl Paragraph {
         self
     }
 
-    pub fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Paragraph {
-        self.property = self.property.indent(left, special_indent);
+    pub fn indent(
+        mut self,
+        left: usize,
+        special_indent: Option<SpecialIndentType>,
+        end: Option<usize>,
+    ) -> Paragraph {
+        self.property = self.property.indent(left, special_indent, end);
         self
     }
 

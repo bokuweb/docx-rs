@@ -2,10 +2,10 @@ use super::{IndentLevel, NumberingId};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct NumberingProperty {
-    id: NumberingId,
-    level: IndentLevel,
+    pub id: NumberingId,
+    pub level: IndentLevel,
 }
 
 impl NumberingProperty {

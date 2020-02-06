@@ -1,6 +1,7 @@
 use std::io::Read;
 use std::str::FromStr;
 
+use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
 use super::Run;
@@ -8,9 +9,19 @@ use super::Run;
 use crate::reader::*;
 use crate::types::BreakType;
 
+#[derive(PartialEq, Debug)]
+enum TextState {
+    Text,
+    Delete,
+}
+
 impl ElementReader for Run {
-    fn read<R: Read>(r: &mut EventReader<R>) -> Result<Self, ReaderError> {
+    fn read<R: Read>(
+        r: &mut EventReader<R>,
+        _attrs: &[OwnedAttribute],
+    ) -> Result<Self, ReaderError> {
         let mut run = Run::new();
+        let mut text_state = TextState::Text;
         loop {
             let e = r.next();
             match e {
@@ -18,7 +29,6 @@ impl ElementReader for Run {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    dbg!(&e, &attributes);
                     match e {
                         XMLElement::Tab => run = run.add_tab(),
                         XMLElement::Bold => run = run.bold(),
@@ -28,6 +38,8 @@ impl ElementReader for Run {
                         XMLElement::Underline => run = run.underline(&attributes[0].value.clone()),
                         XMLElement::Italic => run = run.italic(),
                         XMLElement::Vanish => run = run.vanish(),
+                        XMLElement::Text => text_state = TextState::Text,
+                        XMLElement::DeleteText => text_state = TextState::Delete,
                         XMLElement::Break => {
                             run = run.add_break(BreakType::from_str(&attributes[0].value)?)
                         }
@@ -35,13 +47,16 @@ impl ElementReader for Run {
                     }
                 }
                 Ok(XmlEvent::Characters(c)) => {
-                    run = run.add_text(c);
+                    if text_state == TextState::Delete {
+                        run = run.add_delete_text(c);
+                    } else {
+                        run = run.add_text(c);
+                    }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::Run => {
-                            // dbg!(serde_json::to_string(&run).unwrap());
                             return Ok(run);
                         }
                         _ => {}
@@ -67,7 +82,7 @@ mod tests {
   <w:r><w:rPr><w:color w:val="C9211E"/><w:sz w:val="30"/><w:szCs w:val="30"/></w:rPr><w:t>H</w:t></w:r>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let run = Run::read(&mut parser).unwrap();
+        let run = Run::read(&mut parser, &vec![]).unwrap();
         assert_eq!(
             run,
             Run {
@@ -95,7 +110,7 @@ mod tests {
   <w:r><w:tab /></w:r>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let run = Run::read(&mut parser).unwrap();
+        let run = Run::read(&mut parser, &vec![]).unwrap();
         assert_eq!(
             run,
             Run {
@@ -123,7 +138,7 @@ mod tests {
   <w:r><w:br w:type="page" /></w:r>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let run = Run::read(&mut parser).unwrap();
+        let run = Run::read(&mut parser, &vec![]).unwrap();
         assert_eq!(
             run,
             Run {

@@ -1,7 +1,7 @@
 use crate::documents::{BuildXML, HistoryId, Run};
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Delete {
     pub author: String,
     pub date: String,

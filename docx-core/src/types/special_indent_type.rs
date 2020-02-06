@@ -2,7 +2,7 @@ use wasm_bindgen::prelude::*;
 
 // INFO: wasm-bindgen only allow c-style enum for now
 //       Please convert typescript type to following type.
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum SpecialIndentType {
     FirstLine(usize),
     Hanging(usize),

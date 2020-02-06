@@ -19,12 +19,16 @@ impl Paragraph {
     }
 
     pub fn add_insert(mut self, i: Insert) -> Paragraph {
-        self.0.children.push(docx_rs::ParagraphChild::Insert(i.take()));
+        self.0
+            .children
+            .push(docx_rs::ParagraphChild::Insert(i.take()));
         self
     }
 
     pub fn add_delete(mut self, d: Delete) -> Paragraph {
-        self.0.children.push(docx_rs::ParagraphChild::Delete(d.take()));
+        self.0
+            .children
+            .push(docx_rs::ParagraphChild::Delete(d.take()));
         self
     }
 
@@ -36,11 +40,9 @@ impl Paragraph {
     }
 
     pub fn add_bookmark_end(mut self, id: &str) -> Paragraph {
-        self.0
-            .children
-            .push(docx_rs::ParagraphChild::BookmarkEnd(docx_rs::BookmarkEnd::new(
-                id,
-            )));
+        self.0.children.push(docx_rs::ParagraphChild::BookmarkEnd(
+            docx_rs::BookmarkEnd::new(id),
+        ));
         self
     }
 
@@ -77,7 +79,7 @@ impl Paragraph {
         special_indent_size: Option<usize>,
     ) -> Paragraph {
         let special_indent = create_special_indent(special_indent_kind, special_indent_size);
-        self.0.property = self.0.property.indent(left, special_indent);
+        self.0.property = self.0.property.indent(left, special_indent, None);
         self
     }
 

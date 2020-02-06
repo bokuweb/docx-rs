@@ -30,8 +30,13 @@ impl Level {
         }
     }
 
-    pub fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Self {
-        self.paragraph_property = self.paragraph_property.indent(left, special_indent);
+    pub fn indent(
+        mut self,
+        left: usize,
+        special_indent: Option<SpecialIndentType>,
+        end: Option<usize>,
+    ) -> Self {
+        self.paragraph_property = self.paragraph_property.indent(left, special_indent, end);
         self
     }
 }
@@ -83,7 +88,7 @@ mod tests {
             LevelText::new("%4."),
             LevelJc::new("left"),
         )
-        .indent(320, Some(SpecialIndentType::Hanging(200)))
+        .indent(320, Some(SpecialIndentType::Hanging(200)), None)
         .build();
         assert_eq!(
               str::from_utf8(&b).unwrap(),

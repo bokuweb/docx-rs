@@ -1,15 +1,22 @@
+mod delete;
 mod document;
 mod errors;
 mod from_xml;
+mod insert;
+mod numbering_property;
 mod paragraph;
 mod run;
 mod xml_element;
 
+use delete::*;
 use document::*;
 use errors::*;
+use insert::*;
+use numbering_property::*;
 use paragraph::*;
 use run::*;
 use serde_json;
+
 use std::fs;
 use std::io::Cursor;
 use std::io::Read;

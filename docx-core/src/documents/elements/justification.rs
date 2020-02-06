@@ -9,7 +9,7 @@ use crate::xml_builder::*;
 // present without the val attribute, the default of the val attribute is centerGroup . This means that the instances
 // of mathematical text can be aligned with respect to each other, but the entire group of mathematical text is
 // centered as a whole.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Justification {
     val: String,
 }

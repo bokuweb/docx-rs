@@ -48,7 +48,7 @@ impl Serialize for RunChild {
                 t.serialize_field("data", s)?;
                 t.end()
             }
-            RunChild::Tab(ref s) => {
+            RunChild::Tab(_) => {
                 let mut t = serializer.serialize_struct("Tab", 1)?;
                 t.serialize_field("type", "tab")?;
                 t.end()

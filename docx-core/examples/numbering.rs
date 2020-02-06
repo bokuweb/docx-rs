@@ -1,6 +1,5 @@
 use docx_rs::*;
 
-
 pub fn main() -> Result<(), DocxError> {
     let path = std::path::Path::new("./numbering.docx");
     let file = std::fs::File::create(&path).unwrap();
@@ -19,7 +18,7 @@ pub fn main() -> Result<(), DocxError> {
                     LevelText::new("Section %1."),
                     LevelJc::new("left"),
                 )
-                .indent(1620, Some(SpecialIndentType::Hanging(320))),
+                .indent(1620, Some(SpecialIndentType::Hanging(320)), None),
             ),
         )
         .build()

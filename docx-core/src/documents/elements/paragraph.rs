@@ -1,9 +1,12 @@
+use serde::ser::{SerializeStruct, Serializer};
+use serde::Serialize;
+
 use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct Paragraph {
     pub children: Vec<ParagraphChild>,
     pub property: ParagraphProperty,
@@ -43,6 +46,27 @@ impl BuildXML for ParagraphChild {
             ParagraphChild::BookmarkEnd(v) => v.build(),
             ParagraphChild::CommentStart(v) => v.build(),
             ParagraphChild::CommentEnd(v) => v.build(),
+        }
+    }
+}
+
+impl Serialize for ParagraphChild {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            ParagraphChild::Run(ref r) => {
+                let mut t = serializer.serialize_struct("Run", 2)?;
+                t.serialize_field("type", "run")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            _ => {
+                let mut t = serializer.serialize_struct("Text", 1)?;
+                t.serialize_field("type", "text")?;
+                t.end()
+            }
         }
     }
 }
@@ -211,6 +235,16 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:numPr><w:numId w:val="0" /><w:ilvl w:val="1" /></w:numPr></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
+        );
+    }
+
+    #[test]
+    fn test_paragraph_run_json() {
+        let run = Run::new().add_text("Hello");
+        let p = Paragraph::new().add_run(run);
+        assert_eq!(
+            serde_json::to_string(&p).unwrap(),
+            r#"{"children":[{"type":"run","data":{"run_property":{"sz":null,"sz_cs":null,"color":null,"highlight":null,"underline":null,"bold":null,"bold_cs":null,"italic":null,"italic_cs":null,"vanish":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"run_property":{"sz":null,"sz_cs":null,"color":null,"highlight":null,"underline":null,"bold":null,"bold_cs":null,"italic":null,"italic_cs":null,"vanish":null},"style":"Normal","numbering_property":null,"alignment":null,"indent":null},"has_numbering":false,"attrs":[]}"#
         );
     }
 }

@@ -3,7 +3,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct IndentLevel {
-    val: usize,
+    pub val: usize,
 }
 
 impl IndentLevel {

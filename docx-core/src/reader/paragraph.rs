@@ -8,11 +8,6 @@ use super::*;
 
 use crate::types::*;
 
-/*
-CommentStart(Box<CommentRangeStart>),
-CommentEnd(CommentRangeEnd),
-*/
-
 impl ElementReader for Paragraph {
     fn read<R: Read>(
         r: &mut EventReader<R>,
@@ -75,6 +70,14 @@ impl ElementReader for Paragraph {
                             }
                             continue;
                         }
+                        XMLElement::CommentRangeStart => {
+                            // TODO: Support comment later.
+                            continue;
+                        }
+                        XMLElement::CommentRangeEnd => {
+                            p = p.add_comment_end(usize::from_str(&attributes[0].value)?);
+                            continue;
+                        }
                         XMLElement::Indent => {
                             let mut start = 0;
                             let mut end: Option<usize> = None;
@@ -100,9 +103,11 @@ impl ElementReader for Paragraph {
                         }
                         XMLElement::Justification => {
                             p = p.align(AlignmentType::from_str(&attributes[0].value)?);
+                            continue;
                         }
                         XMLElement::ParagraphStyle => {
                             p = p.style(&attributes[0].value);
+                            continue;
                         }
                         XMLElement::NumberingProperty => {
                             let num_pr = NumberingProperty::read(r, attrs)?;

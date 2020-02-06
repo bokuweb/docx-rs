@@ -1,9 +1,11 @@
+use serde::Serialize;
+
 use super::*;
 use crate::documents::BuildXML;
 use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct ParagraphProperty {
     pub run_property: RunProperty,
     pub style: ParagraphStyle,
@@ -110,6 +112,16 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="20" w:right="0" /></w:pPr>"#
+        );
+    }
+
+    #[test]
+    fn test_indent_json() {
+        let c = ParagraphProperty::new();
+        let b = c.indent(20, Some(SpecialIndentType::FirstLine(10)), None);
+        assert_eq!(
+            serde_json::to_string(&b).unwrap(),
+            r#"{"run_property":{"sz":null,"sz_cs":null,"color":null,"highlight":null,"underline":null,"bold":null,"bold_cs":null,"italic":null,"italic_cs":null,"vanish":null},"style":"Normal","numbering_property":null,"alignment":null,"indent":{"start":20,"end":null,"specialIndent":{"type":"firstLine","val":10}}}"#
         );
     }
 }

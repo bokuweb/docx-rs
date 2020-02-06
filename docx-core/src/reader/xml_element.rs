@@ -37,6 +37,8 @@ pub enum XMLElement {
     DeleteText,
     BookmarkStart,
     BookmarkEnd,
+    CommentRangeStart,
+    CommentRangeEnd,
     Unsupported,
 }
 
@@ -73,6 +75,8 @@ impl FromStr for XMLElement {
             "delText" => Ok(XMLElement::DeleteText),
             "bookmarkStart" => Ok(XMLElement::BookmarkStart),
             "bookmarkEnd" => Ok(XMLElement::BookmarkEnd),
+            "commentRangeStart" => Ok(XMLElement::CommentRangeStart),
+            "commentRangeEnd" => Ok(XMLElement::CommentRangeEnd),
             _ => Ok(XMLElement::Unsupported),
         }
     }

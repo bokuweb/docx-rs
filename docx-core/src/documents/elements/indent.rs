@@ -1,3 +1,6 @@
+use serde::ser::{SerializeStruct, Serializer};
+use serde::Serialize;
+
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -37,6 +40,19 @@ impl BuildXML for Indent {
                 self.end.unwrap_or_default(),
             )
             .build()
+    }
+}
+
+impl Serialize for Indent {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut t = serializer.serialize_struct("Indent", 3)?;
+        t.serialize_field("start", &self.start)?;
+        t.serialize_field("end", &self.end)?;
+        t.serialize_field("specialIndent", &self.special_indent)?;
+        t.end()
     }
 }
 

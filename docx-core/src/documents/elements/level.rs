@@ -92,7 +92,7 @@ mod tests {
         .build();
         assert_eq!(
               str::from_utf8(&b).unwrap(),
-              r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="320" w:hanging="200" /></w:pPr></w:lvl>"#
+              r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr></w:lvl>"#
           );
     }
 }

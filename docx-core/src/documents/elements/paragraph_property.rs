@@ -109,7 +109,7 @@ mod tests {
         let b = c.indent(20, None, None).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="20" /></w:pPr>"#
+            r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="20" w:right="0" /></w:pPr>"#
         );
     }
 }

@@ -51,7 +51,10 @@ mod tests {
     #[test]
     fn test_left() {
         let b = Indent::new(20, None, None).build();
-        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:ind w:left="20" />"#);
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:ind w:left="20" w:right="0" />"#
+        );
     }
 
     #[test]
@@ -59,7 +62,7 @@ mod tests {
         let b = Indent::new(20, Some(SpecialIndentType::FirstLine(40)), None).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:ind w:left="20" w:firstLine="40" />"#
+            r#"<w:ind w:left="20" w:right="0" w:firstLine="40" />"#
         );
     }
 
@@ -68,7 +71,7 @@ mod tests {
         let b = Indent::new(20, Some(SpecialIndentType::Hanging(50)), None).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:ind w:left="20" w:hanging="50" />"#
+            r#"<w:ind w:left="20" w:right="0" w:hanging="50" />"#
         );
     }
 }

@@ -3,14 +3,14 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct BookmarkStart {
-    id: String,
+    id: usize,
     name: String,
 }
 
 impl BookmarkStart {
-    pub fn new(id: impl Into<String>, name: impl Into<String>) -> BookmarkStart {
+    pub fn new(id: usize, name: impl Into<String>) -> BookmarkStart {
         BookmarkStart {
-            id: id.into(),
+            id,
             name: name.into(),
         }
     }
@@ -19,7 +19,8 @@ impl BookmarkStart {
 impl BuildXML for BookmarkStart {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.bookmark_start(&self.id, &self.name).build()
+        b.bookmark_start(&format!("{}", self.id), &self.name)
+            .build()
     }
 }
 
@@ -33,11 +34,11 @@ mod tests {
 
     #[test]
     fn test_bookmark_start() {
-        let c = BookmarkStart::new("mockid", "mockname");
+        let c = BookmarkStart::new(0, "mockname");
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:bookmarkStart w:id="mockid" w:name="mockname" />"#
+            r#"<w:bookmarkStart w:id="0" w:name="mockname" />"#
         );
     }
 }

@@ -52,12 +52,12 @@ export class Paragraph {
     return this;
   }
 
-  addBookmarkStart(id: string, name: string) {
+  addBookmarkStart(id: number, name: string) {
     this.children.push(new BookmarkStart(id, name));
     return this;
   }
 
-  addBookmarkEnd(id: string) {
+  addBookmarkEnd(id: number) {
     this.children.push(new BookmarkEnd(id));
     return this;
   }

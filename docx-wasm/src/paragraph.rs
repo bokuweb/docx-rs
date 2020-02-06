@@ -32,14 +32,14 @@ impl Paragraph {
         self
     }
 
-    pub fn add_bookmark_start(mut self, id: &str, name: &str) -> Paragraph {
+    pub fn add_bookmark_start(mut self, id: usize, name: &str) -> Paragraph {
         self.0.children.push(docx_rs::ParagraphChild::BookmarkStart(
             docx_rs::BookmarkStart::new(id, name),
         ));
         self
     }
 
-    pub fn add_bookmark_end(mut self, id: &str) -> Paragraph {
+    pub fn add_bookmark_end(mut self, id: usize) -> Paragraph {
         self.0.children.push(docx_rs::ParagraphChild::BookmarkEnd(
             docx_rs::BookmarkEnd::new(id),
         ));

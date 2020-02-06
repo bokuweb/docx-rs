@@ -9,7 +9,6 @@ use super::*;
 use crate::types::*;
 
 /*
-
 BookmarkStart(BookmarkStart),
 BookmarkEnd(BookmarkEnd),
 CommentStart(Box<CommentRangeStart>),

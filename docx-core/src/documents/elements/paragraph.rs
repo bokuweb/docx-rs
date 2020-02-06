@@ -76,17 +76,13 @@ impl Paragraph {
         self
     }
 
-    pub fn add_bookmark_start(
-        mut self,
-        id: impl Into<String>,
-        name: impl Into<String>,
-    ) -> Paragraph {
+    pub fn add_bookmark_start(mut self, id: usize, name: impl Into<String>) -> Paragraph {
         self.children
             .push(ParagraphChild::BookmarkStart(BookmarkStart::new(id, name)));
         self
     }
 
-    pub fn add_bookmark_end(mut self, id: impl Into<String>) -> Paragraph {
+    pub fn add_bookmark_end(mut self, id: usize) -> Paragraph {
         self.children
             .push(ParagraphChild::BookmarkEnd(BookmarkEnd::new(id)));
         self
@@ -177,13 +173,13 @@ mod tests {
     #[test]
     fn test_bookmark() {
         let b = Paragraph::new()
-            .add_bookmark_start("1234-5678", "article")
+            .add_bookmark_start(0, "article")
             .add_run(Run::new().add_text("Hello"))
-            .add_bookmark_end("1234-5678")
+            .add_bookmark_end(0)
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:bookmarkStart w:id="1234-5678" w:name="article" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:bookmarkEnd w:id="1234-5678" /></w:p>"#
+            r#"<w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:bookmarkStart w:id="0" w:name="article" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:bookmarkEnd w:id="0" /></w:p>"#
         );
     }
 

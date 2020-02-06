@@ -35,6 +35,8 @@ pub enum XMLElement {
     Insert,
     Delete,
     DeleteText,
+    BookmarkStart,
+    BookmarkEnd,
     Unsupported,
 }
 
@@ -69,6 +71,8 @@ impl FromStr for XMLElement {
             "ins" => Ok(XMLElement::Insert),
             "del" => Ok(XMLElement::Delete),
             "delText" => Ok(XMLElement::DeleteText),
+            "bookmarkStart" => Ok(XMLElement::BookmarkStart),
+            "bookmarkEnd" => Ok(XMLElement::BookmarkEnd),
             _ => Ok(XMLElement::Unsupported),
         }
     }

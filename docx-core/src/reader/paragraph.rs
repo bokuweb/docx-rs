@@ -9,8 +9,6 @@ use super::*;
 use crate::types::*;
 
 /*
-BookmarkStart(BookmarkStart),
-BookmarkEnd(BookmarkEnd),
 CommentStart(Box<CommentRangeStart>),
 CommentEnd(CommentRangeEnd),
 */
@@ -42,6 +40,39 @@ impl ElementReader for Paragraph {
                         XMLElement::Delete => {
                             let del = Delete::read(r, &attributes)?;
                             p = p.add_delete(del);
+                            continue;
+                        }
+                        XMLElement::BookmarkStart => {
+                            let mut id: Option<usize> = None;
+                            let mut name: Option<String> = None;
+
+                            for a in attributes {
+                                let local_name = &a.name.local_name;
+                                if local_name == "id" {
+                                    id = Some(usize::from_str(&a.value)?);
+                                } else if local_name == "name" {
+                                    name = Some(a.value.clone());
+                                }
+                            }
+                            if id.is_none() || name.is_none() {
+                                return Err(ReaderError::XMLReadError);
+                            }
+                            p = p.add_bookmark_start(id.unwrap(), name.unwrap());
+                            continue;
+                        }
+                        XMLElement::BookmarkEnd => {
+                            let mut id: Option<usize> = None;
+                            for a in attributes {
+                                let local_name = &a.name.local_name;
+                                if local_name == "id" {
+                                    id = Some(usize::from_str(&a.value)?);
+                                }
+                            }
+                            if let Some(id) = id {
+                                p = p.add_bookmark_end(id);
+                            } else {
+                                return Err(ReaderError::XMLReadError);
+                            }
                             continue;
                         }
                         XMLElement::Indent => {
@@ -267,6 +298,43 @@ mod tests {
                         .author("unknown")
                         .date("2019-11-15T14:19:04Z")
                 )],
+                property: ParagraphProperty {
+                    run_property: RunProperty::new(),
+                    style: ParagraphStyle::new(s),
+                    numbering_property: None,
+                    alignment: None,
+                    indent: None,
+                },
+                has_numbering: false,
+                attrs: vec![],
+            }
+        );
+    }
+
+    #[test]
+    fn test_read_bookmark() {
+        let c =
+            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:p>
+        <w:bookmarkStart w:id="0" w:name="ABCD-1234"/>
+            <w:r>
+                <w:rPr></w:rPr>
+                <w:t>Bookmarked</w:t>
+            </w:r>
+        <w:bookmarkEnd w:id="0"/>
+    </w:p>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let p = Paragraph::read(&mut parser, &vec![]).unwrap();
+        let s: Option<&str> = None;
+        assert_eq!(
+            p,
+            Paragraph {
+                children: vec![
+                    ParagraphChild::BookmarkStart(BookmarkStart::new(0, "ABCD-1234")),
+                    ParagraphChild::Run(Run::new().add_text("Bookmarked")),
+                    ParagraphChild::BookmarkEnd(BookmarkEnd::new(0)),
+                ],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
                     style: ParagraphStyle::new(s),

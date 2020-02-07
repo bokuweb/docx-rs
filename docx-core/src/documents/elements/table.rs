@@ -3,7 +3,7 @@ use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Table {
     pub rows: Vec<TableRow>,
     pub grid: Vec<usize>,
@@ -24,6 +24,11 @@ impl Table {
         }
     }
 
+    pub fn add_row(mut self, row: TableRow) -> Table {
+        self.rows.push(row);
+        self
+    }
+
     pub fn set_grid(mut self, grid: Vec<usize>) -> Table {
         self.grid = grid;
         self
@@ -39,8 +44,8 @@ impl Table {
         self
     }
 
-    pub fn width(mut self, w: usize) -> Table {
-        self.property = self.property.width(w, WidthType::DXA);
+    pub fn width(mut self, w: usize, t: WidthType) -> Table {
+        self.property = self.property.width(w, t);
         self
     }
 }

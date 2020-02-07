@@ -2,7 +2,7 @@ use super::{TableCell, TableRowProperty};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct TableRow {
     pub cells: Vec<TableCell>,
     pub(crate) has_numbering: bool,

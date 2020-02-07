@@ -15,7 +15,7 @@ use crate::xml_builder::*;
     tr2bl – diagonal border from top right corner to bottom left corner
 */
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct TableBorder {
     position: BorderPosition,
     border_type: BorderType,
@@ -80,7 +80,7 @@ impl BuildXML for TableBorder {
 // If there is no cell border, then the table-level exception border shall be displayed
 // If this element is omitted, then this table shall have the borders specified by the associated table level borders
 // (§17.4.38).
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct TableBorders {
     top: Option<TableBorder>,
     left: Option<TableBorder>,

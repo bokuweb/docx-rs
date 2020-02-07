@@ -40,7 +40,7 @@ impl Table {
     }
 
     pub fn width(mut self, w: usize) -> Table {
-        self.0 = self.0.width(w);
+        self.0 = self.0.width(w, docx_rs::WidthType::DXA);
         self
     }
 }

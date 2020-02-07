@@ -48,6 +48,16 @@ pub enum XMLElement {
     TableCellBorders,
     TableVMerge,
     TableGridSpan,
+    TableWidth,
+    TableIndent,
+    TableBorders,
+    Top,
+    Left,
+    Bottom,
+    InsideH,
+    TableCellMargin,
+    TableGrid,
+    GridCol,
     Unsupported,
 }
 
@@ -95,6 +105,16 @@ impl FromStr for XMLElement {
             "tcBorders" => Ok(XMLElement::TableCellBorders),
             "vMerge" => Ok(XMLElement::TableVMerge),
             "gridSpan" => Ok(XMLElement::TableGridSpan),
+            "tblW" => Ok(XMLElement::TableWidth),
+            "tblInd" => Ok(XMLElement::TableIndent),
+            "tblBorders" => Ok(XMLElement::TableBorders),
+            "top" => Ok(XMLElement::Top),
+            "left" => Ok(XMLElement::Left),
+            "bottom" => Ok(XMLElement::Bottom),
+            "insideH" => Ok(XMLElement::InsideH),
+            "tblCellMar" => Ok(XMLElement::TableCellMargin),
+            "tblGrid" => Ok(XMLElement::TableGrid),
+            "gridCol" => Ok(XMLElement::GridCol),
             _ => Ok(XMLElement::Unsupported),
         }
     }

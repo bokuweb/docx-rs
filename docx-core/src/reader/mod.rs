@@ -1,3 +1,4 @@
+mod attributes;
 mod delete;
 mod document;
 mod errors;
@@ -16,6 +17,7 @@ use zip;
 
 use crate::documents::*;
 
+pub use attributes::*;
 pub use errors::ReaderError;
 pub use from_xml::*;
 pub use xml_element::*;

@@ -6,21 +6,12 @@ mod insert;
 mod numbering_property;
 mod paragraph;
 mod run;
+mod table;
+mod table_cell;
+mod table_row;
 mod xml_element;
 
-use delete::*;
-use document::*;
-use errors::*;
-use insert::*;
-use numbering_property::*;
-use paragraph::*;
-use run::*;
-use serde_json;
-
-use std::fs;
 use std::io::Cursor;
-use std::io::Read;
-use xml::reader::{EventReader, XmlEvent};
 use zip;
 
 use crate::documents::*;
@@ -38,7 +29,7 @@ pub fn read_docx(buf: &[u8]) -> Result<(), ReaderError> {
     // First, the content type for relationship parts and the Main Document part
     // (the only required part) must be defined (physically located at /[Content_Types].xml in the package)
     let content_types_xml = archive.by_name("[Content_Types].xml")?;
-    let content_types = ContentTypes::from_xml(content_types_xml)?;
+    let _content_types = ContentTypes::from_xml(content_types_xml)?;
     // Next, the single required relationship (the package-level relationship to the Main Document part)
     //  must be defined (physically located at /_rels/.rels in the package)
     let rels_xml = archive.by_name("_rels/.rels")?;

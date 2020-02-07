@@ -95,7 +95,7 @@ impl XMLBuilder {
     ) -> Self {
         let start = &format!("{}", start);
         let end = &format!("{}", end);
-        let mut base = XmlEvent::start_element("w:ind")
+        let base = XmlEvent::start_element("w:ind")
             .attr("w:left", start)
             .attr("w:right", end);
 

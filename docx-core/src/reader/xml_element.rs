@@ -39,6 +39,15 @@ pub enum XMLElement {
     BookmarkEnd,
     CommentRangeStart,
     CommentRangeEnd,
+    Table,
+    TableProperty,
+    TableRow,
+    TableCell,
+    TableCellProperty,
+    TableCellWidth,
+    TableCellBorders,
+    TableVMerge,
+    TableGridSpan,
     Unsupported,
 }
 
@@ -77,6 +86,15 @@ impl FromStr for XMLElement {
             "bookmarkEnd" => Ok(XMLElement::BookmarkEnd),
             "commentRangeStart" => Ok(XMLElement::CommentRangeStart),
             "commentRangeEnd" => Ok(XMLElement::CommentRangeEnd),
+            "tbl" => Ok(XMLElement::Table),
+            "tblPr" => Ok(XMLElement::TableProperty),
+            "tr" => Ok(XMLElement::TableRow),
+            "tc" => Ok(XMLElement::TableCell),
+            "tcPr" => Ok(XMLElement::TableCellProperty),
+            "tcW" => Ok(XMLElement::TableCellWidth),
+            "tcBorders" => Ok(XMLElement::TableCellBorders),
+            "vMerge" => Ok(XMLElement::TableVMerge),
+            "gridSpan" => Ok(XMLElement::TableGridSpan),
             _ => Ok(XMLElement::Unsupported),
         }
     }

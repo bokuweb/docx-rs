@@ -1,8 +1,10 @@
+use serde::Serialize;
+
 use super::Comment;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct CommentRangeStart {
     id: usize,
     comment: Comment,

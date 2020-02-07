@@ -3,14 +3,14 @@ use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct TableCell {
     pub contents: Vec<TableCellContent>,
     pub property: TableCellProperty,
     pub has_numbering: bool,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum TableCellContent {
     Paragraph(Paragraph),
 }
@@ -38,8 +38,8 @@ impl TableCell {
         self
     }
 
-    pub fn width(mut self, v: usize) -> TableCell {
-        self.property = self.property.width(v, WidthType::DXA);
+    pub fn width(mut self, v: usize, t: WidthType) -> TableCell {
+        self.property = self.property.width(v, t);
         self
     }
 }

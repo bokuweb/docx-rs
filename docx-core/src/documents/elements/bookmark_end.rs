@@ -1,7 +1,9 @@
+use serde::Serialize;
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct BookmarkEnd {
     id: usize,
 }

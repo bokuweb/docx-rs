@@ -62,9 +62,15 @@ impl Serialize for ParagraphChild {
                 t.serialize_field("data", r)?;
                 t.end()
             }
+            ParagraphChild::Insert(ref r) => {
+                let mut t = serializer.serialize_struct("Insert", 2)?;
+                t.serialize_field("type", "insert")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
             _ => {
-                let mut t = serializer.serialize_struct("Text", 1)?;
-                t.serialize_field("type", "text")?;
+                let mut t = serializer.serialize_struct("Unsupported", 2)?;
+                t.serialize_field("type", "unsupported")?;
                 t.end()
             }
         }
@@ -245,6 +251,17 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
             r#"{"children":[{"type":"run","data":{"run_property":{"sz":null,"sz_cs":null,"color":null,"highlight":null,"underline":null,"bold":null,"bold_cs":null,"italic":null,"italic_cs":null,"vanish":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"run_property":{"sz":null,"sz_cs":null,"color":null,"highlight":null,"underline":null,"bold":null,"bold_cs":null,"italic":null,"italic_cs":null,"vanish":null},"style":"Normal","numbering_property":null,"alignment":null,"indent":null},"has_numbering":false,"attrs":[]}"#
+        );
+    }
+
+    #[test]
+    fn test_paragraph_insert_json() {
+        let run = Run::new().add_text("Hello");
+        let ins = Insert::new(run);
+        let p = Paragraph::new().add_insert(ins);
+        assert_eq!(
+            serde_json::to_string(&p).unwrap(),
+            r#"{"children":[{"type":"insert","data":{"run":{"run_property":{"sz":null,"sz_cs":null,"color":null,"highlight":null,"underline":null,"bold":null,"bold_cs":null,"italic":null,"italic_cs":null,"vanish":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]},"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"run_property":{"sz":null,"sz_cs":null,"color":null,"highlight":null,"underline":null,"bold":null,"bold_cs":null,"italic":null,"italic_cs":null,"vanish":null},"style":"Normal","numbering_property":null,"alignment":null,"indent":null},"has_numbering":false,"attrs":[]}"#
         );
     }
 }

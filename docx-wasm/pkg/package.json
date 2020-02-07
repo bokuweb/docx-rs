@@ -5,11 +5,11 @@
   ],
   "version": "0.1.0",
   "files": [
-    "index_bg.wasm",
-    "index.js",
-    "index.d.ts"
+    "docx_wasm_bg.wasm",
+    "docx_wasm.js",
+    "docx_wasm.d.ts"
   ],
-  "module": "index.js",
-  "types": "index.d.ts",
+  "module": "docx_wasm.js",
+  "types": "docx_wasm.d.ts",
   "sideEffects": "false"
 }

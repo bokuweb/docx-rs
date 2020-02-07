@@ -100,14 +100,14 @@ export class Docx {
 
   buildDelete(d: Delete) {
     const run = this.buildRun(d.run);
-    let insert = wasm.createInsert(run);
+    let del = wasm.createDelete(run);
     if (d._author) {
-      insert = insert.author(d._author);
+      del = del.author(d._author);
     }
     if (d._date) {
-      insert = insert.date(d._date);
+      del = del.date(d._date);
     }
-    return insert;
+    return del;
   }
 
   buildComment(c: Comment) {

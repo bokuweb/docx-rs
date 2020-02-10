@@ -21,7 +21,7 @@ impl TableCell {
 impl TableCell {
     pub fn add_paragraph(mut self, p: Paragraph) -> TableCell {
         self.0
-            .contents
+            .children
             .push(docx_rs::TableCellContent::Paragraph(p.take()));
         self
     }

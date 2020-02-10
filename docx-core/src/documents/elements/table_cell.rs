@@ -7,8 +7,9 @@ use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct TableCell {
-    pub contents: Vec<TableCellContent>,
+    pub children: Vec<TableCellContent>,
     pub property: TableCellProperty,
     pub has_numbering: bool,
 }
@@ -43,7 +44,7 @@ impl TableCell {
         if p.has_numbering {
             self.has_numbering = true
         }
-        self.contents.push(TableCellContent::Paragraph(p));
+        self.children.push(TableCellContent::Paragraph(p));
         self
     }
 
@@ -66,10 +67,10 @@ impl TableCell {
 impl Default for TableCell {
     fn default() -> Self {
         let property = TableCellProperty::new();
-        let contents = vec![];
+        let children = vec![];
         Self {
             property,
-            contents,
+            children,
             has_numbering: false,
         }
     }
@@ -79,7 +80,7 @@ impl BuildXML for TableCell {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         let mut b = b.open_table_cell().add_child(&self.property);
-        for c in &self.contents {
+        for c in &self.children {
             match c {
                 TableCellContent::Paragraph(p) => b = b.add_child(p),
             }

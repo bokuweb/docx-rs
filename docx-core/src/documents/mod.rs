@@ -141,7 +141,7 @@ impl Docx {
                 DocumentChild::Table(table) => {
                     for row in &table.rows {
                         for cell in &row.cells {
-                            for content in &cell.contents {
+                            for content in &cell.children {
                                 match content {
                                     TableCellContent::Paragraph(paragraph) => {
                                         for child in &paragraph.children {

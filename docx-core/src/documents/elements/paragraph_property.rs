@@ -6,6 +6,7 @@ use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct ParagraphProperty {
     pub run_property: RunProperty,
     pub style: ParagraphStyle,
@@ -121,7 +122,7 @@ mod tests {
         let b = c.indent(20, Some(SpecialIndentType::FirstLine(10)), None);
         assert_eq!(
             serde_json::to_string(&b).unwrap(),
-            r#"{"run_property":{"sz":null,"sz_cs":null,"color":null,"highlight":null,"underline":null,"bold":null,"bold_cs":null,"italic":null,"italic_cs":null,"vanish":null},"style":"Normal","numbering_property":null,"alignment":null,"indent":{"start":20,"end":null,"specialIndent":{"type":"firstLine","val":10}}}"#
+            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":"Normal","numberingProperty":null,"alignment":null,"indent":{"start":20,"end":null,"specialIndent":{"type":"firstLine","val":10}}}"#
         );
     }
 }

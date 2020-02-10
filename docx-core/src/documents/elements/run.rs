@@ -7,6 +7,7 @@ use crate::types::BreakType;
 use crate::xml_builder::*;
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct Run {
     pub run_property: RunProperty,
     pub children: Vec<RunChild>,
@@ -203,7 +204,7 @@ mod tests {
         };
         assert_eq!(
             serde_json::to_string(&run).unwrap(),
-            r#"{"run_property":{"sz":30,"sz_cs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"bold_cs":true,"italic":true,"italic_cs":true,"vanish":true},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#
+            r#"{"runProperty":{"sz":30,"szCs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#
         );
     }
 }

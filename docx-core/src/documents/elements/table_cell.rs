@@ -114,4 +114,15 @@ mod tests {
             r#"<w:tc><w:tcPr /><w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p></w:tc>"#
         );
     }
+
+    #[test]
+    fn test_cell_json() {
+        let c = TableCell::new()
+            .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
+            .grid_span(2);
+        assert_eq!(
+            serde_json::to_string(&c).unwrap(),
+            r#"{"children":[{"type":"paragraph","data":{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":"Normal","numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}}],"property":{"width":null,"borders":null,"gridSpan":2,"verticalMerge":null},"hasNumbering":false}"#
+        );
+    }
 }

@@ -5,6 +5,7 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct RunProperty {
     pub sz: Option<Sz>,
     pub sz_cs: Option<SzCs>,

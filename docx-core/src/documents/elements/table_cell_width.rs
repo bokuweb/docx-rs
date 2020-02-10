@@ -5,6 +5,7 @@ use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct TableCellWidth {
     width: usize,
     width_type: WidthType,

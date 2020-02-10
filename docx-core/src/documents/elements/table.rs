@@ -1,14 +1,17 @@
+use serde::Serialize;
+
 use super::{TableGrid, TableProperty, TableRow};
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Table {
     pub rows: Vec<TableRow>,
     pub grid: Vec<usize>,
-    pub(crate) has_numbering: bool,
-    property: TableProperty,
+    pub has_numbering: bool,
+    pub property: TableProperty,
 }
 
 impl Table {

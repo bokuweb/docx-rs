@@ -1,9 +1,12 @@
+use serde::Serialize;
+
 use super::{Justification, TableBorders, TableCellMargins, TableIndent, TableWidth};
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct TableProperty {
     width: TableWidth,
     justification: Justification,

@@ -18,6 +18,7 @@ use crate::xml_builder::*;
 */
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct TableCellBorder {
     position: BorderPosition,
     border_type: BorderType,
@@ -71,6 +72,7 @@ impl BuildXML for TableCellBorder {
 }
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct TableCellBorders {
     top: Option<TableCellBorder>,
     left: Option<TableCellBorder>,

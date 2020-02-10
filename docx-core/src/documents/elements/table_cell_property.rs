@@ -102,7 +102,7 @@ mod tests {
             .width(200, WidthType::DXA);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"width":{"width":200,"width_type":"DXA"},"borders":null,"gridSpan":3,"verticalMerge":"continue"}"#
+            r#"{"width":{"width":200,"widthType":"DXA"},"borders":null,"gridSpan":3,"verticalMerge":"continue"}"#
         );
     }
 }

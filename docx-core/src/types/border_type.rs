@@ -7,6 +7,7 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum BorderType {
     None,
     Single,

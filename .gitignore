@@ -4,7 +4,7 @@ dist
 node_modules
 # pkg
 *.docx#
-test.docx
+*.docx
 output/*.docx
 vrt/screenshot/actual
 vrt/screenshot/diff

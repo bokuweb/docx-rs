@@ -1,4 +1,6 @@
-#[derive(Debug, Clone, PartialEq)]
+use serde::Serialize;
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub enum BorderPosition {
     Left,
     Right,

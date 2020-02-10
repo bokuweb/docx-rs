@@ -32,7 +32,9 @@ impl ElementReader for Table {
                             t = t.align(TableAlignmentType::from_str(&attributes[0].value)?);
                         }
                         XMLElement::TableIndent => {
-                            // TODO: Support later
+                            let (w, _) = read_width(&attributes)?;
+                            t = t.indent(w);
+                            continue;
                         }
                         XMLElement::TableBorders => {
                             // TODO: Support later
@@ -75,7 +77,6 @@ mod tests {
 <w:tbl>
     <w:tblPr>
         <w:tblW w:w="9638" w:type="dxa"/>
-        <w:jc w:val="left"/>
     </w:tblPr>
     <w:tblGrid>
         <w:gridCol w:w="3212"/>
@@ -91,6 +92,27 @@ mod tests {
             Table::new(vec![])
                 .set_grid(vec![3212, 3213, 3213])
                 .width(9638, WidthType::DXA)
+        );
+    }
+
+    #[test]
+    fn test_read_table_with_layout() {
+        let c =
+            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:tbl>
+    <w:tblPr>
+        <w:jc w:val="center"/>
+        <w:tblInd w:w="100" w:type="dxa"/>
+    </w:tblPr>
+</w:tbl>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let t = Table::read(&mut parser, &vec![]).unwrap();
+        assert_eq!(
+            t,
+            Table::new(vec![])
+                .align(TableAlignmentType::Center)
+                .indent(100)
         );
     }
 }

@@ -1,3 +1,4 @@
+use serde::Serialize;
 use std::fmt;
 use wasm_bindgen::prelude::*;
 
@@ -5,7 +6,7 @@ use super::errors;
 use std::str::FromStr;
 
 #[wasm_bindgen]
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, PartialEq, Serialize)]
 pub enum WidthType {
     DXA,
     Auto,

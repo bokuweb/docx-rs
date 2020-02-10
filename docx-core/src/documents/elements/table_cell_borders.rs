@@ -1,3 +1,5 @@
+use serde::Serialize;
+
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -15,7 +17,7 @@ use crate::xml_builder::*;
     tr2bl – diagonal border from top right corner to bottom left corner
 */
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct TableCellBorder {
     position: BorderPosition,
     border_type: BorderType,
@@ -68,7 +70,7 @@ impl BuildXML for TableCellBorder {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct TableCellBorders {
     top: Option<TableCellBorder>,
     left: Option<TableCellBorder>,

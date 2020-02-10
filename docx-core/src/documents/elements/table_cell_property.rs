@@ -1,9 +1,12 @@
+use serde::Serialize;
+
 use super::{GridSpan, TableCellBorders, TableCellWidth, VMerge};
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct TableCellProperty {
     width: Option<TableCellWidth>,
     borders: Option<TableCellBorders>,
@@ -88,6 +91,18 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:tcPr><w:vMerge w:val="continue" /></w:tcPr>"#
+        );
+    }
+
+    #[test]
+    fn test_table_cell_prop_json() {
+        let c = TableCellProperty::new()
+            .vertical_merge(VMergeType::Continue)
+            .grid_span(3)
+            .width(200, WidthType::DXA);
+        assert_eq!(
+            serde_json::to_string(&c).unwrap(),
+            r#"{"width":{"width":200,"width_type":"DXA"},"borders":null,"gridSpan":3,"verticalMerge":"continue"}"#
         );
     }
 }

@@ -1,8 +1,10 @@
+use serde::Serialize;
+
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct TableCellWidth {
     width: usize,
     width_type: WidthType,

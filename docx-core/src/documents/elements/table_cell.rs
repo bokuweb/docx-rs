@@ -1,9 +1,12 @@
+use serde::ser::{SerializeStruct, Serializer};
+use serde::Serialize;
+
 use super::{Paragraph, TableCellProperty};
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct TableCell {
     pub contents: Vec<TableCellContent>,
     pub property: TableCellProperty,
@@ -13,6 +16,22 @@ pub struct TableCell {
 #[derive(Debug, Clone, PartialEq)]
 pub enum TableCellContent {
     Paragraph(Paragraph),
+}
+
+impl Serialize for TableCellContent {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            TableCellContent::Paragraph(ref s) => {
+                let mut t = serializer.serialize_struct("Paragraph", 2)?;
+                t.serialize_field("type", "paragraph")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+        }
+    }
 }
 
 impl TableCell {

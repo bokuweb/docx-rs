@@ -103,6 +103,11 @@ impl Docx {
         self
     }
 
+    pub fn add_abstract_numbering(mut self, num: AbstractNumbering) -> Docx {
+        self.numberings = self.numberings.add_abstract_numbering(num);
+        self
+    }
+
     pub fn add_numbering(mut self, num: Numbering) -> Docx {
         self.numberings = self.numberings.add_numbering(num);
         self

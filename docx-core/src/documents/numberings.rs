@@ -8,12 +8,18 @@ use serde::Serialize;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Numberings {
+    abstract_nums: Vec<AbstractNumbering>,
     numberings: Vec<Numbering>,
 }
 
 impl Numberings {
     pub fn new() -> Self {
         Default::default()
+    }
+
+    pub fn add_abstract_numbering(mut self, n: AbstractNumbering) -> Self {
+        self.abstract_nums.push(n);
+        self
     }
 
     pub fn add_numbering(mut self, n: Numbering) -> Self {
@@ -24,7 +30,10 @@ impl Numberings {
 
 impl Default for Numberings {
     fn default() -> Self {
-        Self { numberings: vec![] }
+        Self {
+            abstract_nums: vec![],
+            numberings: vec![],
+        }
     }
 }
 
@@ -32,6 +41,10 @@ impl BuildXML for Numberings {
     fn build(&self) -> Vec<u8> {
         let mut b = XMLBuilder::new().declaration(Some(true)).open_numbering();
         b = b.add_child(&create_default_numbering());
+        for n in &self.abstract_nums {
+            b = b.add_child(n);
+        }
+        b = b.add_child(&Numbering::new(1, 1));
         for n in &self.numberings {
             b = b.add_child(n);
         }
@@ -39,8 +52,8 @@ impl BuildXML for Numberings {
     }
 }
 
-fn create_default_numbering() -> Numbering {
-    Numbering::new(1)
+fn create_default_numbering() -> AbstractNumbering {
+    AbstractNumbering::new(1)
         .add_level(
             Level::new(
                 0,

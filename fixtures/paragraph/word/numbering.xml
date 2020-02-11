@@ -1,2 +1,214 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml"><w:abstractNum w:abstractNumId="1"><w:lvl w:ilvl="0"><w:start w:val="1"/><w:numFmt w:val="decimal"/><w:lvlText w:val="%1."/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="397"/></w:tabs><w:ind w:left="754" w:hanging="397"/></w:pPr></w:lvl><w:lvl w:ilvl="1"><w:start w:val="1"/><w:numFmt w:val="decimal"/><w:lvlText w:val="%2."/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="794"/></w:tabs><w:ind w:left="1151" w:hanging="397"/></w:pPr></w:lvl><w:lvl w:ilvl="2"><w:start w:val="1"/><w:numFmt w:val="decimal"/><w:lvlText w:val="%3."/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="1191"/></w:tabs><w:ind w:left="1548" w:hanging="397"/></w:pPr></w:lvl><w:lvl w:ilvl="3"><w:start w:val="1"/><w:numFmt w:val="decimal"/><w:lvlText w:val="%4."/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="1588"/></w:tabs><w:ind w:left="1945" w:hanging="397"/></w:pPr></w:lvl><w:lvl w:ilvl="4"><w:start w:val="1"/><w:numFmt w:val="decimal"/><w:lvlText w:val="%5."/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="1985"/></w:tabs><w:ind w:left="2342" w:hanging="397"/></w:pPr></w:lvl><w:lvl w:ilvl="5"><w:start w:val="1"/><w:numFmt w:val="decimal"/><w:lvlText w:val="%6."/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="2381"/></w:tabs><w:ind w:left="2738" w:hanging="397"/></w:pPr></w:lvl><w:lvl w:ilvl="6"><w:start w:val="1"/><w:numFmt w:val="decimal"/><w:lvlText w:val="%7."/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="2778"/></w:tabs><w:ind w:left="3135" w:hanging="397"/></w:pPr></w:lvl><w:lvl w:ilvl="7"><w:start w:val="1"/><w:numFmt w:val="decimal"/><w:lvlText w:val="%8."/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="3175"/></w:tabs><w:ind w:left="3532" w:hanging="397"/></w:pPr></w:lvl><w:lvl w:ilvl="8"><w:start w:val="1"/><w:numFmt w:val="decimal"/><w:lvlText w:val="%9."/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="3572"/></w:tabs><w:ind w:left="3929" w:hanging="397"/></w:pPr></w:lvl></w:abstractNum><w:abstractNum w:abstractNumId="2"><w:lvl w:ilvl="0"><w:start w:val="1"/><w:numFmt w:val="none"/><w:suff w:val="nothing"/><w:lvlText w:val=""/><w:lvlJc w:val="left"/><w:pPr><w:ind w:left="0" w:hanging="0"/></w:pPr></w:lvl><w:lvl w:ilvl="1"><w:start w:val="1"/><w:numFmt w:val="none"/><w:suff w:val="nothing"/><w:lvlText w:val=""/><w:lvlJc w:val="left"/><w:pPr><w:ind w:left="0" w:hanging="0"/></w:pPr></w:lvl><w:lvl w:ilvl="2"><w:start w:val="1"/><w:numFmt w:val="none"/><w:suff w:val="nothing"/><w:lvlText w:val=""/><w:lvlJc w:val="left"/><w:pPr><w:ind w:left="0" w:hanging="0"/></w:pPr></w:lvl><w:lvl w:ilvl="3"><w:start w:val="1"/><w:numFmt w:val="none"/><w:suff w:val="nothing"/><w:lvlText w:val=""/><w:lvlJc w:val="left"/><w:pPr><w:ind w:left="0" w:hanging="0"/></w:pPr></w:lvl><w:lvl w:ilvl="4"><w:start w:val="1"/><w:numFmt w:val="none"/><w:suff w:val="nothing"/><w:lvlText w:val=""/><w:lvlJc w:val="left"/><w:pPr><w:ind w:left="0" w:hanging="0"/></w:pPr></w:lvl><w:lvl w:ilvl="5"><w:start w:val="1"/><w:numFmt w:val="none"/><w:suff w:val="nothing"/><w:lvlText w:val=""/><w:lvlJc w:val="left"/><w:pPr><w:ind w:left="0" w:hanging="0"/></w:pPr></w:lvl><w:lvl w:ilvl="6"><w:start w:val="1"/><w:numFmt w:val="none"/><w:suff w:val="nothing"/><w:lvlText w:val=""/><w:lvlJc w:val="left"/><w:pPr><w:ind w:left="0" w:hanging="0"/></w:pPr></w:lvl><w:lvl w:ilvl="7"><w:start w:val="1"/><w:numFmt w:val="none"/><w:suff w:val="nothing"/><w:lvlText w:val=""/><w:lvlJc w:val="left"/><w:pPr><w:ind w:left="0" w:hanging="0"/></w:pPr></w:lvl><w:lvl w:ilvl="8"><w:start w:val="1"/><w:numFmt w:val="none"/><w:suff w:val="nothing"/><w:lvlText w:val=""/><w:lvlJc w:val="left"/><w:pPr><w:ind w:left="0" w:hanging="0"/></w:pPr></w:lvl></w:abstractNum><w:num w:numId="1"><w:abstractNumId w:val="1"/></w:num><w:num w:numId="2"><w:abstractNumId w:val="2"/></w:num></w:numbering>
+<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" 
+    xmlns:o="urn:schemas-microsoft-com:office:office" 
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" 
+    xmlns:v="urn:schemas-microsoft-com:vml">
+    <w:abstractNum w:abstractNumId="1">
+        <w:lvl w:ilvl="0">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="decimal"/>
+            <w:lvlText w:val="%1."/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:tabs>
+                    <w:tab w:val="num" w:pos="397"/>
+                </w:tabs>
+                <w:ind w:left="754" w:hanging="397"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="1">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="decimal"/>
+            <w:lvlText w:val="%2."/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:tabs>
+                    <w:tab w:val="num" w:pos="794"/>
+                </w:tabs>
+                <w:ind w:left="1151" w:hanging="397"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="2">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="decimal"/>
+            <w:lvlText w:val="%3."/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:tabs>
+                    <w:tab w:val="num" w:pos="1191"/>
+                </w:tabs>
+                <w:ind w:left="1548" w:hanging="397"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="3">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="decimal"/>
+            <w:lvlText w:val="%4."/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:tabs>
+                    <w:tab w:val="num" w:pos="1588"/>
+                </w:tabs>
+                <w:ind w:left="1945" w:hanging="397"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="4">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="decimal"/>
+            <w:lvlText w:val="%5."/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:tabs>
+                    <w:tab w:val="num" w:pos="1985"/>
+                </w:tabs>
+                <w:ind w:left="2342" w:hanging="397"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="5">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="decimal"/>
+            <w:lvlText w:val="%6."/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:tabs>
+                    <w:tab w:val="num" w:pos="2381"/>
+                </w:tabs>
+                <w:ind w:left="2738" w:hanging="397"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="6">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="decimal"/>
+            <w:lvlText w:val="%7."/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:tabs>
+                    <w:tab w:val="num" w:pos="2778"/>
+                </w:tabs>
+                <w:ind w:left="3135" w:hanging="397"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="7">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="decimal"/>
+            <w:lvlText w:val="%8."/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:tabs>
+                    <w:tab w:val="num" w:pos="3175"/>
+                </w:tabs>
+                <w:ind w:left="3532" w:hanging="397"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="8">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="decimal"/>
+            <w:lvlText w:val="%9."/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:tabs>
+                    <w:tab w:val="num" w:pos="3572"/>
+                </w:tabs>
+                <w:ind w:left="3929" w:hanging="397"/>
+            </w:pPr>
+        </w:lvl>
+    </w:abstractNum>
+    <w:abstractNum w:abstractNumId="2">
+        <w:lvl w:ilvl="0">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="none"/>
+            <w:suff w:val="nothing"/>
+            <w:lvlText w:val=""/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:ind w:left="0" w:hanging="0"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="1">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="none"/>
+            <w:suff w:val="nothing"/>
+            <w:lvlText w:val=""/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:ind w:left="0" w:hanging="0"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="2">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="none"/>
+            <w:suff w:val="nothing"/>
+            <w:lvlText w:val=""/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:ind w:left="0" w:hanging="0"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="3">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="none"/>
+            <w:suff w:val="nothing"/>
+            <w:lvlText w:val=""/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:ind w:left="0" w:hanging="0"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="4">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="none"/>
+            <w:suff w:val="nothing"/>
+            <w:lvlText w:val=""/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:ind w:left="0" w:hanging="0"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="5">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="none"/>
+            <w:suff w:val="nothing"/>
+            <w:lvlText w:val=""/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:ind w:left="0" w:hanging="0"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="6">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="none"/>
+            <w:suff w:val="nothing"/>
+            <w:lvlText w:val=""/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:ind w:left="0" w:hanging="0"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="7">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="none"/>
+            <w:suff w:val="nothing"/>
+            <w:lvlText w:val=""/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:ind w:left="0" w:hanging="0"/>
+            </w:pPr>
+        </w:lvl>
+        <w:lvl w:ilvl="8">
+            <w:start w:val="1"/>
+            <w:numFmt w:val="none"/>
+            <w:suff w:val="nothing"/>
+            <w:lvlText w:val=""/>
+            <w:lvlJc w:val="left"/>
+            <w:pPr>
+                <w:ind w:left="0" w:hanging="0"/>
+            </w:pPr>
+        </w:lvl>
+    </w:abstractNum>
+    <w:num w:numId="1">
+        <w:abstractNumId w:val="1"/>
+    </w:num>
+    <w:num w:numId="2">
+        <w:abstractNumId w:val="2"/>
+    </w:num>
+</w:numbering>

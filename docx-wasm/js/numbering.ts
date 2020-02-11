@@ -1,13 +1,8 @@
-import { Level } from "./level";
-
 export class Numbering {
   id: number;
-  levels: Level[];
-  constructor(id: number) {
+  abstractNumId: number;
+  constructor(id: number, abstractNumId: number) {
     this.id = id;
-  }
-  addLevel(level: Level) {
-    this.levels.push(level);
-    return this;
+    this.abstractNumId = abstractNumId;
   }
 }

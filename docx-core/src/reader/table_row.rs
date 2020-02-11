@@ -16,12 +16,9 @@ impl ElementReader for TableRow {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    match e {
-                        XMLElement::TableCell => {
-                            cells.push(TableCell::read(r, &attributes)?);
-                            continue;
-                        }
-                        _ => {}
+                    if let XMLElement::TableCell = e {
+                        cells.push(TableCell::read(r, &attributes)?);
+                        continue;
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {

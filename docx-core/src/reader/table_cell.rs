@@ -117,7 +117,7 @@ mod tests {
 </w:tc>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let cell = TableCell::read(&mut parser, &vec![]).unwrap();
+        let cell = TableCell::read(&mut parser, &[]).unwrap();
         assert_eq!(
             cell,
             TableCell::new()

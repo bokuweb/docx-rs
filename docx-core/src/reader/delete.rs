@@ -16,12 +16,10 @@ impl ElementReader for Delete {
             let e = r.next();
             match e {
                 Ok(XmlEvent::StartElement { name, .. }) => {
-                    let e = XMLElement::from_str(&name.local_name).unwrap();
-                    match e {
-                        XMLElement::Run => {
-                            run = Some(Run::read(r, attrs)?);
-                        }
-                        _ => {}
+                    let e = XMLElement::from_str(&name.local_name)
+                        .expect("should convert to XMLElement");
+                    if let XMLElement::Run = e {
+                        run = Some(Run::read(r, attrs)?);
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {

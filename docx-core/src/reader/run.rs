@@ -55,11 +55,8 @@ impl ElementReader for Run {
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    match e {
-                        XMLElement::Run => {
-                            return Ok(run);
-                        }
-                        _ => {}
+                    if let XMLElement::Run = e {
+                        return Ok(run);
                     }
                 }
                 Err(_) => return Err(ReaderError::XMLReadError),
@@ -82,7 +79,7 @@ mod tests {
   <w:r><w:rPr><w:color w:val="C9211E"/><w:sz w:val="30"/><w:szCs w:val="30"/></w:rPr><w:t>H</w:t></w:r>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let run = Run::read(&mut parser, &vec![]).unwrap();
+        let run = Run::read(&mut parser, &[]).unwrap();
         assert_eq!(
             run,
             Run {
@@ -110,7 +107,7 @@ mod tests {
   <w:r><w:tab /></w:r>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let run = Run::read(&mut parser, &vec![]).unwrap();
+        let run = Run::read(&mut parser, &[]).unwrap();
         assert_eq!(
             run,
             Run {
@@ -138,7 +135,7 @@ mod tests {
   <w:r><w:br w:type="page" /></w:r>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let run = Run::read(&mut parser, &vec![]).unwrap();
+        let run = Run::read(&mut parser, &[]).unwrap();
         assert_eq!(
             run,
             Run {

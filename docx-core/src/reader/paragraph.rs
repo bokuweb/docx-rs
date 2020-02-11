@@ -153,7 +153,7 @@ mod tests {
     </w:p>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let p = Paragraph::read(&mut parser, &vec![]).unwrap();
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
         let s: Option<&str> = None;
         assert_eq!(
             p,
@@ -187,7 +187,7 @@ mod tests {
     </w:p>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let p = Paragraph::read(&mut parser, &vec![]).unwrap();
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
         let s: Option<&str> = None;
         assert_eq!(
             p,
@@ -220,7 +220,7 @@ mod tests {
     </w:p>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let p = Paragraph::read(&mut parser, &vec![]).unwrap();
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
         let s: Option<&str> = None;
         assert_eq!(
             p,
@@ -256,7 +256,7 @@ mod tests {
     </w:p>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let p = Paragraph::read(&mut parser, &vec![]).unwrap();
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
         let s: Option<&str> = None;
         assert_eq!(
             p,
@@ -293,7 +293,7 @@ mod tests {
     </w:p>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let p = Paragraph::read(&mut parser, &vec![]).unwrap();
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
         let s: Option<&str> = None;
         assert_eq!(
             p,
@@ -330,7 +330,7 @@ mod tests {
     </w:p>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let p = Paragraph::read(&mut parser, &vec![]).unwrap();
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
         let s: Option<&str> = None;
         assert_eq!(
             p,

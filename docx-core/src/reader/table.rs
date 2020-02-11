@@ -86,7 +86,7 @@ mod tests {
 </w:tbl>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let t = Table::read(&mut parser, &vec![]).unwrap();
+        let t = Table::read(&mut parser, &[]).unwrap();
         assert_eq!(
             t,
             Table::new(vec![])
@@ -107,7 +107,7 @@ mod tests {
 </w:tbl>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
-        let t = Table::read(&mut parser, &vec![]).unwrap();
+        let t = Table::read(&mut parser, &[]).unwrap();
         assert_eq!(
             t,
             Table::new(vec![])

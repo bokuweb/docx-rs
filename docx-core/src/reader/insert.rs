@@ -17,11 +17,8 @@ impl ElementReader for Insert {
             match e {
                 Ok(XmlEvent::StartElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    match e {
-                        XMLElement::Run => {
-                            run = Some(Run::read(r, attrs)?);
-                        }
-                        _ => {}
+                    if let XMLElement::Run = e {
+                        run = Some(Run::read(r, attrs)?);
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {

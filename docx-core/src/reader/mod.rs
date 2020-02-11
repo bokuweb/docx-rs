@@ -22,7 +22,7 @@ pub use errors::ReaderError;
 pub use from_xml::*;
 pub use xml_element::*;
 
-const DOC_RELATIONSHIP_TYPE: &'static str =
+const DOC_RELATIONSHIP_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
 
 pub fn read_docx(buf: &[u8]) -> Result<(), ReaderError> {

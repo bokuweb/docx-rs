@@ -29,12 +29,15 @@ pub use settings::*;
 pub use styles::*;
 pub use xml_docx::*;
 
-#[derive(Debug)]
+use serde::Serialize;
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Docx {
-    content_type: ContentTypes,
-    rels: Rels,
-    document_rels: DocumentRels,
-    doc_props: DocProps,
+    pub content_type: ContentTypes,
+    pub rels: Rels,
+    pub document_rels: DocumentRels,
+    pub doc_props: DocProps,
     pub styles: Styles,
     pub document: Document,
     pub comments: Comments,
@@ -45,7 +48,7 @@ pub struct Docx {
 
 impl Default for Docx {
     fn default() -> Self {
-        let content_type = ContentTypes::new();
+        let content_type = ContentTypes::new().set_default();
         let rels = Rels::new();
         let doc_props = DocProps::new(CorePropsConfig::new());
         let styles = Styles::new();
@@ -73,6 +76,11 @@ impl Default for Docx {
 impl Docx {
     pub fn new() -> Docx {
         Default::default()
+    }
+
+    pub fn document(mut self, d: Document) -> Docx {
+        self.document = d;
+        self
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> Docx {
@@ -126,6 +134,11 @@ impl Docx {
         }
     }
 
+    pub fn json(&mut self) -> String {
+        self.update_comments();
+        serde_json::to_string(&self).unwrap()
+    }
+
     // Traverse and clone comments from document and add to comments node.
     fn update_comments(&mut self) {
         let mut comments: Vec<Comment> = vec![];
@@ -141,7 +154,7 @@ impl Docx {
                 DocumentChild::Table(table) => {
                     for row in &table.rows {
                         for cell in &row.cells {
-                            for content in &cell.contents {
+                            for content in &cell.children {
                                 match content {
                                     TableCellContent::Paragraph(paragraph) => {
                                         for child in &paragraph.children {

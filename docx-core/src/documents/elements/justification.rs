@@ -1,3 +1,5 @@
+use serde::{Serialize, Serializer};
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
@@ -9,9 +11,9 @@ use crate::xml_builder::*;
 // present without the val attribute, the default of the val attribute is centerGroup . This means that the instances
 // of mathematical text can be aligned with respect to each other, but the entire group of mathematical text is
 // centered as a whole.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Justification {
-    val: String,
+    pub val: String,
 }
 
 impl Justification {
@@ -24,6 +26,15 @@ impl BuildXML for Justification {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         b.justification(&self.val).build()
+    }
+}
+
+impl Serialize for Justification {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.val)
     }
 }
 

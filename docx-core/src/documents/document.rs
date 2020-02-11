@@ -1,18 +1,54 @@
+use serde::ser::{SerializeStruct, Serializer};
+use serde::Serialize;
+
 use super::{Paragraph, SectionProperty, Table};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Document {
-    pub(crate) children: Vec<DocumentChild>,
+    pub children: Vec<DocumentChild>,
     pub section_property: SectionProperty,
     pub has_numbering: bool,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum DocumentChild {
     Paragraph(Paragraph),
     Table(Table),
+}
+
+impl Serialize for DocumentChild {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            DocumentChild::Paragraph(ref p) => {
+                let mut t = serializer.serialize_struct("Paragraph", 2)?;
+                t.serialize_field("type", "paragraph")?;
+                t.serialize_field("data", p)?;
+                t.end()
+            }
+            DocumentChild::Table(ref c) => {
+                let mut t = serializer.serialize_struct("Table", 2)?;
+                t.serialize_field("type", "table")?;
+                t.serialize_field("data", c)?;
+                t.end()
+            }
+        }
+    }
+}
+
+impl Default for Document {
+    fn default() -> Self {
+        Self {
+            children: Vec::new(),
+            section_property: SectionProperty::new(),
+            has_numbering: false,
+        }
+    }
 }
 
 impl Document {
@@ -34,16 +70,6 @@ impl Document {
         }
         self.children.push(DocumentChild::Table(t));
         self
-    }
-}
-
-impl Default for Document {
-    fn default() -> Self {
-        Self {
-            children: Vec::new(),
-            section_property: SectionProperty::new(),
-            has_numbering: false,
-        }
     }
 }
 

@@ -1,15 +1,18 @@
+use serde::Serialize;
+
 use super::*;
 use crate::documents::BuildXML;
 use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct ParagraphProperty {
-    run_property: RunProperty,
-    style: ParagraphStyle,
-    numbering_property: Option<NumberingProperty>,
-    alignment: Option<Justification>,
-    indent: Option<Indent>,
+    pub run_property: RunProperty,
+    pub style: ParagraphStyle,
+    pub numbering_property: Option<NumberingProperty>,
+    pub alignment: Option<Justification>,
+    pub indent: Option<Indent>,
 }
 
 impl Default for ParagraphProperty {
@@ -45,8 +48,13 @@ impl ParagraphProperty {
         self
     }
 
-    pub fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Self {
-        self.indent = Some(Indent::new(left, special_indent));
+    pub fn indent(
+        mut self,
+        left: usize,
+        special_indent: Option<SpecialIndentType>,
+        end: Option<usize>,
+    ) -> Self {
+        self.indent = Some(Indent::new(left, special_indent, end));
         self
     }
 
@@ -101,10 +109,20 @@ mod tests {
     #[test]
     fn test_indent() {
         let c = ParagraphProperty::new();
-        let b = c.indent(20, None).build();
+        let b = c.indent(20, None, None).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="20" /></w:pPr>"#
+            r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="20" w:right="0" /></w:pPr>"#
+        );
+    }
+
+    #[test]
+    fn test_indent_json() {
+        let c = ParagraphProperty::new();
+        let b = c.indent(20, Some(SpecialIndentType::FirstLine(10)), None);
+        assert_eq!(
+            serde_json::to_string(&b).unwrap(),
+            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":"Normal","numberingProperty":null,"alignment":null,"indent":{"start":20,"end":null,"specialIndent":{"type":"firstLine","val":10}}}"#
         );
     }
 }

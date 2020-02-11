@@ -1,11 +1,14 @@
+use serde::ser::{SerializeStruct, Serializer};
+use serde::Serialize;
+
 use super::{IndentLevel, NumberingId};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct NumberingProperty {
-    id: NumberingId,
-    level: IndentLevel,
+    pub id: NumberingId,
+    pub level: IndentLevel,
 }
 
 impl NumberingProperty {
@@ -22,6 +25,18 @@ impl BuildXML for NumberingProperty {
             .add_child(&self.level)
             .close()
             .build()
+    }
+}
+
+impl Serialize for NumberingProperty {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut t = serializer.serialize_struct("NumberProperty", 2)?;
+        t.serialize_field("id", &self.id.id)?;
+        t.serialize_field("level", &self.level.val)?;
+        t.end()
     }
 }
 

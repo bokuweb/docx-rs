@@ -3,12 +3,16 @@ mod core;
 
 pub use self::app::*;
 pub use self::core::*;
+
 use crate::documents::BuildXML;
 
-#[derive(Debug)]
-pub(crate) struct DocProps {
-    app: AppProps,
-    core: CoreProps,
+use serde::Serialize;
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DocProps {
+    pub app: AppProps,
+    pub core: CoreProps,
 }
 
 impl DocProps {

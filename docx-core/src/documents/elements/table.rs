@@ -1,14 +1,17 @@
+use serde::Serialize;
+
 use super::{TableGrid, TableProperty, TableRow};
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Table {
     pub rows: Vec<TableRow>,
     pub grid: Vec<usize>,
-    pub(crate) has_numbering: bool,
-    property: TableProperty,
+    pub has_numbering: bool,
+    pub property: TableProperty,
 }
 
 impl Table {
@@ -22,6 +25,11 @@ impl Table {
             grid,
             has_numbering,
         }
+    }
+
+    pub fn add_row(mut self, row: TableRow) -> Table {
+        self.rows.push(row);
+        self
     }
 
     pub fn set_grid(mut self, grid: Vec<usize>) -> Table {
@@ -39,8 +47,8 @@ impl Table {
         self
     }
 
-    pub fn width(mut self, w: usize) -> Table {
-        self.property = self.property.width(w, WidthType::DXA);
+    pub fn width(mut self, w: usize, t: WidthType) -> Table {
+        self.property = self.property.width(w, t);
         self
     }
 }
@@ -95,6 +103,15 @@ mod tests {
   <w:gridCol w:w="100" w:type="dxa" />
   <w:gridCol w:w="200" w:type="dxa" />
 </w:tblGrid><w:tr><w:trPr /></w:tr></w:tbl>"#
+        );
+    }
+
+    #[test]
+    fn test_table_json() {
+        let t = Table::new(vec![]).set_grid(vec![100, 200, 300]);
+        assert_eq!(
+            serde_json::to_string(&t).unwrap(),
+            r#"{"rows":[],"grid":[100,200,300],"hasNumbering":false,"property":{"width":{"width":0,"widthType":"Auto"},"justification":"left","borders":{"top":{"position":"top","borderType":"single","size":2,"space":0,"color":"000000"},"left":{"position":"left","borderType":"single","size":2,"space":0,"color":"000000"},"bottom":{"position":"bottom","borderType":"single","size":2,"space":0,"color":"000000"},"right":{"position":"right","borderType":"single","size":2,"space":0,"color":"000000"},"insideH":{"position":"insideH","borderType":"single","size":2,"space":0,"color":"000000"},"insideV":{"position":"insideV","borderType":"single","size":2,"space":0,"color":"000000"}},"margins":{"top":55,"left":54,"bottom":55,"right":55},"indent":null}}"#
         );
     }
 }

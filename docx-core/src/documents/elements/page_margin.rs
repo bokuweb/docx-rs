@@ -1,7 +1,10 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+use serde::Serialize;
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PageMargin {
     top: usize,
     left: usize,

@@ -2,7 +2,10 @@ use super::{DefaultTabStop, Zoom};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug)]
+use serde::Serialize;
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Settings {
     default_tab_stop: DefaultTabStop,
     zoom: Zoom,

@@ -19,28 +19,30 @@ impl Paragraph {
     }
 
     pub fn add_insert(mut self, i: Insert) -> Paragraph {
-        self.0.children.push(docx_rs::ParagraphChild::Insert(i.take()));
+        self.0
+            .children
+            .push(docx_rs::ParagraphChild::Insert(i.take()));
         self
     }
 
     pub fn add_delete(mut self, d: Delete) -> Paragraph {
-        self.0.children.push(docx_rs::ParagraphChild::Delete(d.take()));
+        self.0
+            .children
+            .push(docx_rs::ParagraphChild::Delete(d.take()));
         self
     }
 
-    pub fn add_bookmark_start(mut self, id: &str, name: &str) -> Paragraph {
+    pub fn add_bookmark_start(mut self, id: usize, name: &str) -> Paragraph {
         self.0.children.push(docx_rs::ParagraphChild::BookmarkStart(
             docx_rs::BookmarkStart::new(id, name),
         ));
         self
     }
 
-    pub fn add_bookmark_end(mut self, id: &str) -> Paragraph {
-        self.0
-            .children
-            .push(docx_rs::ParagraphChild::BookmarkEnd(docx_rs::BookmarkEnd::new(
-                id,
-            )));
+    pub fn add_bookmark_end(mut self, id: usize) -> Paragraph {
+        self.0.children.push(docx_rs::ParagraphChild::BookmarkEnd(
+            docx_rs::BookmarkEnd::new(id),
+        ));
         self
     }
 
@@ -77,7 +79,7 @@ impl Paragraph {
         special_indent_size: Option<usize>,
     ) -> Paragraph {
         let special_indent = create_special_indent(special_indent_kind, special_indent_size);
-        self.0.property = self.0.property.indent(left, special_indent);
+        self.0.property = self.0.property.indent(left, special_indent, None);
         self
     }
 

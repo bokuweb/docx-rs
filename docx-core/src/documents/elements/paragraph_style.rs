@@ -1,7 +1,9 @@
+use serde::{Serialize, Serializer};
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ParagraphStyle {
     val: String,
 }
@@ -33,6 +35,15 @@ impl ParagraphStyle {
 impl BuildXML for ParagraphStyle {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new().paragraph_style(&self.val).build()
+    }
+}
+
+impl Serialize for ParagraphStyle {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.val)
     }
 }
 

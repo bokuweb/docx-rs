@@ -30,7 +30,7 @@ impl Level {
         special_indent_size: Option<usize>,
     ) -> Self {
         let special_indent = create_special_indent(special_indent_kind, special_indent_size);
-        self.0.paragraph_property = self.0.paragraph_property.indent(left, special_indent);
+        self.0.paragraph_property = self.0.paragraph_property.indent(left, special_indent, None);
         self
     }
 }

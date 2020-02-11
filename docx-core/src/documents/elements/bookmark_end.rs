@@ -1,21 +1,23 @@
+use serde::Serialize;
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct BookmarkEnd {
-    id: String,
+    id: usize,
 }
 
 impl BookmarkEnd {
-    pub fn new(id: impl Into<String>) -> BookmarkEnd {
-        BookmarkEnd { id: id.into() }
+    pub fn new(id: usize) -> BookmarkEnd {
+        BookmarkEnd { id }
     }
 }
 
 impl BuildXML for BookmarkEnd {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.bookmark_end(&self.id).build()
+        b.bookmark_end(&format!("{}", self.id)).build()
     }
 }
 
@@ -29,11 +31,8 @@ mod tests {
 
     #[test]
     fn test_bookmark_end() {
-        let c = BookmarkEnd::new("mockid");
+        let c = BookmarkEnd::new(0);
         let b = c.build();
-        assert_eq!(
-            str::from_utf8(&b).unwrap(),
-            r#"<w:bookmarkEnd w:id="mockid" />"#
-        );
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:bookmarkEnd w:id="0" />"#);
     }
 }

@@ -1,7 +1,8 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use serde::{Deserialize, Serialize, Serializer};
 
-#[derive(Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, PartialEq)]
 pub struct SzCs {
     val: usize,
 }
@@ -15,6 +16,15 @@ impl SzCs {
 impl BuildXML for SzCs {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new().sz_cs(self.val).build()
+    }
+}
+
+impl Serialize for SzCs {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_u32(self.val as u32)
     }
 }
 

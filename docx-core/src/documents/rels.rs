@@ -1,43 +1,69 @@
+use serde::{Deserialize, Serialize};
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug)]
-pub struct Rels {}
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+pub struct Rels {
+    pub rels: Vec<(String, String, String)>,
+}
 
 impl Rels {
     pub fn new() -> Rels {
         Default::default()
     }
+
+    pub fn set_default(mut self) -> Self {
+        self.rels.push((
+            "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"
+                .to_owned(),
+            "rId1".to_owned(),
+            "docProps/core.xml".to_owned(),
+        ));
+        self.rels.push(
+            ("http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties".to_owned(),
+            "rId2".to_owned(), "docProps/app.xml".to_owned()),
+        );
+        self.rels.push((
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument"
+                .to_owned(),
+            "rId3".to_owned(),
+            "word/document.xml".to_owned(),
+        ));
+        self
+    }
+
+    pub fn add_rel(
+        mut self,
+        id: impl Into<String>,
+        rel_type: impl Into<String>,
+        target: impl Into<String>,
+    ) -> Self {
+        self.rels.push((rel_type.into(), id.into(), target.into()));
+        self
+    }
+
+    pub fn find_target(&self, rel_type: &str) -> Option<&(String, String, String)> {
+        self.rels.iter().find(|rel| rel.0 == rel_type)
+    }
 }
 
 impl Default for Rels {
     fn default() -> Self {
-        Rels {}
+        Rels { rels: Vec::new() }
     }
 }
 
 impl BuildXML for Rels {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.declaration(None)
-            .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships")
-            .relationship(
-                "rId1",
-                "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties",
-                "docProps/core.xml"
-            )
-            .relationship(
-                "rId2",
-                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
-                "docProps/app.xml"
-            )
-            .relationship(
-                "rId3",
-                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
-                "word/document.xml"
-            )
-            .close()
-            .build()
+        let mut b = b
+            .declaration(None)
+            .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships");
+        for (k, id, v) in self.rels.iter() {
+            b = b.relationship(id, k, v);
+        }
+        b.close().build()
     }
 }
 
@@ -51,7 +77,7 @@ mod tests {
 
     #[test]
     fn test_build() {
-        let c = Rels::new();
+        let c = Rels::new().set_default();
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

@@ -1,7 +1,9 @@
+use serde::{Deserialize, Serialize, Serializer};
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct Highlight {
     val: String,
 }
@@ -15,6 +17,15 @@ impl Highlight {
 impl BuildXML for Highlight {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new().highlight(&self.val).build()
+    }
+}
+
+impl Serialize for Highlight {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.val)
     }
 }
 
@@ -34,5 +45,12 @@ mod tests {
             str::from_utf8(&b).unwrap(),
             r#"<w:highlight w:val="FFFFFF" />"#
         );
+    }
+
+    #[test]
+    fn test_highlight_json() {
+        let c = Highlight::new("FFFFFF");
+
+        assert_eq!(serde_json::to_string(&c).unwrap(), r#""FFFFFF""#);
     }
 }

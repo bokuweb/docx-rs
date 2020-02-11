@@ -1,8 +1,10 @@
+use serde::{Serialize, Serializer};
+
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct VMerge {
     val: VMergeType,
 }
@@ -18,6 +20,15 @@ impl BuildXML for VMerge {
         XMLBuilder::new()
             .vertical_merge(&self.val.to_string())
             .build()
+    }
+}
+
+impl Serialize for VMerge {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&format!("{}", &self.val))
     }
 }
 

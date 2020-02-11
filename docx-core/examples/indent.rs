@@ -9,20 +9,20 @@ pub fn main() -> Result<(), DocxError> {
         .add_paragraph(
             Paragraph::new()
                 .add_run(Run::new().add_text(DUMMY))
-                .indent(840, None),
+                .indent(840, None, None),
         )
         .add_paragraph(Paragraph::new())
-        .add_paragraph(
-            Paragraph::new()
-                .add_run(Run::new().add_text(DUMMY))
-                .indent(840, Some(SpecialIndentType::FirstLine(720))),
-        )
+        .add_paragraph(Paragraph::new().add_run(Run::new().add_text(DUMMY)).indent(
+            840,
+            Some(SpecialIndentType::FirstLine(720)),
+            None,
+        ))
         .add_paragraph(Paragraph::new())
-        .add_paragraph(
-            Paragraph::new()
-                .add_run(Run::new().add_text(DUMMY))
-                .indent(1560, Some(SpecialIndentType::Hanging(720))),
-        )
+        .add_paragraph(Paragraph::new().add_run(Run::new().add_text(DUMMY)).indent(
+            1560,
+            Some(SpecialIndentType::Hanging(720)),
+            None,
+        ))
         .build()
         .pack(file)?;
     Ok(())

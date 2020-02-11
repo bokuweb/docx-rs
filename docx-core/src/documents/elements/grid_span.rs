@@ -1,7 +1,9 @@
+use serde::{Serialize, Serializer};
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GridSpan {
     val: usize,
 }
@@ -15,6 +17,15 @@ impl GridSpan {
 impl BuildXML for GridSpan {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new().grid_span(self.val).build()
+    }
+}
+
+impl Serialize for GridSpan {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_u32(self.val as u32)
     }
 }
 

@@ -1,5 +1,8 @@
 use std::fmt;
+use std::str::FromStr;
 use wasm_bindgen::prelude::*;
+
+use super::errors;
 
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug)]
@@ -15,6 +18,18 @@ impl fmt::Display for TableAlignmentType {
             TableAlignmentType::Center => write!(f, "center"),
             TableAlignmentType::Left => write!(f, "left"),
             TableAlignmentType::Right => write!(f, "right"),
+        }
+    }
+}
+
+impl FromStr for TableAlignmentType {
+    type Err = errors::TypeError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "left" => Ok(TableAlignmentType::Left),
+            "right" => Ok(TableAlignmentType::Right),
+            "center" => Ok(TableAlignmentType::Center),
+            _ => Err(errors::TypeError::FromStrError),
         }
     }
 }

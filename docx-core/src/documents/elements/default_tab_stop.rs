@@ -1,7 +1,9 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+use serde::{Serialize, Serializer};
+
+#[derive(Debug, Clone, PartialEq)]
 pub struct DefaultTabStop {
     val: usize,
 }
@@ -16,6 +18,15 @@ impl BuildXML for DefaultTabStop {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         b.default_tab_stop(self.val).build()
+    }
+}
+
+impl Serialize for DefaultTabStop {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_u64(self.val as u64)
     }
 }
 

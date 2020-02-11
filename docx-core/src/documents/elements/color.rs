@@ -1,7 +1,9 @@
+use serde::{Deserialize, Serialize, Serializer};
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, PartialEq)]
 pub struct Color {
     val: String,
 }
@@ -15,6 +17,15 @@ impl Color {
 impl BuildXML for Color {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new().color(&self.val).build()
+    }
+}
+
+impl Serialize for Color {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.val)
     }
 }
 

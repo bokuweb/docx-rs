@@ -1,7 +1,9 @@
+use serde::Serialize;
+
 use crate::documents::{BuildXML, Paragraph};
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct Comment {
     pub id: usize,
     pub author: String,

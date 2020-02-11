@@ -16,26 +16,12 @@
                 <w:pStyle w:val="Normal"/>
                 <w:rPr></w:rPr>
             </w:pPr>
-            <w:bookmarkStart w:id="0" w:name="bookmark_test"/>
+            <w:bookmarkStart w:id="0" w:name="ABCD-1234"/>
             <w:r>
                 <w:rPr></w:rPr>
-                <w:t>Bookmark</w:t>
+                <w:t>Bookmarked</w:t>
             </w:r>
             <w:bookmarkEnd w:id="0"/>
-            <w:r>
-                <w:rPr></w:rPr>
-                <w:t xml:space="preserve"> Hello</w:t>
-            </w:r>
-        </w:p>
-        <w:p>
-            <w:pPr>
-                <w:pStyle w:val="Normal"/>
-                <w:rPr></w:rPr>
-            </w:pPr>
-            <w:r>
-                <w:rPr></w:rPr>
-                <w:t>World</w:t>
-            </w:r>
         </w:p>
         <w:sectPr>
             <w:type w:val="nextPage"/>

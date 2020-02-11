@@ -87,9 +87,18 @@ impl XMLBuilder {
     closed_with_str!(underline, "w:u");
 
     // i.e. <w:ind ... >
-    pub(crate) fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Self {
-        let left = &format!("{}", left);
-        let base = XmlEvent::start_element("w:ind").attr("w:left", left);
+    pub(crate) fn indent(
+        mut self,
+        start: usize,
+        special_indent: Option<SpecialIndentType>,
+        end: usize,
+    ) -> Self {
+        let start = &format!("{}", start);
+        let end = &format!("{}", end);
+        let base = XmlEvent::start_element("w:ind")
+            .attr("w:left", start)
+            .attr("w:right", end);
+
         match special_indent {
             Some(SpecialIndentType::FirstLine(v)) => self
                 .writer

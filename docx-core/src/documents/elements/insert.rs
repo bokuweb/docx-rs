@@ -1,7 +1,10 @@
+use serde::Serialize;
+
 use crate::documents::{BuildXML, HistoryId, Run};
+
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct Insert {
     pub run: Run,
     pub author: String,

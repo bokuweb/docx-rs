@@ -1,19 +1,22 @@
+use serde::{Deserialize, Serialize};
+
 use super::{Bold, BoldCs, Color, Highlight, Italic, ItalicCs, Sz, SzCs, Underline, Vanish};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct RunProperty {
-    sz: Option<Sz>,
-    sz_cs: Option<SzCs>,
-    color: Option<Color>,
-    highlight: Option<Highlight>,
-    underline: Option<Underline>,
-    bold: Option<Bold>,
-    bold_cs: Option<BoldCs>,
-    italic: Option<Italic>,
-    italic_cs: Option<ItalicCs>,
-    vanish: Option<Vanish>,
+    pub sz: Option<Sz>,
+    pub sz_cs: Option<SzCs>,
+    pub color: Option<Color>,
+    pub highlight: Option<Highlight>,
+    pub underline: Option<Underline>,
+    pub bold: Option<Bold>,
+    pub bold_cs: Option<BoldCs>,
+    pub italic: Option<Italic>,
+    pub italic_cs: Option<ItalicCs>,
+    pub vanish: Option<Vanish>,
 }
 
 impl RunProperty {

@@ -2,13 +2,16 @@ use crate::documents::{BuildXML, LevelJc, LevelText, NumberFormat, ParagraphProp
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+use serde::Serialize;
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Level {
-    level: usize,
-    start: Start,
-    format: NumberFormat,
-    text: LevelText,
-    jc: LevelJc,
+    pub level: usize,
+    pub start: Start,
+    pub format: NumberFormat,
+    pub text: LevelText,
+    pub jc: LevelJc,
     pub paragraph_property: ParagraphProperty,
 }
 
@@ -30,8 +33,13 @@ impl Level {
         }
     }
 
-    pub fn indent(mut self, left: usize, special_indent: Option<SpecialIndentType>) -> Self {
-        self.paragraph_property = self.paragraph_property.indent(left, special_indent);
+    pub fn indent(
+        mut self,
+        left: usize,
+        special_indent: Option<SpecialIndentType>,
+        end: Option<usize>,
+    ) -> Self {
+        self.paragraph_property = self.paragraph_property.indent(left, special_indent, end);
         self
     }
 }
@@ -83,11 +91,11 @@ mod tests {
             LevelText::new("%4."),
             LevelJc::new("left"),
         )
-        .indent(320, Some(SpecialIndentType::Hanging(200)))
+        .indent(320, Some(SpecialIndentType::Hanging(200)), None)
         .build();
         assert_eq!(
               str::from_utf8(&b).unwrap(),
-              r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="320" w:hanging="200" /></w:pPr></w:lvl>"#
+              r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr></w:lvl>"#
           );
     }
 }

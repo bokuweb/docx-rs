@@ -84,4 +84,13 @@ mod tests {
 </w:tblCellMar></w:tblPr>"#
         );
     }
+
+    #[test]
+    fn test_table_property_json() {
+        let p = TableProperty::new().indent(100);
+        assert_eq!(
+            serde_json::to_string(&p).unwrap(),
+            r#"{"width":{"width":0,"widthType":"Auto"},"justification":"left","borders":{"top":{"position":"top","borderType":"single","size":2,"space":0,"color":"000000"},"left":{"position":"left","borderType":"single","size":2,"space":0,"color":"000000"},"bottom":{"position":"bottom","borderType":"single","size":2,"space":0,"color":"000000"},"right":{"position":"right","borderType":"single","size":2,"space":0,"color":"000000"},"insideH":{"position":"insideH","borderType":"single","size":2,"space":0,"color":"000000"},"insideV":{"position":"insideV","borderType":"single","size":2,"space":0,"color":"000000"}},"margins":{"top":55,"left":54,"bottom":55,"right":55},"indent":{"width":100,"widthType":"DXA"}}"#
+        );
+    }
 }

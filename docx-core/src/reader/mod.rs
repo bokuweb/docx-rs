@@ -6,6 +6,7 @@ mod from_xml;
 mod insert;
 mod numbering_property;
 mod paragraph;
+mod rels;
 mod run;
 mod table;
 mod table_cell;

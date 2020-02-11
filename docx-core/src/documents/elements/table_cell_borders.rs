@@ -60,10 +60,10 @@ impl BuildXML for TableCellBorder {
             BorderPosition::Right => {
                 base.border_right(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::IndideH => {
+            BorderPosition::InsideH => {
                 base.border_inside_h(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::IndideV => {
+            BorderPosition::InsideV => {
                 base.border_inside_v(self.border_type, self.size, self.space, &self.color)
             }
         };
@@ -89,8 +89,8 @@ impl Default for TableCellBorders {
             left: Some(TableCellBorder::new(BorderPosition::Left)),
             bottom: Some(TableCellBorder::new(BorderPosition::Bottom)),
             right: Some(TableCellBorder::new(BorderPosition::Right)),
-            inside_h: Some(TableCellBorder::new(BorderPosition::IndideH)),
-            inside_v: Some(TableCellBorder::new(BorderPosition::IndideV)),
+            inside_h: Some(TableCellBorder::new(BorderPosition::InsideH)),
+            inside_v: Some(TableCellBorder::new(BorderPosition::InsideV)),
         }
     }
 }
@@ -106,8 +106,8 @@ impl TableCellBorders {
             BorderPosition::Left => self.left = Some(border),
             BorderPosition::Bottom => self.bottom = Some(border),
             BorderPosition::Right => self.right = Some(border),
-            BorderPosition::IndideH => self.inside_h = Some(border),
-            BorderPosition::IndideV => self.inside_v = Some(border),
+            BorderPosition::InsideH => self.inside_h = Some(border),
+            BorderPosition::InsideV => self.inside_v = Some(border),
         };
         self
     }
@@ -118,8 +118,8 @@ impl TableCellBorders {
             BorderPosition::Left => self.left = None,
             BorderPosition::Bottom => self.bottom = None,
             BorderPosition::Right => self.right = None,
-            BorderPosition::IndideH => self.inside_h = None,
-            BorderPosition::IndideV => self.inside_v = None,
+            BorderPosition::InsideH => self.inside_h = None,
+            BorderPosition::InsideV => self.inside_v = None,
         };
         self
     }

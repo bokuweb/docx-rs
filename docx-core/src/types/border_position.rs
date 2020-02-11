@@ -7,6 +7,6 @@ pub enum BorderPosition {
     Right,
     Top,
     Bottom,
-    IndideH,
-    IndideV,
+    InsideH,
+    InsideV,
 }

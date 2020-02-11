@@ -24,6 +24,11 @@ impl Docx {
         self
     }
 
+    pub fn add_abstract_numbering(mut self, num: AbstractNumbering) -> Docx {
+        self.0.numberings = self.0.numberings.add_abstract_numbering(num.take());
+        self
+    }
+
     pub fn add_numbering(mut self, num: Numbering) -> Docx {
         self.0.numberings = self.0.numberings.add_numbering(num.take());
         self

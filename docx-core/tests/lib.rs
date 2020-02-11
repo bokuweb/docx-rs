@@ -359,8 +359,8 @@ pub fn user_numbering() -> Result<(), DocxError> {
         .add_run(Run::new().add_text("Hello"))
         .numbering(NumberingId::new(2), IndentLevel::new(0)),
     )
-    .add_numbering(
-      Numbering::new(2).add_level(
+    .add_abstract_numbering(
+      AbstractNumbering::new(2).add_level(
         Level::new(
           0,
           Start::new(1),
@@ -371,6 +371,7 @@ pub fn user_numbering() -> Result<(), DocxError> {
         .indent(1620, Some(SpecialIndentType::Hanging(320)), None),
       ),
     )
+    .add_numbering(Numbering::new(2, 2))
     .build()
     .pack(file)?;
   Ok(())

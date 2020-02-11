@@ -1,3 +1,4 @@
+mod abstract_numbering;
 mod based_on;
 mod bold;
 mod bold_cs;
@@ -64,6 +65,7 @@ mod vanish;
 mod vertical_merge;
 mod zoom;
 
+pub use abstract_numbering::*;
 pub use based_on::*;
 pub use bold::*;
 pub use bold_cs::*;

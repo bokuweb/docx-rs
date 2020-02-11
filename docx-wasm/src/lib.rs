@@ -1,3 +1,4 @@
+mod abstract_numbering;
 mod adaptors;
 mod comment;
 mod delete;
@@ -12,6 +13,7 @@ mod table;
 mod table_cell;
 mod table_row;
 
+pub use abstract_numbering::*;
 pub use adaptors::*;
 pub use comment::*;
 pub use delete::*;

@@ -10,6 +10,7 @@ import { Tab } from "./tab";
 import { Break } from "./break";
 import { Comment } from "./comment";
 import { CommentEnd } from "./comment-end";
+import { AbstractNumbering } from "./abstract-numbering";
 import { Numbering } from "./numbering";
 import { BookmarkStart } from "./bookmark-start";
 import { BookmarkEnd } from "./bookmark-end";
@@ -18,6 +19,7 @@ import * as wasm from "../pkg";
 
 export class Docx {
   children: (Paragraph | Table)[] = [];
+  abstractNumberings: AbstractNumbering[] = [];
   numberings: Numbering[] = [];
 
   addParagraph(p: Paragraph) {
@@ -27,6 +29,11 @@ export class Docx {
 
   addTable(t: Table) {
     this.children.push(t);
+    return this;
+  }
+
+  addAbstractNumbering(num: AbstractNumbering) {
+    this.abstractNumberings.push(num);
     return this;
   }
 
@@ -259,14 +266,20 @@ export class Docx {
       }
     });
 
-    this.numberings.forEach(n => {
-      let num = wasm.createNumbering(n.id);
+    this.abstractNumberings.forEach(n => {
+      let num = wasm.createAbstractNumbering(n.id);
       n.levels.forEach(l => {
         const level = wasm.createLevel(l.id, l.start, l.format, l.text, l.jc);
         num = num.add_level(level);
       });
+      docx = docx.add_abstract_numbering(num);
+    });
+
+    this.numberings.forEach(n => {
+      let num = wasm.createNumbering(n.id, n.abstractNumId);
       docx = docx.add_numbering(num);
     });
+
     const buf = docx.build();
     docx.free();
     return buf;

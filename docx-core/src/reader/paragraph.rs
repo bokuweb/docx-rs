@@ -6,6 +6,7 @@ use xml::reader::{EventReader, XmlEvent};
 
 use super::*;
 
+use super::attributes::*;
 use crate::types::*;
 
 impl ElementReader for Paragraph {
@@ -79,25 +80,7 @@ impl ElementReader for Paragraph {
                             continue;
                         }
                         XMLElement::Indent => {
-                            let mut start = 0;
-                            let mut end: Option<usize> = None;
-                            let mut special: Option<SpecialIndentType> = None;
-
-                            for a in attributes {
-                                let local_name = &a.name.local_name;
-                                if local_name == "left" || local_name == "start" {
-                                    start = usize::from_str(&a.value)?;
-                                } else if local_name == "end" || local_name == "right" {
-                                    end = Some(usize::from_str(&a.value)?);
-                                } else if local_name == "hanging" {
-                                    special =
-                                        Some(SpecialIndentType::Hanging(usize::from_str(&a.value)?))
-                                } else if local_name == "firstLine" {
-                                    special = Some(SpecialIndentType::FirstLine(usize::from_str(
-                                        &a.value,
-                                    )?))
-                                }
-                            }
+                            let (start, end, special) = read_indent(&attributes)?;
                             p = p.indent(start, special, end);
                             continue;
                         }

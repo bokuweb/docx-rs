@@ -1,6 +1,7 @@
 use serde::Serialize;
 
 use crate::documents::BuildXML;
+use crate::types::*;
 use crate::xml_builder::*;
 use crate::StyleType;
 
@@ -32,19 +33,18 @@ impl Default for Style {
 }
 
 impl Style {
-    pub fn new(
-        style_id: impl Into<String>,
-        name: impl Into<String>,
-        style_type: StyleType,
-    ) -> Self {
-        let name = Name::new(name.into());
+    pub fn new(style_id: impl Into<String>, style_type: StyleType) -> Self {
         let default = Default::default();
         Style {
             style_id: style_id.into(),
             style_type,
-            name,
             ..default
         }
+    }
+
+    pub fn name(mut self, name: impl Into<String>) -> Self {
+        self.name = Name::new(name);
+        self
     }
 
     pub fn size(mut self, size: usize) -> Self {
@@ -52,8 +52,13 @@ impl Style {
         self
     }
 
-    pub fn color(mut self, color: &str) -> Self {
+    pub fn color(mut self, color: impl Into<String>) -> Self {
         self.run_property = self.run_property.color(color);
+        self
+    }
+
+    pub fn highlight(mut self, color: impl Into<String>) -> Self {
+        self.run_property = self.run_property.highlight(color);
         self
     }
 
@@ -64,6 +69,31 @@ impl Style {
 
     pub fn italic(mut self) -> Self {
         self.run_property = self.run_property.italic();
+        self
+    }
+
+    pub fn underline(mut self, line_type: impl Into<String>) -> Self {
+        self.run_property = self.run_property.underline(line_type);
+        self
+    }
+
+    pub fn vanish(mut self) -> Self {
+        self.run_property = self.run_property.vanish();
+        self
+    }
+
+    pub fn align(mut self, alignment_type: AlignmentType) -> Self {
+        self.paragraph_property = self.paragraph_property.align(alignment_type);
+        self
+    }
+
+    pub fn indent(
+        mut self,
+        left: usize,
+        special_indent: Option<SpecialIndentType>,
+        end: Option<usize>,
+    ) -> Self {
+        self.paragraph_property = self.paragraph_property.indent(left, special_indent, end);
         self
     }
 }
@@ -94,7 +124,7 @@ mod tests {
 
     #[test]
     fn test_build() {
-        let c = Style::new("Heading", "Heading1", StyleType::Paragraph);
+        let c = Style::new("Heading", StyleType::Paragraph).name("Heading1");
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

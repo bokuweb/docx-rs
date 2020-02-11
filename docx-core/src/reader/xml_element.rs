@@ -27,6 +27,7 @@ pub enum XMLElement {
     Tab,
     ParagraphStyle,
     Indent,
+    Name,
     Alignment,
     NumberingProperty,
     IndentLevel,
@@ -58,6 +59,12 @@ pub enum XMLElement {
     TableCellMargin,
     TableGrid,
     GridCol,
+    Style,
+    BasedOn,
+    Next,
+    VertAlign,
+    Spacing,
+    Styles,
     Unsupported,
 }
 
@@ -82,6 +89,7 @@ impl FromStr for XMLElement {
             "iCs" => Ok(XMLElement::ItalicCs),
             "vanish" => Ok(XMLElement::Vanish),
             "italic" => Ok(XMLElement::Italic),
+            "name" => Ok(XMLElement::Name),
             "tab" => Ok(XMLElement::Tab),
             "br" => Ok(XMLElement::Break),
             "ind" => Ok(XMLElement::Indent),
@@ -115,6 +123,12 @@ impl FromStr for XMLElement {
             "tblCellMar" => Ok(XMLElement::TableCellMargin),
             "tblGrid" => Ok(XMLElement::TableGrid),
             "gridCol" => Ok(XMLElement::GridCol),
+            "style" => Ok(XMLElement::Style),
+            "basedOn" => Ok(XMLElement::BasedOn),
+            "next" => Ok(XMLElement::Next),
+            "vertAlign" => Ok(XMLElement::VertAlign),
+            "spacing" => Ok(XMLElement::Spacing),
+            "styles" => Ok(XMLElement::Styles),
             _ => Ok(XMLElement::Unsupported),
         }
     }

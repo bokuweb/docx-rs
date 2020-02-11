@@ -1,7 +1,7 @@
 <p align="center"><img src ="https://github.com/bokuweb/docx-rs/blob/master/logo.png?raw=true" /></p>
 
 <p align="center">
-    A .docx file generater with Rust/WebAssembly.
+    A .docx file reader / writer  with Rust/WebAssembly.
 </p>
 
 ---

@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Rels {
     pub rels: Vec<(String, String, String)>,
 }

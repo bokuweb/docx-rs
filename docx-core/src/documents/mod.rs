@@ -29,12 +29,15 @@ pub use settings::*;
 pub use styles::*;
 pub use xml_docx::*;
 
-#[derive(Debug)]
+use serde::Serialize;
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Docx {
-    content_type: ContentTypes,
-    rels: Rels,
-    document_rels: DocumentRels,
-    doc_props: DocProps,
+    pub content_type: ContentTypes,
+    pub rels: Rels,
+    pub document_rels: DocumentRels,
+    pub doc_props: DocProps,
     pub styles: Styles,
     pub document: Document,
     pub comments: Comments,
@@ -73,6 +76,11 @@ impl Default for Docx {
 impl Docx {
     pub fn new() -> Docx {
         Default::default()
+    }
+
+    pub fn document(mut self, d: Document) -> Docx {
+        self.document = d;
+        self
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> Docx {
@@ -124,6 +132,11 @@ impl Docx {
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
         }
+    }
+
+    pub fn json(&mut self) -> String {
+        self.update_comments();
+        serde_json::to_string(&self).unwrap()
     }
 
     // Traverse and clone comments from document and add to comments node.

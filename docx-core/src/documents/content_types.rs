@@ -7,7 +7,7 @@ use crate::documents::BuildXML;
 use crate::reader::{FromXML, ReaderError};
 use crate::xml_builder::*;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct ContentTypes {
     types: HashMap<String, String>,
 }

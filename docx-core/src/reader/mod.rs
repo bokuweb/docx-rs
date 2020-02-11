@@ -26,7 +26,7 @@ pub use xml_element::*;
 const DOC_RELATIONSHIP_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
 
-pub fn read_docx(buf: &[u8]) -> Result<(), ReaderError> {
+pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     let cur = Cursor::new(buf);
     let mut archive = zip::ZipArchive::new(cur)?;
     // First, the content type for relationship parts and the Main Document part
@@ -43,6 +43,7 @@ pub fn read_docx(buf: &[u8]) -> Result<(), ReaderError> {
         .find_target(DOC_RELATIONSHIP_TYPE)
         .ok_or(ReaderError::DocumentNotFoundError)?;
     let document_xml = archive.by_name(&main_rel.2)?;
-    Document::from_xml(document_xml)?;
-    Ok(())
+    let document = Document::from_xml(document_xml)?;
+    let docx = Docx::new().document(document);
+    Ok(docx)
 }

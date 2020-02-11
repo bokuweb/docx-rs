@@ -1,7 +1,10 @@
+use serde::Serialize;
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct AppProps {}
 
 impl AppProps {

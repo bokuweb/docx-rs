@@ -1,9 +1,12 @@
+use serde::Serialize;
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 use super::run_property_default::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DocDefaults {
     run_property_default: RunPropertyDefault,
 }

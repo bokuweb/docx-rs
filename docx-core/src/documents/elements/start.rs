@@ -1,7 +1,9 @@
+use serde::{Serialize, Serializer};
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Start {
     val: usize,
 }
@@ -16,6 +18,15 @@ impl BuildXML for Start {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         b.start(self.val).build()
+    }
+}
+
+impl Serialize for Start {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_u32(self.val as u32)
     }
 }
 

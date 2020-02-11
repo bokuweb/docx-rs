@@ -1,10 +1,13 @@
+use serde::Serialize;
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DocumentRels {
-    pub(crate) has_comments: bool,
-    pub(crate) has_numberings: bool,
+    pub has_comments: bool,
+    pub has_numberings: bool,
 }
 
 impl DocumentRels {

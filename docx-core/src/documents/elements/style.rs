@@ -1,16 +1,19 @@
+use serde::Serialize;
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 use crate::StyleType;
 
 use super::{BasedOn, Name, Next, ParagraphProperty, QFormat, RunProperty};
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Style {
-    style_id: String,
-    name: Name,
-    style_type: StyleType,
-    run_property: RunProperty,
-    paragraph_property: ParagraphProperty,
+    pub style_id: String,
+    pub name: Name,
+    pub style_type: StyleType,
+    pub run_property: RunProperty,
+    pub paragraph_property: ParagraphProperty,
 }
 
 impl Default for Style {

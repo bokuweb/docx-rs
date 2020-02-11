@@ -1,7 +1,9 @@
+use serde::{Serialize, Serializer};
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct LevelJc {
     val: String,
 }
@@ -16,6 +18,15 @@ impl BuildXML for LevelJc {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         b.level_justification(&self.val).build()
+    }
+}
+
+impl Serialize for LevelJc {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.val)
     }
 }
 

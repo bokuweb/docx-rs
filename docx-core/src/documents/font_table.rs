@@ -3,7 +3,10 @@ use crate::documents::BuildXML;
 use crate::types::FontPitchType;
 use crate::xml_builder::*;
 
-#[derive(Debug)]
+use serde::Serialize;
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct FontTable {}
 
 impl FontTable {

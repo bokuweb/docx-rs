@@ -2,13 +2,16 @@ use crate::documents::{BuildXML, LevelJc, LevelText, NumberFormat, ParagraphProp
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone)]
+use serde::Serialize;
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Level {
-    level: usize,
-    start: Start,
-    format: NumberFormat,
-    text: LevelText,
-    jc: LevelJc,
+    pub level: usize,
+    pub start: Start,
+    pub format: NumberFormat,
+    pub text: LevelText,
+    pub jc: LevelJc,
     pub paragraph_property: ParagraphProperty,
 }
 

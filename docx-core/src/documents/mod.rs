@@ -49,7 +49,7 @@ pub struct Docx {
 impl Default for Docx {
     fn default() -> Self {
         let content_type = ContentTypes::new().set_default();
-        let rels = Rels::new();
+        let rels = Rels::new().set_default();
         let doc_props = DocProps::new(CorePropsConfig::new());
         let styles = Styles::new();
         let document = Document::new();

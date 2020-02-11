@@ -17,56 +17,56 @@ impl ContentTypes {
         Default::default()
     }
 
-    pub fn add_content(mut self, namespace: impl Into<String>, path: impl Into<String>) -> Self {
-        self.types.insert(namespace.into(), path.into());
+    pub fn add_content(mut self, path: impl Into<String>, namespace: impl Into<String>) -> Self {
+        self.types.insert(path.into(), namespace.into());
         self
     }
 
     pub fn set_default(mut self) -> ContentTypes {
         self.types.insert(
-            "application/vnd.openxmlformats-package.relationships+xml".to_owned(),
             "/_rels/.rels".to_owned(),
-        );
-        self.types.insert(
-            "application/vnd.openxmlformats-officedocument.extended-properties+xml".to_owned(),
-            "/docProps/app.xml".to_owned(),
-        );
-        self.types.insert(
-            "application/vnd.openxmlformats-package.core-properties+xml".to_owned(),
-            "/docProps/core.xml".to_owned(),
-        );
-        self.types.insert(
             "application/vnd.openxmlformats-package.relationships+xml".to_owned(),
-            "/word/_rels/document.xml.rels".to_owned(),
         );
         self.types.insert(
+            "/docProps/app.xml".to_owned(),
+            "application/vnd.openxmlformats-officedocument.extended-properties+xml".to_owned(),
+        );
+        self.types.insert(
+            "/docProps/core.xml".to_owned(),
+            "application/vnd.openxmlformats-package.core-properties+xml".to_owned(),
+        );
+        self.types.insert(
+            "/word/_rels/document.xml.rels".to_owned(),
+            "application/vnd.openxmlformats-package.relationships+xml".to_owned(),
+        );
+        self.types.insert(
+            "/word/settings.xml".to_owned(),
             "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml"
                 .to_owned(),
-            "/word/settings.xml".to_owned(),
         );
         self.types.insert(
+            "/word/fontTable.xml".to_owned(),
             "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml"
                 .to_owned(),
-            "/word/fontTable.xml".to_owned(),
         );
         self.types.insert(
+            "/word/document.xml".to_owned(),
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"
                 .to_owned(),
-            "/word/document.xml".to_owned(),
         );
         self.types.insert(
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml".to_owned(),
             "/word/styles.xml".to_owned(),
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml".to_owned(),
         );
         self.types.insert(
+            "/word/comments.xml".to_owned(),
             "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml"
                 .to_owned(),
-            "/word/comments.xml".to_owned(),
         );
         self.types.insert(
+            "/word/numbering.xml".to_owned(),
             "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"
                 .to_owned(),
-            "/word/numbering.xml".to_owned(),
         );
         self
     }
@@ -104,7 +104,7 @@ impl FromXML for ContentTypes {
                     if depth == 1 {
                         let namespace = attributes[0].value.clone();
                         let path = attributes[1].value.clone();
-                        s = s.add_content(namespace, path);
+                        s = s.add_content(path, namespace);
                     }
                     depth += 1;
                 }
@@ -133,9 +133,9 @@ mod tests {
         let c = ContentTypes::from_xml(xml.as_bytes()).unwrap();
         let mut types = HashMap::new();
         types.insert(
+            "/word/document.xml".to_owned(),
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"
                 .to_owned(),
-            "/word/document.xml".to_owned(),
         );
         assert_eq!(ContentTypes { types }, c);
     }

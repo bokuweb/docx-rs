@@ -17,7 +17,6 @@ impl FromXML for Numberings {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    dbg!(&e);
                     match e {
                         XMLElement::AbstractNumbering => {
                             let mut id = 0;
@@ -36,7 +35,6 @@ impl FromXML for Numberings {
                                     }) => {
                                         let e = XMLElement::from_str(&name.local_name).unwrap();
                                         if let XMLElement::Level = e {
-                                            dbg!("-111");
                                             let l = Level::read(&mut parser, &attributes)?;
                                             abs_num = abs_num.add_level(l);
                                         }
@@ -44,9 +42,7 @@ impl FromXML for Numberings {
                                     Ok(XmlEvent::EndElement { name, .. }) => {
                                         let e = XMLElement::from_str(&name.local_name).unwrap();
                                         if let XMLElement::AbstractNumbering = e {
-                                            dbg!("-");
                                             nums = nums.add_abstract_numbering(abs_num);
-                                            dbg!("end1");
                                             break;
                                         }
                                     }
@@ -56,7 +52,6 @@ impl FromXML for Numberings {
                             continue;
                         }
                         XMLElement::Num => {
-                            dbg!("num");
                             let mut id = 0;
                             for a in attributes {
                                 let local_name = &a.name.local_name;

@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::io::{Cursor, Read};
 use std::path::*;
 use std::str::FromStr;
@@ -10,7 +10,7 @@ use super::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ReadDocumentRels {
-    rels: HashMap<String, PathBuf>,
+    rels: BTreeMap<String, PathBuf>,
 }
 
 impl ReadDocumentRels {
@@ -40,7 +40,7 @@ fn read_rels_xml<R: Read>(
 ) -> Result<ReadDocumentRels, ReaderError> {
     let mut parser = EventReader::new(reader);
     let mut rels = ReadDocumentRels {
-        rels: HashMap::new(),
+        rels: BTreeMap::new(),
     };
     loop {
         let e = parser.next();

@@ -16,6 +16,8 @@ pub enum ReaderError {
     DocumentRelsNotFoundError,
     #[error("Failed to find styles.")]
     DocumentStylesNotFoundError,
+    #[error("Failed to find numberings.")]
+    DocumentNumberingsNotFoundError,
     #[error("Unknown error")]
     Unknown,
 }

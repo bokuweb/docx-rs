@@ -67,6 +67,11 @@ pub enum XMLElement {
     Styles,
     Relationship,
     Relationships,
+    AbstractNumbering,
+    AbstractNumberingId,
+    Level,
+    Numbering,
+    Num,
     Unsupported,
 }
 
@@ -133,6 +138,11 @@ impl FromStr for XMLElement {
             "styles" => Ok(XMLElement::Styles),
             "Relationships" => Ok(XMLElement::Relationships),
             "Relationship" => Ok(XMLElement::Relationship),
+            "abstractNum" => Ok(XMLElement::AbstractNumbering),
+            "abstractNumId" => Ok(XMLElement::AbstractNumberingId),
+            "lvl" => Ok(XMLElement::Level),
+            "numbering" => Ok(XMLElement::Numbering),
+            "num" => Ok(XMLElement::Num),
             _ => Ok(XMLElement::Unsupported),
         }
     }

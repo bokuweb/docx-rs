@@ -6,6 +6,7 @@ mod errors;
 mod from_xml;
 mod insert;
 mod numbering_property;
+mod numberings;
 mod paragraph;
 mod rels;
 mod run;
@@ -31,6 +32,8 @@ const DOC_RELATIONSHIP_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
 const STYLE_RELATIONSHIP_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles";
+const NUMBERING_RELATIONSHIP_TYPE: &str =
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
 
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     let cur = Cursor::new(buf);
@@ -53,11 +56,20 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
     // Read document relationships
     let rels = read_document_rels(&mut archive, &main_rel.2)?;
+
+    // Read styles
     let style_path = rels
         .find_target_path(STYLE_RELATIONSHIP_TYPE)
         .ok_or(ReaderError::DocumentStylesNotFoundError)?;
     let styles_xml = archive.by_name(style_path.to_str().expect("should have styles"))?;
     let styles = Styles::from_xml(styles_xml)?;
+
+    // Read numberings
+    let num_path = rels
+        .find_target_path(NUMBERING_RELATIONSHIP_TYPE)
+        .ok_or(ReaderError::DocumentStylesNotFoundError)?;
+    let num_xml = archive.by_name(num_path.to_str().expect("should have numberings"))?;
+    let nums = Styles::from_xml(num_xml)?;
 
     let docx = Docx::new().document(document).styles(styles);
     Ok(docx)

@@ -286,6 +286,10 @@ export class Docx {
   }
 }
 
+export const readDocx = (buf: Uint8Array) => {
+  return wasm.readDocx(buf);
+};
+
 export * from "./paragraph";
 export * from "./insert";
 export * from "./delete";

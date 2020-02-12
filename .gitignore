@@ -12,3 +12,5 @@ vrt/report.html
 reg.json
 docx-core/tests/output/*.docx
 docx-wasm/*.tgz
+
+docx-core/tests/output/*.json

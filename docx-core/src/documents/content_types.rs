@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::io::Read;
 use xml::reader::{EventReader, XmlEvent};
 
@@ -9,7 +9,7 @@ use crate::xml_builder::*;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct ContentTypes {
-    types: HashMap<String, String>,
+    types: BTreeMap<String, String>,
 }
 
 impl ContentTypes {
@@ -75,7 +75,7 @@ impl ContentTypes {
 impl Default for ContentTypes {
     fn default() -> Self {
         ContentTypes {
-            types: HashMap::new(),
+            types: BTreeMap::new(),
         }
     }
 }
@@ -131,7 +131,7 @@ mod tests {
         let xml = r#"<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
         <Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml" PartName="/word/document.xml"></Override></Types>"#;
         let c = ContentTypes::from_xml(xml.as_bytes()).unwrap();
-        let mut types = HashMap::new();
+        let mut types = BTreeMap::new();
         types.insert(
             "/word/document.xml".to_owned(),
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"

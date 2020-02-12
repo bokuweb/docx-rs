@@ -12,6 +12,7 @@ pub struct Level {
     pub format: NumberFormat,
     pub text: LevelText,
     pub jc: LevelJc,
+    pub pstyle: Option<String>,
     pub paragraph_property: ParagraphProperty,
 }
 
@@ -29,6 +30,7 @@ impl Level {
             format,
             text,
             jc,
+            pstyle: None,
             paragraph_property: ParagraphProperty::new(),
         }
     }
@@ -40,6 +42,11 @@ impl Level {
         end: Option<usize>,
     ) -> Self {
         self.paragraph_property = self.paragraph_property.indent(left, special_indent, end);
+        self
+    }
+
+    pub fn paragraph_style(mut self, style_id: impl Into<String>) -> Self {
+        self.pstyle = Some(style_id.into());
         self
     }
 }

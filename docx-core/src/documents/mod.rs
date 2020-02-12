@@ -102,6 +102,11 @@ impl Docx {
         self
     }
 
+    pub fn numberings(mut self, n: Numberings) -> Self {
+        self.numberings = n;
+        self
+    }
+
     pub fn add_paragraph(mut self, p: Paragraph) -> Docx {
         if p.has_numbering {
             // If this document has numbering, set numberings.xml to document_rels.
@@ -160,7 +165,7 @@ impl Docx {
 
     pub fn json(&mut self) -> String {
         self.update_comments();
-        serde_json::to_string(&self).unwrap()
+        serde_json::to_string_pretty(&self).unwrap()
     }
 
     // Traverse and clone comments from document and add to comments node.

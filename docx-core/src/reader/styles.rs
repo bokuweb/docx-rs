@@ -37,28 +37,39 @@ impl FromXML for Styles {
     }
 }
 
-// #[cfg(test)]
-// mod tests {
-//
-//     use super::*;
-//     #[cfg(test)]
-//     use pretty_assertions::assert_eq;
-//
-//     #[test]
-//     fn test_from_xml() {
-//         let xml = r#"<?xml version="1.0" encoding="UTF-8"?>
-// <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-//   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml" />
-// </Relationships>"#;
-//         let c = Rels::from_xml(xml.as_bytes()).unwrap();
-//         let mut rels = Vec::new();
-//         rels.push((
-//             "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"
-//                 .to_owned(),
-//             "rId1".to_owned(),
-//             "docProps/core.xml".to_owned(),
-//         ));
-//         assert_eq!(Rels { rels }, c);
-//     }
-// }
-//
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+    use crate::types::*;
+    #[cfg(test)]
+    use pretty_assertions::assert_eq;
+
+    #[test]
+    fn test_from_xml() {
+        let xml =
+            r#"<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:style w:type="character" w:styleId="FootnoteTextChar">
+        <w:name w:val="Footnote Text Char"></w:name>
+        <w:rPr>
+            <w:sz w:val="20"></w:sz>
+            <w:szCs w:val="20"></w:szCs>
+        </w:rPr>
+        <w:uiPriority w:val="99"></w:uiPriority>
+        <w:unhideWhenUsed></w:unhideWhenUsed>
+        <w:basedOn w:val="DefaultParagraphFont"></w:basedOn>
+        <w:link w:val="FootnoteText"></w:link>
+        <w:uiPriority w:val="99"></w:uiPriority>
+        <w:semiHidden></w:semiHidden>
+    </w:style>
+</w:styles>"#;
+        let s = Styles::from_xml(xml.as_bytes()).unwrap();
+        let mut styles = Styles::new();
+        styles = styles.add_style(
+            Style::new("FootnoteTextChar", StyleType::Character)
+                .name("Footnote Text Char")
+                .size(20),
+        );
+        assert_eq!(s, styles);
+    }
+}

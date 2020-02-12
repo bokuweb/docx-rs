@@ -79,7 +79,26 @@ impl Docx {
     }
 
     pub fn document(mut self, d: Document) -> Docx {
+        for child in &self.document.children {
+            match child {
+                DocumentChild::Paragraph(paragraph) => {
+                    if paragraph.has_numbering {
+                        self.document_rels.has_numberings = true;
+                    }
+                }
+                DocumentChild::Table(table) => {
+                    if table.has_numbering {
+                        self.document_rels.has_numberings = true;
+                    }
+                }
+            }
+        }
         self.document = d;
+        self
+    }
+
+    pub fn styles(mut self, s: Styles) -> Self {
+        self.styles = s;
         self
     }
 

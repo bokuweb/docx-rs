@@ -12,6 +12,10 @@ pub enum ReaderError {
     XMLReadError,
     #[error("Failed to find document.")]
     DocumentNotFoundError,
+    #[error("Failed to find document rels.")]
+    DocumentRelsNotFoundError,
+    #[error("Failed to find styles.")]
+    DocumentStylesNotFoundError,
     #[error("Unknown error")]
     Unknown,
 }

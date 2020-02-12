@@ -10,7 +10,6 @@ impl FromXML for Document {
     fn from_xml<R: Read>(reader: R) -> Result<Self, ReaderError> {
         let mut parser = EventReader::new(reader);
         let mut doc = Self::default();
-
         loop {
             let e = parser.next();
             match e {

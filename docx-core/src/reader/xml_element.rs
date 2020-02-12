@@ -65,6 +65,8 @@ pub enum XMLElement {
     VertAlign,
     Spacing,
     Styles,
+    Relationship,
+    Relationships,
     Unsupported,
 }
 
@@ -129,6 +131,8 @@ impl FromStr for XMLElement {
             "vertAlign" => Ok(XMLElement::VertAlign),
             "spacing" => Ok(XMLElement::Spacing),
             "styles" => Ok(XMLElement::Styles),
+            "Relationships" => Ok(XMLElement::Relationships),
+            "Relationship" => Ok(XMLElement::Relationship),
             _ => Ok(XMLElement::Unsupported),
         }
     }

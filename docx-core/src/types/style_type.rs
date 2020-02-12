@@ -11,6 +11,8 @@ use std::str::FromStr;
 pub enum StyleType {
     Paragraph,
     Character,
+    Numbering,
+    Unsupported,
 }
 
 impl fmt::Display for StyleType {
@@ -18,6 +20,8 @@ impl fmt::Display for StyleType {
         match *self {
             StyleType::Paragraph => write!(f, "paragraph"),
             StyleType::Character => write!(f, "character"),
+            StyleType::Numbering => write!(f, "numbering"),
+            StyleType::Unsupported => write!(f, "unsupported"),
         }
     }
 }
@@ -28,7 +32,8 @@ impl FromStr for StyleType {
         match s {
             "paragraph" => Ok(StyleType::Paragraph),
             "character" => Ok(StyleType::Character),
-            _ => Err(errors::TypeError::FromStrError),
+            "numbering" => Ok(StyleType::Numbering),
+            _ => Ok(StyleType::Unsupported),
         }
     }
 }

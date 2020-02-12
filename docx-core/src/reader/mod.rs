@@ -8,6 +8,8 @@ mod numbering_property;
 mod paragraph;
 mod rels;
 mod run;
+mod style;
+mod styles;
 mod table;
 mod table_cell;
 mod table_row;

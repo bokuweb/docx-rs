@@ -1,7 +1,9 @@
 use std::fmt;
 use wasm_bindgen::prelude::*;
 
+use super::errors;
 use serde::Serialize;
+use std::str::FromStr;
 
 #[wasm_bindgen]
 #[derive(Debug, Clone, PartialEq, Serialize, Copy)]
@@ -16,6 +18,17 @@ impl fmt::Display for StyleType {
         match *self {
             StyleType::Paragraph => write!(f, "paragraph"),
             StyleType::Character => write!(f, "character"),
+        }
+    }
+}
+
+impl FromStr for StyleType {
+    type Err = errors::TypeError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "paragraph" => Ok(StyleType::Paragraph),
+            "character" => Ok(StyleType::Character),
+            _ => Err(errors::TypeError::FromStrError),
         }
     }
 }

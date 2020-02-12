@@ -35,7 +35,7 @@ impl Default for Styles {
 impl BuildXML for Styles {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        let normal = Style::new("Normal", "Normal", StyleType::Paragraph);
+        let normal = Style::new("Normal", StyleType::Paragraph).name("Normal");
         b.open_styles()
             .add_child(&self.doc_defaults)
             .add_child(&normal)
@@ -56,7 +56,8 @@ mod tests {
 
     #[test]
     fn test_style() {
-        let c = Styles::new().add_style(Style::new("Title", "TitleName", StyleType::Paragraph));
+        let c =
+            Styles::new().add_style(Style::new("Title", StyleType::Paragraph).name("TitleName"));
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

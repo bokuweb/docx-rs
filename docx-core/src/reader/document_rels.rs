@@ -15,7 +15,7 @@ pub struct ReadDocumentRels {
 
 impl ReadDocumentRels {
     pub fn find_target_path(&self, target: &str) -> Option<PathBuf> {
-        self.rels.get(target).map(|s| s.clone())
+        self.rels.get(target).cloned()
     }
 }
 
@@ -60,7 +60,7 @@ fn read_rels_xml<R: Read>(
                             target = Path::new(dir.as_ref()).join(a.value);
                         }
                     }
-                    &rels.rels.insert(rel_type, target);
+                    rels.rels.insert(rel_type, target);
                     continue;
                 }
             }

@@ -37,14 +37,3 @@ impl FromStr for StyleType {
         }
     }
 }
-
-impl FromStr for StyleType {
-    type Err = errors::TypeError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "paragraph" => Ok(StyleType::Paragraph),
-            "character" => Ok(StyleType::Character),
-            _ => Err(errors::TypeError::FromStrError),
-        }
-    }
-}

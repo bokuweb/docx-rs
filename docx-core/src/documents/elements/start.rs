@@ -14,6 +14,12 @@ impl Start {
     }
 }
 
+impl Default for Start {
+    fn default() -> Self {
+        Start { val: 0 }
+    }
+}
+
 impl BuildXML for Start {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();

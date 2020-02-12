@@ -102,6 +102,11 @@ impl Docx {
         self
     }
 
+    pub fn numberings(mut self, n: Numberings) -> Self {
+        self.numberings = n;
+        self
+    }
+
     pub fn add_paragraph(mut self, p: Paragraph) -> Docx {
         if p.has_numbering {
             // If this document has numbering, set numberings.xml to document_rels.

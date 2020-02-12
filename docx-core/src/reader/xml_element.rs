@@ -72,6 +72,10 @@ pub enum XMLElement {
     Level,
     Numbering,
     Num,
+    Start,
+    NumberFormat,
+    LevelText,
+    LevelJustification,
     Unsupported,
 }
 
@@ -143,6 +147,10 @@ impl FromStr for XMLElement {
             "lvl" => Ok(XMLElement::Level),
             "numbering" => Ok(XMLElement::Numbering),
             "num" => Ok(XMLElement::Num),
+            "start" => Ok(XMLElement::Start),
+            "numFmt" => Ok(XMLElement::NumberFormat),
+            "lvlText" => Ok(XMLElement::LevelText),
+            "lvlJc" => Ok(XMLElement::LevelJustification),
             _ => Ok(XMLElement::Unsupported),
         }
     }

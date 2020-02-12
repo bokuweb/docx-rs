@@ -5,6 +5,7 @@ mod document_rels;
 mod errors;
 mod from_xml;
 mod insert;
+mod level;
 mod numbering_property;
 mod numberings;
 mod paragraph;
@@ -69,8 +70,11 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         .find_target_path(NUMBERING_RELATIONSHIP_TYPE)
         .ok_or(ReaderError::DocumentStylesNotFoundError)?;
     let num_xml = archive.by_name(num_path.to_str().expect("should have numberings"))?;
-    let nums = Styles::from_xml(num_xml)?;
+    let nums = Numberings::from_xml(num_xml)?;
 
-    let docx = Docx::new().document(document).styles(styles);
+    let docx = Docx::new()
+        .document(document)
+        .styles(styles)
+        .numberings(nums);
     Ok(docx)
 }

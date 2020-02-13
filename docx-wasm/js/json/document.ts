@@ -1,6 +1,7 @@
 import { ParagraphJSON } from "./paragraph";
+import { TableJSON } from "./table";
 
-export type DocumentChildJSON = ParagraphJSON;
+export type DocumentChildJSON = ParagraphJSON | TableJSON;
 
 export type DocumentJSON = {
   children: DocumentChildJSON[];

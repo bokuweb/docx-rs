@@ -40,3 +40,10 @@ export type DocxJSON = {
   };
   fontTable: {};
 };
+
+export * from "./styles";
+export * from "./border";
+export * from "./document";
+export * from "./paragraph";
+export * from "./run";
+export * from "./table";

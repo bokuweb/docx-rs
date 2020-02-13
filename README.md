@@ -17,7 +17,7 @@
 docx-rs = "0.2.0"
 ```
 
-### Browser
+### Browser/Node.js
 
 ```
 yarn add docx-wasm
@@ -55,6 +55,19 @@ import("docx-wasm").then(w => {
     .build();
   saveAs(new Blob([buf]), "hello.docx");
 });
+```
+
+### Node.js
+
+```javascript
+const w = require("docx-wasm");
+const { writeFileSync } = require("fs");
+
+const buf = new w.Docx()
+  .addParagraph(new w.Paragraph().addRun(new w.Run().addText("Hello world!!")))
+  .build();
+
+writeFileSync("hello.docx", buf);
 ```
 
 ### More examples

@@ -139,3 +139,18 @@ pub fn read_table_merged_libre_office() {
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
+
+#[test]
+pub fn read_bom() {
+    let mut file = File::open("../fixtures/bom/bom.docx").unwrap();
+    let mut buf = vec![];
+    file.read_to_end(&mut buf).unwrap();
+    let json = read_docx(&buf).unwrap().json();
+
+    assert_debug_snapshot!(&json);
+
+    let path = std::path::Path::new("./tests/output/bom.json");
+    let mut file = std::fs::File::create(&path).unwrap();
+    file.write_all(json.as_bytes()).unwrap();
+    file.flush().unwrap();
+}

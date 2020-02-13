@@ -111,7 +111,7 @@ impl FromXML for ContentTypes {
                 Ok(XmlEvent::EndElement { .. }) => {
                     depth -= 1;
                 }
-                Err(_) => return Err(ReaderError::XMLReadError),
+                Err(_) => {}
                 _ => {}
             }
         }

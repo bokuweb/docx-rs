@@ -10,7 +10,9 @@ pub enum AlignmentType {
     Center,
     Left,
     Right,
+    Both,
     Justified,
+    Unsupported,
 }
 
 impl fmt::Display for AlignmentType {
@@ -19,7 +21,9 @@ impl fmt::Display for AlignmentType {
             AlignmentType::Center => write!(f, "center"),
             AlignmentType::Left => write!(f, "left"),
             AlignmentType::Right => write!(f, "right"),
+            AlignmentType::Both => write!(f, "both"),
             AlignmentType::Justified => write!(f, "justified"),
+            _ => write!(f, "unsupported"),
         }
     }
 }
@@ -31,8 +35,9 @@ impl FromStr for AlignmentType {
             "left" => Ok(AlignmentType::Left),
             "right" => Ok(AlignmentType::Right),
             "center" => Ok(AlignmentType::Center),
+            "both" => Ok(AlignmentType::Both),
             "justified" => Ok(AlignmentType::Justified),
-            _ => Err(errors::TypeError::FromStrError),
+            _ => Ok(AlignmentType::Unsupported),
         }
     }
 }

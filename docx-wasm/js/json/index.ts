@@ -1,4 +1,6 @@
 import { Styles } from "./styles";
+import { DocumentJSON } from "./document";
+import { AbstractNumberingJSON, NumberingJSON } from "./numbering";
 
 export type DocxJSON = {
   contentType: {
@@ -27,13 +29,14 @@ export type DocxJSON = {
     };
   };
   styles: Styles;
-  document: {
-    children: any[];
-  };
+  document: DocumentJSON;
   comments: {
     comments: any[];
   };
-  numberings: {};
+  numberings: {
+    abstractNums: AbstractNumberingJSON[];
+    numberings: NumberingJSON[];
+  };
   settings: {
     defaultTabStop: number;
     zoom: number;
@@ -47,3 +50,4 @@ export * from "./document";
 export * from "./paragraph";
 export * from "./run";
 export * from "./table";
+export * from "./numbering";

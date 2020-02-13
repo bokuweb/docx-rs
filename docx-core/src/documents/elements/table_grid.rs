@@ -17,7 +17,7 @@ impl BuildXML for TableGrid {
     fn build(&self) -> Vec<u8> {
         let mut base = XMLBuilder::new().open_table_grid();
         for g in &self.grid {
-            base = base.grid_column(*g, WidthType::DXA);
+            base = base.grid_column(*g, WidthType::Dxa);
         }
         base.close().build()
     }
@@ -37,8 +37,8 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:tblGrid>
-  <w:gridCol w:w="100" w:type="dxa" />
-  <w:gridCol w:w="200" w:type="dxa" />
+  <w:gridCol w:w="100" w:type="Dxa" />
+  <w:gridCol w:w="200" w:type="Dxa" />
 </w:tblGrid>"#
         );
     }

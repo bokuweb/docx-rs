@@ -44,10 +44,10 @@
         <w:tbl>
             <w:tblPr>
                 <w:tblCellMar>
-                    <w:bottom w:type="dxa" w:w="60"/>
-                    <w:top w:type="dxa" w:w="60"/>
-                    <w:left w:type="dxa" w:w="60"/>
-                    <w:right w:type="dxa" w:w="60"/>
+                    <w:bottom w:type="Dxa" w:w="60"/>
+                    <w:top w:type="Dxa" w:w="60"/>
+                    <w:left w:type="Dxa" w:w="60"/>
+                    <w:right w:type="Dxa" w:w="60"/>
                 </w:tblCellMar>
                 <w:tblBorders>
                     <w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>
@@ -58,7 +58,7 @@
                     <w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto"/>
                 </w:tblBorders>
                 <w:jc w:val="left"/>
-                <w:tblW w:type="dxa" w:w="8985"/>
+                <w:tblW w:type="Dxa" w:w="8985"/>
             </w:tblPr>
             <w:tblGrid>
                 <w:gridCol w:w="2985"/>

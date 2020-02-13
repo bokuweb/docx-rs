@@ -20,7 +20,7 @@
             <w:tblPr>
                 <w:tblStyle w:val="TableGrid" />
                 <w:tblW w:w="0" w:type="auto" />
-                <w:tblInd w:w="0" w:type="dxa" />
+                <w:tblInd w:w="0" w:type="Dxa" />
                 <w:tblLayout w:type="fixed" />
                 <w:tblLook w:val="06A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="1" w:noVBand="1" />
             </w:tblPr>
@@ -32,7 +32,7 @@
             <w:tr w:rsidR="10BC4D05" w:rsidTr="10BC4D05" w14:paraId="2A9BC8DF">
                 <w:tc>
                     <w:tcPr>
-                        <w:tcW w:w="3009" w:type="dxa" />
+                        <w:tcW w:w="3009" w:type="Dxa" />
                         <w:tcMar />
                     </w:tcPr>
                     <w:p w:rsidR="10BC4D05" w:rsidP="10BC4D05" w:rsidRDefault="10BC4D05" w14:paraId="1187B5E5" w14:textId="0764147B">
@@ -47,7 +47,7 @@
                 </w:tc>
                 <w:tc>
                     <w:tcPr>
-                        <w:tcW w:w="3009" w:type="dxa" />
+                        <w:tcW w:w="3009" w:type="Dxa" />
                         <w:tcMar />
                     </w:tcPr>
                     <w:p w:rsidR="10BC4D05" w:rsidP="10BC4D05" w:rsidRDefault="10BC4D05" w14:paraId="54F95D94" w14:textId="300B7467">
@@ -58,7 +58,7 @@
                 </w:tc>
                 <w:tc>
                     <w:tcPr>
-                        <w:tcW w:w="3009" w:type="dxa" />
+                        <w:tcW w:w="3009" w:type="Dxa" />
                         <w:tcMar />
                     </w:tcPr>
                     <w:p w:rsidR="10BC4D05" w:rsidP="10BC4D05" w:rsidRDefault="10BC4D05" w14:paraId="58189E6E" w14:textId="300B7467">
@@ -71,7 +71,7 @@
             <w:tr w:rsidR="10BC4D05" w:rsidTr="10BC4D05" w14:paraId="4902C3B4">
                 <w:tc>
                     <w:tcPr>
-                        <w:tcW w:w="3009" w:type="dxa" />
+                        <w:tcW w:w="3009" w:type="Dxa" />
                         <w:tcMar />
                     </w:tcPr>
                     <w:p w:rsidR="10BC4D05" w:rsidP="10BC4D05" w:rsidRDefault="10BC4D05" w14:paraId="66A181C0" w14:textId="300B7467">
@@ -82,7 +82,7 @@
                 </w:tc>
                 <w:tc>
                     <w:tcPr>
-                        <w:tcW w:w="3009" w:type="dxa" />
+                        <w:tcW w:w="3009" w:type="Dxa" />
                         <w:tcMar />
                     </w:tcPr>
                     <w:p w:rsidR="10BC4D05" w:rsidP="10BC4D05" w:rsidRDefault="10BC4D05" w14:paraId="0E3CEB61" w14:textId="300B7467">
@@ -93,7 +93,7 @@
                 </w:tc>
                 <w:tc>
                     <w:tcPr>
-                        <w:tcW w:w="3009" w:type="dxa" />
+                        <w:tcW w:w="3009" w:type="Dxa" />
                         <w:tcMar />
                     </w:tcPr>
                     <w:p w:rsidR="10BC4D05" w:rsidP="10BC4D05" w:rsidRDefault="10BC4D05" w14:paraId="26D2D89D" w14:textId="300B7467">

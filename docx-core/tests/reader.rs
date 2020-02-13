@@ -154,3 +154,18 @@ pub fn read_bom() {
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
+
+#[test]
+pub fn read_bookmark() {
+    let mut file = File::open("../fixtures/bookmark/bookmark.docx").unwrap();
+    let mut buf = vec![];
+    file.read_to_end(&mut buf).unwrap();
+    let json = read_docx(&buf).unwrap().json();
+
+    assert_debug_snapshot!(&json);
+
+    let path = std::path::Path::new("./tests/output/bookmark.json");
+    let mut file = std::fs::File::create(&path).unwrap();
+    file.write_all(json.as_bytes()).unwrap();
+    file.flush().unwrap();
+}

@@ -43,10 +43,10 @@ impl BuildXML for TableCellMargins {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_table_cell_margins()
-            .margin_top(self.top, WidthType::DXA)
-            .margin_left(self.left, WidthType::DXA)
-            .margin_bottom(self.bottom, WidthType::DXA)
-            .margin_right(self.right, WidthType::DXA)
+            .margin_top(self.top, WidthType::Dxa)
+            .margin_left(self.left, WidthType::Dxa)
+            .margin_bottom(self.bottom, WidthType::Dxa)
+            .margin_right(self.right, WidthType::Dxa)
             .close()
             .build()
     }
@@ -66,10 +66,10 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:tblCellMar>
-  <w:top w:w="55" w:type="dxa" />
-  <w:left w:w="54" w:type="dxa" />
-  <w:bottom w:w="55" w:type="dxa" />
-  <w:right w:w="55" w:type="dxa" />
+  <w:top w:w="55" w:type="Dxa" />
+  <w:left w:w="54" w:type="Dxa" />
+  <w:bottom w:w="55" w:type="Dxa" />
+  <w:right w:w="55" w:type="Dxa" />
 </w:tblCellMar>"#
         );
     }
@@ -80,10 +80,10 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:tblCellMar>
-  <w:top w:w="10" w:type="dxa" />
-  <w:left w:w="20" w:type="dxa" />
-  <w:bottom w:w="30" w:type="dxa" />
-  <w:right w:w="40" w:type="dxa" />
+  <w:top w:w="10" w:type="Dxa" />
+  <w:left w:w="20" w:type="Dxa" />
+  <w:bottom w:w="30" w:type="Dxa" />
+  <w:right w:w="40" w:type="Dxa" />
 </w:tblCellMar>"#
         );
     }

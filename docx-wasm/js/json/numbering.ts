@@ -1,6 +1,6 @@
 import { ParagraphPropertyJSON } from "./paragraph";
 
-export type AbstractNumberingJSON = {
+export type LevelJSON = {
   level: number;
   start: number;
   format: string;
@@ -8,6 +8,11 @@ export type AbstractNumberingJSON = {
   jc: string;
   pstyle: string | null;
   paragraphProperty: ParagraphPropertyJSON;
+};
+
+export type AbstractNumberingJSON = {
+  id: number;
+  levels: LevelJSON[];
 };
 
 export type NumberingJSON = {

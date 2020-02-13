@@ -1,11 +1,19 @@
 {
   "name": "docx-wasm",
-  "version": "0.0.24",
-  "main": "dist/index.js",
+  "version": "0.0.27",
+  "main": "dist/node/index.js",
+  "browser": "dist/web/index.js",
   "author": "bokuweb <bokuweb12@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p . && wasm-pack build",
+    "wasm-pack:dev": "wasm-pack build --out-dir js/pkg",
+    "wasm-pack:web": "wasm-pack build --out-dir dist/web/pkg",
+    "wasm-pack:node": "wasm-pack build --out-dir dist/node/pkg --target nodejs",
+    "wasm-pack": "run-p wasm-pack:*",
+    "tsc:web": "tsc -p tsconfig.web.json",
+    "tsc:node": "tsc -p tsconfig.node.json",
+    "tsc": "run-p tsc:*",
+    "build": "run-s wasm-pack tsc",
     "serve": "webpack-dev-server --open --config webpack.dev.js",
     "prepublishOnly": "npm run build"
   },
@@ -15,6 +23,7 @@
   "devDependencies": {
     "@wasm-tool/wasm-pack-plugin": "1.0.1",
     "html-webpack-plugin": "^3.2.0",
+    "npm-run-all": "^4.1.5",
     "text-encoding": "^0.7.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5",
@@ -23,16 +32,9 @@
     "webpack-dev-server": "^3.1.0"
   },
   "files": [
-    "dist",
-    "pkg/docx_wasm_bg.d.ts",
-    "pkg/docx_wasm_bg.wasm",
-    "pkg/docx_wasm.d.ts",
-    "pkg/docx_wasm.js"
+    "dist"
   ],
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "dependencies": {
-    "@bokuweb/docx-wasm": "0.1.0",
-    "docx-wasm": "0.0.10"
-  }
+  "module": "dist/web/index.js",
+  "types": "dist/web/index.d.ts",
+  "dependencies": {}
 }

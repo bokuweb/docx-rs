@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "esNext",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmitOnError": true,
+    "strictNullChecks": true,
+    "target": "es6",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "outDir": "dist/web",
+    "declaration": true
+  },
+  "include": ["js"]
+}

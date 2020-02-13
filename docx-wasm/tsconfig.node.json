@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "esNext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -12,7 +12,7 @@
     "target": "es6",
     "sourceMap": true,
     "esModuleInterop": true,
-    "outDir": "dist",
+    "outDir": "dist/node",
     "declaration": true
   },
   "include": ["js"]

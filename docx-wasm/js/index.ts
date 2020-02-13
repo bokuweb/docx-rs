@@ -16,7 +16,7 @@ import { BookmarkStart } from "./bookmark-start";
 import { BookmarkEnd } from "./bookmark-end";
 import { DocxJSON } from "./json";
 
-import * as wasm from "../pkg";
+import * as wasm from "./pkg";
 
 export class Docx {
   children: (Paragraph | Table)[] = [];

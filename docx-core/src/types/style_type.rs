@@ -12,6 +12,7 @@ pub enum StyleType {
     Paragraph,
     Character,
     Numbering,
+    Table,
     Unsupported,
 }
 
@@ -21,6 +22,7 @@ impl fmt::Display for StyleType {
             StyleType::Paragraph => write!(f, "paragraph"),
             StyleType::Character => write!(f, "character"),
             StyleType::Numbering => write!(f, "numbering"),
+            StyleType::Table => write!(f, "table"),
             StyleType::Unsupported => write!(f, "unsupported"),
         }
     }
@@ -33,6 +35,7 @@ impl FromStr for StyleType {
             "paragraph" => Ok(StyleType::Paragraph),
             "character" => Ok(StyleType::Character),
             "numbering" => Ok(StyleType::Numbering),
+            "table" => Ok(StyleType::Table),
             _ => Ok(StyleType::Unsupported),
         }
     }

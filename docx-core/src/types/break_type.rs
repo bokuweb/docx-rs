@@ -16,6 +16,7 @@ pub enum BreakType {
     Page,
     Column,
     TextWrapping,
+    Unsupported,
 }
 
 impl fmt::Display for BreakType {
@@ -24,6 +25,7 @@ impl fmt::Display for BreakType {
             BreakType::Page => write!(f, "page"),
             BreakType::Column => write!(f, "column"),
             BreakType::TextWrapping => write!(f, "textWrapping"),
+            BreakType::Unsupported => write!(f, "unsupported"),
         }
     }
 }
@@ -35,7 +37,7 @@ impl FromStr for BreakType {
             "page" => Ok(BreakType::Page),
             "column" => Ok(BreakType::Column),
             "textWrapping" => Ok(BreakType::TextWrapping),
-            _ => Err(errors::TypeError::FromStrError),
+            _ => Ok(BreakType::Unsupported),
         }
     }
 }

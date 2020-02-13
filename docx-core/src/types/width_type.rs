@@ -11,6 +11,7 @@ pub enum WidthType {
     DXA,
     Auto,
     Pct,
+    Unsupported,
 }
 
 impl fmt::Display for WidthType {
@@ -19,6 +20,7 @@ impl fmt::Display for WidthType {
             WidthType::DXA => write!(f, "dxa"),
             WidthType::Auto => write!(f, "auto"),
             WidthType::Pct => write!(f, "pct"),
+            WidthType::Unsupported => write!(f, "unsupported"),
         }
     }
 }
@@ -30,7 +32,7 @@ impl FromStr for WidthType {
             "dxa" => Ok(WidthType::DXA),
             "auto" => Ok(WidthType::Auto),
             "pct" => Ok(WidthType::Pct),
-            _ => Err(errors::TypeError::FromStrError),
+            _ => Ok(WidthType::Unsupported),
         }
     }
 }

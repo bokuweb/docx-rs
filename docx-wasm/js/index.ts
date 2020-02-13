@@ -14,6 +14,7 @@ import { AbstractNumbering } from "./abstract-numbering";
 import { Numbering } from "./numbering";
 import { BookmarkStart } from "./bookmark-start";
 import { BookmarkEnd } from "./bookmark-end";
+import { DocxJSON } from "./json";
 
 import * as wasm from "../pkg";
 
@@ -287,7 +288,7 @@ export class Docx {
 }
 
 export const readDocx = (buf: Uint8Array) => {
-  return wasm.readDocx(buf);
+  return JSON.parse(wasm.readDocx(buf)) as DocxJSON;
 };
 
 export * from "./paragraph";
@@ -307,3 +308,4 @@ export * from "./break";
 export * from "./delete-text";
 export * from "./level";
 export * from "./tab";
+export * from "./json";

@@ -72,8 +72,7 @@ mod tests {
 
     #[test]
     fn test_read_table_with_width_prop() {
-        let c =
-            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 <w:tbl>
     <w:tblPr>
         <w:tblW w:w="9638" w:type="dxa"/>
@@ -97,8 +96,7 @@ mod tests {
 
     #[test]
     fn test_read_table_with_layout() {
-        let c =
-            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 <w:tbl>
     <w:tblPr>
         <w:jc w:val="center"/>

@@ -94,8 +94,7 @@ mod tests {
 
     #[test]
     fn test_read_cell_with_prop() {
-        let c =
-            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 <w:tc>
     <w:tcPr>
         <w:tcW w:w="6425" w:type="dxa"/>

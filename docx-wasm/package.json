@@ -1,12 +1,13 @@
 {
   "name": "docx-wasm",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "main": "dist/index.js",
   "author": "bokuweb <bokuweb12@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p .",
-    "serve": "webpack-dev-server --open --config webpack.dev.js"
+    "build": "tsc -p . && wasm-pack build",
+    "serve": "webpack-dev-server --open --config webpack.dev.js",
+    "prepublishOnly": "npm run build"
   },
   "resolutions": {
     "**/serialize-javascript": "2.1.2"

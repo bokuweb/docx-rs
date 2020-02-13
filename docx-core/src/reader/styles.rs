@@ -47,8 +47,7 @@ mod tests {
 
     #[test]
     fn test_from_xml() {
-        let xml =
-            r#"<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let xml = r#"<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <w:style w:type="character" w:styleId="FootnoteTextChar">
         <w:name w:val="Footnote Text Char"></w:name>
         <w:rPr>

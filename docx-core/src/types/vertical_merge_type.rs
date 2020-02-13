@@ -9,6 +9,7 @@ use std::str::FromStr;
 pub enum VMergeType {
     Continue,
     Restart,
+    Unsupported,
 }
 
 impl fmt::Display for VMergeType {
@@ -16,6 +17,7 @@ impl fmt::Display for VMergeType {
         match *self {
             VMergeType::Continue => write!(f, "continue"),
             VMergeType::Restart => write!(f, "restart"),
+            VMergeType::Unsupported => write!(f, "unsupported"),
         }
     }
 }
@@ -26,7 +28,7 @@ impl FromStr for VMergeType {
         match s {
             "continue" => Ok(VMergeType::Continue),
             "restart" => Ok(VMergeType::Restart),
-            _ => Err(errors::TypeError::FromStrError),
+            _ => Ok(VMergeType::Unsupported),
         }
     }
 }

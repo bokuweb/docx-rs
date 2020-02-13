@@ -410,12 +410,12 @@
         <w:semiHidden />
         <w:unhideWhenUsed />
         <w:tblPr>
-            <w:tblInd w:w="0" w:type="Dxa" />
+            <w:tblInd w:w="0" w:type="dxa" />
             <w:tblCellMar>
-                <w:top w:w="0" w:type="Dxa" />
-                <w:left w:w="108" w:type="Dxa" />
-                <w:bottom w:w="0" w:type="Dxa" />
-                <w:right w:w="108" w:type="Dxa" />
+                <w:top w:w="0" w:type="dxa" />
+                <w:left w:w="108" w:type="dxa" />
+                <w:bottom w:w="0" w:type="dxa" />
+                <w:right w:w="108" w:type="dxa" />
             </w:tblCellMar>
         </w:tblPr>
     </w:style>
@@ -439,7 +439,7 @@
             <w:spacing w:after="0" w:line="240" w:lineRule="auto" />
         </w:pPr>
         <w:tblPr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-            <w:tblInd w:w="0" w:type="Dxa" />
+            <w:tblInd w:w="0" w:type="dxa" />
             <w:tblBorders>
                 <w:top w:val="single" w:color="000000" w:themeColor="text1" w:sz="4" w:space="0" />
                 <w:left w:val="single" w:color="000000" w:themeColor="text1" w:sz="4" w:space="0" />
@@ -449,10 +449,10 @@
                 <w:insideV w:val="single" w:color="000000" w:themeColor="text1" w:sz="4" w:space="0" />
             </w:tblBorders>
             <w:tblCellMar>
-                <w:top w:w="0" w:type="Dxa" />
-                <w:left w:w="108" w:type="Dxa" />
-                <w:bottom w:w="0" w:type="Dxa" />
-                <w:right w:w="108" w:type="Dxa" />
+                <w:top w:w="0" w:type="dxa" />
+                <w:left w:w="108" w:type="dxa" />
+                <w:bottom w:w="0" w:type="dxa" />
+                <w:right w:w="108" w:type="dxa" />
             </w:tblCellMar>
         </w:tblPr>
     </w:style>

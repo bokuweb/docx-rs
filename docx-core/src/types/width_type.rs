@@ -7,9 +7,8 @@ use std::str::FromStr;
 
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub enum WidthType {
-    Dxa,
+    DXA,
     Auto,
     Pct,
     Unsupported,
@@ -18,7 +17,7 @@ pub enum WidthType {
 impl fmt::Display for WidthType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            WidthType::Dxa => write!(f, "Dxa"),
+            WidthType::DXA => write!(f, "dxa"),
             WidthType::Auto => write!(f, "auto"),
             WidthType::Pct => write!(f, "pct"),
             WidthType::Unsupported => write!(f, "unsupported"),
@@ -30,7 +29,7 @@ impl FromStr for WidthType {
     type Err = errors::TypeError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "Dxa" => Ok(WidthType::Dxa),
+            "dxa" => Ok(WidthType::DXA),
             "auto" => Ok(WidthType::Auto),
             "pct" => Ok(WidthType::Pct),
             _ => Ok(WidthType::Unsupported),

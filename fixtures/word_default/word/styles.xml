@@ -416,12 +416,12 @@
         <w:semiHidden/>
         <w:unhideWhenUsed/>
         <w:tblPr>
-            <w:tblInd w:w="0" w:type="Dxa"/>
+            <w:tblInd w:w="0" w:type="dxa"/>
             <w:tblCellMar>
-                <w:top w:w="0" w:type="Dxa"/>
-                <w:left w:w="108" w:type="Dxa"/>
-                <w:bottom w:w="0" w:type="Dxa"/>
-                <w:right w:w="108" w:type="Dxa"/>
+                <w:top w:w="0" w:type="dxa"/>
+                <w:left w:w="108" w:type="dxa"/>
+                <w:bottom w:w="0" w:type="dxa"/>
+                <w:right w:w="108" w:type="dxa"/>
             </w:tblCellMar>
         </w:tblPr>
     </w:style>

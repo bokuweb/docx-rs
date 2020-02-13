@@ -75,7 +75,7 @@ mod tests {
         let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 <w:tbl>
     <w:tblPr>
-        <w:tblW w:w="9638" w:type="Dxa"/>
+        <w:tblW w:w="9638" w:type="dxa"/>
     </w:tblPr>
     <w:tblGrid>
         <w:gridCol w:w="3212"/>
@@ -90,7 +90,7 @@ mod tests {
             t,
             Table::new(vec![])
                 .set_grid(vec![3212, 3213, 3213])
-                .width(9638, WidthType::Dxa)
+                .width(9638, WidthType::DXA)
         );
     }
 
@@ -100,7 +100,7 @@ mod tests {
 <w:tbl>
     <w:tblPr>
         <w:jc w:val="center"/>
-        <w:tblInd w:w="100" w:type="Dxa"/>
+        <w:tblInd w:w="100" w:type="dxa"/>
     </w:tblPr>
 </w:tbl>
 </w:document>"#;

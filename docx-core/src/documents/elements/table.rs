@@ -78,11 +78,11 @@ mod tests {
         let b = Table::new(vec![TableRow::new(vec![])]).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tbl><w:tblPr><w:tblW w:w="0" w:type="Dxa" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders><w:tblCellMar>
-  <w:top w:w="55" w:type="Dxa" />
-  <w:left w:w="54" w:type="Dxa" />
-  <w:bottom w:w="55" w:type="Dxa" />
-  <w:right w:w="55" w:type="Dxa" />
+            r#"<w:tbl><w:tblPr><w:tblW w:w="0" w:type="dxa" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders><w:tblCellMar>
+  <w:top w:w="55" w:type="dxa" />
+  <w:left w:w="54" w:type="dxa" />
+  <w:bottom w:w="55" w:type="dxa" />
+  <w:right w:w="55" w:type="dxa" />
 </w:tblCellMar></w:tblPr><w:tblGrid /><w:tr><w:trPr /></w:tr></w:tbl>"#
         );
     }
@@ -94,14 +94,14 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tbl><w:tblPr><w:tblW w:w="0" w:type="Dxa" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders><w:tblCellMar>
-  <w:top w:w="55" w:type="Dxa" />
-  <w:left w:w="54" w:type="Dxa" />
-  <w:bottom w:w="55" w:type="Dxa" />
-  <w:right w:w="55" w:type="Dxa" />
+            r#"<w:tbl><w:tblPr><w:tblW w:w="0" w:type="dxa" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders><w:tblCellMar>
+  <w:top w:w="55" w:type="dxa" />
+  <w:left w:w="54" w:type="dxa" />
+  <w:bottom w:w="55" w:type="dxa" />
+  <w:right w:w="55" w:type="dxa" />
 </w:tblCellMar></w:tblPr><w:tblGrid>
-  <w:gridCol w:w="100" w:type="Dxa" />
-  <w:gridCol w:w="200" w:type="Dxa" />
+  <w:gridCol w:w="100" w:type="dxa" />
+  <w:gridCol w:w="200" w:type="dxa" />
 </w:tblGrid><w:tr><w:trPr /></w:tr></w:tbl>"#
         );
     }
@@ -111,7 +111,7 @@ mod tests {
         let t = Table::new(vec![]).set_grid(vec![100, 200, 300]);
         assert_eq!(
             serde_json::to_string(&t).unwrap(),
-            r#"{"rows":[],"grid":[100,200,300],"hasNumbering":false,"property":{"width":{"width":0,"widthType":"auto"},"justification":"left","borders":{"top":{"position":"top","borderType":"single","size":2,"space":0,"color":"000000"},"left":{"position":"left","borderType":"single","size":2,"space":0,"color":"000000"},"bottom":{"position":"bottom","borderType":"single","size":2,"space":0,"color":"000000"},"right":{"position":"right","borderType":"single","size":2,"space":0,"color":"000000"},"insideH":{"position":"insideH","borderType":"single","size":2,"space":0,"color":"000000"},"insideV":{"position":"insideV","borderType":"single","size":2,"space":0,"color":"000000"}},"margins":{"top":55,"left":54,"bottom":55,"right":55},"indent":null}}"#
+            r#"{"rows":[],"grid":[100,200,300],"hasNumbering":false,"property":{"width":{"width":0,"widthType":"Auto"},"justification":"left","borders":{"top":{"position":"top","borderType":"single","size":2,"space":0,"color":"000000"},"left":{"position":"left","borderType":"single","size":2,"space":0,"color":"000000"},"bottom":{"position":"bottom","borderType":"single","size":2,"space":0,"color":"000000"},"right":{"position":"right","borderType":"single","size":2,"space":0,"color":"000000"},"insideH":{"position":"insideH","borderType":"single","size":2,"space":0,"color":"000000"},"insideV":{"position":"insideV","borderType":"single","size":2,"space":0,"color":"000000"}},"margins":{"top":55,"left":54,"bottom":55,"right":55},"indent":null}}"#
         );
     }
 }

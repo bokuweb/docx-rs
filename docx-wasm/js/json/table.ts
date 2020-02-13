@@ -5,7 +5,7 @@ export type TableCellChildJSON = ParagraphJSON;
 export type TableCellPropertyJSON = {
   width: {
     width: number;
-    widthType: "Dxa" | "auto" | "pct";
+    widthType: "DXA" | "auto" | "pct";
   } | null;
   borders: any | null;
   gridSpan: number | null;
@@ -25,7 +25,7 @@ export type TableRowJSON = {
 export type TablePropertyJSON = {
   width: {
     width: number;
-    widthType: "Dxa" | "auto" | "pct";
+    widthType: "DXA" | "auto" | "pct";
   } | null;
   borders: any | null;
   gridSpan: number | null;

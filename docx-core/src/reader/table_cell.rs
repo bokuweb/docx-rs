@@ -97,7 +97,7 @@ mod tests {
         let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 <w:tc>
     <w:tcPr>
-        <w:tcW w:w="6425" w:type="Dxa"/>
+        <w:tcW w:w="6425" w:type="dxa"/>
         <w:vMerge w:val="restart"/>
         <w:gridSpan w:val="2"/>
         <w:tcBorders>
@@ -121,7 +121,7 @@ mod tests {
             cell,
             TableCell::new()
                 .add_paragraph(Paragraph::new().add_run(Run::new()))
-                .width(6425, WidthType::Dxa)
+                .width(6425, WidthType::DXA)
                 .grid_span(2)
                 .vertical_merge(VMergeType::Restart),
         );

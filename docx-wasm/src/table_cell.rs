@@ -37,7 +37,7 @@ impl TableCell {
     }
 
     pub fn width(mut self, v: usize) -> TableCell {
-        self.0.property = self.0.property.width(v, docx_rs::WidthType::Dxa);
+        self.0.property = self.0.property.width(v, docx_rs::WidthType::DXA);
         self
     }
 }

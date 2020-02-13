@@ -122,8 +122,7 @@ mod tests {
 
     #[test]
     fn test_read_indent() {
-        let c =
-            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <w:p>
         <w:pPr>
             <w:ind w:left="1470" w:right="1270" w:hanging="0"/>
@@ -161,8 +160,7 @@ mod tests {
 
     #[test]
     fn test_read_jc() {
-        let c =
-            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <w:p>
         <w:pPr>
             <w:jc w:val="left"/>
@@ -191,8 +189,7 @@ mod tests {
 
     #[test]
     fn test_read_numbering() {
-        let c =
-            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <w:p>
         <w:pPr>
             <w:numPr>
@@ -227,8 +224,7 @@ mod tests {
 
     #[test]
     fn test_read_insert() {
-        let c =
-            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <w:p>
         <w:ins w:id="0" w:author="unknown" w:date="2019-11-15T14:19:04Z">
             <w:r>
@@ -264,8 +260,7 @@ mod tests {
 
     #[test]
     fn test_read_delete() {
-        let c =
-            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <w:p>
         <w:del w:id="3" w:author="unknown" w:date="2019-11-15T14:19:04Z">
             <w:r>
@@ -301,8 +296,7 @@ mod tests {
 
     #[test]
     fn test_read_bookmark() {
-        let c =
-            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <w:p>
         <w:bookmarkStart w:id="0" w:name="ABCD-1234"/>
             <w:r>

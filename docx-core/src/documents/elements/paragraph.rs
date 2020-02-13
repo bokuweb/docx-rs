@@ -69,6 +69,25 @@ impl Serialize for ParagraphChild {
                 t.serialize_field("data", r)?;
                 t.end()
             }
+            ParagraphChild::Delete(ref r) => {
+                let mut t = serializer.serialize_struct("Delete", 2)?;
+                t.serialize_field("type", "delete")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            ParagraphChild::BookmarkStart(ref r) => {
+                let mut t = serializer.serialize_struct("BookmarkStart", 2)?;
+                t.serialize_field("type", "bookmarkStart")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            ParagraphChild::BookmarkEnd(ref r) => {
+                let mut t = serializer.serialize_struct("BookmarkEnd", 2)?;
+                t.serialize_field("type", "bookmarkEnd")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            // TODO: Add comment later
             _ => {
                 let mut t = serializer.serialize_struct("Unsupported", 2)?;
                 t.serialize_field("type", "unsupported")?;

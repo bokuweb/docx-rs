@@ -76,6 +76,8 @@ pub enum XMLElement {
     NumberFormat,
     LevelText,
     LevelJustification,
+    StyleLink,
+    NumStyleLink,
     Unsupported,
 }
 
@@ -151,6 +153,8 @@ impl FromStr for XMLElement {
             "numFmt" => Ok(XMLElement::NumberFormat),
             "lvlText" => Ok(XMLElement::LevelText),
             "lvlJc" => Ok(XMLElement::LevelJustification),
+            "numStyleLink" => Ok(XMLElement::NumStyleLink),
+            "styleLink" => Ok(XMLElement::StyleLink),
             _ => Ok(XMLElement::Unsupported),
         }
     }

@@ -13,6 +13,8 @@ export type LevelJSON = {
 export type AbstractNumberingJSON = {
   id: number;
   levels: LevelJSON[];
+  numStyleLink: string | null;
+  styleLink: string | null;
 };
 
 export type NumberingJSON = {

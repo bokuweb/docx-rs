@@ -106,3 +106,7 @@ writeFileSync("hello.docx", buf);
 - [x] HIstory
 - [ ] Table of contents
 - [ ] Section
+
+## Requirements
+
+- wasm-pack 0.9.1+

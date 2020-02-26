@@ -34,9 +34,19 @@ impl FromXML for Numberings {
                                         attributes, name, ..
                                     }) => {
                                         let e = XMLElement::from_str(&name.local_name).unwrap();
-                                        if let XMLElement::Level = e {
-                                            let l = Level::read(&mut parser, &attributes)?;
-                                            abs_num = abs_num.add_level(l);
+                                        match e {
+                                            XMLElement::Level => {
+                                                let l = Level::read(&mut parser, &attributes)?;
+                                                abs_num = abs_num.add_level(l);
+                                            }
+                                            XMLElement::StyleLink => {
+                                                abs_num = abs_num.style_link(&attributes[0].value)
+                                            }
+                                            XMLElement::NumStyleLink => {
+                                                abs_num =
+                                                    abs_num.num_style_link(&attributes[0].value)
+                                            }
+                                            _ => {}
                                         }
                                     }
                                     Ok(XmlEvent::EndElement { name, .. }) => {
@@ -112,8 +122,7 @@ mod tests {
 
     #[test]
     fn test_numberings_from_xml() {
-        let xml =
-            r#"<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+        let xml = r#"<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
             xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" >
     <w:abstractNum w:abstractNumId="0" w15:restartNumberingAfterBreak="0">
         <w:multiLevelType w:val="hybridMultilevel"></w:multiLevelType>
@@ -147,6 +156,46 @@ mod tests {
                     .indent(720, Some(SpecialIndentType::Hanging(360)), None),
                 ),
             )
+            .add_numbering(Numbering::new(1, 0));
+        assert_eq!(n, nums)
+    }
+
+    #[test]
+    fn test_numberings_from_xml_with_num_style_link() {
+        let xml = r#"<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+            xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" >
+    <w:abstractNum w:abstractNumId="0">
+        <w:multiLevelType w:val="hybridMultilevel"/>
+        <w:numStyleLink w:val="style1"/>
+    </w:abstractNum>
+    <w:num w:numId="1">
+        <w:abstractNumId w:val="0"></w:abstractNumId>
+    </w:num>
+</w:numbering>"#;
+        let n = Numberings::from_xml(xml.as_bytes()).unwrap();
+        let mut nums = Numberings::new();
+        nums = nums
+            .add_abstract_numbering(AbstractNumbering::new(0).num_style_link("style1"))
+            .add_numbering(Numbering::new(1, 0));
+        assert_eq!(n, nums)
+    }
+
+    #[test]
+    fn test_numberings_from_xml_with_style_link() {
+        let xml = r#"<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+            xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" >
+    <w:abstractNum w:abstractNumId="0">
+        <w:multiLevelType w:val="hybridMultilevel"/>
+        <w:styleLink w:val="style1"/>
+    </w:abstractNum>
+    <w:num w:numId="1">
+        <w:abstractNumId w:val="0"></w:abstractNumId>
+    </w:num>
+</w:numbering>"#;
+        let n = Numberings::from_xml(xml.as_bytes()).unwrap();
+        let mut nums = Numberings::new();
+        nums = nums
+            .add_abstract_numbering(AbstractNumbering::new(0).style_link("style1"))
             .add_numbering(Numbering::new(1, 0));
         assert_eq!(n, nums)
     }

@@ -1,4 +1,5 @@
 import { RunJSON, RunChildJSON } from "./run";
+import { IndentJSON } from "./indent";
 
 export type ParagraphChildJSON =
   | RunJSON
@@ -17,6 +18,7 @@ export type ParagraphPropertyJSON = {
   style: string | null;
   numberingProperty: NumberingPropertyJSON | null;
   alignment: "left" | "center" | "right" | "justified" | "both";
+  indent: IndentJSON | null;
 };
 
 export type ParagraphJSON = {

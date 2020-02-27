@@ -21,3 +21,8 @@ export type NumberingJSON = {
   id: number;
   abstractNumId: number;
 };
+
+export type NumberingsJSON = {
+  abstractNums: AbstractNumberingJSON[];
+  numberings: NumberingJSON[];
+};

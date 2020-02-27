@@ -9,7 +9,7 @@ export type StyleJSON = {
   paragraphProperty: ParagraphPropertyJSON;
 };
 
-export type Styles = {
+export type StylesJSON = {
   docDefaults: {
     runPropertyDefault: RunPropertyJSON;
   };

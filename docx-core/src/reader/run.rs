@@ -32,30 +32,24 @@ impl ElementReader for Run {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::Tab => {
-                            run = {
-                                if let Some(v) = &attributes.get(0) {
-                                    if &v.value == "0" {
-                                        continue;
-                                    }
-                                }
-                                run.add_tab()
-                            }
+                            run = run.add_tab();
                         }
                         XMLElement::Bold => {
-                            run = {
-                                if let Some(v) = &attributes.get(0) {
-                                    if &v.value == "0" {
-                                        continue;
-                                    }
-                                }
-                                run.bold()
+                            if !read_bool(&attributes) {
+                                continue;
                             }
+                            run = run.bold();
                         }
                         XMLElement::Highlight => run = run.highlight(attributes[0].value.clone()),
                         XMLElement::Color => run = run.color(attributes[0].value.clone()),
                         XMLElement::Size => run = run.size(usize::from_str(&attributes[0].value)?),
                         XMLElement::Underline => run = run.underline(&attributes[0].value.clone()),
-                        XMLElement::Italic => run = run.italic(),
+                        XMLElement::Italic => {
+                            if !read_bool(&attributes) {
+                                continue;
+                            }
+                            run = run.italic();
+                        }
                         XMLElement::Vanish => run = run.vanish(),
                         XMLElement::Text => text_state = TextState::Text,
                         XMLElement::DeleteText => text_state = TextState::Delete,
@@ -211,6 +205,66 @@ mod tests {
                     underline: None,
                     bold: None,
                     bold_cs: None,
+                    italic: None,
+                    italic_cs: None,
+                    vanish: None,
+                },
+            }
+        );
+    }
+
+    #[test]
+    fn test_read_italic_false() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:r><w:rPr>
+    <w:b w:val="true"/>
+    <w:i w:val="false"/>
+  </w:rPr></w:r>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let run = Run::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            run,
+            Run {
+                children: vec![],
+                run_property: RunProperty {
+                    sz: None,
+                    sz_cs: None,
+                    color: None,
+                    highlight: None,
+                    underline: None,
+                    bold: Some(Bold::new()),
+                    bold_cs: Some(BoldCs::new()),
+                    italic: None,
+                    italic_cs: None,
+                    vanish: None,
+                },
+            }
+        );
+    }
+
+    #[test]
+    fn test_read_italic_0() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:r><w:rPr>
+    <w:b w:val="1"/>
+    <w:i w:val="0"/>
+  </w:rPr></w:r>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let run = Run::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            run,
+            Run {
+                children: vec![],
+                run_property: RunProperty {
+                    sz: None,
+                    sz_cs: None,
+                    color: None,
+                    highlight: None,
+                    underline: None,
+                    bold: Some(Bold::new()),
+                    bold_cs: Some(BoldCs::new()),
                     italic: None,
                     italic_cs: None,
                     vanish: None,

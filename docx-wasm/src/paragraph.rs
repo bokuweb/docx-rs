@@ -74,9 +74,9 @@ impl Paragraph {
 
     pub fn indent(
         mut self,
-        left: usize,
+        left: i32,
         special_indent_kind: Option<docx_rs::SpecialIndentKind>,
-        special_indent_size: Option<usize>,
+        special_indent_size: Option<i32>,
     ) -> Paragraph {
         let special_indent = create_special_indent(special_indent_kind, special_indent_size);
         self.0.property = self.0.property.indent(left, special_indent, None);

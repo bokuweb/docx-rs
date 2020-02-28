@@ -35,10 +35,8 @@ impl ElementReader for Run {
                             run = run.add_tab();
                         }
                         XMLElement::Bold => {
-                            if let Some(v) = &attributes.get(0) {
-                                if &v.value == "0" {
-                                    continue;
-                                }
+                            if !read_bool(&attributes) {
+                                continue;
                             }
                             run = run.bold();
                         }
@@ -47,12 +45,10 @@ impl ElementReader for Run {
                         XMLElement::Size => run = run.size(usize::from_str(&attributes[0].value)?),
                         XMLElement::Underline => run = run.underline(&attributes[0].value.clone()),
                         XMLElement::Italic => {
-                            if let Some(v) = &attributes.get(0) {
-                                if &v.value == "0" {
-                                    continue;
-                                }
-                                run = run.italic();
+                            if !read_bool(&attributes) {
+                                continue;
                             }
+                            run = run.italic();
                         }
                         XMLElement::Vanish => run = run.vanish(),
                         XMLElement::Text => text_state = TextState::Text,
@@ -218,7 +214,37 @@ mod tests {
     }
 
     #[test]
-    fn test_read_italic() {
+    fn test_read_italic_false() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:r><w:rPr>
+    <w:b w:val="true"/>
+    <w:i w:val="false"/>
+  </w:rPr></w:r>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let run = Run::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            run,
+            Run {
+                children: vec![],
+                run_property: RunProperty {
+                    sz: None,
+                    sz_cs: None,
+                    color: None,
+                    highlight: None,
+                    underline: None,
+                    bold: Some(Bold::new()),
+                    bold_cs: Some(BoldCs::new()),
+                    italic: None,
+                    italic_cs: None,
+                    vanish: None,
+                },
+            }
+        );
+    }
+
+    #[test]
+    fn test_read_italic_0() {
         let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
   <w:r><w:rPr>
     <w:b w:val="1"/>

@@ -53,6 +53,13 @@ impl ElementReader for Run {
                         run = run.add_text(c);
                     }
                 }
+               Ok(XmlEvent::Whitespace(c)) => {
+                    if text_state == TextState::Delete {
+                        run = run.add_delete_text(c);
+                    } else {
+                        run = run.add_text(c);
+                    }
+                }                
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     if let XMLElement::Run = e {

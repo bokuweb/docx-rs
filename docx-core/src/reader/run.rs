@@ -42,7 +42,11 @@ impl ElementReader for Run {
                         XMLElement::Text => text_state = TextState::Text,
                         XMLElement::DeleteText => text_state = TextState::Delete,
                         XMLElement::Break => {
-                            run = run.add_break(BreakType::from_str(&attributes[0].value)?)
+                            if let Some(a) = &attributes.get(0) {
+                                run = run.add_break(BreakType::from_str(&a.value)?)
+                            } else {
+                                run = run.add_break(BreakType::TextWrapping)
+                            }
                         }
                         _ => {}
                     }
@@ -118,8 +122,7 @@ mod tests {
 
     #[test]
     fn test_read_tab() {
-        let c =
-            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
   <w:r><w:tab /></w:r>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
@@ -146,8 +149,7 @@ mod tests {
 
     #[test]
     fn test_read_br() {
-        let c =
-            r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
   <w:r><w:br w:type="page" /></w:r>
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
@@ -156,6 +158,33 @@ mod tests {
             run,
             Run {
                 children: vec![RunChild::Break(Break::new(BreakType::Page))],
+                run_property: RunProperty {
+                    sz: None,
+                    sz_cs: None,
+                    color: None,
+                    highlight: None,
+                    underline: None,
+                    bold: None,
+                    bold_cs: None,
+                    italic: None,
+                    italic_cs: None,
+                    vanish: None,
+                },
+            }
+        );
+    }
+
+    #[test]
+    fn test_read_empty_br() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:r><w:br /></w:r>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let run = Run::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            run,
+            Run {
+                children: vec![RunChild::Break(Break::new(BreakType::TextWrapping))],
                 run_property: RunProperty {
                     sz: None,
                     sz_cs: None,

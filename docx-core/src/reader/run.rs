@@ -31,8 +31,26 @@ impl ElementReader for Run {
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
-                        XMLElement::Tab => run = run.add_tab(),
-                        XMLElement::Bold => run = run.bold(),
+                        XMLElement::Tab => {
+                            run = {
+                                if let Some(v) = &attributes.get(0) {
+                                    if &v.value == "0" {
+                                        continue;
+                                    }
+                                }
+                                run.add_tab()
+                            }
+                        }
+                        XMLElement::Bold => {
+                            run = {
+                                if let Some(v) = &attributes.get(0) {
+                                    if &v.value == "0" {
+                                        continue;
+                                    }
+                                }
+                                run.bold()
+                            }
+                        }
                         XMLElement::Highlight => run = run.highlight(attributes[0].value.clone()),
                         XMLElement::Color => run = run.color(attributes[0].value.clone()),
                         XMLElement::Size => run = run.size(usize::from_str(&attributes[0].value)?),

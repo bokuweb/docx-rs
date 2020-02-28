@@ -89,9 +89,9 @@ impl XMLBuilder {
     // i.e. <w:ind ... >
     pub(crate) fn indent(
         mut self,
-        start: usize,
+        start: i32,
         special_indent: Option<SpecialIndentType>,
-        end: usize,
+        end: i32,
     ) -> Self {
         let start = &format!("{}", start);
         let end = &format!("{}", end);

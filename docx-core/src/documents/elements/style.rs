@@ -89,9 +89,9 @@ impl Style {
 
     pub fn indent(
         mut self,
-        left: usize,
+        left: i32,
         special_indent: Option<SpecialIndentType>,
-        end: Option<usize>,
+        end: Option<i32>,
     ) -> Self {
         self.paragraph_property = self.paragraph_property.indent(left, special_indent, end);
         self

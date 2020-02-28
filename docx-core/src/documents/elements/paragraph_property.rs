@@ -50,9 +50,9 @@ impl ParagraphProperty {
 
     pub fn indent(
         mut self,
-        left: usize,
+        left: i32,
         special_indent: Option<SpecialIndentType>,
-        end: Option<usize>,
+        end: Option<i32>,
     ) -> Self {
         self.indent = Some(Indent::new(left, special_indent, end));
         self

@@ -37,9 +37,9 @@ impl Level {
 
     pub fn indent(
         mut self,
-        left: usize,
+        left: i32,
         special_indent: Option<SpecialIndentType>,
-        end: Option<usize>,
+        end: Option<i32>,
     ) -> Self {
         self.paragraph_property = self.paragraph_property.indent(left, special_indent, end);
         self
@@ -84,9 +84,9 @@ mod tests {
         )
         .build();
         assert_eq!(
-              str::from_utf8(&b).unwrap(),
-              r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr></w:lvl>"#
-          );
+            str::from_utf8(&b).unwrap(),
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr></w:lvl>"#
+        );
     }
 
     #[test]
@@ -101,8 +101,8 @@ mod tests {
         .indent(320, Some(SpecialIndentType::Hanging(200)), None)
         .build();
         assert_eq!(
-              str::from_utf8(&b).unwrap(),
-              r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr></w:lvl>"#
-          );
+            str::from_utf8(&b).unwrap(),
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr></w:lvl>"#
+        );
     }
 }

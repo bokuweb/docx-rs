@@ -1,4 +1,4 @@
-import { RunJSON, RunChildJSON } from "./run";
+import { RunJSON, RunChildJSON, RunPropertyJSON } from "./run";
 import { IndentJSON } from "./indent";
 
 export type ParagraphChildJSON =
@@ -32,7 +32,10 @@ export type ParagraphJSON = {
 export type InsertJSON = {
   type: "insert";
   data: {
-    run: RunJSON;
+    run: {
+      runProperty: RunPropertyJSON;
+      children: RunChildJSON[];
+    };
     author: string;
     data: string;
   };
@@ -41,7 +44,10 @@ export type InsertJSON = {
 export type DeleteJSON = {
   type: "delete";
   data: {
-    run: RunJSON;
+    run: {
+      runProperty: RunPropertyJSON;
+      children: RunChildJSON[];
+    };
     author: string;
     data: string;
   };

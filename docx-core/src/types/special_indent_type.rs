@@ -7,8 +7,8 @@ use serde::Serialize;
 //       Please convert typescript type to following type.
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum SpecialIndentType {
-    FirstLine(usize),
-    Hanging(usize),
+    FirstLine(i32),
+    Hanging(i32),
 }
 
 #[wasm_bindgen]

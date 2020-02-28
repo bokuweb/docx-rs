@@ -7,17 +7,13 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Indent {
-    start: usize,
-    end: Option<usize>,
+    start: i32,
+    end: Option<i32>,
     special_indent: Option<SpecialIndentType>,
 }
 
 impl Indent {
-    pub fn new(
-        start: usize,
-        special_indent: Option<SpecialIndentType>,
-        end: Option<usize>,
-    ) -> Indent {
+    pub fn new(start: i32, special_indent: Option<SpecialIndentType>, end: Option<i32>) -> Indent {
         Indent {
             start,
             end,
@@ -25,7 +21,7 @@ impl Indent {
         }
     }
 
-    pub fn end(mut self, end: usize) -> Self {
+    pub fn end(mut self, end: i32) -> Self {
         self.end = Some(end);
         self
     }

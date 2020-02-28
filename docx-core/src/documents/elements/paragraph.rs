@@ -163,9 +163,9 @@ impl Paragraph {
 
     pub fn indent(
         mut self,
-        left: usize,
+        left: i32,
         special_indent: Option<SpecialIndentType>,
-        end: Option<usize>,
+        end: Option<i32>,
     ) -> Paragraph {
         self.property = self.property.indent(left, special_indent, end);
         self

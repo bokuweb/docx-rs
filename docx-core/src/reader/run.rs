@@ -11,6 +11,7 @@ use crate::types::BreakType;
 
 #[derive(PartialEq, Debug)]
 enum TextState {
+    Idle,
     Text,
     Delete,
 }
@@ -21,7 +22,7 @@ impl ElementReader for Run {
         _attrs: &[OwnedAttribute],
     ) -> Result<Self, ReaderError> {
         let mut run = Run::new();
-        let mut text_state = TextState::Text;
+        let mut text_state = TextState::Idle;
         loop {
             let e = r.next();
             match e {
@@ -46,17 +47,32 @@ impl ElementReader for Run {
                         _ => {}
                     }
                 }
-                Ok(XmlEvent::Characters(c)) => {
-                    if text_state == TextState::Delete {
+                Ok(XmlEvent::Characters(c)) => match text_state {
+                    TextState::Delete => {
                         run = run.add_delete_text(c);
-                    } else {
+                    }
+                    TextState::Text => {
                         run = run.add_text(c);
                     }
-                }
+                    _ => {}
+                },
+                Ok(XmlEvent::Whitespace(c)) => match text_state {
+                    TextState::Delete => {
+                        run = run.add_delete_text(c);
+                    }
+                    TextState::Text => {
+                        run = run.add_text(c);
+                    }
+                    _ => {}
+                },
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    if let XMLElement::Run = e {
-                        return Ok(run);
+                    match e {
+                        XMLElement::Run => {
+                            return Ok(run);
+                        }
+                        XMLElement::DeleteText | XMLElement::Text => text_state = TextState::Idle,
+                        _ => {}
                     }
                 }
                 Err(_) => return Err(ReaderError::XMLReadError),

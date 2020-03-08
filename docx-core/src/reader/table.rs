@@ -25,7 +25,7 @@ impl ElementReader for Table {
                         }
                         XMLElement::TableWidth => {
                             let (w, width_type) = read_width(&attributes)?;
-                            t = t.width(w, width_type);
+                            t = t.width(w as usize, width_type);
                             continue;
                         }
                         XMLElement::Justification => {
@@ -33,7 +33,7 @@ impl ElementReader for Table {
                         }
                         XMLElement::TableIndent => {
                             let (w, _) = read_width(&attributes)?;
-                            t = t.indent(w);
+                            t = t.indent(w as i32);
                             continue;
                         }
                         XMLElement::TableBorders => {
@@ -44,7 +44,7 @@ impl ElementReader for Table {
                         }
                         XMLElement::GridCol => {
                             let (w, _) = read_width(&attributes)?;
-                            grid_col.push(w);
+                            grid_col.push(w as usize);
                         }
                         _ => {}
                     }

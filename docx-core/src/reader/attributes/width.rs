@@ -6,7 +6,7 @@ use crate::types::*;
 
 use super::super::errors::*;
 
-pub fn read_width(attrs: &[OwnedAttribute]) -> Result<(usize, WidthType), ReaderError> {
+pub fn read_width(attrs: &[OwnedAttribute]) -> Result<(isize, WidthType), ReaderError> {
     let mut w = 0;
     let mut width_type = WidthType::Auto;
     for a in attrs {
@@ -14,7 +14,7 @@ pub fn read_width(attrs: &[OwnedAttribute]) -> Result<(usize, WidthType), Reader
         if local_name == "type" {
             width_type = WidthType::from_str(&a.value)?;
         } else if local_name == "w" {
-            w = usize::from_str(&a.value)?;
+            w = isize::from_str(&a.value)?;
         }
     }
     Ok((w, width_type))

@@ -7,12 +7,12 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TableIndent {
-    width: usize,
+    width: i32,
     width_type: WidthType,
 }
 
 impl TableIndent {
-    pub fn new(width: usize, width_type: WidthType) -> TableIndent {
+    pub fn new(width: i32, width_type: WidthType) -> TableIndent {
         TableIndent { width, width_type }
     }
 }

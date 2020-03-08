@@ -45,13 +45,19 @@ impl ElementReader for TableCell {
                                             cell = cell.width(w, width_type);
                                         }
                                         XMLElement::TableGridSpan => {
-                                            cell = cell
-                                                .grid_span(usize::from_str(&attributes[0].value)?)
+                                            if let Some(a) = &attributes.get(0) {
+                                                cell = cell.grid_span(usize::from_str(&a.value)?)
+                                            }
                                         }
                                         XMLElement::TableVMerge => {
-                                            cell = cell.vertical_merge(VMergeType::from_str(
-                                                &attributes[0].value,
-                                            )?);
+                                            if let Some(a) = &attributes.get(0) {
+                                                cell = cell.vertical_merge(VMergeType::from_str(
+                                                    &a.value,
+                                                )?);
+                                            } else {
+                                                // Treat as a continue without attribute
+                                                cell = cell.vertical_merge(VMergeType::Continue)
+                                            }
                                         }
                                         XMLElement::TableCellBorders => {
                                             // TODO: Support table cell borders later
@@ -124,6 +130,33 @@ mod tests {
                 .width(6425, WidthType::DXA)
                 .grid_span(2)
                 .vertical_merge(VMergeType::Restart),
+        );
+    }
+
+    #[test]
+    fn test_read_no_attr_vmerge() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="6425" w:type="dxa"/>
+        <w:vMerge />
+        <w:shd w:fill="auto" w:val="clear"/>
+    </w:tcPr>
+    <w:p>
+        <w:r>
+            <w:rPr></w:rPr>
+        </w:r>
+    </w:p>
+</w:tc>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let cell = TableCell::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            cell,
+            TableCell::new()
+                .add_paragraph(Paragraph::new().add_run(Run::new()))
+                .width(6425, WidthType::DXA)
+                .vertical_merge(VMergeType::Continue),
         );
     }
 }

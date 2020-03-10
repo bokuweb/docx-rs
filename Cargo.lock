@@ -116,7 +116,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "docx-rs"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "insta 0.13.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "pretty_assertions 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -132,7 +132,7 @@ dependencies = [
 name = "docx-wasm"
 version = "0.1.0"
 dependencies = [
- "docx-rs 0.2.0",
+ "docx-rs 0.2.1",
  "wasm-bindgen 0.2.53 (registry+https://github.com/rust-lang/crates.io-index)",
  "wasm-bindgen-test 0.2.50 (registry+https://github.com/rust-lang/crates.io-index)",
 ]

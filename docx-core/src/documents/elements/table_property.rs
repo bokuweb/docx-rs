@@ -32,7 +32,7 @@ impl TableProperty {
         Default::default()
     }
 
-    pub fn indent(mut self, v: usize) -> TableProperty {
+    pub fn indent(mut self, v: i32) -> TableProperty {
         self.indent = Some(TableIndent::new(v, WidthType::DXA));
         self
     }

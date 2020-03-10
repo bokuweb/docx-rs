@@ -29,7 +29,7 @@ impl Table {
         self
     }
 
-    pub fn indent(mut self, v: usize) -> Table {
+    pub fn indent(mut self, v: i32) -> Table {
         self.0 = self.0.indent(v);
         self
     }

@@ -37,7 +37,7 @@ impl Table {
         self
     }
 
-    pub fn indent(mut self, v: usize) -> Table {
+    pub fn indent(mut self, v: i32) -> Table {
         self.property = self.property.indent(v);
         self
     }

@@ -21,7 +21,7 @@ impl Indent {
         start_chars: Option<i32>,
     ) -> Indent {
         Indent {
-            start: start,
+            start,
             start_chars,
             end,
             special_indent,

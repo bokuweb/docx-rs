@@ -79,7 +79,10 @@ impl Paragraph {
         special_indent_size: Option<i32>,
     ) -> Paragraph {
         let special_indent = create_special_indent(special_indent_kind, special_indent_size);
-        self.0.property = self.0.property.indent(left, special_indent, None);
+        self.0.property = self
+            .0
+            .property
+            .indent(Some(left), special_indent, None, None);
         self
     }
 

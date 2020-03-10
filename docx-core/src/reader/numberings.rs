@@ -153,7 +153,12 @@ mod tests {
                         LevelText::new("●"),
                         LevelJc::new("left"),
                     )
-                    .indent(720, Some(SpecialIndentType::Hanging(360)), None),
+                    .indent(
+                        Some(720),
+                        Some(SpecialIndentType::Hanging(360)),
+                        None,
+                        None,
+                    ),
                 ),
             )
             .add_numbering(Numbering::new(1, 0));

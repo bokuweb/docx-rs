@@ -8,17 +8,21 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, PartialEq)]
 pub struct Indent {
     start: Option<i32>,
-    start_chars: Option<i32>,
     end: Option<i32>,
     special_indent: Option<SpecialIndentType>,
+    start_chars: Option<i32>,
 }
 
 impl Indent {
-    pub fn new(start: i32, special_indent: Option<SpecialIndentType>, end: Option<i32>) -> Indent {
+    pub fn new(
+        start: Option<i32>,
+        special_indent: Option<SpecialIndentType>,
+        end: Option<i32>,
+        start_chars: Option<i32>,
+    ) -> Indent {
         Indent {
-            start: Some(start),
-            // used by reader
-            start_chars: None,
+            start: start,
+            start_chars,
             end,
             special_indent,
         }
@@ -37,6 +41,7 @@ impl BuildXML for Indent {
                 self.start,
                 self.special_indent,
                 self.end.unwrap_or_default(),
+                self.start_chars,
             )
             .build()
     }
@@ -66,7 +71,7 @@ mod tests {
 
     #[test]
     fn test_left() {
-        let b = Indent::new(20, None, None).build();
+        let b = Indent::new(Some(20), None, None, None).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:ind w:left="20" w:right="0" />"#
@@ -75,7 +80,7 @@ mod tests {
 
     #[test]
     fn test_first_line() {
-        let b = Indent::new(20, Some(SpecialIndentType::FirstLine(40)), None).build();
+        let b = Indent::new(Some(20), Some(SpecialIndentType::FirstLine(40)), None, None).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:ind w:left="20" w:right="0" w:firstLine="40" />"#
@@ -84,7 +89,7 @@ mod tests {
 
     #[test]
     fn test_hanging() {
-        let b = Indent::new(20, Some(SpecialIndentType::Hanging(50)), None).build();
+        let b = Indent::new(Some(20), Some(SpecialIndentType::Hanging(50)), None, None).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:ind w:left="20" w:right="0" w:hanging="50" />"#

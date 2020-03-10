@@ -18,7 +18,12 @@ pub fn main() -> Result<(), DocxError> {
                     LevelText::new("Section %1."),
                     LevelJc::new("left"),
                 )
-                .indent(1620, Some(SpecialIndentType::Hanging(320)), None),
+                .indent(
+                    Some(1620),
+                    Some(SpecialIndentType::Hanging(320)),
+                    None,
+                    None,
+                ),
             ),
         )
         .add_numbering(Numbering::new(2, 2))

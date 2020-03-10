@@ -89,11 +89,11 @@ impl XMLBuilder {
     // i.e. <w:ind ... >
     pub(crate) fn indent(
         mut self,
-        start: i32,
+        start: Option<i32>,
         special_indent: Option<SpecialIndentType>,
         end: i32,
     ) -> Self {
-        let start = &format!("{}", start);
+        let start = &format!("{}", start.unwrap_or(0));
         let end = &format!("{}", end);
         let base = XmlEvent::start_element("w:ind")
             .attr("w:left", start)

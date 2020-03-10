@@ -7,7 +7,8 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Indent {
-    start: i32,
+    start: Option<i32>,
+    start_chars: Option<i32>,
     end: Option<i32>,
     special_indent: Option<SpecialIndentType>,
 }
@@ -15,7 +16,9 @@ pub struct Indent {
 impl Indent {
     pub fn new(start: i32, special_indent: Option<SpecialIndentType>, end: Option<i32>) -> Indent {
         Indent {
-            start,
+            start: Some(start),
+            // used by reader
+            start_chars: None,
             end,
             special_indent,
         }
@@ -46,6 +49,7 @@ impl Serialize for Indent {
     {
         let mut t = serializer.serialize_struct("Indent", 3)?;
         t.serialize_field("start", &self.start)?;
+        t.serialize_field("startChars", &self.start_chars)?;
         t.serialize_field("end", &self.end)?;
         t.serialize_field("specialIndent", &self.special_indent)?;
         t.end()

@@ -163,11 +163,12 @@ impl Paragraph {
 
     pub fn indent(
         mut self,
-        left: i32,
+        left: Option<i32>,
         special_indent: Option<SpecialIndentType>,
         end: Option<i32>,
+        start_chars: Option<i32>,
     ) -> Paragraph {
-        self.property = self.property.indent(left, special_indent, end);
+        self.property = self.property.indent(left, special_indent, end, start_chars);
         self
     }
 

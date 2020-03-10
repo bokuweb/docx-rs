@@ -1,8 +1,9 @@
 export type IndentJSON = {
-  start: number;
+  start: number | null;
   end: number | null;
   specialIndent: {
     type: "firstLine" | "hanging";
     val: number;
   } | null;
+  startChars: number | null;
 };

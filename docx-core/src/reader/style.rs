@@ -38,8 +38,8 @@ impl ElementReader for Style {
                         }
                         // pPr
                         XMLElement::Indent => {
-                            let (start, end, special) = read_indent(&attributes)?;
-                            style = style.indent(start, special, end);
+                            let (start, end, special, start_chars) = read_indent(&attributes)?;
+                            style = style.indent(start, special, end, start_chars);
                             continue;
                         }
                         XMLElement::Justification => {

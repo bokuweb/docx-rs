@@ -50,11 +50,12 @@ impl ParagraphProperty {
 
     pub fn indent(
         mut self,
-        left: i32,
+        left: Option<i32>,
         special_indent: Option<SpecialIndentType>,
         end: Option<i32>,
+        start_chars: Option<i32>,
     ) -> Self {
-        self.indent = Some(Indent::new(left, special_indent, end));
+        self.indent = Some(Indent::new(left, special_indent, end, start_chars));
         self
     }
 
@@ -109,7 +110,7 @@ mod tests {
     #[test]
     fn test_indent() {
         let c = ParagraphProperty::new();
-        let b = c.indent(20, None, None).build();
+        let b = c.indent(Some(20), None, None, None).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="20" w:right="0" /></w:pPr>"#
@@ -119,10 +120,10 @@ mod tests {
     #[test]
     fn test_indent_json() {
         let c = ParagraphProperty::new();
-        let b = c.indent(20, Some(SpecialIndentType::FirstLine(10)), None);
+        let b = c.indent(Some(20), Some(SpecialIndentType::FirstLine(10)), None, None);
         assert_eq!(
             serde_json::to_string(&b).unwrap(),
-            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":"Normal","numberingProperty":null,"alignment":null,"indent":{"start":20,"end":null,"specialIndent":{"type":"firstLine","val":10}}}"#
+            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":"Normal","numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10}}}"#
         );
     }
 }

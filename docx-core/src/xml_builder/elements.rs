@@ -101,7 +101,7 @@ impl XMLBuilder {
             .attr("w:left", start)
             .attr("w:right", end);
 
-        if let Some(_) = start_chars {
+        if start_chars.is_some() {
             base = base.attr("w:leftChars", &start_chars_value);
         }
 

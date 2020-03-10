@@ -6,9 +6,7 @@ use crate::types::*;
 
 use super::super::errors::*;
 
-pub fn read_indent(
-    attrs: &[OwnedAttribute],
-) -> Result<
+pub type ReadIndentResult = Result<
     (
         Option<i32>,
         Option<i32>,
@@ -16,7 +14,9 @@ pub fn read_indent(
         Option<i32>,
     ),
     ReaderError,
-> {
+>;
+
+pub fn read_indent(attrs: &[OwnedAttribute]) -> ReadIndentResult {
     let mut start: Option<i32> = None;
     let mut start_chars: Option<i32> = None;
     let mut end: Option<i32> = None;

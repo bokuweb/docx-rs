@@ -18,9 +18,10 @@ impl ElementReader for Level {
         let mut level_text = LevelText::new("");
         let mut jc = LevelJc::new("left");
 
-        let mut indent_start = 0;
+        let mut indent_start = None;
         let mut special_indent = None;
         let mut indent_end = None;
+        let mut start_chars = None;
         let mut has_indent = false;
 
         loop {
@@ -52,6 +53,7 @@ impl ElementReader for Level {
                             indent_start = i.0;
                             indent_end = i.1;
                             special_indent = i.2;
+                            start_chars = i.3;
                             has_indent = true;
                         }
                         _ => {}
@@ -65,7 +67,7 @@ impl ElementReader for Level {
                             l = l.paragraph_style(style_id);
                         }
                         if has_indent {
-                            l = l.indent(indent_start, special_indent, indent_end);
+                            l = l.indent(indent_start, special_indent, indent_end, start_chars);
                         }
                         return Ok(l);
                     }

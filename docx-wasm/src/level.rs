@@ -30,7 +30,11 @@ impl Level {
         special_indent_size: Option<i32>,
     ) -> Self {
         let special_indent = create_special_indent(special_indent_kind, special_indent_size);
-        self.0.paragraph_property = self.0.paragraph_property.indent(left, special_indent, None);
+        // end and start_chars is not supported fro wasm for now.
+        self.0.paragraph_property =
+            self.0
+                .paragraph_property
+                .indent(Some(left), special_indent, None, None);
         self
     }
 }

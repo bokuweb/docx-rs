@@ -22,21 +22,24 @@ pub fn indent() -> Result<(), DocxError> {
   let path = std::path::Path::new("./tests/output/indent.docx");
   let file = std::fs::File::create(&path).unwrap();
   Docx::new()
-    .add_paragraph(
-      Paragraph::new()
-        .add_run(Run::new().add_text(DUMMY))
-        .indent(840, None, None),
-    )
-    .add_paragraph(Paragraph::new())
     .add_paragraph(Paragraph::new().add_run(Run::new().add_text(DUMMY)).indent(
-      840,
-      Some(SpecialIndentType::FirstLine(720)),
+      Some(840),
+      None,
+      None,
       None,
     ))
     .add_paragraph(Paragraph::new())
     .add_paragraph(Paragraph::new().add_run(Run::new().add_text(DUMMY)).indent(
-      1560,
+      Some(840),
+      Some(SpecialIndentType::FirstLine(720)),
+      None,
+      None,
+    ))
+    .add_paragraph(Paragraph::new())
+    .add_paragraph(Paragraph::new().add_run(Run::new().add_text(DUMMY)).indent(
+      Some(1560),
       Some(SpecialIndentType::Hanging(720)),
+      None,
       None,
     ))
     .build()
@@ -370,7 +373,12 @@ pub fn user_numbering() -> Result<(), DocxError> {
           LevelText::new("Section %1."),
           LevelJc::new("left"),
         )
-        .indent(1620, Some(SpecialIndentType::Hanging(320)), None),
+        .indent(
+          Some(1620),
+          Some(SpecialIndentType::Hanging(320)),
+          None,
+          None,
+        ),
       ),
     )
     .add_numbering(Numbering::new(2, 2))

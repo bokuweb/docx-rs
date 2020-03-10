@@ -80,8 +80,8 @@ impl ElementReader for Paragraph {
                             continue;
                         }
                         XMLElement::Indent => {
-                            let (start, end, special) = read_indent(&attributes)?;
-                            p = p.indent(start, special, end);
+                            let (start, end, special, start_chars) = read_indent(&attributes)?;
+                            p = p.indent(start, special, end, start_chars);
                             continue;
                         }
                         XMLElement::Justification => {
@@ -147,10 +147,45 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: Some(Indent::new(
-                        1470,
+                        Some(1470),
                         Some(SpecialIndentType::Hanging(0)),
-                        Some(1270)
+                        Some(1270),
+                        None,
                     )),
+                },
+                has_numbering: false,
+                attrs: Vec::new(),
+            }
+        );
+    }
+
+    #[test]
+    fn test_read_indent_start_chars() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:p>
+        <w:pPr>
+            <w:ind w:startChars="100" />
+            <w:rPr></w:rPr>
+        </w:pPr>
+        <w:r>
+            <w:rPr></w:rPr>
+            <w:t>a</w:t>
+        </w:r>
+    </w:p>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
+        let s: Option<&str> = None;
+        assert_eq!(
+            p,
+            Paragraph {
+                children: vec![ParagraphChild::Run(Run::new().add_text("a"))],
+                property: ParagraphProperty {
+                    run_property: RunProperty::new(),
+                    style: ParagraphStyle::new(s),
+                    numbering_property: None,
+                    alignment: None,
+                    indent: Some(Indent::new(None, None, None, Some(100))),
                 },
                 has_numbering: false,
                 attrs: Vec::new(),

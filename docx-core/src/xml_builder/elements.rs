@@ -89,15 +89,21 @@ impl XMLBuilder {
     // i.e. <w:ind ... >
     pub(crate) fn indent(
         mut self,
-        start: i32,
+        start: Option<i32>,
         special_indent: Option<SpecialIndentType>,
         end: i32,
+        start_chars: Option<i32>,
     ) -> Self {
-        let start = &format!("{}", start);
+        let start = &format!("{}", start.unwrap_or(0));
         let end = &format!("{}", end);
-        let base = XmlEvent::start_element("w:ind")
+        let start_chars_value = format!("{}", start_chars.unwrap_or(0));
+        let mut base = XmlEvent::start_element("w:ind")
             .attr("w:left", start)
             .attr("w:right", end);
+
+        if start_chars.is_some() {
+            base = base.attr("w:leftChars", &start_chars_value);
+        }
 
         match special_indent {
             Some(SpecialIndentType::FirstLine(v)) => self

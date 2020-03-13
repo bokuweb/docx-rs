@@ -36,9 +36,9 @@ impl ElementReader for NumberingProperty {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     if e == XMLElement::NumberingProperty {
                         if id.is_none() || level.is_none() {
-                            return Err(ReaderError::XMLReadError);
+                            return Ok(NumberingProperty::new());
                         }
-                        let np = NumberingProperty::new(
+                        let np = NumberingProperty::new().add_num(
                             NumberingId::new(id.unwrap()),
                             IndentLevel::new(level.unwrap()),
                         );

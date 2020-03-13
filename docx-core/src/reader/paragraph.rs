@@ -94,7 +94,9 @@ impl ElementReader for Paragraph {
                         }
                         XMLElement::NumberingProperty => {
                             let num_pr = NumberingProperty::read(r, attrs)?;
-                            p = p.numbering(num_pr.id, num_pr.level);
+                            if num_pr.id.is_some() && num_pr.level.is_some() {
+                                p = p.numbering(num_pr.id.unwrap(), num_pr.level.unwrap());
+                            }
                             continue;
                         }
                         _ => {}
@@ -244,10 +246,9 @@ mod tests {
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
                     style: ParagraphStyle::new(s),
-                    numbering_property: Some(NumberingProperty::new(
-                        NumberingId::new(1),
-                        IndentLevel::new(0),
-                    )),
+                    numbering_property: Some(
+                        NumberingProperty::new().add_num(NumberingId::new(1), IndentLevel::new(0),)
+                    ),
                     alignment: None,
                     indent: None,
                 },

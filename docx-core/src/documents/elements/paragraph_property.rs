@@ -60,7 +60,7 @@ impl ParagraphProperty {
     }
 
     pub fn numbering(mut self, id: NumberingId, level: IndentLevel) -> Self {
-        self.numbering_property = Some(NumberingProperty::new(id, level));
+        self.numbering_property = Some(NumberingProperty::new().add_num(id, level));
         self
     }
 }

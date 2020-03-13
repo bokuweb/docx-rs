@@ -7,13 +7,22 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct NumberingProperty {
-    pub id: NumberingId,
-    pub level: IndentLevel,
+    pub id: Option<NumberingId>,
+    pub level: Option<IndentLevel>,
 }
 
 impl NumberingProperty {
-    pub fn new(id: NumberingId, level: IndentLevel) -> NumberingProperty {
-        Self { id, level }
+    pub fn new() -> NumberingProperty {
+        Self {
+            id: None,
+            level: None,
+        }
+    }
+
+    pub fn add_num(mut self, id: NumberingId, level: IndentLevel) -> NumberingProperty {
+        self.id = Some(id);
+        self.level = Some(level);
+        self
     }
 }
 
@@ -21,8 +30,8 @@ impl BuildXML for NumberingProperty {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         b.open_numbering_property()
-            .add_child(&self.id)
-            .add_child(&self.level)
+            .add_optional_child(&self.id)
+            .add_optional_child(&self.level)
             .close()
             .build()
     }
@@ -34,8 +43,17 @@ impl Serialize for NumberingProperty {
         S: Serializer,
     {
         let mut t = serializer.serialize_struct("NumberProperty", 2)?;
-        t.serialize_field("id", &self.id.id)?;
-        t.serialize_field("level", &self.level.val)?;
+        let mut id: Option<usize> = None;
+        if let Some(n) = &self.id {
+            id = Some(n.id);
+        }
+        t.serialize_field("id", &id)?;
+
+        let mut level: Option<usize> = None;
+        if let Some(n) = &self.level {
+            level = Some(n.val);
+        }
+        t.serialize_field("level", &level)?;
         t.end()
     }
 }
@@ -50,11 +68,33 @@ mod tests {
 
     #[test]
     fn test_num_property() {
-        let c = NumberingProperty::new(NumberingId::new(0), IndentLevel::new(3));
+        let c = NumberingProperty::new().add_num(NumberingId::new(0), IndentLevel::new(3));
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:numPr><w:numId w:val="0" /><w:ilvl w:val="3" /></w:numPr>"#
+        );
+    }
+
+    #[test]
+    fn test_empty_num_property() {
+        let c = NumberingProperty::new();
+        let b = c.build();
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:numPr />"#);
+    }
+
+    #[test]
+    fn test_num_property_json() {
+        let c = NumberingProperty::new().add_num(NumberingId::new(0), IndentLevel::new(3));
+        assert_eq!(serde_json::to_string(&c).unwrap(), r#"{"id":0,"level":3}"#);
+    }
+
+    #[test]
+    fn test_empty_num_property_json() {
+        let c = NumberingProperty::new();
+        assert_eq!(
+            serde_json::to_string(&c).unwrap(),
+            r#"{"id":null,"level":null}"#
         );
     }
 }

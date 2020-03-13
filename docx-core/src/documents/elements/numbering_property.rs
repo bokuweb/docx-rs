@@ -11,12 +11,18 @@ pub struct NumberingProperty {
     pub level: Option<IndentLevel>,
 }
 
-impl NumberingProperty {
-    pub fn new() -> NumberingProperty {
-        Self {
+impl Default for NumberingProperty {
+    fn default() -> Self {
+        NumberingProperty {
             id: None,
             level: None,
         }
+    }
+}
+
+impl NumberingProperty {
+    pub fn new() -> NumberingProperty {
+        Default::default()
     }
 
     pub fn add_num(mut self, id: NumberingId, level: IndentLevel) -> NumberingProperty {

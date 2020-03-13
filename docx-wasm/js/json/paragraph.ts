@@ -9,8 +9,8 @@ export type ParagraphChildJSON =
   | BookmarkEndJSON;
 
 export type NumberingPropertyJSON = {
-  id: number;
-  level: number;
+  id: number | null;
+  level: number | null;
 };
 
 export type ParagraphPropertyJSON = {

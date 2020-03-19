@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use super::{GridSpan, TableCellBorders, TableCellWidth, VMerge};
+use super::{GridSpan, TableCellBorders, TableCellWidth, VAlign, VMerge};
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -12,6 +12,7 @@ pub struct TableCellProperty {
     borders: Option<TableCellBorders>,
     grid_span: Option<GridSpan>,
     vertical_merge: Option<VMerge>,
+    vertical_align: Option<VAlign>,
 }
 
 impl TableCellProperty {
@@ -29,6 +30,11 @@ impl TableCellProperty {
         self
     }
 
+    pub fn vertical_align(mut self, t: VAlignType) -> TableCellProperty {
+        self.vertical_align = Some(VAlign::new(t));
+        self
+    }
+
     pub fn grid_span(mut self, v: usize) -> TableCellProperty {
         self.grid_span = Some(GridSpan::new(v));
         self
@@ -42,6 +48,7 @@ impl Default for TableCellProperty {
             borders: None,
             grid_span: None,
             vertical_merge: None,
+            vertical_align: None,
         }
     }
 }
@@ -54,6 +61,7 @@ impl BuildXML for TableCellProperty {
             .add_optional_child(&self.borders)
             .add_optional_child(&self.grid_span)
             .add_optional_child(&self.vertical_merge)
+            .add_optional_child(&self.vertical_align)
             .close()
             .build()
     }
@@ -95,6 +103,16 @@ mod tests {
     }
 
     #[test]
+    fn test_valign() {
+        let c = TableCellProperty::new().vertical_align(VAlignType::Center);
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:tcPr><w:vAlign w:val="center" /></w:tcPr>"#
+        );
+    }
+
+    #[test]
     fn test_table_cell_prop_json() {
         let c = TableCellProperty::new()
             .vertical_merge(VMergeType::Continue)
@@ -102,7 +120,16 @@ mod tests {
             .width(200, WidthType::DXA);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"width":{"width":200,"widthType":"DXA"},"borders":null,"gridSpan":3,"verticalMerge":"continue"}"#
+            r#"{"width":{"width":200,"widthType":"DXA"},"borders":null,"gridSpan":3,"verticalMerge":"continue","verticalAlign":null}"#
+        );
+    }
+
+    #[test]
+    fn test_table_cell_prop_json_with_valign() {
+        let c = TableCellProperty::new().vertical_align(VAlignType::Center);
+        assert_eq!(
+            serde_json::to_string(&c).unwrap(),
+            r#"{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":"center"}"#
         );
     }
 }

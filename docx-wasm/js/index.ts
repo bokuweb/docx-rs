@@ -229,6 +229,7 @@ export class Docx {
         break;
       }
     }
+
     return table;
   }
 
@@ -243,6 +244,21 @@ export class Docx {
       cell = cell.vertical_merge(wasm.VMergeType.Continue);
     } else if (c.property.verticalMerge === "restart") {
       cell = cell.vertical_merge(wasm.VMergeType.Restart);
+    }
+
+    switch (c.property.verticalAlign) {
+      case "top": {
+        cell = cell.vertical_align(wasm.VAlignType.Top);
+        break;
+      }
+      case "center": {
+        cell = cell.vertical_align(wasm.VAlignType.Center);
+        break;
+      }
+      case "bottom": {
+        cell = cell.vertical_align(wasm.VAlignType.Bottom);
+        break;
+      }
     }
 
     if (typeof c.property.gridSpan !== "undefined") {

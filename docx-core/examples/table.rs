@@ -11,6 +11,7 @@ pub fn main() -> Result<(), DocxError> {
                 .grid_span(2),
             TableCell::new()
                 .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
+                .vertical_align(VAlignType::Center)
                 .vertical_merge(VMergeType::Restart),
         ]),
         TableRow::new(vec![

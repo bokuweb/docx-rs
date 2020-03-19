@@ -2,8 +2,11 @@ import { Paragraph } from "./paragraph";
 
 export type VMergeType = "restart" | "continue";
 
+export type VAlignType = "top" | "center" | "bottom";
+
 export type CellProperty = {
   verticalMerge?: VMergeType;
+  verticalAlign?: VAlignType;
   gridSpan?: number;
   width?: number;
 };
@@ -19,6 +22,11 @@ export class TableCell {
 
   verticalMerge(t: VMergeType) {
     this.property.verticalMerge = t;
+    return this;
+  }
+
+  verticalAlign(t: VAlignType) {
+    this.property.verticalAlign = t;
     return this;
   }
 

@@ -43,10 +43,10 @@ impl BuildXML for TableCellMargins {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_table_cell_margins()
-            .margin_top(self.top, WidthType::DXA)
-            .margin_left(self.left, WidthType::DXA)
-            .margin_bottom(self.bottom, WidthType::DXA)
-            .margin_right(self.right, WidthType::DXA)
+            .margin_top(self.top as i32, WidthType::DXA)
+            .margin_left(self.left as i32, WidthType::DXA)
+            .margin_bottom(self.bottom as i32, WidthType::DXA)
+            .margin_right(self.right as i32, WidthType::DXA)
             .close()
             .build()
     }

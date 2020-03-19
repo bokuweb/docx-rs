@@ -33,7 +33,8 @@ pub fn main() -> Result<(), DocxError> {
                 .vertical_merge(VMergeType::Continue),
         ]),
     ])
-    .set_grid(vec![2000, 2000, 2000]);
+    .set_grid(vec![2000, 2000, 2000])
+    .indent(1000);
     Docx::new().add_table(table).build().pack(file)?;
     Ok(())
 }

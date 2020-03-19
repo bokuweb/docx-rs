@@ -17,7 +17,7 @@ impl BuildXML for TableGrid {
     fn build(&self) -> Vec<u8> {
         let mut base = XMLBuilder::new().open_table_grid();
         for g in &self.grid {
-            base = base.grid_column(*g, WidthType::DXA);
+            base = base.grid_column(*g as i32, WidthType::DXA);
         }
         base.close().build()
     }

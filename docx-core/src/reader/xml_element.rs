@@ -40,6 +40,7 @@ pub enum XMLElement {
     BookmarkEnd,
     CommentRangeStart,
     CommentRangeEnd,
+    VAlign,
     Table,
     TableProperty,
     TableRow,
@@ -155,6 +156,7 @@ impl FromStr for XMLElement {
             "lvlJc" => Ok(XMLElement::LevelJustification),
             "numStyleLink" => Ok(XMLElement::NumStyleLink),
             "styleLink" => Ok(XMLElement::StyleLink),
+            "vAlign" => Ok(XMLElement::VAlign),
             _ => Ok(XMLElement::Unsupported),
         }
     }

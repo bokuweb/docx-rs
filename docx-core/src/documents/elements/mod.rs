@@ -62,6 +62,7 @@ mod table_width;
 mod text;
 mod underline;
 mod vanish;
+mod vertical_align;
 mod vertical_merge;
 mod zoom;
 
@@ -129,5 +130,6 @@ pub use table_width::*;
 pub use text::*;
 pub use underline::*;
 pub use vanish::*;
+pub use vertical_align::*;
 pub use vertical_merge::*;
 pub use zoom::*;

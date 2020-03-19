@@ -215,6 +215,8 @@ export class Docx {
     });
     table = table.set_grid(new Uint32Array(t.grid));
 
+    table = table.indent(t.property.indent || 0);
+
     switch (t.property.align) {
       case "center": {
         table = table.align(wasm.TableAlignmentType.Center);

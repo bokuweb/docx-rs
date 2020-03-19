@@ -215,6 +215,8 @@ export class Docx {
     });
     table = table.set_grid(new Uint32Array(t.grid));
 
+    table = table.indent(t.property.indent || 0);
+
     switch (t.property.align) {
       case "center": {
         table = table.align(wasm.TableAlignmentType.Center);
@@ -229,6 +231,7 @@ export class Docx {
         break;
       }
     }
+
     return table;
   }
 
@@ -243,6 +246,21 @@ export class Docx {
       cell = cell.vertical_merge(wasm.VMergeType.Continue);
     } else if (c.property.verticalMerge === "restart") {
       cell = cell.vertical_merge(wasm.VMergeType.Restart);
+    }
+
+    switch (c.property.verticalAlign) {
+      case "top": {
+        cell = cell.vertical_align(wasm.VAlignType.Top);
+        break;
+      }
+      case "center": {
+        cell = cell.vertical_align(wasm.VAlignType.Center);
+        break;
+      }
+      case "bottom": {
+        cell = cell.vertical_align(wasm.VAlignType.Bottom);
+        break;
+      }
     }
 
     if (typeof c.property.gridSpan !== "undefined") {

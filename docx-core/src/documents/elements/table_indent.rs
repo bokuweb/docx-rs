@@ -19,7 +19,9 @@ impl TableIndent {
 
 impl BuildXML for TableIndent {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().table_indent(20, WidthType::DXA).build()
+        XMLBuilder::new()
+            .table_indent(self.width, WidthType::DXA)
+            .build()
     }
 }
 

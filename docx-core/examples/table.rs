@@ -11,6 +11,7 @@ pub fn main() -> Result<(), DocxError> {
                 .grid_span(2),
             TableCell::new()
                 .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
+                .vertical_align(VAlignType::Center)
                 .vertical_merge(VMergeType::Restart),
         ]),
         TableRow::new(vec![
@@ -32,7 +33,8 @@ pub fn main() -> Result<(), DocxError> {
                 .vertical_merge(VMergeType::Continue),
         ]),
     ])
-    .set_grid(vec![2000, 2000, 2000]);
+    .set_grid(vec![2000, 2000, 2000])
+    .indent(1000);
     Docx::new().add_table(table).build().pack(file)?;
     Ok(())
 }

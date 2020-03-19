@@ -31,6 +31,11 @@ impl TableCell {
         self
     }
 
+    pub fn vertical_align(mut self, t: docx_rs::VAlignType) -> TableCell {
+        self.0.property = self.0.property.vertical_align(t);
+        self
+    }
+
     pub fn grid_span(mut self, v: usize) -> TableCell {
         self.0.property = self.0.property.grid_span(v);
         self

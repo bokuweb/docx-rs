@@ -231,7 +231,7 @@ macro_rules! closed_with_usize {
 
 macro_rules! closed_w_with_type_el {
     ($name: ident, $el_name: expr) => {
-        pub(crate) fn $name(mut self, w: usize, t: WidthType) -> Self {
+        pub(crate) fn $name(mut self, w: i32, t: WidthType) -> Self {
         self.writer
             .write(
                 XmlEvent::start_element($el_name)

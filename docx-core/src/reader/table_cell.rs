@@ -59,6 +59,13 @@ impl ElementReader for TableCell {
                                                 cell = cell.vertical_merge(VMergeType::Continue)
                                             }
                                         }
+                                        XMLElement::VAlign => {
+                                            if let Some(a) = &attributes.get(0) {
+                                                cell = cell.vertical_align(VAlignType::from_str(
+                                                    &a.value,
+                                                )?);
+                                            }
+                                        }
                                         XMLElement::TableCellBorders => {
                                             // TODO: Support table cell borders later
                                         }
@@ -157,6 +164,33 @@ mod tests {
                 .add_paragraph(Paragraph::new().add_run(Run::new()))
                 .width(6425, WidthType::DXA)
                 .vertical_merge(VMergeType::Continue),
+        );
+    }
+
+    #[test]
+    fn test_read_valign() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="6425" w:type="dxa"/>
+        <w:vAlign w:val="bottom"/>
+        <w:shd w:fill="auto" w:val="clear"/>
+    </w:tcPr>
+    <w:p>
+        <w:r>
+            <w:rPr></w:rPr>
+        </w:r>
+    </w:p>
+</w:tc>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let cell = TableCell::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            cell,
+            TableCell::new()
+                .add_paragraph(Paragraph::new().add_run(Run::new()))
+                .width(6425, WidthType::DXA)
+                .vertical_align(VAlignType::Bottom),
         );
     }
 }

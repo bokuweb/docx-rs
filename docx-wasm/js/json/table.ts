@@ -13,6 +13,7 @@ export type TableCellPropertyJSON = {
   borders: any | null;
   gridSpan: number | null;
   verticalMerge: "restart" | "continue" | null;
+  verticalAlign: "top" | "center" | "bottom" | null;
   hasNumbering: boolean;
 };
 

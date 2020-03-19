@@ -53,6 +53,11 @@ impl TableCell {
         self
     }
 
+    pub fn vertical_align(mut self, t: VAlignType) -> TableCell {
+        self.property = self.property.vertical_align(t);
+        self
+    }
+
     pub fn grid_span(mut self, v: usize) -> TableCell {
         self.property = self.property.grid_span(v);
         self
@@ -122,7 +127,7 @@ mod tests {
             .grid_span(2);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"children":[{"type":"paragraph","data":{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":"Normal","numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}}],"property":{"width":null,"borders":null,"gridSpan":2,"verticalMerge":null},"hasNumbering":false}"#
+            r#"{"children":[{"type":"paragraph","data":{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":"Normal","numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}}],"property":{"width":null,"borders":null,"gridSpan":2,"verticalMerge":null,"verticalAlign":null},"hasNumbering":false}"#
         );
     }
 }

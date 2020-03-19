@@ -20,7 +20,7 @@ impl TableCellWidth {
 impl BuildXML for TableCellWidth {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
-            .table_cell_width(self.width, WidthType::DXA)
+            .table_cell_width(self.width as i32, WidthType::DXA)
             .build()
     }
 }

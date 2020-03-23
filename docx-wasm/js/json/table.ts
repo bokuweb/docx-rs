@@ -49,7 +49,7 @@ export type TablePropertyJSON = {
   indent: {
     width: number;
     widthType: WidthType;
-  };
+  } | null;
 };
 
 export type TableJSON = {

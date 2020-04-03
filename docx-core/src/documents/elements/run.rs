@@ -1,4 +1,4 @@
-use super::{Break, DeleteText, RunProperty, Tab, Text};
+use super::{Break, DeleteText, Drawing, RunProperty, Tab, Text};
 use serde::ser::{SerializeStruct, Serializer};
 use serde::{Deserialize, Serialize};
 
@@ -29,6 +29,7 @@ pub enum RunChild {
     DeleteText(DeleteText),
     Tab(Tab),
     Break(Break),
+    Drawing(Drawing),
 }
 
 impl Serialize for RunChild {
@@ -56,6 +57,12 @@ impl Serialize for RunChild {
             }
             RunChild::Break(ref s) => {
                 let mut t = serializer.serialize_struct("Break", 2)?;
+                t.serialize_field("type", "break")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+            RunChild::Drawing(ref s) => {
+                let mut t = serializer.serialize_struct("Drawing", 2)?;
                 t.serialize_field("type", "break")?;
                 t.serialize_field("data", s)?;
                 t.end()
@@ -138,6 +145,7 @@ impl BuildXML for Run {
                 RunChild::DeleteText(t) => b = b.add_child(t),
                 RunChild::Tab(t) => b = b.add_child(t),
                 RunChild::Break(t) => b = b.add_child(t),
+                RunChild::Drawing(t) => b = b.add_child(t),
             }
         }
         b.close().build()

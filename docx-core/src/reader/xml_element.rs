@@ -87,55 +87,55 @@ pub enum XMLElement {
 
 #[derive(PartialEq, Debug)]
 pub enum McXMLElement {
-    McAlternateContent,
-    McChoice,
-    McFallback,
+    AlternateContent,
+    Choice,
+    Fallback,
     Unsupported,
 }
 
 #[derive(PartialEq, Debug)]
 pub enum WpXMLElement {
-    WpAnchor,
-    WpSimplePos,
-    WpPositionH,
-    WpPosOffset,
-    WpPositionV,
-    WpExtent,
-    WpEffectExtent,
-    WpWrapNone,
-    WpDocProperty,
+    Anchor,
+    SimplePos,
+    PositionH,
+    PosOffset,
+    PositionV,
+    Extent,
+    EffectExtent,
+    WrapNone,
+    DocProperty,
     Unsupported,
 }
 
 #[derive(PartialEq, Debug)]
 pub enum AXMLElement {
-    AGraphic,
-    AGraphicData,
-    AXfrm,
-    AOff,
-    AExt,
-    APrstGeom,
-    ASolidFill,
-    ALn,
+    Graphic,
+    GraphicData,
+    Xfrm,
+    Off,
+    Ext,
+    PrstGeom,
+    SolidFill,
+    Ln,
     Unsupported,
 }
 
 #[derive(PartialEq, Debug)]
 pub enum WpsXMLElement {
-    WpsWsp,
-    WpsCNvSpProperty,
-    WpsSpProperty,
-    WpsStyle,
-    WpsTxbx,
-    WpsBodyPr,
+    Wsp,
+    CNvSpProperty,
+    SpProperty,
+    Style,
+    Txbx,
+    BodyPr,
     Unsupported,
 }
 #[derive(PartialEq, Debug)]
 pub enum VXMLElement {
-    VRect,
-    VStroke,
-    VFill,
-    VTexbox,
+    Rect,
+    Stroke,
+    Fill,
+    TextBox,
     Unsupported,
 }
 
@@ -214,9 +214,9 @@ impl FromStr for XMLElement {
             "numStyleLink" => Ok(XMLElement::NumStyleLink),
             "styleLink" => Ok(XMLElement::StyleLink),
             "vAlign" => Ok(XMLElement::VAlign),
-            "Drawing" => Ok(XMLElement::Drawing),
-            "TxbxContent" => Ok(XMLElement::TxbxContent),
-            "Pict" => Ok(XMLElement::Pict),
+            "drawing" => Ok(XMLElement::Drawing),
+            "txbxContent" => Ok(XMLElement::TxbxContent),
+            "pict" => Ok(XMLElement::Pict),
             _ => Ok(XMLElement::Unsupported),
         }
     }
@@ -226,9 +226,9 @@ impl FromStr for McXMLElement {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "mcAlternateContent" => Ok(McXMLElement::McAlternateContent),
-            "mcChoice" => Ok(McXMLElement::McChoice),
-            "mcFallback" => Ok(McXMLElement::McFallback),
+            "alternateContent" => Ok(McXMLElement::AlternateContent),
+            "choice" => Ok(McXMLElement::Choice),
+            "fallback" => Ok(McXMLElement::Fallback),
             _ => Ok(McXMLElement::Unsupported),
         }
     }
@@ -238,15 +238,15 @@ impl FromStr for WpXMLElement {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "wpAnchor" => Ok(WpXMLElement::WpAnchor),
-            "wpSimplePos" => Ok(WpXMLElement::WpSimplePos),
-            "wpPositionH" => Ok(WpXMLElement::WpPositionH),
-            "wpPosOffset" => Ok(WpXMLElement::WpPosOffset),
-            "wpPositionV" => Ok(WpXMLElement::WpPositionV),
-            "wpExtent" => Ok(WpXMLElement::WpExtent),
-            "wpEffectExtent" => Ok(WpXMLElement::WpEffectExtent),
-            "wpWrapNone" => Ok(WpXMLElement::WpWrapNone),
-            "wpDocPr" => Ok(WpXMLElement::WpDocProperty),
+            "anchor" => Ok(WpXMLElement::Anchor),
+            "simplePos" => Ok(WpXMLElement::SimplePos),
+            "positionH" => Ok(WpXMLElement::PositionH),
+            "posOffset" => Ok(WpXMLElement::PosOffset),
+            "positionV" => Ok(WpXMLElement::PositionV),
+            "extent" => Ok(WpXMLElement::Extent),
+            "effectExtent" => Ok(WpXMLElement::EffectExtent),
+            "wrapNone" => Ok(WpXMLElement::WrapNone),
+            "docPr" => Ok(WpXMLElement::DocProperty),
             _ => Ok(WpXMLElement::Unsupported),
         }
     }
@@ -256,14 +256,14 @@ impl FromStr for AXMLElement {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "AGraphic" => Ok(AXMLElement::AGraphic),
-            "AGraphicData" => Ok(AXMLElement::AGraphicData),
-            "AXfrm" => Ok(AXMLElement::AXfrm),
-            "AOff" => Ok(AXMLElement::AOff),
-            "AExt" => Ok(AXMLElement::AExt),
-            "APrstGeom" => Ok(AXMLElement::APrstGeom),
-            "ASolidFill" => Ok(AXMLElement::ASolidFill),
-            "ALn" => Ok(AXMLElement::ALn),
+            "graphic" => Ok(AXMLElement::Graphic),
+            "graphicData" => Ok(AXMLElement::GraphicData),
+            "xfrm" => Ok(AXMLElement::Xfrm),
+            "off" => Ok(AXMLElement::Off),
+            "ext" => Ok(AXMLElement::Ext),
+            "prstGeom" => Ok(AXMLElement::PrstGeom),
+            "solidFill" => Ok(AXMLElement::SolidFill),
+            "ln" => Ok(AXMLElement::Ln),
             _ => Ok(AXMLElement::Unsupported),
         }
     }
@@ -273,12 +273,12 @@ impl FromStr for WpsXMLElement {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "WpsWsp" => Ok(WpsXMLElement::WpsWsp),
-            "WpsCNvSpPr" => Ok(WpsXMLElement::WpsCNvSpProperty),
-            "WpsSpPr" => Ok(WpsXMLElement::WpsSpProperty),
-            "WpsStyle" => Ok(WpsXMLElement::WpsStyle),
-            "WpsTxbx" => Ok(WpsXMLElement::WpsTxbx),
-            "WpsBodyPr" => Ok(WpsXMLElement::WpsBodyPr),
+            "wsp" => Ok(WpsXMLElement::Wsp),
+            "cNvSpPr" => Ok(WpsXMLElement::CNvSpProperty),
+            "spPr" => Ok(WpsXMLElement::SpProperty),
+            "style" => Ok(WpsXMLElement::Style),
+            "txbx" => Ok(WpsXMLElement::Txbx),
+            "bodyPr" => Ok(WpsXMLElement::BodyPr),
             _ => Ok(WpsXMLElement::Unsupported),
         }
     }
@@ -288,10 +288,10 @@ impl FromStr for VXMLElement {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "VRect" => Ok(VXMLElement::VRect),
-            "VStroke" => Ok(VXMLElement::VStroke),
-            "VFill" => Ok(VXMLElement::VFill),
-            "VTexbox" => Ok(VXMLElement::VTexbox),
+            "rect" => Ok(VXMLElement::Rect),
+            "stroke" => Ok(VXMLElement::Stroke),
+            "fill" => Ok(VXMLElement::Fill),
+            "textbox" => Ok(VXMLElement::TextBox),
             _ => Ok(VXMLElement::Unsupported),
         }
     }

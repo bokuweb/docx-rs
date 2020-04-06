@@ -63,7 +63,7 @@ impl Serialize for RunChild {
             }
             RunChild::Drawing(ref s) => {
                 let mut t = serializer.serialize_struct("Drawing", 2)?;
-                t.serialize_field("type", "break")?;
+                t.serialize_field("type", "drawing")?;
                 t.serialize_field("data", s)?;
                 t.end()
             }
@@ -91,6 +91,11 @@ impl Run {
 
     pub fn add_tab(mut self) -> Run {
         self.children.push(RunChild::Tab(Tab::new()));
+        self
+    }
+
+    pub fn add_drawing(mut self, d: Drawing) -> Run {
+        self.children.push(RunChild::Drawing(d));
         self
     }
 

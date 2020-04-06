@@ -11,7 +11,7 @@ pub struct Drawing {
 
 #[derive(Debug, Clone, Serialize, PartialEq)]
 pub enum DrawingChild {
-    Anchor(Anchor),
+    WpAnchor(WpAnchor),
 }
 
 impl Drawing {
@@ -19,8 +19,8 @@ impl Drawing {
         Default::default()
     }
 
-    pub fn add_anchor(mut self, a: Anchor) -> Drawing {
-        self.children.push(DrawingChild::Anchor(a));
+    pub fn add_anchor(mut self, a: WpAnchor) -> Drawing {
+        self.children.push(DrawingChild::WpAnchor(a));
         self
     }
 }
@@ -37,7 +37,7 @@ impl BuildXML for Drawing {
         let mut b = b.open_drawing();
         for child in &self.children {
             match child {
-                DrawingChild::Anchor(a) => {
+                DrawingChild::WpAnchor(a) => {
                     b = b.add_child(a);
                 }
             }

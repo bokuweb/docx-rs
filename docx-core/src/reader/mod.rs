@@ -1,11 +1,15 @@
+mod a_graphic;
+mod a_graphic_data;
 mod attributes;
 mod delete;
 mod document;
 mod document_rels;
+mod drawing;
 mod errors;
 mod from_xml;
 mod insert;
 mod level;
+mod mc_fallback;
 mod numbering_property;
 mod numberings;
 mod paragraph;
@@ -17,6 +21,9 @@ mod styles;
 mod table;
 mod table_cell;
 mod table_row;
+mod wp_anchor;
+mod wps_shape;
+mod wps_text_box;
 mod xml_element;
 
 use std::io::Cursor;
@@ -28,6 +35,7 @@ pub use attributes::*;
 pub use document_rels::*;
 pub use errors::ReaderError;
 pub use from_xml::*;
+pub use mc_fallback::*;
 pub use read_zip::*;
 pub use xml_element::*;
 

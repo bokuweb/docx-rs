@@ -1,12 +1,12 @@
 use super::{Break, DeleteText, Drawing, RunProperty, Tab, Text};
 use serde::ser::{SerializeStruct, Serializer};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 use crate::documents::BuildXML;
 use crate::types::BreakType;
 use crate::xml_builder::*;
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Run {
     pub run_property: RunProperty,
@@ -23,7 +23,7 @@ impl Default for Run {
     }
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum RunChild {
     Text(Text),
     DeleteText(DeleteText),

@@ -21,7 +21,7 @@ impl Graphic {
 impl BuildXML for Graphic {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        let mut b = b.open_graphic("TODO:");
+        let mut b = b.open_graphic("http://schemas.openxmlformats.org/drawingml/2006/main");
         b = b.add_child(&self.data);
         b.close().build()
     }

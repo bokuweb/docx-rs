@@ -4,17 +4,19 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
-pub struct GraphicData {}
-
-impl GraphicData {
-    pub fn new() -> GraphicData {
-        Default::default()
-    }
+pub struct GraphicData {
+    r#type: GraphicDataType,
 }
 
-impl Default for GraphicData {
-    fn default() -> Self {
-        GraphicData {}
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
+pub enum GraphicDataType {
+    Picture,
+    Shape,
+}
+
+impl GraphicData {
+    pub fn new(r#type: GraphicDataType) -> GraphicData {
+        GraphicData { r#type }
     }
 }
 

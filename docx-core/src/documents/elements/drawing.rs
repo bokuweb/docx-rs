@@ -1,15 +1,15 @@
 use super::*;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq)]
 pub struct Drawing {
-    pub child: Option<DrawingChild>,
+    pub children: Vec<DrawingChild>,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq)]
 pub enum DrawingChild {
     Anchor(Anchor),
 }
@@ -19,15 +19,15 @@ impl Drawing {
         Default::default()
     }
 
-    pub fn anchor(mut self, a: Anchor) -> Drawing {
-        self.child = Some(DrawingChild::Anchor(a));
+    pub fn add_anchor(mut self, a: Anchor) -> Drawing {
+        self.children.push(DrawingChild::Anchor(a));
         self
     }
 }
 
 impl Default for Drawing {
     fn default() -> Self {
-        Drawing { child: None }
+        Drawing { children: vec![] }
     }
 }
 
@@ -35,11 +35,12 @@ impl BuildXML for Drawing {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         let mut b = b.open_drawing();
-        match &self.child {
-            Some(DrawingChild::Anchor(a)) => {
-                b = b.add_child(a);
+        for child in &self.children {
+            match child {
+                DrawingChild::Anchor(a) => {
+                    b = b.add_child(a);
+                }
             }
-            None => {}
         }
         b.close().build()
     }

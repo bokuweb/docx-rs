@@ -221,6 +221,11 @@ impl XMLBuilder {
     open!(open_anchor, "wp:anchor");
     open!(open_graphic, "a:graphic", "xmlns:a");
     open!(open_graphic_data, "a:graphicData", "uri");
+
+    // shape
+    open!(open_wp_shape, "wps:wsp");
+    open!(open_wp_text_box, "wps:txbx");
+    open!(open_text_box_content, "w:txbxContent");
 }
 
 #[cfg(test)]

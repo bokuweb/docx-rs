@@ -1,4 +1,5 @@
 use super::*;
+use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 use std::str::FromStr;
 
@@ -12,14 +13,31 @@ use crate::xml_builder::*;
   entirely by the document authors who choose to persist this data within the document.
 */
 #[derive(Debug, Clone, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct AGraphicData {
     pub data_type: GraphicDataType,
     pub children: Vec<GraphicDataChild>,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum GraphicDataChild {
-    WpsShape(WpsShape),
+    Shape(WpsShape),
+}
+
+impl Serialize for GraphicDataChild {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            GraphicDataChild::Shape(ref s) => {
+                let mut t = serializer.serialize_struct("Shape", 2)?;
+                t.serialize_field("type", "shape")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+        }
+    }
 }
 
 impl GraphicDataType {
@@ -48,6 +66,7 @@ impl FromStr for GraphicDataType {
 }
 
 #[derive(Debug, Clone, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub enum GraphicDataType {
     Picture,
     WpShape,
@@ -61,6 +80,11 @@ impl AGraphicData {
             children: vec![],
         }
     }
+
+    pub fn add_shape(mut self, shape: WpsShape) -> Self {
+        self.children.push(GraphicDataChild::Shape(shape));
+        self
+    }
 }
 
 impl BuildXML for AGraphicData {
@@ -69,7 +93,7 @@ impl BuildXML for AGraphicData {
         let mut b = b.open_graphic_data(self.data_type.into_uri());
         for c in &self.children {
             match c {
-                GraphicDataChild::WpsShape(t) => b = b.add_child(t),
+                GraphicDataChild::Shape(t) => b = b.add_child(t),
             }
         }
         b.close().build()

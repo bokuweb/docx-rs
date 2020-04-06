@@ -17,9 +17,11 @@ impl ElementReader for AGraphicData {
                 t = GraphicDataType::from_str(&a.value).unwrap();
             }
         }
+        dbg!(&t);
         let mut graphic_data = AGraphicData::new(t);
         loop {
             let e = r.next();
+            dbg!(&graphic_data, &e);
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..
@@ -27,7 +29,11 @@ impl ElementReader for AGraphicData {
                     let e = WpsXMLElement::from_str(&name.local_name)
                         .expect("should convert to XMLElement");
                     match e {
-                        WpsXMLElement::Wsp => {}
+                        WpsXMLElement::Wsp => {
+                            dbg!("asdad");
+                            let shape = WpsShape::read(r, &attributes)?;
+                            graphic_data = graphic_data.add_shape(shape);
+                        }
                         _ => {}
                     }
                 }

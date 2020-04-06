@@ -9,9 +9,9 @@ use super::*;
 impl ElementReader for WpsTextBox {
     fn read<R: Read>(
         r: &mut EventReader<R>,
-        attrs: &[OwnedAttribute],
+        _attrs: &[OwnedAttribute],
     ) -> Result<Self, ReaderError> {
-        let mut shape = WpsTextBox::new();
+        let mut text_box = WpsTextBox::new();
         loop {
             let e = r.next();
             match e {
@@ -22,16 +22,16 @@ impl ElementReader for WpsTextBox {
                         .expect("should convert to XMLElement");
                     match e {
                         XMLElement::TxbxContent => {
-                            // let text_box = WpsTextBox::read(r, &attributes)?;
-                            // shape = shape.add_text_box(text_box);
+                            let content = TextBoxContent::read(r, &attributes)?;
+                            text_box = text_box.add_content(content);
                         }
                         _ => {}
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = WpsXMLElement::from_str(&name.local_name).unwrap();
-                    if e == WpsXMLElement::Wsp {
-                        return Ok(shape);
+                    if e == WpsXMLElement::Txbx {
+                        return Ok(text_box);
                     }
                 }
                 Err(_) => return Err(ReaderError::XMLReadError),

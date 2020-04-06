@@ -9,7 +9,7 @@ use super::*;
 impl ElementReader for WpAnchor {
     fn read<R: Read>(
         r: &mut EventReader<R>,
-        attrs: &[OwnedAttribute],
+        _attrs: &[OwnedAttribute],
     ) -> Result<Self, ReaderError> {
         let mut anchor = WpAnchor::new();
         loop {

@@ -5,6 +5,7 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct AGraphic {
     pub children: Vec<AGraphicData>,
 }
@@ -14,7 +15,7 @@ impl AGraphic {
         Default::default()
     }
 
-    pub fn add_graphic(mut self, g: AGraphicData) -> Self {
+    pub fn add_graphic_data(mut self, g: AGraphicData) -> Self {
         self.children.push(g);
         self
     }
@@ -34,5 +35,31 @@ impl BuildXML for AGraphic {
             b = b.add_child(child);
         }
         b.close().build()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+    #[cfg(test)]
+    use pretty_assertions::assert_eq;
+
+    #[test]
+    fn test_a_graphic_with_textbox_json() {
+        let graphic =
+            AGraphic::new().add_graphic_data(
+                AGraphicData::new(GraphicDataType::WpShape).add_shape(
+                    WpsShape::new().add_text_box(WpsTextBox::new().add_content(
+                        TextBoxContent::new().add_paragraph(
+                            Paragraph::new().add_run(Run::new().add_text("pattern1")),
+                        ),
+                    )),
+                ),
+            );
+        assert_eq!(
+            serde_json::to_string(&graphic).unwrap(),
+            r#"{"children":[{"dataType":"wpShape","children":[{"type":"shape","data":{"children":[{"type":"textbox","data":{"children":[{"children":[{"Paragraph":{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"pattern1"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":"Normal","numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}}],"has_numbering":false}],"hasNumbering":false}}]}}]}]}"#
+        );
     }
 }

@@ -1,17 +1,35 @@
 use super::*;
+use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct WpsShape {
     children: Vec<WpsShapeChild>,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum WpsShapeChild {
     WpsTextBox(WpsTextBox),
+}
+
+impl Serialize for WpsShapeChild {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            WpsShapeChild::WpsTextBox(ref s) => {
+                let mut t = serializer.serialize_struct("WpsTextBox", 2)?;
+                t.serialize_field("type", "textbox")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+        }
+    }
 }
 
 impl WpsShape {

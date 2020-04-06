@@ -1,3 +1,5 @@
+import { DrawingJSON } from "./drawing";
+
 export type RunPropertyJSON = {
   sz: number | null;
   szCs: number | null;
@@ -11,7 +13,12 @@ export type RunPropertyJSON = {
   vanish: boolean | null;
 };
 
-export type RunChildJSON = TextJSON | DeleteTextJSON | TabJSON | BreakJSON;
+export type RunChildJSON =
+  | TextJSON
+  | DeleteTextJSON
+  | TabJSON
+  | BreakJSON
+  | DrawingJSON;
 
 export type TextJSON = {
   type: "text";

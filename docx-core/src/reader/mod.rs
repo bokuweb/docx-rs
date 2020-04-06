@@ -21,6 +21,7 @@ mod styles;
 mod table;
 mod table_cell;
 mod table_row;
+mod text_box_content;
 mod wp_anchor;
 mod wps_shape;
 mod wps_text_box;

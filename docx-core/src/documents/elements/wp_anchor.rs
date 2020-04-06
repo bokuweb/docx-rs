@@ -5,6 +5,7 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct WpAnchor {
     pub children: Vec<AGraphic>,
 }

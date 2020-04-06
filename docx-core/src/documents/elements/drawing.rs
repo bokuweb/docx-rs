@@ -1,4 +1,5 @@
 use super::*;
+use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
 use crate::documents::BuildXML;
@@ -9,9 +10,25 @@ pub struct Drawing {
     pub children: Vec<DrawingChild>,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum DrawingChild {
     WpAnchor(WpAnchor),
+}
+
+impl Serialize for DrawingChild {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            DrawingChild::WpAnchor(ref s) => {
+                let mut t = serializer.serialize_struct("WpAnchor", 2)?;
+                t.serialize_field("type", "anchor")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+        }
+    }
 }
 
 impl Drawing {

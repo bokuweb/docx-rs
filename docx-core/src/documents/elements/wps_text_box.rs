@@ -5,6 +5,7 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct WpsTextBox {
     pub children: Vec<TextBoxContent>,
     pub has_numbering: bool,

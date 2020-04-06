@@ -41,7 +41,7 @@ impl Serialize for GraphicDataChild {
 }
 
 impl GraphicDataType {
-    fn into_uri(&self) -> &str {
+    fn to_uri(&self) -> &str {
         match *self {
             GraphicDataType::Picture => "http://schemas.openxmlformats.org/drawingml/2006/picture",
             GraphicDataType::WpShape => {
@@ -61,7 +61,7 @@ impl FromStr for GraphicDataType {
         if s.ends_with("wordprocessingShape") {
             return Ok(GraphicDataType::WpShape);
         }
-        return Ok(GraphicDataType::Unsupported);
+        Ok(GraphicDataType::Unsupported)
     }
 }
 
@@ -90,7 +90,7 @@ impl AGraphicData {
 impl BuildXML for AGraphicData {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        let mut b = b.open_graphic_data(self.data_type.into_uri());
+        let mut b = b.open_graphic_data(self.data_type.to_uri());
         for c in &self.children {
             match c {
                 GraphicDataChild::Shape(t) => b = b.add_child(t),

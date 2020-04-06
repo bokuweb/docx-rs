@@ -1,3 +1,5 @@
+#![allow(clippy::single_match)]
+
 use std::io::Read;
 use std::str::FromStr;
 
@@ -29,7 +31,7 @@ impl ElementReader for Run {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..
                 }) => {
-                    match name.prefix.as_ref().map(String::as_str) {
+                    match name.prefix.as_ref().map(std::ops::Deref::deref) {
                         Some("w") => {
                             let e = XMLElement::from_str(&name.local_name).unwrap();
                             match e {

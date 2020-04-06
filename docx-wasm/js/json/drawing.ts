@@ -1,3 +1,5 @@
+import { TextBoxContentJSON } from "./textbox-content";
+
 export type DrawingJSON = {
   type: "drawing";
   data: {
@@ -8,18 +10,35 @@ export type DrawingJSON = {
 export type DrawingChildJSON = WpAnchorJSON;
 
 export type WpAnchorJSON = {
-  children: DrawingChildJSON[];
+  type: "anchor";
+  data: {
+    children: AGraphicJSON[];
+  };
 };
 
-export type AGraphJSON = {
+export type AGraphicJSON = {
   children: AGraphChildJSON[];
 };
 
-export type AGraphChildJSON = WpAnchorJSON;
+export type AGraphChildJSON = AGraphicDataJSON;
 
-export type WpShapeJSON = {
-  dataType: "WpShape";
+export type AGraphicDataJSON = {
+  dataType: "wpShape";
+  children: WpsShapeJSON[];
+};
+
+export type WpsShapeJSON = {
+  type: "shape";
   data: {
-    children: DrawingChildJSON[];
+    children: WpsShapeChildJSON[];
+  };
+};
+
+export type WpsShapeChildJSON = WpsTextBoxJSON;
+
+export type WpsTextBoxJSON = {
+  type: "textbox";
+  data: {
+    children: TextBoxContentJSON[];
   };
 };

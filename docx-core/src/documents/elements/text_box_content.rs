@@ -1,4 +1,5 @@
 use super::*;
+use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
 use crate::documents::BuildXML;
@@ -10,10 +11,32 @@ pub struct TextBoxContent {
     pub has_numbering: bool,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum TextBoxContentChild {
     Paragraph(Paragraph),
     Table(Table),
+}
+
+impl Serialize for TextBoxContentChild {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            TextBoxContentChild::Paragraph(ref p) => {
+                let mut t = serializer.serialize_struct("Paragraph", 2)?;
+                t.serialize_field("type", "paragraph")?;
+                t.serialize_field("data", p)?;
+                t.end()
+            }
+            TextBoxContentChild::Table(ref c) => {
+                let mut t = serializer.serialize_struct("Table", 2)?;
+                t.serialize_field("type", "table")?;
+                t.serialize_field("data", c)?;
+                t.end()
+            }
+        }
+    }
 }
 
 impl TextBoxContent {

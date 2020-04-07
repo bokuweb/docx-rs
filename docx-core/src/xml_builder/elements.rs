@@ -216,6 +216,16 @@ impl XMLBuilder {
     closed_with_str!(level_justification, "w:lvlJc");
     closed_with_str!(abstract_num_id, "w:abstractNumId");
     closed!(vanish, "w:vanish");
+
+    open!(open_drawing, "w:drawing");
+    open!(open_anchor, "wp:anchor");
+    open!(open_graphic, "a:graphic", "xmlns:a");
+    open!(open_graphic_data, "a:graphicData", "uri");
+
+    // shape
+    open!(open_wp_shape, "wps:wsp");
+    open!(open_wp_text_box, "wps:txbx");
+    open!(open_text_box_content, "w:txbxContent");
 }
 
 #[cfg(test)]

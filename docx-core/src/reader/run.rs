@@ -1,3 +1,5 @@
+#![allow(clippy::single_match)]
+
 use std::io::Read;
 use std::str::FromStr;
 
@@ -29,39 +31,63 @@ impl ElementReader for Run {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..
                 }) => {
-                    let e = XMLElement::from_str(&name.local_name).unwrap();
-                    match e {
-                        XMLElement::Tab => {
-                            run = run.add_tab();
-                        }
-                        XMLElement::Bold => {
-                            if !read_bool(&attributes) {
-                                continue;
+                    match name.prefix.as_ref().map(std::ops::Deref::deref) {
+                        Some("w") => {
+                            let e = XMLElement::from_str(&name.local_name).unwrap();
+                            match e {
+                                XMLElement::Tab => {
+                                    run = run.add_tab();
+                                }
+                                XMLElement::Bold => {
+                                    if !read_bool(&attributes) {
+                                        continue;
+                                    }
+                                    run = run.bold();
+                                }
+                                XMLElement::Highlight => {
+                                    run = run.highlight(attributes[0].value.clone())
+                                }
+                                XMLElement::Color => run = run.color(attributes[0].value.clone()),
+                                XMLElement::Size => {
+                                    run = run.size(usize::from_str(&attributes[0].value)?)
+                                }
+                                XMLElement::Underline => {
+                                    run = run.underline(&attributes[0].value.clone())
+                                }
+                                XMLElement::Italic => {
+                                    if !read_bool(&attributes) {
+                                        continue;
+                                    }
+                                    run = run.italic();
+                                }
+                                XMLElement::Vanish => run = run.vanish(),
+                                XMLElement::Text => text_state = TextState::Text,
+                                XMLElement::DeleteText => text_state = TextState::Delete,
+                                XMLElement::Break => {
+                                    if let Some(a) = &attributes.get(0) {
+                                        run = run.add_break(BreakType::from_str(&a.value)?)
+                                    } else {
+                                        run = run.add_break(BreakType::TextWrapping)
+                                    }
+                                }
+                                XMLElement::Drawing => {
+                                    let drawing = Drawing::read(r, &attributes)?;
+                                    run = run.add_drawing(drawing);
+                                }
+                                _ => {}
                             }
-                            run = run.bold();
                         }
-                        XMLElement::Highlight => run = run.highlight(attributes[0].value.clone()),
-                        XMLElement::Color => run = run.color(attributes[0].value.clone()),
-                        XMLElement::Size => run = run.size(usize::from_str(&attributes[0].value)?),
-                        XMLElement::Underline => run = run.underline(&attributes[0].value.clone()),
-                        XMLElement::Italic => {
-                            if !read_bool(&attributes) {
-                                continue;
-                            }
-                            run = run.italic();
-                        }
-                        XMLElement::Vanish => run = run.vanish(),
-                        XMLElement::Text => text_state = TextState::Text,
-                        XMLElement::DeleteText => text_state = TextState::Delete,
-                        XMLElement::Break => {
-                            if let Some(a) = &attributes.get(0) {
-                                run = run.add_break(BreakType::from_str(&a.value)?)
-                            } else {
-                                run = run.add_break(BreakType::TextWrapping)
+                        Some("mc") => {
+                            let e = McXMLElement::from_str(&name.local_name).unwrap();
+                            match e {
+                                McXMLElement::Fallback => {
+                                    let _ = McFallback::read(r, &attributes)?;
+                                }
+                                _ => {}
                             }
                         }
                         _ => {}
-                    }
+                    };
                 }
                 Ok(XmlEvent::Characters(c)) => match text_state {
                     TextState::Delete => {

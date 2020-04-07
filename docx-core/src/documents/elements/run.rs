@@ -1,12 +1,12 @@
-use super::{Break, DeleteText, RunProperty, Tab, Text};
+use super::{Break, DeleteText, Drawing, RunProperty, Tab, Text};
 use serde::ser::{SerializeStruct, Serializer};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 use crate::documents::BuildXML;
 use crate::types::BreakType;
 use crate::xml_builder::*;
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Run {
     pub run_property: RunProperty,
@@ -23,12 +23,13 @@ impl Default for Run {
     }
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum RunChild {
     Text(Text),
     DeleteText(DeleteText),
     Tab(Tab),
     Break(Break),
+    Drawing(Drawing),
 }
 
 impl Serialize for RunChild {
@@ -60,6 +61,12 @@ impl Serialize for RunChild {
                 t.serialize_field("data", s)?;
                 t.end()
             }
+            RunChild::Drawing(ref s) => {
+                let mut t = serializer.serialize_struct("Drawing", 2)?;
+                t.serialize_field("type", "drawing")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
         }
     }
 }
@@ -84,6 +91,11 @@ impl Run {
 
     pub fn add_tab(mut self) -> Run {
         self.children.push(RunChild::Tab(Tab::new()));
+        self
+    }
+
+    pub fn add_drawing(mut self, d: Drawing) -> Run {
+        self.children.push(RunChild::Drawing(d));
         self
     }
 
@@ -138,6 +150,7 @@ impl BuildXML for Run {
                 RunChild::DeleteText(t) => b = b.add_child(t),
                 RunChild::Tab(t) => b = b.add_child(t),
                 RunChild::Break(t) => b = b.add_child(t),
+                RunChild::Drawing(t) => b = b.add_child(t),
             }
         }
         b.close().build()

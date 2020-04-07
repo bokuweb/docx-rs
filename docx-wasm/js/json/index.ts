@@ -48,3 +48,5 @@ export * from "./paragraph";
 export * from "./run";
 export * from "./table";
 export * from "./numbering";
+export * from "./drawing";
+export * from "./textbox-content";

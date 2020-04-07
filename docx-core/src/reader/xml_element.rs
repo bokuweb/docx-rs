@@ -226,9 +226,9 @@ impl FromStr for McXMLElement {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "alternateContent" => Ok(McXMLElement::AlternateContent),
-            "choice" => Ok(McXMLElement::Choice),
-            "fallback" => Ok(McXMLElement::Fallback),
+            "AlternateContent" => Ok(McXMLElement::AlternateContent),
+            "Choice" => Ok(McXMLElement::Choice),
+            "Fallback" => Ok(McXMLElement::Fallback),
             _ => Ok(McXMLElement::Unsupported),
         }
     }

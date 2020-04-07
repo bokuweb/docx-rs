@@ -21,7 +21,6 @@ impl ElementReader for AGraphic {
                     let e = AXMLElement::from_str(&name.local_name)
                         .expect("should convert to XMLElement");
                     if let AXMLElement::GraphicData = e {
-                        dbg!("graphicData1");
                         let data = AGraphicData::read(r, &attributes)?;
                         graphic = graphic.add_graphic_data(data);
                     }

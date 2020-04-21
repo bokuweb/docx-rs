@@ -1,7 +1,9 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+use serde::Serialize;
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct NumberingId {
     pub id: usize,
 }

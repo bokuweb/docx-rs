@@ -70,6 +70,8 @@ impl FromXML for Numberings {
                                 }
                             }
                             let mut abs_num_id = 0;
+                            let mut level_overrides = vec![];
+
                             loop {
                                 let e = parser.next();
                                 match e {
@@ -77,15 +79,24 @@ impl FromXML for Numberings {
                                         attributes, name, ..
                                     }) => {
                                         let e = XMLElement::from_str(&name.local_name).unwrap();
-                                        if let XMLElement::AbstractNumberingId = e {
-                                            abs_num_id = usize::from_str(&attributes[0].value)?;
+                                        match e {
+                                            XMLElement::AbstractNumberingId => {
+                                                abs_num_id = usize::from_str(&attributes[0].value)?
+                                            }
+                                            XMLElement::LvlOverride => {
+                                                let o =
+                                                    LevelOverride::read(&mut parser, &attributes)?;
+                                                level_overrides.push(o);
+                                            }
+                                            _ => {}
                                         }
                                     }
                                     Ok(XmlEvent::EndElement { name, .. }) => {
                                         let e = XMLElement::from_str(&name.local_name).unwrap();
                                         if let XMLElement::Num = e {
+                                            let num = Numbering::new(id, abs_num_id);
                                             nums =
-                                                nums.add_numbering(Numbering::new(id, abs_num_id));
+                                                nums.add_numbering(num.overrides(level_overrides));
                                             break;
                                         }
                                     }
@@ -202,6 +213,37 @@ mod tests {
         nums = nums
             .add_abstract_numbering(AbstractNumbering::new(0).style_link("style1"))
             .add_numbering(Numbering::new(1, 0));
+        assert_eq!(n, nums)
+    }
+
+    #[test]
+    fn test_numberings_from_xml_with_override() {
+        let xml = r#"<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+            xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" >
+    <w:abstractNum w:abstractNumId="0">
+        <w:multiLevelType w:val="hybridMultilevel"/>
+    </w:abstractNum>
+    <w:num w:numId="1">
+        <w:abstractNumId w:val="0"></w:abstractNumId>
+        <w:lvlOverride w:ilvl="0">
+          <w:startOverride w:val="1"/>
+        </w:lvlOverride>
+        <w:lvlOverride w:ilvl="1">
+          <w:startOverride w:val="1"/>
+        </w:lvlOverride>
+    </w:num>
+</w:numbering>"#;
+        let n = Numberings::from_xml(xml.as_bytes()).unwrap();
+        let mut nums = Numberings::new();
+        let overrides = vec![
+            LevelOverride::new(0).start(1),
+            LevelOverride::new(1).start(1),
+        ];
+        let num = Numbering::new(1, 0).overrides(overrides);
+        dbg!(&num);
+        nums = nums
+            .add_abstract_numbering(AbstractNumbering::new(0))
+            .add_numbering(num);
         assert_eq!(n, nums)
     }
 }

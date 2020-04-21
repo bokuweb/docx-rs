@@ -20,7 +20,7 @@ export type AbstractNumberingJSON = {
 export type NumberingJSON = {
   id: number;
   abstractNumId: number;
-  LevelOverrides: LevelOverrideJSON[];
+  levelOverrides: LevelOverrideJSON[];
 };
 
 export type LevelOverrideJSON = {

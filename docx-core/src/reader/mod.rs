@@ -26,6 +26,7 @@ mod wp_anchor;
 mod wps_shape;
 mod wps_text_box;
 mod xml_element;
+mod level_override;
 
 use std::io::Cursor;
 use zip;

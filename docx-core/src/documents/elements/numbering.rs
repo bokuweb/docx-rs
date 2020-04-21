@@ -1,6 +1,7 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
+use super::*;
 use serde::Serialize;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
@@ -8,6 +9,7 @@ use serde::Serialize;
 pub struct Numbering {
     id: usize,
     abstract_num_id: usize,
+    level_overrides: Vec<LevelOverride>,
 }
 
 impl Numbering {
@@ -15,7 +17,13 @@ impl Numbering {
         Self {
             id,
             abstract_num_id,
+            level_overrides: vec![],
         }
+    }
+
+    pub fn overrides(mut self, overrides: Vec<LevelOverride>) -> Self {
+        self.level_overrides = overrides;
+        self
     }
 }
 
@@ -45,6 +53,42 @@ mod tests {
             r#"<w:num w:numId="0">
   <w:abstractNumId w:val="2" />
 </w:num>"#
+        );
+    }
+    /* TODO: enable when builder implemented
+        #[test]
+        fn test_numbering_override() {
+            let c = Numbering::new(0, 2);
+            let overrides = vec![
+                LevelOverride::new(0).start(1),
+                LevelOverride::new(1).start(1),
+            ];
+            let b = c.overrides(overrides).build();
+            assert_eq!(
+                str::from_utf8(&b).unwrap(),
+                r#"<w:num w:numId="0">
+      <w:abstractNumId w:val="2" />
+      <w:lvlOverride w:ilvl="0">
+        <w:startOverride w:val="1"/>
+      </w:lvlOverride>
+      <w:lvlOverride w:ilvl="1">
+        <w:startOverride w:val="1"/>
+      </w:lvlOverride>
+    </w:num>"#
+            );
+        }
+        */
+
+    #[test]
+    fn test_numbering_override_json() {
+        let c = Numbering::new(0, 2);
+        let overrides = vec![
+            LevelOverride::new(0).start(1),
+            LevelOverride::new(1).start(1),
+        ];
+        assert_eq!(
+            serde_json::to_string(&c.overrides(overrides)).unwrap(),
+            r#"{"id":0,"abstractNumId":2,"levelOverrides":[{"level":0,"start":1},{"level":1,"start":1}]}"#
         );
     }
 }

@@ -70,6 +70,8 @@ pub enum XMLElement {
     Relationships,
     AbstractNumbering,
     AbstractNumberingId,
+    LvlOverride,
+    StartOverride,
     Level,
     Numbering,
     Num,
@@ -217,6 +219,8 @@ impl FromStr for XMLElement {
             "drawing" => Ok(XMLElement::Drawing),
             "txbxContent" => Ok(XMLElement::TxbxContent),
             "pict" => Ok(XMLElement::Pict),
+            "lvlOverride" => Ok(XMLElement::LvlOverride),
+            "startOverride" => Ok(XMLElement::StartOverride),
             _ => Ok(XMLElement::Unsupported),
         }
     }

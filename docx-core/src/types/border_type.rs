@@ -9,6 +9,7 @@ use wasm_bindgen::prelude::*;
 #[derive(Copy, Clone, Debug, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum BorderType {
+    Nil,
     None,
     Single,
     Thick,
@@ -23,6 +24,7 @@ pub enum BorderType {
 impl fmt::Display for BorderType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
+            BorderType::Nil => write!(f, "nil"),
             BorderType::None => write!(f, "none"),
             BorderType::Single => write!(f, "single"),
             BorderType::Thick => write!(f, "thick"),

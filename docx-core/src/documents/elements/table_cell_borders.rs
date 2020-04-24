@@ -16,15 +16,14 @@ use crate::xml_builder::*;
     tl2br – diagonal border from top left corner to bottom right corner
     tr2bl – diagonal border from top right corner to bottom left corner
 */
-
 #[derive(Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct TableCellBorder {
+    pub border_type: BorderType,
+    pub size: usize,
+    pub color: String,
     position: BorderPosition,
-    border_type: BorderType,
-    size: usize,
     space: usize,
-    color: String,
 }
 
 impl TableCellBorder {
@@ -40,6 +39,16 @@ impl TableCellBorder {
 
     pub fn color(mut self, color: impl Into<String>) -> TableCellBorder {
         self.color = color.into();
+        self
+    }
+
+    pub fn size(mut self, size: usize) -> TableCellBorder {
+        self.size = size;
+        self
+    }
+
+    pub fn border_type(mut self, border_type: BorderType) -> TableCellBorder {
+        self.border_type = border_type;
         self
     }
 }
@@ -100,7 +109,7 @@ impl TableCellBorders {
         Default::default()
     }
 
-    pub fn set_border(mut self, border: TableCellBorder) -> Self {
+    pub fn set(mut self, border: TableCellBorder) -> Self {
         match border.position {
             BorderPosition::Top => self.top = Some(border),
             BorderPosition::Left => self.left = Some(border),
@@ -112,15 +121,29 @@ impl TableCellBorders {
         self
     }
 
-    pub fn clear_border(mut self, position: BorderPosition) -> Self {
+    pub fn clear(mut self, position: BorderPosition) -> Self {
+        let nil = TableCellBorder::new(position.clone()).border_type(BorderType::Nil);
         match position {
-            BorderPosition::Top => self.top = None,
-            BorderPosition::Left => self.left = None,
-            BorderPosition::Bottom => self.bottom = None,
-            BorderPosition::Right => self.right = None,
-            BorderPosition::InsideH => self.inside_h = None,
-            BorderPosition::InsideV => self.inside_v = None,
+            BorderPosition::Top => self.top = Some(nil),
+            BorderPosition::Left => self.left = Some(nil),
+            BorderPosition::Bottom => self.bottom = Some(nil),
+            BorderPosition::Right => self.right = Some(nil),
+            BorderPosition::InsideH => self.inside_h = Some(nil),
+            BorderPosition::InsideV => self.inside_v = Some(nil),
         };
+        self
+    }
+
+    pub fn clear_all(mut self) -> Self {
+        self.top = Some(TableCellBorder::new(BorderPosition::Top).border_type(BorderType::Nil));
+        self.left = Some(TableCellBorder::new(BorderPosition::Left).border_type(BorderType::Nil));
+        self.bottom =
+            Some(TableCellBorder::new(BorderPosition::Bottom).border_type(BorderType::Nil));
+        self.right = Some(TableCellBorder::new(BorderPosition::Right).border_type(BorderType::Nil));
+        self.inside_h =
+            Some(TableCellBorder::new(BorderPosition::InsideH).border_type(BorderType::Nil));
+        self.inside_v =
+            Some(TableCellBorder::new(BorderPosition::InsideV).border_type(BorderType::Nil));
         self
     }
 }

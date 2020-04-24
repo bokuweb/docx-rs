@@ -45,4 +45,19 @@ impl TableCell {
         self.0.property = self.0.property.width(v, docx_rs::WidthType::DXA);
         self
     }
+
+    pub fn set_border(mut self, border: TableCellBorder) -> TableCell {
+        self.0.property = self.0.property.set_border(border.take());
+        self
+    }
+
+    pub fn clear_border(mut self, position: docx_rs::BorderPosition) -> TableCell {
+        self.0.property = self.0.property.clear_border(position);
+        self
+    }
+
+    pub fn clear_all_border(mut self) -> TableCell {
+        self.0.property = self.0.property.clear_all_border();
+        self
+    }
 }

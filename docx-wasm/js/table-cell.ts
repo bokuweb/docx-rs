@@ -1,10 +1,13 @@
 import { Paragraph } from "./paragraph";
+import { TableCellBorders } from "./table-cell-borders";
+import { BorderPosition, TableCellBorder } from "./table-cell-border";
 
 export type VMergeType = "restart" | "continue";
 
 export type VAlignType = "top" | "center" | "bottom";
 
 export type CellProperty = {
+  borders?: TableCellBorders;
   verticalMerge?: VMergeType;
   verticalAlign?: VAlignType;
   gridSpan?: number;
@@ -37,6 +40,18 @@ export class TableCell {
 
   width(v: number) {
     this.property.width = v;
+    return this;
+  }
+
+  setBorder(position: BorderPosition, border: TableCellBorder) {
+    this.property.borders[position] = border;
+    return this;
+  }
+
+  clearBorder(position: BorderPosition) {
+    this.property.borders[position] = new TableCellBorder(position).border_type(
+      "Nil"
+    );
     return this;
   }
 }

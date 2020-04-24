@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use super::{GridSpan, TableCellBorders, TableCellWidth, VAlign, VMerge};
+use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -37,6 +37,21 @@ impl TableCellProperty {
 
     pub fn grid_span(mut self, v: usize) -> TableCellProperty {
         self.grid_span = Some(GridSpan::new(v));
+        self
+    }
+
+    pub fn set_border(mut self, border: TableCellBorder) -> Self {
+        self.borders = Some(self.borders.unwrap_or_default().set(border));
+        self
+    }
+
+    pub fn clear_border(mut self, position: BorderPosition) -> Self {
+        self.borders = Some(self.borders.unwrap_or_default().clear(position));
+        self
+    }
+
+    pub fn clear_all_border(mut self) -> Self {
+        self.borders = Some(self.borders.unwrap_or_default().clear_all());
         self
     }
 }

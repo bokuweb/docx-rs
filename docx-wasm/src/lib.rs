@@ -12,6 +12,7 @@ mod run;
 mod table;
 mod table_cell;
 mod table_row;
+mod table_cell_border;
 
 pub use abstract_numbering::*;
 pub use adaptors::*;
@@ -27,3 +28,4 @@ pub use run::*;
 pub use table::*;
 pub use table_cell::*;
 pub use table_row::*;
+pub use table_cell_border::*;

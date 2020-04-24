@@ -19,7 +19,7 @@ impl TableCellBorder {
 #[wasm_bindgen]
 impl TableCellBorder {
     pub fn color(mut self, color: String) -> TableCellBorder {
-        self.0.color = color.into();
+        self.0.color = color;
         self
     }
 

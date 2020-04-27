@@ -5,6 +5,9 @@ use serde::Serialize;
 use std::fmt;
 use wasm_bindgen::prelude::*;
 
+use super::errors;
+use std::str::FromStr;
+
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -38,10 +41,27 @@ impl fmt::Display for BorderType {
     }
 }
 
+impl FromStr for BorderType {
+    type Err = errors::TypeError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "nil" => Ok(BorderType::Nil),
+            "none" => Ok(BorderType::None),
+            "single" => Ok(BorderType::Single),
+            "thick" => Ok(BorderType::Thick),
+            "double" => Ok(BorderType::Double),
+            "dotted" => Ok(BorderType::Dotted),
+            "dashed" => Ok(BorderType::Dashed),
+            "dotDash" => Ok(BorderType::DotDash),
+            "dotDotDash" => Ok(BorderType::DotDotDash),
+            "triple" => Ok(BorderType::Triple),
+            _ => Ok(BorderType::Single),
+        }
+    }
+}
+
 /*
-  Unsupported types
-"nil"
-"none"
+Unsupported types
 "thinThickSmallGap"
 "thickThinSmallGap"
 "thinThickThinSmallGap"

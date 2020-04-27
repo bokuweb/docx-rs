@@ -109,6 +109,17 @@ impl TableCellBorders {
         Default::default()
     }
 
+    pub fn with_empty() -> TableCellBorders {
+        TableCellBorders {
+            top: None,
+            left: None,
+            bottom: None,
+            right: None,
+            inside_h: None,
+            inside_v: None,
+        }
+    }
+
     pub fn set(mut self, border: TableCellBorder) -> Self {
         match border.position {
             BorderPosition::Top => self.top = Some(border),

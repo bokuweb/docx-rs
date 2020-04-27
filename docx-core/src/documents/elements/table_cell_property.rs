@@ -40,6 +40,11 @@ impl TableCellProperty {
         self
     }
 
+    pub fn set_borders(mut self, borders: TableCellBorders) -> Self {
+        self.borders = Some(borders);
+        self
+    }
+
     pub fn set_border(mut self, border: TableCellBorder) -> Self {
         self.borders = Some(self.borders.unwrap_or_default().set(border));
         self

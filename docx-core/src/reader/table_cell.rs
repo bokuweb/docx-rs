@@ -67,7 +67,8 @@ impl ElementReader for TableCell {
                                             }
                                         }
                                         XMLElement::TableCellBorders => {
-                                            // TODO: Support table cell borders later
+                                            let borders = TableCellBorders::read(r, &attributes)?;
+                                            cell = cell.set_borders(borders);
                                         }
                                         _ => {}
                                     }
@@ -115,9 +116,11 @@ mod tests {
         <w:gridSpan w:val="2"/>
         <w:tcBorders>
             <w:top w:val="single" w:sz="2" w:space="0" w:color="000000"/>
-            <w:left w:val="single" w:sz="2" w:space="0" w:color="000000"/>
-            <w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000"/>
-            <w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+            <w:left w:val="single" w:sz="3" w:space="0" w:color="000000"/>
+            <w:right w:val="single" w:sz="2" w:space="0" w:color="000000"/>
+            <w:bottom w:val="double" w:sz="4" w:space="0" w:color="000000"/>
+            <w:insideH w:val="single" w:sz="5" w:space="0" w:color="FF0000"/>
+            <w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000"/>
         </w:tcBorders>
         <w:shd w:fill="auto" w:val="clear"/>
     </w:tcPr>
@@ -136,7 +139,19 @@ mod tests {
                 .add_paragraph(Paragraph::new().add_run(Run::new()))
                 .width(6425, WidthType::DXA)
                 .grid_span(2)
-                .vertical_merge(VMergeType::Restart),
+                .vertical_merge(VMergeType::Restart)
+                .set_border(TableCellBorder::new(BorderPosition::Top))
+                .set_border(TableCellBorder::new(BorderPosition::Left).size(3))
+                .set_border(
+                    TableCellBorder::new(BorderPosition::Bottom)
+                        .size(4)
+                        .border_type(BorderType::Double)
+                )
+                .set_border(
+                    TableCellBorder::new(BorderPosition::InsideH)
+                        .size(5)
+                        .color("FF0000".to_owned())
+                )
         );
     }
 

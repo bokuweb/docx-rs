@@ -73,6 +73,11 @@ impl TableCell {
         self
     }
 
+    pub fn set_borders(mut self, borders: TableCellBorders) -> Self {
+        self.property = self.property.set_borders(borders);
+        self
+    }
+
     pub fn clear_border(mut self, position: BorderPosition) -> Self {
         self.property = self.property.clear_border(position);
         self

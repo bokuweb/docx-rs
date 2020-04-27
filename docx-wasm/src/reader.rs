@@ -1,4 +1,3 @@
-use docx_rs;
 use wasm_bindgen::prelude::*;
 
 #[allow(non_snake_case)]

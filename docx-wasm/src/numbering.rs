@@ -1,4 +1,3 @@
-use docx_rs;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]

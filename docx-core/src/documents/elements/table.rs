@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use super::{TableGrid, TableProperty, TableRow};
+use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -49,6 +49,26 @@ impl Table {
 
     pub fn width(mut self, w: usize, t: WidthType) -> Table {
         self.property = self.property.width(w, t);
+        self
+    }
+
+    pub fn set_borders(mut self, borders: TableBorders) -> Self {
+        self.property = self.property.set_borders(borders);
+        self
+    }
+
+    pub fn set_border(mut self, border: TableBorder) -> Self {
+        self.property = self.property.set_border(border);
+        self
+    }
+
+    pub fn clear_border(mut self, position: BorderPosition) -> Self {
+        self.property = self.property.clear_border(position);
+        self
+    }
+
+    pub fn clear_all_border(mut self) -> Self {
+        self.property = self.property.clear_all_border();
         self
     }
 }
@@ -111,7 +131,7 @@ mod tests {
         let t = Table::new(vec![]).set_grid(vec![100, 200, 300]);
         assert_eq!(
             serde_json::to_string(&t).unwrap(),
-            r#"{"rows":[],"grid":[100,200,300],"hasNumbering":false,"property":{"width":{"width":0,"widthType":"Auto"},"justification":"left","borders":{"top":{"position":"top","borderType":"single","size":2,"space":0,"color":"000000"},"left":{"position":"left","borderType":"single","size":2,"space":0,"color":"000000"},"bottom":{"position":"bottom","borderType":"single","size":2,"space":0,"color":"000000"},"right":{"position":"right","borderType":"single","size":2,"space":0,"color":"000000"},"insideH":{"position":"insideH","borderType":"single","size":2,"space":0,"color":"000000"},"insideV":{"position":"insideV","borderType":"single","size":2,"space":0,"color":"000000"}},"margins":{"top":55,"left":54,"bottom":55,"right":55},"indent":null}}"#
+            r#"{"rows":[],"grid":[100,200,300],"hasNumbering":false,"property":{"width":{"width":0,"widthType":"Auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}},"margins":{"top":55,"left":54,"bottom":55,"right":55},"indent":null}}"#
         );
     }
 }

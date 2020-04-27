@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use super::{Justification, TableBorders, TableCellMargins, TableIndent, TableWidth};
+use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -44,6 +44,26 @@ impl TableProperty {
 
     pub fn align(mut self, v: TableAlignmentType) -> TableProperty {
         self.justification = Justification::new(v.to_string());
+        self
+    }
+
+    pub fn set_borders(mut self, borders: TableBorders) -> Self {
+        self.borders = borders;
+        self
+    }
+
+    pub fn set_border(mut self, border: TableBorder) -> Self {
+        self.borders = self.borders.set(border);
+        self
+    }
+
+    pub fn clear_border(mut self, position: BorderPosition) -> Self {
+        self.borders = self.borders.clear(position);
+        self
+    }
+
+    pub fn clear_all_border(mut self) -> Self {
+        self.borders = self.borders.clear_all();
         self
     }
 }
@@ -90,7 +110,7 @@ mod tests {
         let p = TableProperty::new().indent(100);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"width":{"width":0,"widthType":"Auto"},"justification":"left","borders":{"top":{"position":"top","borderType":"single","size":2,"space":0,"color":"000000"},"left":{"position":"left","borderType":"single","size":2,"space":0,"color":"000000"},"bottom":{"position":"bottom","borderType":"single","size":2,"space":0,"color":"000000"},"right":{"position":"right","borderType":"single","size":2,"space":0,"color":"000000"},"insideH":{"position":"insideH","borderType":"single","size":2,"space":0,"color":"000000"},"insideV":{"position":"insideV","borderType":"single","size":2,"space":0,"color":"000000"}},"margins":{"top":55,"left":54,"bottom":55,"right":55},"indent":{"width":100,"widthType":"DXA"}}"#
+            r#"{"width":{"width":0,"widthType":"Auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}},"margins":{"top":55,"left":54,"bottom":55,"right":55},"indent":{"width":100,"widthType":"DXA"}}"#
         );
     }
 }

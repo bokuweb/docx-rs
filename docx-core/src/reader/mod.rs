@@ -29,7 +29,6 @@ mod xml_element;
 mod level_override;
 
 use std::io::Cursor;
-use zip;
 
 use crate::documents::*;
 

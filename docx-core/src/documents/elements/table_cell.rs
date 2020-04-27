@@ -1,7 +1,7 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
-use super::{Paragraph, TableCellProperty};
+use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -67,6 +67,21 @@ impl TableCell {
         self.property = self.property.width(v, t);
         self
     }
+
+    pub fn set_border(mut self, border: TableCellBorder) -> Self {
+        self.property = self.property.set_border(border);
+        self
+    }
+
+    pub fn clear_border(mut self, position: BorderPosition) -> Self {
+        self.property = self.property.clear_border(position);
+        self
+    }
+
+    pub fn clear_all_border(mut self) -> Self {
+        self.property = self.property.clear_all_border();
+        self
+    }
 }
 
 impl Default for TableCell {
@@ -97,7 +112,6 @@ impl BuildXML for TableCell {
 #[cfg(test)]
 mod tests {
 
-    use super::super::*;
     use super::*;
     #[cfg(test)]
     use pretty_assertions::assert_eq;

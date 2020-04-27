@@ -45,7 +45,7 @@ export class Docx {
 
   buildRun(r: Run) {
     let run = wasm.createRun();
-    r.children.forEach(child => {
+    r.children.forEach((child) => {
       if (child instanceof Text) {
         run = run.add_text(child.text);
       } else if (child instanceof DeleteText) {
@@ -134,7 +134,7 @@ export class Docx {
 
   buildParagraph(p: Paragraph) {
     let paragraph = wasm.createParagraph();
-    p.children.forEach(child => {
+    p.children.forEach((child) => {
       if (child instanceof Run) {
         const run = this.buildRun(child);
         paragraph = paragraph.add_run(run);
@@ -205,9 +205,9 @@ export class Docx {
 
   buildTable(t: Table) {
     let table = wasm.createTable();
-    t.rows.forEach(r => {
+    t.rows.forEach((r) => {
       let row = wasm.createTableRow();
-      r.cells.forEach(c => {
+      r.cells.forEach((c) => {
         const cell = this.buildCell(c);
         row = row.add_cell(cell);
       });
@@ -237,7 +237,7 @@ export class Docx {
 
   buildCell(c: TableCell) {
     let cell = wasm.createTableCell();
-    c.children.forEach(p => {
+    c.children.forEach((p) => {
       const paragraph = this.buildParagraph(p);
       cell = cell.add_paragraph(paragraph);
     });
@@ -270,12 +270,68 @@ export class Docx {
     if (typeof c.property.width !== "undefined") {
       cell = cell.width(c.property.width);
     }
+    if (typeof c.property.borders !== "undefined") {
+      if (c.property.borders.top) {
+        const border = wasm
+          .createTableCellBorder(wasm.BorderPosition.Top)
+          .size(c.property.borders.top.size)
+          .color(c.property.borders.top.color)
+          .border_type(c.property.borders.top.border_type);
+        cell = cell.set_border(border);
+      }
+
+      if (c.property.borders.right) {
+        const border = wasm
+          .createTableCellBorder(wasm.BorderPosition.Right)
+          .size(c.property.borders.right.size)
+          .color(c.property.borders.right.color)
+          .border_type(c.property.borders.right.border_type);
+        cell = cell.set_border(border);
+      }
+
+      if (c.property.borders.bottom) {
+        const border = wasm
+          .createTableCellBorder(wasm.BorderPosition.Bottom)
+          .size(c.property.borders.bottom.size)
+          .color(c.property.borders.bottom.color)
+          .border_type(c.property.borders.bottom.border_type);
+        cell = cell.set_border(border);
+      }
+
+      if (c.property.borders.left) {
+        const border = wasm
+          .createTableCellBorder(wasm.BorderPosition.Left)
+          .size(c.property.borders.left.size)
+          .color(c.property.borders.left.color)
+          .border_type(c.property.borders.left.border_type);
+        cell = cell.set_border(border);
+      }
+
+      if (c.property.borders.insideH) {
+        const border = wasm
+          .createTableCellBorder(wasm.BorderPosition.InsideH)
+          .size(c.property.borders.insideH.size)
+          .color(c.property.borders.insideH.color)
+          .border_type(c.property.borders.insideH.border_type);
+        cell = cell.set_border(border);
+      }
+
+      if (c.property.borders.insideV) {
+        const border = wasm
+          .createTableCellBorder(wasm.BorderPosition.InsideV)
+          .size(c.property.borders.insideV.size)
+          .color(c.property.borders.insideV.color)
+          .border_type(c.property.borders.insideV.border_type);
+        cell = cell.set_border(border);
+      }
+    }
+
     return cell;
   }
 
   build() {
     let docx = wasm.createDocx();
-    this.children.forEach(child => {
+    this.children.forEach((child) => {
       if (child instanceof Paragraph) {
         let p = this.buildParagraph(child);
         docx = docx.add_paragraph(p);
@@ -285,16 +341,16 @@ export class Docx {
       }
     });
 
-    this.abstractNumberings.forEach(n => {
+    this.abstractNumberings.forEach((n) => {
       let num = wasm.createAbstractNumbering(n.id);
-      n.levels.forEach(l => {
+      n.levels.forEach((l) => {
         const level = wasm.createLevel(l.id, l.start, l.format, l.text, l.jc);
         num = num.add_level(level);
       });
       docx = docx.add_abstract_numbering(num);
     });
 
-    this.numberings.forEach(n => {
+    this.numberings.forEach((n) => {
       let num = wasm.createNumbering(n.id, n.abstractNumId);
       docx = docx.add_numbering(num);
     });

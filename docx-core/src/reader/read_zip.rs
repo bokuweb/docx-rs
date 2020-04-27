@@ -1,5 +1,4 @@
 use std::io::{Cursor, Read};
-use zip;
 
 use super::ReaderError;
 

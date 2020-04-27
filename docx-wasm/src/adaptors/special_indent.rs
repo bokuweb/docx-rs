@@ -1,5 +1,3 @@
-use docx_rs;
-
 pub fn create_special_indent(
     special_indent_kind: Option<docx_rs::SpecialIndentKind>,
     special_indent_size: Option<i32>,

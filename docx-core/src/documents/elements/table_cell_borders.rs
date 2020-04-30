@@ -51,6 +51,18 @@ impl TableCellBorder {
         self.border_type = border_type;
         self
     }
+
+    pub fn get_size(&self) -> usize {
+        self.size
+    }
+
+    pub fn get_color(&self) -> String {
+        self.color.clone()
+    }
+
+    pub fn get_border_type(&self) -> BorderType {
+        self.border_type
+    }
 }
 
 impl BuildXML for TableCellBorder {

@@ -1,5 +1,5 @@
 import { Paragraph } from "./paragraph";
-import { TableCellBorders } from "./table-cell-borders";
+import { TableCellBorders, PositionKeys } from "./table-cell-borders";
 import { BorderPosition, TableCellBorder } from "./table-cell-border";
 
 export type VMergeType = "restart" | "continue";
@@ -7,7 +7,7 @@ export type VMergeType = "restart" | "continue";
 export type VAlignType = "top" | "center" | "bottom";
 
 export type CellProperty = {
-  borders?: TableCellBorders;
+  borders: TableCellBorders;
   verticalMerge?: VMergeType;
   verticalAlign?: VAlignType;
   gridSpan?: number;
@@ -16,7 +16,9 @@ export type CellProperty = {
 
 export class TableCell {
   children: Paragraph[] = [];
-  property: CellProperty = {};
+  property: CellProperty = {
+    borders: new TableCellBorders(),
+  };
 
   addParagraph(p: Paragraph) {
     this.children.push(p);
@@ -44,14 +46,14 @@ export class TableCell {
   }
 
   setBorder(position: BorderPosition, border: TableCellBorder) {
-    this.property.borders[position] = border;
+    this.property.borders[position.toLowerCase() as PositionKeys] = border;
     return this;
   }
 
   clearBorder(position: BorderPosition) {
-    this.property.borders[position] = new TableCellBorder(position).border_type(
-      "Nil"
-    );
+    this.property.borders[
+      position.toLowerCase() as PositionKeys
+    ] = new TableCellBorder(position).border_type("Nil");
     return this;
   }
 }

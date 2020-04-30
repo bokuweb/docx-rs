@@ -63,6 +63,7 @@ jobs:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
       - run: cargo build
+
   lint:
     name: Clippy
     runs-on: ubuntu-latest

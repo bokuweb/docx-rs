@@ -11,12 +11,12 @@ export type BorderType =
   | "Triple";
 
 export type BorderPosition =
-  | "Left"
-  | "Right"
-  | "Top"
-  | "Bottom"
-  | "InsideH"
-  | "InsideV";
+  | "left"
+  | "right"
+  | "top"
+  | "bottom"
+  | "insideH"
+  | "insideV";
 
 export class TableCellBorder {
   _border_type: BorderType;

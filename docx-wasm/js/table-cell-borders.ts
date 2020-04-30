@@ -1,5 +1,13 @@
 import { BorderPosition, TableCellBorder } from "./table-cell-border";
 
+export type PositionKeys =
+  | "top"
+  | "left"
+  | "bottom"
+  | "right"
+  | "insideH"
+  | "insideV";
+
 export class TableCellBorders {
   top: TableCellBorder | null = new TableCellBorder("Top");
   left: TableCellBorder | null = new TableCellBorder("Left");

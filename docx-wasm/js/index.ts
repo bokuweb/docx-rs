@@ -4,6 +4,7 @@ import { Delete } from "./delete";
 import { DeleteText } from "./delete-text";
 import { Table } from "./table";
 import { TableCell } from "./table-cell";
+import { BorderType } from "./table-cell-border";
 import { Run } from "./run";
 import { Text } from "./text";
 import { Tab } from "./tab";
@@ -17,6 +18,33 @@ import { BookmarkEnd } from "./bookmark-end";
 import { DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
+
+const convertBorderType = (t: BorderType) => {
+  switch (t) {
+    case "Nil":
+      return wasm.BorderType.Nil;
+    case "None":
+      return wasm.BorderType.None;
+    case "Single":
+      return wasm.BorderType.Single;
+    case "Thick":
+      return wasm.BorderType.Thick;
+    case "Double":
+      return wasm.BorderType.Double;
+    case "Dotted":
+      return wasm.BorderType.Dotted;
+    case "Dashed":
+      return wasm.BorderType.Dashed;
+    case "DotDash":
+      return wasm.BorderType.DotDash;
+    case "DotDotDash":
+      return wasm.BorderType.DotDotDash;
+    case "Triple":
+      return wasm.BorderType.Triple;
+    default:
+      return wasm.BorderType.Single;
+  }
+};
 
 export class Docx {
   children: (Paragraph | Table)[] = [];
@@ -274,54 +302,62 @@ export class Docx {
       if (c.property.borders.top) {
         const border = wasm
           .createTableCellBorder(wasm.BorderPosition.Top)
-          .size(c.property.borders.top.size)
-          .color(c.property.borders.top.color)
-          .border_type(c.property.borders.top.border_type);
+          .size(c.property.borders.top._size)
+          .color(c.property.borders.top._color)
+          .border_type(convertBorderType(c.property.borders.top._border_type));
         cell = cell.set_border(border);
       }
 
       if (c.property.borders.right) {
         const border = wasm
           .createTableCellBorder(wasm.BorderPosition.Right)
-          .size(c.property.borders.right.size)
-          .color(c.property.borders.right.color)
-          .border_type(c.property.borders.right.border_type);
+          .size(c.property.borders.right._size)
+          .color(c.property.borders.right._color)
+          .border_type(
+            convertBorderType(c.property.borders.right._border_type)
+          );
         cell = cell.set_border(border);
       }
 
       if (c.property.borders.bottom) {
         const border = wasm
           .createTableCellBorder(wasm.BorderPosition.Bottom)
-          .size(c.property.borders.bottom.size)
-          .color(c.property.borders.bottom.color)
-          .border_type(c.property.borders.bottom.border_type);
+          .size(c.property.borders.bottom._size)
+          .color(c.property.borders.bottom._color)
+          .border_type(
+            convertBorderType(c.property.borders.bottom._border_type)
+          );
         cell = cell.set_border(border);
       }
 
       if (c.property.borders.left) {
         const border = wasm
           .createTableCellBorder(wasm.BorderPosition.Left)
-          .size(c.property.borders.left.size)
-          .color(c.property.borders.left.color)
-          .border_type(c.property.borders.left.border_type);
+          .size(c.property.borders.left._size)
+          .color(c.property.borders.left._color)
+          .border_type(convertBorderType(c.property.borders.left._border_type));
         cell = cell.set_border(border);
       }
 
       if (c.property.borders.insideH) {
         const border = wasm
           .createTableCellBorder(wasm.BorderPosition.InsideH)
-          .size(c.property.borders.insideH.size)
-          .color(c.property.borders.insideH.color)
-          .border_type(c.property.borders.insideH.border_type);
+          .size(c.property.borders.insideH._size)
+          .color(c.property.borders.insideH._color)
+          .border_type(
+            convertBorderType(c.property.borders.insideH._border_type)
+          );
         cell = cell.set_border(border);
       }
 
       if (c.property.borders.insideV) {
         const border = wasm
           .createTableCellBorder(wasm.BorderPosition.InsideV)
-          .size(c.property.borders.insideV.size)
-          .color(c.property.borders.insideV.color)
-          .border_type(c.property.borders.insideV.border_type);
+          .size(c.property.borders.insideV._size)
+          .color(c.property.borders.insideV._color)
+          .border_type(
+            convertBorderType(c.property.borders.insideV._border_type)
+          );
         cell = cell.set_border(border);
       }
     }

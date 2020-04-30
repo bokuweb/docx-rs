@@ -406,6 +406,8 @@ export * from "./insert";
 export * from "./delete";
 export * from "./table";
 export * from "./table-cell";
+export * from "./table-cell-border";
+export * from "./table-cell-borders";
 export * from "./table-row";
 export * from "./run";
 export * from "./text";

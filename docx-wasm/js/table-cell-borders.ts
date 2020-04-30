@@ -35,7 +35,7 @@ export class TableCellBorders {
   }
 
   clear(position: BorderPosition) {
-    let nil = new TableCellBorder(position).border_type("Nil");
+    let nil = new TableCellBorder(position).border_type("nil");
     switch (position) {
       case "top":
         this.top = nil;
@@ -54,12 +54,12 @@ export class TableCellBorders {
   }
 
   clearAll() {
-    this.top = new TableCellBorder("top").border_type("Nil");
-    this.left = new TableCellBorder("left").border_type("Nil");
-    this.bottom = new TableCellBorder("bottom").border_type("Nil");
-    this.right = new TableCellBorder("right").border_type("Nil");
-    this.insideH = new TableCellBorder("insideH").border_type("Nil");
-    this.insideV = new TableCellBorder("insideV").border_type("Nil");
+    this.top = new TableCellBorder("top").border_type("nil");
+    this.left = new TableCellBorder("left").border_type("nil");
+    this.bottom = new TableCellBorder("bottom").border_type("nil");
+    this.right = new TableCellBorder("right").border_type("nil");
+    this.insideH = new TableCellBorder("insideH").border_type("nil");
+    this.insideV = new TableCellBorder("insideV").border_type("nil");
     return this;
   }
 }

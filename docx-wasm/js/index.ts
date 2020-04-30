@@ -21,25 +21,25 @@ import * as wasm from "./pkg";
 
 const convertBorderType = (t: BorderType) => {
   switch (t) {
-    case "Nil":
+    case "nil":
       return wasm.BorderType.Nil;
-    case "None":
+    case "none":
       return wasm.BorderType.None;
-    case "Single":
+    case "single":
       return wasm.BorderType.Single;
-    case "Thick":
+    case "thick":
       return wasm.BorderType.Thick;
-    case "Double":
+    case "double":
       return wasm.BorderType.Double;
-    case "Dotted":
+    case "dotted":
       return wasm.BorderType.Dotted;
-    case "Dashed":
+    case "dashed":
       return wasm.BorderType.Dashed;
-    case "DotDash":
+    case "dotDash":
       return wasm.BorderType.DotDash;
-    case "DotDotDash":
+    case "dotDotDash":
       return wasm.BorderType.DotDotDash;
-    case "Triple":
+    case "triple":
       return wasm.BorderType.Triple;
     default:
       return wasm.BorderType.Single;

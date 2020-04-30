@@ -53,7 +53,7 @@ export class TableCell {
   clearBorder(position: BorderPosition) {
     this.property.borders[
       position.toLowerCase() as PositionKeys
-    ] = new TableCellBorder(position).border_type("Nil");
+    ] = new TableCellBorder(position).border_type("nil");
     return this;
   }
 }

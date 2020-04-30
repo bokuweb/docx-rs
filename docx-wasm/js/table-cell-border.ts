@@ -1,14 +1,14 @@
 export type BorderType =
-  | "Nil"
-  | "None"
-  | "Single"
-  | "Thick"
-  | "Double"
-  | "Dotted"
-  | "Dashed"
-  | "DotDash"
-  | "DotDotDash"
-  | "Triple";
+  | "nil"
+  | "none"
+  | "single"
+  | "thick"
+  | "double"
+  | "dotted"
+  | "dashed"
+  | "dotDash"
+  | "dotDotDash"
+  | "triple";
 
 export type BorderPosition =
   | "left"

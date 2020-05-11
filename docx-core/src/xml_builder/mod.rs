@@ -12,6 +12,8 @@ mod properties;
 mod relationship;
 mod settings;
 mod styles;
+mod pic;
+mod drawing;
 
 use crate::BuildXML;
 

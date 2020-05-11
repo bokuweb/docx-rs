@@ -1,35 +1,37 @@
-<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" 
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:o="urn:schemas-microsoft-com:office:office" 
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:o="urn:schemas-microsoft-com:office:office" 
     xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" 
-    xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" 
     xmlns:v="urn:schemas-microsoft-com:vml" 
-    xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" 
-    xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" 
-    xmlns:w10="urn:schemas-microsoft-com:office:word" 
     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" 
-    xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" 
-    xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" 
+    xmlns:w10="urn:schemas-microsoft-com:office:word" 
+    xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" 
+    xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" 
     xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" 
-    xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" 
-    xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" 
-    xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 wp14">
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" 
+    xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" mc:Ignorable="w14 wp14">
     <w:body>
         <w:p>
+            <w:pPr>
+                <w:pStyle w:val="Normal"/>
+                <w:bidi w:val="0"/>
+                <w:jc w:val="left"/>
+                <w:rPr></w:rPr>
+            </w:pPr>
             <w:r>
                 <w:drawing>
-                    <wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" allowOverlap="1" behindDoc="0" locked="0" layoutInCell="1" relativeHeight="1905000">
+                    <wp:anchor behindDoc="0" distT="0" distB="0" distL="0" distR="0" simplePos="0" locked="0" layoutInCell="1" allowOverlap="1" relativeHeight="2">
                         <wp:simplePos x="0" y="0"/>
-                        <wp:positionH relativeFrom="page">
-                            <wp:align>right</wp:align>
+                        <wp:positionH relativeFrom="column">
+                            <wp:posOffset>300355</wp:posOffset>
                         </wp:positionH>
-                        <wp:positionV relativeFrom="page">
-                            <wp:align>bottom</wp:align>
+                        <wp:positionV relativeFrom="paragraph">
+                            <wp:posOffset>38100</wp:posOffset>
                         </wp:positionV>
-                        <wp:extent cx="1905000" cy="1905000"/>
-                        <wp:effectExtent b="0" l="0" r="0" t="0"/>
-                        <wp:wrapNone/>
-                        <wp:docPr id="0" name="" descr=""/>
+                        <wp:extent cx="929005" cy="929005"/>
+                        <wp:effectExtent l="0" t="0" r="0" b="0"/>
+                        <wp:wrapSquare wrapText="largest"/>
+                        <wp:docPr id="1" name="イメージ1" descr=""></wp:docPr>
                         <wp:cNvGraphicFramePr>
                             <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/>
                         </wp:cNvGraphicFramePr>
@@ -37,22 +39,21 @@
                             <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
                                 <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
                                     <pic:nvPicPr>
-                                        <pic:cNvPr id="0" name="" desc=""/>
+                                        <pic:cNvPr id="1" name="イメージ1" descr=""></pic:cNvPr>
                                         <pic:cNvPicPr>
                                             <a:picLocks noChangeAspect="1" noChangeArrowheads="1"/>
                                         </pic:cNvPicPr>
                                     </pic:nvPicPr>
                                     <pic:blipFill>
-                                        <a:blip r:embed="rId7" cstate="none"/>
-                                        <a:srcRect/>
+                                        <a:blip r:embed="rIdhoge"></a:blip>
                                         <a:stretch>
                                             <a:fillRect/>
                                         </a:stretch>
                                     </pic:blipFill>
                                     <pic:spPr bwMode="auto">
                                         <a:xfrm>
-                                            <a:ext cx="1905000" cy="1905000"/>
                                             <a:off x="0" y="0"/>
+                                            <a:ext cx="929005" cy="929005"/>
                                         </a:xfrm>
                                         <a:prstGeom prst="rect">
                                             <a:avLst/>
@@ -64,14 +65,18 @@
                     </wp:anchor>
                 </w:drawing>
             </w:r>
+            <w:r>
+                <w:rPr></w:rPr>
+                <w:t xml:space="preserve">Hello </w:t>
+            </w:r>
         </w:p>
         <w:sectPr>
-            <w:pgSz w:w="11906" w:h="16838" w:orient="portrait"/>
-            <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="708" w:footer="708" w:gutter="0" w:mirrorMargins="false"/>
-            <w:cols w:space="708" w:num="1"/>
-            <w:docGrid w:linePitch="360"/>
-            <w:headerReference w:type="default" r:id="rId5"/>
-            <w:footerReference w:type="default" r:id="rId6"/>
+            <w:type w:val="nextPage"/>
+            <w:pgSz w:w="11906" w:h="16838"/>
+            <w:pgMar w:left="1134" w:right="1134" w:header="0" w:top="1134" w:footer="0" w:bottom="1134" w:gutter="0"/>
+            <w:pgNumType w:fmt="decimal"/>
+            <w:formProt w:val="false"/>
+            <w:textDirection w:val="lrTb"/>
         </w:sectPr>
     </w:body>
 </w:document>

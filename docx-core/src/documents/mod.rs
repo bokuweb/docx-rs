@@ -7,6 +7,7 @@ mod document_rels;
 mod elements;
 mod font_table;
 mod history_id;
+mod pic_id;
 mod numberings;
 mod rels;
 mod settings;
@@ -15,6 +16,7 @@ mod xml_docx;
 
 pub(crate) use build_xml::BuildXML;
 pub(crate) use history_id::HistoryId;
+pub(crate) use pic_id::*;
 
 pub use comments::*;
 pub use content_types::*;

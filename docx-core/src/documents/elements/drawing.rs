@@ -90,9 +90,9 @@ impl BuildXML for Drawing {
         if let DrawingPositionType::Inline { .. } = self.position_type {
             b = b
                 .open_wp_inline("0", "0", "0", "0")
-                .wp_extent("952500", "952599")
+                .wp_extent("952500", "952500")
                 .wp_effect_extent("0", "0", "0", "0")
-                .wp_doc_pr("0", "", "")
+                .wp_doc_pr("1", "図")
                 .open_wp_c_nv_graphic_frame_pr()
                 .a_graphic_frame_locks("http://schemas.openxmlformats.org/drawingml/2006/main", "1")
                 .close()
@@ -101,7 +101,12 @@ impl BuildXML for Drawing {
         }
         match &self.data {
             Some(DrawingData::Pic(p)) => {
-                b = b.add_child(&p.clone());
+                b = b
+                    .open_a_graphic("http://schemas.openxmlformats.org/drawingml/2006/main")
+                    .open_a_graphic_data("http://schemas.openxmlformats.org/drawingml/2006/picture")
+                    .add_child(&p.clone())
+                    .close()
+                    .close();
             }
             None => {}
         }
@@ -120,7 +125,6 @@ mod tests {
     #[test]
     fn test_drawing_build_with_pic() {
         let d = Drawing::new().pic(Pic::new(vec![0])).build();
-        
         assert_eq!(
             str::from_utf8(&d).unwrap(),
             r#"<w:drawing>

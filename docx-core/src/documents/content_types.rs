@@ -86,6 +86,19 @@ impl BuildXML for ContentTypes {
         let mut b = b
             .declaration(None)
             .open_types("http://schemas.openxmlformats.org/package/2006/content-types");
+
+        b = b
+            .add_default("png", "image/png")
+            .add_default("jpeg", "image/jpeg")
+            .add_default("jpg", "image/jpg")
+            .add_default("bmp", "image/bmp")
+            .add_default("gif", "image/gif")
+            .add_default(
+                "rels",
+                "application/vnd.openxmlformats-package.relationships+xml",
+            )
+            .add_default("xml", "application/xml");
+
         for (k, v) in self.types.iter() {
             b = b.add_override(k, v);
         }

@@ -7,8 +7,8 @@ mod document_rels;
 mod elements;
 mod font_table;
 mod history_id;
-mod pic_id;
 mod numberings;
+mod pic_id;
 mod rels;
 mod settings;
 mod styles;
@@ -46,6 +46,7 @@ pub struct Docx {
     pub numberings: Numberings,
     pub settings: Settings,
     pub font_table: FontTable,
+    pub media: Vec<(usize, Vec<u8>)>,
 }
 
 impl Default for Docx {
@@ -60,6 +61,7 @@ impl Default for Docx {
         let font_table = FontTable::new();
         let comments = Comments::new();
         let numberings = Numberings::new();
+        let media = vec![];
         Docx {
             content_type,
             rels,
@@ -71,6 +73,7 @@ impl Default for Docx {
             settings,
             font_table,
             numberings,
+            media,
         }
     }
 }
@@ -151,6 +154,10 @@ impl Docx {
 
     pub fn build(&mut self) -> XMLDocx {
         self.update_comments();
+        let (image_ids, images) = self.create_images();
+
+        self.document_rels.image_ids = image_ids;
+
         XMLDocx {
             content_type: self.content_type.build(),
             rels: self.rels.build(),
@@ -162,6 +169,7 @@ impl Docx {
             settings: self.settings.build(),
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
+            media: images,
         }
     }
 
@@ -207,5 +215,51 @@ impl Docx {
             self.document_rels.has_comments = true;
         }
         self.comments.add_comments(comments);
+    }
+
+    // Traverse and collect images from document.
+    fn create_images(&mut self) -> (Vec<usize>, Vec<(usize, Vec<u8>)>) {
+        let mut image_ids: Vec<usize> = vec![];
+        let mut images: Vec<(usize, Vec<u8>)> = vec![];
+
+        for child in &mut self.document.children {
+            match child {
+                DocumentChild::Paragraph(paragraph) => {
+                    for child in &mut paragraph.children {
+                        if let ParagraphChild::Run(run) = child {
+                            for child in &mut run.children {
+                                if let RunChild::Drawing(d) = child {
+                                    if let Some(DrawingData::Pic(pic)) = &mut d.data {
+                                        dbg!(&pic.id);
+                                        image_ids.push(pic.id);
+                                        let b = std::mem::replace(&mut pic.image, vec![]);
+                                        images.push((pic.id, b));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                DocumentChild::Table(table) => {
+                    // for row in &table.rows {
+                    //     for cell in &row.cells {
+                    //         for content in &cell.children {
+                    //             match content {
+                    //                 TableCellContent::Paragraph(paragraph) => {
+                    //                     for child in &paragraph.children {
+                    //                         if let ParagraphChild::CommentStart(c) = child {
+                    //                             comments.push(c.comment());
+                    //                         }
+                    //                     }
+                    //                 }
+                    //             }
+                    //         }
+                    //     }
+                    // }
+                }
+            }
+        }
+
+        (image_ids, images)
     }
 }

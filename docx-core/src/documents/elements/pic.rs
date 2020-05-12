@@ -7,17 +7,14 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Pic {
-    id: String,
-    image: Vec<u8>,
+    pub id: usize,
+    pub image: Vec<u8>,
 }
 
 impl Pic {
     pub fn new(buf: Vec<u8>) -> Pic {
         let id = generate_pic_id();
-        Self {
-            id: format!("rIdImage{}", id),
-            image: buf,
-        }
+        Self { id, image: buf }
     }
 }
 
@@ -25,16 +22,27 @@ impl BuildXML for Pic {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         b.open_pic("http://schemas.openxmlformats.org/drawingml/2006/picture")
-            .open_pic_nv_piv_pr()
+            .open_pic_nv_pic_pr()
+            .pic_c_nv_pr("0", "")
+            .open_pic_c_nv_pic_pr()
+            .a_pic_locks("1", "1")
+            .close()
             .close()
             .open_blip_fill()
-            .a_blip(&self.id, "none")
+            .a_blip(&create_pic_rid(self.id), "none")
             .a_src_rect()
             .open_a_stretch()
             .a_fill_rect()
             .close()
             .close()
             .open_pic_sp_pr("auto")
+            .open_a_xfrm()
+            .a_off("0", "0")
+            .a_ext("952500", "952500")
+            .close()
+            .open_a_prst_geom("rect")
+            .a_av_lst()
+            .close()
             .close()
             .close()
             .build()

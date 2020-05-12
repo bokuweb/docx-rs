@@ -167,7 +167,6 @@ impl BuildXML for Run {
 #[cfg(test)]
 mod tests {
 
-    use super::super::*;
     use super::*;
     #[cfg(test)]
     use pretty_assertions::assert_eq;

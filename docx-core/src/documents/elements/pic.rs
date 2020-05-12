@@ -1,4 +1,3 @@
-use super::*;
 use serde::Serialize;
 
 use crate::documents::*;
@@ -29,7 +28,7 @@ impl BuildXML for Pic {
             .close()
             .close()
             .open_blip_fill()
-            .a_blip(&create_pic_rid(self.id), "none")
+            .a_blip(&create_pic_rid(self.id))
             .a_src_rect()
             .open_a_stretch()
             .a_fill_rect()
@@ -63,15 +62,28 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
-  <pic:nvPicPr />
+  <pic:nvPicPr>
+    <pic:cNvPr id="0" name="" />
+    <pic:cNvPicPr>
+      <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
+    </pic:cNvPicPr>
+  </pic:nvPicPr>
   <pic:blipFill>
-    <a:blip r:embed="rIdImage123" cstate="none" />
+    <a:blip r:embed="rIdImage123" />
     <a:srcRect />
     <a:stretch>
       <a:fillRect />
     </a:stretch>
   </pic:blipFill>
-  <pic:spPr bwMode="auto" />
+  <pic:spPr bwMode="auto">
+    <a:xfrm>
+      <a:off x="0" y="0" />
+      <a:ext cx="952500" cy="952500" />
+    </a:xfrm>
+    <a:prstGeom prst="rect">
+      <a:avLst />
+    </a:prstGeom>
+  </pic:spPr>
 </pic:pic>"#
         );
     }

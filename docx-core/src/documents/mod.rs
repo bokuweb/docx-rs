@@ -230,7 +230,6 @@ impl Docx {
                             for child in &mut run.children {
                                 if let RunChild::Drawing(d) = child {
                                     if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                                        dbg!(&pic.id);
                                         image_ids.push(pic.id);
                                         let b = std::mem::replace(&mut pic.image, vec![]);
                                         images.push((pic.id, b));
@@ -241,25 +240,37 @@ impl Docx {
                     }
                 }
                 DocumentChild::Table(table) => {
-                    // for row in &table.rows {
-                    //     for cell in &row.cells {
-                    //         for content in &cell.children {
-                    //             match content {
-                    //                 TableCellContent::Paragraph(paragraph) => {
-                    //                     for child in &paragraph.children {
-                    //                         if let ParagraphChild::CommentStart(c) = child {
-                    //                             comments.push(c.comment());
-                    //                         }
-                    //                     }
-                    //                 }
-                    //             }
-                    //         }
-                    //     }
-                    // }
+                    for row in &mut table.rows {
+                        for cell in &mut row.cells {
+                            for content in &mut cell.children {
+                                match content {
+                                    TableCellContent::Paragraph(paragraph) => {
+                                        for child in &mut paragraph.children {
+                                            if let ParagraphChild::Run(run) = child {
+                                                for child in &mut run.children {
+                                                    if let RunChild::Drawing(d) = child {
+                                                        if let Some(DrawingData::Pic(pic)) =
+                                                            &mut d.data
+                                                        {
+                                                            image_ids.push(pic.id);
+                                                            let b = std::mem::replace(
+                                                                &mut pic.image,
+                                                                vec![],
+                                                            );
+                                                            images.push((pic.id, b));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-
         (image_ids, images)
     }
 }

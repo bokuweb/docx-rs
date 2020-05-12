@@ -92,7 +92,7 @@ impl BuildXML for Drawing {
                 .open_wp_inline("0", "0", "0", "0")
                 .wp_extent("952500", "952500")
                 .wp_effect_extent("0", "0", "0", "0")
-                .wp_doc_pr("1", "図")
+                .wp_doc_pr("1", "Figure")
                 .open_wp_c_nv_graphic_frame_pr()
                 .a_graphic_frame_locks("http://schemas.openxmlformats.org/drawingml/2006/main", "1")
                 .close()
@@ -129,22 +129,39 @@ mod tests {
             str::from_utf8(&d).unwrap(),
             r#"<w:drawing>
   <wp:inline distT="0" distB="0" distL="0" distR="0">
-    <wp:extent cx="952500" cy="952599" />
+    <wp:extent cx="952500" cy="952500" />
     <wp:effectExtent b="0" l="0" r="0" t="0" />
-    <wp:doc_pr id="0" name="" descr="" />
-    <a:cNvGraphicFramePr>
+    <wp:docPr id="1" name="Figure" />
+    <wp:cNvGraphicFramePr>
       <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1" />
-    </a:cNvGraphicFramePr><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
-  <pic:nvPicPr />
+    </wp:cNvGraphicFramePr>
+    <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+      <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+  <pic:nvPicPr>
+    <pic:cNvPr id="0" name="" />
+    <pic:cNvPicPr>
+      <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
+    </pic:cNvPicPr>
+  </pic:nvPicPr>
   <pic:blipFill>
-    <a:blip r:embed="rIdImage123" cstate="none" />
+    <a:blip r:embed="rIdImage123" />
     <a:srcRect />
     <a:stretch>
       <a:fillRect />
     </a:stretch>
   </pic:blipFill>
-  <pic:spPr bwMode="auto" />
-</pic:pic></wp:inline>
+  <pic:spPr bwMode="auto">
+    <a:xfrm>
+      <a:off x="0" y="0" />
+      <a:ext cx="952500" cy="952500" />
+    </a:xfrm>
+    <a:prstGeom prst="rect">
+      <a:avLst />
+    </a:prstGeom>
+  </pic:spPr>
+</pic:pic></a:graphicData>
+    </a:graphic>
+  </wp:inline>
 </w:drawing>"#
         );
     }

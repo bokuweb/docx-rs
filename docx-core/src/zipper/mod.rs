@@ -42,7 +42,7 @@ where
     zip.start_file("word/numbering.xml", options)?;
     zip.write_all(&xml.numberings)?;
 
-    if xml.media.len() > 0 {
+    if !xml.media.is_empty() {
         zip.add_directory("word/media/", Default::default())?;
         for m in xml.media {
             zip.start_file(format!("word/media/image{}.jpg", m.0), options)?;

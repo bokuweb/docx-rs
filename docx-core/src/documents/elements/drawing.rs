@@ -88,20 +88,26 @@ impl BuildXML for Drawing {
         let mut b = b.open_drawing();
 
         if let DrawingPositionType::Inline { .. } = self.position_type {
-            b = b
-                .open_wp_inline("0", "0", "0", "0")
-                .wp_extent("952500", "952500")
-                .wp_effect_extent("0", "0", "0", "0")
-                .wp_doc_pr("1", "Figure")
-                .open_wp_c_nv_graphic_frame_pr()
-                .a_graphic_frame_locks("http://schemas.openxmlformats.org/drawingml/2006/main", "1")
-                .close()
+            b = b.open_wp_inline("0", "0", "0", "0")
         } else {
             b = b.open_wp_anchor("0", "0", "0", "0");
         }
         match &self.data {
             Some(DrawingData::Pic(p)) => {
+                let w = format!("{}", crate::types::emu::from_px(p.size.0));
+                let h = format!("{}", crate::types::emu::from_px(p.size.1));
                 b = b
+                    // Please see 20.4.2.7 extent (Drawing Object Size)
+                    // One inch equates to 914400 EMUs and a centimeter is 360000
+                    .wp_extent(&w, &h)
+                    .wp_effect_extent("0", "0", "0", "0")
+                    .wp_doc_pr("1", "Figure")
+                    .open_wp_c_nv_graphic_frame_pr()
+                    .a_graphic_frame_locks(
+                        "http://schemas.openxmlformats.org/drawingml/2006/main",
+                        "1",
+                    )
+                    .close()
                     .open_a_graphic("http://schemas.openxmlformats.org/drawingml/2006/main")
                     .open_a_graphic_data("http://schemas.openxmlformats.org/drawingml/2006/picture")
                     .add_child(&p.clone())

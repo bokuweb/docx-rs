@@ -67,7 +67,6 @@ impl BuildXML for DocumentRels {
         }
 
         for id in self.image_ids.iter() {
-            dbg!(id, "asdsa!!!=d", &format!("media/image{}.jpg", *id));
             b = b.relationship(
                 &create_pic_rid(*id),
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",

@@ -10,9 +10,9 @@ pub fn main() -> Result<(), DocxError> {
     let mut buf = Vec::new();
     let _ = img.read_to_end(&mut buf).unwrap();
 
-    let pic = Pic::new(buf);
+    let pic = Pic::new(buf).size(320, 240);
     Docx::new()
-        .add_paragraph(Paragraph::new().add_run(Run::new().add_image(pic)))
+        .add_paragraph(Paragraph::new().add_run(Run::new().add_text("🐱").add_image(pic)))
         .build()
         .pack(file)?;
     Ok(())

@@ -130,12 +130,17 @@ mod tests {
 
     #[test]
     fn test_drawing_build_with_pic() {
-        let d = Drawing::new().pic(Pic::new(vec![0])).build();
+        use std::io::Read;
+
+        let mut img = std::fs::File::open("../images/cat_min.jpg").unwrap();
+        let mut buf = Vec::new();
+        let _ = img.read_to_end(&mut buf).unwrap();
+        let d = Drawing::new().pic(Pic::new(buf)).build();
         assert_eq!(
             str::from_utf8(&d).unwrap(),
             r#"<w:drawing>
   <wp:inline distT="0" distB="0" distL="0" distR="0">
-    <wp:extent cx="952500" cy="952500" />
+    <wp:extent cx="3048000" cy="2286000" />
     <wp:effectExtent b="0" l="0" r="0" t="0" />
     <wp:docPr id="1" name="Figure" />
     <wp:cNvGraphicFramePr>
@@ -159,7 +164,7 @@ mod tests {
   <pic:spPr bwMode="auto">
     <a:xfrm>
       <a:off x="0" y="0" />
-      <a:ext cx="952500" cy="952500" />
+      <a:ext cx="3048000" cy="2286000" />
     </a:xfrm>
     <a:prstGeom prst="rect">
       <a:avLst />

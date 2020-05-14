@@ -6,7 +6,7 @@ use docx_rs::*;
 pub fn main() -> Result<(), DocxError> {
     let path = std::path::Path::new("./output/image.docx");
     let file = File::create(&path).unwrap();
-    let mut img = File::open("./images/cat.jpeg").unwrap();
+    let mut img = File::open("./images/cat_min.jpg").unwrap();
     let mut buf = Vec::new();
     let _ = img.read_to_end(&mut buf).unwrap();
 

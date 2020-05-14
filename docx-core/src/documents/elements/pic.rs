@@ -73,7 +73,12 @@ mod tests {
 
   #[test]
   fn test_pic_build() {
-    let b = Pic::new(vec![0]).build();
+    use std::io::Read;
+
+    let mut img = std::fs::File::open("../images/cat_min.jpg").unwrap();
+    let mut buf = Vec::new();
+    let _ = img.read_to_end(&mut buf).unwrap();
+    let b = Pic::new(buf).build();
     assert_eq!(
       str::from_utf8(&b).unwrap(),
       r#"<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
@@ -93,7 +98,7 @@ mod tests {
   <pic:spPr bwMode="auto">
     <a:xfrm>
       <a:off x="0" y="0" />
-      <a:ext cx="952500" cy="952500" />
+      <a:ext cx="3048000" cy="2286000" />
     </a:xfrm>
     <a:prstGeom prst="rect">
       <a:avLst />

@@ -1,5 +1,6 @@
 use serde::Serialize;
 
+use super::*;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
@@ -8,6 +9,7 @@ use crate::xml_builder::*;
 pub struct DocumentRels {
     pub has_comments: bool,
     pub has_numberings: bool,
+    pub image_ids: Vec<usize>,
 }
 
 impl DocumentRels {
@@ -21,6 +23,7 @@ impl Default for DocumentRels {
         Self {
             has_comments: false,
             has_numberings: false,
+            image_ids: vec![],
         }
     }
 }
@@ -60,6 +63,14 @@ impl BuildXML for DocumentRels {
                 "rId5",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering",
                 "numbering.xml",
+            )
+        }
+
+        for id in self.image_ids.iter() {
+            b = b.relationship(
+                &create_pic_rid(*id),
+                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",
+                &format!("media/image{}.jpg", *id),
             )
         }
 

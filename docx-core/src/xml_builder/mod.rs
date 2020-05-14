@@ -5,9 +5,11 @@ mod comments;
 mod core_properties;
 mod declaration;
 mod document;
+mod drawing;
 mod elements;
 mod fonts;
 mod numbering;
+mod pic;
 mod properties;
 mod relationship;
 mod settings;
@@ -53,6 +55,17 @@ impl XMLBuilder {
                 XmlEvent::start_element("Override")
                     .attr("PartName", &name)
                     .attr("ContentType", &content_type),
+            )
+            .expect("should write to buf");
+        self.close()
+    }
+
+    pub(crate) fn add_default(mut self, name: &str, extension: &str) -> Self {
+        self.writer
+            .write(
+                XmlEvent::start_element("Default")
+                    .attr("ContentType", &extension)
+                    .attr("Extension", &name),
             )
             .expect("should write to buf");
         self.close()

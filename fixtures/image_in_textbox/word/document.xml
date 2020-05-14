@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" 
+    xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" 
+    xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" 
+    xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex" 
+    xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex" 
+    xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex" 
+    xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex" 
+    xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex" 
+    xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex" 
+    xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink" 
+    xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d" 
+    xmlns:o="urn:schemas-microsoft-com:office:office" 
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" 
+    xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" 
+    xmlns:v="urn:schemas-microsoft-com:vml" 
+    xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" 
+    xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" 
+    xmlns:w10="urn:schemas-microsoft-com:office:word" 
+    xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" 
+    xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" 
+    xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" 
+    xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" 
+    xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" 
+    xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" 
+    xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" 
+    xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" 
+    xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" 
+    xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" 
+    xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 w16se w16cid w16 w16cex wp14">
+    <w:body>
+        <w:p w:rsidR="006A55A7" w:rsidRDefault="00233F76">
+            <w:r>
+                <w:rPr>
+                    <w:noProof/>
+                </w:rPr>
+                <mc:AlternateContent>
+                    <mc:Choice Requires="wps">
+                        <w:drawing>
+                            <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0" relativeHeight="251659264" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1">
+                                <wp:simplePos x="0" y="0"/>
+                                <wp:positionH relativeFrom="column">
+                                    <wp:posOffset>481965</wp:posOffset>
+                                </wp:positionH>
+                                <wp:positionV relativeFrom="paragraph">
+                                    <wp:posOffset>1012825</wp:posOffset>
+                                </wp:positionV>
+                                <wp:extent cx="2070100" cy="1460500"/>
+                                <wp:effectExtent l="0" t="0" r="12700" b="12700"/>
+                                <wp:wrapNone/>
+                                <wp:docPr id="1" name="テキスト ボックス 1"/>
+                                <wp:cNvGraphicFramePr/>
+                                <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+                                    <a:graphicData uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+                                        <wps:wsp>
+                                            <wps:cNvSpPr txBox="1"/>
+                                            <wps:spPr>
+                                                <a:xfrm>
+                                                    <a:off x="0" y="0"/>
+                                                    <a:ext cx="2070100" cy="1460500"/>
+                                                </a:xfrm>
+                                                <a:prstGeom prst="rect">
+                                                    <a:avLst/>
+                                                </a:prstGeom>
+                                                <a:solidFill>
+                                                    <a:schemeClr val="lt1"/>
+                                                </a:solidFill>
+                                                <a:ln w="6350">
+                                                    <a:solidFill>
+                                                        <a:prstClr val="black"/>
+                                                    </a:solidFill>
+                                                </a:ln>
+                                            </wps:spPr>
+                                            <wps:txbx>
+                                                <w:txbxContent>
+                                                    <w:p w:rsidR="00233F76" w:rsidRDefault="00233F76">
+                                                        <w:r>
+                                                            <w:rPr>
+                                                                <w:rFonts w:hint="eastAsia"/>
+                                                            </w:rPr>
+                                                            <w:t>H</w:t>
+                                                        </w:r>
+                                                        <w:r>
+                                                            <w:t>ello</w:t>
+                                                        </w:r>
+                                                    </w:p>
+                                                    <w:p w:rsidR="00233F76" w:rsidRDefault="00233F76">
+                                                        <w:pPr>
+                                                            <w:rPr>
+                                                                <w:rFonts w:hint="eastAsia"/>
+                                                            </w:rPr>
+                                                        </w:pPr>
+                                                        <w:r>
+                                                            <w:rPr>
+                                                                <w:rFonts w:hint="eastAsia"/>
+                                                                <w:noProof/>
+                                                            </w:rPr>
+                                                            <w:drawing>
+                                                                <wp:inline distT="0" distB="0" distL="0" distR="0">
+                                                                    <wp:extent cx="979170" cy="1362710"/>
+                                                                    <wp:effectExtent l="0" t="0" r="0" b="0"/>
+                                                                    <wp:docPr id="2" name="図 2" descr="飛行機 が含まれている画像&#xA;&#xA;自動的に生成された説明"/>
+                                                                    <wp:cNvGraphicFramePr>
+                                                                        <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/>
+                                                                    </wp:cNvGraphicFramePr>
+                                                                    <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+                                                                        <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                                                                            <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                                                                                <pic:nvPicPr>
+                                                                                    <pic:cNvPr id="2" name="thunder-logo-png-2.png"/>
+                                                                                    <pic:cNvPicPr/>
+                                                                                </pic:nvPicPr>
+                                                                                <pic:blipFill>
+                                                                                    <a:blip r:embed="rId4">
+                                                                                        <a:extLst>
+                                                                                            <a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">
+                                                                                                <a14:useLocalDpi xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main" val="0"/>
+                                                                                            </a:ext>
+                                                                                        </a:extLst>
+                                                                                    </a:blip>
+                                                                                    <a:stretch>
+                                                                                        <a:fillRect/>
+                                                                                    </a:stretch>
+                                                                                </pic:blipFill>
+                                                                                <pic:spPr>
+                                                                                    <a:xfrm>
+                                                                                        <a:off x="0" y="0"/>
+                                                                                        <a:ext cx="979170" cy="1362710"/>
+                                                                                    </a:xfrm>
+                                                                                    <a:prstGeom prst="rect">
+                                                                                        <a:avLst/>
+                                                                                    </a:prstGeom>
+                                                                                </pic:spPr>
+                                                                            </pic:pic>
+                                                                        </a:graphicData>
+                                                                    </a:graphic>
+                                                                </wp:inline>
+                                                            </w:drawing>
+                                                        </w:r>
+                                                    </w:p>
+                                                </w:txbxContent>
+                                            </wps:txbx>
+                                            <wps:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow" horzOverflow="overflow" vert="horz" wrap="square" lIns="91440" tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0" rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0" compatLnSpc="1">
+                                                <a:prstTxWarp prst="textNoShape">
+                                                    <a:avLst/>
+                                                </a:prstTxWarp>
+                                                <a:noAutofit/>
+                                            </wps:bodyPr>
+                                        </wps:wsp>
+                                    </a:graphicData>
+                                </a:graphic>
+                            </wp:anchor>
+                        </w:drawing>
+                    </mc:Choice>
+                    <mc:Fallback>
+                        <w:pict>
+                            <v:shapetype id="_x0000_t202" coordsize="21600,21600" o:spt="202" path="m,l,21600r21600,l21600,xe">
+                                <v:stroke joinstyle="miter"/>
+                                <v:path gradientshapeok="t" o:connecttype="rect"/>
+                            </v:shapetype>
+                            <v:shape id="テキスト ボックス 1" o:spid="_x0000_s1026" type="#_x0000_t202" style="position:absolute;left:0;text-align:left;margin-left:37.95pt;margin-top:79.75pt;width:163pt;height:115pt;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:text;v-text-anchor:top" o:gfxdata="UEsDBBQABgAIAAAAIQC2gziS/gAAAOEBAAATAAAAW0NvbnRlbnRfVHlwZXNdLnhtbJSRQU7DMBBF&#xD;&#xA;90jcwfIWJU67QAgl6YK0S0CoHGBkTxKLZGx5TGhvj5O2G0SRWNoz/78nu9wcxkFMGNg6quQqL6RA&#xD;&#xA;0s5Y6ir5vt9lD1JwBDIwOMJKHpHlpr69KfdHjyxSmriSfYz+USnWPY7AufNIadK6MEJMx9ApD/oD&#xD;&#xA;OlTrorhX2lFEilmcO2RdNtjC5xDF9pCuTyYBB5bi6bQ4syoJ3g9WQ0ymaiLzg5KdCXlKLjvcW893&#xD;&#xA;SUOqXwnz5DrgnHtJTxOsQfEKIT7DmDSUCaxw7Rqn8787ZsmRM9e2VmPeBN4uqYvTtW7jvijg9N/y&#xD;&#xA;JsXecLq0q+WD6m8AAAD//wMAUEsDBBQABgAIAAAAIQA4/SH/1gAAAJQBAAALAAAAX3JlbHMvLnJl&#xD;&#xA;bHOkkMFqwzAMhu+DvYPRfXGawxijTi+j0GvpHsDYimMaW0Yy2fr2M4PBMnrbUb/Q94l/f/hMi1qR&#xD;&#xA;JVI2sOt6UJgd+ZiDgffL8ekFlFSbvV0oo4EbChzGx4f9GRdb25HMsYhqlCwG5lrLq9biZkxWOiqY&#xD;&#xA;22YiTra2kYMu1l1tQD30/bPm3wwYN0x18gb45AdQl1tp5j/sFB2T0FQ7R0nTNEV3j6o9feQzro1i&#xD;&#xA;OWA14Fm+Q8a1a8+Bvu/d/dMb2JY5uiPbhG/ktn4cqGU/er3pcvwCAAD//wMAUEsDBBQABgAIAAAA&#xD;&#xA;IQBJ0ZoFagIAALMEAAAOAAAAZHJzL2Uyb0RvYy54bWysVMFu2zAMvQ/YPwi6r3aytN2COkWWosOA&#xD;&#xA;oi3QDj0rspwYkyVNUmJ3xwYY9hH7hWHnfY9/ZE+yk6bdTsMuMimST+Qj6ZPTppJkLawrtcro4CCl&#xD;&#xA;RCiu81ItMvrx9vzVG0qcZypnUiuR0Xvh6Onk5YuT2ozFUC+1zIUlAFFuXJuMLr034yRxfCkq5g60&#xD;&#xA;EQrGQtuKeah2keSW1UCvZDJM06Ok1jY3VnPhHG7POiOdRPyiENxfFYUTnsiMIjcfTxvPeTiTyQkb&#xD;&#xA;Lywzy5L3abB/yKJipcKjO6gz5hlZ2fIPqKrkVjtd+AOuq0QXRclFrAHVDNJn1dwsmRGxFpDjzI4m&#xD;&#xA;9/9g+eX62pIyR+8oUaxCi9rN1/bhR/vwq918I+3me7vZtA8/oZNBoKs2boyoG4M437zTTQjt7x0u&#xD;&#xA;AwtNYavwRX0EdhB/vyNbNJ5wXA7TY1QME4dtMDpKD6EAJ3kMN9b590JXJAgZtehmJJmtL5zvXLcu&#xD;&#xA;4TWnZZmfl1JGJUyQmElL1gy9lz4mCfAnXlKROqNHrw/TCPzEFqB38XPJ+Kc+vT0v4EmFnAMpXfFB&#xD;&#xA;8s286RmZ6/weRFndTZ4z/LwE7gVz/ppZjBoIwPr4KxyF1EhG9xIlS22//O0++GMCYKWkxuhm1H1e&#xD;&#xA;MSsokR8UZuPtYDQKsx6V0eHxEIrdt8z3LWpVzTQYQv+RXRSDv5dbsbC6usOWTcOrMDHF8XZG/Vac&#xD;&#xA;+W6hsKVcTKfRCdNtmL9QN4YH6NCRwOdtc8es6fvpMQqXejvkbPysrZ1viFR6uvK6KGPPA8Edqz3v&#xD;&#xA;2Iw4Nf0Wh9Xb16PX479m8hsAAP//AwBQSwMEFAAGAAgAAAAhANwTTsLgAAAADwEAAA8AAABkcnMv&#xD;&#xA;ZG93bnJldi54bWxMT8tOwzAQvCPxD9YicaNOgUCSxql4lF44URDnbezaFrEd2W4a/p7lBJeVdnZ2&#xD;&#xA;Hu16dgObVEw2eAHLRQFM+T5I67WAj/eXqwpYyuglDsErAd8qwbo7P2uxkeHk39S0y5qRiE8NCjA5&#xD;&#xA;jw3nqTfKYVqEUXm6HUJ0mGmNmsuIJxJ3A78uijvu0HpyMDiqJ6P6r93RCdg86lr3FUazqaS10/x5&#xD;&#xA;eNVbIS4v5ucVjYcVsKzm/PcBvx0oP3QUbB+OXiY2CLgva2ISXtYlMCLcFktC9gJuKkJ41/L/Pbof&#xD;&#xA;AAAA//8DAFBLAQItABQABgAIAAAAIQC2gziS/gAAAOEBAAATAAAAAAAAAAAAAAAAAAAAAABbQ29u&#xD;&#xA;dGVudF9UeXBlc10ueG1sUEsBAi0AFAAGAAgAAAAhADj9If/WAAAAlAEAAAsAAAAAAAAAAAAAAAAA&#xD;&#xA;LwEAAF9yZWxzLy5yZWxzUEsBAi0AFAAGAAgAAAAhAEnRmgVqAgAAswQAAA4AAAAAAAAAAAAAAAAA&#xD;&#xA;LgIAAGRycy9lMm9Eb2MueG1sUEsBAi0AFAAGAAgAAAAhANwTTsLgAAAADwEAAA8AAAAAAAAAAAAA&#xD;&#xA;AAAAxAQAAGRycy9kb3ducmV2LnhtbFBLBQYAAAAABAAEAPMAAADRBQAAAAA=&#xD;&#xA;" fillcolor="white [3201]" strokeweight=".5pt">
+                                <v:textbox>
+                                    <w:txbxContent>
+                                        <w:p w:rsidR="00233F76" w:rsidRDefault="00233F76">
+                                            <w:r>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="eastAsia"/>
+                                                </w:rPr>
+                                                <w:t>H</w:t>
+                                            </w:r>
+                                            <w:r>
+                                                <w:t>ello</w:t>
+                                            </w:r>
+                                        </w:p>
+                                        <w:p w:rsidR="00233F76" w:rsidRDefault="00233F76">
+                                            <w:pPr>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="eastAsia"/>
+                                                </w:rPr>
+                                            </w:pPr>
+                                            <w:r>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="eastAsia"/>
+                                                    <w:noProof/>
+                                                </w:rPr>
+                                                <w:drawing>
+                                                    <wp:inline distT="0" distB="0" distL="0" distR="0">
+                                                        <wp:extent cx="979170" cy="1362710"/>
+                                                        <wp:effectExtent l="0" t="0" r="0" b="0"/>
+                                                        <wp:docPr id="2" name="図 2" descr="飛行機 が含まれている画像&#xA;&#xA;自動的に生成された説明"/>
+                                                        <wp:cNvGraphicFramePr>
+                                                            <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/>
+                                                        </wp:cNvGraphicFramePr>
+                                                        <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+                                                            <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                                                                <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                                                                    <pic:nvPicPr>
+                                                                        <pic:cNvPr id="2" name="thunder-logo-png-2.png"/>
+                                                                        <pic:cNvPicPr/>
+                                                                    </pic:nvPicPr>
+                                                                    <pic:blipFill>
+                                                                        <a:blip r:embed="rId4">
+                                                                            <a:extLst>
+                                                                                <a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">
+                                                                                    <a14:useLocalDpi xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main" val="0"/>
+                                                                                </a:ext>
+                                                                            </a:extLst>
+                                                                        </a:blip>
+                                                                        <a:stretch>
+                                                                            <a:fillRect/>
+                                                                        </a:stretch>
+                                                                    </pic:blipFill>
+                                                                    <pic:spPr>
+                                                                        <a:xfrm>
+                                                                            <a:off x="0" y="0"/>
+                                                                            <a:ext cx="979170" cy="1362710"/>
+                                                                        </a:xfrm>
+                                                                        <a:prstGeom prst="rect">
+                                                                            <a:avLst/>
+                                                                        </a:prstGeom>
+                                                                    </pic:spPr>
+                                                                </pic:pic>
+                                                            </a:graphicData>
+                                                        </a:graphic>
+                                                    </wp:inline>
+                                                </w:drawing>
+                                            </w:r>
+                                        </w:p>
+                                    </w:txbxContent>
+                                </v:textbox>
+                            </v:shape>
+                        </w:pict>
+                    </mc:Fallback>
+                </mc:AlternateContent>
+            </w:r>
+        </w:p>
+        <w:sectPr w:rsidR="006A55A7" w:rsidSect="00733037">
+            <w:pgSz w:w="11900" w:h="16840"/>
+            <w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0"/>
+            <w:cols w:space="425"/>
+            <w:docGrid w:type="lines" w:linePitch="360"/>
+        </w:sectPr>
+    </w:body>
+</w:document>

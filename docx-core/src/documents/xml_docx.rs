@@ -16,6 +16,7 @@ pub struct XMLDocx {
     pub settings: Vec<u8>,
     pub font_table: Vec<u8>,
     pub numberings: Vec<u8>,
+    pub media: Vec<(usize, Vec<u8>)>,
 }
 
 impl XMLDocx {

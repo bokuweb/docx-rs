@@ -41,6 +41,15 @@ where
     zip.write_all(&xml.comments)?;
     zip.start_file("word/numbering.xml", options)?;
     zip.write_all(&xml.numberings)?;
+
+    if !xml.media.is_empty() {
+        zip.add_directory("word/media/", Default::default())?;
+        for m in xml.media {
+            zip.start_file(format!("word/media/image{}.jpg", m.0), options)?;
+            zip.write_all(&m.1)?;
+        }
+    }
+
     zip.finish()?;
     Ok(())
 }

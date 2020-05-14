@@ -1,4 +1,4 @@
-use super::{Break, DeleteText, Drawing, RunProperty, Tab, Text};
+use super::*;
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
@@ -94,6 +94,13 @@ impl Run {
         self
     }
 
+    pub fn add_image(mut self, pic: Pic) -> Run {
+        self.children
+            .push(RunChild::Drawing(Drawing::new().pic(pic)));
+        self
+    }
+
+    // TODO: Remove later
     pub fn add_drawing(mut self, d: Drawing) -> Run {
         self.children.push(RunChild::Drawing(d));
         self
@@ -160,7 +167,6 @@ impl BuildXML for Run {
 #[cfg(test)]
 mod tests {
 
-    use super::super::*;
     use super::*;
     #[cfg(test)]
     use pretty_assertions::assert_eq;

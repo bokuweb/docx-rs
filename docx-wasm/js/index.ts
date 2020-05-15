@@ -414,6 +414,7 @@ export * from "./text";
 export * from "./comment";
 export * from "./comment-end";
 export * from "./numbering";
+export * from "./abstract-numbering";
 export * from "./bookmark-start";
 export * from "./bookmark-end";
 export * from "./break";

@@ -34,6 +34,7 @@ export type ParagraphProperty = {
 };
 
 export class Paragraph {
+  hasNumberings = false;
   children: ParagraphChild[] = [];
   property: ParagraphProperty = {};
 
@@ -92,6 +93,7 @@ export class Paragraph {
   }
 
   numbering(id: number, level: number) {
+    this.hasNumberings = true;
     this.property.numbering = { id, level };
     return this;
   }

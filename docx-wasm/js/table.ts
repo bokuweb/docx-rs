@@ -9,11 +9,15 @@ export type TableProperty = {
 };
 
 export class Table {
+  hasNumberings = false;
   rows: TableRow[] = [];
   grid: number[] = [];
   property: TableProperty = {};
 
   addRow(row: TableRow) {
+    if (row.hasNumberings) {
+      this.hasNumberings = true;
+    }
     this.rows.push(row);
     return this;
   }

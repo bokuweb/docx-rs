@@ -33,9 +33,12 @@ impl Docx {
         self
     }
 
-    pub fn build(&mut self) -> Result<Vec<u8>, JsValue> {
+    pub fn build(&mut self, has_numberings: bool) -> Result<Vec<u8>, JsValue> {
         let buf = Vec::new();
         let mut cur = std::io::Cursor::new(buf);
+        if has_numberings {
+            self.0.document_rels.has_numberings = true;
+        }
         let res = self.0.build().pack(&mut cur);
         if res.is_err() {
             return Err(format!("{:?}", res).into());

@@ -48,15 +48,22 @@ const convertBorderType = (t: BorderType) => {
 
 export class Docx {
   children: (Paragraph | Table)[] = [];
+  hasNumberings = false;
   abstractNumberings: AbstractNumbering[] = [];
   numberings: Numbering[] = [];
 
   addParagraph(p: Paragraph) {
+    if (p.hasNumberings) {
+      this.hasNumberings = true;
+    }
     this.children.push(p);
     return this;
   }
 
   addTable(t: Table) {
+    if (t.hasNumberings) {
+      this.hasNumberings = true;
+    }
     this.children.push(t);
     return this;
   }
@@ -380,7 +387,22 @@ export class Docx {
     this.abstractNumberings.forEach((n) => {
       let num = wasm.createAbstractNumbering(n.id);
       n.levels.forEach((l) => {
-        const level = wasm.createLevel(l.id, l.start, l.format, l.text, l.jc);
+        let level = wasm.createLevel(l.id, l.start, l.format, l.text, l.jc);
+        if (l.paragraphProperty.indent) {
+          let kind;
+          if (l.paragraphProperty.indent.specialIndentKind === "firstLine") {
+            kind = wasm.SpecialIndentKind.FirstLine;
+          } else if (
+            l.paragraphProperty.indent.specialIndentKind === "hanging"
+          ) {
+            kind = wasm.SpecialIndentKind.Hanging;
+          }
+          level = level.indent(
+            l.paragraphProperty.indent.left,
+            kind,
+            l.paragraphProperty.indent.specialIndentSize
+          );
+        }
         num = num.add_level(level);
       });
       docx = docx.add_abstract_numbering(num);
@@ -391,7 +413,7 @@ export class Docx {
       docx = docx.add_numbering(num);
     });
 
-    const buf = docx.build();
+    const buf = docx.build(this.hasNumberings);
     docx.free();
     return buf;
   }

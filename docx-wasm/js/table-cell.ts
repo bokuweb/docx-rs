@@ -16,11 +16,15 @@ export type CellProperty = {
 
 export class TableCell {
   children: Paragraph[] = [];
+  hasNumberings = false;
   property: CellProperty = {
     borders: new TableCellBorders(),
   };
 
   addParagraph(p: Paragraph) {
+    if (p.hasNumberings) {
+      this.hasNumberings = true;
+    }
     this.children.push(p);
     return this;
   }

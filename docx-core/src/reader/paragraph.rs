@@ -138,14 +138,14 @@ mod tests {
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
         let p = Paragraph::read(&mut parser, &[]).unwrap();
-        let s: Option<&str> = None;
+
         assert_eq!(
             p,
             Paragraph {
                 children: vec![ParagraphChild::Run(Run::new().add_text("a"))],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
-                    style: ParagraphStyle::new(s),
+                    style: None,
                     numbering_property: None,
                     alignment: None,
                     indent: Some(Indent::new(
@@ -177,14 +177,14 @@ mod tests {
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
         let p = Paragraph::read(&mut parser, &[]).unwrap();
-        let s: Option<&str> = None;
+
         assert_eq!(
             p,
             Paragraph {
                 children: vec![ParagraphChild::Run(Run::new().add_text("a"))],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
-                    style: ParagraphStyle::new(s),
+                    style: None,
                     numbering_property: None,
                     alignment: None,
                     indent: Some(Indent::new(None, None, None, Some(100))),
@@ -206,14 +206,14 @@ mod tests {
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
         let p = Paragraph::read(&mut parser, &[]).unwrap();
-        let s: Option<&str> = None;
+
         assert_eq!(
             p,
             Paragraph {
                 children: vec![],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
-                    style: ParagraphStyle::new(s),
+                    style: None,
                     numbering_property: None,
                     alignment: Some(Justification::new(AlignmentType::Left.to_string())),
                     indent: None,
@@ -238,14 +238,13 @@ mod tests {
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
         let p = Paragraph::read(&mut parser, &[]).unwrap();
-        let s: Option<&str> = None;
         assert_eq!(
             p,
             Paragraph {
                 children: vec![],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
-                    style: ParagraphStyle::new(s),
+                    style: None,
                     numbering_property: Some(
                         NumberingProperty::new().add_num(NumberingId::new(1), IndentLevel::new(0),)
                     ),
@@ -272,7 +271,6 @@ mod tests {
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
         let p = Paragraph::read(&mut parser, &[]).unwrap();
-        let s: Option<&str> = None;
         assert_eq!(
             p,
             Paragraph {
@@ -283,7 +281,7 @@ mod tests {
                 )],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
-                    style: ParagraphStyle::new(s),
+                    style: None,
                     numbering_property: None,
                     alignment: None,
                     indent: None,
@@ -308,7 +306,7 @@ mod tests {
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
         let p = Paragraph::read(&mut parser, &[]).unwrap();
-        let s: Option<&str> = None;
+
         assert_eq!(
             p,
             Paragraph {
@@ -319,7 +317,7 @@ mod tests {
                 )],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
-                    style: ParagraphStyle::new(s),
+                    style: None,
                     numbering_property: None,
                     alignment: None,
                     indent: None,
@@ -344,7 +342,7 @@ mod tests {
 </w:document>"#;
         let mut parser = EventReader::new(c.as_bytes());
         let p = Paragraph::read(&mut parser, &[]).unwrap();
-        let s: Option<&str> = None;
+
         assert_eq!(
             p,
             Paragraph {
@@ -355,7 +353,7 @@ mod tests {
                 ],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
-                    style: ParagraphStyle::new(s),
+                    style: None,
                     numbering_property: None,
                     alignment: None,
                     indent: None,

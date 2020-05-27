@@ -99,7 +99,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:txbxContent><w:p><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr></w:p></w:txbxContent>"#
+            r#"<w:txbxContent><w:p><w:pPr><w:rPr /></w:pPr></w:p></w:txbxContent>"#
         );
     }
 }

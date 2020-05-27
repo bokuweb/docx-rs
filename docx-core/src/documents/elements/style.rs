@@ -131,7 +131,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:style w:type="paragraph" w:styleId="Heading"><w:name w:val="Heading1" /><w:rPr /><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr><w:basedOn w:val="Normal" /><w:next w:val="Normal" /><w:qFormat /></w:style>"#
+            r#"<w:style w:type="paragraph" w:styleId="Heading"><w:name w:val="Heading1" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:basedOn w:val="Normal" /><w:next w:val="Normal" /><w:qFormat /></w:style>"#
         );
     }
 }

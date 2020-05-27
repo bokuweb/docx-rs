@@ -9,7 +9,7 @@ use crate::xml_builder::*;
 #[serde(rename_all = "camelCase")]
 pub struct ParagraphProperty {
     pub run_property: RunProperty,
-    pub style: ParagraphStyle,
+    pub style: Option<ParagraphStyle>,
     pub numbering_property: Option<NumberingProperty>,
     pub alignment: Option<Justification>,
     pub indent: Option<Indent>,
@@ -17,10 +17,9 @@ pub struct ParagraphProperty {
 
 impl Default for ParagraphProperty {
     fn default() -> Self {
-        let s: Option<&str> = None;
         ParagraphProperty {
             run_property: RunProperty::new(),
-            style: ParagraphStyle::new(s),
+            style: None,
             numbering_property: None,
             alignment: None,
             indent: None,
@@ -44,7 +43,7 @@ impl ParagraphProperty {
     }
 
     pub fn style(mut self, style_id: &str) -> Self {
-        self.style = ParagraphStyle::new(Some(style_id));
+        self.style = Some(ParagraphStyle::new(Some(style_id)));
         self
     }
 
@@ -69,8 +68,8 @@ impl BuildXML for ParagraphProperty {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_paragraph_property()
-            .add_child(&self.style)
             .add_child(&self.run_property)
+            .add_optional_child(&self.style)
             .add_optional_child(&self.numbering_property)
             .add_optional_child(&self.alignment)
             .add_optional_child(&self.indent)
@@ -93,7 +92,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr>"#
+            r#"<w:pPr><w:rPr /></w:pPr>"#
         );
     }
 
@@ -103,7 +102,7 @@ mod tests {
         let b = c.align(AlignmentType::Right).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:jc w:val="right" /></w:pPr>"#
+            r#"<w:pPr><w:rPr /><w:jc w:val="right" /></w:pPr>"#
         );
     }
 
@@ -113,7 +112,7 @@ mod tests {
         let b = c.indent(Some(20), None, None, None).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPr><w:pStyle w:val="Normal" /><w:rPr /><w:ind w:left="20" w:right="0" /></w:pPr>"#
+            r#"<w:pPr><w:rPr /><w:ind w:left="20" w:right="0" /></w:pPr>"#
         );
     }
 
@@ -123,7 +122,7 @@ mod tests {
         let b = c.indent(Some(20), Some(SpecialIndentType::FirstLine(10)), None, None);
         assert_eq!(
             serde_json::to_string(&b).unwrap(),
-            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":"Normal","numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10}}}"#
+            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":null,"numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10}}}"#
         );
     }
 }

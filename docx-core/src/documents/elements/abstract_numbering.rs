@@ -72,7 +72,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:abstractNum w:abstractNumId="0"><w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:pStyle w:val="Normal" /><w:rPr /></w:pPr></w:lvl></w:abstractNum>"#
+            r#"<w:abstractNum w:abstractNumId="0"><w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr></w:lvl></w:abstractNum>"#
         );
     }
 
@@ -90,7 +90,7 @@ mod tests {
             .num_style_link("style1");
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"id":0,"styleLink":null,"numStyleLink":"style1","levels":[{"level":1,"start":1,"format":"decimal","text":"%4.","jc":"left","pstyle":null,"paragraphProperty":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":"Normal","numberingProperty":null,"alignment":null,"indent":null}}]}"#
+            r#"{"id":0,"styleLink":null,"numStyleLink":"style1","levels":[{"level":1,"start":1,"format":"decimal","text":"%4.","jc":"left","pstyle":null,"paragraphProperty":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null}}]}"#
         );
     }
 }

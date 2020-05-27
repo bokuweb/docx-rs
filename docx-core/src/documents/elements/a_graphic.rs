@@ -59,7 +59,7 @@ mod tests {
             );
         assert_eq!(
             serde_json::to_string(&graphic).unwrap(),
-            r#"{"children":[{"dataType":"wpShape","children":[{"type":"shape","data":{"children":[{"type":"textbox","data":{"children":[{"children":[{"type":"paragraph","data":{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"pattern1"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":"Normal","numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}}],"has_numbering":false}],"hasNumbering":false}}]}}]}]}"#
+            r#"{"children":[{"dataType":"wpShape","children":[{"type":"shape","data":{"children":[{"type":"textbox","data":{"children":[{"children":[{"type":"paragraph","data":{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"pattern1"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}}],"has_numbering":false}],"hasNumbering":false}}]}}]}]}"#
         );
     }
 }

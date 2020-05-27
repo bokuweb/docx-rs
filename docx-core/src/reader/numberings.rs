@@ -240,7 +240,6 @@ mod tests {
             LevelOverride::new(1).start(1),
         ];
         let num = Numbering::new(1, 0).overrides(overrides);
-        dbg!(&num);
         nums = nums
             .add_abstract_numbering(AbstractNumbering::new(0))
             .add_numbering(num);

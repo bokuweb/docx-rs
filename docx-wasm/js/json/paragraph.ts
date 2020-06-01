@@ -32,10 +32,10 @@ export type ParagraphJSON = {
 export type InsertJSON = {
   type: "insert";
   data: {
-    run: {
+    runs: {
       runProperty: RunPropertyJSON;
       children: RunChildJSON[];
-    };
+    }[];
     author: string;
     data: string;
   };
@@ -44,10 +44,10 @@ export type InsertJSON = {
 export type DeleteJSON = {
   type: "delete";
   data: {
-    run: {
+    runs: {
       runProperty: RunPropertyJSON;
       children: RunChildJSON[];
-    };
+    }[];
     author: string;
     data: string;
   };

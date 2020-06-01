@@ -24,7 +24,7 @@ impl ElementReader for Delete {
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    let run = if runs.len() > 0 {
+                    let run = if !runs.is_empty() {
                         std::mem::replace(&mut runs[0], Run::new())
                     } else {
                         Run::new()
@@ -40,9 +40,8 @@ impl ElementReader for Delete {
                             }
                         }
                         if runs.len() > 1 {
-                            for i in 1..runs.len() {
-                                let run = std::mem::replace(&mut runs[i], Run::new());
-                                del = del.add_run(run);
+                            for r in runs.into_iter().skip(1) {
+                                del = del.add_run(r);
                             }
                         }
                         return Ok(del);

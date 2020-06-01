@@ -7,7 +7,7 @@ use crate::xml_builder::*;
 pub struct Delete {
     pub author: String,
     pub date: String,
-    pub run: Run,
+    pub runs: Vec<Run>,
 }
 
 impl Default for Delete {
@@ -15,7 +15,7 @@ impl Default for Delete {
         Delete {
             author: "unnamed".to_owned(),
             date: "1970-01-01T00:00:00Z".to_owned(),
-            run: Run::new(),
+            runs: vec![],
         }
     }
 }
@@ -23,12 +23,13 @@ impl Default for Delete {
 impl Delete {
     pub fn new(run: Run) -> Delete {
         Self {
-            run,
+            runs: vec![run],
             ..Default::default()
         }
     }
-    pub fn run(mut self, run: Run) -> Delete {
-        self.run = run;
+
+    pub fn add_run(mut self, run: Run) -> Delete {
+        self.runs.push(run);
         self
     }
 
@@ -49,7 +50,7 @@ impl BuildXML for Delete {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_delete(&self.generate(), &self.author, &self.date)
-            .add_child(&self.run)
+            .add_children(&self.runs)
             .close()
             .build()
     }

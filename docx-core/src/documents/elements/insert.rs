@@ -6,7 +6,7 @@ use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct Insert {
-    pub run: Run,
+    pub runs: Vec<Run>,
     pub author: String,
     pub date: String,
 }
@@ -16,7 +16,7 @@ impl Default for Insert {
         Insert {
             author: "unnamed".to_owned(),
             date: "1970-01-01T00:00:00Z".to_owned(),
-            run: Run::new(),
+            runs: vec![],
         }
     }
 }
@@ -24,9 +24,14 @@ impl Default for Insert {
 impl Insert {
     pub fn new(run: Run) -> Insert {
         Self {
-            run,
+            runs: vec![run],
             ..Default::default()
         }
+    }
+
+    pub fn add_run(mut self, run: Run) -> Insert {
+        self.runs.push(run);
+        self
     }
 
     pub fn author(mut self, author: impl Into<String>) -> Insert {
@@ -46,7 +51,7 @@ impl BuildXML for Insert {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_insert(&self.generate(), &self.author, &self.date)
-            .add_child(&self.run)
+            .add_children(&self.runs)
             .close()
             .build()
     }

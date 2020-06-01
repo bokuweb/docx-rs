@@ -52,6 +52,7 @@ impl ElementReader for Run {
                                     run = run.size(usize::from_str(&attributes[0].value)?)
                                 }
                                 XMLElement::Underline => {
+                                    dbg!(&attributes);
                                     run = run.underline(&attributes[0].value.clone())
                                 }
                                 XMLElement::Italic => {

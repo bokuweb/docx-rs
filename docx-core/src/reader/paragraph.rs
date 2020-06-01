@@ -363,4 +363,92 @@ mod tests {
             }
         );
     }
+
+    #[test]
+    fn test_read_two_insert() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:p>
+        <w:ins w:id="0" w:author="unknown" w:date="2019-11-15T14:19:04Z">
+            <w:r>
+                <w:rPr></w:rPr>
+                <w:t>W</w:t>
+            </w:r>
+        </w:ins>
+        <w:ins w:id="0" w:author="unknown" w:date="2019-11-15T14:19:04Z">
+            <w:r>
+                <w:rPr></w:rPr>
+                <w:t>H</w:t>
+            </w:r>
+        </w:ins>
+    </w:p>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            p,
+            Paragraph {
+                children: vec![
+                    ParagraphChild::Insert(
+                        Insert::new(Run::new().add_text("W"))
+                            .author("unknown")
+                            .date("2019-11-15T14:19:04Z")
+                    ),
+                    ParagraphChild::Insert(
+                        Insert::new(Run::new().add_text("H"))
+                            .author("unknown")
+                            .date("2019-11-15T14:19:04Z")
+                    )
+                ],
+                property: ParagraphProperty {
+                    run_property: RunProperty::new(),
+                    style: None,
+                    numbering_property: None,
+                    alignment: None,
+                    indent: None,
+                },
+                has_numbering: false,
+                attrs: vec![],
+            }
+        );
+    }
+
+    #[test]
+    fn test_read_two_run_in_insert() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:p>
+        <w:ins w:id="0" w:author="unknown" w:date="2019-11-15T14:19:04Z">
+            <w:r>
+                <w:rPr></w:rPr>
+                <w:t>W</w:t>
+            </w:r>
+            <w:r>
+                <w:rPr></w:rPr>
+                <w:t>H</w:t>
+            </w:r>
+        </w:ins>
+    </w:p>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            p,
+            Paragraph {
+                children: vec![ParagraphChild::Insert(
+                    Insert::new(Run::new().add_text("W"))
+                        .author("unknown")
+                        .date("2019-11-15T14:19:04Z")
+                        .add_run(Run::new().add_text("H")),
+                )],
+                property: ParagraphProperty {
+                    run_property: RunProperty::new(),
+                    style: None,
+                    numbering_property: None,
+                    alignment: None,
+                    indent: None,
+                },
+                has_numbering: false,
+                attrs: vec![],
+            }
+        );
+    }
 }

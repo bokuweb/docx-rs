@@ -2,9 +2,30 @@ use super::XMLBuilder;
 use super::XmlEvent;
 
 impl XMLBuilder {
-    open!(open_wp_inline, "wp:inline", "distT", "distB", "distL", "distR");
-    // TODO: Add some parameters
-    open!(open_wp_anchor, "wp:inline", "distT", "distB", "distL", "distR");
+    open!(
+        open_wp_inline,
+        "wp:inline",
+        "distT",
+        "distB",
+        "distL",
+        "distR"
+    );
+
+    #[allow(clippy::too_many_arguments)]
+    open!(
+        open_wp_anchor,
+        "wp:anchor",
+        "distT",
+        "distB",
+        "distL",
+        "distR",
+        "simplePos",
+        "allowOverlap",
+        "behindDoc",
+        "locked",
+        "layoutInCell",
+        "relativeHeight"
+    );
 
     open!(open_a_graphic, "a:graphic", "xmlns:a");
     open!(open_a_graphic_data, "a:graphicData", "uri");
@@ -18,4 +39,10 @@ impl XMLBuilder {
         "xmlns:a",
         "noChangeAspect"
     );
+
+    closed!(simple_pos, "wp:simplePos", "x", "y");
+    open!(open_position_h, "wp:positionH", "relativeFrom");
+    open!(open_position_v, "wp:positionV", "relativeFrom");
+    closed_with_child!(pos_offset, "wp:posOffset");
+    closed!(wrap_none, "wp:wrapNone");
 }

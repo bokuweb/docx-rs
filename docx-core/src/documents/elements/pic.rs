@@ -1,8 +1,23 @@
+use super::*;
 use image::*;
 use serde::Serialize;
 
 use crate::documents::*;
 use crate::xml_builder::*;
+
+#[derive(Debug, Clone, Copy, Serialize, PartialEq)]
+pub enum PicAlign {
+  Left,
+  Right,
+  Bottom,
+  Top,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, PartialEq)]
+pub enum DrawingPosition {
+  Offset(usize),
+  Align(PicAlign),
+}
 
 #[derive(Debug, Clone, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
@@ -10,6 +25,9 @@ pub struct Pic {
   pub id: usize,
   pub image: Vec<u8>,
   pub size: (u32, u32),
+  pub position_type: DrawingPositionType,
+  pub position_h: DrawingPosition,
+  pub position_v: DrawingPosition,
 }
 
 impl Pic {
@@ -21,11 +39,38 @@ impl Pic {
     dimg
       .write_to(&mut image, ImageFormat::Png)
       .expect("Unable to write");
-    Self { id, image, size }
+    Self {
+      id,
+      image,
+      size,
+      position_type: DrawingPositionType::Inline {
+        dist_t: 0,
+        dist_b: 0,
+        dist_l: 0,
+        dist_r: 0,
+      },
+      position_h: DrawingPosition::Offset(0),
+      position_v: DrawingPosition::Offset(0),
+    }
   }
 
   pub fn size(mut self, w_px: u32, h_px: u32) -> Pic {
     self.size = (w_px, h_px);
+    self
+  }
+
+  pub fn floating(mut self) -> Pic {
+    self.position_type = DrawingPositionType::Anchor;
+    self
+  }
+
+  pub fn offset_x(mut self, x: usize) -> Pic {
+    self.position_h = DrawingPosition::Offset(x);
+    self
+  }
+
+  pub fn offset_y(mut self, y: usize) -> Pic {
+    self.position_v = DrawingPosition::Offset(y);
     self
   }
 }

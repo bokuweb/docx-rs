@@ -80,6 +80,7 @@ writeFileSync("hello.docx", buf);
 - [Numbering](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/numbering.rs)
 - [Table](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/table.rs)
 - [Comment](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/comment.rs)
+- [Image](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/image_inline.rs)
 - [History](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/history.rs)
 
 ## Features
@@ -100,7 +101,7 @@ writeFileSync("hello.docx", buf);
 - [ ] Header
 - [ ] Footer
 - [x] Comment
-- [ ] Image
+- [x] Image
 - [x] Style
 - [x] Table
 - [x] HIstory

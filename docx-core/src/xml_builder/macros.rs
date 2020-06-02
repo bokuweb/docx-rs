@@ -186,6 +186,7 @@ macro_rules! open {
         }
     };
     ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr, $attr2: expr, $attr3: expr, $attr4: expr, $attr5: expr, $attr6: expr, $attr7: expr, $attr8: expr, $attr9: expr) => {
+        #[allow(clippy::too_many_arguments)]
         pub(crate) fn $name(
             mut self,
             arg0: &str,

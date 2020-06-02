@@ -21,7 +21,7 @@
                     <wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" allowOverlap="1" behindDoc="0" locked="0" layoutInCell="1" relativeHeight="1905000">
                         <wp:simplePos x="0" y="0"/>
                         <wp:positionH relativeFrom="page">
-                            <wp:align>right</wp:align>
+                            <wp:posOffset>2014400</wp:posOffset>
                         </wp:positionH>
                         <wp:positionV relativeFrom="page">
                             <wp:align>bottom</wp:align>

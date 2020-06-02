@@ -8,6 +8,8 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, Serialize, PartialEq)]
 pub struct Drawing {
     pub position_type: DrawingPositionType,
+    pub position_h: DrawingPosition,
+    pub position_v: DrawingPosition,
     pub data: Option<DrawingData>,
     // TODO: Old definition, remove later
     pub children: Vec<DrawingChild>,
@@ -56,6 +58,7 @@ impl Drawing {
         Default::default()
     }
 
+    // TODO: Remove later
     pub fn add_anchor(mut self, a: WpAnchor) -> Drawing {
         self.children.push(DrawingChild::WpAnchor(a));
         self
@@ -63,6 +66,21 @@ impl Drawing {
 
     pub fn pic(mut self, pic: Pic) -> Drawing {
         self.data = Some(DrawingData::Pic(pic));
+        self
+    }
+
+    pub fn floating(mut self) -> Drawing {
+        self.position_type = DrawingPositionType::Anchor;
+        self
+    }
+
+    pub fn position_h(mut self, pos: DrawingPosition) -> Drawing {
+        self.position_h = pos;
+        self
+    }
+
+    pub fn position_v(mut self, pos: DrawingPosition) -> Drawing {
+        self.position_v = pos;
         self
     }
 }
@@ -77,6 +95,8 @@ impl Default for Drawing {
                 dist_r: 0,
             },
             data: None,
+            position_v: DrawingPosition::Offset(0),
+            position_h: DrawingPosition::Offset(0),
             children: vec![],
         }
     }
@@ -90,7 +110,21 @@ impl BuildXML for Drawing {
         if let DrawingPositionType::Inline { .. } = self.position_type {
             b = b.open_wp_inline("0", "0", "0", "0")
         } else {
-            b = b.open_wp_anchor("0", "0", "0", "0");
+            b = b
+                .open_wp_anchor("0", "0", "0", "0", "0", "1", "0", "0", "1", "1905000")
+                .simple_pos("0", "0")
+                .open_position_h("page");
+            if let DrawingPosition::Offset(x) = self.position_h {
+                let x = format!("{}", crate::types::emu::from_px(x as u32));
+                b = b.pos_offset(&x).close();
+            }
+
+            b = b.open_position_v("page");
+
+            if let DrawingPosition::Offset(y) = self.position_v {
+                let y = format!("{}", crate::types::emu::from_px(y as u32));
+                b = b.pos_offset(&y).close();
+            }
         }
         match &self.data {
             Some(DrawingData::Pic(p)) => {
@@ -101,6 +135,7 @@ impl BuildXML for Drawing {
                     // One inch equates to 914400 EMUs and a centimeter is 360000
                     .wp_extent(&w, &h)
                     .wp_effect_extent("0", "0", "0", "0")
+                    .wrap_none()
                     .wp_doc_pr("1", "Figure")
                     .open_wp_c_nv_graphic_frame_pr()
                     .a_graphic_frame_locks(
@@ -142,6 +177,7 @@ mod tests {
   <wp:inline distT="0" distB="0" distL="0" distR="0">
     <wp:extent cx="3048000" cy="2286000" />
     <wp:effectExtent b="0" l="0" r="0" t="0" />
+    <wp:wrapNone />
     <wp:docPr id="1" name="Figure" />
     <wp:cNvGraphicFramePr>
       <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1" />

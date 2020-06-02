@@ -95,8 +95,20 @@ impl Run {
     }
 
     pub fn add_image(mut self, pic: Pic) -> Run {
-        self.children
-            .push(RunChild::Drawing(Drawing::new().pic(pic)));
+        if pic.position_type == DrawingPositionType::Anchor {
+            let pos_h = pic.position_h;
+            let pos_v = pic.position_v;
+            self.children.push(RunChild::Drawing(
+                Drawing::new()
+                    .pic(pic)
+                    .floating()
+                    .position_h(pos_h)
+                    .position_v(pos_v),
+            ));
+        } else {
+            self.children
+                .push(RunChild::Drawing(Drawing::new().pic(pic)));
+        }
         self
     }
 

@@ -1,5 +1,7 @@
 import { ParagraphProperty, SpecialIndentKind } from "./paragraph";
 
+export type LevelSuffixType = "nothing" | "tab" | "space";
+
 export class Level {
   id: number;
   start: number;
@@ -7,6 +9,7 @@ export class Level {
   text: string;
   jc: string;
   paragraphProperty: ParagraphProperty = {};
+  levelSuffix: LevelSuffixType;
 
   constructor(
     id: number,
@@ -20,6 +23,7 @@ export class Level {
     this.format = format;
     this.text = text;
     this.jc = jc;
+    this.levelSuffix = "tab";
   }
 
   indent(
@@ -30,8 +34,13 @@ export class Level {
     this.paragraphProperty.indent = {
       left,
       specialIndentKind,
-      specialIndentSize
+      specialIndentSize,
     };
+    return this;
+  }
+
+  suffix(s: LevelSuffixType) {
+    this.levelSuffix = s;
     return this;
   }
 }

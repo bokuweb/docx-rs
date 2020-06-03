@@ -36,4 +36,9 @@ impl Level {
                 .indent(Some(left), special_indent, None, None);
         self
     }
+
+    pub fn suffix(mut self, s: docx_rs::LevelSuffixType) -> Self {
+        self.0 = self.0.suffix(s);
+        self
+    }
 }

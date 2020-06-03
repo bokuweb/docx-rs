@@ -11,6 +11,7 @@ pub mod vertical_align_type;
 pub mod vertical_merge_type;
 pub mod width_type;
 pub mod emu;
+pub mod level_suffix_type;
 
 pub use alignment_type::*;
 pub use border_position::*;
@@ -25,3 +26,4 @@ pub use vertical_align_type::*;
 pub use emu::*;
 pub use vertical_merge_type::*;
 pub use width_type::*;
+pub use level_suffix_type::*;

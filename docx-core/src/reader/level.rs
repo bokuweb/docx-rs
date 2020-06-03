@@ -5,6 +5,7 @@ use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
 use super::*;
+use crate::types::*;
 
 impl ElementReader for Level {
     fn read<R: Read>(
@@ -23,6 +24,7 @@ impl ElementReader for Level {
         let mut indent_end = None;
         let mut start_chars = None;
         let mut has_indent = false;
+        let mut suffix = LevelSuffixType::Tab;
 
         loop {
             let e = r.next();
@@ -41,6 +43,9 @@ impl ElementReader for Level {
                         }
                         XMLElement::NumberFormat => {
                             num_fmt = NumberFormat::new(attributes[0].value.clone());
+                        }
+                        XMLElement::Suffix => {
+                            suffix = LevelSuffixType::from_str(&attributes[0].value)?;
                         }
                         XMLElement::LevelText => {
                             level_text = LevelText::new(attributes[0].value.clone());
@@ -62,7 +67,8 @@ impl ElementReader for Level {
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     if let XMLElement::Level = e {
-                        let mut l = Level::new(level, start, num_fmt, level_text, jc);
+                        let mut l =
+                            Level::new(level, start, num_fmt, level_text, jc).suffix(suffix);
                         if let Some(style_id) = style_id {
                             l = l.paragraph_style(style_id);
                         }

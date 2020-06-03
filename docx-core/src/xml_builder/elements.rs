@@ -86,6 +86,8 @@ impl XMLBuilder {
     // i.e. <w:u ... >
     closed_with_str!(underline, "w:u");
 
+    closed_with_str!(suffix, "w:suff");
+
     // i.e. <w:ind ... >
     pub(crate) fn indent(
         mut self,

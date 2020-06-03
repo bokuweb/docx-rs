@@ -7,6 +7,7 @@ export type LevelJSON = {
   text: string;
   jc: string;
   pstyle: string | null;
+  suffix: 'tab' | 'nothing' | 'space';
   paragraphProperty: ParagraphPropertyJSON;
 };
 

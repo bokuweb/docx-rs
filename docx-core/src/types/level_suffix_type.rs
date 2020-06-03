@@ -8,6 +8,7 @@ use std::str::FromStr;
 
 #[wasm_bindgen]
 #[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum LevelSuffixType {
     Nothing,
     Space,

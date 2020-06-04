@@ -9,7 +9,7 @@ use serde::Serialize;
 pub struct Numbering {
     id: usize,
     abstract_num_id: usize,
-    level_overrides: Vec<LevelOverride>,
+    pub level_overrides: Vec<LevelOverride>,
 }
 
 impl Numbering {
@@ -25,6 +25,11 @@ impl Numbering {
         self.level_overrides = overrides;
         self
     }
+
+    pub fn add_override(mut self, o: LevelOverride) -> Self {
+        self.level_overrides.push(o);
+        self
+    }
 }
 
 impl BuildXML for Numbering {
@@ -32,7 +37,11 @@ impl BuildXML for Numbering {
         let b = XMLBuilder::new();
         let id = format!("{}", self.id);
         let abs_id = format!("{}", self.abstract_num_id);
-        b.open_num(&id).abstract_num_id(&abs_id).close().build()
+        b.open_num(&id)
+            .abstract_num_id(&abs_id)
+            .add_children(&self.level_overrides)
+            .close()
+            .build()
     }
 }
 
@@ -55,29 +64,24 @@ mod tests {
 </w:num>"#
         );
     }
-    /* TODO: enable when builder implemented
-        #[test]
-        fn test_numbering_override() {
-            let c = Numbering::new(0, 2);
-            let overrides = vec![
-                LevelOverride::new(0).start(1),
-                LevelOverride::new(1).start(1),
-            ];
-            let b = c.overrides(overrides).build();
-            assert_eq!(
-                str::from_utf8(&b).unwrap(),
-                r#"<w:num w:numId="0">
-      <w:abstractNumId w:val="2" />
-      <w:lvlOverride w:ilvl="0">
-        <w:startOverride w:val="1"/>
-      </w:lvlOverride>
-      <w:lvlOverride w:ilvl="1">
-        <w:startOverride w:val="1"/>
-      </w:lvlOverride>
-    </w:num>"#
-            );
-        }
-        */
+    #[test]
+    fn test_numbering_override() {
+        let c = Numbering::new(0, 2);
+        let overrides = vec![
+            LevelOverride::new(0).start(1),
+            LevelOverride::new(1).start(1),
+        ];
+        let b = c.overrides(overrides).build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:num w:numId="0">
+  <w:abstractNumId w:val="2" /><w:lvlOverride w:ilvl="0">
+  <w:startOverride w:val="1" />
+</w:lvlOverride><w:lvlOverride w:ilvl="1">
+  <w:startOverride w:val="1" />
+</w:lvlOverride></w:num>"#
+        );
+    }
 
     #[test]
     fn test_numbering_override_json() {

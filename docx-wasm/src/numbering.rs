@@ -14,3 +14,11 @@ impl Numbering {
         self.0
     }
 }
+
+#[wasm_bindgen]
+impl Numbering {
+    pub fn add_override(mut self, o: super::LevelOverride) -> Self {
+        self.0.level_overrides.push(o.take());
+        self
+    }
+}

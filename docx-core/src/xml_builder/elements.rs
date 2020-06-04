@@ -228,6 +228,14 @@ impl XMLBuilder {
     open!(open_wp_shape, "wps:wsp");
     open!(open_wp_text_box, "wps:txbx");
     open!(open_text_box_content, "w:txbxContent");
+
+    /*
+    <w:lvlOverride w:ilvl="0">
+      <w:startOverride w:val="1"/>
+    </w:lvlOverride>
+    */
+    open!(open_level_override, "w:lvlOverride", "w:ilvl");
+    closed_with_str!(start_override, "w:startOverride");
 }
 
 #[cfg(test)]

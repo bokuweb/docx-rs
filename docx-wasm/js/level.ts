@@ -30,8 +30,22 @@ export class Level {
     this.paragraphProperty.indent = {
       left,
       specialIndentKind,
-      specialIndentSize
+      specialIndentSize,
     };
+    return this;
+  }
+}
+
+export class LevelOverride {
+  level: number;
+  startOverride: number | null = null;
+
+  constructor(level: number) {
+    this.level = level;
+  }
+
+  start(start: number) {
+    this.startOverride = start;
     return this;
   }
 }

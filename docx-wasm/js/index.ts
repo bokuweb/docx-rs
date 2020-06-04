@@ -388,6 +388,15 @@ export class Docx {
       let num = wasm.createAbstractNumbering(n.id);
       n.levels.forEach((l) => {
         let level = wasm.createLevel(l.id, l.start, l.format, l.text, l.jc);
+
+        if (l.levelSuffix === "nothing") {
+          level = level.suffix(wasm.LevelSuffixType.Nothing);
+        } else if (l.levelSuffix === "space") {
+          level = level.suffix(wasm.LevelSuffixType.Space);
+        } else {
+          level = level.suffix(wasm.LevelSuffixType.Tab);
+        }
+
         if (l.paragraphProperty.indent) {
           let kind;
           if (l.paragraphProperty.indent.specialIndentKind === "firstLine") {

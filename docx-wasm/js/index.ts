@@ -412,7 +412,7 @@ export class Docx {
       let num = wasm.createNumbering(n.id, n.abstractNumId);
       n.overrides.forEach((o) => {
         let levelOverride = wasm.createLevelOverride(o.level);
-        if (o.start !== null) {
+        if (o.startOverride !== null) {
           levelOverride = levelOverride.start(o.startOverride);
         }
         num = num.add_override(levelOverride);

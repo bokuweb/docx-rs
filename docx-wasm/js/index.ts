@@ -419,6 +419,13 @@ export class Docx {
 
     this.numberings.forEach((n) => {
       let num = wasm.createNumbering(n.id, n.abstractNumId);
+      n.overrides.forEach((o) => {
+        let levelOverride = wasm.createLevelOverride(o.level);
+        if (o.startOverride !== null) {
+          levelOverride = levelOverride.start(o.startOverride);
+        }
+        num = num.add_override(levelOverride);
+      });
       docx = docx.add_numbering(num);
     });
 

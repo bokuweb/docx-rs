@@ -1,5 +1,5 @@
 use crate::documents::BuildXML;
-// use crate::xml_builder::*;
+use crate::xml_builder::*;
 
 use serde::Serialize;
 
@@ -25,9 +25,70 @@ impl LevelOverride {
     }
 }
 
-// TODO: Now read only
 impl BuildXML for LevelOverride {
     fn build(&self) -> Vec<u8> {
-        vec![]
+        let mut b = XMLBuilder::new();
+        b = b.open_level_override(&format!("{}", self.level));
+
+        if let Some(start) = self.start {
+            b = b.start_override(&format!("{}", start));
+        }
+
+        b.close().build()
     }
 }
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+    #[cfg(test)]
+    use pretty_assertions::assert_eq;
+    use std::str;
+
+    #[test]
+    fn test_level_override() {
+        let c = LevelOverride::new(1).start(2);
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:lvlOverride w:ilvl="1">
+  <w:startOverride w:val="2" />
+</w:lvlOverride>"#
+        );
+    }
+}
+
+// Example
+/*
+<w:num w:numId="5">
+  <w:abstractNumId w:val="0"/>
+  <w:lvlOverride w:ilvl="0">
+    <w:startOverride w:val="1"/>
+  </w:lvlOverride>
+  <w:lvlOverride w:ilvl="1">
+    <w:startOverride w:val="1"/>
+  </w:lvlOverride>
+  <w:lvlOverride w:ilvl="2">
+    <w:startOverride w:val="1"/>
+  </w:lvlOverride>
+  <w:lvlOverride w:ilvl="3">
+    <w:startOverride w:val="1"/>
+  </w:lvlOverride>
+  <w:lvlOverride w:ilvl="4">
+    <w:startOverride w:val="1"/>
+  </w:lvlOverride>
+  <w:lvlOverride w:ilvl="5">
+    <w:startOverride w:val="1"/>
+  </w:lvlOverride>
+  <w:lvlOverride w:ilvl="6">
+    <w:startOverride w:val="1"/>
+  </w:lvlOverride>
+  <w:lvlOverride w:ilvl="7">
+    <w:startOverride w:val="1"/>
+  </w:lvlOverride>
+  <w:lvlOverride w:ilvl="8">
+    <w:startOverride w:val="1"/>
+  </w:lvlOverride>
+</w:num>
+*/

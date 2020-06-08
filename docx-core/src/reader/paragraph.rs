@@ -99,6 +99,11 @@ impl ElementReader for Paragraph {
                             }
                             continue;
                         }
+                        XMLElement::RunProperty => {
+                            let run_pr = RunProperty::read(r, attrs)?;
+                            p = p.run_property(run_pr);
+                            continue;
+                        }
                         _ => {}
                     }
                 }

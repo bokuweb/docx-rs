@@ -38,6 +38,7 @@ impl ElementReader for Run {
                                 XMLElement::Tab => {
                                     run = run.add_tab();
                                 }
+                                // TODO: use RunProperty::read()
                                 XMLElement::Bold => {
                                     if !read_bool(&attributes) {
                                         continue;

@@ -9,6 +9,7 @@ mod errors;
 mod from_xml;
 mod insert;
 mod level;
+mod level_override;
 mod mc_fallback;
 mod numbering_property;
 mod numberings;
@@ -16,6 +17,7 @@ mod paragraph;
 mod read_zip;
 mod rels;
 mod run;
+mod run_property;
 mod style;
 mod styles;
 mod table;
@@ -27,7 +29,6 @@ mod wp_anchor;
 mod wps_shape;
 mod wps_text_box;
 mod xml_element;
-mod level_override;
 
 use std::io::Cursor;
 

@@ -16,12 +16,32 @@ export type RunProperty = {
   fonts?: RunFonts;
 };
 
-export type RunFonts = {
-  ascii?: string;
-  hiAnsi?: string;
-  eastAsia?: string;
-  cs?: string;
-};
+export class RunFonts {
+  _ascii?: string;
+  _hiAnsi?: string;
+  _eastAsia?: string;
+  _cs?: string;
+
+  ascii(f: string) {
+    this._ascii = f;
+    return this;
+  }
+
+  hiAnsi(f: string) {
+    this._hiAnsi = f;
+    return this;
+  }
+
+  cs(f: string) {
+    this._cs = f;
+    return this;
+  }
+
+  eastAsia(f: string) {
+    this._eastAsia = f;
+    return this;
+  }
+}
 
 export class Run {
   children: RunChild[] = [];

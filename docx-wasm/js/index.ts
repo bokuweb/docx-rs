@@ -126,6 +126,21 @@ export class Docx {
       run = run.vanish();
     }
 
+    let f = wasm.createRunFonts();
+    if (r.property.fonts?._ascii) {
+      f = f.ascii(r.property.fonts._ascii);
+    }
+    if (r.property.fonts?._hiAnsi) {
+      f = f.hi_ansi(r.property.fonts._hiAnsi);
+    }
+    if (r.property.fonts?._cs) {
+      f = f.cs(r.property.fonts._cs);
+    }
+    if (r.property.fonts?._eastAsia) {
+      f = f.east_asia(r.property.fonts._eastAsia);
+    }
+    run = run.fonts(f);
+
     return run;
   }
 
@@ -253,17 +268,17 @@ export class Docx {
 
     if (p.property.runProperty.fonts) {
       let f = wasm.createRunFonts();
-      if (p.property.runProperty.fonts.ascii) {
-        f = f.ascii(p.property.runProperty.fonts.ascii);
+      if (p.property.runProperty.fonts._ascii) {
+        f = f.ascii(p.property.runProperty.fonts._ascii);
       }
-      if (p.property.runProperty.fonts.hiAnsi) {
-        f = f.hi_ansi(p.property.runProperty.fonts.hiAnsi);
+      if (p.property.runProperty.fonts._hiAnsi) {
+        f = f.hi_ansi(p.property.runProperty.fonts._hiAnsi);
       }
-      if (p.property.runProperty.fonts.cs) {
-        f = f.cs(p.property.runProperty.fonts.cs);
+      if (p.property.runProperty.fonts._cs) {
+        f = f.cs(p.property.runProperty.fonts._cs);
       }
-      if (p.property.runProperty.fonts.eastAsia) {
-        f = f.east_asia(p.property.runProperty.fonts.eastAsia);
+      if (p.property.runProperty.fonts._eastAsia) {
+        f = f.east_asia(p.property.runProperty.fonts._eastAsia);
       }
       paragraph = paragraph.fonts(f);
     }

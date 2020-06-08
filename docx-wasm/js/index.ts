@@ -235,6 +235,39 @@ export class Docx {
       paragraph = paragraph.style(p.property.styleId);
     }
 
+    if (p.property.runProperty.bold) {
+      paragraph = paragraph.bold();
+    }
+
+    if (p.property.runProperty.bold) {
+      paragraph = paragraph.bold();
+    }
+
+    if (p.property.runProperty.italic) {
+      paragraph = paragraph.italic();
+    }
+
+    if (p.property.runProperty.size) {
+      paragraph = paragraph.size(p.property.runProperty.size);
+    }
+
+    if (p.property.runProperty.fonts) {
+      let f = wasm.createRunFonts();
+      if (p.property.runProperty.fonts.ascii) {
+        f = f.ascii(p.property.runProperty.fonts.ascii);
+      }
+      if (p.property.runProperty.fonts.hiAnsi) {
+        f = f.hi_ansi(p.property.runProperty.fonts.hiAnsi);
+      }
+      if (p.property.runProperty.fonts.cs) {
+        f = f.cs(p.property.runProperty.fonts.cs);
+      }
+      if (p.property.runProperty.fonts.eastAsia) {
+        f = f.east_asia(p.property.runProperty.fonts.eastAsia);
+      }
+      paragraph = paragraph.fonts(f);
+    }
+
     return paragraph;
   }
 

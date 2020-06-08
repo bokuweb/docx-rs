@@ -14,7 +14,7 @@ export type NumberingPropertyJSON = {
 };
 
 export type ParagraphPropertyJSON = {
-  runProperty: RunChildJSON;
+  runProperty: RunPropertyJSON;
   style: string | null;
   numberingProperty: NumberingPropertyJSON | null;
   alignment: "left" | "center" | "right" | "justified" | "both";

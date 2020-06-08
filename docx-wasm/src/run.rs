@@ -1,3 +1,4 @@
+use super::*;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -19,12 +20,16 @@ impl Run {
     pub fn add_delete_text(mut self, text: &str) -> Run {
         self.0
             .children
-            .push(docx_rs::RunChild::DeleteText(docx_rs::DeleteText::new(text)));
+            .push(docx_rs::RunChild::DeleteText(docx_rs::DeleteText::new(
+                text,
+            )));
         self
     }
 
     pub fn add_tab(mut self) -> Run {
-        self.0.children.push(docx_rs::RunChild::Tab(docx_rs::Tab::new()));
+        self.0
+            .children
+            .push(docx_rs::RunChild::Tab(docx_rs::Tab::new()));
         self
     }
 
@@ -67,6 +72,11 @@ impl Run {
 
     pub fn vanish(mut self) -> Run {
         self.0.run_property = self.0.run_property.vanish();
+        self
+    }
+
+    pub fn fonts(mut self, f: RunFonts) -> Self {
+        self.0 = self.0.fonts(f.take());
         self
     }
 }

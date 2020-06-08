@@ -13,6 +13,14 @@ export type RunProperty = {
   italic?: boolean;
   underline?: string;
   vanish?: boolean;
+  fonts?: RunFonts;
+};
+
+export type RunFonts = {
+  ascii?: string;
+  hiAnsi?: string;
+  eastAsia?: string;
+  cs?: string;
 };
 
 export class Run {
@@ -71,6 +79,11 @@ export class Run {
 
   vanish() {
     this.property = { ...this.property, vanish: true };
+    return this;
+  }
+
+  fonts(fonts: RunFonts) {
+    this.property = { ...this.property, fonts };
     return this;
   }
 }

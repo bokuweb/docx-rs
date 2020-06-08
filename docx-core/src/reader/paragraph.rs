@@ -99,6 +99,11 @@ impl ElementReader for Paragraph {
                             }
                             continue;
                         }
+                        XMLElement::RunProperty => {
+                            let run_pr = RunProperty::read(r, attrs)?;
+                            p = p.run_property(run_pr);
+                            continue;
+                        }
                         _ => {}
                     }
                 }
@@ -142,7 +147,7 @@ mod tests {
         assert_eq!(
             p,
             Paragraph {
-                children: vec![ParagraphChild::Run(Run::new().add_text("a"))],
+                children: vec![ParagraphChild::Run(Box::new(Run::new().add_text("a")))],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
                     style: None,
@@ -181,7 +186,7 @@ mod tests {
         assert_eq!(
             p,
             Paragraph {
-                children: vec![ParagraphChild::Run(Run::new().add_text("a"))],
+                children: vec![ParagraphChild::Run(Box::new(Run::new().add_text("a")))],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
                     style: None,
@@ -348,7 +353,7 @@ mod tests {
             Paragraph {
                 children: vec![
                     ParagraphChild::BookmarkStart(BookmarkStart::new(0, "ABCD-1234")),
-                    ParagraphChild::Run(Run::new().add_text("Bookmarked")),
+                    ParagraphChild::Run(Box::new(Run::new().add_text("Bookmarked"))),
                     ParagraphChild::BookmarkEnd(BookmarkEnd::new(0)),
                 ],
                 property: ParagraphProperty {

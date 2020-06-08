@@ -1,4 +1,4 @@
-import { Run } from "./run";
+import { Run, RunProperty, RunFonts } from "./run";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
 import { BookmarkStart } from "./bookmark-start";
@@ -31,12 +31,15 @@ export type ParagraphProperty = {
     id: number;
     level: number;
   };
+  runProperty: RunProperty;
 };
 
 export class Paragraph {
   hasNumberings = false;
   children: ParagraphChild[] = [];
-  property: ParagraphProperty = {};
+  property: ParagraphProperty = {
+    runProperty: {},
+  };
 
   addRun(run: Run) {
     this.children.push(run);
@@ -95,6 +98,27 @@ export class Paragraph {
   numbering(id: number, level: number) {
     this.hasNumberings = true;
     this.property.numbering = { id, level };
+    return this;
+  }
+
+  // run property
+  size(size: number) {
+    this.property.runProperty = { ...this.property.runProperty, size };
+    return this;
+  }
+
+  bold() {
+    this.property.runProperty = { ...this.property.runProperty, bold: true };
+    return this;
+  }
+
+  italic() {
+    this.property.runProperty = { ...this.property.runProperty, italic: true };
+    return this;
+  }
+
+  fonts(fonts: RunFonts) {
+    this.property.runProperty = { ...this.property.runProperty, fonts };
     return this;
   }
 }

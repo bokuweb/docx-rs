@@ -157,6 +157,11 @@ impl Run {
         self.run_property = self.run_property.vanish();
         self
     }
+
+    pub fn fonts(mut self, f: RunFonts) -> Run {
+        self.run_property = self.run_property.fonts(f);
+        self
+    }
 }
 
 impl BuildXML for Run {
@@ -231,11 +236,12 @@ mod tests {
                 italic: Some(Italic::new()),
                 italic_cs: Some(ItalicCs::new()),
                 vanish: Some(Vanish::new()),
+                fonts: None,
             },
         };
         assert_eq!(
             serde_json::to_string(&run).unwrap(),
-            r#"{"runProperty":{"sz":30,"szCs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#
+            r#"{"runProperty":{"sz":30,"szCs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true,"fonts":null},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#
         );
     }
 }

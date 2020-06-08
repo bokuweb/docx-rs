@@ -28,7 +28,7 @@ impl Default for Paragraph {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ParagraphChild {
-    Run(Run),
+    Run(Box<Run>),
     Insert(Insert),
     Delete(Delete),
     BookmarkStart(BookmarkStart),
@@ -107,7 +107,7 @@ impl Paragraph {
     }
 
     pub fn add_run(mut self, run: Run) -> Paragraph {
-        self.children.push(ParagraphChild::Run(run));
+        self.children.push(ParagraphChild::Run(Box::new(run)));
         self
     }
 
@@ -175,6 +175,31 @@ impl Paragraph {
     pub fn numbering(mut self, id: NumberingId, level: IndentLevel) -> Self {
         self.property = self.property.numbering(id, level);
         self.has_numbering = true;
+        self
+    }
+
+    pub fn size(mut self, size: usize) -> Self {
+        self.property.run_property = self.property.run_property.size(size);
+        self
+    }
+
+    pub fn bold(mut self) -> Self {
+        self.property.run_property = self.property.run_property.bold();
+        self
+    }
+
+    pub fn italic(mut self) -> Self {
+        self.property.run_property = self.property.run_property.italic();
+        self
+    }
+
+    pub fn fonts(mut self, f: RunFonts) -> Self {
+        self.property.run_property = self.property.run_property.fonts(f);
+        self
+    }
+
+    pub(crate) fn run_property(mut self, p: RunProperty) -> Self {
+        self.property.run_property = p;
         self
     }
 }
@@ -271,7 +296,7 @@ mod tests {
         let p = Paragraph::new().add_run(run);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}"#
+            r#"{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}"#
         );
     }
 
@@ -282,7 +307,7 @@ mod tests {
         let p = Paragraph::new().add_insert(ins);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"children":[{"type":"insert","data":{"runs":[{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}"#
+            r#"{"children":[{"type":"insert","data":{"runs":[{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}"#
         );
     }
 }

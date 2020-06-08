@@ -8,7 +8,7 @@ export class Level {
   format: string;
   text: string;
   jc: string;
-  paragraphProperty: ParagraphProperty = {};
+  paragraphProperty: ParagraphProperty = { runProperty: {} };
   levelSuffix: LevelSuffixType;
 
   constructor(

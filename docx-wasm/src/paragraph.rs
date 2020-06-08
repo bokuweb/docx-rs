@@ -91,6 +91,26 @@ impl Paragraph {
         self.0.property = self.0.property.numbering(id, level);
         self
     }
+
+    pub fn size(mut self, size: usize) -> Self {
+        self.0 = self.0.size(size);
+        self
+    }
+
+    pub fn bold(mut self) -> Self {
+        self.0 = self.0.bold();
+        self
+    }
+
+    pub fn italic(mut self) -> Self {
+        self.0 = self.0.italic();
+        self
+    }
+
+    pub fn fonts(mut self, f: RunFonts) -> Self {
+        self.0 = self.0.fonts(f.take());
+        self
+    }
 }
 
 impl Paragraph {

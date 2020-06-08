@@ -157,6 +157,11 @@ impl Run {
         self.run_property = self.run_property.vanish();
         self
     }
+
+    pub fn fonts(mut self, f: RunFonts) -> Run {
+        self.run_property = self.run_property.fonts(f);
+        self
+    }
 }
 
 impl BuildXML for Run {
@@ -231,6 +236,7 @@ mod tests {
                 italic: Some(Italic::new()),
                 italic_cs: Some(ItalicCs::new()),
                 vanish: Some(Vanish::new()),
+                fonts: None,
             },
         };
         assert_eq!(

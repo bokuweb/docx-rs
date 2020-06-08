@@ -77,6 +77,7 @@ writeFileSync("hello.docx", buf);
 - [Minimum](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/hello.rs)
 - [Indent](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/indent.rs)
 - [Alignment](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/alignment.rs)
+- [Font](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/font.rs)
 - [Numbering](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/numbering.rs)
 - [Table](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/table.rs)
 - [Comment](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/comment.rs)
@@ -86,17 +87,18 @@ writeFileSync("hello.docx", buf);
 ## Features
 
 - [x] Paragraph
-- [x] Alignment
-- [x] Indent
-- [x] Numbering
+  - [x] Alignment
+  - [x] Indent
+  - [x] Numbering
 - [x] Run
-- [x] Bold
-- [x] Size
-- [x] Color
-- [x] Highlight
-- [x] Underline
-- [x] vanish
-- [x] Italic
+  - [x] Bold
+  - [x] Size
+  - [x] Font
+  - [x] Color
+  - [x] Highlight
+  - [x] Underline
+  - [x] vanish
+  - [x] Italic
 - [x] Break
 - [ ] Header
 - [ ] Footer

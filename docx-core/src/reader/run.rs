@@ -147,13 +147,7 @@ mod tests {
                     sz: Some(Sz::new(30)),
                     sz_cs: Some(SzCs::new(30)),
                     color: Some(Color::new("C9211E")),
-                    highlight: None,
-                    underline: None,
-                    bold: None,
-                    bold_cs: None,
-                    italic: None,
-                    italic_cs: None,
-                    vanish: None,
+                    ..RunProperty::default()
                 },
             }
         );
@@ -170,18 +164,7 @@ mod tests {
             run,
             Run {
                 children: vec![RunChild::Tab(Tab::new())],
-                run_property: RunProperty {
-                    sz: None,
-                    sz_cs: None,
-                    color: None,
-                    highlight: None,
-                    underline: None,
-                    bold: None,
-                    bold_cs: None,
-                    italic: None,
-                    italic_cs: None,
-                    vanish: None,
-                },
+                run_property: RunProperty::default(),
             }
         );
     }
@@ -197,18 +180,7 @@ mod tests {
             run,
             Run {
                 children: vec![RunChild::Break(Break::new(BreakType::Page))],
-                run_property: RunProperty {
-                    sz: None,
-                    sz_cs: None,
-                    color: None,
-                    highlight: None,
-                    underline: None,
-                    bold: None,
-                    bold_cs: None,
-                    italic: None,
-                    italic_cs: None,
-                    vanish: None,
-                },
+                run_property: RunProperty::default(),
             }
         );
     }
@@ -224,18 +196,7 @@ mod tests {
             run,
             Run {
                 children: vec![RunChild::Break(Break::new(BreakType::TextWrapping))],
-                run_property: RunProperty {
-                    sz: None,
-                    sz_cs: None,
-                    color: None,
-                    highlight: None,
-                    underline: None,
-                    bold: None,
-                    bold_cs: None,
-                    italic: None,
-                    italic_cs: None,
-                    vanish: None,
-                },
+                run_property: RunProperty::default(),
             }
         );
     }
@@ -255,16 +216,9 @@ mod tests {
             Run {
                 children: vec![],
                 run_property: RunProperty {
-                    sz: None,
-                    sz_cs: None,
-                    color: None,
-                    highlight: None,
-                    underline: None,
                     bold: Some(Bold::new()),
                     bold_cs: Some(BoldCs::new()),
-                    italic: None,
-                    italic_cs: None,
-                    vanish: None,
+                    ..RunProperty::default()
                 },
             }
         );
@@ -285,16 +239,9 @@ mod tests {
             Run {
                 children: vec![],
                 run_property: RunProperty {
-                    sz: None,
-                    sz_cs: None,
-                    color: None,
-                    highlight: None,
-                    underline: None,
                     bold: Some(Bold::new()),
                     bold_cs: Some(BoldCs::new()),
-                    italic: None,
-                    italic_cs: None,
-                    vanish: None,
+                    ..RunProperty::default()
                 },
             }
         );

@@ -22,6 +22,31 @@ impl XMLBuilder {
         self.writer.write(text).expect(EXPECT_MESSAGE);
         self.close()
     }
+
+    pub(crate) fn run_fonts(
+        mut self,
+        ascii: Option<&String>,
+        hi_ansi: Option<&String>,
+        cs: Option<&String>,
+        east_asia: Option<&String>,
+    ) -> Self {
+        let mut w = XmlEvent::start_element("w:rFonts");
+        if let Some(ascii) = ascii {
+            w = w.attr("w:ascii", ascii);
+        }
+        if let Some(hi_ansi) = hi_ansi {
+            w = w.attr("w:hAnsi", hi_ansi);
+        }
+        if let Some(cs) = cs {
+            w = w.attr("w:cs", cs);
+        }
+        if let Some(east_asia) = east_asia {
+            w = w.attr("w:eastAsia", east_asia);
+        }
+        self.writer.write(w).expect(EXPECT_MESSAGE);
+        self.close()
+    }
+
     // i.e. <w:delText ... >
     pub(crate) fn delete_text(mut self, text: &str, preserve_space: bool) -> Self {
         let space = if preserve_space {

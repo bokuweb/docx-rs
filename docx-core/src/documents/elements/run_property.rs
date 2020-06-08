@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{Bold, BoldCs, Color, Highlight, Italic, ItalicCs, Sz, SzCs, Underline, Vanish};
+use super::*;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
@@ -17,6 +17,7 @@ pub struct RunProperty {
     pub italic: Option<Italic>,
     pub italic_cs: Option<ItalicCs>,
     pub vanish: Option<Vanish>,
+    pub fonts: Option<RunFonts>,
 }
 
 impl RunProperty {
@@ -61,6 +62,11 @@ impl RunProperty {
         self.vanish = Some(Vanish::new());
         self
     }
+
+    pub fn fonts(mut self, font: RunFonts) -> RunProperty {
+        self.fonts = Some(font);
+        self
+    }
 }
 
 impl Default for RunProperty {
@@ -76,6 +82,7 @@ impl Default for RunProperty {
             italic: None,
             italic_cs: None,
             vanish: None,
+            fonts: None,
         }
     }
 }
@@ -94,6 +101,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.highlight)
             .add_optional_child(&self.underline)
             .add_optional_child(&self.vanish)
+            .add_optional_child(&self.fonts)
             .close()
             .build()
     }
@@ -154,6 +162,16 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:rPr><w:vanish /></w:rPr>"#
+        );
+    }
+
+    #[test]
+    fn test_run_fonts() {
+        let c = RunProperty::new().fonts(RunFonts::new().east_asia("Hiragino"));
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rPr><w:rFonts w:eastAsia="Hiragino" /></w:rPr>"#
         );
     }
 }

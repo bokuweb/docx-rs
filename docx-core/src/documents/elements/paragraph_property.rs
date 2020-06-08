@@ -90,10 +90,7 @@ mod tests {
     fn test_default() {
         let c = ParagraphProperty::new();
         let b = c.build();
-        assert_eq!(
-            str::from_utf8(&b).unwrap(),
-            r#"<w:pPr><w:rPr /></w:pPr>"#
-        );
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:pPr><w:rPr /></w:pPr>"#);
     }
 
     #[test]

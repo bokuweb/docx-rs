@@ -28,7 +28,7 @@ impl Default for Paragraph {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ParagraphChild {
-    Run(Run),
+    Run(Box<Run>),
     Insert(Insert),
     Delete(Delete),
     BookmarkStart(BookmarkStart),
@@ -107,7 +107,7 @@ impl Paragraph {
     }
 
     pub fn add_run(mut self, run: Run) -> Paragraph {
-        self.children.push(ParagraphChild::Run(run));
+        self.children.push(ParagraphChild::Run(Box::new(run)));
         self
     }
 

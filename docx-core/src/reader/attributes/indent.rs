@@ -25,15 +25,15 @@ pub fn read_indent(attrs: &[OwnedAttribute]) -> ReadIndentResult {
     for a in attrs {
         let local_name = &a.name.local_name;
         if local_name == "left" || local_name == "start" {
-            start = Some(i32::from_str(&a.value)?);
+            start = Some(f64::from_str(&a.value)? as i32);
         } else if local_name == "leftChars" || local_name == "startChars" {
             start_chars = Some(i32::from_str(&a.value)?);
         } else if local_name == "end" || local_name == "right" {
-            end = Some(i32::from_str(&a.value)?);
+            end = Some(f64::from_str(&a.value)? as i32);
         } else if local_name == "hanging" {
-            special = Some(SpecialIndentType::Hanging(i32::from_str(&a.value)?))
+            special = Some(SpecialIndentType::Hanging(f64::from_str(&a.value)? as i32))
         } else if local_name == "firstLine" {
-            special = Some(SpecialIndentType::FirstLine(i32::from_str(&a.value)?))
+            special = Some(SpecialIndentType::FirstLine(f64::from_str(&a.value)? as i32))
         }
     }
 

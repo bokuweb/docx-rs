@@ -6,6 +6,8 @@ pub enum ReaderError {
     ZipError(#[from] zip::result::ZipError),
     #[error("Failed to parse int.")]
     NumError(#[from] std::num::ParseIntError),
+    #[error("Failed to parse float.")]
+    FloatError(#[from] std::num::ParseFloatError),
     #[error("Failed to convert type.")]
     TypeError(#[from] crate::types::TypeError),
     #[error("Failed to read xml.")]

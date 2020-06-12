@@ -15,7 +15,13 @@ export type ParagraphChild =
   | Comment
   | CommentEnd;
 
-export type AlignmentType = "center" | "left" | "right" | "justified";
+export type AlignmentType =
+  | "center"
+  | "left"
+  | "right"
+  | "justified"
+  | "distribute"
+  | "end";
 
 export type SpecialIndentKind = "firstLine" | "hanging";
 

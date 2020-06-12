@@ -18,6 +18,10 @@ impl ElementReader for Table {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
+
+                    ignore::ignore_element(e.clone(), XMLElement::TablePropertyChange, r);
+                    ignore::ignore_element(e.clone(), XMLElement::TableGridChange, r);
+
                     match e {
                         XMLElement::TableRow => {
                             t = t.add_row(TableRow::read(r, &attributes)?);

@@ -16,6 +16,9 @@ impl ElementReader for TableRow {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
+
+                    ignore::ignore_element(e.clone(), XMLElement::TableRowPropertyChange, r);
+                    
                     if let XMLElement::TableCell = e {
                         cells.push(TableCell::read(r, &attributes)?);
                         continue;

@@ -30,6 +30,13 @@ impl ElementReader for TableCell {
                                     attributes, name, ..
                                 }) => {
                                     let e = XMLElement::from_str(&name.local_name).unwrap();
+
+                                    ignore::ignore_element(
+                                        e.clone(),
+                                        XMLElement::TableCellPropertyChange,
+                                        r,
+                                    );
+
                                     match e {
                                         XMLElement::TableCellWidth => {
                                             let mut w = 0;

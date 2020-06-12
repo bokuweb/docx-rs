@@ -7,10 +7,12 @@ use super::errors;
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug)]
 pub enum AlignmentType {
+    Both,
     Center,
+    Distribute,
+    End,
     Left,
     Right,
-    Both,
     Justified,
     Unsupported,
 }
@@ -20,7 +22,9 @@ impl fmt::Display for AlignmentType {
         match *self {
             AlignmentType::Center => write!(f, "center"),
             AlignmentType::Left => write!(f, "left"),
+            AlignmentType::Distribute => write!(f, "distribute"),
             AlignmentType::Right => write!(f, "right"),
+            AlignmentType::End => write!(f, "end"),
             AlignmentType::Both => write!(f, "both"),
             AlignmentType::Justified => write!(f, "justified"),
             _ => write!(f, "unsupported"),
@@ -34,8 +38,10 @@ impl FromStr for AlignmentType {
         match s {
             "left" => Ok(AlignmentType::Left),
             "right" => Ok(AlignmentType::Right),
+            "distribute" => Ok(AlignmentType::Distribute),
             "center" => Ok(AlignmentType::Center),
             "both" => Ok(AlignmentType::Both),
+            "end" => Ok(AlignmentType::End),
             "justified" => Ok(AlignmentType::Justified),
             _ => Ok(AlignmentType::Unsupported),
         }

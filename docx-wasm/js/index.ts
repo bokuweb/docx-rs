@@ -208,6 +208,14 @@ export class Docx {
         paragraph = paragraph.align(wasm.AlignmentType.Left);
         break;
       }
+      case "distribute": {
+        paragraph = paragraph.align(wasm.AlignmentType.Distribute);
+        break;
+      }
+      case "end": {
+        paragraph = paragraph.align(wasm.AlignmentType.End);
+        break;
+      }
     }
 
     if (typeof p.property.indent !== "undefined") {

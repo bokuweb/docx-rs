@@ -6,7 +6,7 @@ use xml::reader::EventReader;
 
 use crate::reader::ReaderError;
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Clone)]
 pub enum XMLElement {
     Body,
     Paragraph,
@@ -26,6 +26,7 @@ pub enum XMLElement {
     Break,
     Tab,
     ParagraphStyle,
+    ParagraphPropertyChange,
     Indent,
     Name,
     Alignment,
@@ -53,6 +54,11 @@ pub enum XMLElement {
     TableWidth,
     TableIndent,
     TableBorders,
+    // Change
+    TableGridChange,
+    TablePropertyChange,
+    TableRowPropertyChange,
+    TableCellPropertyChange,
     Top,
     Right,
     Left,
@@ -158,6 +164,7 @@ impl FromStr for XMLElement {
             "szCs" => Ok(XMLElement::SizeCs),
             "u" => Ok(XMLElement::Underline),
             "pStyle" => Ok(XMLElement::ParagraphStyle),
+            "pPrChange" => Ok(XMLElement::ParagraphPropertyChange),
             "highlight" => Ok(XMLElement::Highlight),
             "b" => Ok(XMLElement::Bold),
             "bCs" => Ok(XMLElement::BoldCs),
@@ -200,6 +207,10 @@ impl FromStr for XMLElement {
             "insideV" => Ok(XMLElement::InsideV),
             "tblCellMar" => Ok(XMLElement::TableCellMargin),
             "tblGrid" => Ok(XMLElement::TableGrid),
+            "tblPrChange" => Ok(XMLElement::TablePropertyChange),
+            "trPrChange" => Ok(XMLElement::TableRowPropertyChange),
+            "tcPrChange" => Ok(XMLElement::TableCellPropertyChange),
+            "tblGridChange" => Ok(XMLElement::TableGridChange),
             "gridCol" => Ok(XMLElement::GridCol),
             "style" => Ok(XMLElement::Style),
             "basedOn" => Ok(XMLElement::BasedOn),

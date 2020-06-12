@@ -7,6 +7,7 @@ mod document_rels;
 mod drawing;
 mod errors;
 mod from_xml;
+mod ignore;
 mod insert;
 mod level;
 mod level_override;

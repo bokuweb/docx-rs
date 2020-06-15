@@ -227,6 +227,10 @@ export class Docx {
         paragraph = paragraph.align(wasm.AlignmentType.Distribute);
         break;
       }
+      case "both": {
+        paragraph = paragraph.align(wasm.AlignmentType.Both);
+        break;
+      }
       case "end": {
         paragraph = paragraph.align(wasm.AlignmentType.End);
         break;

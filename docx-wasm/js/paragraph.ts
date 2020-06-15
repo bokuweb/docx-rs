@@ -19,6 +19,7 @@ export type AlignmentType =
   | "center"
   | "left"
   | "right"
+  | "both"
   | "justified"
   | "distribute"
   | "end";

@@ -26,10 +26,10 @@ impl FromStr for TableAlignmentType {
     type Err = errors::TypeError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "left" => Ok(TableAlignmentType::Left),
-            "right" => Ok(TableAlignmentType::Right),
+            "start" | "left" => Ok(TableAlignmentType::Left),
+            "right" | "end" => Ok(TableAlignmentType::Right),
             "center" => Ok(TableAlignmentType::Center),
-            _ => Err(errors::TypeError::FromStrError),
+            _ => Ok(TableAlignmentType::Left),
         }
     }
 }

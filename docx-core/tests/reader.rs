@@ -199,3 +199,18 @@ pub fn read_textbox() {
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
+
+#[test]
+pub fn read_from_doc() {
+    let mut file = File::open("../fixtures/from_doc/from_doc.docx").unwrap();
+    let mut buf = vec![];
+    file.read_to_end(&mut buf).unwrap();
+    let json = read_docx(&buf).unwrap().json();
+
+    assert_debug_snapshot!(&json);
+
+    let path = std::path::Path::new("./tests/output/from_doc.json");
+    let mut file = std::fs::File::create(&path).unwrap();
+    file.write_all(json.as_bytes()).unwrap();
+    file.flush().unwrap();
+}

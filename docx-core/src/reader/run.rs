@@ -34,6 +34,9 @@ impl ElementReader for Run {
                     match name.prefix.as_ref().map(std::ops::Deref::deref) {
                         Some("w") => {
                             let e = XMLElement::from_str(&name.local_name).unwrap();
+
+                            ignore::ignore_element(e.clone(), XMLElement::RunPropertyChange, r);
+
                             match e {
                                 XMLElement::Tab => {
                                     run = run.add_tab();

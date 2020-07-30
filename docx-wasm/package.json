@@ -22,14 +22,14 @@
   },
   "devDependencies": {
     "@wasm-tool/wasm-pack-plugin": "1.0.1",
-    "html-webpack-plugin": "^3.2.0",
-    "npm-run-all": "^4.1.5",
-    "text-encoding": "^0.7.0",
-    "ts-loader": "^6.2.1",
-    "typescript": "^3.7.5",
-    "webpack": "^4.29.4",
-    "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.1.0"
+    "html-webpack-plugin": "3.2.0",
+    "npm-run-all": "4.1.5",
+    "text-encoding": "0.7.0",
+    "ts-loader": "6.2.1",
+    "typescript": "3.7.5",
+    "webpack": "4.39.3",
+    "webpack-cli": "3.3.8",
+    "webpack-dev-server": "3.8.0"
   },
   "files": [
     "dist"

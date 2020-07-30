@@ -18,7 +18,7 @@
     "prepublishOnly": "npm run build"
   },
   "resolutions": {
-    "**/serialize-javascript": "2.1.2"
+    "**/serialize-javascript": "4.0.0"
   },
   "devDependencies": {
     "@wasm-tool/wasm-pack-plugin": "1.0.1",

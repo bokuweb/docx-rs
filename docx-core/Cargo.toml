@@ -30,4 +30,4 @@ image = "0.23.8"
 
 [dev-dependencies]
 pretty_assertions = "0.6.1"
-insta = "0.13"
+insta = "0.16"

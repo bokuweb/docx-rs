@@ -1,5 +1,6 @@
 mod build_xml;
 mod comments;
+mod comments_extended;
 mod content_types;
 mod doc_props;
 mod document;
@@ -21,6 +22,7 @@ pub(crate) use history_id::HistoryId;
 pub(crate) use pic_id::*;
 
 pub use comments::*;
+pub use comments_extended::*;
 pub use content_types::*;
 pub use doc_props::*;
 pub use document::*;

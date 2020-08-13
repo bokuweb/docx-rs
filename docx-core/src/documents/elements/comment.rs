@@ -9,6 +9,7 @@ pub struct Comment {
     pub author: String,
     pub date: String,
     pub paragraph: Paragraph,
+    pub parent_comment_id: Option<usize>,
 }
 
 impl Default for Comment {
@@ -18,6 +19,7 @@ impl Default for Comment {
             author: "unnamed".to_owned(),
             date: "1970-01-01T00:00:00Z".to_owned(),
             paragraph: Paragraph::new(),
+            parent_comment_id: None,
         }
     }
 }
@@ -42,6 +44,11 @@ impl Comment {
 
     pub fn paragraph(mut self, p: Paragraph) -> Comment {
         self.paragraph = p;
+        self
+    }
+
+    pub fn parent_comment_id(mut self, parent_comment_id: usize) -> Comment {
+        self.parent_comment_id = Some(parent_comment_id);
         self
     }
 

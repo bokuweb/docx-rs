@@ -48,11 +48,16 @@ impl BuildXML for DocumentRels {
                 "rId3",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings",
                 "settings.xml",
+            )
+            .relationship(
+                "rId4",
+                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header",
+                "header1.xml",
             );
 
         if self.has_comments {
             b = b.relationship(
-                "rId4",
+                "rId5",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments",
                 "comments.xml",
             )
@@ -60,7 +65,7 @@ impl BuildXML for DocumentRels {
 
         if self.has_numberings {
             b = b.relationship(
-                "rId5",
+                "rId6",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering",
                 "numbering.xml",
             )

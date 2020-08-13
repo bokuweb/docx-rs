@@ -41,6 +41,8 @@ where
     zip.write_all(&xml.comments)?;
     zip.start_file("word/numbering.xml", options)?;
     zip.write_all(&xml.numberings)?;
+    zip.start_file("word/header1.xml", options)?;
+    zip.write_all(&xml.header)?;
 
     if !xml.media.is_empty() {
         zip.add_directory("word/media/", Default::default())?;

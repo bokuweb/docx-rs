@@ -14,7 +14,7 @@ impl Default for HeaderReference {
     fn default() -> HeaderReference {
         HeaderReference {
             header_type: "default".to_owned(),
-            id: "rid4".to_owned(),
+            id: "rId4".to_owned(),
         }
     }
 }

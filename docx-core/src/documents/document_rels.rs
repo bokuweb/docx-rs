@@ -52,7 +52,7 @@ impl BuildXML for DocumentRels {
             .relationship(
                 "rId4",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header",
-                "header.xml",
+                "header1.xml",
             );
 
         if self.has_comments {

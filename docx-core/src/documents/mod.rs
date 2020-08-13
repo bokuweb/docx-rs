@@ -273,7 +273,25 @@ impl Docx {
                                     TableCellContent::Paragraph(paragraph) => {
                                         for child in &paragraph.children {
                                             if let ParagraphChild::CommentStart(c) = child {
+                                                let comment = c.comment();
+                                                let para_id = comment.paragraph.id.clone();
                                                 comments.push(c.comment());
+                                                let comment_extended =
+                                                    CommentExtended::new(para_id);
+                                                if let Some(parent_comment_id) =
+                                                    comment.parent_comment_id
+                                                {
+                                                    let parent_para_id = comment_map
+                                                        .get(&parent_comment_id)
+                                                        .unwrap()
+                                                        .clone();
+                                                    comments_extended.push(
+                                                        comment_extended
+                                                            .parent_paragraph_id(parent_para_id),
+                                                    );
+                                                } else {
+                                                    comments_extended.push(comment_extended);
+                                                }
                                             }
                                         }
                                     }

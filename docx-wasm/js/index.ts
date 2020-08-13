@@ -179,6 +179,9 @@ export class Docx {
     if (c._date) {
       comment = comment.date(c._date);
     }
+    if (c._parentCommentId) {
+      comment = comment.parent_comment_id(c._parentCommentId);
+    }
     return comment;
   }
 

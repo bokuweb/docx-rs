@@ -33,6 +33,11 @@ impl Comment {
         self
     }
 
+    pub fn parent_comment_id(mut self, id: usize) -> Comment {
+        self.0 = self.0.parent_comment_id(id);
+        self
+    }
+
     pub fn id(&self) -> usize {
         self.0.id
     }

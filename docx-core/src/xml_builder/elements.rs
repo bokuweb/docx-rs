@@ -68,7 +68,7 @@ impl XMLBuilder {
     closed!(q_format, "w:qFormat");
     // i.e. <w:p ... >
     // open!(open_paragraph, "w:p");
-    open_with_attrs!(open_paragraph, "w:p");
+    open!(open_paragraph, "w:p", "w14:paraId");
     open!(open_paragraph_property, "w:pPr");
     open!(open_doc_defaults, "w:docDefaults");
     // i.e. <w:name ... >
@@ -263,6 +263,35 @@ impl XMLBuilder {
     */
     open!(open_level_override, "w:lvlOverride", "w:ilvl");
     closed_with_str!(start_override, "w:startOverride");
+
+    // CommentExtended
+    // w15:commentEx w15:paraId="00000001" w15:paraIdParent="57D1BD7C" w15:done="0"
+    pub(crate) fn comment_extended(
+        mut self,
+        paragraph_id: &str,
+        done: bool,
+        parent_paragraph_id: &Option<String>,
+    ) -> Self {
+        if let Some(parent_paragraph_id) = parent_paragraph_id {
+            self.writer
+                .write(
+                    XmlEvent::start_element("w15:commentEx")
+                        .attr("w15:paraId", paragraph_id)
+                        .attr("w15:paraIdParent", parent_paragraph_id)
+                        .attr("w15:done", &format!("{}", done as usize)),
+                )
+                .expect(EXPECT_MESSAGE);
+            return self.close();
+        }
+        self.writer
+            .write(
+                XmlEvent::start_element("w15:commentEx")
+                    .attr("w15:paraId", paragraph_id)
+                    .attr("w15:done", &format!("{}", done as usize)),
+            )
+            .expect(EXPECT_MESSAGE);
+        self.close()
+    }
 }
 
 #[cfg(test)]

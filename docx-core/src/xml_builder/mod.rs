@@ -2,6 +2,7 @@
 mod macros;
 
 mod comments;
+mod comments_extended;
 mod core_properties;
 mod declaration;
 mod document;

@@ -9,19 +9,19 @@ use crate::xml_builder::*;
 #[derive(Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Paragraph {
+    pub id: String,
     pub children: Vec<ParagraphChild>,
     pub property: ParagraphProperty,
     pub has_numbering: bool,
-    pub attrs: Vec<(String, String)>,
 }
 
 impl Default for Paragraph {
     fn default() -> Self {
         Self {
+            id: crate::generate_para_id(),
             children: Vec::new(),
             property: ParagraphProperty::new(),
             has_numbering: false,
-            attrs: Vec::new(),
         }
     }
 }
@@ -121,11 +121,6 @@ impl Paragraph {
         self
     }
 
-    pub fn add_attr(mut self, key: impl Into<String>, val: impl Into<String>) -> Paragraph {
-        self.attrs.push((key.into(), val.into()));
-        self
-    }
-
     pub fn add_bookmark_start(mut self, id: usize, name: impl Into<String>) -> Paragraph {
         self.children
             .push(ParagraphChild::BookmarkStart(BookmarkStart::new(id, name)));
@@ -207,7 +202,7 @@ impl Paragraph {
 impl BuildXML for Paragraph {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
-            .open_paragraph(&self.attrs)
+            .open_paragraph(&self.id)
             .add_child(&self.property)
             .add_children(&self.children)
             .close()
@@ -230,19 +225,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
-        );
-    }
-
-    #[test]
-    fn test_custom_attr() {
-        let b = Paragraph::new()
-            .add_run(Run::new().add_text("Hello"))
-            .add_attr("customId", "abcd-1234-567890")
-            .build();
-        assert_eq!(
-            str::from_utf8(&b).unwrap(),
-            r#"<w:p customId="abcd-1234-567890"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );
     }
 
@@ -255,7 +238,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p><w:pPr><w:rPr /></w:pPr><w:bookmarkStart w:id="0" w:name="article" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:bookmarkEnd w:id="0" /></w:p>"#
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:bookmarkStart w:id="0" w:name="article" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:bookmarkEnd w:id="0" /></w:p>"#
         );
     }
 
@@ -268,7 +251,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p><w:pPr><w:rPr /></w:pPr><w:commentRangeStart w:id="1" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:r>
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:commentRangeStart w:id="1" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:r>
   <w:rPr />
 </w:r>
 <w:commentRangeEnd w:id="1" />
@@ -286,7 +269,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p><w:pPr><w:rPr /><w:numPr><w:numId w:val="0" /><w:ilvl w:val="1" /></w:numPr></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:numPr><w:numId w:val="0" /><w:ilvl w:val="1" /></w:numPr></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );
     }
 
@@ -296,7 +279,7 @@ mod tests {
         let p = Paragraph::new().add_run(run);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}"#
+            r#"{"id":"12345678","children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false}"#
         );
     }
 
@@ -307,7 +290,7 @@ mod tests {
         let p = Paragraph::new().add_insert(ins);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"children":[{"type":"insert","data":{"runs":[{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false,"attrs":[]}"#
+            r#"{"id":"12345678","children":[{"type":"insert","data":{"runs":[{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false}"#
         );
     }
 }

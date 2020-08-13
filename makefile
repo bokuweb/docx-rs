@@ -1,5 +1,5 @@
 test:
-	cargo test
+	cargo test -- --test-threads=1
 
 lint:
 	cargo clippy --all-targets --all-features -- -D warnings

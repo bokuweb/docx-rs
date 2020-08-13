@@ -5,6 +5,7 @@ export class Comment {
   _author: string;
   _date: string;
   _paragraph: Paragraph;
+  _parentCommentId: number;
 
   constructor(id: number) {
     this.id = id;
@@ -22,6 +23,11 @@ export class Comment {
 
   paragraph(p: Paragraph) {
     this._paragraph = p;
+    return this;
+  }
+
+  parentCommentId(id: number) {
+    this._parentCommentId = id;
     return this;
   }
 }

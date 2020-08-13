@@ -1,5 +1,8 @@
+use std::collections::HashMap;
+
 mod build_xml;
 mod comments;
+mod comments_extended;
 mod content_types;
 mod doc_props;
 mod document;
@@ -10,6 +13,7 @@ mod header;
 mod header_id;
 mod history_id;
 mod numberings;
+mod paragraph_id;
 mod pic_id;
 mod rels;
 mod settings;
@@ -18,9 +22,11 @@ mod xml_docx;
 
 pub(crate) use build_xml::BuildXML;
 pub(crate) use history_id::HistoryId;
+pub(crate) use paragraph_id::*;
 pub(crate) use pic_id::*;
 
 pub use comments::*;
+pub use comments_extended::*;
 pub use content_types::*;
 pub use doc_props::*;
 pub use document::*;
@@ -51,6 +57,7 @@ pub struct Docx {
     pub font_table: FontTable,
     pub media: Vec<(usize, Vec<u8>)>,
     pub header: Header,
+    pub comments_extended: CommentsExtended,
 }
 
 impl Default for Docx {
@@ -67,6 +74,8 @@ impl Default for Docx {
         let numberings = Numberings::new();
         let media = vec![];
         let header = Header::new();
+        let comments_extended = CommentsExtended::new();
+
         Docx {
             content_type,
             rels,
@@ -80,6 +89,7 @@ impl Default for Docx {
             numberings,
             media,
             header,
+            comments_extended,
         }
     }
 }
@@ -187,6 +197,7 @@ impl Docx {
             numberings: self.numberings.build(),
             media: images,
             header: self.header.build(),
+            comments_extended: self.comments_extended.build(),
         }
     }
 
@@ -198,12 +209,59 @@ impl Docx {
     // Traverse and clone comments from document and add to comments node.
     fn update_comments(&mut self) {
         let mut comments: Vec<Comment> = vec![];
+        let mut comments_extended: Vec<CommentExtended> = vec![];
+
+        let mut comment_map: HashMap<usize, String> = HashMap::new();
         for child in &self.document.children {
             match child {
                 DocumentChild::Paragraph(paragraph) => {
                     for child in &paragraph.children {
                         if let ParagraphChild::CommentStart(c) = child {
+                            let comment = c.comment();
+                            let para_id = comment.paragraph.id.clone();
+                            comment_map.insert(comment.id(), para_id.clone());
+                        }
+                    }
+                }
+                DocumentChild::Table(table) => {
+                    for row in &table.rows {
+                        for cell in &row.cells {
+                            for content in &cell.children {
+                                match content {
+                                    TableCellContent::Paragraph(paragraph) => {
+                                        for child in &paragraph.children {
+                                            if let ParagraphChild::CommentStart(c) = child {
+                                                let comment = c.comment();
+                                                let para_id = comment.paragraph.id.clone();
+                                                comment_map.insert(comment.id(), para_id.clone());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for child in &self.document.children {
+            match child {
+                DocumentChild::Paragraph(paragraph) => {
+                    for child in &paragraph.children {
+                        if let ParagraphChild::CommentStart(c) = child {
+                            let comment = c.comment();
+                            let para_id = comment.paragraph.id.clone();
                             comments.push(c.comment());
+                            let comment_extended = CommentExtended::new(para_id);
+                            if let Some(parent_comment_id) = comment.parent_comment_id {
+                                let parent_para_id =
+                                    comment_map.get(&parent_comment_id).unwrap().clone();
+                                comments_extended
+                                    .push(comment_extended.parent_paragraph_id(parent_para_id));
+                            } else {
+                                comments_extended.push(comment_extended);
+                            }
                         }
                     }
                 }
@@ -231,6 +289,10 @@ impl Docx {
         if !comments.is_empty() {
             self.document_rels.has_comments = true;
         }
+
+        self.comments_extended
+            .add_comments_extended(comments_extended);
+
         self.comments.add_comments(comments);
     }
 

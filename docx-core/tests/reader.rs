@@ -1,4 +1,4 @@
-use insta::assert_debug_snapshot;
+use insta::assert_json_snapshot;
 
 use docx_rs::*;
 use std::fs::*;
@@ -11,7 +11,7 @@ pub fn read_hello() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_hello", &json);
 
     let path = std::path::Path::new("./tests/output/hello.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -26,7 +26,7 @@ pub fn read_numbering() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_numbering", &json);
 
     let path = std::path::Path::new("./tests/output/numbering.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -41,7 +41,7 @@ pub fn read_decoration() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_decoration", &json);
 
     let path = std::path::Path::new("./tests/output/decoration.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -57,7 +57,7 @@ pub fn read_highlight_and_underline() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_highlight_and_underline", &json);
 
     let path = std::path::Path::new("./tests/output/highlight_and_underline.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -72,7 +72,7 @@ pub fn read_history() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_history", &json);
 
     let path = std::path::Path::new("./tests/output/history.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -87,7 +87,7 @@ pub fn read_indent_word_online() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_indent_word_online", &json);
 
     let path = std::path::Path::new("./tests/output/indent_word_online.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -102,7 +102,7 @@ pub fn read_tab_and_break() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_tab_and_break", &json);
 
     let path = std::path::Path::new("./tests/output/tab_and_break.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -117,7 +117,7 @@ pub fn read_table_docx() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_table_docx", &json);
 
     let path = std::path::Path::new("./tests/output/table_docx.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -132,7 +132,7 @@ pub fn read_table_merged_libre_office() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_table_merged_libre_office", &json);
 
     let path = std::path::Path::new("./tests/output/table_merged_libre_office.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -147,7 +147,7 @@ pub fn read_bom() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_bom", &json);
 
     let path = std::path::Path::new("./tests/output/bom.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -162,7 +162,7 @@ pub fn read_bookmark() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_bookmark", &json);
 
     let path = std::path::Path::new("./tests/output/bookmark.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -177,7 +177,7 @@ pub fn read_insert_table() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_insert_table", &json);
 
     let path = std::path::Path::new("./tests/output/insert_table.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -192,7 +192,7 @@ pub fn read_textbox() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_textbox", &json);
 
     let path = std::path::Path::new("./tests/output/textbox.json");
     let mut file = std::fs::File::create(&path).unwrap();
@@ -207,7 +207,7 @@ pub fn read_from_doc() {
     file.read_to_end(&mut buf).unwrap();
     let json = read_docx(&buf).unwrap().json();
 
-    assert_debug_snapshot!(&json);
+    assert_json_snapshot!("read_from_doc", &json);
 
     let path = std::path::Path::new("./tests/output/from_doc.json");
     let mut file = std::fs::File::create(&path).unwrap();

@@ -68,7 +68,7 @@ impl XMLBuilder {
     closed!(q_format, "w:qFormat");
     // i.e. <w:p ... >
     // open!(open_paragraph, "w:p");
-    open_with_attrs!(open_paragraph, "w:p");
+    open!(open_paragraph, "w:p", "w14:paraId");
     open!(open_paragraph_property, "w:pPr");
     open!(open_doc_defaults, "w:docDefaults");
     // i.e. <w:name ... >

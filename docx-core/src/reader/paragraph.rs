@@ -150,6 +150,7 @@ mod tests {
         assert_eq!(
             p,
             Paragraph {
+                id: "12345678".to_owned(),
                 children: vec![ParagraphChild::Run(Box::new(Run::new().add_text("a")))],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
@@ -164,7 +165,6 @@ mod tests {
                     )),
                 },
                 has_numbering: false,
-                attrs: Vec::new(),
             }
         );
     }
@@ -189,6 +189,7 @@ mod tests {
         assert_eq!(
             p,
             Paragraph {
+                id: "12345678".to_owned(),
                 children: vec![ParagraphChild::Run(Box::new(Run::new().add_text("a")))],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
@@ -198,7 +199,6 @@ mod tests {
                     indent: Some(Indent::new(None, None, None, Some(100))),
                 },
                 has_numbering: false,
-                attrs: Vec::new(),
             }
         );
     }
@@ -218,6 +218,7 @@ mod tests {
         assert_eq!(
             p,
             Paragraph {
+                id: "12345678".to_owned(),
                 children: vec![],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
@@ -227,7 +228,6 @@ mod tests {
                     indent: None,
                 },
                 has_numbering: false,
-                attrs: vec![],
             }
         );
     }
@@ -249,6 +249,7 @@ mod tests {
         assert_eq!(
             p,
             Paragraph {
+                id: "12345678".to_owned(),
                 children: vec![],
                 property: ParagraphProperty {
                     run_property: RunProperty::new(),
@@ -260,7 +261,6 @@ mod tests {
                     indent: None,
                 },
                 has_numbering: true,
-                attrs: vec![],
             }
         );
     }
@@ -282,6 +282,7 @@ mod tests {
         assert_eq!(
             p,
             Paragraph {
+                id: "12345678".to_owned(),
                 children: vec![ParagraphChild::Insert(
                     Insert::new(Run::new().add_text("W"))
                         .author("unknown")
@@ -295,7 +296,6 @@ mod tests {
                     indent: None,
                 },
                 has_numbering: false,
-                attrs: vec![],
             }
         );
     }
@@ -318,6 +318,7 @@ mod tests {
         assert_eq!(
             p,
             Paragraph {
+                id: "12345678".to_owned(),
                 children: vec![ParagraphChild::Delete(
                     Delete::new(Run::new().add_delete_text("Hello "))
                         .author("unknown")
@@ -331,7 +332,6 @@ mod tests {
                     indent: None,
                 },
                 has_numbering: false,
-                attrs: vec![],
             }
         );
     }
@@ -354,6 +354,7 @@ mod tests {
         assert_eq!(
             p,
             Paragraph {
+                id: "12345678".to_owned(),
                 children: vec![
                     ParagraphChild::BookmarkStart(BookmarkStart::new(0, "ABCD-1234")),
                     ParagraphChild::Run(Box::new(Run::new().add_text("Bookmarked"))),
@@ -367,7 +368,6 @@ mod tests {
                     indent: None,
                 },
                 has_numbering: false,
-                attrs: vec![],
             }
         );
     }
@@ -395,6 +395,7 @@ mod tests {
         assert_eq!(
             p,
             Paragraph {
+                id: "12345678".to_owned(),
                 children: vec![
                     ParagraphChild::Insert(
                         Insert::new(Run::new().add_text("W"))
@@ -415,7 +416,6 @@ mod tests {
                     indent: None,
                 },
                 has_numbering: false,
-                attrs: vec![],
             }
         );
     }
@@ -441,6 +441,7 @@ mod tests {
         assert_eq!(
             p,
             Paragraph {
+                id: "12345678".to_owned(),
                 children: vec![ParagraphChild::Insert(
                     Insert::new(Run::new().add_text("W"))
                         .author("unknown")
@@ -455,7 +456,6 @@ mod tests {
                     indent: None,
                 },
                 has_numbering: false,
-                attrs: vec![],
             }
         );
     }

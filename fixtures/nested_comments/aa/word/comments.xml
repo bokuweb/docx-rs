@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:comments xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
+    xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex"
+    xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex"
+    xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex"
+    xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex"
+    xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex"
+    xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex"
+    xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex"
+    xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex"
+    xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink"
+    xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d"
+    xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+    xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+    xmlns:v="urn:schemas-microsoft-com:vml"
+    xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
+    xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+    xmlns:w10="urn:schemas-microsoft-com:office:word"
+    xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+    xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"
+    xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex"
+    xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid"
+    xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml"
+    xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex"
+    xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
+    xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
+    xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
+    xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 w16se w16cid w16 w16cex wp14">
+    <w:comment w:id="0" w:author="bokuweb" w:date="2020-08-13T17:39:00Z" w:initials="bokuweb">
+        <w:p w14:paraId="67E3033C" w14:textId="5E093601" w:rsidR="00EB01C9" w:rsidRDefault="00EB01C9">
+            <w:pPr>
+                <w:pStyle w:val="a4"/>
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:rStyle w:val="a3"/>
+                </w:rPr>
+                <w:annotationRef/>
+            </w:r>
+            <w:r>
+                <w:rPr>
+                    <w:rFonts w:hint="eastAsia"/>
+                </w:rPr>
+                <w:t>H</w:t>
+            </w:r>
+            <w:r>
+                <w:t>ello</w:t>
+            </w:r>
+        </w:p>
+        <w:tbl>
+            <w:tblPr>
+                <w:tblStyle w:val="aa"/>
+                <w:tblW w:w="0" w:type="auto"/>
+                <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+            </w:tblPr>
+            <w:tblGrid>
+                <w:gridCol w:w="4244"/>
+                <w:gridCol w:w="4244"/>
+            </w:tblGrid>
+            <w:tr w:rsidR="003451BA" w14:paraId="22FA608D" w14:textId="77777777" w:rsidTr="003451BA">
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="4244" w:type="dxa"/>
+                    </w:tcPr>
+                    <w:p w14:paraId="5D32D23F" w14:textId="38A7C42D" w:rsidR="003451BA" w:rsidRDefault="003451BA">
+                        <w:pPr>
+                            <w:pStyle w:val="a4"/>
+                        </w:pPr>
+                        <w:r>
+                            <w:rPr>
+                                <w:rFonts w:hint="eastAsia"/>
+                                <w:noProof/>
+                            </w:rPr>
+                            <w:t>s</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:rPr>
+                                <w:noProof/>
+                            </w:rPr>
+                            <w:t>adsadasd</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="4244" w:type="dxa"/>
+                    </w:tcPr>
+                    <w:p w14:paraId="01B8A0B8" w14:textId="77777777" w:rsidR="003451BA" w:rsidRDefault="003451BA">
+                        <w:pPr>
+                            <w:pStyle w:val="a4"/>
+                        </w:pPr>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+        </w:tbl>
+        <w:p w14:paraId="2269A9E5" w14:textId="77777777" w:rsidR="003451BA" w:rsidRDefault="003451BA">
+            <w:pPr>
+                <w:pStyle w:val="a4"/>
+            </w:pPr>
+        </w:p>
+        <w:p w14:paraId="57D1BD7C" w14:textId="7C68DD92" w:rsidR="003451BA" w:rsidRDefault="003451BA" w:rsidP="003451BA">
+            <w:pPr>
+                <w:pStyle w:val="a4"/>
+                <w:numPr>
+                    <w:ilvl w:val="0"/>
+                    <w:numId w:val="1"/>
+                </w:numPr>
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:rFonts w:hint="eastAsia"/>
+                </w:rPr>
+                <w:t>1</w:t>
+            </w:r>
+            <w:r>
+                <w:t>11111111</w:t>
+            </w:r>
+        </w:p>
+    </w:comment>
+    <w:comment w:id="1" w:author="bokuweb" w:date="2020-08-13T17:39:00Z" w:initials="bokuweb">
+        <w:p w14:paraId="00000001" w14:textId="77777777" w:rsidR="00EB01C9" w:rsidRDefault="00EB01C9">
+            <w:pPr>
+                <w:pStyle w:val="a4"/>
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:rStyle w:val="a3"/>
+                </w:rPr>
+                <w:annotationRef/>
+            </w:r>
+            <w:r>
+                <w:rPr>
+                    <w:rFonts w:hint="eastAsia"/>
+                </w:rPr>
+                <w:t>W</w:t>
+            </w:r>
+            <w:r>
+                <w:t>orld</w:t>
+            </w:r>
+        </w:p>
+    </w:comment>
+    <w:comment w:id="2" w:author="植木智之" w:date="2020-08-13T18:00:00Z" w:initials="植木智之">
+        <w:p w14:paraId="24BD3D00" w14:textId="14A2936B" w:rsidR="003451BA" w:rsidRDefault="003451BA">
+            <w:pPr>
+                <w:pStyle w:val="a4"/>
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:rStyle w:val="a3"/>
+                </w:rPr>
+                <w:annotationRef/>
+            </w:r>
+            <w:r>
+                <w:rPr>
+                    <w:rFonts w:hint="eastAsia"/>
+                </w:rPr>
+                <w:t>a</w:t>
+            </w:r>
+            <w:r>
+                <w:t>sdadsdsa</w:t>
+            </w:r>
+        </w:p>
+    </w:comment>
+</w:comments>

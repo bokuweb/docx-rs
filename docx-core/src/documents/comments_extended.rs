@@ -5,6 +5,7 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 // i.e.    <w15:commentEx w15:paraId="00000001" w15:paraIdParent="57D1BD7C" w15:done="0"/>
+
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CommentsExtended {
@@ -45,13 +46,13 @@ impl BuildXML for CommentsExtended {
 mod tests {
 
     use super::*;
-    use insta::assert_debug_snapshot;
+    use insta::assert_snapshot;
     use std::str;
 
     #[test]
     fn test_settings() {
         let c = CommentsExtended::new().add_comment_extended(CommentExtended::new("123"));
         let b = c.build();
-        assert_debug_snapshot!(str::from_utf8(&b).unwrap());
+        assert_snapshot!("comments_extended_snapshot", str::from_utf8(&b).unwrap());
     }
 }

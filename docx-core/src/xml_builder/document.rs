@@ -42,6 +42,10 @@ impl XMLBuilder {
                         "xmlns:w14",
                         "http://schemas.microsoft.com/office/word/2010/wordml",
                     )
+                    .attr(
+                        "xmlns:w15",
+                        "http://schemas.microsoft.com/office/word/2012/wordml",
+                    )
                     .attr("mc:Ignorable", "w14 wp14"),
             )
             .expect("should write to buf");

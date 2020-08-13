@@ -72,6 +72,11 @@ impl ContentTypes {
             "/word/header1.xml".to_owned(),
             "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml".to_owned(),
         );
+        self.types.insert(
+            "/word/commentsExtended.xml".to_owned(),
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml"
+                .to_owned(),
+        );
         self
     }
 }

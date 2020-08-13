@@ -17,9 +17,8 @@ impl CommentsExtended {
         Default::default()
     }
 
-    pub fn add_comment_extended(mut self, c: CommentExtended) -> Self {
-        self.children.push(c);
-        self
+    pub fn add_comments_extended(&mut self, c: Vec<CommentExtended>) {
+        self.children = c;
     }
 }
 
@@ -41,7 +40,6 @@ impl BuildXML for CommentsExtended {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
 
@@ -51,7 +49,8 @@ mod tests {
 
     #[test]
     fn test_settings() {
-        let c = CommentsExtended::new().add_comment_extended(CommentExtended::new("123"));
+        let mut c = CommentsExtended::new();
+        c.add_comments_extended(vec![CommentExtended::new("123")]);
         let b = c.build();
         assert_snapshot!("comments_extended_snapshot", str::from_utf8(&b).unwrap());
     }

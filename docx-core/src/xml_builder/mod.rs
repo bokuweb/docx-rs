@@ -8,6 +8,7 @@ mod document;
 mod drawing;
 mod elements;
 mod fonts;
+mod header;
 mod numbering;
 mod pic;
 mod properties;

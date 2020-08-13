@@ -6,6 +6,8 @@ mod document;
 mod document_rels;
 mod elements;
 mod font_table;
+mod header;
+mod header_id;
 mod history_id;
 mod numberings;
 mod pic_id;
@@ -25,6 +27,7 @@ pub use document::*;
 pub use document_rels::*;
 pub use elements::*;
 pub use font_table::*;
+pub use header::*;
 pub use numberings::*;
 pub use rels::*;
 pub use settings::*;
@@ -47,6 +50,7 @@ pub struct Docx {
     pub settings: Settings,
     pub font_table: FontTable,
     pub media: Vec<(usize, Vec<u8>)>,
+    pub header: Header,
 }
 
 impl Default for Docx {
@@ -62,6 +66,7 @@ impl Default for Docx {
         let comments = Comments::new();
         let numberings = Numberings::new();
         let media = vec![];
+        let header = Header::new();
         Docx {
             content_type,
             rels,
@@ -74,6 +79,7 @@ impl Default for Docx {
             font_table,
             numberings,
             media,
+            header,
         }
     }
 }
@@ -132,6 +138,16 @@ impl Docx {
         self
     }
 
+    pub fn add_header_paragraph(mut self, p: Paragraph) -> Docx {
+        if p.has_numbering {
+            // If this document has numbering, set numberings.xml to document_rels.
+            // This is because numberings.xml without numbering cause an error on word online.
+            self.document_rels.has_numberings = true;
+        }
+        self.header = self.header.add_paragraph(p);
+        self
+    }
+
     pub fn add_abstract_numbering(mut self, num: AbstractNumbering) -> Docx {
         self.numberings = self.numberings.add_abstract_numbering(num);
         self
@@ -170,6 +186,7 @@ impl Docx {
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
             media: images,
+            header: self.header.build(),
         }
     }
 

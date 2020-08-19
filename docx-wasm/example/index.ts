@@ -29,6 +29,7 @@ import("../js").then((w) => {
         )
         .addCommentEnd(new w.CommentEnd(2))
     )
+    .docId("12345678-1234-1234-1234-1234567890AB")
     .build();
   saveAs(new Blob([buf]), "hello.docx");
 });

@@ -178,6 +178,11 @@ impl Docx {
         self
     }
 
+    pub fn doc_id(mut self, id: &str) -> Self {
+        self.settings = self.settings.doc_id(id);
+        self
+    }
+
     pub fn build(&mut self) -> XMLDocx {
         self.update_comments();
         let (image_ids, images) = self.create_images();

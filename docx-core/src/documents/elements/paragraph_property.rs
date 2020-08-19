@@ -67,8 +67,8 @@ impl ParagraphProperty {
 impl BuildXML for ParagraphProperty {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
-            .open_paragraph_property()
-            .add_child(&self.run_property)
+        .open_paragraph_property()
+        .add_child(&self.run_property)
             .add_optional_child(&self.style)
             .add_optional_child(&self.numbering_property)
             .add_optional_child(&self.alignment)

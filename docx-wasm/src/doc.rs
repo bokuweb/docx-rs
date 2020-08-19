@@ -33,6 +33,11 @@ impl Docx {
         self
     }
 
+    pub fn doc_id(mut self, id: &str) -> Docx {
+        self.0 = self.0.doc_id(id);
+        self
+    }
+
     pub fn build(&mut self, has_numberings: bool) -> Result<Vec<u8>, JsValue> {
         let buf = Vec::new();
         let mut cur = std::io::Cursor::new(buf);

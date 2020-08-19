@@ -15,6 +15,7 @@ import { AbstractNumbering } from "./abstract-numbering";
 import { Numbering } from "./numbering";
 import { BookmarkStart } from "./bookmark-start";
 import { BookmarkEnd } from "./bookmark-end";
+import { Settings } from "./settings";
 import { DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
@@ -51,6 +52,7 @@ export class Docx {
   hasNumberings = false;
   abstractNumberings: AbstractNumbering[] = [];
   numberings: Numbering[] = [];
+  settings: Settings = new Settings();
 
   addParagraph(p: Paragraph) {
     if (p.hasNumberings) {
@@ -75,6 +77,11 @@ export class Docx {
 
   addNumbering(num: Numbering) {
     this.numberings.push(num);
+    return this;
+  }
+
+  docId(id: string) {
+    this.settings.docId(id);
     return this;
   }
 
@@ -437,6 +444,7 @@ export class Docx {
 
   build() {
     let docx = wasm.createDocx();
+
     this.children.forEach((child) => {
       if (child instanceof Paragraph) {
         let p = this.buildParagraph(child);
@@ -491,6 +499,10 @@ export class Docx {
       });
       docx = docx.add_numbering(num);
     });
+
+    if (this.settings._docId) {
+      docx = docx.doc_id(this.settings._docId);
+    }
 
     const buf = docx.build(this.hasNumberings);
     docx.free();

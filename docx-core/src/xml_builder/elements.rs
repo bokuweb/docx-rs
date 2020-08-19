@@ -264,6 +264,8 @@ impl XMLBuilder {
     open!(open_level_override, "w:lvlOverride", "w:ilvl");
     closed_with_str!(start_override, "w:startOverride");
 
+    closed!(doc_id, "w15:docId", "w15:val");
+
     // CommentExtended
     // w15:commentEx w15:paraId="00000001" w15:paraIdParent="57D1BD7C" w15:done="0"
     pub(crate) fn comment_extended(

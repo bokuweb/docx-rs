@@ -64,29 +64,18 @@ jobs:
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
       - run: cargo build
 
-  #  build-wasm:
-  #    runs-on: ubuntu-latest
-  #    steps:
-  #      - uses: actions/checkout@master
-  #      - uses: actions-rs/toolchain@v1
-  #        with:
-  #          profile: minimal
-  #          toolchain: stable
-  #          override: true
-  #      - name: Cache cargo registry
-  #        uses: actions/cache@v1
-  #        with:
-  #          path: ~/.cargo/registry
-  #          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-  #      - name: Cache cargo index
-  #        uses: actions/cache@v1
-  #        with:
-  #          path: ~/.cargo/git
-  #          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
-  #      - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-  #      - run: cd docx-wasm && yarn install
-  #      - run: rustup target add wasm32-unknown-unknown
-  #      - run: cd docx-wasm && npm run build
+  build-wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+        with:
+          node-version: 12
+      - name: install wasm-pack
+        run: cd docx-wasm && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      - run: cd docx-wasm && yarn install
+      - run: rustup target add wasm32-unknown-unknown
+      - run: cd docx-wasm && npm run build
 
   lint:
     name: Clippy

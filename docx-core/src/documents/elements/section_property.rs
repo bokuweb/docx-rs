@@ -1,5 +1,6 @@
 use super::*;
 use crate::documents::BuildXML;
+use crate::types::*;
 use crate::xml_builder::*;
 
 use serde::Serialize;
@@ -12,6 +13,7 @@ pub struct SectionProperty {
     columns: usize,
     document_grid: usize,
     header_reference: HeaderReference,
+    section_type: Option<SectionType>,
 }
 
 impl SectionProperty {
@@ -28,21 +30,26 @@ impl Default for SectionProperty {
             columns: 425,
             document_grid: 360,
             header_reference: HeaderReference::default(),
+            section_type: None,
         }
     }
 }
 
 impl BuildXML for SectionProperty {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.open_section_property()
+        let mut b = XMLBuilder::new();
+        b = b
+            .open_section_property()
             .add_child(&self.page_size)
             .add_child(&self.page_margin)
             .add_child(&self.header_reference)
             .columns(&format!("{}", &self.columns))
-            .document_grid("lines", &format!("{}", &self.document_grid))
-            .close()
-            .build()
+            .document_grid("lines", &format!("{}", &self.document_grid));
+
+        if let Some(t) = self.section_type {
+            b = b.type_tag(&t.to_string());
+        }
+        b.close().build()
     }
 }
 

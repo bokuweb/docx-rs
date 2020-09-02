@@ -48,7 +48,7 @@ const convertBorderType = (t: BorderType) => {
 };
 
 export class Docx {
-  children: (Paragraph | Table)[] = [];
+  children: (Paragraph | Table | BookmarkStart | BookmarkEnd)[] = [];
   hasNumberings = false;
   abstractNumberings: AbstractNumbering[] = [];
   numberings: Numbering[] = [];
@@ -59,6 +59,16 @@ export class Docx {
       this.hasNumberings = true;
     }
     this.children.push(p);
+    return this;
+  }
+
+  addBookmarkStart(id: number, name: string) {
+    this.children.push(new BookmarkStart(id, name));
+    return this;
+  }
+
+  addBookmarkEnd(id: number) {
+    this.children.push(new BookmarkEnd(id));
     return this;
   }
 
@@ -452,6 +462,10 @@ export class Docx {
       } else if (child instanceof Table) {
         let t = this.buildTable(child);
         docx = docx.add_table(t);
+      } else if (child instanceof BookmarkStart) {
+        docx = docx.add_bookmark_start(child.id, child.name);
+      } else if (child instanceof BookmarkEnd) {
+        docx = docx.add_bookmark_end(child.id);
       }
     });
 

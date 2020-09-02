@@ -18,6 +18,16 @@ impl Docx {
         self
     }
 
+    pub fn add_bookmark_start(mut self, id: usize, name: &str) -> Self {
+        self.0 = self.0.add_bookmark_start(id, name);
+        self
+    }
+
+    pub fn add_bookmark_end(mut self, id: usize) -> Docx {
+        self.0 = self.0.add_bookmark_end(id);
+        self
+    }
+
     pub fn add_table(mut self, t: Table) -> Docx {
         self.0.document = self.0.document.add_table(t.take());
         self

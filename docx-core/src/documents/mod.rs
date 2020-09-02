@@ -112,6 +112,7 @@ impl Docx {
                         self.document_rels.has_numberings = true;
                     }
                 }
+                _ => {}
             }
         }
         self.document = d;
@@ -135,6 +136,16 @@ impl Docx {
             self.document_rels.has_numberings = true;
         }
         self.document = self.document.add_paragraph(p);
+        self
+    }
+
+    pub fn add_bookmark_start(mut self, id: usize, name: impl Into<String>) -> Docx {
+        self.document = self.document.add_bookmark_start(id, name);
+        self
+    }
+
+    pub fn add_bookmark_end(mut self, id: usize) -> Docx {
+        self.document = self.document.add_bookmark_end(id);
         self
     }
 
@@ -247,6 +258,7 @@ impl Docx {
                         }
                     }
                 }
+                _ => {}
             }
         }
 
@@ -305,6 +317,7 @@ impl Docx {
                         }
                     }
                 }
+                _ => {}
             }
         }
         // If this document has comments, set comments.xml to document_rels.
@@ -371,6 +384,7 @@ impl Docx {
                         }
                     }
                 }
+                _ => {}
             }
         }
         (image_ids, images)

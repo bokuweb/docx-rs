@@ -2,6 +2,7 @@ import { saveAs } from "file-saver";
 
 import("../js").then((w) => {
   const buf = new w.Docx()
+    .addBookmarkStart(0, "Hello")
     .addParagraph(
       new w.Paragraph()
         .addRun(new w.Run().addText("Hello "))
@@ -29,6 +30,7 @@ import("../js").then((w) => {
         )
         .addCommentEnd(new w.CommentEnd(2))
     )
+    .addBookmarkEnd(0)
     .docId("12345678-1234-1234-1234-1234567890AB")
     .build();
   saveAs(new Blob([buf]), "hello.docx");

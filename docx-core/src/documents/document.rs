@@ -1,7 +1,7 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
-use super::{Paragraph, SectionProperty, Table};
+use super::*;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
@@ -17,6 +17,8 @@ pub struct Document {
 pub enum DocumentChild {
     Paragraph(Paragraph),
     Table(Table),
+    BookmarkStart(BookmarkStart),
+    BookmarkEnd(BookmarkEnd),
 }
 
 impl Serialize for DocumentChild {
@@ -34,6 +36,18 @@ impl Serialize for DocumentChild {
             DocumentChild::Table(ref c) => {
                 let mut t = serializer.serialize_struct("Table", 2)?;
                 t.serialize_field("type", "table")?;
+                t.serialize_field("data", c)?;
+                t.end()
+            }
+            DocumentChild::BookmarkStart(ref c) => {
+                let mut t = serializer.serialize_struct("BookmarkStart", 2)?;
+                t.serialize_field("type", "bookmarkStart")?;
+                t.serialize_field("data", c)?;
+                t.end()
+            }
+            DocumentChild::BookmarkEnd(ref c) => {
+                let mut t = serializer.serialize_struct("BookmarkEnd", 2)?;
+                t.serialize_field("type", "bookmarkEnd")?;
                 t.serialize_field("data", c)?;
                 t.end()
             }
@@ -71,6 +85,18 @@ impl Document {
         self.children.push(DocumentChild::Table(t));
         self
     }
+
+    pub fn add_bookmark_start(mut self, id: usize, name: impl Into<String>) -> Self {
+        self.children
+            .push(DocumentChild::BookmarkStart(BookmarkStart::new(id, name)));
+        self
+    }
+
+    pub fn add_bookmark_end(mut self, id: usize) -> Self {
+        self.children
+            .push(DocumentChild::BookmarkEnd(BookmarkEnd::new(id)));
+        self
+    }
 }
 
 impl BuildXML for Document {
@@ -83,6 +109,8 @@ impl BuildXML for Document {
             match c {
                 DocumentChild::Paragraph(p) => b = b.add_child(p),
                 DocumentChild::Table(t) => b = b.add_child(t),
+                DocumentChild::BookmarkStart(s) => b = b.add_child(s),
+                DocumentChild::BookmarkEnd(e) => b = b.add_child(e),
             }
         }
         b.add_child(&self.section_property).close().close().build()

@@ -71,8 +71,21 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: 12
-      - name: install wasm-pack
-        run: cd docx-wasm && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            repositories/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - uses: jetli/wasm-pack-action@v0.3.0
+        with:
+          version: 'latest'
       - run: cd docx-wasm && yarn install
       - run: rustup target add wasm32-unknown-unknown
       - run: cd docx-wasm && npm run build

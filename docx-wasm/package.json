@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "wasm-pack:dev": "wasm-pack build --out-dir js/pkg",
-    "wasm-pack:web": "wasm-pack build --out-dir dist/web/pkg",
-    "wasm-pack:node": "wasm-pack build --out-dir dist/node/pkg --target nodejs",
+    "wasm-pack:web": "wasm-pack build --release --out-dir dist/web/pkg",
+    "wasm-pack:node": "wasm-pack build --release --out-dir dist/node/pkg --target nodejs",
     "wasm-pack": "run-p wasm-pack:*",
     "tsc:web": "tsc -p tsconfig.web.json",
     "tsc:node": "tsc -p tsconfig.node.json",

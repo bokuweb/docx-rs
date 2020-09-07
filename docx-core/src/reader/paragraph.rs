@@ -42,36 +42,13 @@ impl ElementReader for Paragraph {
                             continue;
                         }
                         XMLElement::BookmarkStart => {
-                            let mut id: Option<usize> = None;
-                            let mut name: Option<String> = None;
-
-                            for a in attributes {
-                                let local_name = &a.name.local_name;
-                                if local_name == "id" {
-                                    id = Some(usize::from_str(&a.value)?);
-                                } else if local_name == "name" {
-                                    name = Some(a.value.clone());
-                                }
-                            }
-                            if id.is_none() || name.is_none() {
-                                return Err(ReaderError::XMLReadError);
-                            }
-                            p = p.add_bookmark_start(id.unwrap(), name.unwrap());
+                            let s = BookmarkStart::read(r, &attributes)?;
+                            p = p.add_bookmark_start(s.id, s.name);
                             continue;
                         }
                         XMLElement::BookmarkEnd => {
-                            let mut id: Option<usize> = None;
-                            for a in attributes {
-                                let local_name = &a.name.local_name;
-                                if local_name == "id" {
-                                    id = Some(usize::from_str(&a.value)?);
-                                }
-                            }
-                            if let Some(id) = id {
-                                p = p.add_bookmark_end(id);
-                            } else {
-                                return Err(ReaderError::XMLReadError);
-                            }
+                            let e = BookmarkEnd::read(r, &attributes)?;
+                            p = p.add_bookmark_end(e.id);
                             continue;
                         }
                         XMLElement::CommentRangeStart => {

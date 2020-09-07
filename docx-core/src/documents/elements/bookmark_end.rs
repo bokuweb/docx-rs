@@ -5,7 +5,7 @@ use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct BookmarkEnd {
-    id: usize,
+    pub id: usize,
 }
 
 impl BookmarkEnd {

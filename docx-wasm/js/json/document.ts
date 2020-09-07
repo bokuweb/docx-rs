@@ -1,7 +1,11 @@
-import { ParagraphJSON } from "./paragraph";
+import { ParagraphJSON, BookmarkStartJSON, BookmarkEndJSON } from "./paragraph";
 import { TableJSON } from "./table";
 
-export type DocumentChildJSON = ParagraphJSON | TableJSON;
+export type DocumentChildJSON =
+  | ParagraphJSON
+  | TableJSON
+  | BookmarkStartJSON
+  | BookmarkEndJSON;
 
 export type DocumentJSON = {
   children: DocumentChildJSON[];

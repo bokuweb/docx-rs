@@ -28,6 +28,16 @@ impl FromXML for Document {
                             doc = doc.add_table(t);
                             continue;
                         }
+                        XMLElement::BookmarkStart => {
+                            let s = BookmarkStart::read(&mut parser, &attributes)?;
+                            doc = doc.add_bookmark_start(s.id, s.name);
+                            continue;
+                        }
+                        XMLElement::BookmarkEnd => {
+                            let e = BookmarkEnd::read(&mut parser, &attributes)?;
+                            doc = doc.add_bookmark_end(e.id);
+                            continue;
+                        }
                         _ => {}
                     }
                 }

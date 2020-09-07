@@ -35,6 +35,8 @@ export type DocxJSON = {
   };
   numberings: NumberingsJSON;
   settings: {
+    // w15:docId
+    docId: string | null;
     defaultTabStop: number;
     zoom: number;
   };

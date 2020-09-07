@@ -1,9 +1,9 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Serializer};
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct DocId {
     id: String,
 }
@@ -11,6 +11,15 @@ pub struct DocId {
 impl DocId {
     pub fn new(id: impl Into<String>) -> DocId {
         DocId { id: id.into() }
+    }
+}
+
+impl Serialize for DocId {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.id)
     }
 }
 

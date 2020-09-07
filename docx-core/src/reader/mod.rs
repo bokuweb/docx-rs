@@ -1,11 +1,11 @@
 mod a_graphic;
 mod a_graphic_data;
 mod attributes;
+mod bookmark_end;
+mod bookmark_start;
 mod delete;
 mod document;
 mod document_rels;
-mod bookmark_start;
-mod bookmark_end;
 mod drawing;
 mod errors;
 mod from_xml;
@@ -21,6 +21,7 @@ mod read_zip;
 mod rels;
 mod run;
 mod run_property;
+mod settings;
 mod style;
 mod styles;
 mod table;
@@ -51,6 +52,8 @@ const STYLE_RELATIONSHIP_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles";
 const NUMBERING_RELATIONSHIP_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
+const SETTINGS_TYPE: &str =
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings";
 
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     let cur = Cursor::new(buf);
@@ -101,6 +104,17 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         )?;
         let nums = Numberings::from_xml(&data[..])?;
         docx = docx.numberings(nums);
+    }
+
+    // Read settings
+    let settings_path = rels.find_target_path(SETTINGS_TYPE);
+    if let Some(settings_path) = settings_path {
+        let data = read_zip(
+            &mut archive,
+            settings_path.to_str().expect("should have settings"),
+        )?;
+        let settings = Settings::from_xml(&data[..])?;
+        docx = docx.settings(settings);
     }
 
     Ok(docx)

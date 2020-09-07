@@ -83,6 +83,7 @@ pub enum XMLElement {
     StartOverride,
     Level,
     Numbering,
+    Settings,
     Num,
     Start,
     NumberFormat,
@@ -94,6 +95,7 @@ pub enum XMLElement {
     Drawing,
     TxbxContent,
     Pict,
+    DocId,
     Unsupported,
 }
 
@@ -226,6 +228,7 @@ impl FromStr for XMLElement {
             "abstractNumId" => Ok(XMLElement::AbstractNumberingId),
             "lvl" => Ok(XMLElement::Level),
             "numbering" => Ok(XMLElement::Numbering),
+            "settings" => Ok(XMLElement::Settings),
             "num" => Ok(XMLElement::Num),
             "start" => Ok(XMLElement::Start),
             "numFmt" => Ok(XMLElement::NumberFormat),
@@ -240,6 +243,7 @@ impl FromStr for XMLElement {
             "pict" => Ok(XMLElement::Pict),
             "lvlOverride" => Ok(XMLElement::LvlOverride),
             "startOverride" => Ok(XMLElement::StartOverride),
+            "docId" => Ok(XMLElement::DocId),
             _ => Ok(XMLElement::Unsupported),
         }
     }

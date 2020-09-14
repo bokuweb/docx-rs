@@ -1,12 +1,51 @@
+use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
-use crate::documents::{BuildXML, HistoryId, Run};
+use super::*;
 
+use crate::documents::{BuildXML, HistoryId, Run};
 use crate::xml_builder::*;
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum InsertChild {
+    Run(Box<Run>),
+    Delete(Delete),
+}
+
+impl BuildXML for InsertChild {
+    fn build(&self) -> Vec<u8> {
+        match self {
+            InsertChild::Run(v) => v.build(),
+            InsertChild::Delete(v) => v.build(),
+        }
+    }
+}
+
+impl Serialize for InsertChild {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            InsertChild::Run(ref r) => {
+                let mut t = serializer.serialize_struct("Run", 2)?;
+                t.serialize_field("type", "run")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            InsertChild::Delete(ref r) => {
+                let mut t = serializer.serialize_struct("Delete", 2)?;
+                t.serialize_field("type", "delete")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+        }
+    }
+}
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct Insert {
-    pub runs: Vec<Run>,
+    pub children: Vec<InsertChild>,
     pub author: String,
     pub date: String,
 }
@@ -16,7 +55,7 @@ impl Default for Insert {
         Insert {
             author: "unnamed".to_owned(),
             date: "1970-01-01T00:00:00Z".to_owned(),
-            runs: vec![],
+            children: vec![],
         }
     }
 }
@@ -24,13 +63,36 @@ impl Default for Insert {
 impl Insert {
     pub fn new(run: Run) -> Insert {
         Self {
-            runs: vec![run],
+            children: vec![InsertChild::Run(Box::new(run))],
+            ..Default::default()
+        }
+    }
+
+    pub fn new_with_empty() -> Insert {
+        Self {
+            ..Default::default()
+        }
+    }
+
+    pub fn new_with_del(del: Delete) -> Insert {
+        Self {
+            children: vec![InsertChild::Delete(del)],
             ..Default::default()
         }
     }
 
     pub fn add_run(mut self, run: Run) -> Insert {
-        self.runs.push(run);
+        self.children.push(InsertChild::Run(Box::new(run)));
+        self
+    }
+
+    pub fn add_delete(mut self, del: Delete) -> Insert {
+        self.children.push(InsertChild::Delete(del));
+        self
+    }
+
+    pub fn add_child(mut self, c: InsertChild) -> Insert {
+        self.children.push(c);
         self
     }
 
@@ -51,7 +113,7 @@ impl BuildXML for Insert {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_insert(&self.generate(), &self.author, &self.date)
-            .add_children(&self.runs)
+            .add_children(&self.children)
             .close()
             .build()
     }

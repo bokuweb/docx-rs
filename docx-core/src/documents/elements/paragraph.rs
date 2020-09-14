@@ -290,7 +290,7 @@ mod tests {
         let p = Paragraph::new().add_insert(ins);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"id":"12345678","children":[{"type":"insert","data":{"runs":[{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false}"#
+            r#"{"id":"12345678","children":[{"type":"insert","data":{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null},"hasNumbering":false}"#
         );
     }
 }

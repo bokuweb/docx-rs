@@ -18,7 +18,7 @@
     "prepublishOnly": "npm run build"
   },
   "resolutions": {
-    "**/serialize-javascript": "4.0.0"
+    "**/serialize-javascript": "5.0.1"
   },
   "devDependencies": {
     "@types/file-saver": "2.0.1",

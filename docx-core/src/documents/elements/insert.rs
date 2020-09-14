@@ -68,6 +68,12 @@ impl Insert {
         }
     }
 
+    pub fn new_with_empty() -> Insert {
+        Self {
+            ..Default::default()
+        }
+    }
+
     pub fn new_with_del(del: Delete) -> Insert {
         Self {
             children: vec![InsertChild::Delete(del)],
@@ -82,6 +88,11 @@ impl Insert {
 
     pub fn add_delete(mut self, del: Delete) -> Insert {
         self.children.push(InsertChild::Delete(del));
+        self
+    }
+
+    pub fn add_child(mut self, c: InsertChild) -> Insert {
+        self.children.push(c);
         self
     }
 

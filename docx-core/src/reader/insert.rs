@@ -11,25 +11,26 @@ impl ElementReader for Insert {
         r: &mut EventReader<R>,
         attrs: &[OwnedAttribute],
     ) -> Result<Self, ReaderError> {
-        let mut runs: Vec<Run> = vec![];
+        let mut children: Vec<InsertChild> = vec![];
         loop {
             let e = r.next();
             match e {
                 Ok(XmlEvent::StartElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    if let XMLElement::Run = e {
-                        runs.push(Run::read(r, attrs)?);
+                    match e {
+                        XMLElement::Run => {
+                            children.push(InsertChild::Run(Box::new(Run::read(r, attrs)?)))
+                        }
+                        XMLElement::Delete => {
+                            children.push(InsertChild::Delete(Delete::read(r, attrs)?))
+                        }
+                        _ => {}
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     if e == XMLElement::Insert {
-                        let run = if !runs.is_empty() {
-                            std::mem::replace(&mut runs[0], Run::new())
-                        } else {
-                            Run::new()
-                        };
-                        let mut ins = Insert::new(run);
+                        let mut ins = Insert::new_with_empty();
                         for attr in attrs {
                             let local_name = &attr.name.local_name;
                             if local_name == "author" {
@@ -38,9 +39,9 @@ impl ElementReader for Insert {
                                 ins = ins.date(&attr.value);
                             }
                         }
-                        if runs.len() > 1 {
-                            for r in runs.into_iter().skip(1) {
-                                ins = ins.add_run(r);
+                        if children.len() > 1 {
+                            for c in children.into_iter() {
+                                ins = ins.add_child(c);
                             }
                         }
                         return Ok(ins);

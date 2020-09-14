@@ -39,7 +39,7 @@ impl ElementReader for Insert {
                                 ins = ins.date(&attr.value);
                             }
                         }
-                        if children.len() > 1 {
+                        if children.len() > 0 {
                             for c in children.into_iter() {
                                 ins = ins.add_child(c);
                             }

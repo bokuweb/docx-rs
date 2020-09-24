@@ -329,8 +329,12 @@ export class Docx {
       table = table.add_row(row);
     });
     table = table.set_grid(new Uint32Array(t.grid));
-
     table = table.indent(t.property.indent || 0);
+
+    if (t.property.cellMargins) {
+      const { top, right, bottom, left } = t.property.cellMargins;
+      table = table.set_margins(top, right, bottom, left);
+    }
 
     switch (t.property.align) {
       case "center": {

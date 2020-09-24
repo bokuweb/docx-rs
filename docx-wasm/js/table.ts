@@ -6,6 +6,12 @@ export type TableProperty = {
   indent?: number;
   align?: TableAlignmentType;
   width?: number;
+  cellMargins?: {
+    top: number;
+    left: number;
+    bottom: number;
+    right: number;
+  };
 };
 
 export class Table {
@@ -39,6 +45,11 @@ export class Table {
 
   width(w: number) {
     this.property.width = w;
+    return this;
+  }
+
+  cellMargins(top: number, right: number, bottom: number, left: number) {
+    this.property.cellMargins = { top, left, bottom, right };
     return this;
   }
 }

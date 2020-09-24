@@ -43,7 +43,7 @@ impl Table {
         self
     }
 
-    pub fn set_margins(mut self, top: usize, right: usize, bottom: usize, left: usize) -> Table {
+    pub fn set_cell_margins(mut self, top: usize, right: usize, bottom: usize, left: usize) -> Table {
         let m = docx_rs::TableCellMargins::new().margin(top, right, bottom, left);
         self.0.property = self.0.property.set_margins(m);
         self

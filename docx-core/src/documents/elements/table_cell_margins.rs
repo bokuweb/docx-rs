@@ -29,7 +29,7 @@ impl TableCellMargins {
         Default::default()
     }
 
-    pub fn margin(self, top: usize, left: usize, bottom: usize, right: usize) -> TableCellMargins {
+    pub fn margin(self, top: usize, right: usize, bottom: usize, left: usize) -> TableCellMargins {
         TableCellMargins {
             top,
             left,
@@ -81,9 +81,9 @@ mod tests {
             str::from_utf8(&b).unwrap(),
             r#"<w:tblCellMar>
   <w:top w:w="10" w:type="dxa" />
-  <w:left w:w="20" w:type="dxa" />
+  <w:left w:w="40" w:type="dxa" />
   <w:bottom w:w="30" w:type="dxa" />
-  <w:right w:w="40" w:type="dxa" />
+  <w:right w:w="20" w:type="dxa" />
 </w:tblCellMar>"#
         );
     }

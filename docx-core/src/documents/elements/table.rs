@@ -52,6 +52,11 @@ impl Table {
         self
     }
 
+    pub fn margins(mut self, margins: TableCellMargins) -> Self {
+        self.property = self.property.set_margins(margins);
+        self
+    }
+
     pub fn set_borders(mut self, borders: TableBorders) -> Self {
         self.property = self.property.set_borders(borders);
         self

@@ -1,10 +1,16 @@
 use docx_rs::*;
-use std::fs::*;
-use std::io::Read;
+
+use std::fs::File;
+use std::io::{Read, Write};
 
 pub fn main() {
-    let mut file = File::open("./from_doc.docx").unwrap();
+    let mut file = File::open("./style_test.docx").unwrap();
     let mut buf = vec![];
     file.read_to_end(&mut buf).unwrap();
     dbg!(read_docx(&buf).unwrap().json());
+
+    let mut file = File::create("./test.json").unwrap();
+    let res = read_docx(&buf).unwrap().json();
+    file.write_all(res.as_bytes()).unwrap();
+    file.flush().unwrap();
 }

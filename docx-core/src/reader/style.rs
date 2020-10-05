@@ -47,7 +47,12 @@ impl ElementReader for Style {
                             continue;
                         }
                         // rPr
-                        XMLElement::Bold => style = style.bold(),
+                        XMLElement::Bold => {
+                            if !read_bool(&attributes) {
+                                continue;
+                            }
+                            style = style.bold();
+                        }
                         XMLElement::Highlight => {
                             style = style.highlight(attributes[0].value.clone())
                         }
@@ -58,7 +63,12 @@ impl ElementReader for Style {
                         XMLElement::Underline => {
                             style = style.underline(&attributes[0].value.clone())
                         }
-                        XMLElement::Italic => style = style.italic(),
+                        XMLElement::Italic => {
+                            if !read_bool(&attributes) {
+                                continue;
+                            }
+                            style = style.italic();
+                        }
                         XMLElement::Vanish => style = style.vanish(),
                         _ => {}
                     }

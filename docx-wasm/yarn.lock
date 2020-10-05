@@ -835,7 +835,7 @@ acorn@^7.1.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
-adm-zip@^0.4.16:
+adm-zip@0.4.16:
   version "0.4.16"
   resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.4.16.tgz#cf4c508fdffab02c269cbc7f471a875f05570365"
   integrity sha512-TFi4HBKSGfIKsK5YCkKaaFG2m4PEDyViZmEwof3MTIgzimHLto6muaHVpbrljdIvIrFZzEq/p4nafOeLcYegrg==
@@ -3989,7 +3989,7 @@ jest-worker@^26.5.0:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-jest@^26.5.0:
+jest@26.5.0:
   version "26.5.0"
   resolved "https://registry.yarnpkg.com/jest/-/jest-26.5.0.tgz#d973c13a3843587b89b02dab1fbcd1f3bf111f09"
   integrity sha512-yW1QTkdpxVWTV2M5cOwVdEww8dRGqL5bb7FOG3YQoMtf7oReCEawmU0+tOKkZUSfcOymbXmCfdBQLzuwOLCx0w==

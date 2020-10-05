@@ -79,6 +79,7 @@ jobs:
       - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - run: rustup target add wasm32-unknown-unknown
       - run: cd docx-wasm && yarn install && yarn wasm-pack:web
+      - run: cd docx-wasm && yarn tsc
 
   lint:
     name: Clippy

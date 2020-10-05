@@ -92,7 +92,7 @@ mod tests {
         ];
         assert_eq!(
             serde_json::to_string(&c.overrides(overrides)).unwrap(),
-            r#"{"id":0,"abstractNumId":2,"levelOverrides":[{"level":0,"start":1},{"level":1,"start":1}]}"#
+            r#"{"id":0,"abstractNumId":2,"levelOverrides":[{"level":0,"overrideStart":1,"overrideLevel":null},{"level":1,"overrideStart":1,"overrideLevel":null}]}"#
         );
     }
 }

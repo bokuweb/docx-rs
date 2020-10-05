@@ -19,10 +19,18 @@ impl ElementReader for LevelOverride {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    if let XMLElement::StartOverride = e {
-                        let val = usize::from_str(&attributes[0].value)?;
-                        o = o.start(val);
-                        continue;
+                    match e {
+                        XMLElement::StartOverride => {
+                            let val = usize::from_str(&attributes[0].value)?;
+                            o = o.start(val);
+                            continue;
+                        }
+                        XMLElement::Level => {
+                            let lvl = Level::read(r, &attributes)?;
+                            o = o.level(lvl);
+                            continue;
+                        }
+                        _ => {}
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {

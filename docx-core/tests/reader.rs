@@ -214,3 +214,18 @@ pub fn read_from_doc() {
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
+
+#[test]
+pub fn read_lvl_override() {
+    let mut file = File::open("../fixtures/lvl_override/override.docx").unwrap();
+    let mut buf = vec![];
+    file.read_to_end(&mut buf).unwrap();
+    let json = read_docx(&buf).unwrap().json();
+
+    assert_json_snapshot!("read_lvl_override", &json);
+
+    let path = std::path::Path::new("./tests/output/lvl_override.json");
+    let mut file = std::fs::File::create(&path).unwrap();
+    file.write_all(json.as_bytes()).unwrap();
+    file.flush().unwrap();
+}

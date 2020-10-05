@@ -1,3 +1,5 @@
+use super::*;
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
@@ -11,16 +13,26 @@ This element specifies an optional override which shall be applied in place of z
 #[serde(rename_all = "camelCase")]
 pub struct LevelOverride {
     pub level: usize,
-    pub start: Option<usize>,
+    pub override_start: Option<usize>,
+    pub override_level: Option<Level>,
 }
 
 impl LevelOverride {
     pub fn new(level: usize) -> LevelOverride {
-        LevelOverride { level, start: None }
+        LevelOverride {
+            level,
+            override_start: None,
+            override_level: None,
+        }
     }
 
     pub fn start(mut self, start: usize) -> LevelOverride {
-        self.start = Some(start);
+        self.override_start = Some(start);
+        self
+    }
+
+    pub fn level(mut self, override_level: Level) -> LevelOverride {
+        self.override_level = Some(override_level);
         self
     }
 }
@@ -30,7 +42,9 @@ impl BuildXML for LevelOverride {
         let mut b = XMLBuilder::new();
         b = b.open_level_override(&format!("{}", self.level));
 
-        if let Some(start) = self.start {
+        b = b.add_optional_child(&self.override_level);
+
+        if let Some(start) = self.override_start {
             b = b.start_override(&format!("{}", start));
         }
 
@@ -57,38 +71,21 @@ mod tests {
 </w:lvlOverride>"#
         );
     }
-}
 
-// Example
-/*
-<w:num w:numId="5">
-  <w:abstractNumId w:val="0"/>
-  <w:lvlOverride w:ilvl="0">
-    <w:startOverride w:val="1"/>
-  </w:lvlOverride>
-  <w:lvlOverride w:ilvl="1">
-    <w:startOverride w:val="1"/>
-  </w:lvlOverride>
-  <w:lvlOverride w:ilvl="2">
-    <w:startOverride w:val="1"/>
-  </w:lvlOverride>
-  <w:lvlOverride w:ilvl="3">
-    <w:startOverride w:val="1"/>
-  </w:lvlOverride>
-  <w:lvlOverride w:ilvl="4">
-    <w:startOverride w:val="1"/>
-  </w:lvlOverride>
-  <w:lvlOverride w:ilvl="5">
-    <w:startOverride w:val="1"/>
-  </w:lvlOverride>
-  <w:lvlOverride w:ilvl="6">
-    <w:startOverride w:val="1"/>
-  </w:lvlOverride>
-  <w:lvlOverride w:ilvl="7">
-    <w:startOverride w:val="1"/>
-  </w:lvlOverride>
-  <w:lvlOverride w:ilvl="8">
-    <w:startOverride w:val="1"/>
-  </w:lvlOverride>
-</w:num>
-*/
+    #[test]
+    fn test_override_with_lvl() {
+        let lvl = Level::new(
+            1,
+            Start::new(1),
+            NumberFormat::new("decimal"),
+            LevelText::new("%4."),
+            LevelJc::new("left"),
+        );
+        let c = LevelOverride::new(1).level(lvl);
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:lvlOverride w:ilvl="1"><w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr></w:lvl></w:lvlOverride>"#
+        );
+    }
+}

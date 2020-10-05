@@ -1,3 +1,4 @@
+import { LevelJSON } from "./json";
 import { ParagraphProperty, SpecialIndentKind } from "./paragraph";
 
 export type LevelSuffixType = "nothing" | "tab" | "space";
@@ -48,13 +49,19 @@ export class Level {
 export class LevelOverride {
   level: number;
   startOverride: number | null = null;
+  levelOverride: LevelJSON | null = null;
 
   constructor(level: number) {
     this.level = level;
   }
 
-  start(start: number) {
+  overrideStart(start: number) {
     this.startOverride = start;
+    return this;
+  }
+
+  overrideLevel(level: LevelJSON) {
+    this.levelOverride = level;
     return this;
   }
 }

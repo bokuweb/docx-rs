@@ -7,7 +7,7 @@ export type LevelJSON = {
   text: string;
   jc: string;
   pstyle: string | null;
-  suffix: 'tab' | 'nothing' | 'space';
+  suffix: "tab" | "nothing" | "space";
   paragraphProperty: ParagraphPropertyJSON;
 };
 
@@ -26,7 +26,8 @@ export type NumberingJSON = {
 
 export type LevelOverrideJSON = {
   level: number;
-  start: number;
+  overrideStart: number | null;
+  overrideLevel: LevelJSON | null;
 };
 
 export type NumberingsJSON = {

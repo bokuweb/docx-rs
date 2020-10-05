@@ -13,6 +13,7 @@
     "tsc:web": "tsc -p tsconfig.web.json",
     "tsc:node": "tsc -p tsconfig.node.json",
     "tsc": "run-p tsc:*",
+    "test": "jest",
     "build": "run-s wasm-pack tsc",
     "serve": "webpack-dev-server --open --config webpack.dev.js",
     "prepublishOnly": "npm run build"
@@ -23,8 +24,10 @@
   "devDependencies": {
     "@types/file-saver": "2.0.1",
     "@wasm-tool/wasm-pack-plugin": "1.3.1",
+    "adm-zip": "^0.4.16",
     "file-saver": "2.0.2",
     "html-webpack-plugin": "4.4.1",
+    "jest": "^26.5.0",
     "npm-run-all": "4.1.5",
     "text-encoding": "0.7.0",
     "ts-loader": "8.0.3",

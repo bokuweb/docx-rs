@@ -333,7 +333,7 @@ export class Docx {
 
     if (t.property.cellMargins) {
       const { top, right, bottom, left } = t.property.cellMargins;
-      table = table.set_margins(top, right, bottom, left);
+      table = table.set_cell_margins(top, right, bottom, left);
     }
 
     switch (t.property.align) {

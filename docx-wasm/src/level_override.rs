@@ -1,5 +1,7 @@
 use wasm_bindgen::prelude::*;
 
+use super::Level;
+
 #[wasm_bindgen]
 #[derive(Debug)]
 pub struct LevelOverride(docx_rs::LevelOverride);
@@ -19,6 +21,11 @@ impl LevelOverride {
 impl LevelOverride {
     pub fn start(mut self, start: usize) -> Self {
         self.0 = self.0.start(start);
+        self
+    }
+
+    pub fn level(mut self, level: Level) -> Self {
+        self.0 = self.0.level(level.take());
         self
     }
 }

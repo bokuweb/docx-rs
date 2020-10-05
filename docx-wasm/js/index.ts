@@ -513,6 +513,16 @@ export class Docx {
         if (o.startOverride !== null) {
           levelOverride = levelOverride.start(o.startOverride);
         }
+        if (o.levelOverride !== null) {
+          let level = wasm.createLevel(
+            o.levelOverride.level,
+            o.levelOverride.start,
+            o.levelOverride.format,
+            o.levelOverride.text,
+            o.levelOverride.jc
+          );
+          levelOverride = levelOverride.level(level);
+        }
         num = num.add_override(levelOverride);
       });
       docx = docx.add_numbering(num);

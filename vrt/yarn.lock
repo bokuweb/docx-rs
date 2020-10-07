@@ -57,10 +57,10 @@ inherits@2:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-libreoffice-convert@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/libreoffice-convert/-/libreoffice-convert-1.1.1.tgz#aafdce80985c4e90ccce871702dc3d2b93eb1605"
-  integrity sha512-mTQLiVd0+JawmI0QEgWBYl3ah/KUh6y7u1OTtUTJwVOebvAoMUyYFb6wVCd4VfGgmoxLh3slcCIrd+dsZY64pw==
+libreoffice-convert@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/libreoffice-convert/-/libreoffice-convert-1.3.0.tgz#8b0cfc18245c6ef4f7a0f9124e6df6a02a511bd2"
+  integrity sha512-MLM5q91/YjLlQN3Z5RuLIPFeNvDPRgniFEH+rHeysQAGJAwlSMDBg9xmQpuGJ2QxCZsSZNGskJdlnc3vSJq0TA==
   dependencies:
     async "^2.6.2"
     tmp "^0.2.1"

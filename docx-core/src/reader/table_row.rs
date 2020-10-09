@@ -4,7 +4,7 @@ use std::str::FromStr;
 use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
-use super::attributes::read_val;
+use super::attributes::*;
 use super::*;
 
 impl ElementReader for TableRow {
@@ -34,8 +34,8 @@ impl ElementReader for TableRow {
                             }
                         }
                         XMLElement::WidthAfter => {
-                            if let Some(v) = read_val(&attributes) {
-                                width_after = Some(f32::from_str(&v)?);
+                            if let Ok(v) = read_width(&attributes) {
+                                width_after = Some(v.0 as f32);
                             }
                         }
                         XMLElement::TableRowHeight => {

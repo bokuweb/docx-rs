@@ -1,10 +1,4 @@
-use std::str::FromStr;
-
 use xml::attribute::OwnedAttribute;
-
-use crate::types::*;
-
-use super::super::errors::*;
 
 pub fn read_val(attrs: &[OwnedAttribute]) -> Option<String> {
     for a in attrs {

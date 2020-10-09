@@ -4,6 +4,7 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct TableRowProperty {
     grid_after: Option<u32>,
     width_after: Option<f32>,

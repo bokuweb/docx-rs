@@ -1790,13 +1790,13 @@ Object {
         "id": "rId4",
       },
       "pageMargin": Object {
-        "bottom": 1701,
+        "bottom": 600,
         "footer": 992,
         "gutter": 0,
         "header": 851,
         "left": 1701,
-        "right": 1701,
-        "top": 1985,
+        "right": 1400,
+        "top": 1700,
       },
       "pageSize": Object {
         "h": 16838,
@@ -2373,8 +2373,8 @@ Object {
         "top": 1985,
       },
       "pageSize": Object {
-        "h": 16838,
-        "w": 11906,
+        "h": 16840,
+        "w": 11900,
       },
       "sectionType": null,
     },
@@ -3728,4 +3728,31 @@ exports[`writer should write lvlOverride with level 3`] = `
   <w:abstractNumId w:val=\\"1\\" />
 </w:num><w:num w:numId=\\"0\\">
   <w:abstractNumId w:val=\\"0\\" /><w:lvlOverride w:ilvl=\\"0\\"><w:lvl w:ilvl=\\"0\\"><w:start w:val=\\"3\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%1\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /></w:pPr></w:lvl></w:lvlOverride></w:num></w:numbering>"
+`;
+
+exports[`writer should write page size 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
+  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write page size 2`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<w:document xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\" xmlns:w10=\\"urn:schemas-microsoft-com:office:word\\" xmlns:wp=\\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\\" xmlns:wps=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\\" xmlns:wpg=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\\" xmlns:mc=\\"http://schemas.openxmlformats.org/markup-compatibility/2006\\" xmlns:wp14=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\\" xmlns:w14=\\"http://schemas.microsoft.com/office/word/2010/wordml\\" xmlns:w15=\\"http://schemas.microsoft.com/office/word/2012/wordml\\" mc:Ignorable=\\"w14 wp14\\">
+  <w:body><w:p w14:paraId=\\"0000001f\\"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr><w:rFonts /></w:rPr><w:t xml:space=\\"preserve\\">Hello world!!</w:t></w:r></w:p><w:sectPr><w:pgSz w:w=\\"400\\" w:h=\\"800\\" /><w:pgMar w:top=\\"1985\\" w:right=\\"1701\\" w:bottom=\\"1701\\" w:left=\\"1701\\" w:header=\\"851\\" w:footer=\\"992\\" w:gutter=\\"0\\" /><w:headerReference w:type=\\"default\\" r:id=\\"rId4\\" /><w:cols w:space=\\"425\\" />
+  <w:docGrid w:type=\\"lines\\" w:linePitch=\\"360\\" />
+</w:sectPr></w:body>
+</w:document>"
+`;
+
+exports[`writer should write page size 3`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<w:numbering xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\"><w:abstractNum w:abstractNumId=\\"1\\"><w:lvl w:ilvl=\\"0\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%1.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"420\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr></w:lvl><w:lvl w:ilvl=\\"1\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%2)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"840\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr></w:lvl><w:lvl w:ilvl=\\"2\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%3\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1260\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr></w:lvl><w:lvl w:ilvl=\\"3\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%4.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1680\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr></w:lvl><w:lvl w:ilvl=\\"4\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%5)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2100\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr></w:lvl><w:lvl w:ilvl=\\"5\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%6\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2520\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr></w:lvl><w:lvl w:ilvl=\\"6\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%7.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2940\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr></w:lvl><w:lvl w:ilvl=\\"7\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%8)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3360\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr></w:lvl><w:lvl w:ilvl=\\"8\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%9\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3780\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr></w:lvl></w:abstractNum><w:num w:numId=\\"1\\">
+  <w:abstractNumId w:val=\\"1\\" />
+</w:num></w:numbering>"
 `;

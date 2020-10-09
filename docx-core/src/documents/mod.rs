@@ -204,7 +204,7 @@ impl Docx {
         self
     }
 
-    pub fn page_margin(mut self, margin: PageMargin) -> Self {
+    pub fn page_margin(mut self, margin: crate::types::PageMargin) -> Self {
         self.document = self.document.page_margin(margin);
         self
     }

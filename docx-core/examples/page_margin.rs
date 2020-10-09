@@ -7,10 +7,10 @@ pub fn main() -> Result<(), DocxError> {
         .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
         .page_margin(
             PageMargin::new()
-                .top(3000)
-                .footer(3000)
-                .left(3000)
-                .right(3000),
+                .top(3200)
+                .footer(3200)
+                .left(3200)
+                .right(3200),
         )
         .build()
         .pack(file)?;

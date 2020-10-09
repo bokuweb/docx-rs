@@ -52,4 +52,15 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write page size", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!"));
+    const buf = new w.Docx().addParagraph(p).pageSize(400, 800).build();
+    const z = new Zip(Buffer.from(buf));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

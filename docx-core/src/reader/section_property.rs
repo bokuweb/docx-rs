@@ -23,8 +23,10 @@ fn read_page_size(attributes: &[OwnedAttribute]) -> Result<PageSize, ReaderError
     Ok(size)
 }
 
-fn read_page_margin(attributes: &[OwnedAttribute]) -> Result<PageMargin, ReaderError> {
-    let mut margin = PageMargin::new();
+fn read_page_margin(
+    attributes: &[OwnedAttribute],
+) -> Result<crate::types::PageMargin, ReaderError> {
+    let mut margin = crate::types::PageMargin::new();
     for a in attributes {
         let local_name = &a.name.local_name;
         match local_name.as_str() {

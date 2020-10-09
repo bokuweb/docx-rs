@@ -16,6 +16,7 @@ import { Numbering } from "./numbering";
 import { BookmarkStart } from "./bookmark-start";
 import { BookmarkEnd } from "./bookmark-end";
 import { Settings } from "./settings";
+import { SectionProperty, PageMargin } from "./section-property";
 import { DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
@@ -53,6 +54,7 @@ export class Docx {
   abstractNumberings: AbstractNumbering[] = [];
   numberings: Numbering[] = [];
   settings: Settings = new Settings();
+  sectionProperty: SectionProperty = new SectionProperty();
 
   addParagraph(p: Paragraph) {
     if (p.hasNumberings) {
@@ -92,6 +94,16 @@ export class Docx {
 
   docId(id: string) {
     this.settings.docId(id);
+    return this;
+  }
+
+  pageSize(w: number, h: number) {
+    this.sectionProperty.pageSize(w, h);
+    return this;
+  }
+
+  pageMargin(margin: Partial<PageMargin>) {
+    this.sectionProperty.pageMargin(margin);
     return this;
   }
 
@@ -530,6 +542,32 @@ export class Docx {
 
     if (this.settings._docId) {
       docx = docx.doc_id(this.settings._docId);
+    }
+
+    if (this.sectionProperty._pageMargin) {
+      const {
+        top,
+        left,
+        right,
+        bottom,
+        header,
+        footer,
+        gutter,
+      } = this.sectionProperty._pageMargin;
+      const margin = new wasm.PageMargin();
+      margin.top = top;
+      margin.left = left;
+      margin.right = right;
+      margin.bottom = bottom;
+      margin.header = header;
+      margin.footer = footer;
+      margin.gutter = gutter;
+      docx = docx.page_margin(margin);
+    }
+
+    if (this.sectionProperty._pageSize) {
+      const { w, h } = this.sectionProperty._pageSize;
+      docx = docx.page_size(w, h);
     }
 
     const buf = docx.build(this.hasNumberings);

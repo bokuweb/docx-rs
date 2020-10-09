@@ -103,7 +103,7 @@ impl Document {
         self
     }
 
-    pub fn page_margin(mut self, margin: PageMargin) -> Self {
+    pub fn page_margin(mut self, margin: crate::types::PageMargin) -> Self {
         self.section_property = self.section_property.page_margin(margin);
         self
     }

@@ -1,19 +1,6 @@
 use crate::documents::BuildXML;
+use crate::types::PageMargin;
 use crate::xml_builder::*;
-
-use serde::Serialize;
-
-#[derive(Debug, Clone, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct PageMargin {
-    top: u32,
-    left: u32,
-    bottom: u32,
-    right: u32,
-    header: u32,
-    footer: u32,
-    gutter: u32,
-}
 
 // These values were based on microsoft office word2019 windows edition.
 // <w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0"/>

@@ -17,6 +17,12 @@ export type TableCellPropertyJSON = {
   hasNumbering: boolean;
 };
 
+export type TableRowPropertyJSON = {
+  gridAfter: number | null;
+  rowHeight: number | null;
+  widthAfter: number | null;
+};
+
 export type TableCellJSON = {
   children: TableCellChildJSON[];
   property: TableCellPropertyJSON;
@@ -24,6 +30,7 @@ export type TableCellJSON = {
 
 export type TableRowJSON = {
   cells: TableCellJSON[];
+  property: TableRowPropertyJSON;
 };
 
 export type TablePropertyJSON = {

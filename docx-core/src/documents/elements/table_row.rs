@@ -22,6 +22,21 @@ impl TableRow {
             has_numbering,
         }
     }
+
+    pub fn grid_after(mut self, grid_after: u32) -> TableRow {
+        self.property = self.property.grid_after(grid_after);
+        self
+    }
+
+    pub fn width_after(mut self, w: f32) -> TableRow {
+        self.property = self.property.width_after(w);
+        self
+    }
+
+    pub fn row_height(mut self, h: f32) -> TableRow {
+        self.property = self.property.row_height(h);
+        self
+    }
 }
 
 impl BuildXML for TableRow {

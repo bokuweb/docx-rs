@@ -216,9 +216,9 @@ Object {
               ],
               "hasNumbering": false,
               "property": Object {
-                "grid_after": null,
-                "row_height": 970,
-                "width_after": null,
+                "gridAfter": null,
+                "rowHeight": 970,
+                "widthAfter": null,
               },
             },
             Object {
@@ -372,9 +372,9 @@ Object {
               ],
               "hasNumbering": false,
               "property": Object {
-                "grid_after": 1,
-                "row_height": 55,
-                "width_after": 1065,
+                "gridAfter": 1,
+                "rowHeight": 55,
+                "widthAfter": 1065,
               },
             },
             Object {
@@ -528,9 +528,9 @@ Object {
               ],
               "hasNumbering": false,
               "property": Object {
-                "grid_after": 1,
-                "row_height": 675,
-                "width_after": 1065,
+                "gridAfter": 1,
+                "rowHeight": 675,
+                "widthAfter": 1065,
               },
             },
             Object {
@@ -684,9 +684,9 @@ Object {
               ],
               "hasNumbering": false,
               "property": Object {
-                "grid_after": 2,
-                "row_height": 397,
-                "width_after": 3717,
+                "gridAfter": 2,
+                "rowHeight": 397,
+                "widthAfter": 3717,
               },
             },
             Object {
@@ -840,9 +840,9 @@ Object {
               ],
               "hasNumbering": false,
               "property": Object {
-                "grid_after": 2,
-                "row_height": 397,
-                "width_after": 3717,
+                "gridAfter": 2,
+                "rowHeight": 397,
+                "widthAfter": 3717,
               },
             },
             Object {
@@ -1069,9 +1069,9 @@ Object {
               ],
               "hasNumbering": false,
               "property": Object {
-                "grid_after": 2,
-                "row_height": 397,
-                "width_after": 3717,
+                "gridAfter": 2,
+                "rowHeight": 397,
+                "widthAfter": 3717,
               },
             },
             Object {
@@ -1298,9 +1298,9 @@ Object {
               ],
               "hasNumbering": false,
               "property": Object {
-                "grid_after": 2,
-                "row_height": 397,
-                "width_after": 3717,
+                "gridAfter": 2,
+                "rowHeight": 397,
+                "widthAfter": 3717,
               },
             },
             Object {
@@ -1515,9 +1515,9 @@ Object {
               ],
               "hasNumbering": false,
               "property": Object {
-                "grid_after": 2,
-                "row_height": 397,
-                "width_after": 3717,
+                "gridAfter": 2,
+                "rowHeight": 397,
+                "widthAfter": 3717,
               },
             },
             Object {
@@ -1744,9 +1744,9 @@ Object {
               ],
               "hasNumbering": false,
               "property": Object {
-                "grid_after": 2,
-                "row_height": 397,
-                "width_after": 3717,
+                "gridAfter": 2,
+                "rowHeight": 397,
+                "widthAfter": 3717,
               },
             },
           ],

@@ -7,7 +7,12 @@ describe("reader", () => {
   test("should read lvlOverride docx", () => {
     const buf = readFileSync("../fixtures/lvl_override/override.docx");
     const json = w.readDocx(buf);
-    console.log(json);
+    expect(json).toMatchSnapshot();
+  });
+
+  test("should read gridAfter docx", () => {
+    const buf = readFileSync("../fixtures/grid_after/grid_after.docx");
+    const json = w.readDocx(buf);
     expect(json).toMatchSnapshot();
   });
 });

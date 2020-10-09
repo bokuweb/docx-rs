@@ -22,6 +22,21 @@ impl TableRow {
             has_numbering,
         }
     }
+
+    pub fn grid_after(mut self, grid_after: u32) -> TableRow {
+        self.property = self.property.grid_after(grid_after);
+        self
+    }
+
+    pub fn width_after(mut self, w: f32) -> TableRow {
+        self.property = self.property.width_after(w);
+        self
+    }
+
+    pub fn row_height(mut self, h: f32) -> TableRow {
+        self.property = self.property.row_height(h);
+        self
+    }
 }
 
 impl BuildXML for TableRow {
@@ -56,7 +71,7 @@ mod tests {
         let r = TableRow::new(vec![TableCell::new()]);
         assert_eq!(
             serde_json::to_string(&r).unwrap(),
-            r#"{"cells":[{"children":[],"property":{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":null},"hasNumbering":false}],"hasNumbering":false,"property":{}}"#
+            r#"{"cells":[{"children":[],"property":{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":null},"hasNumbering":false}],"hasNumbering":false,"property":{"grid_after":null,"width_after":null,"row_height":null}}"#
         );
     }
 }

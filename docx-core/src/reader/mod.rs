@@ -21,6 +21,7 @@ mod read_zip;
 mod rels;
 mod run;
 mod run_property;
+mod section_property;
 mod settings;
 mod style;
 mod styles;

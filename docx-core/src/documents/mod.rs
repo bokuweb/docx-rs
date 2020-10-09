@@ -199,6 +199,16 @@ impl Docx {
         self
     }
 
+    pub fn page_size(mut self, w: u32, h: u32) -> Self {
+        self.document = self.document.page_size(PageSize::new().size(w, h));
+        self
+    }
+
+    pub fn page_margin(mut self, margin: crate::types::PageMargin) -> Self {
+        self.document = self.document.page_margin(margin);
+        self
+    }
+
     pub fn build(&mut self) -> XMLDocx {
         self.update_comments();
         let (image_ids, images) = self.create_images();

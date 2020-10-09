@@ -38,6 +38,11 @@ impl FromXML for Document {
                             doc = doc.add_bookmark_end(e.id);
                             continue;
                         }
+                        XMLElement::SectionProperty => {
+                            let e = SectionProperty::read(&mut parser, &attributes)?;
+                            doc = doc.default_section_property(e);
+                            continue;
+                        }
                         _ => {}
                     }
                 }

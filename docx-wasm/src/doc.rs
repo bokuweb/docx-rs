@@ -48,6 +48,16 @@ impl Docx {
         self
     }
 
+    pub fn page_size(mut self, w: u32, h: u32) -> Docx {
+        self.0 = self.0.page_size(w, h);
+        self
+    }
+
+    pub fn page_margin(mut self, margin: docx_rs::PageMargin) -> Docx {
+        self.0 = self.0.page_margin(margin);
+        self
+    }
+
     pub fn build(&mut self, has_numberings: bool) -> Result<Vec<u8>, JsValue> {
         let buf = Vec::new();
         let mut cur = std::io::Cursor::new(buf);

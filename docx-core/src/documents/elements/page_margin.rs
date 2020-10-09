@@ -1,19 +1,6 @@
 use crate::documents::BuildXML;
+use crate::types::PageMargin;
 use crate::xml_builder::*;
-
-use serde::Serialize;
-
-#[derive(Debug, Clone, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct PageMargin {
-    top: usize,
-    left: usize,
-    bottom: usize,
-    right: usize,
-    header: usize,
-    footer: usize,
-    gutter: usize,
-}
 
 // These values were based on microsoft office word2019 windows edition.
 // <w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0"/>
@@ -36,27 +23,31 @@ impl PageMargin {
         Default::default()
     }
 
-    pub fn top(self, v: usize) -> PageMargin {
+    pub fn top(self, v: u32) -> PageMargin {
         PageMargin { top: v, ..self }
     }
 
-    pub fn left(self, v: usize) -> PageMargin {
+    pub fn left(self, v: u32) -> PageMargin {
         PageMargin { left: v, ..self }
     }
 
-    pub fn bottom(self, v: usize) -> PageMargin {
+    pub fn bottom(self, v: u32) -> PageMargin {
         PageMargin { bottom: v, ..self }
     }
 
-    pub fn right(self, v: usize) -> PageMargin {
+    pub fn right(self, v: u32) -> PageMargin {
         PageMargin { right: v, ..self }
     }
 
-    pub fn header(self, v: usize) -> PageMargin {
+    pub fn header(self, v: u32) -> PageMargin {
         PageMargin { header: v, ..self }
     }
 
-    pub fn gutter(self, v: usize) -> PageMargin {
+    pub fn footer(self, v: u32) -> PageMargin {
+        PageMargin { footer: v, ..self }
+    }
+
+    pub fn gutter(self, v: u32) -> PageMargin {
         PageMargin { gutter: v, ..self }
     }
 }

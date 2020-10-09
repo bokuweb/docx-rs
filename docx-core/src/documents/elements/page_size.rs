@@ -6,8 +6,8 @@ use serde::Serialize;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PageSize {
-    w: usize,
-    h: usize,
+    w: u32,
+    h: u32,
 }
 
 // These values were based on microsoft office word2019 windows edition.
@@ -23,8 +23,18 @@ impl PageSize {
         Default::default()
     }
 
-    pub fn size(self, w: usize, h: usize) -> PageSize {
+    pub fn size(self, w: u32, h: u32) -> PageSize {
         PageSize { w, h }
+    }
+
+    pub fn width(mut self, w: u32) -> PageSize {
+        self.w = w;
+        self
+    }
+
+    pub fn height(mut self, h: u32) -> PageSize {
+        self.h = h;
+        self
     }
 }
 

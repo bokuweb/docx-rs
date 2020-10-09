@@ -107,6 +107,11 @@ impl Document {
         self.section_property = self.section_property.page_margin(margin);
         self
     }
+
+    pub fn default_section_property(mut self, property: SectionProperty) -> Self {
+        self.section_property = property;
+        self
+    }
 }
 
 impl BuildXML for Document {

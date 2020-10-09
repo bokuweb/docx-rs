@@ -99,6 +99,9 @@ pub enum XMLElement {
     TxbxContent,
     Pict,
     DocId,
+    SectionProperty,
+    PageSize,
+    PageMargin,
     Unsupported,
 }
 
@@ -250,6 +253,9 @@ impl FromStr for XMLElement {
             "lvlOverride" => Ok(XMLElement::LvlOverride),
             "startOverride" => Ok(XMLElement::StartOverride),
             "docId" => Ok(XMLElement::DocId),
+            "sectPr" => Ok(XMLElement::SectionProperty),
+            "pgSz" => Ok(XMLElement::PageSize),
+            "pgMar" => Ok(XMLElement::PageMargin),
             _ => Ok(XMLElement::Unsupported),
         }
     }

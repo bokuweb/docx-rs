@@ -20,6 +20,16 @@ impl SectionProperty {
     pub fn new() -> SectionProperty {
         Default::default()
     }
+
+    pub fn page_size(mut self, size: PageSize) -> Self {
+        self.page_size = size;
+        self
+    }
+
+    pub fn page_margin(mut self, margin: PageMargin) -> Self {
+        self.page_margin = margin;
+        self
+    }
 }
 
 impl Default for SectionProperty {

@@ -97,6 +97,16 @@ impl Document {
             .push(DocumentChild::BookmarkEnd(BookmarkEnd::new(id)));
         self
     }
+
+    pub fn page_size(mut self, size: PageSize) -> Self {
+        self.section_property = self.section_property.page_size(size);
+        self
+    }
+
+    pub fn page_margin(mut self, margin: PageMargin) -> Self {
+        self.section_property = self.section_property.page_margin(margin);
+        self
+    }
 }
 
 impl BuildXML for Document {

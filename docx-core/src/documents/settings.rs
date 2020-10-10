@@ -102,13 +102,13 @@ mod tests {
             str::from_utf8(&b).unwrap(),
             r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"><w:defaultTabStop w:val="709" /><w:zoom w:percent="100" /><w:compat>
-    <spaceForUL />
-    <balanceSingleByteDoubleByteWidth />
-    <doNotLeaveBackslashAlone />
-    <ulTrailSpace />
-    <doNotExpandShiftReturn />
-    <adjustLineHeightInTable />
-    <useFELayout />
+    <w:spaceForUL />
+    <w:balanceSingleByteDoubleByteWidth />
+    <w:doNotLeaveBackslashAlone />
+    <w:ulTrailSpace />
+    <w:doNotExpandShiftReturn />
+    <w:adjustLineHeightInTable />
+    <w:useFELayout />
     <w:compatSetting w:name="compatibilityMode" w:uri="http://schemas.microsoft.com/office/word" w:val="15" />
     <w:compatSetting w:name="overrideTableStyleFontSizeAndJustification" w:uri="http://schemas.microsoft.com/office/word" w:val="1" />
     <w:compatSetting w:name="enableOpenTypeFeatures" w:uri="http://schemas.microsoft.com/office/word" w:val="1" />

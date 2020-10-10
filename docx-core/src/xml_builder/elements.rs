@@ -256,6 +256,26 @@ impl XMLBuilder {
     open!(open_wp_text_box, "wps:txbx");
     open!(open_text_box_content, "w:txbxContent");
 
+    // compat
+    open!(open_compat, "w:compat");
+    closed!(space_for_ul, "spaceForUL");
+    closed!(
+        balance_single_byte_double_byte_width,
+        "balanceSingleByteDoubleByteWidth"
+    );
+    closed!(do_not_leave_backslash_alone, "doNotLeaveBackslashAlone");
+    closed!(ul_trail_space, "ulTrailSpace");
+    closed!(do_not_expand_shift_return, "doNotExpandShiftReturn");
+    closed!(adjust_line_height_table, "adjustLineHeightInTable");
+    closed!(use_fe_layout, "useFELayout");
+    closed!(
+        compat_setting,
+        "w:compatSetting",
+        "w:name",
+        "w:uri",
+        "w:val"
+    );
+
     /*
     <w:lvlOverride w:ilvl="0">
       <w:startOverride w:val="1"/>

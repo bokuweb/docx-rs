@@ -11,6 +11,7 @@ export type RunPropertyJSON = {
   italic: boolean | null;
   italicCs: boolean | null;
   vanish: boolean | null;
+  spacing: number | null;
 };
 
 export type RunChildJSON =

@@ -197,6 +197,11 @@ impl Paragraph {
         self.property.run_property = p;
         self
     }
+
+    pub fn line_height(mut self, h: u32) -> Self {
+        self.property = self.property.line_height(h);
+        self
+    }
 }
 
 impl BuildXML for Paragraph {

@@ -9,6 +9,19 @@ use super::*;
 use super::attributes::*;
 use crate::types::*;
 
+fn read_lineheight(attributes: &[OwnedAttribute]) -> Option<u32> {
+    for a in attributes {
+        let local_name = &a.name.local_name;
+        match local_name.as_str() {
+            "line" => {
+                return f32::from_str(&a.value).ok().map(|l| l as u32);
+            }
+            _ => {}
+        }
+    }
+    None
+}
+
 impl ElementReader for Paragraph {
     fn read<R: Read>(
         r: &mut EventReader<R>,
@@ -62,6 +75,12 @@ impl ElementReader for Paragraph {
                         XMLElement::Indent => {
                             let (start, end, special, start_chars) = read_indent(&attributes)?;
                             p = p.indent(start, special, end, start_chars);
+                            continue;
+                        }
+                        XMLElement::Spacing => {
+                            if let Some(line) = read_lineheight(&attributes) {
+                                p = p.line_height(line);
+                            }
                             continue;
                         }
                         XMLElement::Justification => {
@@ -140,6 +159,7 @@ mod tests {
                         Some(1270),
                         None,
                     )),
+                    line_height: None,
                 },
                 has_numbering: false,
             }
@@ -174,6 +194,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: Some(Indent::new(None, None, None, Some(100))),
+                    line_height: None,
                 },
                 has_numbering: false,
             }
@@ -203,6 +224,7 @@ mod tests {
                     numbering_property: None,
                     alignment: Some(Justification::new(AlignmentType::Left.to_string())),
                     indent: None,
+                    line_height: None,
                 },
                 has_numbering: false,
             }
@@ -236,6 +258,7 @@ mod tests {
                     ),
                     alignment: None,
                     indent: None,
+                    line_height: None,
                 },
                 has_numbering: true,
             }
@@ -271,6 +294,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: None,
+                    line_height: None,
                 },
                 has_numbering: false,
             }
@@ -307,6 +331,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: None,
+                    line_height: None,
                 },
                 has_numbering: false,
             }
@@ -343,6 +368,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: None,
+                    line_height: None,
                 },
                 has_numbering: false,
             }
@@ -391,6 +417,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: None,
+                    line_height: None,
                 },
                 has_numbering: false,
             }
@@ -431,6 +458,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: None,
+                    line_height: None,
                 },
                 has_numbering: false,
             }

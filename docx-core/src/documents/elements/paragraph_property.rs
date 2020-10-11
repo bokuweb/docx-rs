@@ -13,6 +13,7 @@ pub struct ParagraphProperty {
     pub numbering_property: Option<NumberingProperty>,
     pub alignment: Option<Justification>,
     pub indent: Option<Indent>,
+    pub line_height: Option<u32>,
 }
 
 impl Default for ParagraphProperty {
@@ -23,6 +24,7 @@ impl Default for ParagraphProperty {
             numbering_property: None,
             alignment: None,
             indent: None,
+            line_height: None,
         }
     }
 }
@@ -62,17 +64,28 @@ impl ParagraphProperty {
         self.numbering_property = Some(NumberingProperty::new().add_num(id, level));
         self
     }
+
+    pub fn line_height(mut self, h: u32) -> Self {
+        self.line_height = Some(h);
+        self
+    }
 }
 
 impl BuildXML for ParagraphProperty {
     fn build(&self) -> Vec<u8> {
+        let spacing = if let Some(s) = self.line_height {
+            Some(Spacing::new(crate::SpacingType::Line(s)))
+        } else {
+            None
+        };
         XMLBuilder::new()
-        .open_paragraph_property()
-        .add_child(&self.run_property)
+            .open_paragraph_property()
+            .add_child(&self.run_property)
             .add_optional_child(&self.style)
             .add_optional_child(&self.numbering_property)
             .add_optional_child(&self.alignment)
             .add_optional_child(&self.indent)
+            .add_optional_child(&spacing)
             .close()
             .build()
     }

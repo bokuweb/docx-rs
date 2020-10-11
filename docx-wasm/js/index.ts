@@ -155,6 +155,10 @@ export class Docx {
       run = run.vanish();
     }
 
+    if (r.property.spacing != null) {
+      run = run.spacing(r.property.spacing);
+    }
+
     let f = wasm.createRunFonts();
     if (r.property.fonts?._ascii) {
       f = f.ascii(r.property.fonts._ascii);
@@ -298,8 +302,8 @@ export class Docx {
       paragraph = paragraph.bold();
     }
 
-    if (p.property.runProperty.bold) {
-      paragraph = paragraph.bold();
+    if (p.property.lineHeight) {
+      paragraph = paragraph.line_height(p.property.lineHeight);
     }
 
     if (p.property.runProperty.italic) {

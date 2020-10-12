@@ -1,5 +1,6 @@
 import { ParagraphJSON, BookmarkStartJSON, BookmarkEndJSON } from "./paragraph";
 import { TableJSON } from "./table";
+import { SectionPropertyJSON } from "./section-property";
 
 export type DocumentChildJSON =
   | ParagraphJSON
@@ -9,22 +10,6 @@ export type DocumentChildJSON =
 
 export type DocumentJSON = {
   children: DocumentChildJSON[];
-  sectionProperty: {
-    pageSize: {
-      w: number;
-      h: number;
-    };
-    pageMargin: {
-      top: number;
-      left: number;
-      bottom: number;
-      right: number;
-      header: number;
-      footer: number;
-      gutter: number;
-    };
-    columns: number;
-    documentGrid: number;
-  };
+  sectionProperty: SectionPropertyJSON;
   hasNumbering: boolean;
 };

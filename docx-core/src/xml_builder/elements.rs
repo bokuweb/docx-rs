@@ -258,16 +258,16 @@ impl XMLBuilder {
 
     // compat
     open!(open_compat, "w:compat");
-    closed!(space_for_ul, "spaceForUL");
+    closed!(space_for_ul, "w:spaceForUL");
     closed!(
         balance_single_byte_double_byte_width,
-        "balanceSingleByteDoubleByteWidth"
+        "w:balanceSingleByteDoubleByteWidth"
     );
-    closed!(do_not_leave_backslash_alone, "doNotLeaveBackslashAlone");
-    closed!(ul_trail_space, "ulTrailSpace");
-    closed!(do_not_expand_shift_return, "doNotExpandShiftReturn");
-    closed!(adjust_line_height_table, "adjustLineHeightInTable");
-    closed!(use_fe_layout, "useFELayout");
+    closed!(do_not_leave_backslash_alone, "w:doNotLeaveBackslashAlone");
+    closed!(ul_trail_space, "w:ulTrailSpace");
+    closed!(do_not_expand_shift_return, "w:doNotExpandShiftReturn");
+    closed!(adjust_line_height_table, "w:adjustLineHeightInTable");
+    closed!(use_fe_layout, "w:useFELayout");
     closed!(
         compat_setting,
         "w:compatSetting",

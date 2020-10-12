@@ -63,4 +63,19 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write page margin", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!"));
+    const buf = new w.Docx()
+      .addParagraph(p)
+      .pageMargin({ top: 1000, left: 2000 })
+      .build();
+    writeFileSync("aa.docx", buf);
+    const z = new Zip(Buffer.from(buf));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

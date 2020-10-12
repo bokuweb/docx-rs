@@ -555,13 +555,13 @@ export class Docx {
         gutter,
       } = this.sectionProperty._pageMargin;
       const margin = new wasm.PageMargin();
-      margin.top = top;
-      margin.left = left;
-      margin.right = right;
-      margin.bottom = bottom;
-      margin.header = header;
-      margin.footer = footer;
-      margin.gutter = gutter;
+      margin.top(top);
+      margin.left(left);
+      margin.right(right);
+      margin.bottom(bottom);
+      margin.header(header);
+      margin.footer(footer);
+      margin.gutter(gutter);
       docx = docx.page_margin(margin);
     }
 

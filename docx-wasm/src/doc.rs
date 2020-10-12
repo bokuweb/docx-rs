@@ -53,8 +53,8 @@ impl Docx {
         self
     }
 
-    pub fn page_margin(mut self, margin: docx_rs::PageMargin) -> Docx {
-        self.0 = self.0.page_margin(margin);
+    pub fn page_margin(mut self, margin: PageMargin) -> Docx {
+        self.0 = self.0.page_margin(margin.take());
         self
     }
 

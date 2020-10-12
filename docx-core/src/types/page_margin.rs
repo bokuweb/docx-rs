@@ -1,8 +1,5 @@
 use serde::Serialize;
 
-use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen]
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PageMargin {

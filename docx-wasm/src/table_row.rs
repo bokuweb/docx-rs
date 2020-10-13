@@ -22,4 +22,9 @@ impl TableRow {
         self.0.cells.push(cell.take());
         self
     }
+
+    pub fn row_height(mut self, h: u32) -> TableRow {
+        self.0 = self.0.row_height(h as f32);
+        self
+    }
 }

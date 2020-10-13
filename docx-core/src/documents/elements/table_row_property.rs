@@ -44,7 +44,11 @@ impl Default for TableRowProperty {
 
 impl BuildXML for TableRowProperty {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().open_table_row_property().close().build()
+        let mut b = XMLBuilder::new().open_table_row_property();
+        if let Some(h) = self.row_height {
+            b = b.table_row_height(&format!("{}", h), "auto")
+        }
+        b.close().build()
     }
 }
 

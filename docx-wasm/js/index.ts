@@ -338,6 +338,9 @@ export class Docx {
         const cell = this.buildCell(c);
         row = row.add_cell(cell);
       });
+      if (r.height) {
+        row = row.row_height(r.height);
+      }
       table = table.add_row(row);
     });
     table = table.set_grid(new Uint32Array(t.grid));

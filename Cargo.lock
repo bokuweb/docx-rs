@@ -140,7 +140,7 @@ name = "docx-rs"
 version = "0.2.9"
 dependencies = [
  "image 0.23.10 (registry+https://github.com/rust-lang/crates.io-index)",
- "insta 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "insta 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "pretty_assertions 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.45 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -220,7 +220,7 @@ dependencies = [
 
 [[package]]
 name = "insta"
-version = "1.0.0"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "console 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -649,7 +649,7 @@ dependencies = [
 "checksum gif 0.11.1 (registry+https://github.com/rust-lang/crates.io-index)" = "02efba560f227847cb41463a7395c514d127d4f74fff12ef0137fff1b84b96c4"
 "checksum hermit-abi 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)" = "eff2656d88f158ce120947499e971d743c05dbcbed62e5bd2f38f1698bbc3772"
 "checksum image 0.23.10 (registry+https://github.com/rust-lang/crates.io-index)" = "985fc06b1304d19c28d5c562ed78ef5316183f2b0053b46763a0b94862373c34"
-"checksum insta 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "d3463f26c58ee98b72e4eae1a6b4c28bc3320ab69d4836b55162362c2ec63fa6"
+"checksum insta 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "e7e7528a20113cf7ca90eddfc2439c608188b6eafc0613964da2bd140c92acec"
 "checksum itoa 0.4.5 (registry+https://github.com/rust-lang/crates.io-index)" = "b8b7a7c0c47db5545ed3fef7468ee7bb5b74691498139e4b3f6a20685dc6dd8e"
 "checksum jpeg-decoder 0.1.19 (registry+https://github.com/rust-lang/crates.io-index)" = "5b47b4c4e017b01abdc5bcc126d2d1002e5a75bbe3ce73f9f4f311a916363704"
 "checksum lazy_static 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"

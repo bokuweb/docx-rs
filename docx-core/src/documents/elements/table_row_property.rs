@@ -46,7 +46,7 @@ impl BuildXML for TableRowProperty {
     fn build(&self) -> Vec<u8> {
         let mut b = XMLBuilder::new().open_table_row_property();
         if let Some(h) = self.row_height {
-            b = b.table_row_height(&format!("{}", h), "exact")
+            b = b.table_row_height(&format!("{}", h), "auto")
         }
         b.close().build()
     }

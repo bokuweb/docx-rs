@@ -10,11 +10,11 @@ export class TableRow {
       this.hasNumberings = true;
     }
     this.cells.push(cell);
-    this;
+    return this;
   }
 
   rowHeight(h: number) {
     this.height = h;
-    this;
+    return this;
   }
 }

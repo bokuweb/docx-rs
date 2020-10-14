@@ -52,3 +52,4 @@ export * from "./table";
 export * from "./numbering";
 export * from "./drawing";
 export * from "./textbox-content";
+export * from "./section-property";

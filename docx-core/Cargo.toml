@@ -1,6 +1,6 @@
 [package]
 name = "docx-rs"
-version = "0.2.8"
+version = "0.2.9"
 authors = ["bokuweb <bokuweb12@gmail.com>"]
 repository = "https://github.com/bokuweb/docx-rs"
 edition = "2018"
@@ -30,4 +30,4 @@ image = "0.23.10"
 
 [dev-dependencies]
 pretty_assertions = "0.6.1"
-insta = "1.0"
+insta = "1.1"

@@ -342,6 +342,9 @@ export class Docx {
         const cell = this.buildCell(c);
         row = row.add_cell(cell);
       });
+      if (r.height) {
+        row = row.row_height(r.height);
+      }
       table = table.add_row(row);
     });
     table = table.set_grid(new Uint32Array(t.grid));
@@ -558,14 +561,15 @@ export class Docx {
         footer,
         gutter,
       } = this.sectionProperty._pageMargin;
-      const margin = new wasm.PageMargin();
-      margin.top = top;
-      margin.left = left;
-      margin.right = right;
-      margin.bottom = bottom;
-      margin.header = header;
-      margin.footer = footer;
-      margin.gutter = gutter;
+      const margin = wasm
+        .createPageMargin()
+        .top(top)
+        .left(left)
+        .right(right)
+        .bottom(bottom)
+        .header(header)
+        .footer(footer)
+        .gutter(gutter);
       docx = docx.page_margin(margin);
     }
 

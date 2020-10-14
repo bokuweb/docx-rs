@@ -153,7 +153,7 @@ impl XMLBuilder {
                 self.writer
                     .write(XmlEvent::start_element("w:spacing").attr("w:val", &format!("{}", v)))
                     .expect(EXPECT_MESSAGE);
-                return self.close();
+                self.close()
             }
             SpacingType::Line(v) => {
                 self.writer
@@ -163,9 +163,9 @@ impl XMLBuilder {
                             .attr("w:lineRule", "auto"),
                     )
                     .expect(EXPECT_MESSAGE);
-                return self.close();
+                self.close()
             }
-        };
+        }
     }
 
     //

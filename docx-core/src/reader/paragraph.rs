@@ -12,11 +12,8 @@ use crate::types::*;
 fn read_lineheight(attributes: &[OwnedAttribute]) -> Option<u32> {
     for a in attributes {
         let local_name = &a.name.local_name;
-        match local_name.as_str() {
-            "line" => {
-                return f32::from_str(&a.value).ok().map(|l| l as u32);
-            }
-            _ => {}
+        if let "line" = local_name.as_str() {
+            return f32::from_str(&a.value).ok().map(|l| l as u32);
         }
     }
     None

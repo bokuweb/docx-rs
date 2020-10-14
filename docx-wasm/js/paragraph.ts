@@ -38,6 +38,7 @@ export type ParagraphProperty = {
     id: number;
     level: number;
   };
+  lineHeight?: number;
   runProperty: RunProperty;
 };
 
@@ -105,6 +106,11 @@ export class Paragraph {
   numbering(id: number, level: number) {
     this.hasNumberings = true;
     this.property.numbering = { id, level };
+    return this;
+  }
+
+  lineHeight(lineHeight: number) {
+    this.property = { ...this.property, lineHeight };
     return this;
   }
 

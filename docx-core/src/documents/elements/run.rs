@@ -128,6 +128,11 @@ impl Run {
         self
     }
 
+    pub fn spacing(mut self, v: u32) -> Run {
+        self.run_property = self.run_property.spacing(v);
+        self
+    }
+
     pub fn color(mut self, color: impl Into<String>) -> Run {
         self.run_property = self.run_property.color(color);
         self
@@ -236,12 +241,13 @@ mod tests {
                 italic: Some(Italic::new()),
                 italic_cs: Some(ItalicCs::new()),
                 vanish: Some(Vanish::new()),
+                spacing: Some(100),
                 fonts: None,
             },
         };
         assert_eq!(
             serde_json::to_string(&run).unwrap(),
-            r#"{"runProperty":{"sz":30,"szCs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true,"fonts":null},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#
+            r#"{"runProperty":{"sz":30,"szCs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true,"spacing":100,"fonts":null},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#
         );
     }
 }

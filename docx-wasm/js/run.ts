@@ -14,6 +14,7 @@ export type RunProperty = {
   underline?: string;
   vanish?: boolean;
   fonts?: RunFonts;
+  spacing?: number;
 };
 
 export class RunFonts {
@@ -104,6 +105,11 @@ export class Run {
 
   fonts(fonts: RunFonts) {
     this.property = { ...this.property, fonts };
+    return this;
+  }
+
+  spacing(spacing: number) {
+    this.property = { ...this.property, spacing };
     return this;
   }
 }

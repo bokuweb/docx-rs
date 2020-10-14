@@ -19,6 +19,7 @@ export type ParagraphPropertyJSON = {
   numberingProperty: NumberingPropertyJSON | null;
   alignment: "left" | "center" | "right" | "justified" | "both";
   indent: IndentJSON | null;
+  lineHeight: number | null;
 };
 
 export type ParagraphJSON = {

@@ -111,6 +111,11 @@ impl Paragraph {
         self.0 = self.0.fonts(f.take());
         self
     }
+
+    pub fn line_height(mut self, line_height: u32) -> Self {
+        self.0 = self.0.line_height(line_height);
+        self
+    }
 }
 
 impl Paragraph {

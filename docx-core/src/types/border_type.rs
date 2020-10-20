@@ -22,6 +22,27 @@ pub enum BorderType {
     DotDash,
     DotDotDash,
     Triple,
+    ThinThickSmallGap,
+    ThickThinSmallGap,
+    ThinThickThinSmallGap,
+    ThinThickMediumGap,
+    ThickThinMediumGap,
+    ThinThickThinMediumGap,
+    ThinThickLargeGap,
+    ThickThinLargeGap,
+    ThinThickThinLargeGap,
+    Wave,
+    DoubleWave,
+    DashSmallGap,
+    DashDotStroked,
+    ThreeDEmboss,
+    ThreeDEngrave,
+    Outset,
+    Inset,
+    Apples,
+    ArchedScallops,
+    BabyPacifier,
+    BabyRattle,
 }
 
 impl fmt::Display for BorderType {
@@ -37,6 +58,27 @@ impl fmt::Display for BorderType {
             BorderType::DotDash => write!(f, "dotDash"),
             BorderType::DotDotDash => write!(f, "dotDotDash"),
             BorderType::Triple => write!(f, "triple"),
+            BorderType::ThinThickSmallGap => write!(f, "thinThickSmallGap"),
+            BorderType::ThickThinSmallGap => write!(f, "thickThinSmallGap"),
+            BorderType::ThinThickThinSmallGap => write!(f, "thinThickThinSmallGap"),
+            BorderType::ThinThickMediumGap => write!(f, "thinThickMediumGap"),
+            BorderType::ThickThinMediumGap => write!(f, "thickThinMediumGap"),
+            BorderType::ThinThickThinMediumGap => write!(f, "thinThickThinMediumGap"),
+            BorderType::ThinThickLargeGap => write!(f, "thinThickLargeGap"),
+            BorderType::ThickThinLargeGap => write!(f, "thickThinLargeGap"),
+            BorderType::ThinThickThinLargeGap => write!(f, "thinThickThinLargeGap"),
+            BorderType::Wave => write!(f, "wave"),
+            BorderType::DoubleWave => write!(f, "doubleWave"),
+            BorderType::DashSmallGap => write!(f, "dashSmallGap"),
+            BorderType::DashDotStroked => write!(f, "dashDotStroked"),
+            BorderType::ThreeDEmboss => write!(f, "threeDEmboss"),
+            BorderType::ThreeDEngrave => write!(f, "threeDEngrave"),
+            BorderType::Outset => write!(f, "outset"),
+            BorderType::Inset => write!(f, "inset"),
+            BorderType::Apples => write!(f, "apples"),
+            BorderType::ArchedScallops => write!(f, "archedScallops"),
+            BorderType::BabyPacifier => write!(f, "babyPacifier"),
+            BorderType::BabyRattle => write!(f, "babyRattle"),
         }
     }
 }
@@ -55,6 +97,27 @@ impl FromStr for BorderType {
             "dotDash" => Ok(BorderType::DotDash),
             "dotDotDash" => Ok(BorderType::DotDotDash),
             "triple" => Ok(BorderType::Triple),
+            "thinThickSmallGap" => Ok(BorderType::ThinThickSmallGap),
+            "thickThinSmallGap" => Ok(BorderType::ThickThinSmallGap),
+            "thinThickThinSmallGap" => Ok(BorderType::ThinThickThinSmallGap),
+            "thinThickMediumGap" => Ok(BorderType::ThinThickMediumGap),
+            "thickThinMediumGap" => Ok(BorderType::ThickThinMediumGap),
+            "thinThickThinMediumGap" => Ok(BorderType::ThinThickThinMediumGap),
+            "thinThickLargeGap" => Ok(BorderType::ThinThickLargeGap),
+            "thickThinLargeGap" => Ok(BorderType::ThickThinLargeGap),
+            "thinThickThinLargeGap" => Ok(BorderType::ThinThickThinLargeGap),
+            "wave" => Ok(BorderType::Wave),
+            "doubleWave" => Ok(BorderType::DoubleWave),
+            "dashSmallGap" => Ok(BorderType::DashSmallGap),
+            "dashDotStroked" => Ok(BorderType::DashDotStroked),
+            "threeDEmboss" => Ok(BorderType::ThreeDEmboss),
+            "threeDEngrave" => Ok(BorderType::ThreeDEngrave),
+            "outset" => Ok(BorderType::Outset),
+            "inset" => Ok(BorderType::Inset),
+            "apples" => Ok(BorderType::Apples),
+            "archedScallops" => Ok(BorderType::ArchedScallops),
+            "babyPacifier" => Ok(BorderType::BabyPacifier),
+            "babyRattle" => Ok(BorderType::BabyRattle),
             _ => Ok(BorderType::Single),
         }
     }
@@ -62,27 +125,6 @@ impl FromStr for BorderType {
 
 /*
 Unsupported types
-"thinThickSmallGap"
-"thickThinSmallGap"
-"thinThickThinSmallGap"
-"thinThickMediumGap"
-"thickThinMediumGap"
-"thinThickThinMediumGap"
-"thinThickLargeGap"
-"thickThinLargeGap"
-"thinThickThinLargeGap"
-"wave"
-"doubleWave"
-"dashSmallGap"
-"dashDotStroked"
-"threeDEmboss"
-"threeDEngrave"
-"outset"
-"inset"
-"apples"
-"archedScallops"
-"babyPacifier"
-"babyRattle"
 "balloons3Colors"
 "balloonsHotAir"
 "basicBlackDashes"

@@ -17,7 +17,7 @@ pub struct RunProperty {
     pub italic: Option<Italic>,
     pub italic_cs: Option<ItalicCs>,
     pub vanish: Option<Vanish>,
-    pub spacing: Option<u32>,
+    pub spacing: Option<i32>,
     pub fonts: Option<RunFonts>,
 }
 
@@ -32,8 +32,8 @@ impl RunProperty {
         self
     }
 
-    pub fn spacing(mut self, spacing: u32) -> RunProperty {
-        self.spacing = Some(spacing as u32);
+    pub fn spacing(mut self, spacing: i32) -> RunProperty {
+        self.spacing = Some(spacing);
         self
     }
 

@@ -79,6 +79,11 @@ impl Run {
         self.0 = self.0.fonts(f.take());
         self
     }
+
+    pub fn spacing(mut self, spacing: u32) -> Run {
+        self.0.run_property = self.0.run_property.spacing(spacing);
+        self
+    }
 }
 
 impl Run {

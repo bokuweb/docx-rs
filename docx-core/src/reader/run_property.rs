@@ -29,6 +29,11 @@ impl ElementReader for RunProperty {
                         XMLElement::Highlight => rp = rp.highlight(attributes[0].value.clone()),
                         XMLElement::Color => rp = rp.color(attributes[0].value.clone()),
                         XMLElement::Size => rp = rp.size(usize::from_str(&attributes[0].value)?),
+                        XMLElement::Spacing => {
+                            if let Some(v) = read_val(&attributes) {
+                                rp = rp.spacing(u32::from_str(&v)?)
+                            }
+                        }
                         XMLElement::Underline => rp = rp.underline(&attributes[0].value.clone()),
                         XMLElement::Italic => {
                             if !read_bool(&attributes) {

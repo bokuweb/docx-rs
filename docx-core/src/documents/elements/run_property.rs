@@ -17,6 +17,7 @@ pub struct RunProperty {
     pub italic: Option<Italic>,
     pub italic_cs: Option<ItalicCs>,
     pub vanish: Option<Vanish>,
+    pub spacing: Option<u32>,
     pub fonts: Option<RunFonts>,
 }
 
@@ -28,6 +29,11 @@ impl RunProperty {
     pub fn size(mut self, size: usize) -> RunProperty {
         self.sz = Some(Sz::new(size));
         self.sz_cs = Some(SzCs::new(size));
+        self
+    }
+
+    pub fn spacing(mut self, spacing: u32) -> RunProperty {
+        self.spacing = Some(spacing as u32);
         self
     }
 
@@ -83,6 +89,7 @@ impl Default for RunProperty {
             italic_cs: None,
             vanish: None,
             fonts: None,
+            spacing: None,
         }
     }
 }
@@ -90,6 +97,11 @@ impl Default for RunProperty {
 impl BuildXML for RunProperty {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
+        let spacing = if let Some(s) = self.spacing {
+            Some(Spacing::new(crate::SpacingType::Value(s)))
+        } else {
+            None
+        };
         b.open_run_property()
             .add_optional_child(&self.sz)
             .add_optional_child(&self.sz_cs)
@@ -102,6 +114,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.underline)
             .add_optional_child(&self.vanish)
             .add_optional_child(&self.fonts)
+            .add_optional_child(&spacing)
             .close()
             .build()
     }

@@ -146,6 +146,28 @@ impl XMLBuilder {
         self.close()
     }
 
+    // i.e. <w:spacing ... >
+    pub(crate) fn spacing(mut self, s: crate::types::SpacingType) -> Self {
+        match s {
+            SpacingType::Value(v) => {
+                self.writer
+                    .write(XmlEvent::start_element("w:spacing").attr("w:val", &format!("{}", v)))
+                    .expect(EXPECT_MESSAGE);
+                self.close()
+            }
+            SpacingType::Line(v) => {
+                self.writer
+                    .write(
+                        XmlEvent::start_element("w:spacing")
+                            .attr("w:line", &format!("{}", v))
+                            .attr("w:lineRule", "auto"),
+                    )
+                    .expect(EXPECT_MESSAGE);
+                self.close()
+            }
+        }
+    }
+
     //
     // Table elements
     //

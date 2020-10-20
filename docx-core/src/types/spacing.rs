@@ -3,7 +3,7 @@ use serde::*;
 
 #[derive(Copy, Clone, Debug, PartialEq, Deserialize)]
 pub enum SpacingType {
-    Value(u32),
+    Value(i32),
     Line(u32),
 }
 

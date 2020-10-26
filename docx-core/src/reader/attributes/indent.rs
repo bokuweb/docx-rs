@@ -21,21 +21,23 @@ pub fn read_indent(attrs: &[OwnedAttribute]) -> ReadIndentResult {
     let mut start_chars: Option<i32> = None;
     let mut end: Option<i32> = None;
     let mut special: Option<SpecialIndentType> = None;
-
     for a in attrs {
         let local_name = &a.name.local_name;
         if local_name == "left" || local_name == "start" {
-            start = Some(f64::from_str(&a.value)? as i32);
+            let v = super::value_to_dax(&a.value)?;
+            start = Some(v);
         } else if local_name == "leftChars" || local_name == "startChars" {
             start_chars = Some(i32::from_str(&a.value)?);
         } else if local_name == "end" || local_name == "right" {
-            end = Some(f64::from_str(&a.value)? as i32);
+            let v = super::value_to_dax(&a.value)?;
+            end = Some(v);
         } else if local_name == "hanging" {
-            special = Some(SpecialIndentType::Hanging(f64::from_str(&a.value)? as i32))
+            let v = super::value_to_dax(&a.value)?;
+            special = Some(SpecialIndentType::Hanging(v))
         } else if local_name == "firstLine" {
-            special = Some(SpecialIndentType::FirstLine(f64::from_str(&a.value)? as i32))
+            let v = super::value_to_dax(&a.value)?;
+            special = Some(SpecialIndentType::FirstLine(v))
         }
     }
-
     Ok((start, end, special, start_chars))
 }

@@ -40,7 +40,10 @@ impl ElementReader for TableRow {
                         }
                         XMLElement::TableRowHeight => {
                             if let Some(v) = read_val(&attributes) {
-                                row_height = Some(f32::from_str(&v)?);
+                                let h = f32::from_str(&v);
+                                if let Ok(h) = h {
+                                    row_height = Some(h);
+                                }
                             }
                         }
                         _ => {}

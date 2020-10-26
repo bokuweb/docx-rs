@@ -76,14 +76,20 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // (physically located at /document.xml in the package):
     let main_rel = rels
         .find_target(DOC_RELATIONSHIP_TYPE)
-        .ok_or(ReaderError::DocumentNotFoundError)?;
+        .ok_or(ReaderError::DocumentNotFoundError);
+
+    let document_path = if let Ok(rel) = main_rel {
+        rel.2.clone()
+    } else {
+        "word/document.xml".to_owned()
+    };
     let document = {
-        let data = read_zip(&mut archive, &main_rel.2)?;
+        let data = read_zip(&mut archive, &document_path)?;
         Document::from_xml(&data[..])?
     };
     let mut docx = Docx::new().document(document);
     // Read document relationships
-    let rels = read_document_rels(&mut archive, &main_rel.2)?;
+    let rels = read_document_rels(&mut archive, &document_path)?;
 
     // Read styles
     let style_path = rels.find_target_path(STYLE_RELATIONSHIP_TYPE);

@@ -31,7 +31,8 @@ impl ElementReader for RunProperty {
                         XMLElement::Size => rp = rp.size(usize::from_str(&attributes[0].value)?),
                         XMLElement::Spacing => {
                             if let Some(v) = read_val(&attributes) {
-                                rp = rp.spacing(f32::from_str(&v)? as i32)
+                                let v = value_to_dax(&v)?;
+                                rp = rp.spacing(v)
                             }
                         }
                         XMLElement::Underline => rp = rp.underline(&attributes[0].value.clone()),

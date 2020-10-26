@@ -12,10 +12,10 @@ fn read_page_size(attributes: &[OwnedAttribute]) -> Result<PageSize, ReaderError
         let local_name = &a.name.local_name;
         match local_name.as_str() {
             "w" => {
-                size = size.width(f32::from_str(&a.value)? as u32);
+                size = size.width(value_to_dax(&a.value)? as u32);
             }
             "h" => {
-                size = size.height(f32::from_str(&a.value)? as u32);
+                size = size.height(value_to_dax(&a.value)? as u32);
             }
             _ => {}
         }
@@ -31,25 +31,25 @@ fn read_page_margin(
         let local_name = &a.name.local_name;
         match local_name.as_str() {
             "top" => {
-                margin = margin.top(f32::from_str(&a.value)? as u32);
+                margin = margin.top(value_to_dax(&a.value)? as u32);
             }
             "right" => {
-                margin = margin.right(f32::from_str(&a.value)? as u32);
+                margin = margin.right(value_to_dax(&a.value)? as u32);
             }
             "bottom" => {
-                margin = margin.bottom(f32::from_str(&a.value)? as u32);
+                margin = margin.bottom(value_to_dax(&a.value)? as u32);
             }
             "left" => {
-                margin = margin.left(f32::from_str(&a.value)? as u32);
+                margin = margin.left(value_to_dax(&a.value)? as u32);
             }
             "header" => {
-                margin = margin.header(f32::from_str(&a.value)? as u32);
+                margin = margin.header(value_to_dax(&a.value)? as u32);
             }
             "footer" => {
-                margin = margin.footer(f32::from_str(&a.value)? as u32);
+                margin = margin.footer(value_to_dax(&a.value)? as u32);
             }
             "gutter" => {
-                margin = margin.gutter(f32::from_str(&a.value)? as u32);
+                margin = margin.gutter(value_to_dax(&a.value)? as u32);
             }
             _ => {}
         }

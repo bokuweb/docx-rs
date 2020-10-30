@@ -1,6 +1,9 @@
+use serde::Serialize;
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct BasedOn {
     val: String,
 }

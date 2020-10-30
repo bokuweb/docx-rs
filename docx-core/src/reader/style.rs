@@ -36,6 +36,12 @@ impl ElementReader for Style {
                             style = style.name(&attributes[0].value.clone());
                             continue;
                         }
+                        XMLElement::BasedOn => {
+                            if let Some(v) = read_val(&attributes) {
+                                style = style.based_on(v);
+                            }
+                            continue;
+                        }
                         // pPr
                         XMLElement::Indent => {
                             let (start, end, special, start_chars) = read_indent(&attributes)?;
@@ -70,6 +76,11 @@ impl ElementReader for Style {
                             style = style.italic();
                         }
                         XMLElement::Vanish => style = style.vanish(),
+                        XMLElement::TableProperty => {
+                            if let Ok(p) = TableProperty::read(r, &attributes) {
+                                style = style.table_property(p);
+                            }
+                        }
                         _ => {}
                     }
                 }

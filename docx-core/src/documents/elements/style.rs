@@ -5,7 +5,7 @@ use crate::types::*;
 use crate::xml_builder::*;
 use crate::StyleType;
 
-use super::{BasedOn, Name, Next, ParagraphProperty, QFormat, RunProperty};
+use super::{BasedOn, Name, Next, ParagraphProperty, QFormat, RunProperty, TableProperty};
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -15,6 +15,8 @@ pub struct Style {
     pub style_type: StyleType,
     pub run_property: RunProperty,
     pub paragraph_property: ParagraphProperty,
+    pub table_property: TableProperty,
+    pub based_on: Option<BasedOn>,
 }
 
 impl Default for Style {
@@ -28,6 +30,8 @@ impl Default for Style {
             name,
             run_property: rpr,
             paragraph_property: ppr,
+            table_property: TableProperty::new(),
+            based_on: None,
         }
     }
 }
@@ -44,6 +48,11 @@ impl Style {
 
     pub fn name(mut self, name: impl Into<String>) -> Self {
         self.name = Name::new(name);
+        self
+    }
+
+    pub fn based_on(mut self, base: impl Into<String>) -> Self {
+        self.based_on = Some(BasedOn::new(base));
         self
     }
 
@@ -99,6 +108,11 @@ impl Style {
                 .indent(left, special_indent, end, start_chars);
         self
     }
+
+    pub fn table_property(mut self, p: TableProperty) -> Self {
+        self.table_property = p;
+        self
+    }
 }
 
 impl BuildXML for Style {
@@ -112,6 +126,7 @@ impl BuildXML for Style {
             .add_child(&BasedOn::new("Normal"))
             .add_child(&Next::new("Normal"))
             .add_child(&QFormat::new())
+            .add_optional_child(&self.based_on)
             .close()
             .build()
     }

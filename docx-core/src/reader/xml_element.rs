@@ -58,6 +58,7 @@ pub enum XMLElement {
     TableWidth,
     TableIndent,
     TableBorders,
+    TableStyle,
     // Change
     TableGridChange,
     TablePropertyChange,
@@ -212,6 +213,7 @@ impl FromStr for XMLElement {
             "tblW" => Ok(XMLElement::TableWidth),
             "tblInd" => Ok(XMLElement::TableIndent),
             "tblBorders" => Ok(XMLElement::TableBorders),
+            "tblStyle" => Ok(XMLElement::TableStyle),
             "top" => Ok(XMLElement::Top),
             "right" => Ok(XMLElement::Right),
             "left" => Ok(XMLElement::Left),

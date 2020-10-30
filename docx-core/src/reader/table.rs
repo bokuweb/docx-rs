@@ -45,6 +45,11 @@ impl ElementReader for Table {
                                 t = t.set_borders(borders);
                             }
                         }
+                        XMLElement::TableStyle => {
+                            if let Some(s) = read_val(&attributes) {
+                                t = t.style(s);
+                            }
+                        }
                         XMLElement::TableCellMargin => {
                             // TODO: Support later
                         }

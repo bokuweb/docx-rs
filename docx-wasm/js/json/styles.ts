@@ -1,5 +1,6 @@
 import { RunPropertyJSON } from "./run";
 import { ParagraphPropertyJSON } from "./paragraph";
+import { TablePropertyJSON } from "./table";
 
 export type StyleJSON = {
   styleId: string;
@@ -7,6 +8,8 @@ export type StyleJSON = {
   styleType: string;
   runProperty: RunPropertyJSON;
   paragraphProperty: ParagraphPropertyJSON;
+  tableProperty: TablePropertyJSON;
+  basedOn: string | null;
 };
 
 export type StylesJSON = {

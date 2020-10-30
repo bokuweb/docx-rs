@@ -15,6 +15,12 @@ describe("reader", () => {
     const json = w.readDocx(buf);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read table style docx", () => {
+    const buf = readFileSync("../fixtures/table_style/table_style.docx");
+    const json = w.readDocx(buf);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {

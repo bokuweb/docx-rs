@@ -182,6 +182,7 @@ impl XMLBuilder {
     open!(open_table_borders, "w:tblBorders");
     open!(open_table_cell_margins, "w:tblCellMar");
 
+    closed_with_str!(table_style, "w:tblStyle");
     closed_w_with_type_el!(table_width, "w:tblW");
     closed_w_with_type_el!(table_indent, "w:tblInd");
     closed_w_with_type_el!(grid_column, "w:gridCol");

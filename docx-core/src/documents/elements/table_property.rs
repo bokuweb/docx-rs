@@ -13,6 +13,7 @@ pub struct TableProperty {
     borders: TableBorders,
     margins: TableCellMargins,
     indent: Option<TableIndent>,
+    style: Option<TableStyle>,
 }
 
 impl Default for TableProperty {
@@ -23,6 +24,7 @@ impl Default for TableProperty {
             borders: TableBorders::new(),
             margins: TableCellMargins::new(),
             indent: None,
+            style: None,
         }
     }
 }
@@ -71,6 +73,11 @@ impl TableProperty {
         self.borders = self.borders.clear_all();
         self
     }
+
+    pub fn style(mut self, s: impl Into<String>) -> Self {
+        self.style = Some(TableStyle::new(s));
+        self
+    }
 }
 
 impl BuildXML for TableProperty {
@@ -82,6 +89,7 @@ impl BuildXML for TableProperty {
             .add_child(&self.borders)
             .add_child(&self.margins)
             .add_optional_child(&self.indent)
+            .add_optional_child(&self.style)
             .close()
             .build()
     }

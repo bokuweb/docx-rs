@@ -57,6 +57,7 @@ export type TablePropertyJSON = {
     width: number;
     widthType: WidthType;
   };
+  style: string | null;
 };
 
 export type TableJSON = {

@@ -47,6 +47,11 @@ impl Table {
         self
     }
 
+    pub fn style(mut self, s: impl Into<String>) -> Table {
+        self.property = self.property.style(s);
+        self
+    }
+
     pub fn width(mut self, w: usize, t: WidthType) -> Table {
         self.property = self.property.width(w, t);
         self

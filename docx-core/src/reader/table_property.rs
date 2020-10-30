@@ -20,13 +20,10 @@ impl ElementReader for TableProperty {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    match e {
-                        XMLElement::TableBorders => {
-                            if let Ok(borders) = TableBorders::read(r, &attributes) {
-                                tp = tp.set_borders(borders);
-                            }
+                    if let XMLElement::TableBorders = e {
+                        if let Ok(borders) = TableBorders::read(r, &attributes) {
+                            tp = tp.set_borders(borders);
                         }
-                        _ => {}
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {

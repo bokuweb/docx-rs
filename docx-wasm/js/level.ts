@@ -1,5 +1,6 @@
 import { LevelJSON } from "./json";
 import { ParagraphProperty, SpecialIndentKind } from "./paragraph";
+import { RunFonts, RunProperty } from "./run";
 
 export type LevelSuffixType = "nothing" | "tab" | "space";
 
@@ -10,6 +11,7 @@ export class Level {
   text: string;
   jc: string;
   paragraphProperty: ParagraphProperty = { runProperty: {} };
+  runProperty: RunProperty = {};
   levelSuffix: LevelSuffixType;
 
   constructor(
@@ -42,6 +44,51 @@ export class Level {
 
   suffix(s: LevelSuffixType) {
     this.levelSuffix = s;
+    return this;
+  }
+
+  size(size: number) {
+    this.runProperty = { ...this.runProperty, size };
+    return this;
+  }
+
+  color(color: string) {
+    this.runProperty = { ...this.runProperty, color };
+    return this;
+  }
+
+  highlight(color: string) {
+    this.runProperty = { ...this.runProperty, highlight: color };
+    return this;
+  }
+
+  bold() {
+    this.runProperty = { ...this.runProperty, bold: true };
+    return this;
+  }
+
+  italic() {
+    this.runProperty = { ...this.runProperty, italic: true };
+    return this;
+  }
+
+  underline(type: string) {
+    this.runProperty = { ...this.runProperty, underline: type };
+    return this;
+  }
+
+  vanish() {
+    this.runProperty = { ...this.runProperty, vanish: true };
+    return this;
+  }
+
+  fonts(fonts: RunFonts) {
+    this.runProperty = { ...this.runProperty, fonts };
+    return this;
+  }
+
+  spacing(spacing: number) {
+    this.runProperty = { ...this.runProperty, spacing };
     return this;
   }
 }

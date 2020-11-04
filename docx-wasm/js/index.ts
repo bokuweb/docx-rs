@@ -20,6 +20,7 @@ import { SectionProperty, PageMargin } from "./section-property";
 import { DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
+import { Level } from "./level";
 
 const convertBorderType = (t: BorderType) => {
   switch (t) {
@@ -475,6 +476,62 @@ export class Docx {
     return cell;
   }
 
+  buildLevel(l: Level) {
+    let level = wasm.createLevel(l.id, l.start, l.format, l.text, l.jc);
+
+    if (l.levelSuffix === "nothing") {
+      level = level.suffix(wasm.LevelSuffixType.Nothing);
+    } else if (l.levelSuffix === "space") {
+      level = level.suffix(wasm.LevelSuffixType.Space);
+    } else {
+      level = level.suffix(wasm.LevelSuffixType.Tab);
+    }
+
+    if (l.runProperty.bold) {
+      level = level.bold();
+    }
+
+    if (l.runProperty.italic) {
+      level = level.italic();
+    }
+
+    if (l.runProperty.size) {
+      level = level.size(l.runProperty.size);
+    }
+
+    if (l.runProperty.fonts) {
+      let f = wasm.createRunFonts();
+      if (l.runProperty.fonts._ascii) {
+        f = f.ascii(l.runProperty.fonts._ascii);
+      }
+      if (l.runProperty.fonts._hiAnsi) {
+        f = f.hi_ansi(l.runProperty.fonts._hiAnsi);
+      }
+      if (l.runProperty.fonts._cs) {
+        f = f.cs(l.runProperty.fonts._cs);
+      }
+      if (l.runProperty.fonts._eastAsia) {
+        f = f.east_asia(l.runProperty.fonts._eastAsia);
+      }
+      level = level.fonts(f);
+    }
+
+    if (l.paragraphProperty.indent) {
+      let kind;
+      if (l.paragraphProperty.indent.specialIndentKind === "firstLine") {
+        kind = wasm.SpecialIndentKind.FirstLine;
+      } else if (l.paragraphProperty.indent.specialIndentKind === "hanging") {
+        kind = wasm.SpecialIndentKind.Hanging;
+      }
+      level = level.indent(
+        l.paragraphProperty.indent.left,
+        kind,
+        l.paragraphProperty.indent.specialIndentSize
+      );
+    }
+    return level;
+  }
+
   build() {
     let docx = wasm.createDocx();
 
@@ -495,31 +552,7 @@ export class Docx {
     this.abstractNumberings.forEach((n) => {
       let num = wasm.createAbstractNumbering(n.id);
       n.levels.forEach((l) => {
-        let level = wasm.createLevel(l.id, l.start, l.format, l.text, l.jc);
-
-        if (l.levelSuffix === "nothing") {
-          level = level.suffix(wasm.LevelSuffixType.Nothing);
-        } else if (l.levelSuffix === "space") {
-          level = level.suffix(wasm.LevelSuffixType.Space);
-        } else {
-          level = level.suffix(wasm.LevelSuffixType.Tab);
-        }
-
-        if (l.paragraphProperty.indent) {
-          let kind;
-          if (l.paragraphProperty.indent.specialIndentKind === "firstLine") {
-            kind = wasm.SpecialIndentKind.FirstLine;
-          } else if (
-            l.paragraphProperty.indent.specialIndentKind === "hanging"
-          ) {
-            kind = wasm.SpecialIndentKind.Hanging;
-          }
-          level = level.indent(
-            l.paragraphProperty.indent.left,
-            kind,
-            l.paragraphProperty.indent.specialIndentSize
-          );
-        }
+        const level = this.buildLevel(l);
         num = num.add_level(level);
       });
       docx = docx.add_abstract_numbering(num);

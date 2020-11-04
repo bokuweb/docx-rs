@@ -106,7 +106,7 @@ impl Level {
     pub fn fonts(mut self, f: RunFonts) -> Self {
         self.run_property = self.run_property.fonts(f);
         self
-    }    
+    }
 }
 
 impl BuildXML for Level {
@@ -117,7 +117,8 @@ impl BuildXML for Level {
             .add_child(&self.format)
             .add_child(&self.text)
             .add_child(&self.jc)
-            .add_child(&self.paragraph_property);
+            .add_child(&self.paragraph_property)
+            .add_child(&self.run_property);
 
         if self.suffix != LevelSuffixType::Tab {
             b = b.suffix(&self.suffix.to_string());
@@ -147,7 +148,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr></w:lvl>"#
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /></w:lvl>"#
         );
     }
 
@@ -164,7 +165,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr></w:lvl>"#
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr><w:rPr /></w:lvl>"#
         );
     }
     #[test]
@@ -180,7 +181,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:suff w:val="space" />
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /><w:suff w:val="space" />
 </w:lvl>"#
         );
     }

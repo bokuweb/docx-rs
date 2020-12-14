@@ -41,4 +41,49 @@ impl Level {
         self.0 = self.0.suffix(s);
         self
     }
+
+    pub fn size(mut self, size: usize) -> Self {
+        self.0 = self.0.size(size);
+        self
+    }
+
+    pub fn color(mut self, color: &str) -> Self {
+        self.0 = self.0.color(color);
+        self
+    }
+
+    pub fn highlight(mut self, color: &str) -> Self {
+        self.0 = self.0.highlight(color);
+        self
+    }
+
+    pub fn bold(mut self) -> Self {
+        self.0 = self.0.bold();
+        self
+    }
+
+    pub fn italic(mut self) -> Self {
+        self.0 = self.0.italic();
+        self
+    }
+
+    pub fn underline(mut self, line_type: &str) -> Self {
+        self.0 = self.0.underline(line_type);
+        self
+    }
+
+    pub fn vanish(mut self) -> Self {
+        self.0 = self.0.vanish();
+        self
+    }
+
+    pub fn fonts(mut self, f: RunFonts) -> Self {
+        self.0 = self.0.fonts(f.take());
+        self
+    }
+
+    pub fn spacing(mut self, spacing: i32) -> Self {
+        self.0 = self.0.spacing(spacing);
+        self
+    }
 }

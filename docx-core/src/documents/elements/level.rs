@@ -1,4 +1,4 @@
-use crate::documents::{BuildXML, LevelJc, LevelText, NumberFormat, ParagraphProperty, Start};
+use crate::documents::*;
 use crate::types::*;
 use crate::xml_builder::*;
 
@@ -14,6 +14,7 @@ pub struct Level {
     pub jc: LevelJc,
     pub pstyle: Option<String>,
     pub paragraph_property: ParagraphProperty,
+    pub run_property: RunProperty,
     pub suffix: LevelSuffixType,
 }
 
@@ -33,6 +34,7 @@ impl Level {
             jc,
             pstyle: None,
             paragraph_property: ParagraphProperty::new(),
+            run_property: RunProperty::new(),
             suffix: LevelSuffixType::Tab,
         }
     }
@@ -59,6 +61,52 @@ impl Level {
         self.suffix = s;
         self
     }
+
+    // run property
+    pub fn size(mut self, size: usize) -> Self {
+        self.run_property = self.run_property.size(size);
+        self
+    }
+
+    pub fn spacing(mut self, v: i32) -> Self {
+        self.run_property = self.run_property.spacing(v);
+        self
+    }
+
+    pub fn color(mut self, color: impl Into<String>) -> Self {
+        self.run_property = self.run_property.color(color);
+        self
+    }
+
+    pub fn highlight(mut self, color: impl Into<String>) -> Self {
+        self.run_property = self.run_property.highlight(color);
+        self
+    }
+
+    pub fn bold(mut self) -> Self {
+        self.run_property = self.run_property.bold();
+        self
+    }
+
+    pub fn italic(mut self) -> Self {
+        self.run_property = self.run_property.italic();
+        self
+    }
+
+    pub fn underline(mut self, line_type: impl Into<String>) -> Self {
+        self.run_property = self.run_property.underline(line_type);
+        self
+    }
+
+    pub fn vanish(mut self) -> Self {
+        self.run_property = self.run_property.vanish();
+        self
+    }
+
+    pub fn fonts(mut self, f: RunFonts) -> Self {
+        self.run_property = self.run_property.fonts(f);
+        self
+    }
 }
 
 impl BuildXML for Level {
@@ -69,7 +117,8 @@ impl BuildXML for Level {
             .add_child(&self.format)
             .add_child(&self.text)
             .add_child(&self.jc)
-            .add_child(&self.paragraph_property);
+            .add_child(&self.paragraph_property)
+            .add_child(&self.run_property);
 
         if self.suffix != LevelSuffixType::Tab {
             b = b.suffix(&self.suffix.to_string());
@@ -99,7 +148,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr></w:lvl>"#
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /></w:lvl>"#
         );
     }
 
@@ -116,7 +165,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr></w:lvl>"#
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr><w:rPr /></w:lvl>"#
         );
     }
     #[test]
@@ -132,7 +181,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:suff w:val="space" />
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /><w:suff w:val="space" />
 </w:lvl>"#
         );
     }

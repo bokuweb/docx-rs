@@ -5,7 +5,7 @@ import { DeleteText } from "./delete-text";
 import { Table } from "./table";
 import { TableCell } from "./table-cell";
 import { BorderType } from "./table-cell-border";
-import { Run } from "./run";
+import { Run, RunFonts } from "./run";
 import { Text } from "./text";
 import { Tab } from "./tab";
 import { Break } from "./break";
@@ -16,6 +16,7 @@ import { Numbering } from "./numbering";
 import { BookmarkStart } from "./bookmark-start";
 import { BookmarkEnd } from "./bookmark-end";
 import { Settings } from "./settings";
+import { Styles } from "./styles";
 import { SectionProperty, PageMargin } from "./section-property";
 import { DocxJSON } from "./json";
 
@@ -56,6 +57,7 @@ export class Docx {
   numberings: Numbering[] = [];
   settings: Settings = new Settings();
   sectionProperty: SectionProperty = new SectionProperty();
+  styles = new Styles();
 
   addParagraph(p: Paragraph) {
     if (p.hasNumberings) {
@@ -107,6 +109,38 @@ export class Docx {
     this.sectionProperty.pageMargin(margin);
     return this;
   }
+
+  defaultSize(size: number) {
+    this.styles.defaultSize(size);
+    return this;
+  }
+
+  defaultFonts(fonts: RunFonts) {
+    this.styles.defaultFonts(fonts);
+    return this;
+  }
+
+  defaultSpacing(spacing: number) {
+    this.styles.defaultSpacing(spacing);
+    return this;
+  }
+
+  buildRunFonts = (fonts: RunFonts | undefined) => {
+    let f = wasm.createRunFonts();
+    if (fonts?._ascii) {
+      f = f.ascii(fonts._ascii);
+    }
+    if (fonts?._hiAnsi) {
+      f = f.hi_ansi(fonts._hiAnsi);
+    }
+    if (fonts?._cs) {
+      f = f.cs(fonts._cs);
+    }
+    if (fonts?._eastAsia) {
+      f = f.east_asia(fonts._eastAsia);
+    }
+    return f;
+  };
 
   buildRun(r: Run) {
     let run = wasm.createRun();
@@ -160,20 +194,8 @@ export class Docx {
       run = run.spacing(r.property.spacing);
     }
 
-    let f = wasm.createRunFonts();
-    if (r.property.fonts?._ascii) {
-      f = f.ascii(r.property.fonts._ascii);
-    }
-    if (r.property.fonts?._hiAnsi) {
-      f = f.hi_ansi(r.property.fonts._hiAnsi);
-    }
-    if (r.property.fonts?._cs) {
-      f = f.cs(r.property.fonts._cs);
-    }
-    if (r.property.fonts?._eastAsia) {
-      f = f.east_asia(r.property.fonts._eastAsia);
-    }
-    run = run.fonts(f);
+    const fonts = this.buildRunFonts(r.property.fonts);
+    run = run.fonts(fonts);
 
     return run;
   }
@@ -611,6 +633,25 @@ export class Docx {
       docx = docx.page_size(w, h);
     }
 
+    if (this.styles?.docDefaults) {
+      if (this.styles.docDefaults.runProperty?.fonts) {
+        const fonts = this.buildRunFonts(
+          this.styles.docDefaults.runProperty.fonts
+        );
+        docx = docx.default_fonts(fonts);
+      }
+
+      if (this.styles.docDefaults.runProperty?.size) {
+        docx = docx.default_size(this.styles.docDefaults.runProperty.size);
+      }
+
+      if (this.styles.docDefaults.runProperty?.spacing) {
+        docx = docx.default_spacing(
+          this.styles.docDefaults.runProperty.spacing
+        );
+      }
+    }
+
     const buf = docx.build(this.hasNumberings);
     docx.free();
     return buf;
@@ -631,6 +672,8 @@ export * from "./table-cell-borders";
 export * from "./table-row";
 export * from "./run";
 export * from "./text";
+export * from "./style";
+export * from "./styles";
 export * from "./comment";
 export * from "./comment-end";
 export * from "./numbering";

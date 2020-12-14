@@ -209,6 +209,21 @@ impl Docx {
         self
     }
 
+    pub fn default_size(mut self, size: usize) -> Self {
+        self.styles = self.styles.default_size(size);
+        self
+    }
+
+    pub fn default_spacing(mut self, spacing: i32) -> Self {
+        self.styles = self.styles.default_spacing(spacing);
+        self
+    }
+
+    pub fn default_fonts(mut self, font: RunFonts) -> Self {
+        self.styles = self.styles.default_fonts(font);
+        self
+    }
+
     pub fn build(&mut self) -> XMLDocx {
         self.update_comments();
         let (image_ids, images) = self.create_images();

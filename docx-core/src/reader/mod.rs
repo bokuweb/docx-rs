@@ -4,6 +4,7 @@ mod attributes;
 mod bookmark_end;
 mod bookmark_start;
 mod delete;
+mod doc_defaults;
 mod document;
 mod document_rels;
 mod drawing;

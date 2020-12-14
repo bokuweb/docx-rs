@@ -1,7 +1,7 @@
 use serde::Serialize;
 
-use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use crate::{documents::BuildXML, RunProperty};
 
 use super::run_property_default::*;
 use super::RunFonts;
@@ -29,6 +29,11 @@ impl DocDefaults {
 
     pub fn fonts(mut self, font: RunFonts) -> Self {
         self.run_property_default = self.run_property_default.fonts(font);
+        self
+    }
+
+    pub(crate) fn run_property(mut self, p: RunProperty) -> Self {
+        self.run_property_default = self.run_property_default.run_property(p);
         self
     }
 }

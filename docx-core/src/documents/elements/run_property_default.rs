@@ -29,6 +29,11 @@ impl RunPropertyDefault {
         self.run_property = self.run_property.fonts(font);
         self
     }
+
+    pub(crate) fn run_property(mut self, p: RunProperty) -> Self {
+        self.run_property = p;
+        self
+    }
 }
 
 impl Default for RunPropertyDefault {

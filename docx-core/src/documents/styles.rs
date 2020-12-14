@@ -36,6 +36,11 @@ impl Styles {
         self.doc_defaults = self.doc_defaults.fonts(font);
         self
     }
+
+    pub(crate) fn doc_defaults(mut self, doc_defaults: DocDefaults) -> Self {
+        self.doc_defaults = doc_defaults;
+        self
+    }
 }
 
 impl Default for Styles {

@@ -35,6 +35,8 @@ impl ElementReader for RunProperty {
                                 rp = rp.spacing(v)
                             }
                         }
+                        // TODO: Implement later
+                        XMLElement::RunFonts => {}
                         XMLElement::Underline => rp = rp.underline(&attributes[0].value.clone()),
                         XMLElement::Italic => {
                             if !read_bool(&attributes) {
@@ -43,7 +45,6 @@ impl ElementReader for RunProperty {
                             rp = rp.italic();
                         }
                         XMLElement::Vanish => rp = rp.vanish(),
-                        // TODO: Add run fonts reader
                         _ => {}
                     }
                 }

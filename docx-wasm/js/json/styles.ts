@@ -14,7 +14,9 @@ export type StyleJSON = {
 
 export type StylesJSON = {
   docDefaults: {
-    runPropertyDefault: RunPropertyJSON;
+    runPropertyDefault: {
+      runProperty: RunPropertyJSON;
+    };
   };
   styles: StyleJSON[];
 };

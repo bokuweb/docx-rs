@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use super::RunProperty;
+use super::*;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
@@ -13,6 +13,21 @@ pub struct RunPropertyDefault {
 impl RunPropertyDefault {
     pub fn new() -> RunPropertyDefault {
         Default::default()
+    }
+
+    pub fn size(mut self, size: usize) -> Self {
+        self.run_property = self.run_property.size(size);
+        self
+    }
+
+    pub fn spacing(mut self, spacing: i32) -> Self {
+        self.run_property = self.run_property.spacing(spacing);
+        self
+    }
+
+    pub fn fonts(mut self, font: RunFonts) -> Self {
+        self.run_property = self.run_property.fonts(font);
+        self
     }
 }
 

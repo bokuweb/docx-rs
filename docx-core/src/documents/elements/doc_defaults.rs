@@ -1,9 +1,10 @@
 use serde::Serialize;
 
-use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use crate::{documents::BuildXML, RunProperty};
 
 use super::run_property_default::*;
+use super::RunFonts;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -14,6 +15,26 @@ pub struct DocDefaults {
 impl DocDefaults {
     pub fn new() -> DocDefaults {
         Default::default()
+    }
+
+    pub fn size(mut self, size: usize) -> Self {
+        self.run_property_default = self.run_property_default.size(size);
+        self
+    }
+
+    pub fn spacing(mut self, spacing: i32) -> Self {
+        self.run_property_default = self.run_property_default.spacing(spacing);
+        self
+    }
+
+    pub fn fonts(mut self, font: RunFonts) -> Self {
+        self.run_property_default = self.run_property_default.fonts(font);
+        self
+    }
+
+    pub(crate) fn run_property(mut self, p: RunProperty) -> Self {
+        self.run_property_default = self.run_property_default.run_property(p);
+        self
     }
 }
 

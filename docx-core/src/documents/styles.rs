@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use super::{DocDefaults, Style};
+use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -19,6 +19,26 @@ impl Styles {
 
     pub fn add_style(mut self, style: Style) -> Self {
         self.styles.push(style);
+        self
+    }
+
+    pub fn default_size(mut self, size: usize) -> Self {
+        self.doc_defaults = self.doc_defaults.size(size);
+        self
+    }
+
+    pub fn default_spacing(mut self, spacing: i32) -> Self {
+        self.doc_defaults = self.doc_defaults.spacing(spacing);
+        self
+    }
+
+    pub fn default_fonts(mut self, font: RunFonts) -> Self {
+        self.doc_defaults = self.doc_defaults.fonts(font);
+        self
+    }
+
+    pub(crate) fn doc_defaults(mut self, doc_defaults: DocDefaults) -> Self {
+        self.doc_defaults = doc_defaults;
         self
     }
 }

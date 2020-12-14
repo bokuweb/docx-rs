@@ -1,6 +1,5 @@
 const w = require("../dist/node");
 const { readFileSync, writeFileSync } = require("fs");
-const path = require("path");
 const Zip = require("adm-zip");
 
 describe("reader", () => {
@@ -76,7 +75,26 @@ describe("writer", () => {
       .addParagraph(p)
       .pageMargin({ top: 1000, left: 2000 })
       .build();
-    writeFileSync("aa.docx", buf);
+    const z = new Zip(Buffer.from(buf));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write default font", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!!!"));
+    const fonts = new w.RunFonts()
+      .eastAsia("Arial")
+      .ascii("Arial")
+      .hiAnsi("Arial");
+    const buf = new w.Docx()
+      .addParagraph(p)
+      .defaultSize(40)
+      .defaultFonts(fonts)
+      .build();
+    writeFileSync("default_font.docx", buf);
     const z = new Zip(Buffer.from(buf));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {

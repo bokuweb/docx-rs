@@ -14,6 +14,7 @@ pub enum XMLElement {
     RunProperty,
     Color,
     Underline,
+    RunFonts,
     Size,
     SizeCs,
     Spacing,
@@ -100,6 +101,8 @@ pub enum XMLElement {
     TxbxContent,
     Pict,
     DocId,
+    DocDefaults,
+    RunPropertyDefault,
     SectionProperty,
     PageSize,
     PageMargin,
@@ -257,7 +260,10 @@ impl FromStr for XMLElement {
             "docId" => Ok(XMLElement::DocId),
             "sectPr" => Ok(XMLElement::SectionProperty),
             "pgSz" => Ok(XMLElement::PageSize),
+            "rFonts" => Ok(XMLElement::RunFonts),
             "pgMar" => Ok(XMLElement::PageMargin),
+            "docDefaults" => Ok(XMLElement::DocDefaults),
+            "rPrDefault" => Ok(XMLElement::RunPropertyDefault),
             _ => Ok(XMLElement::Unsupported),
         }
     }

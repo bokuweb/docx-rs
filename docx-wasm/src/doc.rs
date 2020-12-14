@@ -58,6 +58,21 @@ impl Docx {
         self
     }
 
+    pub fn default_size(mut self, size: usize) -> Self {
+        self.0.styles = self.0.styles.default_size(size);
+        self
+    }
+
+    pub fn default_spacing(mut self, spacing: i32) -> Self {
+        self.0.styles = self.0.styles.default_spacing(spacing);
+        self
+    }
+
+    pub fn default_fonts(mut self, font: RunFonts) -> Self {
+        self.0.styles = self.0.styles.default_fonts(font.take());
+        self
+    }
+
     pub fn build(&mut self, has_numberings: bool) -> Result<Vec<u8>, JsValue> {
         let buf = Vec::new();
         let mut cur = std::io::Cursor::new(buf);

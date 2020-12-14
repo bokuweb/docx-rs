@@ -17,10 +17,18 @@ impl FromXML for Styles {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    if let XMLElement::Style = e {
-                        let s = Style::read(&mut parser, &attributes)?;
-                        styles = styles.add_style(s);
-                        continue;
+                    match e {
+                        XMLElement::Style => {
+                            let s = Style::read(&mut parser, &attributes)?;
+                            styles = styles.add_style(s);
+                            continue;
+                        }
+                        XMLElement::DocDefaults => {
+                            let d = DocDefaults::read(&mut parser, &attributes)?;
+                            styles = styles.doc_defaults(d);
+                            continue;
+                        }
+                        _ => {}
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {

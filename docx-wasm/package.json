@@ -13,7 +13,7 @@
     "tsc:web": "tsc -p tsconfig.web.json",
     "tsc:node": "tsc -p tsconfig.node.json",
     "tsc": "run-p tsc:*",
-    "test": "tsc && jest",
+    "test": "npm run build && tsc && jest",
     "build": "run-s wasm-pack tsc",
     "serve": "webpack-dev-server --open --config webpack.dev.js",
     "prepublishOnly": "npm run build"

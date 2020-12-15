@@ -29,6 +29,11 @@ impl FromXML for CommentsExtended {
                         });
                     }
                 }
+                Ok(XmlEvent::EndDocument { .. }) => {
+                    return Ok(CommentsExtended {
+                        children: comments_extended,
+                    });
+                }
                 Err(_) => return Err(ReaderError::XMLReadError),
                 _ => {}
             }

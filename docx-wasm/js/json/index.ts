@@ -39,6 +39,7 @@ export type DocxJSON = {
     docId: string | null;
     defaultTabStop: number;
     zoom: number;
+    docVars: { name: string; val: string }[];
   };
   fontTable: {};
 };

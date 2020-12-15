@@ -18,18 +18,30 @@ impl FromXML for Settings {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    if let XMLElement::DocId = e {
-                        for a in attributes {
-                            if let Some(prefix) = a.name.prefix {
-                                let local_name = &a.name.local_name;
-                                // Ignore w14:val
-                                if local_name == "val" && prefix == "w15" {
-                                    settings = settings.doc_id(
-                                        &a.value.to_owned().replace("{", "").replace("}", ""),
-                                    );
+                    match e {
+                        XMLElement::DocId => {
+                            for a in attributes {
+                                if let Some(prefix) = a.name.prefix {
+                                    let local_name = &a.name.local_name;
+                                    // Ignore w14:val
+                                    if local_name == "val" && prefix == "w15" {
+                                        settings = settings.doc_id(
+                                            &a.value.to_owned().replace("{", "").replace("}", ""),
+                                        );
+                                    }
                                 }
                             }
                         }
+                        XMLElement::DocVar => {
+                            let name = attributes::read_name(&attributes);
+                            let val = attributes::read_val(&attributes);
+                            if let Some(name) = name {
+                                if let Some(val) = val {
+                                    settings = settings.add_doc_var(name, val);
+                                }
+                            }
+                        }
+                        _ => {}
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {

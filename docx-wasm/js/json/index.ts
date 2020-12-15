@@ -1,6 +1,7 @@
 import { StylesJSON } from "./styles";
 import { DocumentJSON } from "./document";
 import { NumberingsJSON } from "./numbering";
+import { CommentJSON } from "./comment";
 
 export type DocxJSON = {
   contentType: {
@@ -31,7 +32,7 @@ export type DocxJSON = {
   styles: StylesJSON;
   document: DocumentJSON;
   comments: {
-    comments: any[]; // TODO:
+    comments: CommentJSON[];
   };
   numberings: NumberingsJSON;
   settings: {
@@ -52,5 +53,6 @@ export * from "./run";
 export * from "./table";
 export * from "./numbering";
 export * from "./drawing";
+export * from "./comment";
 export * from "./textbox-content";
 export * from "./section-property";

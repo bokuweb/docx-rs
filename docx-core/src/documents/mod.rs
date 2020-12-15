@@ -377,34 +377,15 @@ impl Docx {
     }
 
     // Traverse and clone comments from document and add to comments node.
-    pub(crate) fn store_comments(
-        &mut self,
-        comments: &[Comment],
-        comments_extended: &[CommentExtended],
-    ) {
+    pub(crate) fn store_comments(&mut self, comments: &[Comment]) {
         for child in &mut self.document.children {
             match child {
                 DocumentChild::Paragraph(paragraph) => {
                     for child in &mut paragraph.children {
                         if let ParagraphChild::CommentStart(ref mut c) = child {
                             let comment_id = c.get_id();
-                            let para_id = paragraph.id.clone();
-                            let extended = comments_extended
-                                .iter()
-                                .find(|ex| ex.paragraph_id == para_id);
-
                             if let Some(comment) = comments.iter().find(|c| c.id() == comment_id) {
-                                let mut comment = comment.clone();
-                                if let Some(extended) = extended {
-                                    if let Some(parent_id) = extended.parent_paragraph_id.clone() {
-                                        if let Some(parent_comment) =
-                                            comments.iter().find(|c| c.paragraph.id == parent_id)
-                                        {
-                                            comment = comment
-                                                .parent_comment_id(parent_comment.id.clone());
-                                        }
-                                    }
-                                }
+                                let comment = comment.clone();
                                 c.as_mut().comment(comment);
                             }
                         }
@@ -417,32 +398,12 @@ impl Docx {
                                 match content {
                                     TableCellContent::Paragraph(paragraph) => {
                                         for child in &mut paragraph.children {
-                                            if let ParagraphChild::CommentStart(c) = child {
+                                            if let ParagraphChild::CommentStart(ref mut c) = child {
                                                 let comment_id = c.get_id();
-                                                let para_id = paragraph.id.clone();
-                                                let extended = comments_extended
-                                                    .iter()
-                                                    .find(|ex| ex.paragraph_id == para_id);
                                                 if let Some(comment) =
                                                     comments.iter().find(|c| c.id() == comment_id)
                                                 {
-                                                    let mut comment = comment.clone();
-                                                    if let Some(extended) = extended {
-                                                        if let Some(parent_id) =
-                                                            extended.parent_paragraph_id.clone()
-                                                        {
-                                                            if let Some(parent_comment) =
-                                                                comments.iter().find(|c| {
-                                                                    c.paragraph.id == parent_id
-                                                                })
-                                                            {
-                                                                comment = comment
-                                                                    .parent_comment_id(
-                                                                        parent_comment.id.clone(),
-                                                                    );
-                                                            }
-                                                        }
-                                                    }
+                                                    let comment = comment.clone();
                                                     c.as_mut().comment(comment);
                                                 }
                                             }

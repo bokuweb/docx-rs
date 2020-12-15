@@ -19,6 +19,10 @@ impl Comments {
         &self.comments
     }
 
+    pub fn into_inner(self) -> Vec<Comment> {
+        self.comments
+    }
+
     pub(crate) fn add_comments(&mut self, comments: Vec<Comment>) {
         self.comments = comments;
     }

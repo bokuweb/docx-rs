@@ -123,7 +123,27 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             comments_path.to_str().expect("should have comments."),
         );
         if let Ok(data) = data {
-            Comments::from_xml(&data[..])?
+            let mut comments = Comments::from_xml(&data[..])?.into_inner();
+            for i in 0..comments.len() {
+                let c = &comments[i];
+                let extended = comments_extended
+                    .children
+                    .iter()
+                    .find(|ex| ex.paragraph_id == c.paragraph.id);
+                if let Some(CommentExtended {
+                    parent_paragraph_id: Some(parent_paragraph_id),
+                    ..
+                }) = extended
+                {
+                    if let Some(parent_comment) = comments
+                        .iter()
+                        .find(|c| &c.paragraph.id == parent_paragraph_id)
+                    {
+                        comments[i].parent_comment_id = Some(parent_comment.id);
+                    }
+                }
+            }
+            Comments { comments }
         } else {
             Comments::default()
         }
@@ -139,7 +159,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
     // store comments to paragraphs.
     if !comments.inner().is_empty() {
-        docx.store_comments(comments.inner(), &comments_extended.children);
+        docx.store_comments(comments.inner());
         docx = docx.comments(comments);
         docx = docx.comments_extended(comments_extended);
     }

@@ -13,3 +13,15 @@ pub use indent_level::*;
 pub use name::*;
 pub use val::*;
 pub use width::*;
+
+use xml::attribute::OwnedAttribute;
+
+pub fn read(attrs: &[OwnedAttribute], target: &str) -> Option<String> {
+    for a in attrs {
+        let local_name = &a.name.local_name;
+        if local_name == target {
+            return Some(a.value.to_owned());
+        }
+    }
+    None
+}

@@ -3,6 +3,8 @@ mod a_graphic_data;
 mod attributes;
 mod bookmark_end;
 mod bookmark_start;
+mod comment;
+mod comments;
 mod delete;
 mod doc_defaults;
 mod document;
@@ -58,6 +60,10 @@ const NUMBERING_RELATIONSHIP_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
 const SETTINGS_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings";
+const COMMENTS_TYPE: &str =
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments";
+const COMMENTS_EXTENDED_TYPE: &str =
+    "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
 
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     let cur = Cursor::new(buf);
@@ -86,13 +92,27 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     } else {
         "word/document.xml".to_owned()
     };
+
+    let rels = read_document_rels(&mut archive, &document_path)?;
+
+    // Read comments
+    let comments_path = rels.find_target_path(COMMENTS_TYPE);
+    let comments = if let Some(comments_path) = comments_path {
+        let data = read_zip(
+            &mut archive,
+            comments_path.to_str().expect("should have comments."),
+        )?;
+        Comments::from_xml(&data[..])?
+    } else {
+        Comments::default()
+    };
+
     let document = {
         let data = read_zip(&mut archive, &document_path)?;
         Document::from_xml(&data[..])?
     };
     let mut docx = Docx::new().document(document);
     // Read document relationships
-    let rels = read_document_rels(&mut archive, &document_path)?;
 
     // Read styles
     let style_path = rels.find_target_path(STYLE_RELATIONSHIP_TYPE);

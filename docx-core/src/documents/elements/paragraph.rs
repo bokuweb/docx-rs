@@ -87,7 +87,18 @@ impl Serialize for ParagraphChild {
                 t.serialize_field("data", r)?;
                 t.end()
             }
-            // TODO: Add comment later
+            ParagraphChild::CommentStart(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeStart", 2)?;
+                t.serialize_field("type", "commentRangeStart")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            ParagraphChild::CommentEnd(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeEnd", 2)?;
+                t.serialize_field("type", "commentRangeEnd")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
             _ => {
                 let mut t = serializer.serialize_struct("Unsupported", 2)?;
                 t.serialize_field("type", "unsupported")?;

@@ -43,7 +43,7 @@ where
     zip.write_all(&xml.numberings)?;
     zip.start_file("word/header1.xml", options)?;
     zip.write_all(&xml.header)?;
-    zip.start_file("word/CommentsExtended.xml", options)?;
+    zip.start_file("word/commentsExtended.xml", options)?;
     zip.write_all(&xml.comments_extended)?;
 
     if !xml.media.is_empty() {

@@ -3,6 +3,10 @@ mod a_graphic_data;
 mod attributes;
 mod bookmark_end;
 mod bookmark_start;
+mod comment;
+mod comment_extended;
+mod comments;
+mod comments_extended;
 mod delete;
 mod doc_defaults;
 mod document;
@@ -58,6 +62,10 @@ const NUMBERING_RELATIONSHIP_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
 const SETTINGS_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings";
+const COMMENTS_TYPE: &str =
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments";
+const COMMENTS_EXTENDED_TYPE: &str =
+    "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
 
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     let cur = Cursor::new(buf);
@@ -86,14 +94,77 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     } else {
         "word/document.xml".to_owned()
     };
+
+    let rels = read_document_rels(&mut archive, &document_path)?;
+
+    // Read commentsExtended
+    let comments_extended_path = rels.find_target_path(COMMENTS_EXTENDED_TYPE);
+    let comments_extended = if let Some(comments_extended_path) = comments_extended_path {
+        let data = read_zip(
+            &mut archive,
+            comments_extended_path
+                .to_str()
+                .expect("should have comments extended."),
+        );
+        if let Ok(data) = data {
+            CommentsExtended::from_xml(&data[..])?
+        } else {
+            CommentsExtended::default()
+        }
+    } else {
+        CommentsExtended::default()
+    };
+
+    // Read comments
+    let comments_path = rels.find_target_path(COMMENTS_TYPE);
+    let comments = if let Some(comments_path) = comments_path {
+        let data = read_zip(
+            &mut archive,
+            comments_path.to_str().expect("should have comments."),
+        );
+        if let Ok(data) = data {
+            let mut comments = Comments::from_xml(&data[..])?.into_inner();
+            for i in 0..comments.len() {
+                let c = &comments[i];
+                let extended = comments_extended
+                    .children
+                    .iter()
+                    .find(|ex| ex.paragraph_id == c.paragraph.id);
+                if let Some(CommentExtended {
+                    parent_paragraph_id: Some(parent_paragraph_id),
+                    ..
+                }) = extended
+                {
+                    if let Some(parent_comment) = comments
+                        .iter()
+                        .find(|c| &c.paragraph.id == parent_paragraph_id)
+                    {
+                        comments[i].parent_comment_id = Some(parent_comment.id);
+                    }
+                }
+            }
+            Comments { comments }
+        } else {
+            Comments::default()
+        }
+    } else {
+        Comments::default()
+    };
+
     let document = {
         let data = read_zip(&mut archive, &document_path)?;
         Document::from_xml(&data[..])?
     };
     let mut docx = Docx::new().document(document);
-    // Read document relationships
-    let rels = read_document_rels(&mut archive, &document_path)?;
 
+    // store comments to paragraphs.
+    if !comments.inner().is_empty() {
+        docx.store_comments(comments.inner());
+        docx = docx.comments(comments);
+        docx = docx.comments_extended(comments_extended);
+    }
+
+    // Read document relationships
     // Read styles
     let style_path = rels.find_target_path(STYLE_RELATIONSHIP_TYPE);
     if let Some(style_path) = style_path {

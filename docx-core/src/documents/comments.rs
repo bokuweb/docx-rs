@@ -7,13 +7,22 @@ use serde::Serialize;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Comments {
-    comments: Vec<Comment>,
+    pub(crate) comments: Vec<Comment>,
 }
 
 impl Comments {
     pub fn new() -> Self {
         Default::default()
     }
+
+    pub fn inner(&self) -> &[Comment] {
+        &self.comments
+    }
+
+    pub fn into_inner(self) -> Vec<Comment> {
+        self.comments
+    }
+
     pub(crate) fn add_comments(&mut self, comments: Vec<Comment>) {
         self.comments = comments;
     }

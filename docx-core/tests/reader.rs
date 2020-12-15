@@ -229,3 +229,33 @@ pub fn read_lvl_override() {
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
+
+#[test]
+pub fn read_comment() {
+    let mut file = File::open("../fixtures/comment/comment.docx").unwrap();
+    let mut buf = vec![];
+    file.read_to_end(&mut buf).unwrap();
+    let json = read_docx(&buf).unwrap().json();
+
+    assert_json_snapshot!("read_comment", &json);
+
+    let path = std::path::Path::new("./tests/output/comment.json");
+    let mut file = std::fs::File::create(&path).unwrap();
+    file.write_all(json.as_bytes()).unwrap();
+    file.flush().unwrap();
+}
+
+#[test]
+pub fn read_extended_comment() {
+    let mut file = File::open("../fixtures/extended_comments/extended_comments.docx").unwrap();
+    let mut buf = vec![];
+    file.read_to_end(&mut buf).unwrap();
+    let json = read_docx(&buf).unwrap().json();
+
+    assert_json_snapshot!("read_extended_comments", &json);
+
+    let path = std::path::Path::new("./tests/output/extended_comments.json");
+    let mut file = std::fs::File::create(&path).unwrap();
+    file.write_all(json.as_bytes()).unwrap();
+    file.flush().unwrap();
+}

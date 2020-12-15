@@ -6,9 +6,9 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CommentExtended {
-    paragraph_id: String,
-    done: bool,
-    parent_paragraph_id: Option<String>,
+    pub paragraph_id: String,
+    pub done: bool,
+    pub parent_paragraph_id: Option<String>,
 }
 
 impl CommentExtended {
@@ -36,5 +36,25 @@ impl BuildXML for CommentExtended {
         XMLBuilder::new()
             .comment_extended(&self.paragraph_id, self.done, &self.parent_paragraph_id)
             .build()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+    #[cfg(test)]
+    use pretty_assertions::assert_eq;
+    #[test]
+    fn test_comment_extended_json() {
+        let ex = CommentExtended {
+            paragraph_id: "00002".to_owned(),
+            done: false,
+            parent_paragraph_id: Some("0004".to_owned()),
+        };
+        assert_eq!(
+            serde_json::to_string(&ex).unwrap(),
+            r#"{"paragraphId":"00002","done":false,"parentParagraphId":"0004"}"#
+        );
     }
 }

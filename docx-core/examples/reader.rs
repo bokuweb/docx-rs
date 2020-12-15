@@ -7,7 +7,6 @@ pub fn main() {
     let mut file = File::open("./test.docx").unwrap();
     let mut buf = vec![];
     file.read_to_end(&mut buf).unwrap();
-    dbg!(read_docx(&buf).unwrap().json());
 
     let mut file = File::create("./test.json").unwrap();
     let res = read_docx(&buf).unwrap().json();

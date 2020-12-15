@@ -1,10 +1,13 @@
 import { RunJSON, RunChildJSON, RunPropertyJSON } from "./run";
 import { IndentJSON } from "./indent";
+import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
 
 export type ParagraphChildJSON =
   | RunJSON
   | InsertJSON
   | DeleteJSON
+  | CommentRangeStartJSON
+  | CommentRangeEndJSON
   | BookmarkStartJSON
   | BookmarkEndJSON;
 

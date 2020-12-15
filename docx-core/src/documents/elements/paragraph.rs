@@ -87,10 +87,16 @@ impl Serialize for ParagraphChild {
                 t.serialize_field("data", r)?;
                 t.end()
             }
-            // TODO: Add comment later
-            _ => {
-                let mut t = serializer.serialize_struct("Unsupported", 2)?;
-                t.serialize_field("type", "unsupported")?;
+            ParagraphChild::CommentStart(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeStart", 2)?;
+                t.serialize_field("type", "commentRangeStart")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            ParagraphChild::CommentEnd(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeEnd", 2)?;
+                t.serialize_field("type", "commentRangeEnd")?;
+                t.serialize_field("data", r)?;
                 t.end()
             }
         }
@@ -100,6 +106,11 @@ impl Serialize for ParagraphChild {
 impl Paragraph {
     pub fn new() -> Paragraph {
         Default::default()
+    }
+
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = id.into();
+        self
     }
 
     pub fn children(&self) -> &Vec<ParagraphChild> {

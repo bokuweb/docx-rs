@@ -6,8 +6,8 @@ use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct CommentRangeStart {
-    id: usize,
-    comment: Comment,
+    pub id: usize,
+    pub comment: Comment,
 }
 
 impl CommentRangeStart {
@@ -18,8 +18,16 @@ impl CommentRangeStart {
         }
     }
 
-    pub(crate) fn comment(&self) -> Comment {
+    pub(crate) fn comment(&mut self, comment: Comment) {
+        self.comment = comment;
+    }
+
+    pub(crate) fn get_comment(&self) -> Comment {
         self.comment.clone()
+    }
+
+    pub(crate) fn get_id(&self) -> usize {
+        self.id
     }
 }
 

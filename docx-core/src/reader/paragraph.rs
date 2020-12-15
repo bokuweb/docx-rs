@@ -25,6 +25,9 @@ impl ElementReader for Paragraph {
         attrs: &[OwnedAttribute],
     ) -> Result<Self, ReaderError> {
         let mut p = Paragraph::new();
+        if let Some(para_id) = read(attrs, "paraId") {
+            p = p.id(para_id);
+        }
         loop {
             let e = r.next();
             match e {
@@ -62,7 +65,12 @@ impl ElementReader for Paragraph {
                             continue;
                         }
                         XMLElement::CommentRangeStart => {
-                            // TODO: Support comment later.
+                            if let Some(id) = read(&attributes, "id") {
+                                if let Ok(id) = usize::from_str(&id) {
+                                    let comment = Comment::new(id);
+                                    p = p.add_comment_start(comment);
+                                }
+                            }
                             continue;
                         }
                         XMLElement::CommentRangeEnd => {

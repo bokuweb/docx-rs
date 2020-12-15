@@ -20,6 +20,12 @@ describe("reader", () => {
     const json = w.readDocx(buf);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read extended comments docx", () => {
+    const buf = readFileSync("../fixtures/extended_comments/extended_comments.docx");
+    const json = w.readDocx(buf);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {

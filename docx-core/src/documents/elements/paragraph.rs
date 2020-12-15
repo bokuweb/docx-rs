@@ -113,6 +113,11 @@ impl Paragraph {
         Default::default()
     }
 
+    pub fn id(mut self, id: impl Into<String>) -> Self {
+        self.id = id.into();
+        self
+    }
+
     pub fn children(&self) -> &Vec<ParagraphChild> {
         &self.children
     }

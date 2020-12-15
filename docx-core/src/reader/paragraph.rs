@@ -25,6 +25,9 @@ impl ElementReader for Paragraph {
         attrs: &[OwnedAttribute],
     ) -> Result<Self, ReaderError> {
         let mut p = Paragraph::new();
+        if let Some(para_id) = read(attrs, "paraId") {
+            p = p.id(para_id);
+        }
         loop {
             let e = r.next();
             match e {

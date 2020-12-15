@@ -5,6 +5,8 @@ mod bookmark_end;
 mod bookmark_start;
 mod comment;
 mod comments;
+mod comments_extended;
+mod comment_extended;
 mod delete;
 mod doc_defaults;
 mod document;
@@ -94,6 +96,20 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     };
 
     let rels = read_document_rels(&mut archive, &document_path)?;
+
+    // Read commentsExtended
+    let comments_extended_path = rels.find_target_path(COMMENTS_EXTENDED_TYPE);
+    let comments_extended = if let Some(comments_extended_path) = comments_extended_path {
+        let data = read_zip(
+            &mut archive,
+            comments_extended_path
+                .to_str()
+                .expect("should have comments extended."),
+        )?;
+        Comments::from_xml(&data[..])?
+    } else {
+        Comments::default()
+    };
 
     // Read comments
     let comments_path = rels.find_target_path(COMMENTS_TYPE);

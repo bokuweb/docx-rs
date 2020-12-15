@@ -1,8 +1,4 @@
-use std::str::FromStr;
-
 use xml::attribute::OwnedAttribute;
-
-use super::super::errors::*;
 
 pub fn read_name(attrs: &[OwnedAttribute]) -> Option<String> {
     for a in attrs {

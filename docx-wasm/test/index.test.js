@@ -94,7 +94,19 @@ describe("writer", () => {
       .defaultSize(40)
       .defaultFonts(fonts)
       .build();
-    writeFileSync("default_font.docx", buf);
+    writeFileSync("../output/default_font.docx", buf);
+    const z = new Zip(Buffer.from(buf));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write doc vars", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!!!"));
+    const buf = new w.Docx().addParagraph(p).addDocVar("foo", "bar").build();
+    writeFileSync("../output/doc_vars.docx", buf);
     const z = new Zip(Buffer.from(buf));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {

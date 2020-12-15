@@ -311,6 +311,9 @@ impl XMLBuilder {
 
     closed!(doc_id, "w15:docId", "w15:val");
 
+    open!(open_doc_vars, "w:docVars");
+    closed!(doc_var, "w:docVar", "w:name", "w:val");
+
     // CommentExtended
     // w15:commentEx w15:paraId="00000001" w15:paraIdParent="57D1BD7C" w15:done="0"
     pub(crate) fn comment_extended(

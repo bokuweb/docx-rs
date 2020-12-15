@@ -9,7 +9,7 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CommentsExtended {
-    children: Vec<CommentExtended>,
+    pub children: Vec<CommentExtended>,
 }
 
 impl CommentsExtended {

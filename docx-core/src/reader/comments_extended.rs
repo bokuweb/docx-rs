@@ -5,8 +5,6 @@ use xml::reader::{EventReader, XmlEvent};
 
 use super::*;
 
-pub struct CommentsExtended(pub Vec<CommentExtended>);
-
 impl FromXML for CommentsExtended {
     fn from_xml<R: Read>(reader: R) -> Result<Self, ReaderError> {
         let mut r = EventReader::new(reader);
@@ -26,7 +24,9 @@ impl FromXML for CommentsExtended {
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     if e == XMLElement::CommentsExtended {
-                        return Ok(CommentsExtended(comments_extended));
+                        return Ok(CommentsExtended {
+                            children: comments_extended,
+                        });
                     }
                 }
                 Err(_) => return Err(ReaderError::XMLReadError),

@@ -6,9 +6,9 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CommentExtended {
-    paragraph_id: String,
-    done: bool,
-    parent_paragraph_id: Option<String>,
+    pub paragraph_id: String,
+    pub done: bool,
+    pub parent_paragraph_id: Option<String>,
 }
 
 impl CommentExtended {

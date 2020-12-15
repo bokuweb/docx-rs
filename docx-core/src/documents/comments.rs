@@ -14,6 +14,11 @@ impl Comments {
     pub fn new() -> Self {
         Default::default()
     }
+
+    pub fn inner(&self) -> &[Comment] {
+        &self.comments
+    }
+
     pub(crate) fn add_comments(&mut self, comments: Vec<Comment>) {
         self.comments = comments;
     }

@@ -134,6 +134,16 @@ impl Docx {
         self
     }
 
+    pub fn comments(mut self, c: Comments) -> Self {
+        self.comments = c;
+        self
+    }
+
+    pub fn comments_extended(mut self, c: CommentsExtended) -> Self {
+        self.comments_extended = c;
+        self
+    }
+
     pub fn add_paragraph(mut self, p: Paragraph) -> Docx {
         if p.has_numbering {
             // If this document has numbering, set numberings.xml to document_rels.
@@ -268,7 +278,7 @@ impl Docx {
                 DocumentChild::Paragraph(paragraph) => {
                     for child in &paragraph.children {
                         if let ParagraphChild::CommentStart(c) = child {
-                            let comment = c.comment();
+                            let comment = c.get_comment();
                             let para_id = comment.paragraph.id.clone();
                             comment_map.insert(comment.id(), para_id.clone());
                         }
@@ -282,7 +292,7 @@ impl Docx {
                                     TableCellContent::Paragraph(paragraph) => {
                                         for child in &paragraph.children {
                                             if let ParagraphChild::CommentStart(c) = child {
-                                                let comment = c.comment();
+                                                let comment = c.get_comment();
                                                 let para_id = comment.paragraph.id.clone();
                                                 comment_map.insert(comment.id(), para_id.clone());
                                             }
@@ -302,9 +312,9 @@ impl Docx {
                 DocumentChild::Paragraph(paragraph) => {
                     for child in &paragraph.children {
                         if let ParagraphChild::CommentStart(c) = child {
-                            let comment = c.comment();
+                            let comment = c.get_comment();
                             let para_id = comment.paragraph.id.clone();
-                            comments.push(c.comment());
+                            comments.push(c.get_comment());
                             let comment_extended = CommentExtended::new(para_id);
                             if let Some(parent_comment_id) = comment.parent_comment_id {
                                 let parent_para_id =
@@ -325,9 +335,9 @@ impl Docx {
                                     TableCellContent::Paragraph(paragraph) => {
                                         for child in &paragraph.children {
                                             if let ParagraphChild::CommentStart(c) = child {
-                                                let comment = c.comment();
+                                                let comment = c.get_comment();
                                                 let para_id = comment.paragraph.id.clone();
-                                                comments.push(c.comment());
+                                                comments.push(c.get_comment());
                                                 let comment_extended =
                                                     CommentExtended::new(para_id);
                                                 if let Some(parent_comment_id) =
@@ -365,6 +375,91 @@ impl Docx {
             .add_comments_extended(comments_extended);
 
         self.comments.add_comments(comments);
+    }
+
+    // Traverse and clone comments from document and add to comments node.
+    pub(crate) fn store_comments(
+        &mut self,
+        comments: &[Comment],
+        comments_extended: &[CommentExtended],
+    ) {
+        for child in &mut self.document.children {
+            match child {
+                DocumentChild::Paragraph(paragraph) => {
+                    for child in &mut paragraph.children {
+                        if let ParagraphChild::CommentStart(ref mut c) = child {
+                            let comment_id = c.get_id();
+                            let para_id = paragraph.id.clone();
+                            let extended = comments_extended
+                                .iter()
+                                .find(|ex| ex.paragraph_id == para_id);
+                            if let Some(comment) = comments.iter().find(|c| c.id() == comment_id) {
+                                let mut comment = comment.clone();
+                                if let Some(extended) = extended {
+                                    if let Some(parent_id) = extended.parent_paragraph_id.clone() {
+                                        if let Some(parent_comment) =
+                                            comments.iter().find(|c| c.paragraph.id == parent_id)
+                                        {
+                                            comment = comment
+                                                .parent_comment_id(parent_comment.id.clone());
+                                        }
+                                    }
+                                }
+                                c.as_mut().comment(comment);
+                            }
+                        }
+                    }
+                }
+                DocumentChild::Table(table) => {
+                    for row in &mut table.rows {
+                        for cell in &mut row.cells {
+                            for content in &mut cell.children {
+                                match content {
+                                    TableCellContent::Paragraph(paragraph) => {
+                                        for child in &mut paragraph.children {
+                                            if let ParagraphChild::CommentStart(c) = child {
+                                                let comment_id = c.get_id();
+                                                let para_id = paragraph.id.clone();
+                                                let extended = comments_extended
+                                                    .iter()
+                                                    .find(|ex| ex.paragraph_id == para_id);
+                                                if let Some(comment) =
+                                                    comments.iter().find(|c| c.id() == comment_id)
+                                                {
+                                                    let mut comment = comment.clone();
+                                                    if let Some(extended) = extended {
+                                                        if let Some(parent_id) =
+                                                            extended.parent_paragraph_id.clone()
+                                                        {
+                                                            if let Some(parent_comment) =
+                                                                comments.iter().find(|c| {
+                                                                    c.paragraph.id == parent_id
+                                                                })
+                                                            {
+                                                                comment = comment
+                                                                    .parent_comment_id(
+                                                                        parent_comment.id.clone(),
+                                                                    );
+                                                            }
+                                                        }
+                                                    }
+                                                    c.as_mut().comment(comment);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                _ => {}
+            }
+        }
+
+        if !comments.is_empty() {
+            self.document_rels.has_comments = true;
+        }
     }
 
     // Traverse and collect images from document.

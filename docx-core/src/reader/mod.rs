@@ -4,9 +4,9 @@ mod attributes;
 mod bookmark_end;
 mod bookmark_start;
 mod comment;
+mod comment_extended;
 mod comments;
 mod comments_extended;
-mod comment_extended;
 mod delete;
 mod doc_defaults;
 mod document;
@@ -106,9 +106,9 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
                 .to_str()
                 .expect("should have comments extended."),
         )?;
-        Comments::from_xml(&data[..])?
+        CommentsExtended::from_xml(&data[..])?
     } else {
-        Comments::default()
+        CommentsExtended::default()
     };
 
     // Read comments
@@ -128,8 +128,14 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         Document::from_xml(&data[..])?
     };
     let mut docx = Docx::new().document(document);
-    // Read document relationships
 
+    // store comments to paragraphs.
+    docx.store_comments(comments.inner(), &comments_extended.children);
+
+    docx = docx.comments(comments);
+    docx = docx.comments_extended(comments_extended);
+
+    // Read document relationships
     // Read styles
     let style_path = rels.find_target_path(STYLE_RELATIONSHIP_TYPE);
     if let Some(style_path) = style_path {

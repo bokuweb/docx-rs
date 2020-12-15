@@ -65,7 +65,12 @@ impl ElementReader for Paragraph {
                             continue;
                         }
                         XMLElement::CommentRangeStart => {
-                            // TODO: Support comment later.
+                            if let Some(id) = read(&attributes, "id") {
+                                if let Ok(id) = usize::from_str(&id) {
+                                    let comment = Comment::new(id);
+                                    p = p.add_comment_start(comment);
+                                }
+                            }
                             continue;
                         }
                         XMLElement::CommentRangeEnd => {

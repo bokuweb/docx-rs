@@ -99,11 +99,6 @@ impl Serialize for ParagraphChild {
                 t.serialize_field("data", r)?;
                 t.end()
             }
-            _ => {
-                let mut t = serializer.serialize_struct("Unsupported", 2)?;
-                t.serialize_field("type", "unsupported")?;
-                t.end()
-            }
         }
     }
 }

@@ -38,3 +38,23 @@ impl BuildXML for CommentExtended {
             .build()
     }
 }
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+    #[cfg(test)]
+    use pretty_assertions::assert_eq;
+    #[test]
+    fn test_comment_extended_json() {
+        let ex = CommentExtended {
+            paragraph_id: "00002".to_owned(),
+            done: false,
+            parent_paragraph_id: Some("0004".to_owned()),
+        };
+        assert_eq!(
+            serde_json::to_string(&ex).unwrap(),
+            r#"{"paragraphId":"00002","done":false,"parentParagraphId":"0004"}"#
+        );
+    }
+}

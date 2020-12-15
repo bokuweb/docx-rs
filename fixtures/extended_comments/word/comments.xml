@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:comments xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+    xmlns:v="urn:schemas-microsoft-com:vml"
+    xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    xmlns:w10="urn:schemas-microsoft-com:office:word"
+    xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+    xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
+    xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
+    xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" mc:Ignorable="w14 wp14">
+    <w:comment w:id="1" w:author="あどみん　てすと" w:date="2020-12-15T15:54:25.705Z" w:initials="">
+        <w:p w14:paraId="00000064">
+            <w:pPr>
+                <w:rPr />
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:rFonts />
+                </w:rPr>
+                <w:t xml:space="preserve">yey</w:t>
+            </w:r>
+        </w:p>
+    </w:comment>
+    <w:comment w:id="2" w:author="あどみん　てすと" w:date="2020-12-15T15:54:32.752Z" w:initials="">
+        <w:p w14:paraId="00000066">
+            <w:pPr>
+                <w:rPr />
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:rFonts />
+                </w:rPr>
+                <w:t xml:space="preserve">yo</w:t>
+            </w:r>
+        </w:p>
+    </w:comment>
+</w:comments>

@@ -263,7 +263,6 @@ impl Docx {
     }
 
     pub fn json(&mut self) -> String {
-        self.update_comments();
         serde_json::to_string_pretty(&self).unwrap()
     }
 
@@ -393,6 +392,7 @@ impl Docx {
                             let extended = comments_extended
                                 .iter()
                                 .find(|ex| ex.paragraph_id == para_id);
+
                             if let Some(comment) = comments.iter().find(|c| c.id() == comment_id) {
                                 let mut comment = comment.clone();
                                 if let Some(extended) = extended {

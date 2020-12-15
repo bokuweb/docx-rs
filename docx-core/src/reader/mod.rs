@@ -105,8 +105,12 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             comments_extended_path
                 .to_str()
                 .expect("should have comments extended."),
-        )?;
-        CommentsExtended::from_xml(&data[..])?
+        );
+        if let Ok(data) = data {
+            CommentsExtended::from_xml(&data[..])?
+        } else {
+            CommentsExtended::default()
+        }
     } else {
         CommentsExtended::default()
     };
@@ -117,8 +121,12 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         let data = read_zip(
             &mut archive,
             comments_path.to_str().expect("should have comments."),
-        )?;
-        Comments::from_xml(&data[..])?
+        );
+        if let Ok(data) = data {
+            Comments::from_xml(&data[..])?
+        } else {
+            Comments::default()
+        }
     } else {
         Comments::default()
     };
@@ -130,10 +138,11 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     let mut docx = Docx::new().document(document);
 
     // store comments to paragraphs.
-    docx.store_comments(comments.inner(), &comments_extended.children);
-
-    docx = docx.comments(comments);
-    docx = docx.comments_extended(comments_extended);
+    if !comments.inner().is_empty() {
+        docx.store_comments(comments.inner(), &comments_extended.children);
+        docx = docx.comments(comments);
+        docx = docx.comments_extended(comments_extended);
+    }
 
     // Read document relationships
     // Read styles

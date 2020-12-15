@@ -22,17 +22,19 @@ impl ElementReader for Comment {
         loop {
             let e = r.next();
             match e {
-                Ok(XmlEvent::StartElement { name, .. }) => {
+                Ok(XmlEvent::StartElement {
+                    name, attributes, ..
+                }) => {
                     let e = XMLElement::from_str(&name.local_name)
                         .expect("should convert to XMLElement");
                     if let XMLElement::Paragraph = e {
-                        let p = Paragraph::read(r, attrs)?;
+                        let p = Paragraph::read(r, &attributes)?;
                         comment = comment.paragraph(p);
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    if e == XMLElement::Comments {
+                    if e == XMLElement::Comment {
                         return Ok(comment);
                     }
                 }

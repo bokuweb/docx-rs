@@ -100,6 +100,11 @@ export class Docx {
     return this;
   }
 
+  addDocVar(name: string, val: string) {
+    this.settings.addDocVar(name, val);
+    return this;
+  }
+
   pageSize(w: number, h: number) {
     this.sectionProperty.pageSize(w, h);
     return this;
@@ -605,6 +610,10 @@ export class Docx {
     if (this.settings._docId) {
       docx = docx.doc_id(this.settings._docId);
     }
+
+    this.settings._docVars.forEach((v) => {
+      docx = docx.add_doc_var(v.name, v.val);
+    });
 
     if (this.sectionProperty._pageMargin) {
       const {

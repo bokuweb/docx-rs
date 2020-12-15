@@ -11,6 +11,7 @@ pub struct Settings {
     default_tab_stop: DefaultTabStop,
     zoom: Zoom,
     doc_id: Option<DocId>,
+    doc_vars: Vec<DocVar>,
 }
 
 impl Settings {
@@ -22,6 +23,11 @@ impl Settings {
         self.doc_id = Some(DocId::new(id.into()));
         self
     }
+
+    pub fn add_doc_var(mut self, name: impl Into<String>, val: impl Into<String>) -> Self {
+        self.doc_vars.push(DocVar::new(name, val));
+        self
+    }
 }
 
 impl Default for Settings {
@@ -30,6 +36,7 @@ impl Default for Settings {
             default_tab_stop: DefaultTabStop::new(709),
             zoom: Zoom::new(100),
             doc_id: None,
+            doc_vars: vec![],
         }
     }
 }
@@ -37,7 +44,8 @@ impl Default for Settings {
 impl BuildXML for Settings {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.declaration(Some(true))
+        let mut b = b
+            .declaration(Some(true))
             .open_settings()
             .add_child(&self.default_tab_stop)
             .add_child(&self.zoom)
@@ -80,9 +88,16 @@ impl BuildXML for Settings {
                 "0",
             )
             .close()
-            .add_optional_child(&self.doc_id)
-            .close()
-            .build()
+            .add_optional_child(&self.doc_id);
+
+        if !self.doc_vars.is_empty() {
+            b = b.open_doc_vars();
+            for v in self.doc_vars.iter() {
+                b = b.add_child(v);
+            }
+            b = b.close();
+        }
+        b.close().build()
     }
 }
 

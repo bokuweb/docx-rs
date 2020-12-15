@@ -199,6 +199,11 @@ impl Docx {
         self
     }
 
+    pub fn add_doc_var(mut self, name: &str, val: &str) -> Self {
+        self.settings = self.settings.add_doc_var(name, val);
+        self
+    }
+
     pub fn page_size(mut self, w: u32, h: u32) -> Self {
         self.document = self.document.page_size(PageSize::new().size(w, h));
         self

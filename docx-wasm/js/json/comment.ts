@@ -9,10 +9,16 @@ export type CommentJSON = {
 };
 
 export type CommentRangeStartJSON = {
-  id: number;
-  comment: CommentJSON;
+  type: "commentRangeStart";
+  data: {
+    id: number;
+    comment: CommentJSON;
+  };
 };
 
 export type CommentRangeEndJSON = {
-  id: number;
+  type: "commentRangeEnd";
+  data: {
+    id: number;
+  };
 };

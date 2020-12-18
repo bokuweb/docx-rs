@@ -134,7 +134,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
                             }
                         }
                     }
-                    return false;
+                    false
                 });
                 if let Some(CommentExtended {
                     parent_paragraph_id: Some(parent_paragraph_id),
@@ -149,7 +149,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
                                 }
                             }
                         }
-                        return false;
+                        false
                     }) {
                         comments[i].parent_comment_id = Some(parent_comment.id);
                     }

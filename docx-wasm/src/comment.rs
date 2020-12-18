@@ -28,7 +28,7 @@ impl Comment {
         self
     }
 
-    pub fn paragraph(mut self, p: Paragraph) -> Comment {
+    pub fn add_paragraph(mut self, p: Paragraph) -> Comment {
         self.0 = self.0.add_paragraph(p.take());
         self
     }

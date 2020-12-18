@@ -1,10 +1,12 @@
-import { ParagraphJSON } from "../";
+import { ParagraphJSON, TableJSON } from "../";
+
+export type CommentChildJSON = ParagraphJSON | TableJSON;
 
 export type CommentJSON = {
   id: number;
   author: string;
   date: string;
-  paragraph: ParagraphJSON;
+  children: CommentChildJSON[];
   parentCommentId: number | null;
 };
 

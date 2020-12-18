@@ -72,12 +72,6 @@ impl Comment {
         self
     }
 
-    // Deprecated.
-    pub fn paragraph(mut self, p: Paragraph) -> Comment {
-        self.children.push(CommentChild::Paragraph(p));
-        self
-    }
-
     pub fn add_paragraph(mut self, p: Paragraph) -> Self {
         self.children.push(CommentChild::Paragraph(p));
         self
@@ -133,7 +127,7 @@ mod tests {
             r#"<w:comment w:id="1" w:author="unnamed" w:date="1970-01-01T00:00:00Z" w:initials="" />"#
         );
     }
-    
+
     #[test]
     fn test_comment_with_default_paragraph() {
         let b = Comment::new(1).add_paragraph(Paragraph::new()).build();

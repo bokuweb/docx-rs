@@ -1,10 +1,11 @@
 import { Paragraph } from "./paragraph";
+import { Table } from "./table";
 
 export class Comment {
   id: number;
   _author: string;
   _date: string;
-  _paragraph: Paragraph;
+  children: (Paragraph | Table)[] = [];
   _parentCommentId: number;
 
   constructor(id: number) {
@@ -21,8 +22,8 @@ export class Comment {
     return this;
   }
 
-  paragraph(p: Paragraph) {
-    this._paragraph = p;
+  addParagraph(p: Paragraph) {
+    this.children.push(p);
     return this;
   }
 

@@ -74,7 +74,11 @@ impl ElementReader for Paragraph {
                             continue;
                         }
                         XMLElement::CommentRangeEnd => {
-                            p = p.add_comment_end(usize::from_str(&attributes[0].value)?);
+                            if let Some(id) = read(&attributes, "id") {
+                                if let Ok(id) = usize::from_str(&id) {
+                                    p = p.add_comment_end(id);
+                                }
+                            }
                             continue;
                         }
                         XMLElement::Indent => {

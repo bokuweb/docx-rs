@@ -38,6 +38,23 @@ impl FromXML for Document {
                             doc = doc.add_bookmark_end(e.id);
                             continue;
                         }
+                        XMLElement::CommentRangeStart => {
+                            if let Some(id) = read(&attributes, "id") {
+                                if let Ok(id) = usize::from_str(&id) {
+                                    let comment = Comment::new(id);
+                                    doc = doc.add_comment_start(comment);
+                                }
+                            }
+                            continue;
+                        }
+                        XMLElement::CommentRangeEnd => {
+                            if let Some(id) = read(&attributes, "id") {
+                                if let Ok(id) = usize::from_str(&id) {
+                                    doc = doc.add_comment_end(id);
+                                }
+                            }
+                            continue;
+                        }
                         XMLElement::SectionProperty => {
                             let e = SectionProperty::read(&mut parser, &attributes)?;
                             doc = doc.default_section_property(e);

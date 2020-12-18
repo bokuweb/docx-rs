@@ -19,6 +19,8 @@ pub enum DocumentChild {
     Table(Table),
     BookmarkStart(BookmarkStart),
     BookmarkEnd(BookmarkEnd),
+    CommentStart(Box<CommentRangeStart>),
+    CommentEnd(CommentRangeEnd),
 }
 
 impl Serialize for DocumentChild {
@@ -49,6 +51,18 @@ impl Serialize for DocumentChild {
                 let mut t = serializer.serialize_struct("BookmarkEnd", 2)?;
                 t.serialize_field("type", "bookmarkEnd")?;
                 t.serialize_field("data", c)?;
+                t.end()
+            }
+            DocumentChild::CommentStart(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeStart", 2)?;
+                t.serialize_field("type", "commentRangeStart")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            DocumentChild::CommentEnd(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeEnd", 2)?;
+                t.serialize_field("type", "commentRangeEnd")?;
+                t.serialize_field("data", r)?;
                 t.end()
             }
         }
@@ -98,6 +112,19 @@ impl Document {
         self
     }
 
+    pub fn add_comment_start(mut self, comment: Comment) -> Self {
+        self.children.push(DocumentChild::CommentStart(Box::new(
+            CommentRangeStart::new(comment),
+        )));
+        self
+    }
+
+    pub fn add_comment_end(mut self, id: usize) -> Self {
+        self.children
+            .push(DocumentChild::CommentEnd(CommentRangeEnd::new(id)));
+        self
+    }
+
     pub fn page_size(mut self, size: PageSize) -> Self {
         self.section_property = self.section_property.page_size(size);
         self
@@ -114,21 +141,30 @@ impl Document {
     }
 }
 
+impl BuildXML for DocumentChild {
+    fn build(&self) -> Vec<u8> {
+        match self {
+            DocumentChild::Paragraph(v) => v.build(),
+            DocumentChild::Table(v) => v.build(),
+            DocumentChild::BookmarkStart(v) => v.build(),
+            DocumentChild::BookmarkEnd(v) => v.build(),
+            DocumentChild::CommentStart(v) => v.build(),
+            DocumentChild::CommentEnd(v) => v.build(),
+        }
+    }
+}
+
 impl BuildXML for Document {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new()
+        XMLBuilder::new()
             .declaration(Some(true))
             .open_document()
-            .open_body();
-        for c in &self.children {
-            match c {
-                DocumentChild::Paragraph(p) => b = b.add_child(p),
-                DocumentChild::Table(t) => b = b.add_child(t),
-                DocumentChild::BookmarkStart(s) => b = b.add_child(s),
-                DocumentChild::BookmarkEnd(e) => b = b.add_child(e),
-            }
-        }
-        b.add_child(&self.section_property).close().close().build()
+            .open_body()
+            .add_children(&self.children)
+            .add_child(&self.section_property)
+            .close()
+            .close()
+            .build()
     }
 }
 

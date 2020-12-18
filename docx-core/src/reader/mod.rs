@@ -126,19 +126,31 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             let mut comments = Comments::from_xml(&data[..])?.into_inner();
             for i in 0..comments.len() {
                 let c = &comments[i];
-                let extended = comments_extended
-                    .children
-                    .iter()
-                    .find(|ex| ex.paragraph_id == c.paragraph.id);
+                let extended = comments_extended.children.iter().find(|ex| {
+                    for child in &c.children {
+                        if let CommentChild::Paragraph(p) = child {
+                            if ex.paragraph_id == p.id {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                });
                 if let Some(CommentExtended {
                     parent_paragraph_id: Some(parent_paragraph_id),
                     ..
                 }) = extended
                 {
-                    if let Some(parent_comment) = comments
-                        .iter()
-                        .find(|c| &c.paragraph.id == parent_paragraph_id)
-                    {
+                    if let Some(parent_comment) = comments.iter().find(|c| {
+                        for child in &c.children {
+                            if let CommentChild::Paragraph(p) = child {
+                                if &p.id == parent_paragraph_id {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }) {
                         comments[i].parent_comment_id = Some(parent_comment.id);
                     }
                 }

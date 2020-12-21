@@ -10,7 +10,7 @@ pub fn main() -> Result<(), DocxError> {
                     Comment::new(1)
                         .author("bokuweb")
                         .date("2019-01-01T00:00:00Z")
-                        .paragraph(Paragraph::new().add_run(Run::new().add_text("Hello"))),
+                        .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello"))),
                 )
                 .add_comment_end(1),
         )

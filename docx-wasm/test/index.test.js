@@ -28,6 +28,14 @@ describe("reader", () => {
     const json = w.readDocx(buf);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read multi paragraph comments docx", () => {
+    const buf = readFileSync(
+      "../fixtures/multi_paragraph_comment/multi_paragraph_comment.docx"
+    );
+    const json = w.readDocx(buf);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {

@@ -1,6 +1,7 @@
+use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
-use crate::documents::{BuildXML, Paragraph};
+use crate::documents::*;
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
@@ -9,8 +10,36 @@ pub struct Comment {
     pub id: usize,
     pub author: String,
     pub date: String,
-    pub paragraph: Paragraph,
+    pub children: Vec<CommentChild>,
     pub parent_comment_id: Option<usize>,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum CommentChild {
+    Paragraph(Paragraph),
+    Table(Table),
+}
+
+impl Serialize for CommentChild {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            CommentChild::Paragraph(ref p) => {
+                let mut t = serializer.serialize_struct("Paragraph", 2)?;
+                t.serialize_field("type", "paragraph")?;
+                t.serialize_field("data", p)?;
+                t.end()
+            }
+            CommentChild::Table(ref c) => {
+                let mut t = serializer.serialize_struct("Table", 2)?;
+                t.serialize_field("type", "table")?;
+                t.serialize_field("data", c)?;
+                t.end()
+            }
+        }
+    }
 }
 
 impl Default for Comment {
@@ -19,7 +48,7 @@ impl Default for Comment {
             id: 1,
             author: "unnamed".to_owned(),
             date: "1970-01-01T00:00:00Z".to_owned(),
-            paragraph: Paragraph::new(),
+            children: vec![],
             parent_comment_id: None,
         }
     }
@@ -43,8 +72,13 @@ impl Comment {
         self
     }
 
-    pub fn paragraph(mut self, p: Paragraph) -> Comment {
-        self.paragraph = p;
+    pub fn add_paragraph(mut self, p: Paragraph) -> Self {
+        self.children.push(CommentChild::Paragraph(p));
+        self
+    }
+
+    pub fn add_table(mut self, t: Table) -> Self {
+        self.children.push(CommentChild::Table(t));
         self
     }
 
@@ -58,11 +92,20 @@ impl Comment {
     }
 }
 
+impl BuildXML for CommentChild {
+    fn build(&self) -> Vec<u8> {
+        match self {
+            CommentChild::Paragraph(v) => v.build(),
+            CommentChild::Table(v) => v.build(),
+        }
+    }
+}
+
 impl BuildXML for Comment {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_comment(&format!("{}", self.id), &self.author, &self.date, "")
-            .add_child(&self.paragraph)
+            .add_children(&self.children)
             .close()
             .build()
     }
@@ -77,8 +120,17 @@ mod tests {
     use std::str;
 
     #[test]
-    fn test_ins_default() {
+    fn test_comment_default() {
         let b = Comment::new(1).build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:comment w:id="1" w:author="unnamed" w:date="1970-01-01T00:00:00Z" w:initials="" />"#
+        );
+    }
+
+    #[test]
+    fn test_comment_with_default_paragraph() {
+        let b = Comment::new(1).add_paragraph(Paragraph::new()).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:comment w:id="1" w:author="unnamed" w:date="1970-01-01T00:00:00Z" w:initials=""><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:comment>"#

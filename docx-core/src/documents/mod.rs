@@ -266,6 +266,12 @@ impl Docx {
         serde_json::to_string_pretty(&self).unwrap()
     }
 
+    // Internal: for docx-wasm
+    pub fn json_with_update_comments(&mut self) -> String {
+        self.update_comments();
+        serde_json::to_string_pretty(&self).unwrap()
+    }
+
     // Traverse and clone comments from document and add to comments node.
     fn update_comments(&mut self) {
         let mut comments: Vec<Comment> = vec![];

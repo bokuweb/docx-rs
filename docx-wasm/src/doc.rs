@@ -91,7 +91,7 @@ impl Docx {
         Ok(cur.into_inner())
     }
 
-    pub fn json(&self) -> String {
-        self.0.json()
+    pub fn json_with_update_comments(&mut self) -> String {
+        self.0.json_with_update_comments()
     }
 }

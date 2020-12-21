@@ -28,6 +28,7 @@ export type ParagraphPropertyJSON = {
 export type ParagraphJSON = {
   type: "paragraph";
   data: {
+    id: string;
     property: ParagraphPropertyJSON;
     children: ParagraphChildJSON[];
   };

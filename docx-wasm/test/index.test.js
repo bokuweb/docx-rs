@@ -41,7 +41,7 @@ describe("reader", () => {
 describe("writer", () => {
   test("should write hello", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!"));
-    const { buffer } = new w.Docx().addParagraph(p).build();
+    const buffer = new w.Docx().addParagraph(p).build();
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
@@ -60,7 +60,7 @@ describe("writer", () => {
         new w.Level(0, 3, "decimal", "%1", "left")
       )
     );
-    const { buffer } = new w.Docx()
+    const buffer = new w.Docx()
       .addParagraph(p)
       .addAbstractNumbering(new w.AbstractNumbering(0))
       .addNumbering(num)
@@ -76,7 +76,7 @@ describe("writer", () => {
 
   test("should write page size", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!"));
-    const { buffer } = new w.Docx().addParagraph(p).pageSize(400, 800).build();
+    const buffer = new w.Docx().addParagraph(p).pageSize(400, 800).build();
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
@@ -87,7 +87,7 @@ describe("writer", () => {
 
   test("should write page margin", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!"));
-    const { buffer } = new w.Docx()
+    const buffer = new w.Docx()
       .addParagraph(p)
       .pageMargin({ top: 1000, left: 2000 })
       .build();
@@ -105,7 +105,7 @@ describe("writer", () => {
       .eastAsia("Arial")
       .ascii("Arial")
       .hiAnsi("Arial");
-    const { buffer } = new w.Docx()
+    const buffer = new w.Docx()
       .addParagraph(p)
       .defaultSize(40)
       .defaultFonts(fonts)
@@ -121,7 +121,7 @@ describe("writer", () => {
 
   test("should write doc vars", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!!!"));
-    const { buffer } = new w.Docx()
+    const buffer = new w.Docx()
       .addParagraph(p)
       .addDocVar("foo", "bar")
       .build();

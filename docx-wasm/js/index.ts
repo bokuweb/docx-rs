@@ -563,7 +563,7 @@ export class Docx {
     return level;
   }
 
-  build(opts?: { json?: boolean }): { buffer: Uint8Array; json?: string } {
+  createDocx(): wasm.Docx {
     let docx = wasm.createDocx();
 
     this.children.forEach((child) => {
@@ -665,10 +665,21 @@ export class Docx {
       }
     }
 
-    const json = opts?.json ? docx.json() : undefined;
-    const buffer = docx.build(this.hasNumberings);
+    return docx;
+  }
+
+  json() {
+    const docx = this.createDocx();
+    const json = docx.json();
     docx.free();
-    return { buffer, json };
+    return json;
+  }
+
+  build() {
+    const docx = this.createDocx();
+    const buf = docx.build(this.hasNumberings);
+    docx.free();
+    return buf;
   }
 }
 

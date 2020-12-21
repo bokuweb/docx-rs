@@ -672,7 +672,7 @@ export class Docx {
     const docx = this.createDocx();
     const json = docx.json();
     docx.free();
-    return json;
+    return JSON.parse(json) as DocxJSON;
   }
 
   build() {

@@ -50,12 +50,12 @@ import { saveAs } from "file-saver";
 
 // // Note that a dynamic `import` statement here is required due to webpack/webpack#6615,
 import("docx-wasm").then(w => {
-  const buf = new w.Docx()
+  const { buffer } = new w.Docx()
     .addParagraph(
       new w.Paragraph().addRun(new w.Run().addText("Hello world!!"))
     )
     .build();
-  saveAs(new Blob([buf]), "hello.docx");
+  saveAs(new Blob([buffer]), "hello.docx");
 });
 ```
 
@@ -65,11 +65,11 @@ import("docx-wasm").then(w => {
 const w = require("docx-wasm");
 const { writeFileSync } = require("fs");
 
-const buf = new w.Docx()
+const { buffer } = new w.Docx()
   .addParagraph(new w.Paragraph().addRun(new w.Run().addText("Hello world!!")))
   .build();
 
-writeFileSync("hello.docx", buf);
+writeFileSync("hello.docx", buffer);
 ```
 
 ### More examples

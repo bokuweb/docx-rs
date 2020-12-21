@@ -4,28 +4,28 @@ const Zip = require("adm-zip");
 
 describe("reader", () => {
   test("should read lvlOverride docx", () => {
-    const buf = readFileSync("../fixtures/lvl_override/override.docx");
-    const json = w.readDocx(buf);
+    const buffer = readFileSync("../fixtures/lvl_override/override.docx");
+    const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
 
   test("should read gridAfter docx", () => {
-    const buf = readFileSync("../fixtures/grid_after/grid_after.docx");
-    const json = w.readDocx(buf);
+    const buffer = readFileSync("../fixtures/grid_after/grid_after.docx");
+    const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
 
   test("should read table style docx", () => {
-    const buf = readFileSync("../fixtures/table_style/table_style.docx");
-    const json = w.readDocx(buf);
+    const buffer = readFileSync("../fixtures/table_style/table_style.docx");
+    const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
 
   test("should read extended comments docx", () => {
-    const buf = readFileSync(
+    const buffer = readFileSync(
       "../fixtures/extended_comments/extended_comments.docx"
     );
-    const json = w.readDocx(buf);
+    const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
 
@@ -41,8 +41,8 @@ describe("reader", () => {
 describe("writer", () => {
   test("should write hello", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!"));
-    const buf = new w.Docx().addParagraph(p).build();
-    const z = new Zip(Buffer.from(buf));
+    const buffer = new w.Docx().addParagraph(p).build();
+    const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
         expect(z.readAsText(e)).toMatchSnapshot();
@@ -60,13 +60,13 @@ describe("writer", () => {
         new w.Level(0, 3, "decimal", "%1", "left")
       )
     );
-    const buf = new w.Docx()
+    const buffer = new w.Docx()
       .addParagraph(p)
       .addAbstractNumbering(new w.AbstractNumbering(0))
       .addNumbering(num)
       .build();
 
-    const z = new Zip(Buffer.from(buf));
+    const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
         expect(z.readAsText(e)).toMatchSnapshot();
@@ -76,8 +76,8 @@ describe("writer", () => {
 
   test("should write page size", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!"));
-    const buf = new w.Docx().addParagraph(p).pageSize(400, 800).build();
-    const z = new Zip(Buffer.from(buf));
+    const buffer = new w.Docx().addParagraph(p).pageSize(400, 800).build();
+    const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
         expect(z.readAsText(e)).toMatchSnapshot();
@@ -87,11 +87,11 @@ describe("writer", () => {
 
   test("should write page margin", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!"));
-    const buf = new w.Docx()
+    const buffer = new w.Docx()
       .addParagraph(p)
       .pageMargin({ top: 1000, left: 2000 })
       .build();
-    const z = new Zip(Buffer.from(buf));
+    const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
         expect(z.readAsText(e)).toMatchSnapshot();
@@ -105,13 +105,13 @@ describe("writer", () => {
       .eastAsia("Arial")
       .ascii("Arial")
       .hiAnsi("Arial");
-    const buf = new w.Docx()
+    const buffer = new w.Docx()
       .addParagraph(p)
       .defaultSize(40)
       .defaultFonts(fonts)
       .build();
-    writeFileSync("../output/default_font.docx", buf);
-    const z = new Zip(Buffer.from(buf));
+    writeFileSync("../output/default_font.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
         expect(z.readAsText(e)).toMatchSnapshot();
@@ -121,9 +121,12 @@ describe("writer", () => {
 
   test("should write doc vars", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!!!"));
-    const buf = new w.Docx().addParagraph(p).addDocVar("foo", "bar").build();
-    writeFileSync("../output/doc_vars.docx", buf);
-    const z = new Zip(Buffer.from(buf));
+    const buffer = new w.Docx()
+      .addParagraph(p)
+      .addDocVar("foo", "bar")
+      .build();
+    writeFileSync("../output/doc_vars.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
         expect(z.readAsText(e)).toMatchSnapshot();

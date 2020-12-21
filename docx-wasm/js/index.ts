@@ -563,7 +563,7 @@ export class Docx {
     return level;
   }
 
-  build() {
+  createDocx(): wasm.Docx {
     let docx = wasm.createDocx();
 
     this.children.forEach((child) => {
@@ -665,6 +665,18 @@ export class Docx {
       }
     }
 
+    return docx;
+  }
+
+  json() {
+    const docx = this.createDocx();
+    const json = docx.json();
+    docx.free();
+    return json;
+  }
+
+  build() {
+    const docx = this.createDocx();
     const buf = docx.build(this.hasNumberings);
     docx.free();
     return buf;

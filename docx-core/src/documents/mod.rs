@@ -262,7 +262,7 @@ impl Docx {
         }
     }
 
-    pub fn json(&mut self) -> String {
+    pub fn json(&self) -> String {
         serde_json::to_string_pretty(&self).unwrap()
     }
 

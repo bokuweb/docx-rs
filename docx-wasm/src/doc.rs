@@ -90,4 +90,8 @@ impl Docx {
         }
         Ok(cur.into_inner())
     }
+
+    pub fn json(&self) -> String {
+        self.0.json()
+    }
 }

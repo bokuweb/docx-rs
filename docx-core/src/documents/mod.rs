@@ -240,6 +240,8 @@ impl Docx {
     }
 
     pub fn build(&mut self) -> XMLDocx {
+        self.reset();
+
         self.update_comments();
         let (image_ids, images) = self.create_images();
 
@@ -263,7 +265,21 @@ impl Docx {
     }
 
     pub fn json(&self) -> String {
+        self.reset();
+
         serde_json::to_string_pretty(&self).unwrap()
+    }
+
+    // Internal: for docx-wasm
+    pub fn json_with_update_comments(&mut self) -> String {
+        self.reset();
+
+        self.update_comments();
+        serde_json::to_string_pretty(&self).unwrap()
+    }
+
+    fn reset(&self) {
+        crate::reset_para_id();
     }
 
     // Traverse and clone comments from document and add to comments node.

@@ -670,9 +670,9 @@ export class Docx {
 
   json() {
     const docx = this.createDocx();
-    const json = docx.json();
+    const json = docx.json_with_update_comments();
     docx.free();
-    return json;
+    return JSON.parse(json) as DocxJSON;
   }
 
   build() {

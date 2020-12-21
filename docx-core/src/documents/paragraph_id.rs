@@ -12,7 +12,20 @@ pub fn generate_para_id() -> String {
     format!("{:08x}", id)
 }
 
+#[cfg(not(test))]
+pub fn reset_para_id() {
+    use std::sync::atomic::Ordering;
+
+    PARA_ID.load(Ordering::Relaxed);
+    PARA_ID.store(1, Ordering::Relaxed);
+}
+
 #[cfg(test)]
 pub fn generate_para_id() -> String {
     "12345678".to_owned()
+}
+
+#[cfg(test)]
+pub fn reset_para_id() {
+    // NOP
 }

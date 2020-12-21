@@ -29,7 +29,7 @@ impl ElementReader for Comment {
                         .expect("should convert to XMLElement");
                     if let XMLElement::Paragraph = e {
                         let p = Paragraph::read(r, &attributes)?;
-                        comment = comment.paragraph(p);
+                        comment = comment.add_paragraph(p);
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {

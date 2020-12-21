@@ -231,9 +231,13 @@ export class Docx {
 
   buildComment(c: Comment) {
     let comment = wasm.createComment(c.id);
-    if (c._paragraph) {
-      comment = comment.paragraph(this.buildParagraph(c._paragraph));
-    }
+    c.children.forEach((child) => {
+      if (child instanceof Paragraph) {
+        comment = comment.add_paragraph(this.buildParagraph(child));
+      } else if (child instanceof Table) {
+        // TODO:
+      }
+    });
     if (c._author) {
       comment = comment.author(c._author);
     }

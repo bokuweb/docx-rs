@@ -10,7 +10,8 @@ pub fn main() -> Result<(), DocxError> {
                     Comment::new(1)
                         .author("bokuweb")
                         .date("2019-01-01T00:00:00Z")
-                        .paragraph(Paragraph::new().add_run(Run::new().add_text("Hello"))),
+                        .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
+                        .add_paragraph(Paragraph::new().add_run(Run::new().add_text("World"))),
                 )
                 .add_comment_end(1)
                 .add_comment_start(
@@ -18,7 +19,7 @@ pub fn main() -> Result<(), DocxError> {
                         .author("bokuweb")
                         .date("2019-01-02T00:00:00Z")
                         .parent_comment_id(1)
-                        .paragraph(Paragraph::new().add_run(Run::new().add_text("World"))),
+                        .add_paragraph(Paragraph::new().add_run(Run::new().add_text("World"))),
                 )
                 .add_comment_end(2)
                 .add_comment_start(
@@ -26,7 +27,8 @@ pub fn main() -> Result<(), DocxError> {
                         .author("bokuweb")
                         .date("2019-01-02T00:00:00Z")
                         .parent_comment_id(1)
-                        .paragraph(Paragraph::new().add_run(Run::new().add_text("!!!!!"))),
+                        .add_paragraph(Paragraph::new().add_run(Run::new().add_text("!!!!!")))
+                        .add_paragraph(Paragraph::new().add_run(Run::new().add_text("!!!!!"))),
                 )
                 .add_comment_end(3),
         )

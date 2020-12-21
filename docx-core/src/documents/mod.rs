@@ -278,8 +278,14 @@ impl Docx {
                     for child in &paragraph.children {
                         if let ParagraphChild::CommentStart(c) = child {
                             let comment = c.get_comment();
-                            let para_id = comment.paragraph.id.clone();
-                            comment_map.insert(comment.id(), para_id.clone());
+                            let comment_id = comment.id();
+                            for child in comment.children {
+                                if let CommentChild::Paragraph(child) = child {
+                                    let para_id = child.id.clone();
+                                    comment_map.insert(comment_id, para_id.clone());
+                                }
+                                // TODO: Support table
+                            }
                         }
                     }
                 }
@@ -292,8 +298,15 @@ impl Docx {
                                         for child in &paragraph.children {
                                             if let ParagraphChild::CommentStart(c) = child {
                                                 let comment = c.get_comment();
-                                                let para_id = comment.paragraph.id.clone();
-                                                comment_map.insert(comment.id(), para_id.clone());
+                                                let comment_id = comment.id();
+                                                for child in comment.children {
+                                                    if let CommentChild::Paragraph(child) = child {
+                                                        let para_id = child.id.clone();
+                                                        comment_map
+                                                            .insert(comment_id, para_id.clone());
+                                                    }
+                                                    // TODO: Support table
+                                                }
                                             }
                                         }
                                     }
@@ -312,16 +325,22 @@ impl Docx {
                     for child in &paragraph.children {
                         if let ParagraphChild::CommentStart(c) = child {
                             let comment = c.get_comment();
-                            let para_id = comment.paragraph.id.clone();
-                            comments.push(c.get_comment());
-                            let comment_extended = CommentExtended::new(para_id);
-                            if let Some(parent_comment_id) = comment.parent_comment_id {
-                                let parent_para_id =
-                                    comment_map.get(&parent_comment_id).unwrap().clone();
-                                comments_extended
-                                    .push(comment_extended.parent_paragraph_id(parent_para_id));
-                            } else {
-                                comments_extended.push(comment_extended);
+                            for child in comment.children {
+                                if let CommentChild::Paragraph(child) = child {
+                                    let para_id = child.id.clone();
+                                    comments.push(c.get_comment());
+                                    let comment_extended = CommentExtended::new(para_id);
+                                    if let Some(parent_comment_id) = comment.parent_comment_id {
+                                        let parent_para_id =
+                                            comment_map.get(&parent_comment_id).unwrap().clone();
+                                        comments_extended.push(
+                                            comment_extended.parent_paragraph_id(parent_para_id),
+                                        );
+                                    } else {
+                                        comments_extended.push(comment_extended);
+                                    }
+                                }
+                                // TODO: Support table
                             }
                         }
                     }
@@ -335,23 +354,30 @@ impl Docx {
                                         for child in &paragraph.children {
                                             if let ParagraphChild::CommentStart(c) = child {
                                                 let comment = c.get_comment();
-                                                let para_id = comment.paragraph.id.clone();
-                                                comments.push(c.get_comment());
-                                                let comment_extended =
-                                                    CommentExtended::new(para_id);
-                                                if let Some(parent_comment_id) =
-                                                    comment.parent_comment_id
-                                                {
-                                                    let parent_para_id = comment_map
-                                                        .get(&parent_comment_id)
-                                                        .unwrap()
-                                                        .clone();
-                                                    comments_extended.push(
-                                                        comment_extended
-                                                            .parent_paragraph_id(parent_para_id),
-                                                    );
-                                                } else {
-                                                    comments_extended.push(comment_extended);
+                                                for child in comment.children {
+                                                    if let CommentChild::Paragraph(child) = child {
+                                                        let para_id = child.id.clone();
+                                                        comments.push(c.get_comment());
+                                                        let comment_extended =
+                                                            CommentExtended::new(para_id);
+                                                        if let Some(parent_comment_id) =
+                                                            comment.parent_comment_id
+                                                        {
+                                                            let parent_para_id = comment_map
+                                                                .get(&parent_comment_id)
+                                                                .unwrap()
+                                                                .clone();
+                                                            comments_extended.push(
+                                                                comment_extended
+                                                                    .parent_paragraph_id(
+                                                                        parent_para_id,
+                                                                    ),
+                                                            );
+                                                        } else {
+                                                            comments_extended
+                                                                .push(comment_extended);
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }

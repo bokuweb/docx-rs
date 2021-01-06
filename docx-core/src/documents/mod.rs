@@ -431,6 +431,19 @@ impl Docx {
                                 c.as_mut().comment(comment);
                             }
                         }
+                        if let ParagraphChild::Insert(ref mut insert) = child {
+                            for child in &mut insert.children {
+                                if let InsertChild::CommentStart(ref mut c) = child {
+                                    let comment_id = c.get_id();
+                                    if let Some(comment) =
+                                        comments.iter().find(|c| c.id() == comment_id)
+                                    {
+                                        let comment = comment.clone();
+                                        c.as_mut().comment(comment);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 DocumentChild::Table(table) => {
@@ -447,6 +460,22 @@ impl Docx {
                                                 {
                                                     let comment = comment.clone();
                                                     c.as_mut().comment(comment);
+                                                }
+                                            }
+                                            if let ParagraphChild::Insert(ref mut insert) = child {
+                                                for child in &mut insert.children {
+                                                    if let InsertChild::CommentStart(ref mut c) =
+                                                        child
+                                                    {
+                                                        let comment_id = c.get_id();
+                                                        if let Some(comment) = comments
+                                                            .iter()
+                                                            .find(|c| c.id() == comment_id)
+                                                        {
+                                                            let comment = comment.clone();
+                                                            c.as_mut().comment(comment);
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }

@@ -10,6 +10,8 @@ use crate::xml_builder::*;
 pub enum InsertChild {
     Run(Box<Run>),
     Delete(Delete),
+    CommentStart(Box<CommentRangeStart>),
+    CommentEnd(CommentRangeEnd),
 }
 
 impl BuildXML for InsertChild {
@@ -17,6 +19,8 @@ impl BuildXML for InsertChild {
         match self {
             InsertChild::Run(v) => v.build(),
             InsertChild::Delete(v) => v.build(),
+            InsertChild::CommentStart(v) => v.build(),
+            InsertChild::CommentEnd(v) => v.build(),
         }
     }
 }
@@ -36,6 +40,18 @@ impl Serialize for InsertChild {
             InsertChild::Delete(ref r) => {
                 let mut t = serializer.serialize_struct("Delete", 2)?;
                 t.serialize_field("type", "delete")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            InsertChild::CommentStart(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeStart", 2)?;
+                t.serialize_field("type", "commentRangeStart")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            InsertChild::CommentEnd(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeEnd", 2)?;
+                t.serialize_field("type", "commentRangeEnd")?;
                 t.serialize_field("data", r)?;
                 t.end()
             }
@@ -93,6 +109,19 @@ impl Insert {
 
     pub fn add_child(mut self, c: InsertChild) -> Insert {
         self.children.push(c);
+        self
+    }
+
+    pub fn add_comment_start(mut self, comment: Comment) -> Self {
+        self.children.push(InsertChild::CommentStart(Box::new(
+            CommentRangeStart::new(comment),
+        )));
+        self
+    }
+
+    pub fn add_comment_end(mut self, id: usize) -> Self {
+        self.children
+            .push(InsertChild::CommentEnd(CommentRangeEnd::new(id)));
         self
     }
 

@@ -37,7 +37,12 @@ export type ParagraphJSON = {
 export type InsertJSON = {
   type: "insert";
   data: {
-    children: (DeleteJSON | RunJSON)[];
+    children: (
+      | DeleteJSON
+      | RunJSON
+      | CommentRangeStartJSON
+      | CommentRangeEndJSON
+    )[];
     author: string;
     data: string;
   };

@@ -11,18 +11,33 @@ impl ElementReader for Insert {
         r: &mut EventReader<R>,
         attrs: &[OwnedAttribute],
     ) -> Result<Self, ReaderError> {
-        let mut children: Vec<InsertChild> = vec![];
+        let mut ins = Insert::new_with_empty();
         loop {
             let e = r.next();
             match e {
-                Ok(XmlEvent::StartElement { name, .. }) => {
+                Ok(XmlEvent::StartElement {
+                    name, attributes, ..
+                }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
-                        XMLElement::Run => {
-                            children.push(InsertChild::Run(Box::new(Run::read(r, attrs)?)))
+                        XMLElement::Run => ins = ins.add_run(Run::read(r, attrs)?),
+                        XMLElement::Delete => ins = ins.add_delete(Delete::read(r, attrs)?),
+                        XMLElement::CommentRangeStart => {
+                            if let Some(id) = read(&attributes, "id") {
+                                if let Ok(id) = usize::from_str(&id) {
+                                    let comment = Comment::new(id);
+                                    ins = ins.add_comment_start(comment);
+                                }
+                            }
+                            continue;
                         }
-                        XMLElement::Delete => {
-                            children.push(InsertChild::Delete(Delete::read(r, attrs)?))
+                        XMLElement::CommentRangeEnd => {
+                            if let Some(id) = read(&attributes, "id") {
+                                if let Ok(id) = usize::from_str(&id) {
+                                    ins = ins.add_comment_end(id);
+                                }
+                            }
+                            continue;
                         }
                         _ => {}
                     }
@@ -30,7 +45,6 @@ impl ElementReader for Insert {
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     if e == XMLElement::Insert {
-                        let mut ins = Insert::new_with_empty();
                         for attr in attrs {
                             let local_name = &attr.name.local_name;
                             if local_name == "author" {
@@ -38,9 +52,6 @@ impl ElementReader for Insert {
                             } else if local_name == "date" {
                                 ins = ins.date(&attr.value);
                             }
-                        }
-                        for c in children.into_iter() {
-                            ins = ins.add_child(c);
                         }
                         return Ok(ins);
                     }

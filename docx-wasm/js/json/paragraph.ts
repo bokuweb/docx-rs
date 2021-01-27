@@ -1,4 +1,4 @@
-import { RunJSON, RunChildJSON, RunPropertyJSON } from "./run";
+import { RunJSON, RunPropertyJSON } from "./run";
 import { IndentJSON } from "./indent";
 import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
 
@@ -51,14 +51,16 @@ export type InsertJSON = {
 export type DeleteJSON = {
   type: "delete";
   data: {
-    runs: {
-      runProperty: RunPropertyJSON;
-      children: RunChildJSON[];
-    }[];
+    children: DeleteChildJSON[];
     author: string;
     data: string;
   };
 };
+
+export type DeleteChildJSON =
+  | RunJSON
+  | CommentRangeStartJSON
+  | CommentRangeEndJSON;
 
 export type BookmarkStartJSON = {
   type: "bookmarkStart";

@@ -1,4 +1,5 @@
 import { DrawingJSON } from "./drawing";
+import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
 
 export type RunPropertyJSON = {
   sz: number | null;
@@ -19,7 +20,9 @@ export type RunChildJSON =
   | DeleteTextJSON
   | TabJSON
   | BreakJSON
-  | DrawingJSON;
+  | DrawingJSON
+  | CommentRangeStartJSON
+  | CommentRangeEndJSON;
 
 export type TextJSON = {
   type: "text";

@@ -38,6 +38,13 @@ impl BuildXML for CommentRangeStart {
     }
 }
 
+impl BuildXML for Box<CommentRangeStart> {
+    fn build(&self) -> Vec<u8> {
+        let b = XMLBuilder::new();
+        b.comment_range_start(&format!("{}", self.id)).build()
+    }
+}
+
 #[cfg(test)]
 mod tests {
 

@@ -330,7 +330,8 @@ mod tests {
             Paragraph {
                 id: "12345678".to_owned(),
                 children: vec![ParagraphChild::Delete(
-                    Delete::new(Run::new().add_delete_text("Hello "))
+                    Delete::new()
+                        .add_run(Run::new().add_delete_text("Hello "))
                         .author("unknown")
                         .date("2019-11-15T14:19:04Z")
                 )],

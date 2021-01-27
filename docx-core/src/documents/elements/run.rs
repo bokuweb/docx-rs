@@ -30,6 +30,8 @@ pub enum RunChild {
     Tab(Tab),
     Break(Break),
     Drawing(Box<Drawing>),
+    CommentStart(Box<CommentRangeStart>),
+    CommentEnd(CommentRangeEnd),
 }
 
 impl Serialize for RunChild {
@@ -65,6 +67,18 @@ impl Serialize for RunChild {
                 let mut t = serializer.serialize_struct("Drawing", 2)?;
                 t.serialize_field("type", "drawing")?;
                 t.serialize_field("data", s)?;
+                t.end()
+            }
+            RunChild::CommentStart(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeStart", 2)?;
+                t.serialize_field("type", "commentRangeStart")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            RunChild::CommentEnd(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeEnd", 2)?;
+                t.serialize_field("type", "commentRangeEnd")?;
+                t.serialize_field("data", r)?;
                 t.end()
             }
         }
@@ -180,6 +194,8 @@ impl BuildXML for Run {
                 RunChild::Tab(t) => b = b.add_child(t),
                 RunChild::Break(t) => b = b.add_child(t),
                 RunChild::Drawing(t) => b = b.add_child(t),
+                RunChild::CommentStart(c) => b = b.add_child(c),
+                RunChild::CommentEnd(c) => b = b.add_child(c),
             }
         }
         b.close().build()

@@ -7,7 +7,7 @@ pub struct Delete(docx_rs::Delete);
 
 #[wasm_bindgen(js_name = createDelete)]
 pub fn create_delete(run: Run) -> Delete {
-    Delete(docx_rs::Delete::new(run.take()))
+    Delete(docx_rs::Delete::new().add_run(run.take()))
 }
 
 impl Delete {

@@ -11,7 +11,7 @@ pub fn main() -> Result<(), DocxError> {
                         .author("bokuweb")
                         .date("2019-01-01T00:00:00Z"),
                 )
-                .add_delete(Delete::new(Run::new().add_delete_text("World"))),
+                .add_delete(Delete::new().add_run(Run::new().add_delete_text("World"))),
         )
         .build()
         .pack(file)?;

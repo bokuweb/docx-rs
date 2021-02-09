@@ -16,6 +16,7 @@ import { Numbering } from "./numbering";
 import { BookmarkStart } from "./bookmark-start";
 import { BookmarkEnd } from "./bookmark-end";
 import { Settings } from "./settings";
+import { DocProps } from "./doc-props";
 import { Styles } from "./styles";
 import { SectionProperty, PageMargin } from "./section-property";
 import { DocxJSON } from "./json";
@@ -56,6 +57,7 @@ export class Docx {
   abstractNumberings: AbstractNumbering[] = [];
   numberings: Numbering[] = [];
   settings: Settings = new Settings();
+  docProps: DocProps = new DocProps();
   sectionProperty: SectionProperty = new SectionProperty();
   styles = new Styles();
 
@@ -97,6 +99,16 @@ export class Docx {
 
   docId(id: string) {
     this.settings.docId(id);
+    return this;
+  }
+
+  createdAt(date: string) {
+    this.docProps.createdAt(date);
+    return this;
+  }
+
+  updatedAt(date: string) {
+    this.docProps.updatedAt(date);
     return this;
   }
 
@@ -663,6 +675,14 @@ export class Docx {
           this.styles.docDefaults.runProperty.spacing
         );
       }
+    }
+
+    if (this.docProps._createdAt) {
+      docx = docx.created_at(this.docProps._createdAt);
+    }
+
+    if (this.docProps._updatedAt) {
+      docx = docx.updated_at(this.docProps._updatedAt);
     }
 
     return docx;

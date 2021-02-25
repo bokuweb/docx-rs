@@ -34,6 +34,13 @@ impl TableProperty {
         Default::default()
     }
 
+    pub fn without_borders() -> TableProperty {
+        TableProperty {
+            borders: TableBorders::with_empty(),
+            ..Default::default()
+        }
+    }
+
     pub fn indent(mut self, v: i32) -> TableProperty {
         self.indent = Some(TableIndent::new(v, WidthType::DXA));
         self

@@ -27,6 +27,18 @@ impl Table {
         }
     }
 
+    pub fn without_borders(rows: Vec<TableRow>) -> Table {
+        let property = TableProperty::without_borders();
+        let has_numbering = rows.iter().any(|c| c.has_numbering);
+        let grid = vec![];
+        Self {
+            property,
+            rows,
+            grid,
+            has_numbering,
+        }
+    }
+
     pub fn add_row(mut self, row: TableRow) -> Table {
         self.rows.push(row);
         self

@@ -9,7 +9,7 @@ use crate::types::*;
 
 impl ElementReader for Table {
     fn read<R: Read>(r: &mut EventReader<R>, _: &[OwnedAttribute]) -> Result<Self, ReaderError> {
-        let mut t = Table::new(vec![]);
+        let mut t = Table::without_borders(vec![]);
         let mut grid_col: Vec<usize> = vec![];
         loop {
             let e = r.next();
@@ -99,7 +99,7 @@ mod tests {
         let t = Table::read(&mut parser, &[]).unwrap();
         assert_eq!(
             t,
-            Table::new(vec![])
+            Table::without_borders(vec![])
                 .set_grid(vec![3212, 3213, 3213])
                 .width(9638, WidthType::DXA)
         );
@@ -119,7 +119,7 @@ mod tests {
         let t = Table::read(&mut parser, &[]).unwrap();
         assert_eq!(
             t,
-            Table::new(vec![])
+            Table::without_borders(vec![])
                 .align(TableAlignmentType::Center)
                 .indent(100)
         );

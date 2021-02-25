@@ -99,7 +99,7 @@ mod tests {
         let t = Table::read(&mut parser, &[]).unwrap();
         assert_eq!(
             t,
-            Table::new(vec![])
+            Table::without_borders(vec![])
                 .set_grid(vec![3212, 3213, 3213])
                 .width(9638, WidthType::DXA)
         );
@@ -119,7 +119,7 @@ mod tests {
         let t = Table::read(&mut parser, &[]).unwrap();
         assert_eq!(
             t,
-            Table::new(vec![])
+            Table::without_borders(vec![])
                 .align(TableAlignmentType::Center)
                 .indent(100)
         );

@@ -6,7 +6,7 @@ repository = "https://github.com/bokuweb/docx-rs"
 edition = "2018"
 license = "MIT"
 readme = "../README.md"
-description = "A .docx file generater with Rust/WebAssembly."
+description = "A .docx file writer with Rust/WebAssembly."
 keywords = [
   "office",
   "word",

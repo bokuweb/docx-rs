@@ -9,7 +9,7 @@ use crate::types::*;
 
 impl ElementReader for Table {
     fn read<R: Read>(r: &mut EventReader<R>, _: &[OwnedAttribute]) -> Result<Self, ReaderError> {
-        let mut t = Table::new(vec![]);
+        let mut t = Table::without_borders(vec![]);
         let mut grid_col: Vec<usize> = vec![];
         loop {
             let e = r.next();

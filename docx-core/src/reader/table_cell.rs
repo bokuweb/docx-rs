@@ -17,6 +17,8 @@ impl ElementReader for TableCell {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
+                    // FIXME: ignore table in table for now. Please support table in table later.
+                    ignore::ignore_element(e.clone(), XMLElement::Table, r);
                     match e {
                         XMLElement::Paragraph => {
                             let p = Paragraph::read(r, &attributes)?;

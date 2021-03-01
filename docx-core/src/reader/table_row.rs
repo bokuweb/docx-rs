@@ -4,6 +4,8 @@ use std::str::FromStr;
 use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
+use crate::HeightRule;
+
 use super::attributes::*;
 use super::*;
 
@@ -13,6 +15,7 @@ impl ElementReader for TableRow {
         let mut grid_after = None;
         let mut width_after = None;
         let mut row_height = None;
+        let mut height_rule = Some(HeightRule::Exact);
         loop {
             let e = r.next();
             match e {
@@ -36,6 +39,13 @@ impl ElementReader for TableRow {
                         XMLElement::WidthAfter => {
                             if let Ok(v) = read_width(&attributes) {
                                 width_after = Some(v.0 as f32);
+                            }
+                        }
+                        XMLElement::HeightRule => {
+                            if let Some(v) = read_val(&attributes) {
+                                if let Ok(r) = HeightRule::from_str(&v) {
+                                    height_rule = Some(r);
+                                }
                             }
                         }
                         XMLElement::TableRowHeight => {
@@ -64,6 +74,11 @@ impl ElementReader for TableRow {
                         if let Some(width_after) = width_after {
                             row = row.width_after(width_after);
                         }
+
+                        if let Some(height_rule) = height_rule {
+                            row = row.height_rule(height_rule);
+                        }
+
                         return Ok(row);
                     }
                 }

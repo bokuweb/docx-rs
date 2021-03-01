@@ -1,8 +1,8 @@
 use serde::Serialize;
 
 use super::{TableCell, TableRowProperty};
-use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use crate::{documents::BuildXML, HeightRule};
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -35,6 +35,11 @@ impl TableRow {
 
     pub fn row_height(mut self, h: f32) -> TableRow {
         self.property = self.property.row_height(h);
+        self
+    }
+
+    pub fn height_rule(mut self, r: HeightRule) -> TableRow {
+        self.property = self.property.height_rule(r);
         self
     }
 }
@@ -71,7 +76,7 @@ mod tests {
         let r = TableRow::new(vec![TableCell::new()]);
         assert_eq!(
             serde_json::to_string(&r).unwrap(),
-            r#"{"cells":[{"children":[],"property":{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":null},"hasNumbering":false}],"hasNumbering":false,"property":{"gridAfter":null,"widthAfter":null,"rowHeight":null}}"#
+            r#"{"cells":[{"children":[],"property":{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":null},"hasNumbering":false}],"hasNumbering":false,"property":{"gridAfter":null,"widthAfter":null,"rowHeight":null,"heightRule":null}}"#
         );
     }
 }

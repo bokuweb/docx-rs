@@ -49,7 +49,7 @@ pub fn hello() -> Result<(), DocxError> {
 import { saveAs } from "file-saver";
 
 // // Note that a dynamic `import` statement here is required due to webpack/webpack#6615,
-import("docx-wasm").then(w => {
+import("docx-wasm").then((w) => {
   const { buffer } = new w.Docx()
     .addParagraph(
       new w.Paragraph().addRun(new w.Run().addText("Hello world!!"))
@@ -100,7 +100,7 @@ writeFileSync("hello.docx", buffer);
   - [x] vanish
   - [x] Italic
 - [x] Break
-- [ ] Header
+- [x] Header
 - [ ] Footer
 - [x] Comment
 - [x] Image

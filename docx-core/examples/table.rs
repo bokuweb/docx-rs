@@ -12,7 +12,8 @@ pub fn main() -> Result<(), DocxError> {
             TableCell::new()
                 .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
                 .vertical_align(VAlignType::Center)
-                .vertical_merge(VMergeType::Restart),
+                .vertical_merge(VMergeType::Restart)
+                .text_direction(TextDirectionType::TbRlV),
         ]),
         TableRow::new(vec![
             TableCell::new()

@@ -75,6 +75,14 @@ impl ElementReader for TableCell {
                                                 )?);
                                             }
                                         }
+                                        XMLElement::TextDirection => {
+                                            if let Some(a) = &attributes.get(0) {
+                                                if let Ok(v) = TextDirectionType::from_str(&a.value)
+                                                {
+                                                    cell = cell.text_direction(v);
+                                                }
+                                            }
+                                        }
                                         XMLElement::TableCellBorders => {
                                             let borders = TableCellBorders::read(r, &attributes)?;
                                             cell = cell.set_borders(borders);

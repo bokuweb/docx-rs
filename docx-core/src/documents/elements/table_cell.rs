@@ -58,6 +58,11 @@ impl TableCell {
         self
     }
 
+    pub fn text_direction(mut self, t: TextDirectionType) -> TableCell {
+        self.property = self.property.text_direction(t);
+        self
+    }
+
     pub fn grid_span(mut self, v: usize) -> TableCell {
         self.property = self.property.grid_span(v);
         self

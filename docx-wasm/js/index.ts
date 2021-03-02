@@ -386,8 +386,26 @@ export class Docx {
         const cell = this.buildCell(c);
         row = row.add_cell(cell);
       });
+
       if (r.height) {
         row = row.row_height(r.height);
+      }
+
+      if (r.hRule) {
+        switch (r.hRule) {
+          case "auto": {
+            row = row.height_rule(wasm.HeightRule.Auto);
+            break;
+          }
+          case "atLeast": {
+            row = row.height_rule(wasm.HeightRule.AtLeast);
+            break;
+          }
+          case "exact": {
+            row = row.height_rule(wasm.HeightRule.Exact);
+            break;
+          }
+        }
       }
       table = table.add_row(row);
     });

@@ -1,9 +1,12 @@
 import { TableCell } from "./table-cell";
 
+export type HeightRule = "auto" | "atLeast" | "exact";
+
 export class TableRow {
   cells: TableCell[] = [];
   hasNumberings = false;
   height: number | null = null;
+  hRule: HeightRule = "exact";
 
   addCell(cell: TableCell) {
     if (cell.hasNumberings) {
@@ -15,6 +18,11 @@ export class TableRow {
 
   rowHeight(h: number) {
     this.height = h;
+    return this;
+  }
+
+  heightRule(r: HeightRule) {
+    this.hRule = r;
     return this;
   }
 }

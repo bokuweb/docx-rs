@@ -27,4 +27,9 @@ impl TableRow {
         self.0 = self.0.row_height(h as f32);
         self
     }
+
+    pub fn height_rule(mut self, r: docx_rs::HeightRule) -> TableRow {
+        self.0 = self.0.height_rule(r);
+        self
+    }
 }

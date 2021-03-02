@@ -1,9 +1,12 @@
 import { ParagraphJSON } from "./paragraph";
 import { BorderJSON } from "./border";
+import { HeightRule } from "../table-row";
 
 export type TableCellChildJSON = ParagraphJSON;
 
 export type WidthType = "DXA" | "Auto" | "Pct";
+
+export { HeightRule } from "../table-row";
 
 export type TableCellPropertyJSON = {
   width: {
@@ -20,6 +23,7 @@ export type TableCellPropertyJSON = {
 export type TableRowPropertyJSON = {
   gridAfter: number | null;
   rowHeight: number | null;
+  heightRule: HeightRule | null;
   widthAfter: number | null;
 };
 

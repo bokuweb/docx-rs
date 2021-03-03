@@ -15,7 +15,7 @@ impl ElementReader for TableRow {
         let mut grid_after = None;
         let mut width_after = None;
         let mut row_height = None;
-        let mut height_rule = Some(HeightRule::Exact);
+        let mut height_rule = Some(HeightRule::Auto);
         loop {
             let e = r.next();
             match e {

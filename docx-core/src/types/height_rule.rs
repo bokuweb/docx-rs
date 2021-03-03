@@ -38,7 +38,7 @@ impl FromStr for HeightRule {
             "auto" => Ok(HeightRule::Auto),
             "atLeast" => Ok(HeightRule::AtLeast),
             "exact" => Ok(HeightRule::Exact),
-            _ => Ok(HeightRule::Auto),
+            _ => Ok(HeightRule::AtLeast),
         }
     }
 }

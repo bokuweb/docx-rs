@@ -1,10 +1,12 @@
 import { ParagraphJSON } from "./paragraph";
 import { BorderJSON } from "./border";
 import { HeightRule } from "../table-row";
+import { TextDirectionType } from "../table-cell";
 
 export type TableCellChildJSON = ParagraphJSON;
 
 export type WidthType = "DXA" | "Auto" | "Pct";
+export { TextDirectionType } from "../table-cell";
 
 export { HeightRule } from "../table-row";
 
@@ -17,6 +19,7 @@ export type TableCellPropertyJSON = {
   gridSpan: number | null;
   verticalMerge: "restart" | "continue" | null;
   verticalAlign: "top" | "center" | "bottom" | null;
+  textDirection: TextDirectionType | null;
   hasNumbering: boolean;
 };
 

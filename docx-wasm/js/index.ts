@@ -3,7 +3,7 @@ import { Insert } from "./insert";
 import { Delete } from "./delete";
 import { DeleteText } from "./delete-text";
 import { Table } from "./table";
-import { TableCell } from "./table-cell";
+import { TableCell, toTextDirectionWasmType } from "./table-cell";
 import { BorderType } from "./table-cell-border";
 import { Run, RunFonts } from "./run";
 import { Text } from "./text";
@@ -470,6 +470,13 @@ export class Docx {
     if (typeof c.property.width !== "undefined") {
       cell = cell.width(c.property.width);
     }
+
+    if (typeof c.property.textDirection !== "undefined") {
+      cell = cell.text_direction(
+        toTextDirectionWasmType(c.property.textDirection)
+      );
+    }
+
     if (typeof c.property.borders !== "undefined") {
       if (c.property.borders.top) {
         const border = wasm

@@ -58,6 +58,11 @@ impl TableCell {
         self
     }
 
+    pub fn text_direction(mut self, t: TextDirectionType) -> TableCell {
+        self.property = self.property.text_direction(t);
+        self
+    }
+
     pub fn grid_span(mut self, v: usize) -> TableCell {
         self.property = self.property.grid_span(v);
         self
@@ -146,7 +151,7 @@ mod tests {
             .grid_span(2);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"children":[{"type":"paragraph","data":{"id":"12345678","children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineHeight":null},"hasNumbering":false}}],"property":{"width":null,"borders":null,"gridSpan":2,"verticalMerge":null,"verticalAlign":null},"hasNumbering":false}"#
+            r#"{"children":[{"type":"paragraph","data":{"id":"12345678","children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineHeight":null},"hasNumbering":false}}],"property":{"width":null,"borders":null,"gridSpan":2,"verticalMerge":null,"verticalAlign":null,"textDirection":null},"hasNumbering":false}"#
         );
     }
 }

@@ -13,6 +13,7 @@ pub struct TableCellProperty {
     grid_span: Option<GridSpan>,
     vertical_merge: Option<VMerge>,
     vertical_align: Option<VAlign>,
+    text_direction: Option<TextDirection>,
 }
 
 impl TableCellProperty {
@@ -32,6 +33,11 @@ impl TableCellProperty {
 
     pub fn vertical_align(mut self, t: VAlignType) -> TableCellProperty {
         self.vertical_align = Some(VAlign::new(t));
+        self
+    }
+
+    pub fn text_direction(mut self, t: TextDirectionType) -> Self {
+        self.text_direction = Some(TextDirection::new(t));
         self
     }
 
@@ -69,6 +75,7 @@ impl Default for TableCellProperty {
             grid_span: None,
             vertical_merge: None,
             vertical_align: None,
+            text_direction: None,
         }
     }
 }
@@ -82,6 +89,7 @@ impl BuildXML for TableCellProperty {
             .add_optional_child(&self.grid_span)
             .add_optional_child(&self.vertical_merge)
             .add_optional_child(&self.vertical_align)
+            .add_optional_child(&self.text_direction)
             .close()
             .build()
     }
@@ -140,7 +148,7 @@ mod tests {
             .width(200, WidthType::DXA);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"width":{"width":200,"widthType":"DXA"},"borders":null,"gridSpan":3,"verticalMerge":"continue","verticalAlign":null}"#
+            r#"{"width":{"width":200,"widthType":"DXA"},"borders":null,"gridSpan":3,"verticalMerge":"continue","verticalAlign":null,"textDirection":null}"#
         );
     }
 
@@ -149,7 +157,7 @@ mod tests {
         let c = TableCellProperty::new().vertical_align(VAlignType::Center);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":"center"}"#
+            r#"{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":"center","textDirection":null}"#
         );
     }
 }

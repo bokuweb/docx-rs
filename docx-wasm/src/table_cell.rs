@@ -45,6 +45,11 @@ impl TableCell {
         self
     }
 
+    pub fn text_direction(mut self, t: docx_rs::TextDirectionType) -> TableCell {
+        self.0.property = self.0.property.text_direction(t);
+        self
+    }
+
     pub fn set_border(mut self, border: TableCellBorder) -> TableCell {
         self.0.property = self.0.property.set_border(border.take());
         self

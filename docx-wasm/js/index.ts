@@ -437,9 +437,14 @@ export class Docx {
 
   buildCell(c: TableCell) {
     let cell = wasm.createTableCell();
-    c.children.forEach((p) => {
-      const paragraph = this.buildParagraph(p);
-      cell = cell.add_paragraph(paragraph);
+    c.children.forEach((c) => {
+      if (c instanceof Paragraph) {
+        const paragraph = this.buildParagraph(c);
+        cell = cell.add_paragraph(paragraph);
+      } else if (c instanceof Table) {
+        const table = this.buildTable(c);
+        cell = cell.add_table(table);
+      }
     });
 
     if (c.property.verticalMerge === "continue") {

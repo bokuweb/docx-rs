@@ -326,6 +326,9 @@ impl Docx {
                                             }
                                         }
                                     }
+                                    TableCellContent::Table(_) => {
+                                        // TODO: correct comment
+                                    }
                                 }
                             }
                         }
@@ -397,6 +400,9 @@ impl Docx {
                                                 }
                                             }
                                         }
+                                    }
+                                    TableCellContent::Table(_) => {
+                                        // TODO: correct comment
                                     }
                                 }
                             }
@@ -509,6 +515,9 @@ impl Docx {
                                             }
                                         }
                                     }
+                                    TableCellContent::Table(_) => {
+                                        // TODO: support comment
+                                    }
                                 }
                             }
                         }
@@ -569,6 +578,9 @@ impl Docx {
                                                 }
                                             }
                                         }
+                                    }
+                                    TableCellContent::Table(_) => {
+                                        // TODO: support comment
                                     }
                                 }
                             }

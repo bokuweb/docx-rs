@@ -5,7 +5,7 @@ use wasm_bindgen::prelude::*;
 pub struct TableCellBorder(docx_rs::TableCellBorder);
 
 #[wasm_bindgen(js_name = createTableCellBorder)]
-pub fn create_table_cell_border(position: docx_rs::BorderPosition) -> TableCellBorder {
+pub fn create_table_cell_border(position: docx_rs::TableCellBorderPosition) -> TableCellBorder {
     TableCellBorder(docx_rs::TableCellBorder::new(position))
 }
 

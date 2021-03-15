@@ -71,7 +71,7 @@ impl TableProperty {
         self
     }
 
-    pub fn clear_border(mut self, position: BorderPosition) -> Self {
+    pub fn clear_border(mut self, position: TableBorderPosition) -> Self {
         self.borders = self.borders.clear(position);
         self
     }

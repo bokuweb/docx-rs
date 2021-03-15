@@ -62,7 +62,7 @@ impl TableCell {
         self
     }
 
-    pub fn clear_border(mut self, position: docx_rs::BorderPosition) -> TableCell {
+    pub fn clear_border(mut self, position: docx_rs::TableCellBorderPosition) -> TableCell {
         self.0.property = self.0.property.clear_border(position);
         self
     }

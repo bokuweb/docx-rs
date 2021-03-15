@@ -483,67 +483,89 @@ export class Docx {
     }
 
     if (typeof c.property.borders !== "undefined") {
-      if (c.property.borders.top) {
-        const border = wasm
-          .createTableCellBorder(wasm.BorderPosition.Top)
-          .size(c.property.borders.top._size)
-          .color(c.property.borders.top._color)
-          .border_type(convertBorderType(c.property.borders.top._border_type));
-        cell = cell.set_border(border);
-      }
+      cell = this.buildCellBorders(c, cell);
+    }
 
-      if (c.property.borders.right) {
-        const border = wasm
-          .createTableCellBorder(wasm.BorderPosition.Right)
-          .size(c.property.borders.right._size)
-          .color(c.property.borders.right._color)
-          .border_type(
-            convertBorderType(c.property.borders.right._border_type)
-          );
-        cell = cell.set_border(border);
-      }
+    return cell;
+  }
 
-      if (c.property.borders.bottom) {
-        const border = wasm
-          .createTableCellBorder(wasm.BorderPosition.Bottom)
-          .size(c.property.borders.bottom._size)
-          .color(c.property.borders.bottom._color)
-          .border_type(
-            convertBorderType(c.property.borders.bottom._border_type)
-          );
-        cell = cell.set_border(border);
-      }
+  buildCellBorders(js: TableCell, cell: wasm.TableCell): wasm.TableCell {
+    if (js.property.borders.top) {
+      const border = wasm
+        .createTableCellBorder(wasm.TableCellBorderPosition.Top)
+        .size(js.property.borders.top._size)
+        .color(js.property.borders.top._color)
+        .border_type(convertBorderType(js.property.borders.top._border_type));
+      cell = cell.set_border(border);
+    }
 
-      if (c.property.borders.left) {
-        const border = wasm
-          .createTableCellBorder(wasm.BorderPosition.Left)
-          .size(c.property.borders.left._size)
-          .color(c.property.borders.left._color)
-          .border_type(convertBorderType(c.property.borders.left._border_type));
-        cell = cell.set_border(border);
-      }
+    if (js.property.borders.right) {
+      const border = wasm
+        .createTableCellBorder(wasm.TableCellBorderPosition.Right)
+        .size(js.property.borders.right._size)
+        .color(js.property.borders.right._color)
+        .border_type(convertBorderType(js.property.borders.right._border_type));
+      cell = cell.set_border(border);
+    }
 
-      if (c.property.borders.insideH) {
-        const border = wasm
-          .createTableCellBorder(wasm.BorderPosition.InsideH)
-          .size(c.property.borders.insideH._size)
-          .color(c.property.borders.insideH._color)
-          .border_type(
-            convertBorderType(c.property.borders.insideH._border_type)
-          );
-        cell = cell.set_border(border);
-      }
+    if (js.property.borders.bottom) {
+      const border = wasm
+        .createTableCellBorder(wasm.TableCellBorderPosition.Bottom)
+        .size(js.property.borders.bottom._size)
+        .color(js.property.borders.bottom._color)
+        .border_type(
+          convertBorderType(js.property.borders.bottom._border_type)
+        );
+      cell = cell.set_border(border);
+    }
 
-      if (c.property.borders.insideV) {
-        const border = wasm
-          .createTableCellBorder(wasm.BorderPosition.InsideV)
-          .size(c.property.borders.insideV._size)
-          .color(c.property.borders.insideV._color)
-          .border_type(
-            convertBorderType(c.property.borders.insideV._border_type)
-          );
-        cell = cell.set_border(border);
-      }
+    if (js.property.borders.left) {
+      const border = wasm
+        .createTableCellBorder(wasm.TableCellBorderPosition.Left)
+        .size(js.property.borders.left._size)
+        .color(js.property.borders.left._color)
+        .border_type(convertBorderType(js.property.borders.left._border_type));
+      cell = cell.set_border(border);
+    }
+
+    if (js.property.borders.insideH) {
+      const border = wasm
+        .createTableCellBorder(wasm.TableCellBorderPosition.InsideH)
+        .size(js.property.borders.insideH._size)
+        .color(js.property.borders.insideH._color)
+        .border_type(
+          convertBorderType(js.property.borders.insideH._border_type)
+        );
+      cell = cell.set_border(border);
+    }
+
+    if (js.property.borders.insideV) {
+      const border = wasm
+        .createTableCellBorder(wasm.TableCellBorderPosition.InsideV)
+        .size(js.property.borders.insideV._size)
+        .color(js.property.borders.insideV._color)
+        .border_type(
+          convertBorderType(js.property.borders.insideV._border_type)
+        );
+      cell = cell.set_border(border);
+    }
+
+    if (js.property.borders.tl2br) {
+      const border = wasm
+        .createTableCellBorder(wasm.TableCellBorderPosition.Tl2br)
+        .size(js.property.borders.tl2br._size)
+        .color(js.property.borders.tl2br._color)
+        .border_type(convertBorderType(js.property.borders.tl2br._border_type));
+      cell = cell.set_border(border);
+    }
+
+    if (js.property.borders.tr2bl) {
+      const border = wasm
+        .createTableCellBorder(wasm.TableCellBorderPosition.Tr2bl)
+        .size(js.property.borders.tr2bl._size)
+        .color(js.property.borders.tr2bl._color)
+        .border_type(convertBorderType(js.property.borders.tr2bl._border_type));
+      cell = cell.set_border(border);
     }
 
     return cell;

@@ -77,6 +77,8 @@ pub enum XMLElement {
     Bottom,
     InsideH,
     InsideV,
+    Tl2br,
+    Tr2bl,
     TableCellMargin,
     TableGrid,
     GridCol,

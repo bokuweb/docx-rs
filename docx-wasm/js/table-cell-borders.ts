@@ -1,4 +1,4 @@
-import { BorderPosition, TableCellBorder } from "./table-cell-border";
+import { TableCellBorderPosition, TableCellBorder } from "./table-cell-border";
 
 export type PositionKeys =
   | "top"
@@ -6,7 +6,9 @@ export type PositionKeys =
   | "bottom"
   | "right"
   | "insideH"
-  | "insideV";
+  | "insideV"
+  | "tl2br"
+  | "tr2bl";
 
 export class TableCellBorders {
   top: TableCellBorder | null = new TableCellBorder("top");
@@ -15,6 +17,8 @@ export class TableCellBorders {
   right: TableCellBorder | null = new TableCellBorder("right");
   insideH: TableCellBorder | null = new TableCellBorder("insideH");
   insideV: TableCellBorder | null = new TableCellBorder("insideV");
+  tl2br: TableCellBorder | null = new TableCellBorder("tl2br");
+  tr2bl: TableCellBorder | null = new TableCellBorder("tr2bl");
 
   set(border: TableCellBorder) {
     switch (border.position) {
@@ -30,11 +34,15 @@ export class TableCellBorders {
         this.insideH = border;
       case "insideV":
         this.insideV = border;
+      case "tl2br":
+        this.tl2br = border;
+      case "tr2bl":
+        this.tr2bl = border;
     }
     return this;
   }
 
-  clear(position: BorderPosition) {
+  clear(position: TableCellBorderPosition) {
     let nil = new TableCellBorder(position).border_type("nil");
     switch (position) {
       case "top":
@@ -49,6 +57,10 @@ export class TableCellBorders {
         this.insideH = nil;
       case "insideV":
         this.insideV = nil;
+      case "tl2br":
+        this.tl2br = nil;
+      case "tr2bl":
+        this.tr2bl = nil;
     }
     return this;
   }
@@ -60,6 +72,8 @@ export class TableCellBorders {
     this.right = new TableCellBorder("right").border_type("nil");
     this.insideH = new TableCellBorder("insideH").border_type("nil");
     this.insideV = new TableCellBorder("insideV").border_type("nil");
+    this.tl2br = new TableCellBorder("tl2br").border_type("nil");
+    this.tr2bl = new TableCellBorder("tr2bl").border_type("nil");
     return this;
   }
 }

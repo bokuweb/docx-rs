@@ -20,7 +20,7 @@ impl ElementReader for TableBorders {
                     match e {
                         XMLElement::Top => {
                             let attr = read_border(&attributes)?;
-                            let mut border = TableBorder::new(BorderPosition::Top)
+                            let mut border = TableBorder::new(TableBorderPosition::Top)
                                 .border_type(attr.border_type)
                                 .color(attr.color);
                             if let Some(size) = attr.size {
@@ -31,7 +31,7 @@ impl ElementReader for TableBorders {
                         }
                         XMLElement::Right => {
                             let attr = read_border(&attributes)?;
-                            let mut border = TableBorder::new(BorderPosition::Right)
+                            let mut border = TableBorder::new(TableBorderPosition::Right)
                                 .border_type(attr.border_type)
                                 .color(attr.color);
                             if let Some(size) = attr.size {
@@ -42,7 +42,7 @@ impl ElementReader for TableBorders {
                         }
                         XMLElement::Bottom => {
                             let attr = read_border(&attributes)?;
-                            let mut border = TableBorder::new(BorderPosition::Bottom)
+                            let mut border = TableBorder::new(TableBorderPosition::Bottom)
                                 .border_type(attr.border_type)
                                 .color(attr.color);
                             if let Some(size) = attr.size {
@@ -53,7 +53,7 @@ impl ElementReader for TableBorders {
                         }
                         XMLElement::Left => {
                             let attr = read_border(&attributes)?;
-                            let mut border = TableBorder::new(BorderPosition::Left)
+                            let mut border = TableBorder::new(TableBorderPosition::Left)
                                 .border_type(attr.border_type)
                                 .color(attr.color);
                             if let Some(size) = attr.size {
@@ -64,7 +64,7 @@ impl ElementReader for TableBorders {
                         }
                         XMLElement::InsideH => {
                             let attr = read_border(&attributes)?;
-                            let mut border = TableBorder::new(BorderPosition::InsideH)
+                            let mut border = TableBorder::new(TableBorderPosition::InsideH)
                                 .border_type(attr.border_type)
                                 .color(attr.color);
                             if let Some(size) = attr.size {
@@ -75,7 +75,7 @@ impl ElementReader for TableBorders {
                         }
                         XMLElement::InsideV => {
                             let attr = read_border(&attributes)?;
-                            let mut border = TableBorder::new(BorderPosition::InsideV)
+                            let mut border = TableBorder::new(TableBorderPosition::InsideV)
                                 .border_type(attr.border_type)
                                 .color(attr.color);
                             if let Some(size) = attr.size {

@@ -98,7 +98,7 @@ impl TableCell {
         self
     }
 
-    pub fn clear_border(mut self, position: BorderPosition) -> Self {
+    pub fn clear_border(mut self, position: TableCellBorderPosition) -> Self {
         self.property = self.property.clear_border(position);
         self
     }

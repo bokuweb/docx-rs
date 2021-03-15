@@ -1,7 +1,7 @@
 import { Paragraph } from "./paragraph";
 import { Table } from "./table";
 import { TableCellBorders, PositionKeys } from "./table-cell-borders";
-import { BorderPosition, TableCellBorder } from "./table-cell-border";
+import { TableCellBorderPosition, TableCellBorder } from "./table-cell-border";
 import * as wasm from "./pkg";
 
 export type VMergeType = "restart" | "continue";
@@ -106,12 +106,12 @@ export class TableCell {
     return this;
   }
 
-  setBorder(position: BorderPosition, border: TableCellBorder) {
+  setBorder(position: TableCellBorderPosition, border: TableCellBorder) {
     this.property.borders[position.toLowerCase() as PositionKeys] = border;
     return this;
   }
 
-  clearBorder(position: BorderPosition) {
+  clearBorder(position: TableCellBorderPosition) {
     this.property.borders[
       position.toLowerCase() as PositionKeys
     ] = new TableCellBorder(position).border_type("nil");

@@ -22,12 +22,12 @@ pub struct TableCellBorder {
     pub border_type: BorderType,
     pub size: usize,
     pub color: String,
-    position: BorderPosition,
+    position: TableCellBorderPosition,
     space: usize,
 }
 
 impl TableCellBorder {
-    pub fn new(position: BorderPosition) -> TableCellBorder {
+    pub fn new(position: TableCellBorderPosition) -> TableCellBorder {
         TableCellBorder {
             position,
             border_type: BorderType::Single,
@@ -69,23 +69,29 @@ impl BuildXML for TableCellBorder {
     fn build(&self) -> Vec<u8> {
         let base = XMLBuilder::new();
         let base = match self.position {
-            BorderPosition::Top => {
+            TableCellBorderPosition::Top => {
                 base.border_top(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::Left => {
+            TableCellBorderPosition::Left => {
                 base.border_left(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::Bottom => {
+            TableCellBorderPosition::Bottom => {
                 base.border_bottom(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::Right => {
+            TableCellBorderPosition::Right => {
                 base.border_right(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::InsideH => {
+            TableCellBorderPosition::InsideH => {
                 base.border_inside_h(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::InsideV => {
+            TableCellBorderPosition::InsideV => {
                 base.border_inside_v(self.border_type, self.size, self.space, &self.color)
+            }
+            TableCellBorderPosition::Tr2bl => {
+                base.border_tr2bl(self.border_type, self.size, self.space, &self.color)
+            }
+            TableCellBorderPosition::Tl2br => {
+                base.border_tl2br(self.border_type, self.size, self.space, &self.color)
             }
         };
         base.build()
@@ -101,17 +107,21 @@ pub struct TableCellBorders {
     right: Option<TableCellBorder>,
     inside_h: Option<TableCellBorder>,
     inside_v: Option<TableCellBorder>,
+    tr2bl: Option<TableCellBorder>,
+    tl2br: Option<TableCellBorder>,
 }
 
 impl Default for TableCellBorders {
     fn default() -> TableCellBorders {
         TableCellBorders {
-            top: Some(TableCellBorder::new(BorderPosition::Top)),
-            left: Some(TableCellBorder::new(BorderPosition::Left)),
-            bottom: Some(TableCellBorder::new(BorderPosition::Bottom)),
-            right: Some(TableCellBorder::new(BorderPosition::Right)),
-            inside_h: Some(TableCellBorder::new(BorderPosition::InsideH)),
-            inside_v: Some(TableCellBorder::new(BorderPosition::InsideV)),
+            top: Some(TableCellBorder::new(TableCellBorderPosition::Top)),
+            left: Some(TableCellBorder::new(TableCellBorderPosition::Left)),
+            bottom: Some(TableCellBorder::new(TableCellBorderPosition::Bottom)),
+            right: Some(TableCellBorder::new(TableCellBorderPosition::Right)),
+            inside_h: Some(TableCellBorder::new(TableCellBorderPosition::InsideH)),
+            inside_v: Some(TableCellBorder::new(TableCellBorderPosition::InsideV)),
+            tr2bl: None,
+            tl2br: None,
         }
     }
 }
@@ -129,44 +139,56 @@ impl TableCellBorders {
             right: None,
             inside_h: None,
             inside_v: None,
+            tr2bl: None,
+            tl2br: None,
         }
     }
 
     pub fn set(mut self, border: TableCellBorder) -> Self {
         match border.position {
-            BorderPosition::Top => self.top = Some(border),
-            BorderPosition::Left => self.left = Some(border),
-            BorderPosition::Bottom => self.bottom = Some(border),
-            BorderPosition::Right => self.right = Some(border),
-            BorderPosition::InsideH => self.inside_h = Some(border),
-            BorderPosition::InsideV => self.inside_v = Some(border),
+            TableCellBorderPosition::Top => self.top = Some(border),
+            TableCellBorderPosition::Left => self.left = Some(border),
+            TableCellBorderPosition::Bottom => self.bottom = Some(border),
+            TableCellBorderPosition::Right => self.right = Some(border),
+            TableCellBorderPosition::InsideH => self.inside_h = Some(border),
+            TableCellBorderPosition::InsideV => self.inside_v = Some(border),
+            TableCellBorderPosition::Tr2bl => self.tr2bl = Some(border),
+            TableCellBorderPosition::Tl2br => self.tl2br = Some(border),
         };
         self
     }
 
-    pub fn clear(mut self, position: BorderPosition) -> Self {
+    pub fn clear(mut self, position: TableCellBorderPosition) -> Self {
         let nil = TableCellBorder::new(position.clone()).border_type(BorderType::Nil);
         match position {
-            BorderPosition::Top => self.top = Some(nil),
-            BorderPosition::Left => self.left = Some(nil),
-            BorderPosition::Bottom => self.bottom = Some(nil),
-            BorderPosition::Right => self.right = Some(nil),
-            BorderPosition::InsideH => self.inside_h = Some(nil),
-            BorderPosition::InsideV => self.inside_v = Some(nil),
+            TableCellBorderPosition::Top => self.top = Some(nil),
+            TableCellBorderPosition::Left => self.left = Some(nil),
+            TableCellBorderPosition::Bottom => self.bottom = Some(nil),
+            TableCellBorderPosition::Right => self.right = Some(nil),
+            TableCellBorderPosition::InsideH => self.inside_h = Some(nil),
+            TableCellBorderPosition::InsideV => self.inside_v = Some(nil),
+            TableCellBorderPosition::Tr2bl => self.tr2bl = Some(nil),
+            TableCellBorderPosition::Tl2br => self.tl2br = Some(nil),
         };
         self
     }
 
     pub fn clear_all(mut self) -> Self {
-        self.top = Some(TableCellBorder::new(BorderPosition::Top).border_type(BorderType::Nil));
-        self.left = Some(TableCellBorder::new(BorderPosition::Left).border_type(BorderType::Nil));
-        self.bottom =
-            Some(TableCellBorder::new(BorderPosition::Bottom).border_type(BorderType::Nil));
-        self.right = Some(TableCellBorder::new(BorderPosition::Right).border_type(BorderType::Nil));
-        self.inside_h =
-            Some(TableCellBorder::new(BorderPosition::InsideH).border_type(BorderType::Nil));
-        self.inside_v =
-            Some(TableCellBorder::new(BorderPosition::InsideV).border_type(BorderType::Nil));
+        self.top =
+            Some(TableCellBorder::new(TableCellBorderPosition::Top).border_type(BorderType::Nil));
+        self.left =
+            Some(TableCellBorder::new(TableCellBorderPosition::Left).border_type(BorderType::Nil));
+        self.bottom = Some(
+            TableCellBorder::new(TableCellBorderPosition::Bottom).border_type(BorderType::Nil),
+        );
+        self.right =
+            Some(TableCellBorder::new(TableCellBorderPosition::Right).border_type(BorderType::Nil));
+        self.inside_h = Some(
+            TableCellBorder::new(TableCellBorderPosition::InsideH).border_type(BorderType::Nil),
+        );
+        self.inside_v = Some(
+            TableCellBorder::new(TableCellBorderPosition::InsideV).border_type(BorderType::Nil),
+        );
         self
     }
 }

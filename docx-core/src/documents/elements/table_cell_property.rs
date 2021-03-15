@@ -56,7 +56,7 @@ impl TableCellProperty {
         self
     }
 
-    pub fn clear_border(mut self, position: BorderPosition) -> Self {
+    pub fn clear_border(mut self, position: TableCellBorderPosition) -> Self {
         self.borders = Some(self.borders.unwrap_or_default().clear(position));
         self
     }

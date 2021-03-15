@@ -1,4 +1,5 @@
 import { Paragraph } from "./paragraph";
+import { Table } from "./table";
 import { TableCellBorders, PositionKeys } from "./table-cell-borders";
 import { BorderPosition, TableCellBorder } from "./table-cell-border";
 import * as wasm from "./pkg";
@@ -58,7 +59,7 @@ export type CellProperty = {
 };
 
 export class TableCell {
-  children: Paragraph[] = [];
+  children: (Paragraph | Table)[] = [];
   hasNumberings = false;
   property: CellProperty = {
     borders: new TableCellBorders(),
@@ -69,6 +70,14 @@ export class TableCell {
       this.hasNumberings = true;
     }
     this.children.push(p);
+    return this;
+  }
+
+  addTable(t: Table) {
+    if (t.hasNumberings) {
+      this.hasNumberings = true;
+    }
+    this.children.push(t);
     return this;
   }
 

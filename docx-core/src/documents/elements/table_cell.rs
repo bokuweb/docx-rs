@@ -17,6 +17,7 @@ pub struct TableCell {
 #[derive(Debug, Clone, PartialEq)]
 pub enum TableCellContent {
     Paragraph(Paragraph),
+    Table(Table),
 }
 
 impl Serialize for TableCellContent {
@@ -28,6 +29,12 @@ impl Serialize for TableCellContent {
             TableCellContent::Paragraph(ref s) => {
                 let mut t = serializer.serialize_struct("Paragraph", 2)?;
                 t.serialize_field("type", "paragraph")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+            TableCellContent::Table(ref s) => {
+                let mut t = serializer.serialize_struct("Table", 2)?;
+                t.serialize_field("type", "table")?;
                 t.serialize_field("data", s)?;
                 t.end()
             }
@@ -45,6 +52,14 @@ impl TableCell {
             self.has_numbering = true
         }
         self.children.push(TableCellContent::Paragraph(p));
+        self
+    }
+
+    pub fn add_table(mut self, t: Table) -> TableCell {
+        if t.has_numbering {
+            self.has_numbering = true
+        }
+        self.children.push(TableCellContent::Table(t));
         self
     }
 
@@ -113,6 +128,13 @@ impl BuildXML for TableCell {
         for c in &self.children {
             match c {
                 TableCellContent::Paragraph(p) => b = b.add_child(p),
+                TableCellContent::Table(t) => {
+                    b = b.add_child(t);
+                    // INFO: We need to add empty paragraph when parent cell includes only cell.
+                    if self.children.len() == 1 {
+                        b = b.add_child(&Paragraph::new())
+                    }
+                }
             }
         }
         b.close().build()

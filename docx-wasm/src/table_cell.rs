@@ -25,6 +25,13 @@ impl TableCell {
         self
     }
 
+    pub fn add_table(mut self, t: Table) -> TableCell {
+        self.0
+            .children
+            .push(docx_rs::TableCellContent::Table(t.take()));
+        self
+    }
+
     pub fn vertical_merge(mut self, t: docx_rs::VMergeType) -> TableCell {
         self.0.property = self.0.property.vertical_merge(t);
         self

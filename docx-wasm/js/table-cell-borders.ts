@@ -17,8 +17,8 @@ export class TableCellBorders {
   right: TableCellBorder | null = new TableCellBorder("right");
   insideH: TableCellBorder | null = new TableCellBorder("insideH");
   insideV: TableCellBorder | null = new TableCellBorder("insideV");
-  tl2br: TableCellBorder | null = new TableCellBorder("tl2br");
-  tr2bl: TableCellBorder | null = new TableCellBorder("tr2bl");
+  tl2br: TableCellBorder | null = null;
+  tr2bl: TableCellBorder | null = null;
 
   set(border: TableCellBorder) {
     switch (border.position) {

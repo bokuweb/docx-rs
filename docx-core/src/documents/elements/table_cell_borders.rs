@@ -189,6 +189,10 @@ impl TableCellBorders {
         self.inside_v = Some(
             TableCellBorder::new(TableCellBorderPosition::InsideV).border_type(BorderType::Nil),
         );
+        self.tl2br =
+            Some(TableCellBorder::new(TableCellBorderPosition::Tl2br).border_type(BorderType::Nil));
+        self.tr2bl =
+            Some(TableCellBorder::new(TableCellBorderPosition::Tr2bl).border_type(BorderType::Nil));
         self
     }
 }
@@ -203,6 +207,8 @@ impl BuildXML for TableCellBorders {
             .add_optional_child(&self.right)
             .add_optional_child(&self.inside_h)
             .add_optional_child(&self.inside_v)
+            .add_optional_child(&self.tl2br)
+            .add_optional_child(&self.tr2bl)
             .close()
             .build()
     }

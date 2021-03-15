@@ -106,8 +106,10 @@ export class TableCell {
     return this;
   }
 
-  setBorder(position: TableCellBorderPosition, border: TableCellBorder) {
-    this.property.borders[position.toLowerCase() as PositionKeys] = border;
+  setBorder(border: TableCellBorder) {
+    this.property.borders[
+      border.position.toLowerCase() as PositionKeys
+    ] = border;
     return this;
   }
 

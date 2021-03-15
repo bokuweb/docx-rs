@@ -137,6 +137,10 @@ impl BuildXML for TableCell {
                 }
             }
         }
+        // INFO: We need to add empty paragraph when parent cell includes only cell.
+        if self.children.is_empty() {
+            b = b.add_child(&Paragraph::new())
+        }
         b.close().build()
     }
 }

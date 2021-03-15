@@ -1016,7 +1016,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": null,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": 970,
                 "widthAfter": null,
               },
@@ -1179,7 +1179,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 1,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": 55,
                 "widthAfter": 1065,
               },
@@ -1342,7 +1342,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 1,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": 675,
                 "widthAfter": 1065,
               },
@@ -1505,7 +1505,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
               },
@@ -1668,7 +1668,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
               },
@@ -1907,7 +1907,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
               },
@@ -2146,7 +2146,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
               },
@@ -2373,7 +2373,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
               },
@@ -2612,7 +2612,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
               },
@@ -9345,7 +9345,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": null,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": null,
                 "widthAfter": null,
               },
@@ -9536,7 +9536,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": null,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": null,
                 "widthAfter": null,
               },
@@ -9727,7 +9727,7 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": null,
-                "heightRule": "exact",
+                "heightRule": "atLeast",
                 "rowHeight": null,
                 "widthAfter": null,
               },

@@ -6,7 +6,7 @@ export class TableRow {
   cells: TableCell[] = [];
   hasNumberings = false;
   height: number | null = null;
-  hRule: HeightRule = "exact";
+  hRule: HeightRule = "atLeast";
 
   addCell(cell: TableCell) {
     if (cell.hasNumberings) {

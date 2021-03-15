@@ -17,7 +17,7 @@ pub enum HeightRule {
 
 impl Default for HeightRule {
     fn default() -> Self {
-        Self::Exact
+        Self::AtLeast
     }
 }
 
@@ -38,7 +38,7 @@ impl FromStr for HeightRule {
             "auto" => Ok(HeightRule::Auto),
             "atLeast" => Ok(HeightRule::AtLeast),
             "exact" => Ok(HeightRule::Exact),
-            _ => Ok(HeightRule::Exact),
+            _ => Ok(HeightRule::AtLeast),
         }
     }
 }

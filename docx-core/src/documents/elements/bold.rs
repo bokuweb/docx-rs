@@ -4,17 +4,24 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
-pub struct Bold {}
+pub struct Bold {
+    val: bool,
+}
 
 impl Bold {
     pub fn new() -> Bold {
         Default::default()
     }
+
+    pub fn disable(mut self) -> Bold {
+        self.val = false;
+        self
+    }
 }
 
 impl Default for Bold {
     fn default() -> Self {
-        Self {}
+        Self { val: true }
     }
 }
 
@@ -23,7 +30,7 @@ impl Serialize for Bold {
     where
         S: Serializer,
     {
-        serializer.serialize_bool(true)
+        serializer.serialize_bool(self.val)
     }
 }
 

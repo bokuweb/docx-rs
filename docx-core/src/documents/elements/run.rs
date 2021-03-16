@@ -162,8 +162,18 @@ impl Run {
         self
     }
 
+    pub fn disable_bold(mut self) -> Run {
+        self.run_property = self.run_property.disable_bold();
+        self
+    }
+
     pub fn italic(mut self) -> Run {
         self.run_property = self.run_property.italic();
+        self
+    }
+
+    pub fn disable_italic(mut self) -> Run {
+        self.run_property = self.run_property.disable_italic();
         self
     }
 

@@ -53,9 +53,21 @@ impl RunProperty {
         self
     }
 
+    pub fn disable_bold(mut self) -> RunProperty {
+        self.bold = Some(Bold::new().disable());
+        self.bold_cs = Some(BoldCs::new().disable());
+        self
+    }
+
     pub fn italic(mut self) -> RunProperty {
         self.italic = Some(Italic::new());
         self.italic_cs = Some(ItalicCs::new());
+        self
+    }
+
+    pub fn disable_italic(mut self) -> RunProperty {
+        self.italic = Some(Italic::new().disable());
+        self.italic_cs = Some(ItalicCs::new().disable());
         self
     }
 

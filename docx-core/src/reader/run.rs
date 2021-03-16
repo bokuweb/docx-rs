@@ -44,6 +44,7 @@ impl ElementReader for Run {
                                 // TODO: use RunProperty::read()
                                 XMLElement::Bold => {
                                     if !read_bool(&attributes) {
+                                        run = run.disable_bold();
                                         continue;
                                     }
                                     run = run.bold();
@@ -60,6 +61,7 @@ impl ElementReader for Run {
                                 }
                                 XMLElement::Italic => {
                                     if !read_bool(&attributes) {
+                                        run = run.disable_italic();
                                         continue;
                                     }
                                     run = run.italic();
@@ -221,6 +223,8 @@ mod tests {
                 run_property: RunProperty {
                     bold: Some(Bold::new()),
                     bold_cs: Some(BoldCs::new()),
+                    italic: Some(Italic::new().disable()),
+                    italic_cs: Some(ItalicCs::new().disable()),
                     ..RunProperty::default()
                 },
             }
@@ -244,6 +248,8 @@ mod tests {
                 run_property: RunProperty {
                     bold: Some(Bold::new()),
                     bold_cs: Some(BoldCs::new()),
+                    italic: Some(Italic::new().disable()),
+                    italic_cs: Some(ItalicCs::new().disable()),
                     ..RunProperty::default()
                 },
             }

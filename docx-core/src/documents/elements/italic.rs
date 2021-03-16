@@ -4,17 +4,24 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
-pub struct Italic {}
+pub struct Italic {
+    val: bool,
+}
 
 impl Italic {
     pub fn new() -> Italic {
         Default::default()
     }
+
+    pub fn disable(mut self) -> Self {
+        self.val = false;
+        self
+    }
 }
 
 impl Default for Italic {
     fn default() -> Self {
-        Self {}
+        Self { val: true }
     }
 }
 
@@ -23,7 +30,7 @@ impl Serialize for Italic {
     where
         S: Serializer,
     {
-        serializer.serialize_bool(true)
+        serializer.serialize_bool(self.val)
     }
 }
 

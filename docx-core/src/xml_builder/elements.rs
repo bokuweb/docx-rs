@@ -207,6 +207,8 @@ impl XMLBuilder {
     closed_border_el!(border_right, "w:right");
     closed_border_el!(border_inside_h, "w:insideH");
     closed_border_el!(border_inside_v, "w:insideV");
+    closed_border_el!(border_tl2br, "w:tl2br");
+    closed_border_el!(border_tr2bl, "w:tr2bl");
 
     closed!(shd, "w:shd", "w:fill", "w:val");
 

@@ -67,7 +67,7 @@ mod tests {
         let b = TableRow::new(vec![TableCell::new()]).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tr><w:trPr /><w:tc><w:tcPr /></w:tc></w:tr>"#
+            r#"<w:tr><w:trPr /><w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:tc></w:tr>"#
         );
     }
 

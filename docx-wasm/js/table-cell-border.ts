@@ -31,22 +31,24 @@ export type BorderType =
   | "babyPacifier"
   | "babyRattle";
 
-export type BorderPosition =
+export type TableCellBorderPosition =
   | "left"
   | "right"
   | "top"
   | "bottom"
   | "insideH"
-  | "insideV";
+  | "insideV"
+  | "tl2br"
+  | "tr2bl";
 
 export class TableCellBorder {
   _border_type: BorderType;
   _size = 2;
   _color = "000000";
-  position: BorderPosition;
+  position: TableCellBorderPosition;
   space = 0;
 
-  constructor(position: BorderPosition) {
+  constructor(position: TableCellBorderPosition) {
     this.position = position;
   }
 

@@ -22,12 +22,12 @@ pub struct TableBorder {
     pub border_type: BorderType,
     pub size: usize,
     pub color: String,
-    position: BorderPosition,
+    position: TableBorderPosition,
     space: usize,
 }
 
 impl TableBorder {
-    pub fn new(position: BorderPosition) -> TableBorder {
+    pub fn new(position: TableBorderPosition) -> TableBorder {
         TableBorder {
             position,
             border_type: BorderType::Single,
@@ -57,22 +57,22 @@ impl BuildXML for TableBorder {
     fn build(&self) -> Vec<u8> {
         let base = XMLBuilder::new();
         let base = match self.position {
-            BorderPosition::Top => {
+            TableBorderPosition::Top => {
                 base.border_top(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::Left => {
+            TableBorderPosition::Left => {
                 base.border_left(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::Bottom => {
+            TableBorderPosition::Bottom => {
                 base.border_bottom(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::Right => {
+            TableBorderPosition::Right => {
                 base.border_right(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::InsideH => {
+            TableBorderPosition::InsideH => {
                 base.border_inside_h(self.border_type, self.size, self.space, &self.color)
             }
-            BorderPosition::InsideV => {
+            TableBorderPosition::InsideV => {
                 base.border_inside_v(self.border_type, self.size, self.space, &self.color)
             }
         };
@@ -94,12 +94,12 @@ pub struct TableBorders {
 impl Default for TableBorders {
     fn default() -> TableBorders {
         TableBorders {
-            top: Some(TableBorder::new(BorderPosition::Top)),
-            left: Some(TableBorder::new(BorderPosition::Left)),
-            bottom: Some(TableBorder::new(BorderPosition::Bottom)),
-            right: Some(TableBorder::new(BorderPosition::Right)),
-            inside_h: Some(TableBorder::new(BorderPosition::InsideH)),
-            inside_v: Some(TableBorder::new(BorderPosition::InsideV)),
+            top: Some(TableBorder::new(TableBorderPosition::Top)),
+            left: Some(TableBorder::new(TableBorderPosition::Left)),
+            bottom: Some(TableBorder::new(TableBorderPosition::Bottom)),
+            right: Some(TableBorder::new(TableBorderPosition::Right)),
+            inside_h: Some(TableBorder::new(TableBorderPosition::InsideH)),
+            inside_v: Some(TableBorder::new(TableBorderPosition::InsideV)),
         }
     }
 }
@@ -122,38 +122,40 @@ impl TableBorders {
 
     pub fn set(mut self, border: TableBorder) -> Self {
         match border.position {
-            BorderPosition::Top => self.top = Some(border),
-            BorderPosition::Left => self.left = Some(border),
-            BorderPosition::Bottom => self.bottom = Some(border),
-            BorderPosition::Right => self.right = Some(border),
-            BorderPosition::InsideH => self.inside_h = Some(border),
-            BorderPosition::InsideV => self.inside_v = Some(border),
+            TableBorderPosition::Top => self.top = Some(border),
+            TableBorderPosition::Left => self.left = Some(border),
+            TableBorderPosition::Bottom => self.bottom = Some(border),
+            TableBorderPosition::Right => self.right = Some(border),
+            TableBorderPosition::InsideH => self.inside_h = Some(border),
+            TableBorderPosition::InsideV => self.inside_v = Some(border),
         };
         self
     }
 
-    pub fn clear(mut self, position: BorderPosition) -> Self {
+    pub fn clear(mut self, position: TableBorderPosition) -> Self {
         let nil = TableBorder::new(position.clone()).border_type(BorderType::Nil);
         match position {
-            BorderPosition::Top => self.top = Some(nil),
-            BorderPosition::Left => self.left = Some(nil),
-            BorderPosition::Bottom => self.bottom = Some(nil),
-            BorderPosition::Right => self.right = Some(nil),
-            BorderPosition::InsideH => self.inside_h = Some(nil),
-            BorderPosition::InsideV => self.inside_v = Some(nil),
+            TableBorderPosition::Top => self.top = Some(nil),
+            TableBorderPosition::Left => self.left = Some(nil),
+            TableBorderPosition::Bottom => self.bottom = Some(nil),
+            TableBorderPosition::Right => self.right = Some(nil),
+            TableBorderPosition::InsideH => self.inside_h = Some(nil),
+            TableBorderPosition::InsideV => self.inside_v = Some(nil),
         };
         self
     }
 
     pub fn clear_all(mut self) -> Self {
-        self.top = Some(TableBorder::new(BorderPosition::Top).border_type(BorderType::Nil));
-        self.left = Some(TableBorder::new(BorderPosition::Left).border_type(BorderType::Nil));
-        self.bottom = Some(TableBorder::new(BorderPosition::Bottom).border_type(BorderType::Nil));
-        self.right = Some(TableBorder::new(BorderPosition::Right).border_type(BorderType::Nil));
+        self.top = Some(TableBorder::new(TableBorderPosition::Top).border_type(BorderType::Nil));
+        self.left = Some(TableBorder::new(TableBorderPosition::Left).border_type(BorderType::Nil));
+        self.bottom =
+            Some(TableBorder::new(TableBorderPosition::Bottom).border_type(BorderType::Nil));
+        self.right =
+            Some(TableBorder::new(TableBorderPosition::Right).border_type(BorderType::Nil));
         self.inside_h =
-            Some(TableBorder::new(BorderPosition::InsideH).border_type(BorderType::Nil));
+            Some(TableBorder::new(TableBorderPosition::InsideH).border_type(BorderType::Nil));
         self.inside_v =
-            Some(TableBorder::new(BorderPosition::InsideV).border_type(BorderType::Nil));
+            Some(TableBorder::new(TableBorderPosition::InsideV).border_type(BorderType::Nil));
         self
     }
 }
@@ -193,8 +195,8 @@ mod tests {
     #[test]
     fn test_table_borders_set() {
         let b = TableBorders::new()
-            .set(TableBorder::new(BorderPosition::Left).color("AAAAAA"))
-            .clear(BorderPosition::Top)
+            .set(TableBorder::new(TableBorderPosition::Left).color("AAAAAA"))
+            .clear(TableBorderPosition::Top)
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

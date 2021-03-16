@@ -103,6 +103,37 @@ describe("writer", () => {
     writeFileSync("../output/nested_table.docx", buffer);
   });
 
+  test("should write tl2br and tr2bl cells", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello!!"));
+    const table = new w.Table().addRow(
+      new w.TableRow()
+        .addCell(
+          new w.TableCell()
+            .setBorder(new w.TableCellBorder("tl2br"))
+            .addParagraph(p)
+        )
+        .addCell(
+          new w.TableCell()
+            .setBorder(new w.TableCellBorder("tr2bl"))
+            .addParagraph(p)
+        )
+        .addCell(
+          new w.TableCell()
+            .setBorder(new w.TableCellBorder("tr2bl"))
+            .setBorder(new w.TableCellBorder("tl2br"))
+            .addParagraph(p)
+        )
+    );
+    const buffer = new w.Docx().addTable(table).build();
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+    writeFileSync("../output/cell_borders.docx", buffer);
+  });
+
   test("should write page margin", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!"));
     const buffer = new w.Docx()

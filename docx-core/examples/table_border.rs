@@ -9,9 +9,9 @@ pub fn main() -> Result<(), DocxError> {
             TableCell::new()
                 .add_paragraph(Paragraph::new())
                 .grid_span(2)
-                .clear_border(BorderPosition::Left)
-                .clear_border(BorderPosition::Bottom)
-                .clear_border(BorderPosition::Right),
+                .clear_border(TableCellBorderPosition::Left)
+                .clear_border(TableCellBorderPosition::Bottom)
+                .clear_border(TableCellBorderPosition::Right),
             TableCell::new()
                 .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
                 .vertical_align(VAlignType::Center)

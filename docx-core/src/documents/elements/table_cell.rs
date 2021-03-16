@@ -98,7 +98,7 @@ impl TableCell {
         self
     }
 
-    pub fn clear_border(mut self, position: BorderPosition) -> Self {
+    pub fn clear_border(mut self, position: TableCellBorderPosition) -> Self {
         self.property = self.property.clear_border(position);
         self
     }
@@ -137,6 +137,10 @@ impl BuildXML for TableCell {
                 }
             }
         }
+        // INFO: We need to add empty paragraph when parent cell includes only cell.
+        if self.children.is_empty() {
+            b = b.add_child(&Paragraph::new())
+        }
         b.close().build()
     }
 }
@@ -152,7 +156,7 @@ mod tests {
     #[test]
     fn test_cell() {
         let b = TableCell::new().build();
-        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:tc><w:tcPr /></w:tc>"#);
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:tc>"#);
     }
 
     #[test]

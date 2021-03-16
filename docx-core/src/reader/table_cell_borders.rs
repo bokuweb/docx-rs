@@ -29,7 +29,7 @@ impl ElementReader for TableCellBorders {
                             borders = borders.set(border);
                             continue;
                         }
-                        XMLElement::Right => {
+                        XMLElement::Right | XMLElement::End => {
                             let attr = read_border(&attributes)?;
                             let mut border = TableCellBorder::new(TableCellBorderPosition::Right)
                                 .border_type(attr.border_type)
@@ -51,7 +51,7 @@ impl ElementReader for TableCellBorders {
                             borders = borders.set(border);
                             continue;
                         }
-                        XMLElement::Left => {
+                        XMLElement::Left | XMLElement::Start => {
                             let attr = read_border(&attributes)?;
                             let mut border = TableCellBorder::new(TableCellBorderPosition::Left)
                                 .border_type(attr.border_type)

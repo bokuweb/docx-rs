@@ -687,9 +687,7 @@ Object {
     },
     "styles": Array [
       Object {
-        "basedOn": Object {
-          "val": "Normal",
-        },
+        "basedOn": "Normal",
         "name": "Normal",
         "paragraphProperty": Object {
           "alignment": null,
@@ -5439,9 +5437,7 @@ Object {
         },
       },
       Object {
-        "basedOn": Object {
-          "val": "a",
-        },
+        "basedOn": "a",
         "name": "List Paragraph",
         "paragraphProperty": Object {
           "alignment": null,
@@ -8410,9 +8406,7 @@ Object {
         },
       },
       Object {
-        "basedOn": Object {
-          "val": "a",
-        },
+        "basedOn": "a",
         "name": "annotation text",
         "paragraphProperty": Object {
           "alignment": null,
@@ -8512,9 +8506,7 @@ Object {
         },
       },
       Object {
-        "basedOn": Object {
-          "val": "a0",
-        },
+        "basedOn": "a0",
         "name": "コメント文字列 (文字)",
         "paragraphProperty": Object {
           "alignment": null,
@@ -8614,9 +8606,7 @@ Object {
         },
       },
       Object {
-        "basedOn": Object {
-          "val": "a0",
-        },
+        "basedOn": "a0",
         "name": "annotation reference",
         "paragraphProperty": Object {
           "alignment": null,
@@ -8716,9 +8706,7 @@ Object {
         },
       },
       Object {
-        "basedOn": Object {
-          "val": "a3",
-        },
+        "basedOn": "a3",
         "name": "annotation subject",
         "paragraphProperty": Object {
           "alignment": null,
@@ -8818,9 +8806,7 @@ Object {
         },
       },
       Object {
-        "basedOn": Object {
-          "val": "a4",
-        },
+        "basedOn": "a4",
         "name": "コメント内容 (文字)",
         "paragraphProperty": Object {
           "alignment": null,
@@ -8920,9 +8906,7 @@ Object {
         },
       },
       Object {
-        "basedOn": Object {
-          "val": "a1",
-        },
+        "basedOn": "a1",
         "name": "Table Grid",
         "paragraphProperty": Object {
           "alignment": null,
@@ -10280,9 +10264,7 @@ Object {
         },
       },
       Object {
-        "basedOn": Object {
-          "val": "a1",
-        },
+        "basedOn": "a1",
         "name": "Table Grid",
         "paragraphProperty": Object {
           "alignment": null,

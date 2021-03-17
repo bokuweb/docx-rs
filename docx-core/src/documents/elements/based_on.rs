@@ -1,9 +1,9 @@
-use serde::Serialize;
+use serde::{Serialize, Serializer};
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct BasedOn {
     val: String,
 }
@@ -11,6 +11,15 @@ pub struct BasedOn {
 impl BasedOn {
     pub fn new(val: impl Into<String>) -> BasedOn {
         BasedOn { val: val.into() }
+    }
+}
+
+impl Serialize for BasedOn {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.val)
     }
 }
 

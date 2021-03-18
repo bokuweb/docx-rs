@@ -1,5 +1,6 @@
 import { Paragraph } from "./paragraph";
 import { Table } from "./table";
+import { Shading } from "./shading";
 import { TableCellBorders, PositionKeys } from "./table-cell-borders";
 import { TableCellBorderPosition, TableCellBorder } from "./table-cell-border";
 import * as wasm from "./pkg";
@@ -56,6 +57,7 @@ export type CellProperty = {
   gridSpan?: number;
   width?: number;
   textDirection?: TextDirectionType;
+  shading?: Shading;
 };
 
 export class TableCell {
@@ -98,6 +100,14 @@ export class TableCell {
 
   width(v: number) {
     this.property.width = v;
+    return this;
+  }
+
+  shading(color: string, fill: string) {
+    const s = new Shading();
+    s.color(color);
+    s.fill(fill);
+    this.property.shading = s;
     return this;
   }
 

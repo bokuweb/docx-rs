@@ -68,6 +68,11 @@ impl TableCell {
         self
     }
 
+    pub fn shading(mut self, s: Shading) -> TableCell {
+        self.property = self.property.shading(s);
+        self
+    }
+
     pub fn vertical_align(mut self, t: VAlignType) -> TableCell {
         self.property = self.property.vertical_align(t);
         self
@@ -156,7 +161,10 @@ mod tests {
     #[test]
     fn test_cell() {
         let b = TableCell::new().build();
-        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:tc>"#);
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:tc>"#
+        );
     }
 
     #[test]
@@ -177,7 +185,7 @@ mod tests {
             .grid_span(2);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"children":[{"type":"paragraph","data":{"id":"12345678","children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineHeight":null},"hasNumbering":false}}],"property":{"width":null,"borders":null,"gridSpan":2,"verticalMerge":null,"verticalAlign":null,"textDirection":null},"hasNumbering":false}"#
+            r#"{"children":[{"type":"paragraph","data":{"id":"12345678","children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineHeight":null},"hasNumbering":false}}],"property":{"width":null,"borders":null,"gridSpan":2,"verticalMerge":null,"verticalAlign":null,"textDirection":null,"shading":null},"hasNumbering":false}"#
         );
     }
 }

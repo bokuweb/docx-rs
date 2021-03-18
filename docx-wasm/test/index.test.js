@@ -134,6 +134,23 @@ describe("writer", () => {
     writeFileSync("../output/cell_borders.docx", buffer);
   });
 
+  test("should write cell shading", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello!!"));
+    const table = new w.Table().addRow(
+      new w.TableRow().addCell(
+        new w.TableCell().addParagraph(p).shading("auto", "FF0000")
+      )
+    );
+    const buffer = new w.Docx().addTable(table).build();
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+    writeFileSync("../output/cell_shading.docx", buffer);
+  });
+
   test("should write page margin", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!"));
     const buffer = new w.Docx()

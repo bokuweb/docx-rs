@@ -13,13 +13,19 @@ pub struct Shading {
     pub fill: String,
 }
 
-impl Shading {
-    pub fn new() -> Shading {
+impl Default for Shading {
+    fn default() -> Self {
         Shading {
             shd_type: ShdType::Clear,
             color: "auto".to_owned(),
             fill: "FFFFFF".to_owned(),
         }
+    }
+}
+
+impl Shading {
+    pub fn new() -> Shading {
+        Shading::default()
     }
 
     pub fn color(mut self, color: impl Into<String>) -> Shading {

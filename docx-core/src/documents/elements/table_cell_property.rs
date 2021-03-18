@@ -14,6 +14,7 @@ pub struct TableCellProperty {
     vertical_merge: Option<VMerge>,
     vertical_align: Option<VAlign>,
     text_direction: Option<TextDirection>,
+    shading: Option<Shading>,
 }
 
 impl TableCellProperty {
@@ -43,6 +44,11 @@ impl TableCellProperty {
 
     pub fn grid_span(mut self, v: usize) -> TableCellProperty {
         self.grid_span = Some(GridSpan::new(v));
+        self
+    }
+
+    pub fn shading(mut self, s: Shading) -> Self {
+        self.shading = Some(s);
         self
     }
 
@@ -76,6 +82,7 @@ impl Default for TableCellProperty {
             vertical_merge: None,
             vertical_align: None,
             text_direction: None,
+            shading: None,
         }
     }
 }
@@ -90,6 +97,7 @@ impl BuildXML for TableCellProperty {
             .add_optional_child(&self.vertical_merge)
             .add_optional_child(&self.vertical_align)
             .add_optional_child(&self.text_direction)
+            .add_optional_child(&self.shading)
             .close()
             .build()
     }
@@ -137,6 +145,17 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:tcPr><w:vAlign w:val="center" /></w:tcPr>"#
+        );
+    }
+
+    #[test]
+    fn test_shd() {
+        let c = TableCellProperty::new()
+            .shading(Shading::new().shd_type(ShdType::Clear).fill("FF0000"));
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:tcPr><w:shd w:val="clear" w:color="auto" w:fill="FF0000" /></w:tcPr>"#
         );
     }
 

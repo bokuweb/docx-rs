@@ -1,4 +1,5 @@
 use super::*;
+use docx_rs::Shading;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -49,6 +50,13 @@ impl TableCell {
 
     pub fn width(mut self, v: usize) -> TableCell {
         self.0.property = self.0.property.width(v, docx_rs::WidthType::DXA);
+        self
+    }
+
+    pub fn shading(mut self, color: &str, fill: &str) -> TableCell {
+        // INFO: Now shd_type is fixed to `clear` from js
+        let s = Shading::new().color(color).fill(fill);
+        self.0.property = self.0.property.shading(s);
         self
     }
 

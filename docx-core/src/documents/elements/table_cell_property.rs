@@ -167,7 +167,7 @@ mod tests {
             .width(200, WidthType::DXA);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"width":{"width":200,"widthType":"DXA"},"borders":null,"gridSpan":3,"verticalMerge":"continue","verticalAlign":null,"textDirection":null}"#
+            r#"{"width":{"width":200,"widthType":"DXA"},"borders":null,"gridSpan":3,"verticalMerge":"continue","verticalAlign":null,"textDirection":null,"shading":null}"#
         );
     }
 
@@ -176,7 +176,7 @@ mod tests {
         let c = TableCellProperty::new().vertical_align(VAlignType::Center);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":"center","textDirection":null}"#
+            r#"{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":"center","textDirection":null,"shading":null}"#
         );
     }
 }

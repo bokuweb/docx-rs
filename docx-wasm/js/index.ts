@@ -486,6 +486,10 @@ export class Docx {
       cell = this.buildCellBorders(c, cell);
     }
 
+    if (typeof c.property.shading !== "undefined") {
+      cell = cell.shading(c.property.shading._color, c.property.shading._fill);
+    }
+
     return cell;
   }
 

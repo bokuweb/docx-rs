@@ -2,6 +2,7 @@ import { ParagraphJSON } from "./paragraph";
 import { BorderJSON } from "./border";
 import { HeightRule } from "../table-row";
 import { TextDirectionType } from "../table-cell";
+import { ShadingJSON } from "./shading";
 
 export type TableCellChildJSON = ParagraphJSON;
 
@@ -21,6 +22,7 @@ export type TableCellPropertyJSON = {
   verticalAlign: "top" | "center" | "bottom" | null;
   textDirection: TextDirectionType | null;
   hasNumbering: boolean;
+  shading: ShadingJSON | null;
 };
 
 export type TableRowPropertyJSON = {

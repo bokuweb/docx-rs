@@ -16,9 +16,9 @@ pub struct Shading {
 impl Shading {
     pub fn new() -> Shading {
         Shading {
-            shd_type: ShdType::Nil,
+            shd_type: ShdType::Clear,
             color: "auto".to_owned(),
-            fill: "#FFFFFF".to_owned(),
+            fill: "FFFFFF".to_owned(),
         }
     }
 

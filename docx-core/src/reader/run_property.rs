@@ -45,6 +45,18 @@ impl ElementReader for RunProperty {
                             rp = rp.italic();
                         }
                         XMLElement::Vanish => rp = rp.vanish(),
+                        XMLElement::TextBorder => {
+                            if let Ok(attr) = read_border(&attributes) {
+                                let mut border = TextBorder::new()
+                                    .border_type(attr.border_type)
+                                    .color(attr.color);
+                                if let Some(size) = attr.size {
+                                    border = border.size(size as usize);
+                                };
+                                rp = rp.text_border(border);
+                                continue;
+                            }
+                        }
                         _ => {}
                     }
                 }

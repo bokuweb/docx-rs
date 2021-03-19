@@ -79,6 +79,11 @@ impl ElementReader for SectionProperty {
                             let size = read_page_size(&attributes)?;
                             sp = sp.page_size(size);
                         }
+                        XMLElement::DocGrid => {
+                            if let Ok(doc_grid) = DocGrid::read(r, &attributes) {
+                                sp = sp.doc_grid(doc_grid);
+                            }
+                        }
                         _ => {}
                     }
                 }

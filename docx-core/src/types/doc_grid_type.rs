@@ -8,6 +8,7 @@ use super::errors;
 
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub enum DocGridType {
     Default,
     Lines,

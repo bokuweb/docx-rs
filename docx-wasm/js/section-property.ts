@@ -1,6 +1,17 @@
+import { DocGridType } from ".";
+
 export class SectionProperty {
   _pageSize: PageSize | null = null;
   _pageMargin: PageMargin | null = null;
+  _docGrid: {
+    gridType: DocGridType;
+    linePitch: number | null;
+    charSpace: number | null;
+  } = {
+    gridType: "lines",
+    linePitch: 360,
+    charSpace: null,
+  };
 
   pageSize(w: number, h: number) {
     this._pageSize = { w, h };
@@ -9,6 +20,15 @@ export class SectionProperty {
 
   pageMargin(margin: Partial<PageMargin>) {
     this._pageMargin = { ...defaultPageMargin(), ...margin };
+    return this;
+  }
+
+  docGrid(
+    gridType: DocGridType,
+    linePitch: number | null,
+    charSpace: number | null
+  ) {
+    this._docGrid = { gridType, linePitch, charSpace };
     return this;
   }
 }

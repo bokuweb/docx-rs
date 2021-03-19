@@ -112,6 +112,7 @@ pub enum XMLElement {
     DocId,
     DocVars,
     DocVar,
+    DocGrid,
     DocDefaults,
     RunPropertyDefault,
     SectionProperty,
@@ -283,6 +284,7 @@ impl FromStr for XMLElement {
             "rFonts" => Ok(XMLElement::RunFonts),
             "pgMar" => Ok(XMLElement::PageMargin),
             "docDefaults" => Ok(XMLElement::DocDefaults),
+            "docGrid" => Ok(XMLElement::DocGrid),
             "rPrDefault" => Ok(XMLElement::RunPropertyDefault),
             _ => Ok(XMLElement::Unsupported),
         }

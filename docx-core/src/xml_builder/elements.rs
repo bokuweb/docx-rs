@@ -346,6 +346,28 @@ impl XMLBuilder {
             .expect(EXPECT_MESSAGE);
         self.close()
     }
+
+    // docGrid
+    pub(crate) fn doc_grid(
+        mut self,
+        t: &DocGridType,
+        line_pitch: Option<usize>,
+        char_space: Option<usize>,
+    ) -> Self {
+        let t = t.to_string();
+        let line_pitch_string = format!("{}", line_pitch.unwrap_or_default());
+        let char_space_string = format!("{}", char_space.unwrap_or_default());
+        let mut w = XmlEvent::start_element("w:docGrid").attr("w:type", &t);
+        if line_pitch.is_some() {
+            w = w.attr("w:linePitch", &line_pitch_string);
+        }
+        if char_space.is_some() {
+            w = w.attr("w:charSpace", &&char_space_string);
+        }
+        self.writer.write(w).expect(EXPECT_MESSAGE);
+
+        self.close()
+    }
 }
 
 #[cfg(test)]

@@ -135,6 +135,11 @@ impl Document {
         self
     }
 
+    pub fn doc_grid(mut self, doc_grid: DocGrid) -> Self {
+        self.section_property = self.section_property.doc_grid(doc_grid);
+        self
+    }
+
     pub fn default_section_property(mut self, property: SectionProperty) -> Self {
         self.section_property = property;
         self

@@ -88,6 +88,23 @@ impl Docx {
         self
     }
 
+    pub fn doc_grid(
+        mut self,
+        grid_type: docx_rs::DocGridType,
+        line_pitch: Option<usize>,
+        char_space: Option<usize>,
+    ) -> Self {
+        let mut doc_grid = docx_rs::DocGrid::with_empty().grid_type(grid_type);
+        if let Some(line_pitch) = line_pitch {
+            doc_grid = doc_grid.line_pitch(line_pitch);
+        }
+        if let Some(char_space) = char_space {
+            doc_grid = doc_grid.char_space(char_space);
+        }
+        self.0.document = self.0.document.doc_grid(doc_grid);
+        self
+    }
+
     pub fn build(&mut self, has_numberings: bool) -> Result<Vec<u8>, JsValue> {
         let buf = Vec::new();
         let mut cur = std::io::Cursor::new(buf);

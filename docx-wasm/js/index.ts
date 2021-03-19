@@ -710,6 +710,10 @@ export class Docx {
       docx = docx.page_size(w, h);
     }
 
+    if (this.sectionProperty._docGrid) {
+      // docx = docx.do(w, h);
+    }
+
     if (this.styles?.docDefaults) {
       if (this.styles.docDefaults.runProperty?.fonts) {
         const fonts = this.buildRunFonts(

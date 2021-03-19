@@ -24,6 +24,7 @@ mod numberings;
 mod paragraph;
 mod read_zip;
 mod rels;
+mod doc_grid;
 mod run;
 mod run_property;
 mod section_property;

@@ -1,3 +1,11 @@
+export type DocGridType = "default" | "lines" | "linesAndChars" | "snapToChars";
+
+export type DocGridJSON = {
+  gridType: DocGridType;
+  linePitch: number | null;
+  charSpace: number | null;
+};
+
 export type SectionPropertyJSON = {
   pageSize: {
     w: number;
@@ -13,5 +21,5 @@ export type SectionPropertyJSON = {
     gutter: number;
   };
   columns: number;
-  documentGrid: number;
+  docGrid: DocGridJSON;
 };

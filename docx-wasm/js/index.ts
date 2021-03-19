@@ -487,7 +487,11 @@ export class Docx {
     }
 
     if (typeof c.property.shading !== "undefined") {
-      cell = cell.shading(c.property.shading._color, c.property.shading._fill);
+      cell = cell.shading(
+        c.property.shading._type,
+        c.property.shading._color,
+        c.property.shading._fill
+      );
     }
 
     return cell;

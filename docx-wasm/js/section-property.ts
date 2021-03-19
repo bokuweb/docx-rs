@@ -1,13 +1,15 @@
 import { DocGridType } from ".";
 
+export type DocGrid = {
+  gridType: DocGridType;
+  linePitch?: number;
+  charSpace?: number;
+};
+
 export class SectionProperty {
   _pageSize: PageSize | null = null;
   _pageMargin: PageMargin | null = null;
-  _docGrid: {
-    gridType: DocGridType;
-    linePitch?: number;
-    charSpace?: number;
-  } = {
+  _docGrid: DocGrid = {
     gridType: "lines",
     linePitch: 360,
   };

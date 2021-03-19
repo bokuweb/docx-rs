@@ -3,6 +3,10 @@ export class Shading {
   _color: string = "auto";
   _fill: string = "FFFFFF";
 
+  type(t: string) {
+    this._type = t;
+  }
+
   color(c: string) {
     this._color = c;
   }

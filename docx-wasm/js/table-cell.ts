@@ -103,10 +103,11 @@ export class TableCell {
     return this;
   }
 
-  shading(color: string, fill: string) {
+  shading(type: string, color: string, fill: string) {
     const s = new Shading();
     s.color(color);
     s.fill(fill);
+    s.type(type);
     this.property.shading = s;
     return this;
   }

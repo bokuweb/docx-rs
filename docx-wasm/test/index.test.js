@@ -138,7 +138,7 @@ describe("writer", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello!!"));
     const table = new w.Table().addRow(
       new w.TableRow().addCell(
-        new w.TableCell().addParagraph(p).shading("auto", "FF0000")
+        new w.TableCell().addParagraph(p).shading("clear", "auto", "FF0000")
       )
     );
     const buffer = new w.Docx().addTable(table).build();

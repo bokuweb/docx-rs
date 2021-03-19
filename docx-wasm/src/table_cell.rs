@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use super::*;
 use docx_rs::Shading;
 use wasm_bindgen::prelude::*;
@@ -53,9 +55,11 @@ impl TableCell {
         self
     }
 
-    pub fn shading(mut self, color: &str, fill: &str) -> TableCell {
-        // INFO: Now shd_type is fixed to `clear` from js
-        let s = Shading::new().color(color).fill(fill);
+    pub fn shading(mut self, t: &str, color: &str, fill: &str) -> TableCell {
+        let mut s = Shading::new().color(color).fill(fill);
+        if let Ok(t) = docx_rs::ShdType::from_str(t) {
+            s = s.shd_type(t);
+        }
         self.0.property = self.0.property.shading(s);
         self
     }

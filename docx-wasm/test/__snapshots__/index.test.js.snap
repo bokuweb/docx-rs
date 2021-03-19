@@ -1096,7 +1096,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": "center",
@@ -1179,7 +1179,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": "center",
@@ -1273,7 +1273,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": "center",
@@ -1356,7 +1356,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": "center",
@@ -1450,7 +1450,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -1533,7 +1533,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -1627,7 +1627,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -1710,7 +1710,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -1804,7 +1804,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -1887,7 +1887,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -1970,7 +1970,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -2064,7 +2064,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -2147,7 +2147,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -2230,7 +2230,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -2318,7 +2318,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -2395,7 +2395,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -2478,7 +2478,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -2572,7 +2572,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -2655,7 +2655,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,
@@ -2738,7 +2738,7 @@ Object {
                     "shading": Object {
                       "color": "auto",
                       "fill": "auto",
-                      "shdType": "Clear",
+                      "shdType": "clear",
                     },
                     "textDirection": null,
                     "verticalAlign": null,

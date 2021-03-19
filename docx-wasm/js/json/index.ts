@@ -53,6 +53,7 @@ export * from "./run";
 export * from "./table";
 export * from "./numbering";
 export * from "./drawing";
+export * from "./shading";
 export * from "./comment";
 export * from "./textbox-content";
 export * from "./section-property";

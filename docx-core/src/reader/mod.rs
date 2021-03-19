@@ -29,6 +29,7 @@ mod run;
 mod run_property;
 mod section_property;
 mod settings;
+mod shading;
 mod style;
 mod styles;
 mod table;

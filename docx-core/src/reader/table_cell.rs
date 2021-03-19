@@ -75,6 +75,11 @@ impl ElementReader for TableCell {
                                                 )?);
                                             }
                                         }
+                                        XMLElement::Shading => {
+                                            if let Ok(shd) = Shading::read(r, &attributes) {
+                                                cell = cell.shading(shd);
+                                            }
+                                        }
                                         XMLElement::TextDirection => {
                                             if let Some(a) = &attributes.get(0) {
                                                 if let Ok(v) = TextDirectionType::from_str(&a.value)
@@ -139,7 +144,6 @@ mod tests {
             <w:insideH w:val="single" w:sz="5" w:space="0" w:color="FF0000"/>
             <w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000"/>
         </w:tcBorders>
-        <w:shd w:fill="auto" w:val="clear"/>
     </w:tcPr>
     <w:p>
         <w:r>
@@ -179,7 +183,6 @@ mod tests {
     <w:tcPr>
         <w:tcW w:w="6425" w:type="dxa"/>
         <w:vMerge />
-        <w:shd w:fill="auto" w:val="clear"/>
     </w:tcPr>
     <w:p>
         <w:r>
@@ -206,7 +209,6 @@ mod tests {
     <w:tcPr>
         <w:tcW w:w="6425" w:type="dxa"/>
         <w:vAlign w:val="bottom"/>
-        <w:shd w:fill="auto" w:val="clear"/>
     </w:tcPr>
     <w:p>
         <w:r>

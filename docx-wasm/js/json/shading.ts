@@ -1,5 +1,5 @@
 export type ShadingJSON = {
-  shd_type: string | null;
+  shdType: string;
   color: string;
   fill: string;
 };

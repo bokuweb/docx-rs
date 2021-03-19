@@ -210,6 +210,8 @@ impl XMLBuilder {
     closed_border_el!(border_tl2br, "w:tl2br");
     closed_border_el!(border_tr2bl, "w:tr2bl");
 
+    closed_border_el!(text_border, "w:bdr");
+
     closed!(shd, "w:shd", "w:val", "w:color", "w:fill");
 
     closed!(tab, "w:tab");

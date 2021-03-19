@@ -269,6 +269,7 @@ mod tests {
                 vanish: Some(Vanish::new()),
                 spacing: Some(100),
                 fonts: None,
+                text_border: None,
             },
         };
         assert_eq!(

@@ -19,6 +19,7 @@ pub struct RunProperty {
     pub vanish: Option<Vanish>,
     pub spacing: Option<i32>,
     pub fonts: Option<RunFonts>,
+    pub text_border: Option<TextBorder>,
 }
 
 impl RunProperty {
@@ -85,6 +86,11 @@ impl RunProperty {
         self.fonts = Some(font);
         self
     }
+
+    pub fn text_border(mut self, b: TextBorder) -> Self {
+        self.text_border = Some(b);
+        self
+    }
 }
 
 impl Default for RunProperty {
@@ -102,6 +108,7 @@ impl Default for RunProperty {
             vanish: None,
             fonts: None,
             spacing: None,
+            text_border: None,
         }
     }
 }
@@ -126,6 +133,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.underline)
             .add_optional_child(&self.vanish)
             .add_optional_child(&self.fonts)
+            .add_optional_child(&self.text_border)
             .add_optional_child(&spacing)
             .close()
             .build()

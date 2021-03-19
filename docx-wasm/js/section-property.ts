@@ -5,12 +5,11 @@ export class SectionProperty {
   _pageMargin: PageMargin | null = null;
   _docGrid: {
     gridType: DocGridType;
-    linePitch: number | null;
-    charSpace: number | null;
+    linePitch?: number;
+    charSpace?: number;
   } = {
     gridType: "lines",
     linePitch: 360,
-    charSpace: null,
   };
 
   pageSize(w: number, h: number) {
@@ -23,11 +22,7 @@ export class SectionProperty {
     return this;
   }
 
-  docGrid(
-    gridType: DocGridType,
-    linePitch: number | null,
-    charSpace: number | null
-  ) {
+  docGrid(gridType: DocGridType, linePitch?: number, charSpace?: number) {
     this._docGrid = { gridType, linePitch, charSpace };
     return this;
   }

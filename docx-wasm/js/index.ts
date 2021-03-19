@@ -19,7 +19,7 @@ import { Settings } from "./settings";
 import { DocProps } from "./doc-props";
 import { Styles } from "./styles";
 import { SectionProperty, PageMargin } from "./section-property";
-import { DocxJSON } from "./json";
+import { DocGridType, DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
 import { Level } from "./level";
@@ -124,6 +124,11 @@ export class Docx {
 
   pageMargin(margin: Partial<PageMargin>) {
     this.sectionProperty.pageMargin(margin);
+    return this;
+  }
+
+  docGrid(type: DocGridType, linePitch?: number, charSpace?: number) {
+    this.sectionProperty.docGrid(type, linePitch, charSpace);
     return this;
   }
 
@@ -711,7 +716,22 @@ export class Docx {
     }
 
     if (this.sectionProperty._docGrid) {
-      // docx = docx.do(w, h);
+      const { gridType, charSpace, linePitch } = this.sectionProperty._docGrid;
+      let type = wasm.DocGridType.Default;
+      switch (gridType) {
+        case "lines":
+          type = wasm.DocGridType.Lines;
+          break;
+        case "linesAndChars":
+          type = wasm.DocGridType.LinesAndChars;
+          break;
+        case "snapToChars":
+          type = wasm.DocGridType.SnapToChars;
+          break;
+        case "default":
+          break;
+      }
+      docx = docx.doc_grid(type, linePitch, charSpace);
     }
 
     if (this.styles?.docDefaults) {

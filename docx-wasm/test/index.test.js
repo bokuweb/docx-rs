@@ -179,4 +179,16 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write doc grid", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!!!"));
+    const buffer = new w.Docx().addParagraph(p).docGrid("default", 360).build();
+    writeFileSync("../output/doc_grid.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

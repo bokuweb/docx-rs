@@ -1,6 +1,6 @@
 {
   "name": "docx-wasm",
-  "version": "0.0.160",
+  "version": "0.0.161",
   "main": "dist/node/index.js",
   "browser": "dist/web/index.js",
   "author": "bokuweb <bokuweb12@gmail.com>",

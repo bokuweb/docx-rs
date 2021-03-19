@@ -1,6 +1,6 @@
 {
   "name": "docx-wasm",
-  "version": "0.0.164",
+  "version": "0.0.166",
   "main": "dist/node/index.js",
   "browser": "dist/web/index.js",
   "author": "bokuweb <bokuweb12@gmail.com>",
@@ -14,7 +14,7 @@
     "tsc:node": "tsc -p tsconfig.node.json",
     "tsc": "run-s tsc:*",
     "test": "npm run build && tsc && jest",
-    "build": "run-s wasm-pack tsc copy",
+    "build": "run-s wasm-pack tsc",
     "serve": "webpack-dev-server --open --config webpack.dev.js",
     "copy": "cpy 'dist/node/pkg/package.json'  'dist/web/pkg'",
     "prepublishOnly": "npm run build"

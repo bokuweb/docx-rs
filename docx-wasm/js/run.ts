@@ -2,8 +2,16 @@ import { Text } from "./text";
 import { DeleteText } from "./delete-text";
 import { Tab } from "./tab";
 import { Break, BreakType } from "./break";
+import { BorderType } from "./border";
 
 export type RunChild = Text | DeleteText | Tab | Break;
+
+export type TextBorder = {
+  borderType: BorderType;
+  color: string;
+  space: number;
+  size: number;
+};
 
 export type RunProperty = {
   size?: number;
@@ -15,6 +23,7 @@ export type RunProperty = {
   vanish?: boolean;
   fonts?: RunFonts;
   spacing?: number;
+  textBorder?: TextBorder;
 };
 
 export class RunFonts {
@@ -110,6 +119,19 @@ export class Run {
 
   spacing(spacing: number) {
     this.property = { ...this.property, spacing };
+    return this;
+  }
+
+  textBorder(type: BorderType, size: number, space: number, color: string) {
+    this.property = {
+      ...this.property,
+      textBorder: {
+        borderType: type,
+        size,
+        space,
+        color,
+      },
+    };
     return this;
   }
 }

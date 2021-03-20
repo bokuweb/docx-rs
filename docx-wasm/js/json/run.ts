@@ -1,6 +1,13 @@
 import { DrawingJSON } from "./drawing";
 import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
 
+export type TextBorderJSON = {
+  borderType: string;
+  size: number;
+  space: number;
+  color: string;
+};
+
 export type RunPropertyJSON = {
   sz: number | null;
   szCs: number | null;
@@ -13,6 +20,7 @@ export type RunPropertyJSON = {
   italicCs: boolean | null;
   vanish: boolean | null;
   spacing: number | null;
+  TextBorder: TextBorderJSON | null;
 };
 
 export type RunChildJSON =

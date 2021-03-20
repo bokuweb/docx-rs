@@ -208,4 +208,18 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write text border", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello "))
+      .addRun(new w.Run().addText("World!").textBorder("single", 4, 0, "auto"));
+    const buffer = new w.Docx().addParagraph(p).build();
+    writeFileSync("../output/text_border.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

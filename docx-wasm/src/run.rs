@@ -1,4 +1,5 @@
 use super::*;
+use docx_rs::{BorderType, TextBorder};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -82,6 +83,22 @@ impl Run {
 
     pub fn spacing(mut self, spacing: i32) -> Run {
         self.0.run_property = self.0.run_property.spacing(spacing);
+        self
+    }
+
+    pub fn text_border(
+        mut self,
+        border_type: BorderType,
+        size: usize,
+        space: usize,
+        color: &str,
+    ) -> Run {
+        let border = TextBorder::new()
+            .border_type(border_type)
+            .size(size)
+            .space(space)
+            .color(color);
+        self.0.run_property = self.0.run_property.text_border(border);
         self
     }
 }

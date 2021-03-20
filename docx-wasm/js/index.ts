@@ -4,7 +4,7 @@ import { Delete } from "./delete";
 import { DeleteText } from "./delete-text";
 import { Table } from "./table";
 import { TableCell, toTextDirectionWasmType } from "./table-cell";
-import { BorderType } from "./table-cell-border";
+import { BorderType } from "./border";
 import { Run, RunFonts } from "./run";
 import { Text } from "./text";
 import { Tab } from "./tab";
@@ -214,6 +214,11 @@ export class Docx {
 
     if (r.property.spacing != null) {
       run = run.spacing(r.property.spacing);
+    }
+
+    if (r.property.textBorder) {
+      const { borderType, color, space, size } = r.property.textBorder;
+      run = run.text_border(convertBorderType(borderType), size, space, color);
     }
 
     const fonts = this.buildRunFonts(r.property.fonts);
@@ -794,6 +799,7 @@ export const readDocx = (buf: Uint8Array) => {
 export * from "./paragraph";
 export * from "./insert";
 export * from "./delete";
+export * from "./border";
 export * from "./table";
 export * from "./table-cell";
 export * from "./table-cell-border";

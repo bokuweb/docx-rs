@@ -99,6 +99,7 @@ writeFileSync("hello.docx", buffer);
   - [x] Underline
   - [x] vanish
   - [x] Italic
+  - [x] TextBorder
 - [x] Break
 - [x] Header
 - [ ] Footer

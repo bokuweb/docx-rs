@@ -90,7 +90,7 @@ mod tests {
             .num_style_link("style1");
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"id":0,"styleLink":null,"numStyleLink":"style1","levels":[{"level":1,"start":1,"format":"decimal","text":"%4.","jc":"left","pstyle":null,"paragraphProperty":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineHeight":null},"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null},"suffix":"tab"}]}"#
+            r#"{"id":0,"styleLink":null,"numStyleLink":"style1","levels":[{"level":1,"start":1,"format":"decimal","text":"%4.","jc":"left","pstyle":null,"paragraphProperty":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null,"textBorder":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineHeight":null},"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null,"textBorder":null},"suffix":"tab"}]}"#
         );
     }
 }

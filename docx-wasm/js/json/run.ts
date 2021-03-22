@@ -20,7 +20,7 @@ export type RunPropertyJSON = {
   italicCs: boolean | null;
   vanish: boolean | null;
   spacing: number | null;
-  TextBorder: TextBorderJSON | null;
+  textBorder: TextBorderJSON | null;
 };
 
 export type RunChildJSON =

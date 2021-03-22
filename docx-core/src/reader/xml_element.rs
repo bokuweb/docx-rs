@@ -246,6 +246,8 @@ impl FromStr for XMLElement {
             "bottom" => Ok(XMLElement::Bottom),
             "insideH" => Ok(XMLElement::InsideH),
             "insideV" => Ok(XMLElement::InsideV),
+            "tl2br" => Ok(XMLElement::Tl2br),
+            "tr2bl" => Ok(XMLElement::Tr2bl),
             "tblCellMar" => Ok(XMLElement::TableCellMargin),
             "tblGrid" => Ok(XMLElement::TableGrid),
             "tblPrChange" => Ok(XMLElement::TablePropertyChange),

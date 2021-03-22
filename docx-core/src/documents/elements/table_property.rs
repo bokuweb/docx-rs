@@ -14,6 +14,7 @@ pub struct TableProperty {
     margins: TableCellMargins,
     indent: Option<TableIndent>,
     style: Option<TableStyle>,
+    layout: Option<TableLayout>,
 }
 
 impl Default for TableProperty {
@@ -25,6 +26,7 @@ impl Default for TableProperty {
             margins: TableCellMargins::new(),
             indent: None,
             style: None,
+            layout: None,
         }
     }
 }
@@ -85,6 +87,11 @@ impl TableProperty {
         self.style = Some(TableStyle::new(s));
         self
     }
+
+    pub fn layout(mut self, t: TableLayoutType) -> Self {
+        self.layout = Some(TableLayout::new(t));
+        self
+    }
 }
 
 impl BuildXML for TableProperty {
@@ -97,6 +104,7 @@ impl BuildXML for TableProperty {
             .add_child(&self.margins)
             .add_optional_child(&self.indent)
             .add_optional_child(&self.style)
+            .add_optional_child(&self.layout)
             .close()
             .build()
     }

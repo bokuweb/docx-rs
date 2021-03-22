@@ -64,6 +64,11 @@ impl Table {
         self
     }
 
+    pub fn layout(mut self, t: TableLayoutType) -> Table {
+        self.property = self.property.layout(t);
+        self
+    }
+
     pub fn width(mut self, w: usize, t: WidthType) -> Table {
         self.property = self.property.width(w, t);
         self

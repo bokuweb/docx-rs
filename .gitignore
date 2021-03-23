@@ -7,6 +7,8 @@ node_modules
 *.docx#
 *.docx
 output/*.docx
+output/*.json
+output/*.xml
 vrt/screenshot/actual
 vrt/screenshot/diff
 vrt/report.html

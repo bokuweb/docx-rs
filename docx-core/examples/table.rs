@@ -8,7 +8,8 @@ pub fn main() -> Result<(), DocxError> {
         TableRow::new(vec![
             TableCell::new()
                 .add_paragraph(Paragraph::new())
-                .grid_span(2),
+                .grid_span(2)
+                .shading(Shading::new().fill("FF0000")),
             TableCell::new()
                 .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
                 .vertical_align(VAlignType::Center)
@@ -35,6 +36,7 @@ pub fn main() -> Result<(), DocxError> {
         ]),
     ])
     .set_grid(vec![2000, 2000, 2000])
+    .layout(TableLayoutType::Fixed)
     .indent(1000);
     Docx::new().add_table(table).build().pack(file)?;
     Ok(())

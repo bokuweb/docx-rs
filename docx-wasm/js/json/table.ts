@@ -3,6 +3,7 @@ import { BorderJSON } from "./border";
 import { HeightRule } from "../table-row";
 import { TextDirectionType } from "../table-cell";
 import { ShadingJSON } from "./shading";
+import { TableLayoutType } from "../table";
 
 export type TableCellChildJSON = ParagraphJSON;
 
@@ -67,6 +68,7 @@ export type TablePropertyJSON = {
     widthType: WidthType;
   };
   style: string | null;
+  layout: TableLayoutType | null;
 };
 
 export type TableJSON = {

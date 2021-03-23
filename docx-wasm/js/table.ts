@@ -1,6 +1,7 @@
 import { TableRow } from "./table-row";
 
 export type TableAlignmentType = "center" | "left" | "right";
+export type TableLayoutType = "fixed" | "autofit";
 
 export type TableProperty = {
   indent?: number;
@@ -12,6 +13,7 @@ export type TableProperty = {
     bottom: number;
     right: number;
   };
+  layout?: TableLayoutType;
 };
 
 export class Table {
@@ -40,6 +42,11 @@ export class Table {
 
   align(v: TableAlignmentType) {
     this.property.align = v;
+    return this;
+  }
+
+  layout(l: TableLayoutType) {
+    this.property.layout = l;
     return this;
   }
 

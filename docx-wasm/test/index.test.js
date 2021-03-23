@@ -216,6 +216,21 @@ describe("writer", () => {
     }
   });
 
+  test("should write table layout", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello!!"));
+    const table = new w.Table()
+      .addRow(new w.TableRow().addCell(new w.TableCell().addParagraph(p)))
+      .layout("fixed");
+    const buffer = new w.Docx().addTable(table).build();
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+    writeFileSync("../output/table_layout.docx", buffer);
+  });
+
   test("should write text border", () => {
     const p = new w.Paragraph()
       .addRun(new w.Run().addText("Hello "))

@@ -442,6 +442,17 @@ export class Docx {
       }
     }
 
+    switch (t.property.layout) {
+      case "fixed": {
+        table = table.layout(wasm.TableLayoutType.Fixed);
+        break;
+      }
+      case "autofit": {
+        table = table.layout(wasm.TableLayoutType.Autofit);
+        break;
+      }
+    }
+
     return table;
   }
 

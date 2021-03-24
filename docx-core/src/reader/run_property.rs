@@ -22,6 +22,7 @@ impl ElementReader for RunProperty {
                     match e {
                         XMLElement::Bold => {
                             if !read_bool(&attributes) {
+                                rp = rp.disable_bold();
                                 continue;
                             }
                             rp = rp.bold();
@@ -40,6 +41,7 @@ impl ElementReader for RunProperty {
                         XMLElement::Underline => rp = rp.underline(&attributes[0].value.clone()),
                         XMLElement::Italic => {
                             if !read_bool(&attributes) {
+                                rp = rp.disable_italic();
                                 continue;
                             }
                             rp = rp.italic();

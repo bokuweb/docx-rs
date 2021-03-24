@@ -196,6 +196,11 @@ impl Run {
         self.run_property = self.run_property.fonts(f);
         self
     }
+
+    pub(crate) fn set_property(mut self, p: RunProperty) -> Run {
+        self.run_property = p;
+        self
+    }
 }
 
 impl BuildXML for Run {

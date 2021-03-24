@@ -41,32 +41,10 @@ impl ElementReader for Run {
                                 XMLElement::Tab => {
                                     run = run.add_tab();
                                 }
-                                // TODO: use RunProperty::read()
-                                XMLElement::Bold => {
-                                    if !read_bool(&attributes) {
-                                        run = run.disable_bold();
-                                        continue;
-                                    }
-                                    run = run.bold();
+                                XMLElement::RunProperty => {
+                                    let p = RunProperty::read(r, &attributes)?;
+                                    run = run.set_property(p);
                                 }
-                                XMLElement::Highlight => {
-                                    run = run.highlight(attributes[0].value.clone())
-                                }
-                                XMLElement::Color => run = run.color(attributes[0].value.clone()),
-                                XMLElement::Size => {
-                                    run = run.size(usize::from_str(&attributes[0].value)?)
-                                }
-                                XMLElement::Underline => {
-                                    run = run.underline(&attributes[0].value.clone())
-                                }
-                                XMLElement::Italic => {
-                                    if !read_bool(&attributes) {
-                                        run = run.disable_italic();
-                                        continue;
-                                    }
-                                    run = run.italic();
-                                }
-                                XMLElement::Vanish => run = run.vanish(),
                                 XMLElement::Text => text_state = TextState::Text,
                                 XMLElement::DeleteText => text_state = TextState::Delete,
                                 XMLElement::Break => {
@@ -79,18 +57,6 @@ impl ElementReader for Run {
                                 XMLElement::Drawing => {
                                     let drawing = Drawing::read(r, &attributes)?;
                                     run = run.add_drawing(drawing);
-                                }
-                                XMLElement::TextBorder => {
-                                    if let Ok(attr) = read_border(&attributes) {
-                                        let mut border = TextBorder::new()
-                                            .border_type(attr.border_type)
-                                            .color(attr.color);
-                                        if let Some(size) = attr.size {
-                                            border = border.size(size as usize);
-                                        };
-                                        run = run.text_border(border);
-                                        continue;
-                                    }
                                 }
                                 _ => {}
                             }

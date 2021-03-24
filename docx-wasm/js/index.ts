@@ -106,6 +106,11 @@ export class Docx {
     return this;
   }
 
+  defaultTabStop(stop: number) {
+    this.settings.defaultTabStop(stop);
+    return this;
+  }
+
   createdAt(date: string) {
     this.docProps.createdAt(date);
     return this;
@@ -716,6 +721,8 @@ export class Docx {
     if (this.settings._docId) {
       docx = docx.doc_id(this.settings._docId);
     }
+
+    docx = docx.default_tab_stop(this.settings._defaultTabStop);
 
     this.settings._docVars.forEach((v) => {
       docx = docx.add_doc_var(v.name, v.val);

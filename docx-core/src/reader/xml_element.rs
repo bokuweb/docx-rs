@@ -116,6 +116,7 @@ pub enum XMLElement {
     DocVar,
     DocGrid,
     DocDefaults,
+    DefaultTabStop,
     RunPropertyDefault,
     SectionProperty,
     PageSize,
@@ -292,6 +293,7 @@ impl FromStr for XMLElement {
             "docDefaults" => Ok(XMLElement::DocDefaults),
             "docGrid" => Ok(XMLElement::DocGrid),
             "rPrDefault" => Ok(XMLElement::RunPropertyDefault),
+            "defaultTabStop" => Ok(XMLElement::DefaultTabStop),
             _ => Ok(XMLElement::Unsupported),
         }
     }

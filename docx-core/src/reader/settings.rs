@@ -41,6 +41,14 @@ impl FromXML for Settings {
                                 }
                             }
                         }
+                        XMLElement::DefaultTabStop => {
+                            let val = attributes::read_val(&attributes);
+                            if let Some(val) = val {
+                                if let Ok(val) = f32::from_str(&val) {
+                                    settings = settings.default_tab_stop(val as usize);
+                                }
+                            }
+                        }
                         _ => {}
                     }
                 }

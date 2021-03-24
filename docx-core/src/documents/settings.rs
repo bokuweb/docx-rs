@@ -24,6 +24,11 @@ impl Settings {
         self
     }
 
+    pub fn default_tab_stop(mut self, tab_stop: usize) -> Self {
+        self.default_tab_stop = DefaultTabStop::new(tab_stop);
+        self
+    }
+
     pub fn add_doc_var(mut self, name: impl Into<String>, val: impl Into<String>) -> Self {
         self.doc_vars.push(DocVar::new(name, val));
         self
@@ -33,7 +38,7 @@ impl Settings {
 impl Default for Settings {
     fn default() -> Self {
         Self {
-            default_tab_stop: DefaultTabStop::new(709),
+            default_tab_stop: DefaultTabStop::new(840),
             zoom: Zoom::new(100),
             doc_id: None,
             doc_vars: vec![],
@@ -116,7 +121,7 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"><w:defaultTabStop w:val="709" /><w:zoom w:percent="100" /><w:compat>
+<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"><w:defaultTabStop w:val="840" /><w:zoom w:percent="100" /><w:compat>
     <w:spaceForUL />
     <w:balanceSingleByteDoubleByteWidth />
     <w:doNotLeaveBackslashAlone />

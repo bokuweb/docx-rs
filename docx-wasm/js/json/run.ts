@@ -1,8 +1,9 @@
 import { DrawingJSON } from "./drawing";
 import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
+import { BorderType } from "../border";
 
 export type TextBorderJSON = {
-  borderType: string;
+  borderType: BorderType;
   size: number;
   space: number;
   color: string;

@@ -18,7 +18,7 @@ pub fn read_border(attrs: &[OwnedAttribute]) -> Result<BorderAttrs, ReaderError>
     let mut color = "000000".to_owned();
     let mut size: Option<u32> = None;
     let mut space: Option<u32> = None;
-
+    dbg!(&attrs);
     for a in attrs {
         let local_name = &a.name.local_name;
         if local_name == "color" {

@@ -172,6 +172,11 @@ impl Run {
         self
     }
 
+    pub fn text_border(mut self, b: TextBorder) -> Run {
+        self.run_property = self.run_property.text_border(b);
+        self
+    }
+
     pub fn disable_italic(mut self) -> Run {
         self.run_property = self.run_property.disable_italic();
         self

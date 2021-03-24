@@ -53,29 +53,10 @@ impl ElementReader for Style {
                             continue;
                         }
                         // rPr
-                        XMLElement::Bold => {
-                            if !read_bool(&attributes) {
-                                continue;
-                            }
-                            style = style.bold();
+                        XMLElement::RunProperty => {
+                            let p = RunProperty::read(r, &attributes)?;
+                            style.run_property = p;
                         }
-                        XMLElement::Highlight => {
-                            style = style.highlight(attributes[0].value.clone())
-                        }
-                        XMLElement::Color => style = style.color(attributes[0].value.clone()),
-                        XMLElement::Size => {
-                            style = style.size(usize::from_str(&attributes[0].value)?)
-                        }
-                        XMLElement::Underline => {
-                            style = style.underline(&attributes[0].value.clone())
-                        }
-                        XMLElement::Italic => {
-                            if !read_bool(&attributes) {
-                                continue;
-                            }
-                            style = style.italic();
-                        }
-                        XMLElement::Vanish => style = style.vanish(),
                         XMLElement::TableProperty => {
                             if let Ok(p) = TableProperty::read(r, &attributes) {
                                 style = style.table_property(p);

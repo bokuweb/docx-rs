@@ -80,6 +80,18 @@ impl ElementReader for Run {
                                     let drawing = Drawing::read(r, &attributes)?;
                                     run = run.add_drawing(drawing);
                                 }
+                                XMLElement::TextBorder => {
+                                    if let Ok(attr) = read_border(&attributes) {
+                                        let mut border = TextBorder::new()
+                                            .border_type(attr.border_type)
+                                            .color(attr.color);
+                                        if let Some(size) = attr.size {
+                                            border = border.size(size as usize);
+                                        };
+                                        run = run.text_border(border);
+                                        continue;
+                                    }
+                                }
                                 _ => {}
                             }
                         }

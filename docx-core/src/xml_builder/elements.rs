@@ -232,6 +232,7 @@ impl XMLBuilder {
 
     closed_with_str!(type_tag, "w:type");
     closed!(page_size, "w:pgSz", "w:w", "w:h");
+    closed!(page_size_with_orient, "w:pgSz", "w:w", "w:h", "w:orient");
     closed!(
         page_margin,
         "w:pgMar",

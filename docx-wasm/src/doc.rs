@@ -68,6 +68,11 @@ impl Docx {
         self
     }
 
+    pub fn page_orient(mut self, o: docx_rs::PageOrientationType) -> Docx {
+        self.0 = self.0.page_orient(o);
+        self
+    }
+
     pub fn page_margin(mut self, margin: PageMargin) -> Docx {
         self.0 = self.0.page_margin(margin.take());
         self

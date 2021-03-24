@@ -7,7 +7,10 @@ export type DocGrid = {
 };
 
 export class SectionProperty {
-  _pageSize: PageSize | null = null;
+  _pageSize: PageSize = {
+    w: 11906,
+    h: 16838,
+  };
   _pageMargin: PageMargin | null = null;
   _docGrid: DocGrid = {
     gridType: "lines",
@@ -15,12 +18,18 @@ export class SectionProperty {
   };
 
   pageSize(w: number, h: number) {
-    this._pageSize = { w, h };
+    this._pageSize.w = w;
+    this._pageSize.h = h;
     return this;
   }
 
   pageMargin(margin: Partial<PageMargin>) {
     this._pageMargin = { ...defaultPageMargin(), ...margin };
+    return this;
+  }
+
+  pageOrientation(orient: PageOrientationType) {
+    this._pageSize.orient = orient;
     return this;
   }
 
@@ -30,7 +39,9 @@ export class SectionProperty {
   }
 }
 
-export type PageSize = { w: number; h: number };
+export type PageOrientationType = "landscape" | "portrait";
+
+export type PageSize = { w: number; h: number; orient?: PageOrientationType };
 
 export type PageMargin = {
   top: number;

@@ -18,7 +18,11 @@ import { BookmarkEnd } from "./bookmark-end";
 import { Settings } from "./settings";
 import { DocProps } from "./doc-props";
 import { Styles } from "./styles";
-import { SectionProperty, PageMargin } from "./section-property";
+import {
+  SectionProperty,
+  PageMargin,
+  PageOrientationType,
+} from "./section-property";
 import { DocGridType, DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
@@ -124,6 +128,11 @@ export class Docx {
 
   pageMargin(margin: Partial<PageMargin>) {
     this.sectionProperty.pageMargin(margin);
+    return this;
+  }
+
+  pageOrientation(o: PageOrientationType) {
+    this.sectionProperty.pageOrientation(o);
     return this;
   }
 
@@ -735,8 +744,16 @@ export class Docx {
     }
 
     if (this.sectionProperty._pageSize) {
-      const { w, h } = this.sectionProperty._pageSize;
+      const { w, h, orient } = this.sectionProperty._pageSize;
       docx = docx.page_size(w, h);
+      switch (orient) {
+        case "landscape":
+          docx = docx.page_orient(wasm.PageOrientationType.Landscape);
+          break;
+        case "portrait":
+          docx = docx.page_orient(wasm.PageOrientationType.Portrait);
+          break;
+      }
     }
 
     if (this.sectionProperty._docGrid) {

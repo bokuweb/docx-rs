@@ -1,4 +1,5 @@
 use crate::documents::BuildXML;
+use crate::types::*;
 use crate::xml_builder::*;
 
 use serde::Serialize;
@@ -8,13 +9,18 @@ use serde::Serialize;
 pub struct PageSize {
     w: u32,
     h: u32,
+    orient: Option<PageOrientationType>,
 }
 
 // These values were based on microsoft office word2019 windows edition.
 // <w:pgSz w:w="11906" w:h="16838"/>
 impl Default for PageSize {
     fn default() -> PageSize {
-        PageSize { w: 11906, h: 16838 }
+        PageSize {
+            w: 11906,
+            h: 16838,
+            orient: None,
+        }
     }
 }
 
@@ -24,7 +30,11 @@ impl PageSize {
     }
 
     pub fn size(self, w: u32, h: u32) -> PageSize {
-        PageSize { w, h }
+        PageSize {
+            w,
+            h,
+            orient: self.orient,
+        }
     }
 
     pub fn width(mut self, w: u32) -> PageSize {
@@ -36,13 +46,28 @@ impl PageSize {
         self.h = h;
         self
     }
+
+    pub fn orient(mut self, o: PageOrientationType) -> PageSize {
+        self.orient = Some(o);
+        self
+    }
 }
 
 impl BuildXML for PageSize {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .page_size(&format!("{}", self.w), &format!("{}", self.h))
-            .build()
+        if let Some(orient) = self.orient {
+            XMLBuilder::new()
+                .page_size_with_orient(
+                    &format!("{}", self.w),
+                    &format!("{}", self.h),
+                    &orient.to_string(),
+                )
+                .build()
+        } else {
+            XMLBuilder::new()
+                .page_size(&format!("{}", self.w), &format!("{}", self.h))
+                .build()
+        }
     }
 }
 

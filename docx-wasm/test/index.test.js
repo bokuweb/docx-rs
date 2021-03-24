@@ -244,4 +244,20 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write page orientation", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello "));
+    const buffer = new w.Docx()
+      .addParagraph(p)
+      .pageSize(16838, 11906)
+      .pageOrientation("landscape")
+      .build();
+    writeFileSync("../output/page_orientation.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

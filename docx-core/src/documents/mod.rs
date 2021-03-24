@@ -224,6 +224,11 @@ impl Docx {
         self
     }
 
+    pub fn page_orient(mut self, o: crate::types::PageOrientationType) -> Self {
+        self.document = self.document.page_orient(o);
+        self
+    }
+
     pub fn default_size(mut self, size: usize) -> Self {
         self.styles = self.styles.default_size(size);
         self

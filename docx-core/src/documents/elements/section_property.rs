@@ -31,6 +31,11 @@ impl SectionProperty {
         self
     }
 
+    pub fn page_orient(mut self, o: PageOrientationType) -> Self {
+        self.page_size = self.page_size.orient(o);
+        self
+    }
+
     pub fn doc_grid(mut self, doc_grid: DocGrid) -> Self {
         self.doc_grid = doc_grid;
         self

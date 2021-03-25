@@ -9,6 +9,7 @@ export type StyleJSON = {
   runProperty: RunPropertyJSON;
   paragraphProperty: ParagraphPropertyJSON;
   tableProperty: TablePropertyJSON;
+  tableCellProperty: TableCellPropertyJSON;
   basedOn: string | null;
 };
 

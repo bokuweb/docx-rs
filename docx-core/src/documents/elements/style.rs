@@ -5,7 +5,7 @@ use crate::types::*;
 use crate::xml_builder::*;
 use crate::StyleType;
 
-use super::{BasedOn, Name, Next, ParagraphProperty, QFormat, RunProperty, TableProperty};
+use super::*;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -16,6 +16,7 @@ pub struct Style {
     pub run_property: RunProperty,
     pub paragraph_property: ParagraphProperty,
     pub table_property: TableProperty,
+    pub table_cell_property: TableCellProperty,
     pub based_on: Option<BasedOn>,
 }
 
@@ -31,6 +32,7 @@ impl Default for Style {
             run_property: rpr,
             paragraph_property: ppr,
             table_property: TableProperty::new(),
+            table_cell_property: TableCellProperty::new(),
             based_on: None,
         }
     }
@@ -111,6 +113,11 @@ impl Style {
 
     pub fn table_property(mut self, p: TableProperty) -> Self {
         self.table_property = p;
+        self
+    }
+
+    pub fn table_cell_property(mut self, p: TableCellProperty) -> Self {
+        self.table_cell_property = p;
         self
     }
 }

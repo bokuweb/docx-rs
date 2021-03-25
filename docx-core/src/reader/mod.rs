@@ -15,6 +15,7 @@ mod drawing;
 mod errors;
 mod from_xml;
 mod ignore;
+mod table_cell_property;
 mod insert;
 mod level;
 mod level_override;

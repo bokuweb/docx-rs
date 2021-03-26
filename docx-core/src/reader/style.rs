@@ -62,6 +62,11 @@ impl ElementReader for Style {
                                 style = style.table_property(p);
                             }
                         }
+                        XMLElement::TableCellProperty => {
+                            if let Ok(p) = TableCellProperty::read(r, &attributes) {
+                                style = style.table_cell_property(p);
+                            }
+                        }
                         _ => {}
                     }
                 }

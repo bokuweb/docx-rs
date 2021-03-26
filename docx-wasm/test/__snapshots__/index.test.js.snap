@@ -2914,7 +2914,7 @@ Object {
     ],
   },
   "settings": Object {
-    "defaultTabStop": 709,
+    "defaultTabStop": 840,
     "docId": "E43E077A-3477-A242-BD53-4313974E06A2",
     "docVars": Array [],
     "zoom": 100,
@@ -5332,7 +5332,7 @@ Object {
     ],
   },
   "settings": Object {
-    "defaultTabStop": 709,
+    "defaultTabStop": 840,
     "docId": "10BE20B6-DCA9-7441-B548-606D7D9EDD92",
     "docVars": Array [],
     "zoom": 100,
@@ -10448,7 +10448,7 @@ Object {
     ],
   },
   "settings": Object {
-    "defaultTabStop": 709,
+    "defaultTabStop": 840,
     "docId": "C272B628-6DE8-264A-8734-9D2219FFD42F",
     "docVars": Array [],
     "zoom": 100,
@@ -11517,7 +11517,7 @@ Object {
     ],
   },
   "settings": Object {
-    "defaultTabStop": 709,
+    "defaultTabStop": 840,
     "docId": "9F52F717-3F03-584C-ACEF-96E0106FA905",
     "docVars": Array [],
     "zoom": 100,

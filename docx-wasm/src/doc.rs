@@ -63,6 +63,11 @@ impl Docx {
         self
     }
 
+    pub fn default_tab_stop(mut self, stop: usize) -> Docx {
+        self.0 = self.0.default_tab_stop(stop);
+        self
+    }
+
     pub fn page_size(mut self, w: u32, h: u32) -> Docx {
         self.0 = self.0.page_size(w, h);
         self

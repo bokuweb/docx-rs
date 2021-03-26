@@ -209,6 +209,11 @@ impl Docx {
         self
     }
 
+    pub fn default_tab_stop(mut self, stop: usize) -> Self {
+        self.settings = self.settings.default_tab_stop(stop);
+        self
+    }
+
     pub fn add_doc_var(mut self, name: &str, val: &str) -> Self {
         self.settings = self.settings.add_doc_var(name, val);
         self

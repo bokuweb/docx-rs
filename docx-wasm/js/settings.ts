@@ -6,9 +6,15 @@ export type DocVar = {
 export class Settings {
   _docId: string | null = null;
   _docVars: DocVar[] = [];
+  _defaultTabStop = 840;
 
   docId(id: string) {
     this._docId = id;
+    return this;
+  }
+
+  defaultTabStop(stop: number) {
+    this._defaultTabStop = stop;
     return this;
   }
 

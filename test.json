@@ -1,0 +1,792 @@
+{
+  "contentType": {
+    "types": {
+      "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
+      "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
+      "/docProps/core.xml": "application/vnd.openxmlformats-package.core-properties+xml",
+      "/word/_rels/document.xml.rels": "application/vnd.openxmlformats-package.relationships+xml",
+      "/word/comments.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
+      "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
+      "/word/document.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
+      "/word/fontTable.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml",
+      "/word/header1.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml",
+      "/word/numbering.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml",
+      "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
+      "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"
+    }
+  },
+  "rels": {
+    "rels": [
+      [
+        "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties",
+        "rId1",
+        "docProps/core.xml"
+      ],
+      [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
+        "rId2",
+        "docProps/app.xml"
+      ],
+      [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
+        "rId3",
+        "word/document.xml"
+      ]
+    ]
+  },
+  "documentRels": {
+    "hasComments": false,
+    "hasNumberings": false,
+    "imageIds": []
+  },
+  "docProps": {
+    "app": {},
+    "core": {
+      "config": {
+        "created": null,
+        "creator": null,
+        "description": null,
+        "language": null,
+        "lastModifiedBy": null,
+        "modified": null,
+        "revision": null,
+        "subject": null,
+        "title": null
+      }
+    }
+  },
+  "styles": {
+    "docDefaults": {
+      "runPropertyDefault": {
+        "runProperty": {
+          "sz": 21,
+          "szCs": 21,
+          "color": null,
+          "highlight": null,
+          "underline": null,
+          "bold": null,
+          "boldCs": null,
+          "italic": null,
+          "italicCs": null,
+          "vanish": null,
+          "spacing": null,
+          "fonts": null,
+          "textBorder": null
+        }
+      }
+    },
+    "styles": [
+      {
+        "styleId": "a",
+        "name": "Normal",
+        "styleType": "paragraph",
+        "runProperty": {
+          "sz": null,
+          "szCs": null,
+          "color": null,
+          "highlight": null,
+          "underline": null,
+          "bold": null,
+          "boldCs": null,
+          "italic": null,
+          "italicCs": null,
+          "vanish": null,
+          "spacing": null,
+          "fonts": null,
+          "textBorder": null
+        },
+        "paragraphProperty": {
+          "runProperty": {
+            "sz": null,
+            "szCs": null,
+            "color": null,
+            "highlight": null,
+            "underline": null,
+            "bold": null,
+            "boldCs": null,
+            "italic": null,
+            "italicCs": null,
+            "vanish": null,
+            "spacing": null,
+            "fonts": null,
+            "textBorder": null
+          },
+          "style": null,
+          "numberingProperty": null,
+          "alignment": "both",
+          "indent": null,
+          "lineHeight": null
+        },
+        "tableProperty": {
+          "width": {
+            "width": 0,
+            "widthType": "Auto"
+          },
+          "justification": "left",
+          "borders": {
+            "top": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "top",
+              "space": 0
+            },
+            "left": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "left",
+              "space": 0
+            },
+            "bottom": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "bottom",
+              "space": 0
+            },
+            "right": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "right",
+              "space": 0
+            },
+            "insideH": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "insideH",
+              "space": 0
+            },
+            "insideV": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "insideV",
+              "space": 0
+            }
+          },
+          "margins": {
+            "top": 55,
+            "left": 54,
+            "bottom": 55,
+            "right": 55
+          },
+          "indent": null,
+          "style": null,
+          "layout": null
+        },
+        "basedOn": null
+      },
+      {
+        "styleId": "a0",
+        "name": "Default Paragraph Font",
+        "styleType": "character",
+        "runProperty": {
+          "sz": null,
+          "szCs": null,
+          "color": null,
+          "highlight": null,
+          "underline": null,
+          "bold": null,
+          "boldCs": null,
+          "italic": null,
+          "italicCs": null,
+          "vanish": null,
+          "spacing": null,
+          "fonts": null,
+          "textBorder": null
+        },
+        "paragraphProperty": {
+          "runProperty": {
+            "sz": null,
+            "szCs": null,
+            "color": null,
+            "highlight": null,
+            "underline": null,
+            "bold": null,
+            "boldCs": null,
+            "italic": null,
+            "italicCs": null,
+            "vanish": null,
+            "spacing": null,
+            "fonts": null,
+            "textBorder": null
+          },
+          "style": null,
+          "numberingProperty": null,
+          "alignment": null,
+          "indent": null,
+          "lineHeight": null
+        },
+        "tableProperty": {
+          "width": {
+            "width": 0,
+            "widthType": "Auto"
+          },
+          "justification": "left",
+          "borders": {
+            "top": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "top",
+              "space": 0
+            },
+            "left": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "left",
+              "space": 0
+            },
+            "bottom": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "bottom",
+              "space": 0
+            },
+            "right": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "right",
+              "space": 0
+            },
+            "insideH": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "insideH",
+              "space": 0
+            },
+            "insideV": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "insideV",
+              "space": 0
+            }
+          },
+          "margins": {
+            "top": 55,
+            "left": 54,
+            "bottom": 55,
+            "right": 55
+          },
+          "indent": null,
+          "style": null,
+          "layout": null
+        },
+        "basedOn": null
+      },
+      {
+        "styleId": "a1",
+        "name": "Normal Table",
+        "styleType": "table",
+        "runProperty": {
+          "sz": null,
+          "szCs": null,
+          "color": null,
+          "highlight": null,
+          "underline": null,
+          "bold": null,
+          "boldCs": null,
+          "italic": null,
+          "italicCs": null,
+          "vanish": null,
+          "spacing": null,
+          "fonts": null,
+          "textBorder": null
+        },
+        "paragraphProperty": {
+          "runProperty": {
+            "sz": null,
+            "szCs": null,
+            "color": null,
+            "highlight": null,
+            "underline": null,
+            "bold": null,
+            "boldCs": null,
+            "italic": null,
+            "italicCs": null,
+            "vanish": null,
+            "spacing": null,
+            "fonts": null,
+            "textBorder": null
+          },
+          "style": null,
+          "numberingProperty": null,
+          "alignment": null,
+          "indent": null,
+          "lineHeight": null
+        },
+        "tableProperty": {
+          "width": {
+            "width": 0,
+            "widthType": "Auto"
+          },
+          "justification": "left",
+          "borders": {
+            "top": null,
+            "left": null,
+            "bottom": null,
+            "right": null,
+            "insideH": null,
+            "insideV": null
+          },
+          "margins": {
+            "top": 55,
+            "left": 54,
+            "bottom": 55,
+            "right": 55
+          },
+          "indent": null,
+          "style": null,
+          "layout": null
+        },
+        "basedOn": null
+      },
+      {
+        "styleId": "a2",
+        "name": "No List",
+        "styleType": "numbering",
+        "runProperty": {
+          "sz": null,
+          "szCs": null,
+          "color": null,
+          "highlight": null,
+          "underline": null,
+          "bold": null,
+          "boldCs": null,
+          "italic": null,
+          "italicCs": null,
+          "vanish": null,
+          "spacing": null,
+          "fonts": null,
+          "textBorder": null
+        },
+        "paragraphProperty": {
+          "runProperty": {
+            "sz": null,
+            "szCs": null,
+            "color": null,
+            "highlight": null,
+            "underline": null,
+            "bold": null,
+            "boldCs": null,
+            "italic": null,
+            "italicCs": null,
+            "vanish": null,
+            "spacing": null,
+            "fonts": null,
+            "textBorder": null
+          },
+          "style": null,
+          "numberingProperty": null,
+          "alignment": null,
+          "indent": null,
+          "lineHeight": null
+        },
+        "tableProperty": {
+          "width": {
+            "width": 0,
+            "widthType": "Auto"
+          },
+          "justification": "left",
+          "borders": {
+            "top": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "top",
+              "space": 0
+            },
+            "left": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "left",
+              "space": 0
+            },
+            "bottom": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "bottom",
+              "space": 0
+            },
+            "right": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "right",
+              "space": 0
+            },
+            "insideH": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "insideH",
+              "space": 0
+            },
+            "insideV": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "insideV",
+              "space": 0
+            }
+          },
+          "margins": {
+            "top": 55,
+            "left": 54,
+            "bottom": 55,
+            "right": 55
+          },
+          "indent": null,
+          "style": null,
+          "layout": null
+        },
+        "basedOn": null
+      }
+    ]
+  },
+  "document": {
+    "children": [
+      {
+        "type": "paragraph",
+        "data": {
+          "id": "5064973E",
+          "children": [
+            {
+              "type": "run",
+              "data": {
+                "runProperty": {
+                  "sz": null,
+                  "szCs": null,
+                  "color": null,
+                  "highlight": null,
+                  "underline": null,
+                  "bold": null,
+                  "boldCs": null,
+                  "italic": null,
+                  "italicCs": null,
+                  "vanish": null,
+                  "spacing": null,
+                  "fonts": null,
+                  "textBorder": {
+                    "borderType": "single",
+                    "size": 4,
+                    "color": "auto",
+                    "space": 0
+                  }
+                },
+                "children": [
+                  {
+                    "type": "text",
+                    "data": {
+                      "preserveSpace": true,
+                      "text": "H"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "run",
+              "data": {
+                "runProperty": {
+                  "sz": null,
+                  "szCs": null,
+                  "color": null,
+                  "highlight": null,
+                  "underline": null,
+                  "bold": null,
+                  "boldCs": null,
+                  "italic": null,
+                  "italicCs": null,
+                  "vanish": null,
+                  "spacing": null,
+                  "fonts": null,
+                  "textBorder": {
+                    "borderType": "single",
+                    "size": 4,
+                    "color": "auto",
+                    "space": 0
+                  }
+                },
+                "children": [
+                  {
+                    "type": "text",
+                    "data": {
+                      "preserveSpace": true,
+                      "text": "ello"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "run",
+              "data": {
+                "runProperty": {
+                  "sz": null,
+                  "szCs": null,
+                  "color": null,
+                  "highlight": null,
+                  "underline": null,
+                  "bold": null,
+                  "boldCs": null,
+                  "italic": null,
+                  "italicCs": null,
+                  "vanish": null,
+                  "spacing": null,
+                  "fonts": null,
+                  "textBorder": null
+                },
+                "children": [
+                  {
+                    "type": "text",
+                    "data": {
+                      "preserveSpace": true,
+                      "text": " "
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "run",
+              "data": {
+                "runProperty": {
+                  "sz": null,
+                  "szCs": null,
+                  "color": null,
+                  "highlight": null,
+                  "underline": null,
+                  "bold": true,
+                  "boldCs": true,
+                  "italic": null,
+                  "italicCs": null,
+                  "vanish": null,
+                  "spacing": null,
+                  "fonts": null,
+                  "textBorder": null
+                },
+                "children": [
+                  {
+                    "type": "text",
+                    "data": {
+                      "preserveSpace": true,
+                      "text": "W"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "run",
+              "data": {
+                "runProperty": {
+                  "sz": null,
+                  "szCs": null,
+                  "color": null,
+                  "highlight": null,
+                  "underline": null,
+                  "bold": true,
+                  "boldCs": true,
+                  "italic": null,
+                  "italicCs": null,
+                  "vanish": null,
+                  "spacing": null,
+                  "fonts": null,
+                  "textBorder": {
+                    "borderType": "single",
+                    "size": 4,
+                    "color": "auto",
+                    "space": 0
+                  }
+                },
+                "children": [
+                  {
+                    "type": "text",
+                    "data": {
+                      "preserveSpace": true,
+                      "text": "o"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "run",
+              "data": {
+                "runProperty": {
+                  "sz": null,
+                  "szCs": null,
+                  "color": null,
+                  "highlight": null,
+                  "underline": null,
+                  "bold": null,
+                  "boldCs": null,
+                  "italic": null,
+                  "italicCs": null,
+                  "vanish": null,
+                  "spacing": null,
+                  "fonts": null,
+                  "textBorder": {
+                    "borderType": "single",
+                    "size": 4,
+                    "color": "auto",
+                    "space": 0
+                  }
+                },
+                "children": [
+                  {
+                    "type": "text",
+                    "data": {
+                      "preserveSpace": true,
+                      "text": "rl"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "run",
+              "data": {
+                "runProperty": {
+                  "sz": null,
+                  "szCs": null,
+                  "color": null,
+                  "highlight": null,
+                  "underline": null,
+                  "bold": null,
+                  "boldCs": null,
+                  "italic": null,
+                  "italicCs": null,
+                  "vanish": null,
+                  "spacing": null,
+                  "fonts": null,
+                  "textBorder": null
+                },
+                "children": [
+                  {
+                    "type": "text",
+                    "data": {
+                      "preserveSpace": true,
+                      "text": "d!!!"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "run",
+              "data": {
+                "runProperty": {
+                  "sz": null,
+                  "szCs": null,
+                  "color": null,
+                  "highlight": null,
+                  "underline": null,
+                  "bold": null,
+                  "boldCs": null,
+                  "italic": null,
+                  "italicCs": null,
+                  "vanish": null,
+                  "spacing": null,
+                  "fonts": null,
+                  "textBorder": null
+                },
+                "children": [
+                  {
+                    "type": "text",
+                    "data": {
+                      "preserveSpace": true,
+                      "text": "===="
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "property": {
+            "runProperty": {
+              "sz": null,
+              "szCs": null,
+              "color": null,
+              "highlight": null,
+              "underline": null,
+              "bold": null,
+              "boldCs": null,
+              "italic": null,
+              "italicCs": null,
+              "vanish": null,
+              "spacing": null,
+              "fonts": null,
+              "textBorder": null
+            },
+            "style": null,
+            "numberingProperty": null,
+            "alignment": null,
+            "indent": null,
+            "lineHeight": null
+          },
+          "hasNumbering": false
+        }
+      }
+    ],
+    "sectionProperty": {
+      "pageSize": {
+        "w": 11900,
+        "h": 16840
+      },
+      "pageMargin": {
+        "top": 1985,
+        "left": 1701,
+        "bottom": 1701,
+        "right": 1701,
+        "header": 851,
+        "footer": 992,
+        "gutter": 0
+      },
+      "columns": 425,
+      "docGrid": {
+        "gridType": "lines",
+        "linePitch": 360,
+        "charSpace": null
+      },
+      "headerReference": {
+        "headerType": "default",
+        "id": "rId4"
+      },
+      "sectionType": null
+    },
+    "hasNumbering": false
+  },
+  "comments": {
+    "comments": []
+  },
+  "numberings": {
+    "abstractNums": [],
+    "numberings": []
+  },
+  "settings": {
+    "defaultTabStop": 709,
+    "zoom": 100,
+    "docId": "8E2D3E4C-6723-BC4B-A914-75D1ABCB0821",
+    "docVars": []
+  },
+  "fontTable": {},
+  "media": [],
+  "header": {
+    "children": []
+  },
+  "commentsExtended": {
+    "children": []
+  }
+}

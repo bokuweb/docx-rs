@@ -35,14 +35,16 @@ export type DocxJSON = {
     comments: CommentJSON[];
   };
   numberings: NumberingsJSON;
-  settings: {
-    // w15:docId
-    docId: string | null;
-    defaultTabStop: number;
-    zoom: number;
-    docVars: { name: string; val: string }[];
-  };
+  settings: SettingsJSON;
   fontTable: {};
+};
+
+export type SettingsJSON = {
+  // w15:docId
+  docId: string | null;
+  defaultTabStop: number;
+  zoom: number;
+  docVars: { name: string; val: string }[];
 };
 
 export * from "./styles";

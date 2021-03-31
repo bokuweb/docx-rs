@@ -535,6 +535,8 @@ Object {
             "alignment": "left",
             "indent": Object {
               "end": 0,
+              "firstLineChars": null,
+              "hangingChars": null,
               "specialIndent": null,
               "start": 0,
               "startChars": null,
@@ -3467,6 +3469,8 @@ Object {
             "alignment": null,
             "indent": Object {
               "end": null,
+              "firstLineChars": null,
+              "hangingChars": null,
               "specialIndent": null,
               "start": null,
               "startChars": 0,
@@ -3564,6 +3568,8 @@ Object {
             "alignment": null,
             "indent": Object {
               "end": null,
+              "firstLineChars": null,
+              "hangingChars": null,
               "specialIndent": null,
               "start": null,
               "startChars": 0,
@@ -3692,6 +3698,8 @@ Object {
             "alignment": null,
             "indent": Object {
               "end": null,
+              "firstLineChars": null,
+              "hangingChars": null,
               "specialIndent": null,
               "start": null,
               "startChars": 0,
@@ -3774,6 +3782,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "firstLine",
                   "val": 147,
@@ -3828,6 +3838,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -3882,6 +3894,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -3936,6 +3950,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -3990,6 +4006,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4044,6 +4062,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4098,6 +4118,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4152,6 +4174,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4206,6 +4230,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4267,6 +4293,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4321,6 +4349,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4375,6 +4405,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4429,6 +4461,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4483,6 +4517,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4537,6 +4573,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4591,6 +4629,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4645,6 +4685,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4699,6 +4741,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4760,6 +4804,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "firstLine",
                   "val": 147,
@@ -4814,6 +4860,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4868,6 +4916,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4922,6 +4972,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -4976,6 +5028,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -5030,6 +5084,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -5084,6 +5140,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -5138,6 +5196,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -5192,6 +5252,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": null,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -5777,6 +5839,8 @@ Object {
           "alignment": null,
           "indent": Object {
             "end": null,
+            "firstLineChars": null,
+            "hangingChars": null,
             "specialIndent": null,
             "start": 840,
             "startChars": 400,
@@ -7496,6 +7560,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": 0,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -7550,6 +7616,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": 0,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -7604,6 +7672,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": 0,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -7658,6 +7728,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": 0,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -7712,6 +7784,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": 0,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -7766,6 +7840,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": 0,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -7820,6 +7896,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": 0,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -7874,6 +7952,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": 0,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -7928,6 +8008,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": 0,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 420,
@@ -7989,6 +8071,8 @@ Object {
               "alignment": null,
               "indent": Object {
                 "end": 0,
+                "firstLineChars": null,
+                "hangingChars": null,
                 "specialIndent": Object {
                   "type": "hanging",
                   "val": 608,

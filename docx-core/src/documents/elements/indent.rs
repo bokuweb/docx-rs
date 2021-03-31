@@ -73,6 +73,8 @@ impl Serialize for Indent {
         t.serialize_field("startChars", &self.start_chars)?;
         t.serialize_field("end", &self.end)?;
         t.serialize_field("specialIndent", &self.special_indent)?;
+        t.serialize_field("hangingChars", &self.hanging_chars)?;
+        t.serialize_field("firstLineChars", &self.first_line_chars)?;
         t.end()
     }
 }

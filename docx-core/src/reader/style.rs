@@ -44,8 +44,17 @@ impl ElementReader for Style {
                         }
                         // pPr
                         XMLElement::Indent => {
-                            let (start, end, special, start_chars) = read_indent(&attributes)?;
+                            let (start, end, special, start_chars, hanging_chars, first_line_chars) =
+                                read_indent(&attributes)?;
                             style = style.indent(start, special, end, start_chars);
+
+                            if let Some(chars) = hanging_chars {
+                                style = style.hanging_chars(chars);
+                            }
+                            if let Some(chars) = first_line_chars {
+                                style = style.first_line_chars(chars);
+                            }
+
                             continue;
                         }
                         XMLElement::Justification => {

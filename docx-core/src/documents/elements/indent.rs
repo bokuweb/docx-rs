@@ -7,10 +7,13 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Indent {
-    start: Option<i32>,
-    end: Option<i32>,
-    special_indent: Option<SpecialIndentType>,
-    start_chars: Option<i32>,
+    pub start: Option<i32>,
+    pub end: Option<i32>,
+    pub special_indent: Option<SpecialIndentType>,
+    pub start_chars: Option<i32>,
+    // Internal, for reading
+    pub hanging_chars: Option<i32>,
+    pub first_line_chars: Option<i32>,
 }
 
 impl Indent {
@@ -25,11 +28,24 @@ impl Indent {
             start_chars,
             end,
             special_indent,
+            // Internal, for reading
+            hanging_chars: None,
+            first_line_chars: None,
         }
     }
 
     pub fn end(mut self, end: i32) -> Self {
         self.end = Some(end);
+        self
+    }
+
+    pub fn hanging_chars(mut self, chars: i32) -> Self {
+        self.hanging_chars = Some(chars);
+        self
+    }
+
+    pub fn first_line_chars(mut self, chars: i32) -> Self {
+        self.first_line_chars = Some(chars);
         self
     }
 }

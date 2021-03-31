@@ -69,6 +69,20 @@ impl ParagraphProperty {
         self.line_height = Some(h);
         self
     }
+
+    pub(crate) fn hanging_chars(mut self, chars: i32) -> Self {
+        if let Some(indent) = self.indent {
+            self.indent = Some(indent.hanging_chars(chars));
+        }
+        self
+    }
+
+    pub(crate) fn first_line_chars(mut self, chars: i32) -> Self {
+        if let Some(indent) = self.indent {
+            self.indent = Some(indent.first_line_chars(chars));
+        }
+        self
+    }
 }
 
 impl BuildXML for ParagraphProperty {

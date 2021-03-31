@@ -111,6 +111,16 @@ impl Style {
         self
     }
 
+    pub(crate) fn hanging_chars(mut self, chars: i32) -> Self {
+        self.paragraph_property = self.paragraph_property.hanging_chars(chars);
+        self
+    }
+
+    pub(crate) fn first_line_chars(mut self, chars: i32) -> Self {
+        self.paragraph_property = self.paragraph_property.first_line_chars(chars);
+        self
+    }
+
     pub fn table_property(mut self, p: TableProperty) -> Self {
         self.table_property = p;
         self

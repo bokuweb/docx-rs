@@ -8,6 +8,7 @@ pub struct Div {
     pub margin_right: usize,
     pub margin_top: usize,
     pub margin_bottom: usize,
+    pub divs_child: Vec<Div>,
 }
 
 impl Default for Div {
@@ -18,6 +19,7 @@ impl Default for Div {
             margin_right: 0,
             margin_top: 0,
             margin_bottom: 0,
+            divs_child: vec![],
         }
     }
 }
@@ -47,6 +49,11 @@ impl Div {
 
     pub fn margin_bottom(mut self, s: usize) -> Self {
         self.margin_bottom = s;
+        self
+    }
+
+    pub fn add_child(mut self, s: Div) -> Self {
+        self.divs_child.push(s);
         self
     }
 }

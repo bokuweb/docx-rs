@@ -861,7 +861,50 @@ Object {
     ],
   },
   "webSettings": Object {
-    "divs": Array [],
+    "divs": Array [
+      Object {
+        "id": "344401095",
+        "marginBottom": 0,
+        "marginLeft": 1224,
+        "marginRight": 0,
+        "marginTop": 0,
+      },
+      Object {
+        "id": "2092265353",
+        "marginBottom": 0,
+        "marginLeft": 918,
+        "marginRight": 0,
+        "marginTop": 0,
+      },
+      Object {
+        "id": "1448353598",
+        "marginBottom": 0,
+        "marginLeft": 1224,
+        "marginRight": 0,
+        "marginTop": 0,
+      },
+      Object {
+        "id": "530803451",
+        "marginBottom": 0,
+        "marginLeft": 918,
+        "marginRight": 0,
+        "marginTop": 0,
+      },
+      Object {
+        "id": "1539781370",
+        "marginBottom": 0,
+        "marginLeft": 1224,
+        "marginRight": 0,
+        "marginTop": 0,
+      },
+      Object {
+        "id": "448283929",
+        "marginBottom": 0,
+        "marginLeft": 918,
+        "marginRight": 0,
+        "marginTop": 0,
+      },
+    ],
   },
 }
 `;

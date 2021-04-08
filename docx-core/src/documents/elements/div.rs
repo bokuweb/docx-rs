@@ -3,6 +3,7 @@ use serde::Serialize;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Div {
+    pub id: String,
     pub margin_left: usize,
     pub margin_right: usize,
     pub margin_top: usize,
@@ -12,6 +13,7 @@ pub struct Div {
 impl Default for Div {
     fn default() -> Self {
         Self {
+            id: "".to_string(),
             margin_left: 0,
             margin_right: 0,
             margin_top: 0,
@@ -21,8 +23,11 @@ impl Default for Div {
 }
 
 impl Div {
-    pub fn new() -> Self {
-        Default::default()
+    pub fn new(id: impl Into<String>) -> Self {
+        Self {
+            id: id.into(),
+            ..Default::default()
+        }
     }
 
     pub fn margin_left(mut self, s: usize) -> Self {

@@ -3,6 +3,7 @@ export type WebSettingsJSON = {
 };
 
 export type DivJSON = {
+  id: string;
   marginLeft: number;
   marginRight: number;
   marginTop: number;

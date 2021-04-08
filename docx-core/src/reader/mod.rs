@@ -59,6 +59,7 @@ pub use mc_fallback::*;
 pub use read_zip::*;
 pub use xml_element::*;
 
+// 2006
 const DOC_RELATIONSHIP_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
 const STYLE_RELATIONSHIP_TYPE: &str =
@@ -69,10 +70,11 @@ const SETTINGS_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings";
 const COMMENTS_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments";
+const WEB_SETTINGS_TYPE: &str =
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings";
+// 2011
 const COMMENTS_EXTENDED_TYPE: &str =
     "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
-const WEB_SETTINGS_TYPE: &str =
-    "http://schemas.microsoft.com/officeDocument/2006/relationships/webSettings";
 
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     let cur = Cursor::new(buf);

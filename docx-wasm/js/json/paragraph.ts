@@ -23,6 +23,7 @@ export type ParagraphPropertyJSON = {
   alignment: "left" | "center" | "right" | "justified" | "both";
   indent: IndentJSON | null;
   lineHeight: number | null;
+  divId: string | null;
 };
 
 export type ParagraphJSON = {

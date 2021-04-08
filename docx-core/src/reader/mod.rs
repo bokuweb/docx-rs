@@ -8,14 +8,15 @@ mod comment_extended;
 mod comments;
 mod comments_extended;
 mod delete;
+mod div;
 mod doc_defaults;
+mod doc_grid;
 mod document;
 mod document_rels;
 mod drawing;
 mod errors;
 mod from_xml;
 mod ignore;
-mod table_cell_property;
 mod insert;
 mod level;
 mod level_override;
@@ -25,7 +26,6 @@ mod numberings;
 mod paragraph;
 mod read_zip;
 mod rels;
-mod doc_grid;
 mod run;
 mod run_property;
 mod section_property;
@@ -37,9 +37,11 @@ mod table;
 mod table_borders;
 mod table_cell;
 mod table_cell_borders;
+mod table_cell_property;
 mod table_property;
 mod table_row;
 mod text_box_content;
+mod web_settings;
 mod wp_anchor;
 mod wps_shape;
 mod wps_text_box;
@@ -69,6 +71,7 @@ const COMMENTS_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments";
 const COMMENTS_EXTENDED_TYPE: &str =
     "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
+const WEB_SETTINGS_TYPE: &str = "http://schemas.microsoft.com/office/206/relationships/webSettings";
 
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     let cur = Cursor::new(buf);
@@ -211,6 +214,19 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         )?;
         let settings = Settings::from_xml(&data[..])?;
         docx = docx.settings(settings);
+    }
+
+    // Read web settings
+    let web_settings_path = rels.find_target_path(WEB_SETTINGS_TYPE);
+    if let Some(web_settings_path) = web_settings_path {
+        let data = read_zip(
+            &mut archive,
+            web_settings_path
+                .to_str()
+                .expect("should have web settings"),
+        )?;
+        let web_settings = WebSettings::from_xml(&data[..])?;
+        docx = docx.web_settings(web_settings);
     }
 
     Ok(docx)

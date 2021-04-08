@@ -14,6 +14,8 @@ pub struct ParagraphProperty {
     pub alignment: Option<Justification>,
     pub indent: Option<Indent>,
     pub line_height: Option<u32>,
+    // read only
+    pub(crate) div_id: Option<String>,
 }
 
 impl Default for ParagraphProperty {
@@ -25,6 +27,7 @@ impl Default for ParagraphProperty {
             alignment: None,
             indent: None,
             line_height: None,
+            div_id: None,
         }
     }
 }
@@ -132,7 +135,7 @@ mod tests {
         let b = c.indent(Some(20), Some(SpecialIndentType::FirstLine(10)), None, None);
         assert_eq!(
             serde_json::to_string(&b).unwrap(),
-            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null,"textBorder":null},"style":null,"numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10}},"lineHeight":null}"#
+            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null,"textBorder":null},"style":null,"numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10}},"lineHeight":null,"divId":null}"#
         );
     }
 }

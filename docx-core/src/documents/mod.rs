@@ -18,6 +18,7 @@ mod pic_id;
 mod rels;
 mod settings;
 mod styles;
+mod web_settings;
 mod xml_docx;
 
 pub(crate) use build_xml::BuildXML;
@@ -38,6 +39,7 @@ pub use numberings::*;
 pub use rels::*;
 pub use settings::*;
 pub use styles::*;
+pub use web_settings::*;
 pub use xml_docx::*;
 
 use serde::Serialize;
@@ -58,6 +60,7 @@ pub struct Docx {
     pub media: Vec<(usize, Vec<u8>)>,
     pub header: Header,
     pub comments_extended: CommentsExtended,
+    pub web_settings: WebSettings,
 }
 
 impl Default for Docx {
@@ -75,6 +78,7 @@ impl Default for Docx {
         let media = vec![];
         let header = Header::new();
         let comments_extended = CommentsExtended::new();
+        let web_settings = WebSettings::new();
 
         Docx {
             content_type,
@@ -90,6 +94,7 @@ impl Default for Docx {
             media,
             header,
             comments_extended,
+            web_settings
         }
     }
 }
@@ -131,6 +136,12 @@ impl Docx {
 
     pub fn settings(mut self, s: Settings) -> Self {
         self.settings = s;
+        self
+    }
+
+    // reader only
+    pub(crate) fn web_settings(mut self, s: WebSettings) -> Self {
+        self.web_settings = s;
         self
     }
 

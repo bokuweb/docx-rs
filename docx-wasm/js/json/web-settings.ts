@@ -8,5 +8,5 @@ export type DivJSON = {
   marginRight: number;
   marginTop: number;
   marginBottom: number;
-  divsChild: DivJSON | null;
+  divsChild: DivJSON[];
 };

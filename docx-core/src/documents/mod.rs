@@ -94,7 +94,7 @@ impl Default for Docx {
             media,
             header,
             comments_extended,
-            web_settings
+            web_settings,
         }
     }
 }

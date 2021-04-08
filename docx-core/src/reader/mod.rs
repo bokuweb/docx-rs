@@ -71,7 +71,8 @@ const COMMENTS_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments";
 const COMMENTS_EXTENDED_TYPE: &str =
     "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
-const WEB_SETTINGS_TYPE: &str = "http://schemas.microsoft.com/office/206/relationships/webSettings";
+const WEB_SETTINGS_TYPE: &str =
+    "http://schemas.microsoft.com/officeDocument/2006/relationships/webSettings";
 
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     let cur = Cursor::new(buf);
@@ -218,6 +219,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
     // Read web settings
     let web_settings_path = rels.find_target_path(WEB_SETTINGS_TYPE);
+    dbg!(&web_settings_path);
     if let Some(web_settings_path) = web_settings_path {
         let data = read_zip(
             &mut archive,

@@ -10,7 +10,6 @@ impl FromXML for WebSettings {
     fn from_xml<R: Read>(reader: R) -> Result<Self, ReaderError> {
         let mut parser = EventReader::new(reader);
         let mut settings = Self::default();
-
         loop {
             let e = parser.next();
             match e {
@@ -18,6 +17,7 @@ impl FromXML for WebSettings {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
+                    dbg!(&e);
                     if let XMLElement::Div = e {
                         if let Ok(div) = Div::read(&mut parser, &attributes) {
                             settings.divs.push(div);

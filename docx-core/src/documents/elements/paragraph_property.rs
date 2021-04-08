@@ -69,6 +69,20 @@ impl ParagraphProperty {
         self.line_height = Some(h);
         self
     }
+
+    pub(crate) fn hanging_chars(mut self, chars: i32) -> Self {
+        if let Some(indent) = self.indent {
+            self.indent = Some(indent.hanging_chars(chars));
+        }
+        self
+    }
+
+    pub(crate) fn first_line_chars(mut self, chars: i32) -> Self {
+        if let Some(indent) = self.indent {
+            self.indent = Some(indent.first_line_chars(chars));
+        }
+        self
+    }
 }
 
 impl BuildXML for ParagraphProperty {
@@ -132,7 +146,7 @@ mod tests {
         let b = c.indent(Some(20), Some(SpecialIndentType::FirstLine(10)), None, None);
         assert_eq!(
             serde_json::to_string(&b).unwrap(),
-            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null,"textBorder":null},"style":null,"numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10}},"lineHeight":null}"#
+            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null,"textBorder":null},"style":null,"numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10},"hangingChars":null,"firstLineChars":null},"lineHeight":null}"#
         );
     }
 }

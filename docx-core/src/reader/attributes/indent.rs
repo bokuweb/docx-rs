@@ -12,6 +12,8 @@ pub type ReadIndentResult = Result<
         Option<i32>,
         Option<SpecialIndentType>,
         Option<i32>,
+        Option<i32>,
+        Option<i32>,
     ),
     ReaderError,
 >;
@@ -19,6 +21,8 @@ pub type ReadIndentResult = Result<
 pub fn read_indent(attrs: &[OwnedAttribute]) -> ReadIndentResult {
     let mut start: Option<i32> = None;
     let mut start_chars: Option<i32> = None;
+    let mut hanging_chars: Option<i32> = None;
+    let mut first_line_chars: Option<i32> = None;
     let mut end: Option<i32> = None;
     let mut special: Option<SpecialIndentType> = None;
     for a in attrs {
@@ -37,7 +41,22 @@ pub fn read_indent(attrs: &[OwnedAttribute]) -> ReadIndentResult {
         } else if local_name == "firstLine" {
             let v = super::value_to_dax(&a.value)?;
             special = Some(SpecialIndentType::FirstLine(v))
+        } else if local_name == "firstLineChars" {
+            if let Ok(chars) = i32::from_str(&a.value) {
+                first_line_chars = Some(chars);
+            }
+        } else if local_name == "hangingChars" {
+            if let Ok(chars) = i32::from_str(&a.value) {
+                hanging_chars = Some(chars);
+            }
         }
     }
-    Ok((start, end, special, start_chars))
+    Ok((
+        start,
+        end,
+        special,
+        start_chars,
+        hanging_chars,
+        first_line_chars,
+    ))
 }

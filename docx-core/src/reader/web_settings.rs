@@ -18,13 +18,10 @@ impl FromXML for WebSettings {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    match e {
-                        XMLElement::Div => {
-                            if let Ok(div) = Div::read(&mut parser, &attributes) {
-                                settings.divs.push(div);
-                            }
+                    if let XMLElement::Div = e {
+                        if let Ok(div) = Div::read(&mut parser, &attributes) {
+                            settings.divs.push(div);
                         }
-                        _ => {}
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {

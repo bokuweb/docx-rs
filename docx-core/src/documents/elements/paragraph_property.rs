@@ -14,6 +14,10 @@ pub struct ParagraphProperty {
     pub alignment: Option<Justification>,
     pub indent: Option<Indent>,
     pub line_height: Option<u32>,
+    pub keep_next: bool,
+    pub keep_lines: bool,
+    pub page_break_before: bool,
+    pub window_control: bool,
     // read only
     pub(crate) div_id: Option<String>,
 }
@@ -27,6 +31,10 @@ impl Default for ParagraphProperty {
             alignment: None,
             indent: None,
             line_height: None,
+            keep_next: false,
+            keep_lines: false,
+            page_break_before: false,
+            window_control: false,
             div_id: None,
         }
     }
@@ -73,6 +81,26 @@ impl ParagraphProperty {
         self
     }
 
+    pub fn keep_next(mut self, v: bool) -> Self {
+        self.keep_next = v;
+        self
+    }
+
+    pub fn keep_lines(mut self, v: bool) -> Self {
+        self.keep_lines = v;
+        self
+    }
+
+    pub fn page_break_before(mut self, v: bool) -> Self {
+        self.page_break_before = v;
+        self
+    }
+
+    pub fn window_control(mut self, v: bool) -> Self {
+        self.window_control = v;
+        self
+    }
+
     pub(crate) fn hanging_chars(mut self, chars: i32) -> Self {
         if let Some(indent) = self.indent {
             self.indent = Some(indent.hanging_chars(chars));
@@ -95,16 +123,32 @@ impl BuildXML for ParagraphProperty {
         } else {
             None
         };
-        XMLBuilder::new()
+        let mut b = XMLBuilder::new()
             .open_paragraph_property()
             .add_child(&self.run_property)
             .add_optional_child(&self.style)
             .add_optional_child(&self.numbering_property)
             .add_optional_child(&self.alignment)
             .add_optional_child(&self.indent)
-            .add_optional_child(&spacing)
-            .close()
-            .build()
+            .add_optional_child(&spacing);
+
+        if self.keep_next {
+            b = b.keep_next()
+        }
+
+        if self.keep_lines {
+            b = b.keep_lines()
+        }
+
+        if self.page_break_before {
+            b = b.page_break_before()
+        }
+
+        if self.window_control {
+            b = b.window_control()
+        }
+
+        b.close().build()
     }
 }
 
@@ -140,6 +184,17 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:pPr><w:rPr /><w:ind w:left="20" w:right="0" /></w:pPr>"#
+        );
+    }
+
+    #[test]
+    fn test_keep_next() {
+        let c = ParagraphProperty::new();
+        let b = c.keep_next(true).build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:pPr><w:rPr /><w:keepNext />
+</w:pPr>"#
         );
     }
 

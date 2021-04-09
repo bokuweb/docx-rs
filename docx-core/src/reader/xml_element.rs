@@ -40,6 +40,10 @@ pub enum XMLElement {
     NumberingId,
     Justification,
     Insert,
+    KeepNext,
+    KeepLines,
+    PageBreakBefore,
+    WindowControl,
     DivId,
     Div,
     DivsChild,
@@ -310,6 +314,10 @@ impl FromStr for XMLElement {
             "marTop" => Ok(XMLElement::MarginTop),
             "marBottom" => Ok(XMLElement::MarginBottom),
             "webSettings" => Ok(XMLElement::WebSettings),
+            "keepNext" => Ok(XMLElement::KeepNext),
+            "keepLines" => Ok(XMLElement::KeepLines),
+            "pageBreakBefore" => Ok(XMLElement::PageBreakBefore),
+            "windowControl" => Ok(XMLElement::WindowControl),
             _ => Ok(XMLElement::Unsupported),
         }
     }

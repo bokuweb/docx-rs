@@ -126,6 +126,18 @@ impl ElementReader for Paragraph {
                             p = p.run_property(run_pr);
                             continue;
                         }
+                        XMLElement::KeepNext => {
+                            p.property.keep_next = true;
+                        }
+                        XMLElement::KeepLines => {
+                            p.property.keep_lines = true;
+                        }
+                        XMLElement::PageBreakBefore => {
+                            p.property.page_break_before = true;
+                        }
+                        XMLElement::WindowControl => {
+                            p.property.window_control = true;
+                        }
                         _ => {}
                     }
                 }

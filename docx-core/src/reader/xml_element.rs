@@ -40,6 +40,13 @@ pub enum XMLElement {
     NumberingId,
     Justification,
     Insert,
+    DivId,
+    Div,
+    DivsChild,
+    MarginLeft,
+    MarginRight,
+    MarginTop,
+    MarginBottom,
     Delete,
     DeleteText,
     BookmarkStart,
@@ -121,6 +128,7 @@ pub enum XMLElement {
     SectionProperty,
     PageSize,
     PageMargin,
+    WebSettings,
     Unsupported,
 }
 
@@ -294,6 +302,14 @@ impl FromStr for XMLElement {
             "docGrid" => Ok(XMLElement::DocGrid),
             "rPrDefault" => Ok(XMLElement::RunPropertyDefault),
             "defaultTabStop" => Ok(XMLElement::DefaultTabStop),
+            "divId" => Ok(XMLElement::DivId),
+            "div" => Ok(XMLElement::Div),
+            "divsChild" => Ok(XMLElement::DivsChild),
+            "marLeft" => Ok(XMLElement::MarginLeft),
+            "marRight" => Ok(XMLElement::MarginRight),
+            "marTop" => Ok(XMLElement::MarginTop),
+            "marBottom" => Ok(XMLElement::MarginBottom),
+            "webSettings" => Ok(XMLElement::WebSettings),
             _ => Ok(XMLElement::Unsupported),
         }
     }

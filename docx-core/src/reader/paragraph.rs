@@ -108,6 +108,12 @@ impl ElementReader for Paragraph {
                             p = p.style(&attributes[0].value);
                             continue;
                         }
+                        XMLElement::DivId => {
+                            if let Some(val) = read_val(&attributes) {
+                                p.property.div_id = Some(val)
+                            }
+                            continue;
+                        }
                         XMLElement::NumberingProperty => {
                             let num_pr = NumberingProperty::read(r, attrs)?;
                             if num_pr.id.is_some() && num_pr.level.is_some() {
@@ -177,6 +183,7 @@ mod tests {
                         None,
                     )),
                     line_height: None,
+                    ..Default::default()
                 },
                 has_numbering: false,
             }
@@ -212,6 +219,7 @@ mod tests {
                     alignment: None,
                     indent: Some(Indent::new(None, None, None, Some(100))),
                     line_height: None,
+                    ..Default::default()
                 },
                 has_numbering: false,
             }
@@ -242,6 +250,7 @@ mod tests {
                     alignment: Some(Justification::new(AlignmentType::Left.to_string())),
                     indent: None,
                     line_height: None,
+                    ..Default::default()
                 },
                 has_numbering: false,
             }
@@ -276,6 +285,7 @@ mod tests {
                     alignment: None,
                     indent: None,
                     line_height: None,
+                    ..Default::default()
                 },
                 has_numbering: true,
             }
@@ -312,6 +322,7 @@ mod tests {
                     alignment: None,
                     indent: None,
                     line_height: None,
+                    ..Default::default()
                 },
                 has_numbering: false,
             }
@@ -350,6 +361,7 @@ mod tests {
                     alignment: None,
                     indent: None,
                     line_height: None,
+                    ..Default::default()
                 },
                 has_numbering: false,
             }
@@ -387,6 +399,7 @@ mod tests {
                     alignment: None,
                     indent: None,
                     line_height: None,
+                    ..Default::default()
                 },
                 has_numbering: false,
             }
@@ -436,6 +449,7 @@ mod tests {
                     alignment: None,
                     indent: None,
                     line_height: None,
+                    ..Default::default()
                 },
                 has_numbering: false,
             }
@@ -477,6 +491,7 @@ mod tests {
                     alignment: None,
                     indent: None,
                     line_height: None,
+                    ..Default::default()
                 },
                 has_numbering: false,
             }

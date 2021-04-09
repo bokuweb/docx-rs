@@ -1,5 +1,6 @@
 mod bool_value;
 mod border;
+mod id;
 mod indent;
 mod indent_level;
 mod name;
@@ -8,6 +9,7 @@ mod width;
 
 pub use bool_value::*;
 pub use border::*;
+pub use id::*;
 pub use indent::*;
 pub use indent_level::*;
 pub use name::*;

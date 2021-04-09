@@ -1,5 +1,9 @@
 import { LevelJSON } from "./json";
-import { ParagraphProperty, SpecialIndentKind } from "./paragraph";
+import {
+  createDefaultParagraphProperty,
+  ParagraphProperty,
+  SpecialIndentKind,
+} from "./paragraph";
 import { RunFonts, RunProperty } from "./run";
 
 export type LevelSuffixType = "nothing" | "tab" | "space";
@@ -10,7 +14,7 @@ export class Level {
   format: string;
   text: string;
   jc: string;
-  paragraphProperty: ParagraphProperty = { runProperty: {} };
+  paragraphProperty: ParagraphProperty = createDefaultParagraphProperty();
   runProperty: RunProperty = {};
   levelSuffix: LevelSuffixType;
 

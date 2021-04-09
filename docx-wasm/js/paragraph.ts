@@ -1,4 +1,4 @@
-import { Run, RunProperty, RunFonts } from "./run";
+import { Run, RunProperty, RunFonts, createDefaultRunProperty } from "./run";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
 import { BookmarkStart } from "./bookmark-start";
@@ -40,14 +40,26 @@ export type ParagraphProperty = {
   };
   lineHeight?: number;
   runProperty: RunProperty;
+  keepNext: boolean;
+  keepLines: boolean;
+  pageBreakBefore: boolean;
+  windowControl: boolean;
+};
+
+export const createDefaultParagraphProperty = (): ParagraphProperty => {
+  return {
+    runProperty: createDefaultRunProperty(),
+    keepNext: false,
+    keepLines: false,
+    pageBreakBefore: false,
+    windowControl: false,
+  };
 };
 
 export class Paragraph {
   hasNumberings = false;
   children: ParagraphChild[] = [];
-  property: ParagraphProperty = {
-    runProperty: {},
-  };
+  property: ParagraphProperty = createDefaultParagraphProperty();
 
   addRun(run: Run) {
     this.children.push(run);
@@ -111,6 +123,26 @@ export class Paragraph {
 
   lineHeight(lineHeight: number) {
     this.property = { ...this.property, lineHeight };
+    return this;
+  }
+
+  keepNext(v: boolean) {
+    this.property = { ...this.property, keepNext: v };
+    return this;
+  }
+
+  keepLines(v: boolean) {
+    this.property = { ...this.property, keepLines: v };
+    return this;
+  }
+
+  pageBreakBefore(v: boolean) {
+    this.property = { ...this.property, pageBreakBefore: v };
+    return this;
+  }
+
+  windowControl(v: boolean) {
+    this.property = { ...this.property, windowControl: v };
     return this;
   }
 

@@ -167,6 +167,26 @@ impl Paragraph {
         self
     }
 
+    pub fn keep_next(mut self, v: bool) -> Self {
+        self.property = self.property.keep_next(v);
+        self
+    }
+
+    pub fn keep_lines(mut self, v: bool) -> Self {
+        self.property = self.property.keep_lines(v);
+        self
+    }
+
+    pub fn page_break_before(mut self, v: bool) -> Self {
+        self.property = self.property.page_break_before(v);
+        self
+    }
+
+    pub fn window_control(mut self, v: bool) -> Self {
+        self.property = self.property.window_control(v);
+        self
+    }
+
     pub fn indent(
         mut self,
         left: Option<i32>,

@@ -23,7 +23,7 @@ import {
   PageMargin,
   PageOrientationType,
 } from "./section-property";
-import { DocGridType, DocxJSON } from "./json";
+import { DocGridType, DocxJSON, WidthType } from "./json";
 
 import * as wasm from "./pkg";
 import { Level } from "./level";
@@ -52,6 +52,21 @@ const convertBorderType = (t: BorderType) => {
       return wasm.BorderType.Triple;
     default:
       return wasm.BorderType.Single;
+  }
+};
+
+const convertWidthType = (t: WidthType) => {
+  switch (t) {
+    case "nil":
+      return wasm.WidthType.Nil;
+    case "Pct":
+      return wasm.WidthType.Pct;
+    case "DXA":
+      return wasm.WidthType.DXA;
+    case "Auto":
+      return wasm.WidthType.Auto;
+    default:
+      return wasm.WidthType.DXA;
   }
 };
 
@@ -438,7 +453,11 @@ export class Docx {
 
     if (t.property.cellMargins) {
       const { top, right, bottom, left } = t.property.cellMargins;
-      table = table.set_cell_margins(top, right, bottom, left);
+      table = table
+        .cell_margin_top(top.val, convertWidthType(top.type))
+        .cell_margin_right(right.val, convertWidthType(right.type))
+        .cell_margin_bottom(bottom.val, convertWidthType(bottom.type))
+        .cell_margin_left(left.val, convertWidthType(left.type));
     }
 
     switch (t.property.align) {

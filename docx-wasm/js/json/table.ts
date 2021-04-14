@@ -7,7 +7,7 @@ import { TableLayoutType } from "../table";
 
 export type TableCellChildJSON = ParagraphJSON;
 
-export type WidthType = "DXA" | "Auto" | "Pct" | "Nil";
+export type WidthType = "DXA" | "Auto" | "Pct" | "nil";
 export { TextDirectionType } from "../table-cell";
 
 export { HeightRule } from "../table-row";

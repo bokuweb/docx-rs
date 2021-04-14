@@ -1,4 +1,5 @@
 use super::*;
+use docx_rs::WidthType;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -57,6 +58,26 @@ impl Table {
     ) -> Table {
         let m = docx_rs::TableCellMargins::new().margin(top, right, bottom, left);
         self.0.property = self.0.property.set_margins(m);
+        self
+    }
+
+    pub fn cell_margin_top(mut self, v: usize, t: WidthType) -> Table {
+        self.0.property = self.0.property.cell_margin_top(v, t);
+        self
+    }
+
+    pub fn cell_margin_right(mut self, v: usize, t: WidthType) -> Table {
+        self.0.property = self.0.property.cell_margin_right(v, t);
+        self
+    }
+
+    pub fn cell_margin_bottom(mut self, v: usize, t: WidthType) -> Table {
+        self.0.property = self.0.property.cell_margin_bottom(v, t);
+        self
+    }
+
+    pub fn cell_margin_left(mut self, v: usize, t: WidthType) -> Table {
+        self.0.property = self.0.property.cell_margin_left(v, t);
         self
     }
 }

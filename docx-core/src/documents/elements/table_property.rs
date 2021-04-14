@@ -63,6 +63,26 @@ impl TableProperty {
         self
     }
 
+    pub fn cell_margin_top(mut self, v: usize, t: WidthType) -> Self {
+        self.margins = self.margins.margin_top(v, t);
+        self
+    }
+
+    pub fn cell_margin_right(mut self, v: usize, t: WidthType) -> Self {
+        self.margins = self.margins.margin_right(v, t);
+        self
+    }
+
+    pub fn cell_margin_bottom(mut self, v: usize, t: WidthType) -> Self {
+        self.margins = self.margins.margin_bottom(v, t);
+        self
+    }
+
+    pub fn cell_margin_left(mut self, v: usize, t: WidthType) -> Self {
+        self.margins = self.margins.margin_left(v, t);
+        self
+    }
+
     pub fn set_borders(mut self, borders: TableBorders) -> Self {
         self.borders = borders;
         self

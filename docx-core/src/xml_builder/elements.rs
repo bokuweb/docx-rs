@@ -309,6 +309,11 @@ impl XMLBuilder {
         "w:val"
     );
 
+    closed!(keep_next, "w:keepNext");
+    closed!(keep_lines, "w:keepLines");
+    closed!(page_break_before, "w:pageBreakBefore");
+    closed!(window_control, "w:windowControl");
+
     /*
     <w:lvlOverride w:ilvl="0">
       <w:startOverride w:val="1"/>

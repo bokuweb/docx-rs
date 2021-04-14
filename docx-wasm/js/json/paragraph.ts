@@ -24,6 +24,10 @@ export type ParagraphPropertyJSON = {
   indent: IndentJSON | null;
   lineHeight: number | null;
   divId: string | null;
+  keepNext: boolean;
+  keepLines: boolean;
+  pageBreakBefore: boolean;
+  windowControl: boolean;
 };
 
 export type ParagraphJSON = {

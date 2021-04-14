@@ -26,6 +26,10 @@ export type RunProperty = {
   textBorder?: TextBorder;
 };
 
+export const createDefaultRunProperty = (): RunProperty => {
+  return {};
+};
+
 export class RunFonts {
   _ascii?: string;
   _hiAnsi?: string;

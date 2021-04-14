@@ -6,20 +6,42 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
+struct CellMargin {
+    pub val: usize,
+    pub width_type: WidthType,
+}
+
+impl CellMargin {
+    pub fn new(val: usize, t: WidthType) -> Self {
+        Self { val, width_type: t }
+    }
+}
+
+impl Default for CellMargin {
+    fn default() -> CellMargin {
+        CellMargin {
+            val: 55,
+            width_type: WidthType::DXA,
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct TableCellMargins {
-    top: usize,
-    left: usize,
-    bottom: usize,
-    right: usize,
+    top: CellMargin,
+    left: CellMargin,
+    bottom: CellMargin,
+    right: CellMargin,
 }
 
 impl Default for TableCellMargins {
     fn default() -> TableCellMargins {
         TableCellMargins {
-            top: 55,
-            left: 54,
-            bottom: 55,
-            right: 55,
+            top: CellMargin::default(),
+            left: CellMargin::default(),
+            bottom: CellMargin::default(),
+            right: CellMargin::default(),
         }
     }
 }
@@ -31,11 +53,31 @@ impl TableCellMargins {
 
     pub fn margin(self, top: usize, right: usize, bottom: usize, left: usize) -> TableCellMargins {
         TableCellMargins {
-            top,
-            left,
-            bottom,
-            right,
+            top: CellMargin::new(top, WidthType::DXA),
+            left: CellMargin::new(left, WidthType::DXA),
+            bottom: CellMargin::new(bottom, WidthType::DXA),
+            right: CellMargin::new(right, WidthType::DXA),
         }
+    }
+
+    pub fn margin_top(mut self, v: usize, t: WidthType) -> Self {
+        self.top = CellMargin::new(v, t);
+        self
+    }
+
+    pub fn margin_right(mut self, v: usize, t: WidthType) -> Self {
+        self.right = CellMargin::new(v, t);
+        self
+    }
+
+    pub fn margin_left(mut self, v: usize, t: WidthType) -> Self {
+        self.left = CellMargin::new(v, t);
+        self
+    }
+
+    pub fn margin_bottom(mut self, v: usize, t: WidthType) -> Self {
+        self.bottom = CellMargin::new(v, t);
+        self
     }
 }
 
@@ -43,10 +85,10 @@ impl BuildXML for TableCellMargins {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_table_cell_margins()
-            .margin_top(self.top as i32, WidthType::DXA)
-            .margin_left(self.left as i32, WidthType::DXA)
-            .margin_bottom(self.bottom as i32, WidthType::DXA)
-            .margin_right(self.right as i32, WidthType::DXA)
+            .margin_top(self.top.val as i32, self.top.width_type)
+            .margin_left(self.left.val as i32, self.left.width_type)
+            .margin_bottom(self.bottom.val as i32, self.bottom.width_type)
+            .margin_right(self.right.val as i32, self.right.width_type)
             .close()
             .build()
     }
@@ -67,7 +109,7 @@ mod tests {
             str::from_utf8(&b).unwrap(),
             r#"<w:tblCellMar>
   <w:top w:w="55" w:type="dxa" />
-  <w:left w:w="54" w:type="dxa" />
+  <w:left w:w="55" w:type="dxa" />
   <w:bottom w:w="55" w:type="dxa" />
   <w:right w:w="55" w:type="dxa" />
 </w:tblCellMar>"#

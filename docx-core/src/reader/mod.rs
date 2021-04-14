@@ -37,6 +37,7 @@ mod table;
 mod table_borders;
 mod table_cell;
 mod table_cell_borders;
+mod table_cell_margins;
 mod table_cell_property;
 mod table_property;
 mod table_row;

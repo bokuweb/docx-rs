@@ -1,6 +1,6 @@
+import { createDefaultTableCellMargins, TableProperty } from "./table";
 import { RunProperty, createDefaultRunProperty } from "./run";
 import { createDefaultParagraphProperty, ParagraphProperty } from "./paragraph";
-import { TableProperty } from "./table";
 
 export type StyleType =
   | "paragraph"
@@ -22,9 +22,12 @@ export class Style {
     this._styleId = id;
     this._styleType = type;
     this._name = "";
+    this._runProperty = {};
+    this._tableProperty = {
+      cellMargins: createDefaultTableCellMargins(),
+    };
     this._runProperty = createDefaultRunProperty();
     this._paragraphProperty = createDefaultParagraphProperty();
-    this._tableProperty = {};
     this._basedOn = null;
   }
 

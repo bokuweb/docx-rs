@@ -127,7 +127,7 @@ mod tests {
             str::from_utf8(&b).unwrap(),
             r#"<w:tbl><w:tblPr><w:tblW w:w="0" w:type="dxa" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders><w:tblCellMar>
   <w:top w:w="55" w:type="dxa" />
-  <w:left w:w="54" w:type="dxa" />
+  <w:left w:w="55" w:type="dxa" />
   <w:bottom w:w="55" w:type="dxa" />
   <w:right w:w="55" w:type="dxa" />
 </w:tblCellMar></w:tblPr><w:tblGrid /><w:tr><w:trPr /></w:tr></w:tbl>"#
@@ -143,7 +143,7 @@ mod tests {
             str::from_utf8(&b).unwrap(),
             r#"<w:tbl><w:tblPr><w:tblW w:w="0" w:type="dxa" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders><w:tblCellMar>
   <w:top w:w="55" w:type="dxa" />
-  <w:left w:w="54" w:type="dxa" />
+  <w:left w:w="55" w:type="dxa" />
   <w:bottom w:w="55" w:type="dxa" />
   <w:right w:w="55" w:type="dxa" />
 </w:tblCellMar></w:tblPr><w:tblGrid>
@@ -158,7 +158,7 @@ mod tests {
         let t = Table::new(vec![]).set_grid(vec![100, 200, 300]);
         assert_eq!(
             serde_json::to_string(&t).unwrap(),
-            r#"{"rows":[],"grid":[100,200,300],"hasNumbering":false,"property":{"width":{"width":0,"widthType":"Auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}},"margins":{"top":55,"left":54,"bottom":55,"right":55},"indent":null,"style":null,"layout":null}}"#
+            r#"{"rows":[],"grid":[100,200,300],"hasNumbering":false,"property":{"width":{"width":0,"widthType":"Auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}},"margins":{"top":{"val":55,"widthType":"DXA"},"left":{"val":55,"widthType":"DXA"},"bottom":{"val":55,"widthType":"DXA"},"right":{"val":55,"widthType":"DXA"}},"indent":null,"style":null,"layout":null}}"#
         );
     }
 }

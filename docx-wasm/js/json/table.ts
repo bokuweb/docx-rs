@@ -43,6 +43,15 @@ export type TableRowJSON = {
   property: TableRowPropertyJSON;
 };
 
+export type TableCellMarginJSON = { val: number; widthType: WidthType };
+
+export type TableCellMarginsJSON = {
+  top: TableCellMarginJSON;
+  left: TableCellMarginJSON;
+  bottom: TableCellMarginJSON;
+  right: TableCellMarginJSON;
+};
+
 export type TablePropertyJSON = {
   width: {
     width: number;
@@ -57,12 +66,7 @@ export type TablePropertyJSON = {
     insideH: BorderJSON;
     insideV: BorderJSON;
   } | null;
-  margins: {
-    top: { val: number; widthType: WidthType };
-    left: { val: number; widthType: WidthType };
-    bottom: { val: number; widthType: WidthType };
-    right: { val: number; widthType: WidthType };
-  } | null;
+  margins: TableCellMarginsJSON | null;
   indent: {
     width: number;
     widthType: WidthType;

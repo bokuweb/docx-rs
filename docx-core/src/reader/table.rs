@@ -51,7 +51,9 @@ impl ElementReader for Table {
                             }
                         }
                         XMLElement::TableCellMargin => {
-                            // TODO: Support later
+                            if let Ok(margins) = TableCellMargins::read(r, &attributes) {
+                                t = t.margins(margins)
+                            }
                         }
                         XMLElement::GridCol => {
                             let (w, _) = read_width(&attributes)?;

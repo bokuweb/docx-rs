@@ -7,7 +7,7 @@ import { TableLayoutType } from "../table";
 
 export type TableCellChildJSON = ParagraphJSON;
 
-export type WidthType = "DXA" | "Auto" | "Pct";
+export type WidthType = "DXA" | "Auto" | "Pct" | "Nil";
 export { TextDirectionType } from "../table-cell";
 
 export { HeightRule } from "../table-row";
@@ -58,10 +58,10 @@ export type TablePropertyJSON = {
     insideV: BorderJSON;
   } | null;
   margins: {
-    top: number;
-    left: number;
-    bottom: number;
-    right: number;
+    top: { val: number; widthType: WidthType };
+    left: { val: number; widthType: WidthType };
+    bottom: { val: number; widthType: WidthType };
+    right: { val: number; widthType: WidthType };
   } | null;
   indent: {
     width: number;

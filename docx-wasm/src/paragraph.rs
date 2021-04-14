@@ -116,6 +116,26 @@ impl Paragraph {
         self.0 = self.0.line_height(line_height);
         self
     }
+
+    pub fn keep_next(mut self, v: bool) -> Self {
+        self.0 = self.0.keep_next(v);
+        self
+    }
+
+    pub fn keep_lines(mut self, v: bool) -> Self {
+        self.0 = self.0.keep_lines(v);
+        self
+    }
+
+    pub fn page_break_before(mut self, v: bool) -> Self {
+        self.0 = self.0.page_break_before(v);
+        self
+    }
+
+    pub fn window_control(mut self, v: bool) -> Self {
+        self.0 = self.0.window_control(v);
+        self
+    }
 }
 
 impl Paragraph {

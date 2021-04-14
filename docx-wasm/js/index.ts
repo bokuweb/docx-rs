@@ -399,6 +399,22 @@ export class Docx {
       paragraph = paragraph.fonts(f);
     }
 
+    if (p.property.keepLines) {
+      paragraph = paragraph.keep_lines(true);
+    }
+
+    if (p.property.keepNext) {
+      paragraph = paragraph.keep_next(true);
+    }
+
+    if (p.property.pageBreakBefore) {
+      paragraph = paragraph.page_break_before(true);
+    }
+
+    if (p.property.windowControl) {
+      paragraph = paragraph.window_control(true);
+    }
+
     return paragraph;
   }
 

@@ -38,9 +38,15 @@ pub struct TableCellMargins {
 impl Default for TableCellMargins {
     fn default() -> TableCellMargins {
         TableCellMargins {
-            top: CellMargin::default(),
+            top: CellMargin {
+                val: 0,
+                width_type: WidthType::DXA,
+            },
             left: CellMargin::default(),
-            bottom: CellMargin::default(),
+            bottom: CellMargin {
+                val: 0,
+                width_type: WidthType::DXA,
+            },
             right: CellMargin::default(),
         }
     }
@@ -108,9 +114,9 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:tblCellMar>
-  <w:top w:w="55" w:type="dxa" />
+  <w:top w:w="0" w:type="dxa" />
   <w:left w:w="55" w:type="dxa" />
-  <w:bottom w:w="55" w:type="dxa" />
+  <w:bottom w:w="0" w:type="dxa" />
   <w:right w:w="55" w:type="dxa" />
 </w:tblCellMar>"#
         );

@@ -413,12 +413,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "podio"
-version = "0.1.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "780fb4b6698bbf9cf2444ea5d22411cef2953f0824b98f33cf454ec5615645bd"
-
-[[package]]
 name = "pretty_assertions"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -702,11 +696,12 @@ dependencies = [
 
 [[package]]
 name = "zip"
-version = "0.5.6"
+version = "0.5.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "58287c28d78507f5f91f2a4cf1e8310e2c76fd4c6932f93ac60fd1ceb402db7d"
+checksum = "9c83dc9b784d252127720168abd71ea82bf8c3d96b17dc565b5e2a02854f2b27"
 dependencies = [
+ "byteorder",
  "crc32fast",
  "flate2",
- "podio",
+ "thiserror",
 ]

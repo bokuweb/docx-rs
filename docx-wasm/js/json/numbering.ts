@@ -6,9 +6,10 @@ export type LevelJSON = {
   format: string;
   text: string;
   jc: string;
-  pstyle: string | null;
   suffix: "tab" | "nothing" | "space";
   paragraphProperty: ParagraphPropertyJSON;
+  pstyle: string | null;
+  levelRestart: number | null;
 };
 
 export type AbstractNumberingJSON = {

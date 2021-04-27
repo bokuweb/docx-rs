@@ -23,6 +23,7 @@ impl ElementReader for Level {
         let mut special_indent = None;
         let mut indent_end = None;
         let mut start_chars = None;
+        let mut level_restart = None;
         let mut has_indent = false;
         let mut suffix = LevelSuffixType::Tab;
 
@@ -50,6 +51,11 @@ impl ElementReader for Level {
                         XMLElement::LevelText => {
                             level_text = LevelText::new(attributes[0].value.clone());
                         }
+                        XMLElement::LevelRestart => {
+                            if let Ok(v) = u32::from_str(&attributes[0].value) {
+                                level_restart = Some(LevelRestart::new(v));
+                            }
+                        }
                         XMLElement::LevelJustification => {
                             jc = LevelJc::new(attributes[0].value.clone());
                         }
@@ -75,6 +81,7 @@ impl ElementReader for Level {
                         if has_indent {
                             l = l.indent(indent_start, special_indent, indent_end, start_chars);
                         }
+                        l.level_restart = level_restart;
                         return Ok(l);
                     }
                 }

@@ -275,6 +275,7 @@ impl XMLBuilder {
     closed_with_usize!(start, "w:start");
     closed_with_str!(number_format, "w:numFmt");
     closed_with_str!(level_text, "w:lvlText");
+    closed_with_str!(level_restart, "w:lvlRestart");
     closed_with_str!(level_justification, "w:lvlJc");
     closed_with_str!(abstract_num_id, "w:abstractNumId");
     closed!(vanish, "w:vanish");

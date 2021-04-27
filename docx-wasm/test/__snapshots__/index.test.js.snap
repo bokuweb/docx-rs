@@ -5127,6 +5127,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 0,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5188,6 +5189,7 @@ Object {
             "format": "aiueoFullWidth",
             "jc": "left",
             "level": 1,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5249,6 +5251,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 2,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5310,6 +5313,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 3,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5371,6 +5375,7 @@ Object {
             "format": "aiueoFullWidth",
             "jc": "left",
             "level": 4,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5432,6 +5437,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 5,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5493,6 +5499,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 6,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5554,6 +5561,7 @@ Object {
             "format": "aiueoFullWidth",
             "jc": "left",
             "level": 7,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5615,6 +5623,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 8,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5683,6 +5692,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 0,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5744,6 +5754,7 @@ Object {
             "format": "aiueoFullWidth",
             "jc": "left",
             "level": 1,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5805,6 +5816,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 2,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5866,6 +5878,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 3,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5927,6 +5940,7 @@ Object {
             "format": "aiueoFullWidth",
             "jc": "left",
             "level": 4,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -5988,6 +6002,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 5,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6049,6 +6064,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 6,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6110,6 +6126,7 @@ Object {
             "format": "aiueoFullWidth",
             "jc": "left",
             "level": 7,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6171,6 +6188,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 8,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6239,6 +6257,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 0,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6300,6 +6319,7 @@ Object {
             "format": "aiueoFullWidth",
             "jc": "left",
             "level": 1,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6361,6 +6381,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 2,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6422,6 +6443,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 3,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6483,6 +6505,7 @@ Object {
             "format": "aiueoFullWidth",
             "jc": "left",
             "level": 4,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6544,6 +6567,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 5,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6605,6 +6629,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 6,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6666,6 +6691,7 @@ Object {
             "format": "aiueoFullWidth",
             "jc": "left",
             "level": 7,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6727,6 +6753,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 8,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -6810,6 +6837,7 @@ Object {
               "format": "decimal",
               "jc": "left",
               "level": 0,
+              "levelRestart": null,
               "paragraphProperty": Object {
                 "alignment": null,
                 "divId": null,
@@ -9263,6 +9291,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 0,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9324,6 +9353,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 1,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9385,6 +9415,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 2,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9446,6 +9477,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 3,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9507,6 +9539,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 4,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9568,6 +9601,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 5,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9629,6 +9663,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 6,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9690,6 +9725,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 7,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9751,6 +9787,7 @@ Object {
             "format": "decimalEnclosedCircle",
             "jc": "left",
             "level": 8,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9819,6 +9856,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 0,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9880,6 +9918,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 1,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9931,6 +9970,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 2,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -9982,6 +10022,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 3,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -10033,6 +10074,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 4,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -10084,6 +10126,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 5,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -10135,6 +10178,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 6,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -10186,6 +10230,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 7,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,
@@ -10237,6 +10282,7 @@ Object {
             "format": "decimal",
             "jc": "left",
             "level": 8,
+            "levelRestart": null,
             "paragraphProperty": Object {
               "alignment": null,
               "divId": null,

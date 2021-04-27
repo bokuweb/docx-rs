@@ -12,10 +12,11 @@ pub struct Level {
     pub format: NumberFormat,
     pub text: LevelText,
     pub jc: LevelJc,
-    pub pstyle: Option<String>,
     pub paragraph_property: ParagraphProperty,
     pub run_property: RunProperty,
     pub suffix: LevelSuffixType,
+    pub pstyle: Option<String>,
+    pub level_restart: Option<LevelRestart>,
 }
 
 impl Level {
@@ -32,10 +33,11 @@ impl Level {
             format,
             text,
             jc,
-            pstyle: None,
             paragraph_property: ParagraphProperty::new(),
             run_property: RunProperty::new(),
             suffix: LevelSuffixType::Tab,
+            pstyle: None,
+            level_restart: None,
         }
     }
 
@@ -107,6 +109,11 @@ impl Level {
         self.run_property = self.run_property.fonts(f);
         self
     }
+
+    pub fn level_restart(mut self, v: u32) -> Self {
+        self.level_restart = Some(LevelRestart::new(v));
+        self
+    }
 }
 
 impl BuildXML for Level {
@@ -118,7 +125,8 @@ impl BuildXML for Level {
             .add_child(&self.text)
             .add_child(&self.jc)
             .add_child(&self.paragraph_property)
-            .add_child(&self.run_property);
+            .add_child(&self.run_property)
+            .add_optional_child(&self.level_restart);
 
         if self.suffix != LevelSuffixType::Tab {
             b = b.suffix(&self.suffix.to_string());

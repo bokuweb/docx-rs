@@ -28,9 +28,11 @@ export type TableCellPropertyJSON = {
 
 export type TableRowPropertyJSON = {
   gridAfter: number | null;
+  gridBefore: number | null;
   rowHeight: number | null;
   heightRule: HeightRule | null;
   widthAfter: number | null;
+  widthBefore: number | null;
 };
 
 export type TableCellJSON = {

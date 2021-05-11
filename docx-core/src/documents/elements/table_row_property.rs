@@ -8,6 +8,8 @@ use crate::{documents::BuildXML, HeightRule};
 pub struct TableRowProperty {
     grid_after: Option<u32>,
     width_after: Option<f32>,
+    grid_before: Option<u32>,
+    width_before: Option<f32>,
     row_height: Option<f32>,
     height_rule: Option<HeightRule>,
 }
@@ -27,6 +29,16 @@ impl TableRowProperty {
         self
     }
 
+    pub fn grid_before(mut self, before: u32) -> Self {
+        self.grid_before = Some(before);
+        self
+    }
+
+    pub fn width_before(mut self, w: f32) -> Self {
+        self.width_before = Some(w);
+        self
+    }
+
     pub fn row_height(mut self, h: f32) -> Self {
         self.row_height = Some(h);
         self
@@ -43,6 +55,8 @@ impl Default for TableRowProperty {
         TableRowProperty {
             grid_after: None,
             width_after: None,
+            grid_before: None,
+            width_before: None,
             row_height: None,
             height_rule: None,
         }

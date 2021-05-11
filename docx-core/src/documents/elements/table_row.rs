@@ -17,8 +17,8 @@ impl TableRow {
         let property = TableRowProperty::new();
         let has_numbering = cells.iter().any(|c| c.has_numbering);
         Self {
-            property,
             cells,
+            property,
             has_numbering,
         }
     }
@@ -30,6 +30,16 @@ impl TableRow {
 
     pub fn width_after(mut self, w: f32) -> TableRow {
         self.property = self.property.width_after(w);
+        self
+    }
+
+    pub fn grid_before(mut self, grid_before: u32) -> TableRow {
+        self.property = self.property.grid_before(grid_before);
+        self
+    }
+
+    pub fn width_before(mut self, w: f32) -> TableRow {
+        self.property = self.property.width_before(w);
         self
     }
 
@@ -76,7 +86,7 @@ mod tests {
         let r = TableRow::new(vec![TableCell::new()]);
         assert_eq!(
             serde_json::to_string(&r).unwrap(),
-            r#"{"cells":[{"children":[],"property":{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":null,"textDirection":null,"shading":null},"hasNumbering":false}],"hasNumbering":false,"property":{"gridAfter":null,"widthAfter":null,"rowHeight":null,"heightRule":null}}"#
+            r#"{"cells":[{"children":[],"property":{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":null,"textDirection":null,"shading":null},"hasNumbering":false}],"hasNumbering":false,"property":{"gridAfter":null,"widthAfter":null,"gridBefore":null,"widthBefore":null,"rowHeight":null,"heightRule":null}}"#
         );
     }
 }

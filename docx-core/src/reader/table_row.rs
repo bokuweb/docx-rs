@@ -14,6 +14,8 @@ impl ElementReader for TableRow {
         let mut cells = vec![];
         let mut grid_after = None;
         let mut width_after = None;
+        let mut grid_before = None;
+        let mut width_before = None;
         let mut row_height = None;
         let mut height_rule = Some(HeightRule::AtLeast);
         loop {
@@ -39,6 +41,16 @@ impl ElementReader for TableRow {
                         XMLElement::WidthAfter => {
                             if let Ok(v) = read_width(&attributes) {
                                 width_after = Some(v.0 as f32);
+                            }
+                        }
+                        XMLElement::GridBefore => {
+                            if let Some(v) = read_val(&attributes) {
+                                grid_before = Some(u32::from_str(&v)?);
+                            }
+                        }
+                        XMLElement::WidthBefore => {
+                            if let Ok(v) = read_width(&attributes) {
+                                width_before = Some(v.0 as f32);
                             }
                         }
                         XMLElement::HeightRule => {
@@ -67,12 +79,20 @@ impl ElementReader for TableRow {
                             row = row.grid_after(grid_after);
                         }
 
+                        if let Some(grid_before) = grid_before {
+                            row = row.grid_before(grid_before);
+                        }
+
                         if let Some(row_height) = row_height {
                             row = row.row_height(row_height);
                         }
 
                         if let Some(width_after) = width_after {
                             row = row.width_after(width_after);
+                        }
+
+                        if let Some(width_before) = width_before {
+                            row = row.width_before(width_before);
                         }
 
                         if let Some(height_rule) = height_rule {

@@ -2205,9 +2205,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": null,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": 970,
                 "widthAfter": null,
+                "widthBefore": null,
               },
             },
             Object {
@@ -2394,9 +2396,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 1,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": 55,
                 "widthAfter": 1065,
+                "widthBefore": null,
               },
             },
             Object {
@@ -2583,9 +2587,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 1,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": 675,
                 "widthAfter": 1065,
+                "widthBefore": null,
               },
             },
             Object {
@@ -2772,9 +2778,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
+                "widthBefore": null,
               },
             },
             Object {
@@ -2961,9 +2969,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
+                "widthBefore": null,
               },
             },
             Object {
@@ -3239,9 +3249,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
+                "widthBefore": null,
               },
             },
             Object {
@@ -3517,9 +3529,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
+                "widthBefore": null,
               },
             },
             Object {
@@ -3783,9 +3797,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
+                "widthBefore": null,
               },
             },
             Object {
@@ -4061,9 +4077,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": 2,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": 397,
                 "widthAfter": 3717,
+                "widthBefore": null,
               },
             },
           ],
@@ -12096,9 +12114,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": null,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": null,
                 "widthAfter": null,
+                "widthBefore": null,
               },
             },
             Object {
@@ -12315,9 +12335,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": null,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": null,
                 "widthAfter": null,
+                "widthBefore": null,
               },
             },
             Object {
@@ -12534,9 +12556,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": null,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": null,
                 "widthAfter": null,
+                "widthBefore": null,
               },
             },
           ],
@@ -13530,9 +13554,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": null,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": 730,
                 "widthAfter": null,
+                "widthBefore": null,
               },
             },
             Object {
@@ -13733,9 +13759,11 @@ Object {
               "hasNumbering": false,
               "property": Object {
                 "gridAfter": null,
+                "gridBefore": null,
                 "heightRule": "atLeast",
                 "rowHeight": null,
                 "widthAfter": null,
+                "widthBefore": null,
               },
             },
           ],

@@ -59,6 +59,16 @@ impl ElementReader for RunProperty {
                                 continue;
                             }
                         }
+                        XMLElement::Insert => {
+                            if let Ok(ins) = Insert::read(r, &attributes) {
+                                rp = rp.insert(ins);
+                            }
+                        }
+                        XMLElement::Delete => {
+                            if let Ok(del) = Delete::read(r, &attributes) {
+                                rp = rp.delete(del);
+                            }
+                        }
                         _ => {}
                     }
                 }

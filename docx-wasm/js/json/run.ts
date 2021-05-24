@@ -1,6 +1,7 @@
 import { DrawingJSON } from "./drawing";
 import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
 import { BorderType } from "../border";
+import { InsertJSON, DeleteJSON } from "./paragraph";
 
 export type TextBorderJSON = {
   borderType: BorderType;
@@ -22,6 +23,8 @@ export type RunPropertyJSON = {
   vanish: boolean | null;
   spacing: number | null;
   textBorder: TextBorderJSON | null;
+  ins: InsertJSON | null;
+  del: DeleteJSON | null;
 };
 
 export type RunChildJSON =

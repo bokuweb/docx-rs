@@ -4,7 +4,7 @@ use super::*;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct RunProperty {
     pub sz: Option<Sz>,
@@ -20,6 +20,8 @@ pub struct RunProperty {
     pub spacing: Option<i32>,
     pub fonts: Option<RunFonts>,
     pub text_border: Option<TextBorder>,
+    pub del: Option<Delete>,
+    pub ins: Option<Insert>,
 }
 
 impl RunProperty {
@@ -91,6 +93,16 @@ impl RunProperty {
         self.text_border = Some(b);
         self
     }
+
+    pub fn delete(mut self, d: Delete) -> Self {
+        self.del = Some(d);
+        self
+    }
+
+    pub fn insert(mut self, i: Insert) -> Self {
+        self.ins = Some(i);
+        self
+    }
 }
 
 impl Default for RunProperty {
@@ -109,6 +121,8 @@ impl Default for RunProperty {
             fonts: None,
             spacing: None,
             text_border: None,
+            del: None,
+            ins: None,
         }
     }
 }
@@ -116,11 +130,9 @@ impl Default for RunProperty {
 impl BuildXML for RunProperty {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        let spacing = if let Some(s) = self.spacing {
-            Some(Spacing::new(crate::SpacingType::Value(s)))
-        } else {
-            None
-        };
+        let spacing = self
+            .spacing
+            .map(|s| Spacing::new(crate::SpacingType::Value(s)));
         b.open_run_property()
             .add_optional_child(&self.sz)
             .add_optional_child(&self.sz_cs)
@@ -134,6 +146,8 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.vanish)
             .add_optional_child(&self.fonts)
             .add_optional_child(&self.text_border)
+            .add_optional_child(&self.ins)
+            .add_optional_child(&self.del)
             .add_optional_child(&spacing)
             .close()
             .build()

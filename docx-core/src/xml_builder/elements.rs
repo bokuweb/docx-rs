@@ -75,6 +75,8 @@ impl XMLBuilder {
     closed_with_str!(name, "w:name");
     // i.e. <w:jc ... >
     closed_with_str!(justification, "w:jc");
+    // i.e. <w:vertAlign ... >
+    closed_with_str!(vert_align, "w:vertAlign");
     // i.e. <w:pStyle ... >
     closed_with_str!(paragraph_style, "w:pStyle");
     // i.e. <w:sz ... >

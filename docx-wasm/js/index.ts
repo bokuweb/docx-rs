@@ -225,6 +225,14 @@ export class Docx {
       run = run.highlight(r.property.highlight);
     }
 
+    if (r.property.vertAlign) {
+      if (r.property.vertAlign === "superscript") {
+        run = run.vert_align(wasm.VertAlignType.SuperScript);
+      } else if (r.property.vertAlign === "subscript") {
+        run = run.vert_align(wasm.VertAlignType.SubScript);
+      }
+    }
+
     if (r.property.bold) {
       run = run.bold();
     }
@@ -764,15 +772,8 @@ export class Docx {
     });
 
     if (this.sectionProperty._pageMargin) {
-      const {
-        top,
-        left,
-        right,
-        bottom,
-        header,
-        footer,
-        gutter,
-      } = this.sectionProperty._pageMargin;
+      const { top, left, right, bottom, header, footer, gutter } =
+        this.sectionProperty._pageMargin;
       const margin = wasm
         .createPageMargin()
         .top(top)

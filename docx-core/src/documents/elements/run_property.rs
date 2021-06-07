@@ -2,6 +2,7 @@ use serde::Serialize;
 
 use super::*;
 use crate::documents::BuildXML;
+use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Serialize, PartialEq)]
@@ -11,6 +12,7 @@ pub struct RunProperty {
     pub sz_cs: Option<SzCs>,
     pub color: Option<Color>,
     pub highlight: Option<Highlight>,
+    pub vert_align: Option<VertAlign>,
     pub underline: Option<Underline>,
     pub bold: Option<Bold>,
     pub bold_cs: Option<BoldCs>,
@@ -47,6 +49,11 @@ impl RunProperty {
 
     pub fn highlight(mut self, color: impl Into<String>) -> RunProperty {
         self.highlight = Some(Highlight::new(color));
+        self
+    }
+
+    pub fn vert_align(mut self, a: VertAlignType) -> Self {
+        self.vert_align = Some(VertAlign::new(a));
         self
     }
 
@@ -112,6 +119,7 @@ impl Default for RunProperty {
             sz: None,
             sz_cs: None,
             highlight: None,
+            vert_align: None,
             underline: None,
             bold: None,
             bold_cs: None,
@@ -148,6 +156,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.text_border)
             .add_optional_child(&self.ins)
             .add_optional_child(&self.del)
+            .add_optional_child(&self.vert_align)
             .add_optional_child(&spacing)
             .close()
             .build()

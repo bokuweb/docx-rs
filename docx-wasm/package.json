@@ -23,7 +23,7 @@
     "**/serialize-javascript": "5.0.1"
   },
   "devDependencies": {
-    "@types/file-saver": "2.0.1",
+    "@types/file-saver": "2.0.2",
     "@wasm-tool/wasm-pack-plugin": "1.4.0",
     "adm-zip": "0.5.5",
     "cpy-cli": "3.1.1",

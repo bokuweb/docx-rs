@@ -6,6 +6,7 @@ node_modules
 # pkg
 *.docx#
 *.docx
+!fixtures/**/*.docx
 output/*.docx
 output/*.json
 output/*.xml

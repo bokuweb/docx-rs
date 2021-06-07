@@ -2,6 +2,7 @@ import { DrawingJSON } from "./drawing";
 import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
 import { BorderType } from "../border";
 import { InsertJSON, DeleteJSON } from "./paragraph";
+import { VertAlignType } from "../run";
 
 export type TextBorderJSON = {
   borderType: BorderType;
@@ -15,6 +16,7 @@ export type RunPropertyJSON = {
   szCs: number | null;
   color: string | null;
   highlight: string | null;
+  vertAlign: VertAlignType | null;
   underline: string | null;
   bold: boolean | null;
   boldCs: boolean | null;

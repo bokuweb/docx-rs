@@ -4,6 +4,8 @@ use std::str::FromStr;
 use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
+use crate::VertAlignType;
+
 use super::*;
 
 impl ElementReader for RunProperty {
@@ -28,6 +30,11 @@ impl ElementReader for RunProperty {
                             rp = rp.bold();
                         }
                         XMLElement::Highlight => rp = rp.highlight(attributes[0].value.clone()),
+                        XMLElement::VertAlign => {
+                            if let Ok(v) = VertAlignType::from_str(&attributes[0].value) {
+                                rp = rp.vert_align(v)
+                            }
+                        }
                         XMLElement::Color => rp = rp.color(attributes[0].value.clone()),
                         XMLElement::Size => rp = rp.size(usize::from_str(&attributes[0].value)?),
                         XMLElement::Spacing => {

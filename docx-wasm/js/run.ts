@@ -13,10 +13,13 @@ export type TextBorder = {
   size: number;
 };
 
+export type VertAlignType = "baseline" | "superscript" | "subscript";
+
 export type RunProperty = {
   size?: number;
   color?: string;
   highlight?: string;
+  vertAlign?: VertAlignType;
   bold?: boolean;
   italic?: boolean;
   underline?: string;
@@ -93,6 +96,11 @@ export class Run {
 
   highlight(color: string) {
     this.property = { ...this.property, highlight: color };
+    return this;
+  }
+
+  vertAlign(vertAlign: VertAlignType) {
+    this.property = { ...this.property, vertAlign };
     return this;
   }
 

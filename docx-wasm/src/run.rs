@@ -1,5 +1,5 @@
 use super::*;
-use docx_rs::{BorderType, TextBorder};
+use docx_rs::{BorderType, TextBorder, VertAlignType};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -83,6 +83,11 @@ impl Run {
 
     pub fn spacing(mut self, spacing: i32) -> Run {
         self.0.run_property = self.0.run_property.spacing(spacing);
+        self
+    }
+
+    pub fn vert_align(mut self, a: VertAlignType) -> Run {
+        self.0.run_property = self.0.run_property.vert_align(a);
         self
     }
 

@@ -13,6 +13,7 @@ Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
       "/docProps/core.xml": "application/vnd.openxmlformats-package.core-properties+xml",
+      "/docProps/custom.xml": "application/vnd.openxmlformats-officedocument.custom-properties+xml",
       "/word/_rels/document.xml.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/word/comments.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
@@ -38,6 +39,9 @@ Object {
         "subject": null,
         "title": null,
       },
+    },
+    "custom": Object {
+      "properties": Object {},
     },
   },
   "document": Object {
@@ -458,6 +462,11 @@ Object {
         "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
         "rId3",
         "word/document.xml",
+      ],
+      Array [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties",
+        "rId4",
+        "docProps/custom.xml",
       ],
     ],
   },
@@ -1316,6 +1325,7 @@ Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
       "/docProps/core.xml": "application/vnd.openxmlformats-package.core-properties+xml",
+      "/docProps/custom.xml": "application/vnd.openxmlformats-officedocument.custom-properties+xml",
       "/word/_rels/document.xml.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/word/comments.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
@@ -1341,6 +1351,9 @@ Object {
         "subject": null,
         "title": null,
       },
+    },
+    "custom": Object {
+      "properties": Object {},
     },
   },
   "document": Object {
@@ -1896,6 +1909,11 @@ Object {
         "rId3",
         "word/document.xml",
       ],
+      Array [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties",
+        "rId4",
+        "docProps/custom.xml",
+      ],
     ],
   },
   "settings": Object {
@@ -2084,6 +2102,7 @@ Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
       "/docProps/core.xml": "application/vnd.openxmlformats-package.core-properties+xml",
+      "/docProps/custom.xml": "application/vnd.openxmlformats-officedocument.custom-properties+xml",
       "/word/_rels/document.xml.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/word/comments.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
@@ -2109,6 +2128,9 @@ Object {
         "subject": null,
         "title": null,
       },
+    },
+    "custom": Object {
+      "properties": Object {},
     },
   },
   "document": Object {
@@ -4370,6 +4392,11 @@ Object {
         "rId3",
         "word/document.xml",
       ],
+      Array [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties",
+        "rId4",
+        "docProps/custom.xml",
+      ],
     ],
   },
   "settings": Object {
@@ -4927,6 +4954,7 @@ Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
       "/docProps/core.xml": "application/vnd.openxmlformats-package.core-properties+xml",
+      "/docProps/custom.xml": "application/vnd.openxmlformats-officedocument.custom-properties+xml",
       "/word/_rels/document.xml.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/word/comments.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
@@ -4952,6 +4980,9 @@ Object {
         "subject": null,
         "title": null,
       },
+    },
+    "custom": Object {
+      "properties": Object {},
     },
   },
   "document": Object {
@@ -7337,6 +7368,11 @@ Object {
         "rId3",
         "word/document.xml",
       ],
+      Array [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties",
+        "rId4",
+        "docProps/custom.xml",
+      ],
     ],
   },
   "settings": Object {
@@ -8645,6 +8681,7 @@ Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
       "/docProps/core.xml": "application/vnd.openxmlformats-package.core-properties+xml",
+      "/docProps/custom.xml": "application/vnd.openxmlformats-officedocument.custom-properties+xml",
       "/word/_rels/document.xml.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/word/comments.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
@@ -8670,6 +8707,9 @@ Object {
         "subject": null,
         "title": null,
       },
+    },
+    "custom": Object {
+      "properties": Object {},
     },
   },
   "document": Object {
@@ -11076,6 +11116,11 @@ Object {
         "rId3",
         "word/document.xml",
       ],
+      Array [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties",
+        "rId4",
+        "docProps/custom.xml",
+      ],
     ],
   },
   "settings": Object {
@@ -12587,6 +12632,7 @@ Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
       "/docProps/core.xml": "application/vnd.openxmlformats-package.core-properties+xml",
+      "/docProps/custom.xml": "application/vnd.openxmlformats-officedocument.custom-properties+xml",
       "/word/_rels/document.xml.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/word/comments.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
@@ -12612,6 +12658,9 @@ Object {
         "subject": null,
         "title": null,
       },
+    },
+    "custom": Object {
+      "properties": Object {},
     },
   },
   "document": Object {
@@ -13464,6 +13513,11 @@ Object {
         "rId3",
         "word/document.xml",
       ],
+      Array [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties",
+        "rId4",
+        "docProps/custom.xml",
+      ],
     ],
   },
   "settings": Object {
@@ -14174,6 +14228,7 @@ Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
       "/docProps/core.xml": "application/vnd.openxmlformats-package.core-properties+xml",
+      "/docProps/custom.xml": "application/vnd.openxmlformats-officedocument.custom-properties+xml",
       "/word/_rels/document.xml.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/word/comments.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
@@ -14199,6 +14254,9 @@ Object {
         "subject": null,
         "title": null,
       },
+    },
+    "custom": Object {
+      "properties": Object {},
     },
   },
   "document": Object {
@@ -14717,6 +14775,11 @@ Object {
         "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
         "rId3",
         "word/document.xml",
+      ],
+      Array [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties",
+        "rId4",
+        "docProps/custom.xml",
       ],
     ],
   },
@@ -15410,6 +15473,7 @@ Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
       "/docProps/core.xml": "application/vnd.openxmlformats-package.core-properties+xml",
+      "/docProps/custom.xml": "application/vnd.openxmlformats-officedocument.custom-properties+xml",
       "/word/_rels/document.xml.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/word/comments.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
@@ -15435,6 +15499,9 @@ Object {
         "subject": null,
         "title": null,
       },
+    },
+    "custom": Object {
+      "properties": Object {},
     },
   },
   "document": Object {
@@ -15754,6 +15821,11 @@ Object {
         "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
         "rId3",
         "word/document.xml",
+      ],
+      Array [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties",
+        "rId4",
+        "docProps/custom.xml",
       ],
     ],
   },
@@ -16323,6 +16395,40 @@ exports[`writer should write cell shading 2`] = `
 `;
 
 exports[`writer should write cell shading 3`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<w:numbering xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\"><w:abstractNum w:abstractNumId=\\"1\\"><w:lvl w:ilvl=\\"0\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%1.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"420\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"1\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%2)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"840\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"2\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%3\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1260\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"3\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%4.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1680\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"4\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%5)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2100\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"5\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%6\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2520\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"6\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%7.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2940\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"7\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%8)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3360\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"8\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%9\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3780\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl></w:abstractNum><w:num w:numId=\\"1\\">
+  <w:abstractNumId w:val=\\"1\\" />
+</w:num></w:numbering>"
+`;
+
+exports[`writer should write custom props 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<Properties xmlns=\\"http://schemas.openxmlformats.org/officeDocument/2006/custom-properties\\" xmlns:vt=\\"http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes\\">
+  <property fmtid=\\"{D5CDD505-2E9C-101B-9397-08002B2CF9AE}\\" pid=\\"2\\" name=\\"hello\\">
+    <vt:lpwstr>{\\"world\\": 0}</vt:lpwstr>
+  </property>
+</Properties>"
+`;
+
+exports[`writer should write custom props 2`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
+  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write custom props 3`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<w:document xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\" xmlns:w10=\\"urn:schemas-microsoft-com:office:word\\" xmlns:wp=\\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\\" xmlns:wps=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\\" xmlns:wpg=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\\" xmlns:mc=\\"http://schemas.openxmlformats.org/markup-compatibility/2006\\" xmlns:wp14=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\\" xmlns:w14=\\"http://schemas.microsoft.com/office/word/2010/wordml\\" xmlns:w15=\\"http://schemas.microsoft.com/office/word/2012/wordml\\" mc:Ignorable=\\"w14 wp14\\">
+  <w:body><w:p w14:paraId=\\"00000001\\"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr><w:rFonts /></w:rPr><w:t xml:space=\\"preserve\\">Hello!!</w:t></w:r></w:p><w:sectPr><w:pgSz w:w=\\"11906\\" w:h=\\"16838\\" /><w:pgMar w:top=\\"1985\\" w:right=\\"1701\\" w:bottom=\\"1701\\" w:left=\\"1701\\" w:header=\\"851\\" w:footer=\\"992\\" w:gutter=\\"0\\" /><w:headerReference w:type=\\"default\\" r:id=\\"rId4\\" /><w:cols w:space=\\"425\\" /><w:docGrid w:type=\\"lines\\" w:linePitch=\\"360\\" /></w:sectPr></w:body>
+</w:document>"
+`;
+
+exports[`writer should write custom props 4`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
 <w:numbering xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\"><w:abstractNum w:abstractNumId=\\"1\\"><w:lvl w:ilvl=\\"0\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%1.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"420\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"1\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%2)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"840\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"2\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%3\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1260\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"3\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%4.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1680\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"4\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%5)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2100\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"5\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%6\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2520\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"6\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%7.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2940\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"7\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%8)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3360\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"8\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%9\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3780\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl></w:abstractNum><w:num w:numId=\\"1\\">
   <w:abstractNumId w:val=\\"1\\" />

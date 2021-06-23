@@ -131,6 +131,11 @@ export class Docx {
     return this;
   }
 
+  customProperty(name: string, item: string) {
+    this.docProps.customProperty(name, item);
+    return this;
+  }
+
   updatedAt(date: string) {
     this.docProps.updatedAt(date);
     return this;
@@ -840,6 +845,14 @@ export class Docx {
     if (this.docProps._createdAt) {
       docx = docx.created_at(this.docProps._createdAt);
     }
+
+    if (this.docProps._updatedAt) {
+      docx = docx.updated_at(this.docProps._updatedAt);
+    }
+
+    Object.entries(this.docProps._customProperties).forEach(([key, item]) => {
+      docx = docx.custom_property(key, item);
+    });
 
     if (this.docProps._updatedAt) {
       docx = docx.updated_at(this.docProps._updatedAt);

@@ -29,6 +29,9 @@ export type DocxJSON = {
         title: string | null;
       };
     };
+    custom: {
+      [key: string]: string;
+    };
   };
   styles: StylesJSON;
   document: DocumentJSON;

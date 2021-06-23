@@ -1,5 +1,365 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`reader should read custom docx 1`] = `
+Object {
+  "comments": Object {
+    "comments": Array [],
+  },
+  "commentsExtended": Object {
+    "children": Array [],
+  },
+  "contentType": Object {
+    "types": Object {
+      "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
+      "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
+      "/docProps/core.xml": "application/vnd.openxmlformats-package.core-properties+xml",
+      "/docProps/custom.xml": "application/vnd.openxmlformats-officedocument.custom-properties+xml",
+      "/word/_rels/document.xml.rels": "application/vnd.openxmlformats-package.relationships+xml",
+      "/word/comments.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
+      "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
+      "/word/document.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
+      "/word/fontTable.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml",
+      "/word/header1.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml",
+      "/word/numbering.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml",
+      "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
+      "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
+    },
+  },
+  "docProps": Object {
+    "app": Object {},
+    "core": Object {
+      "config": Object {
+        "created": null,
+        "creator": null,
+        "description": null,
+        "language": null,
+        "lastModifiedBy": null,
+        "modified": null,
+        "revision": null,
+        "subject": null,
+        "title": null,
+      },
+    },
+    "custom": Object {
+      "properties": Object {
+        "hello": "world",
+      },
+    },
+  },
+  "document": Object {
+    "children": Array [
+      Object {
+        "data": Object {
+          "children": Array [
+            Object {
+              "data": Object {
+                "children": Array [
+                  Object {
+                    "data": Object {
+                      "preserveSpace": true,
+                      "text": "Hello",
+                    },
+                    "type": "text",
+                  },
+                ],
+                "runProperty": Object {
+                  "bold": null,
+                  "boldCs": null,
+                  "color": null,
+                  "del": null,
+                  "fonts": null,
+                  "highlight": null,
+                  "ins": null,
+                  "italic": null,
+                  "italicCs": null,
+                  "spacing": null,
+                  "sz": null,
+                  "szCs": null,
+                  "textBorder": null,
+                  "underline": null,
+                  "vanish": null,
+                  "vertAlign": null,
+                },
+              },
+              "type": "run",
+            },
+          ],
+          "hasNumbering": false,
+          "id": "00000001",
+          "property": Object {
+            "alignment": null,
+            "divId": null,
+            "indent": null,
+            "keepLines": false,
+            "keepNext": false,
+            "lineHeight": null,
+            "numberingProperty": null,
+            "pageBreakBefore": false,
+            "runProperty": Object {
+              "bold": null,
+              "boldCs": null,
+              "color": null,
+              "del": null,
+              "fonts": null,
+              "highlight": null,
+              "ins": null,
+              "italic": null,
+              "italicCs": null,
+              "spacing": null,
+              "sz": null,
+              "szCs": null,
+              "textBorder": null,
+              "underline": null,
+              "vanish": null,
+              "vertAlign": null,
+            },
+            "style": null,
+            "windowControl": false,
+          },
+        },
+        "type": "paragraph",
+      },
+    ],
+    "hasNumbering": false,
+    "sectionProperty": Object {
+      "columns": 425,
+      "docGrid": Object {
+        "charSpace": null,
+        "gridType": "lines",
+        "linePitch": 360,
+      },
+      "headerReference": Object {
+        "headerType": "default",
+        "id": "rId4",
+      },
+      "pageMargin": Object {
+        "bottom": 1701,
+        "footer": 992,
+        "gutter": 0,
+        "header": 851,
+        "left": 1701,
+        "right": 1701,
+        "top": 1985,
+      },
+      "pageSize": Object {
+        "h": 16838,
+        "orient": null,
+        "w": 11906,
+      },
+      "sectionType": null,
+    },
+  },
+  "documentRels": Object {
+    "hasComments": false,
+    "hasNumberings": false,
+    "imageIds": Array [],
+  },
+  "fontTable": Object {},
+  "header": Object {
+    "children": Array [],
+  },
+  "media": Array [],
+  "numberings": Object {
+    "abstractNums": Array [],
+    "numberings": Array [],
+  },
+  "rels": Object {
+    "rels": Array [
+      Array [
+        "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties",
+        "rId1",
+        "docProps/core.xml",
+      ],
+      Array [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
+        "rId2",
+        "docProps/app.xml",
+      ],
+      Array [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
+        "rId3",
+        "word/document.xml",
+      ],
+      Array [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties",
+        "rId4",
+        "docProps/custom.xml",
+      ],
+    ],
+  },
+  "settings": Object {
+    "defaultTabStop": 840,
+    "docId": null,
+    "docVars": Array [],
+    "zoom": 100,
+  },
+  "styles": Object {
+    "docDefaults": Object {
+      "runPropertyDefault": Object {
+        "runProperty": Object {
+          "bold": null,
+          "boldCs": null,
+          "color": null,
+          "del": null,
+          "fonts": null,
+          "highlight": null,
+          "ins": null,
+          "italic": null,
+          "italicCs": null,
+          "spacing": null,
+          "sz": null,
+          "szCs": null,
+          "textBorder": null,
+          "underline": null,
+          "vanish": null,
+          "vertAlign": null,
+        },
+      },
+    },
+    "styles": Array [
+      Object {
+        "basedOn": "Normal",
+        "name": "Normal",
+        "paragraphProperty": Object {
+          "alignment": null,
+          "divId": null,
+          "indent": null,
+          "keepLines": false,
+          "keepNext": false,
+          "lineHeight": null,
+          "numberingProperty": null,
+          "pageBreakBefore": false,
+          "runProperty": Object {
+            "bold": null,
+            "boldCs": null,
+            "color": null,
+            "del": null,
+            "fonts": null,
+            "highlight": null,
+            "ins": null,
+            "italic": null,
+            "italicCs": null,
+            "spacing": null,
+            "sz": null,
+            "szCs": null,
+            "textBorder": null,
+            "underline": null,
+            "vanish": null,
+            "vertAlign": null,
+          },
+          "style": null,
+          "windowControl": false,
+        },
+        "runProperty": Object {
+          "bold": null,
+          "boldCs": null,
+          "color": null,
+          "del": null,
+          "fonts": null,
+          "highlight": null,
+          "ins": null,
+          "italic": null,
+          "italicCs": null,
+          "spacing": null,
+          "sz": null,
+          "szCs": null,
+          "textBorder": null,
+          "underline": null,
+          "vanish": null,
+          "vertAlign": null,
+        },
+        "styleId": "Normal",
+        "styleType": "paragraph",
+        "tableCellProperty": Object {
+          "borders": null,
+          "gridSpan": null,
+          "shading": null,
+          "textDirection": null,
+          "verticalAlign": null,
+          "verticalMerge": null,
+          "width": null,
+        },
+        "tableProperty": Object {
+          "borders": Object {
+            "bottom": Object {
+              "borderType": "single",
+              "color": "000000",
+              "position": "bottom",
+              "size": 2,
+              "space": 0,
+            },
+            "insideH": Object {
+              "borderType": "single",
+              "color": "000000",
+              "position": "insideH",
+              "size": 2,
+              "space": 0,
+            },
+            "insideV": Object {
+              "borderType": "single",
+              "color": "000000",
+              "position": "insideV",
+              "size": 2,
+              "space": 0,
+            },
+            "left": Object {
+              "borderType": "single",
+              "color": "000000",
+              "position": "left",
+              "size": 2,
+              "space": 0,
+            },
+            "right": Object {
+              "borderType": "single",
+              "color": "000000",
+              "position": "right",
+              "size": 2,
+              "space": 0,
+            },
+            "top": Object {
+              "borderType": "single",
+              "color": "000000",
+              "position": "top",
+              "size": 2,
+              "space": 0,
+            },
+          },
+          "indent": null,
+          "justification": "left",
+          "layout": null,
+          "margins": Object {
+            "bottom": Object {
+              "val": 0,
+              "widthType": "DXA",
+            },
+            "left": Object {
+              "val": 55,
+              "widthType": "DXA",
+            },
+            "right": Object {
+              "val": 55,
+              "widthType": "DXA",
+            },
+            "top": Object {
+              "val": 0,
+              "widthType": "DXA",
+            },
+          },
+          "style": null,
+          "width": Object {
+            "width": 0,
+            "widthType": "Auto",
+          },
+        },
+      },
+    ],
+  },
+  "webSettings": Object {
+    "divs": Array [],
+  },
+}
+`;
+
 exports[`reader should read div docx 1`] = `
 Object {
   "comments": Object {

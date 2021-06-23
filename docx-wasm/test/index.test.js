@@ -22,6 +22,13 @@ describe("reader", () => {
     expect(json).toMatchSnapshot();
   });
 
+  test("should read custom docx", () => {
+    const buffer = readFileSync("../fixtures/custom/custom.docx");
+    const json = w.readDocx(buffer);
+    writeFileSync("../output/custom.json", JSON.stringify(json, null, 2));
+    expect(json).toMatchSnapshot();
+  });
+
   test("should read table style docx", () => {
     const buffer = readFileSync("../fixtures/table_style/table_style.docx");
     const json = w.readDocx(buffer);

@@ -61,6 +61,7 @@ pub enum XMLElement {
     CommentRangeStart,
     CommentRangeEnd,
     CommentExtended,
+    Property,
     CommentsExtended,
     VAlign,
     Shading,
@@ -193,6 +194,11 @@ pub enum VXMLElement {
     Unsupported,
 }
 
+pub enum VtXMLElement {
+    Lpwstr,
+    Unsupported,
+}
+
 impl FromStr for XMLElement {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -236,6 +242,7 @@ impl FromStr for XMLElement {
             "commentEx" => Ok(XMLElement::CommentExtended),
             "commentsEx" => Ok(XMLElement::CommentsExtended),
             "shd" => Ok(XMLElement::Shading),
+            "property" => Ok(XMLElement::Property),
             "tbl" => Ok(XMLElement::Table),
             "tblPr" => Ok(XMLElement::TableProperty),
             "tr" => Ok(XMLElement::TableRow),
@@ -400,6 +407,16 @@ impl FromStr for VXMLElement {
             "fill" => Ok(VXMLElement::Fill),
             "textbox" => Ok(VXMLElement::TextBox),
             _ => Ok(VXMLElement::Unsupported),
+        }
+    }
+}
+
+impl FromStr for VtXMLElement {
+    type Err = ();
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "lpwstr" => Ok(VtXMLElement::Lpwstr),
+            _ => Ok(VtXMLElement::Unsupported),
         }
     }
 }

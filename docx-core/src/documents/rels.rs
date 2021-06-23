@@ -30,6 +30,12 @@ impl Rels {
             "rId3".to_owned(),
             "word/document.xml".to_owned(),
         ));
+        self.rels.push((
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties"
+                .to_owned(),
+            "rId4".to_owned(),
+            "docProps/custom.xml".to_owned(),
+        ));
         self
     }
 

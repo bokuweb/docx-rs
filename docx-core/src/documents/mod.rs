@@ -83,14 +83,14 @@ impl Default for Docx {
         Docx {
             content_type,
             rels,
+            document_rels,
             doc_props,
             styles,
             document,
             comments,
-            document_rels,
+            numberings,
             settings,
             font_table,
-            numberings,
             media,
             header,
             comments_extended,
@@ -212,6 +212,11 @@ impl Docx {
 
     pub fn updated_at(mut self, date: &str) -> Self {
         self.doc_props = self.doc_props.updated_at(date);
+        self
+    }
+
+    pub fn custom_property(mut self, name: impl Into<String>, item: impl Into<String>) -> Self {
+        self.doc_props = self.doc_props.custom_property(name, item);
         self
     }
 

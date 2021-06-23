@@ -77,6 +77,10 @@ impl ContentTypes {
             "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml"
                 .to_owned(),
         );
+        self.types.insert(
+            "/docProps/custom.xml".to_owned(),
+            "application/vnd.openxmlformats-officedocument.custom-properties+xml".to_owned(),
+        );
         self
     }
 }

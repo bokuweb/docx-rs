@@ -4,6 +4,7 @@ mod macros;
 mod comments;
 mod comments_extended;
 mod core_properties;
+mod custom_properties;
 mod declaration;
 mod document;
 mod drawing;
@@ -15,6 +16,7 @@ mod pic;
 mod properties;
 mod relationship;
 mod settings;
+
 mod styles;
 
 use crate::BuildXML;

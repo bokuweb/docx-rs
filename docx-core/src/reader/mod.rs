@@ -7,6 +7,7 @@ mod comment;
 mod comment_extended;
 mod comments;
 mod comments_extended;
+mod custom_properties;
 mod delete;
 mod div;
 mod doc_defaults;
@@ -63,6 +64,8 @@ pub use xml_element::*;
 // 2006
 const DOC_RELATIONSHIP_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
+const CUSTOM_PROPERTIES_TYPE: &str =
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties";
 const STYLE_RELATIONSHIP_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles";
 const NUMBERING_RELATIONSHIP_TYPE: &str =
@@ -78,6 +81,7 @@ const COMMENTS_EXTENDED_TYPE: &str =
     "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
 
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
+    let mut docx = Docx::new();
     let cur = Cursor::new(buf);
     let mut archive = zip::ZipArchive::new(cur)?;
     // First, the content type for relationship parts and the Main Document part
@@ -104,6 +108,15 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     } else {
         "word/document.xml".to_owned()
     };
+
+    if let Some(custom_props) = rels.find_target(CUSTOM_PROPERTIES_TYPE) {
+        let data = read_zip(&mut archive, &custom_props.2);
+        if let Ok(data) = data {
+            if let Ok(custom) = CustomProps::from_xml(&data[..]) {
+                docx.doc_props.custom = custom;
+            }
+        }
+    }
 
     let rels = read_document_rels(&mut archive, &document_path)?;
 
@@ -177,7 +190,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         let data = read_zip(&mut archive, &document_path)?;
         Document::from_xml(&data[..])?
     };
-    let mut docx = Docx::new().document(document);
+    docx = docx.document(document);
 
     // store comments to paragraphs.
     if !comments.inner().is_empty() {

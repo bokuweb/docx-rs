@@ -22,6 +22,13 @@ describe("reader", () => {
     expect(json).toMatchSnapshot();
   });
 
+  test("should read custom docx", () => {
+    const buffer = readFileSync("../fixtures/custom/custom.docx");
+    const json = w.readDocx(buffer);
+    writeFileSync("../output/custom.json", JSON.stringify(json, null, 2));
+    expect(json).toMatchSnapshot();
+  });
+
   test("should read table style docx", () => {
     const buffer = readFileSync("../fixtures/table_style/table_style.docx");
     const json = w.readDocx(buffer);
@@ -268,6 +275,21 @@ describe("writer", () => {
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write custom props", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello!!"));
+    const buffer = new w.Docx()
+      .addParagraph(p)
+      .customProperty('hello', '{"world": 0}')
+      .build();
+    writeFileSync("../output/custom.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml|custom.xml/)) {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }

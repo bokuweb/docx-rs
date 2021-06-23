@@ -27,6 +27,8 @@ where
     zip.write_all(&xml.doc_props.app)?;
     zip.start_file("docProps/core.xml", options)?;
     zip.write_all(&xml.doc_props.core)?;
+    zip.start_file("docProps/custom.xml", options)?;
+    zip.write_all(&xml.doc_props.custom)?;
     zip.start_file("word/_rels/document.xml.rels", options)?;
     zip.write_all(&xml.document_rels)?;
     zip.start_file("word/document.xml", options)?;

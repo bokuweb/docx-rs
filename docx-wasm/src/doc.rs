@@ -53,6 +53,11 @@ impl Docx {
         self
     }
 
+    pub fn custom_property(mut self, name: &str, item: &str) -> Self {
+        self.0.doc_props = self.0.doc_props.custom_property(name, item);
+        self
+    }
+
     pub fn doc_id(mut self, id: &str) -> Docx {
         self.0 = self.0.doc_id(id);
         self

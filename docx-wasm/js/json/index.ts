@@ -30,7 +30,9 @@ export type DocxJSON = {
       };
     };
     custom: {
-      [key: string]: string;
+      properties: {
+        [key: string]: string;
+      };
     };
   };
   styles: StylesJSON;

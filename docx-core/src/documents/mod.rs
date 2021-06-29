@@ -18,7 +18,10 @@ mod pic_id;
 mod rels;
 mod settings;
 mod styles;
+mod taskpanes;
+mod taskpanes_rels;
 mod web_settings;
+mod webextension;
 mod xml_docx;
 
 pub(crate) use build_xml::BuildXML;
@@ -39,7 +42,10 @@ pub use numberings::*;
 pub use rels::*;
 pub use settings::*;
 pub use styles::*;
+pub use taskpanes::*;
+pub use taskpanes_rels::*;
 pub use web_settings::*;
+pub use webextension::*;
 pub use xml_docx::*;
 
 use serde::Serialize;

@@ -1,0 +1,357 @@
+{
+  "contentType": {
+    "types": {
+      "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
+      "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
+      "/docProps/core.xml": "application/vnd.openxmlformats-package.core-properties+xml",
+      "/docProps/custom.xml": "application/vnd.openxmlformats-officedocument.custom-properties+xml",
+      "/word/_rels/document.xml.rels": "application/vnd.openxmlformats-package.relationships+xml",
+      "/word/comments.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml",
+      "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
+      "/word/document.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
+      "/word/fontTable.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml",
+      "/word/header1.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml",
+      "/word/numbering.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml",
+      "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
+      "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"
+    }
+  },
+  "rels": {
+    "rels": [
+      [
+        "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties",
+        "rId1",
+        "docProps/core.xml"
+      ],
+      [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
+        "rId2",
+        "docProps/app.xml"
+      ],
+      [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
+        "rId3",
+        "word/document.xml"
+      ],
+      [
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties",
+        "rId4",
+        "docProps/custom.xml"
+      ]
+    ]
+  },
+  "documentRels": {
+    "hasComments": false,
+    "hasNumberings": false,
+    "imageIds": []
+  },
+  "docProps": {
+    "app": {},
+    "core": {
+      "config": {
+        "created": null,
+        "creator": null,
+        "description": null,
+        "language": null,
+        "lastModifiedBy": null,
+        "modified": null,
+        "revision": null,
+        "subject": null,
+        "title": null
+      }
+    },
+    "custom": {
+      "properties": {
+        "hello": "world"
+      }
+    }
+  },
+  "styles": {
+    "docDefaults": {
+      "runPropertyDefault": {
+        "runProperty": {
+          "sz": null,
+          "szCs": null,
+          "color": null,
+          "highlight": null,
+          "vertAlign": null,
+          "underline": null,
+          "bold": null,
+          "boldCs": null,
+          "italic": null,
+          "italicCs": null,
+          "vanish": null,
+          "spacing": null,
+          "fonts": null,
+          "textBorder": null,
+          "del": null,
+          "ins": null
+        }
+      }
+    },
+    "styles": [
+      {
+        "styleId": "Normal",
+        "name": "Normal",
+        "styleType": "paragraph",
+        "runProperty": {
+          "sz": null,
+          "szCs": null,
+          "color": null,
+          "highlight": null,
+          "vertAlign": null,
+          "underline": null,
+          "bold": null,
+          "boldCs": null,
+          "italic": null,
+          "italicCs": null,
+          "vanish": null,
+          "spacing": null,
+          "fonts": null,
+          "textBorder": null,
+          "del": null,
+          "ins": null
+        },
+        "paragraphProperty": {
+          "runProperty": {
+            "sz": null,
+            "szCs": null,
+            "color": null,
+            "highlight": null,
+            "vertAlign": null,
+            "underline": null,
+            "bold": null,
+            "boldCs": null,
+            "italic": null,
+            "italicCs": null,
+            "vanish": null,
+            "spacing": null,
+            "fonts": null,
+            "textBorder": null,
+            "del": null,
+            "ins": null
+          },
+          "style": null,
+          "numberingProperty": null,
+          "alignment": null,
+          "indent": null,
+          "lineHeight": null,
+          "keepNext": false,
+          "keepLines": false,
+          "pageBreakBefore": false,
+          "windowControl": false,
+          "divId": null
+        },
+        "tableProperty": {
+          "width": {
+            "width": 0,
+            "widthType": "Auto"
+          },
+          "justification": "left",
+          "borders": {
+            "top": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "top",
+              "space": 0
+            },
+            "left": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "left",
+              "space": 0
+            },
+            "bottom": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "bottom",
+              "space": 0
+            },
+            "right": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "right",
+              "space": 0
+            },
+            "insideH": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "insideH",
+              "space": 0
+            },
+            "insideV": {
+              "borderType": "single",
+              "size": 2,
+              "color": "000000",
+              "position": "insideV",
+              "space": 0
+            }
+          },
+          "margins": {
+            "top": {
+              "val": 0,
+              "widthType": "DXA"
+            },
+            "left": {
+              "val": 55,
+              "widthType": "DXA"
+            },
+            "bottom": {
+              "val": 0,
+              "widthType": "DXA"
+            },
+            "right": {
+              "val": 55,
+              "widthType": "DXA"
+            }
+          },
+          "indent": null,
+          "style": null,
+          "layout": null
+        },
+        "tableCellProperty": {
+          "width": null,
+          "borders": null,
+          "gridSpan": null,
+          "verticalMerge": null,
+          "verticalAlign": null,
+          "textDirection": null,
+          "shading": null
+        },
+        "basedOn": "Normal"
+      }
+    ]
+  },
+  "document": {
+    "children": [
+      {
+        "type": "paragraph",
+        "data": {
+          "id": "00000001",
+          "children": [
+            {
+              "type": "run",
+              "data": {
+                "runProperty": {
+                  "sz": null,
+                  "szCs": null,
+                  "color": null,
+                  "highlight": null,
+                  "vertAlign": null,
+                  "underline": null,
+                  "bold": null,
+                  "boldCs": null,
+                  "italic": null,
+                  "italicCs": null,
+                  "vanish": null,
+                  "spacing": null,
+                  "fonts": null,
+                  "textBorder": null,
+                  "del": null,
+                  "ins": null
+                },
+                "children": [
+                  {
+                    "type": "text",
+                    "data": {
+                      "preserveSpace": true,
+                      "text": "Hello"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "property": {
+            "runProperty": {
+              "sz": null,
+              "szCs": null,
+              "color": null,
+              "highlight": null,
+              "vertAlign": null,
+              "underline": null,
+              "bold": null,
+              "boldCs": null,
+              "italic": null,
+              "italicCs": null,
+              "vanish": null,
+              "spacing": null,
+              "fonts": null,
+              "textBorder": null,
+              "del": null,
+              "ins": null
+            },
+            "style": null,
+            "numberingProperty": null,
+            "alignment": null,
+            "indent": null,
+            "lineHeight": null,
+            "keepNext": false,
+            "keepLines": false,
+            "pageBreakBefore": false,
+            "windowControl": false,
+            "divId": null
+          },
+          "hasNumbering": false
+        }
+      }
+    ],
+    "sectionProperty": {
+      "pageSize": {
+        "w": 11906,
+        "h": 16838,
+        "orient": null
+      },
+      "pageMargin": {
+        "top": 1985,
+        "left": 1701,
+        "bottom": 1701,
+        "right": 1701,
+        "header": 851,
+        "footer": 992,
+        "gutter": 0
+      },
+      "columns": 425,
+      "docGrid": {
+        "gridType": "lines",
+        "linePitch": 360,
+        "charSpace": null
+      },
+      "headerReference": {
+        "headerType": "default",
+        "id": "rId4"
+      },
+      "sectionType": null
+    },
+    "hasNumbering": false
+  },
+  "comments": {
+    "comments": []
+  },
+  "numberings": {
+    "abstractNums": [],
+    "numberings": []
+  },
+  "settings": {
+    "defaultTabStop": 840,
+    "zoom": 100,
+    "docId": null,
+    "docVars": []
+  },
+  "fontTable": {},
+  "media": [],
+  "header": {
+    "children": []
+  },
+  "commentsExtended": {
+    "children": []
+  },
+  "webSettings": {
+    "divs": []
+  }
+}

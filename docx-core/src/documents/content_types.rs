@@ -81,6 +81,14 @@ impl ContentTypes {
             "/docProps/custom.xml".to_owned(),
             "application/vnd.openxmlformats-officedocument.custom-properties+xml".to_owned(),
         );
+        self.types.insert(
+            "/word/webextensions/taskpanes.xml".to_owned(),
+            "application/vnd.ms-office.webextensiontaskpanes+xml".to_owned(),
+        );
+        self.types.insert(
+            "/word/webextensions/webextension1.xml".to_owned(),
+            "application/vnd.ms-office.webextension+xml".to_owned(),
+        );
         self
     }
 }

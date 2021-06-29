@@ -36,6 +36,12 @@ impl Rels {
             "rId4".to_owned(),
             "docProps/custom.xml".to_owned(),
         ));
+        self.rels.push((
+            "http://schemas.microsoft.com/office/2011/relationships/webextensiontaskpanes"
+                .to_owned(),
+            "rId5".to_owned(),
+            "word/webextensions/taskpanes.xml".to_owned(),
+        ));
         self
     }
 
@@ -93,6 +99,7 @@ mod tests {
   <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml" />
   <Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml" />
   <Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties" Target="docProps/custom.xml" />
+  <Relationship Id="rId5" Type="http://schemas.microsoft.com/office/2011/relationships/webextensiontaskpanes" Target="docProps/custom.xml" />
 </Relationships>"#
         );
     }

@@ -13,22 +13,13 @@ impl TaskpanesRels {
         Default::default()
     }
 
-    pub fn set_default(mut self) -> Self {
+    pub fn add_rel(mut self) -> Self {
+        let index = self.rels.len() + 1;
         self.rels.push((
-            "http://schemas.microsoft.com/office/2011/relationships/webextension".to_owned(),
-            "rId1".to_owned(),
-            "webextension1.xml".to_owned(),
+            "http://schemas.microsoft.com/office/2011/relationships/webextension".to_string(),
+            format!("rId{}", index),
+            format!("webextension{}.xml", index),
         ));
-        self
-    }
-
-    pub fn add_rel(
-        mut self,
-        id: impl Into<String>,
-        rel_type: impl Into<String>,
-        target: impl Into<String>,
-    ) -> Self {
-        self.rels.push((rel_type.into(), id.into(), target.into()));
         self
     }
 
@@ -66,7 +57,7 @@ mod tests {
 
     #[test]
     fn test_build() {
-        let c = TaskpanesRels::new().set_default();
+        let c = TaskpanesRels::new().add_rel();
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

@@ -19,6 +19,9 @@ pub struct XMLDocx {
     pub media: Vec<(usize, Vec<u8>)>,
     pub header: Vec<u8>,
     pub comments_extended: Vec<u8>,
+    pub taskpanes: Option<Vec<u8>>,
+    pub taskpanes_rels: Vec<u8>,
+    pub web_extensions: Vec<Vec<u8>>,
 }
 
 impl XMLDocx {

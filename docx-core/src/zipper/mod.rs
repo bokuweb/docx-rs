@@ -56,6 +56,25 @@ where
         }
     }
 
+    // For now support only taskpanes
+    if let Some(taskpanes) = xml.taskpanes {
+        zip.add_directory("word/webextensions/", Default::default())?;
+        zip.start_file("word/webextensions/taskpanes.xml", options)?;
+        zip.write_all(&taskpanes)?;
+
+        zip.add_directory("word/webextensions/_rels", Default::default())?;
+        zip.start_file("word/webextensions/_rels/taskpanes.xml.rels", options)?;
+        zip.write_all(&xml.taskpanes_rels)?;
+
+        for (i, ext) in xml.web_extensions.iter().enumerate() {
+            zip.start_file(
+                format!("word/webextensions/webextension{}.xml", i + 1),
+                options,
+            )?;
+            zip.write_all(&ext)?;
+        }
+    }
+
     zip.finish()?;
     Ok(())
 }

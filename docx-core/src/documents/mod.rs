@@ -67,6 +67,9 @@ pub struct Docx {
     pub header: Header,
     pub comments_extended: CommentsExtended,
     pub web_settings: WebSettings,
+    pub taskpanes: Option<Taskpanes>,
+    pub taskpanes_rels: TaskpanesRels,
+    pub web_extensions: Vec<WebExtension>,
 }
 
 impl Default for Docx {
@@ -101,6 +104,9 @@ impl Default for Docx {
             header,
             comments_extended,
             web_settings,
+            taskpanes: None,
+            taskpanes_rels: TaskpanesRels::new(),
+            web_extensions: vec![],
         }
     }
 }
@@ -271,11 +277,24 @@ impl Docx {
         self
     }
 
+    pub fn taskpanes(mut self) -> Self {
+        self.taskpanes = Some(Taskpanes::new());
+        self
+    }
+
+    pub fn web_extension(mut self, ext: WebExtension) -> Self {
+        self.web_extensions.push(ext);
+        self
+    }
+
     pub fn build(&mut self) -> XMLDocx {
         self.reset();
 
         self.update_comments();
+
         let (image_ids, images) = self.create_images();
+
+        let web_extensions = self.web_extensions.iter().map(|ext| ext.build()).collect();
 
         self.document_rels.image_ids = image_ids;
 
@@ -293,6 +312,8 @@ impl Docx {
             media: images,
             header: self.header.build(),
             comments_extended: self.comments_extended.build(),
+            taskpanes: self.taskpanes.map(|taskpanes| taskpanes.build()),
+            web_extensions,
         }
     }
 

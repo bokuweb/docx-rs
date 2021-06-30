@@ -49,10 +49,10 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<?xml version="1.0" encoding="UTF-8"?>
+            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <wetp:taskpanes xmlns:wetp="http://schemas.microsoft.com/office/webextensions/taskpanes/2010/11">
-  <wetp:taskpane docstate="" visibility="1" width="350" row="1">
-    <wetp:webextensionref xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:id="1" />
+  <wetp:taskpane dockstate="" visibility="1" width="350" row="1">
+    <wetp:webextensionref xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:id="rId1" />
   </wetp:taskpane>
 </wetp:taskpanes>"#
         );

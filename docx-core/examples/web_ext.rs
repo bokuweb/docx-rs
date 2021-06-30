@@ -12,7 +12,7 @@ pub fn main() -> Result<(), DocxError> {
                 "developer",
                 "Registry",
             )
-            .property("hello", "world"),
+            .property("hello", "\"world\""),
         )
         .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
         .build()

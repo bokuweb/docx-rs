@@ -279,12 +279,15 @@ impl Docx {
 
     pub fn taskpanes(mut self) -> Self {
         self.taskpanes = Some(Taskpanes::new());
+        self.rels = self.rels.add_taskpanes_rel();
+        self.content_type = self.content_type.add_taskpanes();
         self
     }
 
     pub fn web_extension(mut self, ext: WebExtension) -> Self {
         self.web_extensions.push(ext);
         self.taskpanes_rels = self.taskpanes_rels.add_rel();
+        self.content_type = self.content_type.add_web_extensions();
         self
     }
 

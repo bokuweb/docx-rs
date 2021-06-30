@@ -41,7 +41,6 @@ impl BuildXML for TaskpanesRels {
             .declaration(Some(true))
             .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships");
         for (k, id, v) in self.rels.iter() {
-            dbg!(id);
             b = b.relationship(id, k, v);
         }
         b.close().build()

@@ -10,6 +10,7 @@ use crate::xml_builder::*;
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct ContentTypes {
     types: BTreeMap<String, String>,
+    web_extension_count: usize,
 }
 
 impl ContentTypes {
@@ -81,14 +82,26 @@ impl ContentTypes {
             "/docProps/custom.xml".to_owned(),
             "application/vnd.openxmlformats-officedocument.custom-properties+xml".to_owned(),
         );
+        self
+    }
+
+    pub fn add_taskpanes(mut self) -> Self {
         self.types.insert(
             "/word/webextensions/taskpanes.xml".to_owned(),
             "application/vnd.ms-office.webextensiontaskpanes+xml".to_owned(),
         );
+        self
+    }
+
+    pub fn add_web_extensions(mut self) -> Self {
         self.types.insert(
-            "/word/webextensions/webextension1.xml".to_owned(),
+            format!(
+                "/word/webextensions/webextension{}.xml",
+                self.web_extension_count
+            ),
             "application/vnd.ms-office.webextension+xml".to_owned(),
         );
+        self.web_extension_count += 1;
         self
     }
 }
@@ -97,6 +110,7 @@ impl Default for ContentTypes {
     fn default() -> Self {
         ContentTypes {
             types: BTreeMap::new(),
+            web_extension_count: 1,
         }
     }
 }
@@ -171,6 +185,12 @@ mod tests {
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"
                 .to_owned(),
         );
-        assert_eq!(ContentTypes { types }, c);
+        assert_eq!(
+            ContentTypes {
+                types,
+                web_extension_count: 1
+            },
+            c
+        );
     }
 }

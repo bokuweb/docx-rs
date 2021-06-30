@@ -284,12 +284,35 @@ describe("writer", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello!!"));
     const buffer = new w.Docx()
       .addParagraph(p)
-      .customProperty('hello', '{"world": 0}')
+      .customProperty("hello", '{"world": 0}')
       .build();
     writeFileSync("../output/custom.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml|custom.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write webextension", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello!!"));
+    const buffer = new w.Docx()
+      .addParagraph(p)
+      .taskpanes()
+      .webextension(
+        new w.WebExtension(
+          "7f33b723-fb58-4524-8733-dbedc4b7c095",
+          "1.0.0.0",
+          "developer",
+          "Registry"
+        ).property("hello", '"world"')
+      )
+      .build();
+    writeFileSync("../output/webextension.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/webextension1.xml|_rels|taskpanes.xml.rel/)) {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }

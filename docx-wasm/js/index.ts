@@ -18,6 +18,7 @@ import { BookmarkEnd } from "./bookmark-end";
 import { Settings } from "./settings";
 import { DocProps } from "./doc-props";
 import { Styles } from "./styles";
+import { WebExtension } from "./webextension";
 import {
   SectionProperty,
   PageMargin,
@@ -78,6 +79,8 @@ export class Docx {
   settings: Settings = new Settings();
   docProps: DocProps = new DocProps();
   sectionProperty: SectionProperty = new SectionProperty();
+  _taskpanes: boolean = false;
+  webextensions: WebExtension[] = [];
   styles = new Styles();
 
   addParagraph(p: Paragraph) {
@@ -178,6 +181,16 @@ export class Docx {
 
   defaultSpacing(spacing: number) {
     this.styles.defaultSpacing(spacing);
+    return this;
+  }
+
+  taskpanes() {
+    this._taskpanes = true;
+    return this;
+  }
+
+  webextension(e: WebExtension) {
+    this.webextensions.push(e);
     return this;
   }
 
@@ -858,6 +871,23 @@ export class Docx {
       docx = docx.updated_at(this.docProps._updatedAt);
     }
 
+    if (this._taskpanes) {
+      docx = docx.taskpanes();
+
+      for (const e of this.webextensions) {
+        let ext = wasm.createWebExtension(
+          e._id,
+          e._version,
+          e._store,
+          e._storeType
+        );
+        for (const [name, value] of Object.entries(e.properties)) {
+          ext = ext.property(name, value);
+        }
+        docx = docx.web_extension(ext);
+      }
+    }
+
     return docx;
   }
 
@@ -904,3 +934,4 @@ export * from "./delete-text";
 export * from "./level";
 export * from "./tab";
 export * from "./json";
+export * from "./webextension";

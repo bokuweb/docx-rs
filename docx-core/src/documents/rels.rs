@@ -36,22 +36,23 @@ impl Rels {
             "rId4".to_owned(),
             "docProps/custom.xml".to_owned(),
         ));
-        self.rels.push((
-            "http://schemas.microsoft.com/office/2011/relationships/webextensiontaskpanes"
-                .to_owned(),
-            "rId5".to_owned(),
-            "word/webextensions/taskpanes.xml".to_owned(),
-        ));
         self
     }
 
-    pub fn add_rel(
-        mut self,
-        id: impl Into<String>,
-        rel_type: impl Into<String>,
-        target: impl Into<String>,
-    ) -> Self {
-        self.rels.push((rel_type.into(), id.into(), target.into()));
+    pub fn add_taskpanes_rel(mut self) -> Self {
+        self = self.add_rel(
+            "http://schemas.microsoft.com/office/2011/relationships/webextensiontaskpanes",
+            "word/webextensions/taskpanes.xml",
+        );
+        self
+    }
+
+    pub fn add_rel(mut self, rel_type: impl Into<String>, target: impl Into<String>) -> Self {
+        self.rels.push((
+            rel_type.into(),
+            format!("rId{}", self.rels.len() + 1),
+            target.into(),
+        ));
         self
     }
 

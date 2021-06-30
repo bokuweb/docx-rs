@@ -103,6 +103,16 @@ impl Docx {
         self
     }
 
+    pub fn taskpanes(mut self) -> Self {
+        self.0 = self.0.taskpanes();
+        self
+    }
+
+    pub fn web_extension(mut self, ext: WebExtension) -> Self {
+        self.0 = self.0.web_extension(ext.take());
+        self
+    }
+
     pub fn doc_grid(
         mut self,
         grid_type: docx_rs::DocGridType,

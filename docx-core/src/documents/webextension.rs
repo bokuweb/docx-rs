@@ -1,6 +1,7 @@
 use serde::Serialize;
 
 use crate::documents::BuildXML;
+use crate::escape::escape;
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, PartialEq, Clone)]
@@ -44,7 +45,8 @@ impl WebExtension {
     }
 
     pub fn property(mut self, name: impl Into<String>, value: impl Into<String>) -> Self {
-        self.properties.push(WebExtensionProperty::new(name, value));
+        self.properties
+            .push(WebExtensionProperty::new(name, escape(&value.into())));
         self
     }
 }

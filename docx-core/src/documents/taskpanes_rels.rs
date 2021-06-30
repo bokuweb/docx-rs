@@ -38,9 +38,10 @@ impl BuildXML for TaskpanesRels {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         let mut b = b
-            .declaration(None)
+            .declaration(Some(true))
             .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships");
         for (k, id, v) in self.rels.iter() {
+            dbg!(id);
             b = b.relationship(id, k, v);
         }
         b.close().build()

@@ -351,7 +351,7 @@ impl XMLBuilder {
     open!(
         open_taskpane,
         "wetp:taskpane",
-        "docstate",
+        "dockstate",
         "visibility",
         "width",
         "row"

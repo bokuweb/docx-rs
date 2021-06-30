@@ -284,6 +284,7 @@ impl Docx {
 
     pub fn web_extension(mut self, ext: WebExtension) -> Self {
         self.web_extensions.push(ext);
+        self.taskpanes_rels = self.taskpanes_rels.add_rel();
         self
     }
 
@@ -313,6 +314,7 @@ impl Docx {
             header: self.header.build(),
             comments_extended: self.comments_extended.build(),
             taskpanes: self.taskpanes.map(|taskpanes| taskpanes.build()),
+            taskpanes_rels: self.taskpanes_rels.build(),
             web_extensions,
         }
     }

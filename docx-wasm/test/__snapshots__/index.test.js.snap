@@ -24,6 +24,7 @@ Object {
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
     },
+    "web_extension_count": 1,
   },
   "docProps": Object {
     "app": Object {},
@@ -354,6 +355,11 @@ Object {
       },
     ],
   },
+  "taskpanes": null,
+  "taskpanesRels": Object {
+    "rels": Array [],
+  },
+  "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
   },
@@ -384,6 +390,7 @@ Object {
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
     },
+    "web_extension_count": 1,
   },
   "docProps": Object {
     "app": Object {},
@@ -1366,6 +1373,11 @@ Object {
       },
     ],
   },
+  "taskpanes": null,
+  "taskpanesRels": Object {
+    "rels": Array [],
+  },
+  "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [
       Object {
@@ -1696,6 +1708,7 @@ Object {
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
     },
+    "web_extension_count": 1,
   },
   "docProps": Object {
     "app": Object {},
@@ -2443,6 +2456,11 @@ Object {
       },
     ],
   },
+  "taskpanes": null,
+  "taskpanesRels": Object {
+    "rels": Array [],
+  },
+  "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
   },
@@ -2473,6 +2491,7 @@ Object {
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
     },
+    "web_extension_count": 1,
   },
   "docProps": Object {
     "app": Object {},
@@ -5295,6 +5314,11 @@ Object {
       },
     ],
   },
+  "taskpanes": null,
+  "taskpanesRels": Object {
+    "rels": Array [],
+  },
+  "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
   },
@@ -5325,6 +5349,7 @@ Object {
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
     },
+    "web_extension_count": 1,
   },
   "docProps": Object {
     "app": Object {},
@@ -8413,6 +8438,11 @@ Object {
       },
     ],
   },
+  "taskpanes": null,
+  "taskpanesRels": Object {
+    "rels": Array [],
+  },
+  "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
   },
@@ -9052,6 +9082,7 @@ Object {
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
     },
+    "web_extension_count": 1,
   },
   "docProps": Object {
     "app": Object {},
@@ -12973,6 +13004,11 @@ Object {
       },
     ],
   },
+  "taskpanes": null,
+  "taskpanesRels": Object {
+    "rels": Array [],
+  },
+  "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
   },
@@ -13003,6 +13039,7 @@ Object {
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
     },
+    "web_extension_count": 1,
   },
   "docProps": Object {
     "app": Object {},
@@ -14569,6 +14606,11 @@ Object {
       },
     ],
   },
+  "taskpanes": null,
+  "taskpanesRels": Object {
+    "rels": Array [],
+  },
+  "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
   },
@@ -14599,6 +14641,7 @@ Object {
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
     },
+    "web_extension_count": 1,
   },
   "docProps": Object {
     "app": Object {},
@@ -15814,6 +15857,11 @@ Object {
       },
     ],
   },
+  "taskpanes": null,
+  "taskpanesRels": Object {
+    "rels": Array [],
+  },
+  "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
   },
@@ -15844,6 +15892,7 @@ Object {
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
     },
+    "web_extension_count": 1,
   },
   "docProps": Object {
     "app": Object {},
@@ -16725,6 +16774,11 @@ Object {
       },
     ],
   },
+  "taskpanes": null,
+  "taskpanesRels": Object {
+    "rels": Array [],
+  },
+  "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
   },
@@ -17115,4 +17169,52 @@ exports[`writer should write tl2br and tr2bl cells 3`] = `
 <w:numbering xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\"><w:abstractNum w:abstractNumId=\\"1\\"><w:lvl w:ilvl=\\"0\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%1.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"420\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"1\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%2)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"840\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"2\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%3\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1260\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"3\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%4.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1680\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"4\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%5)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2100\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"5\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%6\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2520\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"6\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%7.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2940\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"7\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%8)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3360\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"8\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%9\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3780\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl></w:abstractNum><w:num w:numId=\\"1\\">
   <w:abstractNumId w:val=\\"1\\" />
 </w:num></w:numbering>"
+`;
+
+exports[`writer should write webextension 1`] = `""`;
+
+exports[`writer should write webextension 2`] = `""`;
+
+exports[`writer should write webextension 3`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties\\" Target=\\"docProps/core.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties\\" Target=\\"docProps/app.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\\" Target=\\"word/document.xml\\" />
+  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties\\" Target=\\"docProps/custom.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/webextensiontaskpanes\\" Target=\\"word/webextensions/taskpanes.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write webextension 4`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
+  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write webextension 5`] = `""`;
+
+exports[`writer should write webextension 6`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/webextension\\" Target=\\"webextension1.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write webextension 7`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<we:webextension xmlns:we=\\"http://schemas.microsoft.com/office/webextensions/webextension/2010/11\\" id=\\"{7f33b723-fb58-4524-8733-dbedc4b7c095}\\">
+  <we:reference id=\\"7f33b723-fb58-4524-8733-dbedc4b7c095\\" version=\\"1.0.0.0\\" store=\\"developer\\" storeType=\\"Registry\\" />
+  <we:alternateReferences />
+  <we:properties>
+    <we:property name=\\"hello\\" value=\\"&quot;world&quot;\\" />
+  </we:properties>
+  <we:bindings />
+  <we:snapshot xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" />
+</we:webextension>"
 `;

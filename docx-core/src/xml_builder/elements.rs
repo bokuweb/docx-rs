@@ -330,6 +330,34 @@ impl XMLBuilder {
     open!(open_doc_vars, "w:docVars");
     closed!(doc_var, "w:docVar", "w:name", "w:val");
 
+    // webextension
+    open!(open_webextension, "we:webextension", "xmlns:we", "id");
+    closed!(
+        webextension_reference,
+        "we:reference",
+        "id",
+        "version",
+        "store",
+        "storeType"
+    );
+    closed!(webextension_alternate_references, "we:alternateReferences");
+    open!(open_webextension_properties, "we:properties");
+    closed!(webextension_property, "we:property", "name", "value");
+    closed!(webextension_bindings, "we:bindings");
+    closed!(webextension_snapshot, "we:snapshot", "xmlns:r");
+
+    // taskpanes
+    open!(open_taskpanes, "wetp:taskpanes", "xmlns:wetp");
+    open!(
+        open_taskpane,
+        "wetp:taskpane",
+        "dockstate",
+        "visibility",
+        "width",
+        "row"
+    );
+    closed!(webextensionref, "wetp:webextensionref", "xmlns:r", "r:id");
+
     // CommentExtended
     // w15:commentEx w15:paraId="00000001" w15:paraIdParent="57D1BD7C" w15:done="0"
     pub(crate) fn comment_extended(

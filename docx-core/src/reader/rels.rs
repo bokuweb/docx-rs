@@ -13,20 +13,17 @@ impl FromXML for Rels {
             match e {
                 Ok(XmlEvent::StartElement { attributes, .. }) => {
                     if depth == 1 {
-                        let mut id = "".to_owned();
                         let mut rel_type = "".to_owned();
                         let mut target = "".to_owned();
                         for attr in attributes {
                             let name: &str = &attr.name.local_name;
-                            if name == "Id" {
-                                id = attr.value.clone();
-                            } else if name == "Type" {
+                            if name == "Type" {
                                 rel_type = attr.value.clone();
                             } else if name == "Target" {
                                 target = attr.value.clone();
                             }
                         }
-                        s = s.add_rel(id, rel_type, target);
+                        s = s.add_rel(rel_type, target);
                     }
                     depth += 1;
                 }

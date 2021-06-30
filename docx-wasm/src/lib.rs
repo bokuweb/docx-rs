@@ -16,6 +16,7 @@ mod table;
 mod table_cell;
 mod table_cell_border;
 mod table_row;
+mod web_extension;
 
 pub use abstract_numbering::*;
 pub use adaptors::*;
@@ -35,3 +36,4 @@ pub use table::*;
 pub use table_cell::*;
 pub use table_cell_border::*;
 pub use table_row::*;
+pub use web_extension::*;

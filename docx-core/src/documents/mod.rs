@@ -18,7 +18,10 @@ mod pic_id;
 mod rels;
 mod settings;
 mod styles;
+mod taskpanes;
+mod taskpanes_rels;
 mod web_settings;
+mod webextension;
 mod xml_docx;
 
 pub(crate) use build_xml::BuildXML;
@@ -39,7 +42,10 @@ pub use numberings::*;
 pub use rels::*;
 pub use settings::*;
 pub use styles::*;
+pub use taskpanes::*;
+pub use taskpanes_rels::*;
 pub use web_settings::*;
+pub use webextension::*;
 pub use xml_docx::*;
 
 use serde::Serialize;
@@ -61,6 +67,9 @@ pub struct Docx {
     pub header: Header,
     pub comments_extended: CommentsExtended,
     pub web_settings: WebSettings,
+    pub taskpanes: Option<Taskpanes>,
+    pub taskpanes_rels: TaskpanesRels,
+    pub web_extensions: Vec<WebExtension>,
 }
 
 impl Default for Docx {
@@ -95,6 +104,9 @@ impl Default for Docx {
             header,
             comments_extended,
             web_settings,
+            taskpanes: None,
+            taskpanes_rels: TaskpanesRels::new(),
+            web_extensions: vec![],
         }
     }
 }
@@ -265,11 +277,28 @@ impl Docx {
         self
     }
 
+    pub fn taskpanes(mut self) -> Self {
+        self.taskpanes = Some(Taskpanes::new());
+        self.rels = self.rels.add_taskpanes_rel();
+        self.content_type = self.content_type.add_taskpanes();
+        self
+    }
+
+    pub fn web_extension(mut self, ext: WebExtension) -> Self {
+        self.web_extensions.push(ext);
+        self.taskpanes_rels = self.taskpanes_rels.add_rel();
+        self.content_type = self.content_type.add_web_extensions();
+        self
+    }
+
     pub fn build(&mut self) -> XMLDocx {
         self.reset();
 
         self.update_comments();
+
         let (image_ids, images) = self.create_images();
+
+        let web_extensions = self.web_extensions.iter().map(|ext| ext.build()).collect();
 
         self.document_rels.image_ids = image_ids;
 
@@ -287,6 +316,9 @@ impl Docx {
             media: images,
             header: self.header.build(),
             comments_extended: self.comments_extended.build(),
+            taskpanes: self.taskpanes.map(|taskpanes| taskpanes.build()),
+            taskpanes_rels: self.taskpanes_rels.build(),
+            web_extensions,
         }
     }
 

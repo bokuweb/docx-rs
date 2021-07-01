@@ -45,8 +45,10 @@ impl WebExtension {
     }
 
     pub fn property(mut self, name: impl Into<String>, value: impl Into<String>) -> Self {
+        let v = value.into();
+        let v = format!("&quot;{}&quot;", escape(&v).replace("&quot;", "\\&quot;"));
         self.properties
-            .push(WebExtensionProperty::new(name, escape(&value.into())));
+            .push(WebExtensionProperty::new(name, &v));
         self
     }
 }
@@ -103,7 +105,7 @@ mod tests {
   <we:reference id="7f33b723-fb58-4524-8733-dbedc4b7c095" version="1.0.0.0" store="developer" storeType="Registry" />
   <we:alternateReferences />
   <we:properties>
-    <we:property name="hello" value="world" />
+    <we:property name="hello" value="&quot;world&quot;" />
   </we:properties>
   <we:bindings />
   <we:snapshot xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" />

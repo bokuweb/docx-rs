@@ -306,7 +306,7 @@ describe("writer", () => {
           "1.0.0.0",
           "developer",
           "Registry"
-        ).property("hello", '"world"')
+        ).property("hello", JSON.stringify({ hello: "world" }))
       )
       .build();
     writeFileSync("../output/webextension.docx", buffer);

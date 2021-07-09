@@ -17209,7 +17209,7 @@ exports[`writer should write webextension 6`] = `
 exports[`writer should write webextension 7`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
 <we:webextension xmlns:we=\\"http://schemas.microsoft.com/office/webextensions/webextension/2010/11\\" id=\\"{7f33b723-fb58-4524-8733-dbedc4b7c095}\\">
-  <we:reference id=\\"7f33b723-fb58-4524-8733-dbedc4b7c095\\" version=\\"1.0.0.0\\" store=\\"developer\\" storeType=\\"Registry\\" />
+  <we:reference id=\\"abcd\\" version=\\"1.0.0.0\\" store=\\"developer\\" storeType=\\"Registry\\" />
   <we:alternateReferences />
   <we:properties>
     <we:property name=\\"hello\\" value=\\"&quot;{\\\\&quot;hello\\\\&quot;:\\\\&quot;world\\\\&quot;}&quot;\\" />

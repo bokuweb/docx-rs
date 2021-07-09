@@ -877,6 +877,7 @@ export class Docx {
       for (const e of this.webextensions) {
         let ext = wasm.createWebExtension(
           e._id,
+          e._referenceId,
           e._version,
           e._store,
           e._storeType

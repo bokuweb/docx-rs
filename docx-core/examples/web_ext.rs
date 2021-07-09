@@ -8,6 +8,7 @@ pub fn main() -> Result<(), DocxError> {
         .web_extension(
             WebExtension::new(
                 "7f33b723-fb58-4524-8733-dbedc4b7c095",
+                "abc",
                 "1.0.0.0",
                 "developer",
                 "Registry",

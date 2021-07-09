@@ -25,18 +25,21 @@ pub struct WebExtension {
     pub version: String,
     pub store: String,
     pub store_type: String,
+    pub reference_id: String,
     pub properties: Vec<WebExtensionProperty>,
 }
 
 impl WebExtension {
     pub fn new(
         id: impl Into<String>,
+        reference_id: impl Into<String>,
         version: impl Into<String>,
         store: impl Into<String>,
         store_type: impl Into<String>,
     ) -> Self {
         Self {
             id: id.into(),
+            reference_id: reference_id.into(),
             version: version.into(),
             store: store.into(),
             store_type: store_type.into(),
@@ -47,8 +50,7 @@ impl WebExtension {
     pub fn property(mut self, name: impl Into<String>, value: impl Into<String>) -> Self {
         let v = value.into();
         let v = format!("&quot;{}&quot;", escape(&v).replace("&quot;", "\\&quot;"));
-        self.properties
-            .push(WebExtensionProperty::new(name, &v));
+        self.properties.push(WebExtensionProperty::new(name, &v));
         self
     }
 }
@@ -62,7 +64,12 @@ impl BuildXML for WebExtension {
                 "http://schemas.microsoft.com/office/webextensions/webextension/2010/11",
                 &format!("{{{}}}", &self.id),
             )
-            .webextension_reference(&self.id, &self.version, &self.store, &self.store_type)
+            .webextension_reference(
+                &self.reference_id,
+                &self.version,
+                &self.store,
+                &self.store_type,
+            )
             .webextension_alternate_references()
             .open_webextension_properties();
 
@@ -92,6 +99,7 @@ mod tests {
     fn test_build() {
         let c = WebExtension::new(
             "7f33b723-fb58-4524-8733-dbedc4b7c095",
+            "abcd",
             "1.0.0.0",
             "developer",
             "Registry",
@@ -102,7 +110,7 @@ mod tests {
             str::from_utf8(&b).unwrap(),
             r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <we:webextension xmlns:we="http://schemas.microsoft.com/office/webextensions/webextension/2010/11" id="{7f33b723-fb58-4524-8733-dbedc4b7c095}">
-  <we:reference id="7f33b723-fb58-4524-8733-dbedc4b7c095" version="1.0.0.0" store="developer" storeType="Registry" />
+  <we:reference id="abcd" version="1.0.0.0" store="developer" storeType="Registry" />
   <we:alternateReferences />
   <we:properties>
     <we:property name="hello" value="&quot;world&quot;" />

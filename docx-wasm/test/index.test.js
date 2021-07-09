@@ -303,6 +303,7 @@ describe("writer", () => {
       .webextension(
         new w.WebExtension(
           "7f33b723-fb58-4524-8733-dbedc4b7c095",
+          "abcd",
           "1.0.0.0",
           "developer",
           "Registry"

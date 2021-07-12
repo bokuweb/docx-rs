@@ -4,6 +4,7 @@ mod build_xml;
 mod comments;
 mod comments_extended;
 mod content_types;
+mod custom_xml;
 mod doc_props;
 mod document;
 mod document_rels;
@@ -50,7 +51,7 @@ pub use xml_docx::*;
 
 use serde::Serialize;
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Docx {
     pub content_type: ContentTypes,
@@ -70,6 +71,7 @@ pub struct Docx {
     pub taskpanes: Option<Taskpanes>,
     pub taskpanes_rels: TaskpanesRels,
     pub web_extensions: Vec<WebExtension>,
+    // pub custom_xmls: Vec<XmlDocument>,
 }
 
 impl Default for Docx {

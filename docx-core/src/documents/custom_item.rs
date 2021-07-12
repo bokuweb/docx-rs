@@ -1,8 +1,8 @@
 use crate::documents::BuildXML;
+use crate::{ParseXmlError, XmlData, XmlDocument};
 use serde::ser::{SerializeSeq, SerializeStruct};
 use serde::Serialize;
 use std::str::FromStr;
-use xmlJSON::{ParseXmlError, XmlData, XmlDocument};
 
 #[derive(Debug, Clone)]
 pub struct CustomItem(XmlDocument);
@@ -53,7 +53,7 @@ impl Serialize for CustomXmlData {
 
 impl BuildXML for CustomItem {
     fn build(&self) -> Vec<u8> {
-        self.0.to_string().as_bytes()
+        self.0.to_string().as_bytes().to_vec()
     }
 }
 

@@ -308,6 +308,7 @@ impl Docx {
         self.content_type = self.content_type.add_custom_xml();
         let rel = CustomItemRels::new().add_item();
         self.custom_item_props.push(CustomItemProperty::new(id));
+        self.document_rels = self.document_rels.add_custom_item();
         self.custom_item_rels.push(rel);
         self.custom_items.push(x);
         self

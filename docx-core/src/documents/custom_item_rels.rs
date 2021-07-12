@@ -27,7 +27,7 @@ impl BuildXML for CustomItemRels {
             .declaration(Some(true))
             .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships");
 
-        for id in 0..self.custom_item_count.iter() {
+        for id in 0..self.custom_item_count {
             let id = id + 1;
             b = b.relationship(
                 &format!("rId{}", id),

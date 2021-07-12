@@ -1,20 +1,21 @@
+use crate::documents::BuildXML;
 use serde::ser::{SerializeSeq, SerializeStruct};
 use serde::Serialize;
 use std::str::FromStr;
 use xmlJSON::{ParseXmlError, XmlData, XmlDocument};
 
 #[derive(Debug, Clone)]
-pub struct CustomXml(XmlDocument);
+pub struct CustomItem(XmlDocument);
 
-impl FromStr for CustomXml {
+impl FromStr for CustomItem {
     type Err = ParseXmlError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(CustomXml(XmlDocument::from_str(s)?))
+        Ok(CustomItem(XmlDocument::from_str(s)?))
     }
 }
 
-impl Serialize for CustomXml {
+impl Serialize for CustomItem {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: serde::Serializer,
@@ -50,6 +51,12 @@ impl Serialize for CustomXmlData {
     }
 }
 
+impl BuildXML for CustomItem {
+    fn build(&self) -> Vec<u8> {
+        self.0.to_string().as_bytes()
+    }
+}
+
 #[cfg(test)]
 mod tests {
 
@@ -59,7 +66,7 @@ mod tests {
 
     #[test]
     fn test_custom_xml() {
-        let c = CustomXml::from_str(
+        let c = CustomItem::from_str(
             r#"<?xml version="1.0" encoding="UTF-8" standalone="no"?>
         <ds:datastoreItem ds:itemID="{06AC5857-5C65-A94A-BCEC-37356A209BC3}"
             xmlns:ds="http://schemas.openxmlformats.org/officeDocument/2006/customXml">

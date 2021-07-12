@@ -22,6 +22,9 @@ pub struct XMLDocx {
     pub taskpanes: Option<Vec<u8>>,
     pub taskpanes_rels: Vec<u8>,
     pub web_extensions: Vec<Vec<u8>>,
+    pub custom_items: Vec<Vec<u8>>,
+    pub custom_item_rels: Vec<Vec<u8>>,
+    pub custom_item_props: Vec<Vec<u8>>,
 }
 
 impl XMLDocx {

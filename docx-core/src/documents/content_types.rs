@@ -11,6 +11,7 @@ use crate::xml_builder::*;
 pub struct ContentTypes {
     types: BTreeMap<String, String>,
     web_extension_count: usize,
+    custom_xml_count: usize,
 }
 
 impl ContentTypes {
@@ -104,6 +105,15 @@ impl ContentTypes {
         self.web_extension_count += 1;
         self
     }
+
+    pub fn add_custom_xml(mut self) -> Self {
+        self.types.insert(
+            format!("/customXml/itemProps{}.xml", self.web_extension_count),
+            "application/vnd.openxmlformats-officedocument.customXmlProperties+xml".to_owned(),
+        );
+        self.custom_xml_count += 1;
+        self
+    }
 }
 
 impl Default for ContentTypes {
@@ -111,6 +121,7 @@ impl Default for ContentTypes {
         ContentTypes {
             types: BTreeMap::new(),
             web_extension_count: 1,
+            custom_xml_count: 1,
         }
     }
 }
@@ -188,7 +199,8 @@ mod tests {
         assert_eq!(
             ContentTypes {
                 types,
-                web_extension_count: 1
+                web_extension_count: 1,
+                custom_xml_count: 1
             },
             c
         );

@@ -318,4 +318,22 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write customItem", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello!!"));
+    const buffer = new w.Docx()
+      .addParagraph(p)
+      .addCustomItem(
+        "06AC5857-5C65-A94A-BCEC-37356A209BC3",
+        '<root><item name="Cheap Item" price="$193.95"/><item name="Expensive Item" price="$931.88"/></root>'
+      )
+      .build();
+    writeFileSync("../output/custom-item.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/item1.xml|_rels|item1Props/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

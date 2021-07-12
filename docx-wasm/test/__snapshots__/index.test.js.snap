@@ -9,6 +9,7 @@ Object {
     "children": Array [],
   },
   "contentType": Object {
+    "custom_xml_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -26,6 +27,9 @@ Object {
     },
     "web_extension_count": 1,
   },
+  "customItemProps": Array [],
+  "customItemRels": Array [],
+  "customItems": Array [],
   "docProps": Object {
     "app": Object {},
     "core": Object {
@@ -151,6 +155,7 @@ Object {
     },
   },
   "documentRels": Object {
+    "customXmlCount": 0,
     "hasComments": false,
     "hasNumberings": false,
     "imageIds": Array [],
@@ -375,6 +380,7 @@ Object {
     "children": Array [],
   },
   "contentType": Object {
+    "custom_xml_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -392,6 +398,9 @@ Object {
     },
     "web_extension_count": 1,
   },
+  "customItemProps": Array [],
+  "customItemRels": Array [],
+  "customItems": Array [],
   "docProps": Object {
     "app": Object {},
     "core": Object {
@@ -800,6 +809,7 @@ Object {
     },
   },
   "documentRels": Object {
+    "customXmlCount": 0,
     "hasComments": false,
     "hasNumberings": false,
     "imageIds": Array [],
@@ -1693,6 +1703,7 @@ Object {
     ],
   },
   "contentType": Object {
+    "custom_xml_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -1710,6 +1721,9 @@ Object {
     },
     "web_extension_count": 1,
   },
+  "customItemProps": Array [],
+  "customItemRels": Array [],
+  "customItems": Array [],
   "docProps": Object {
     "app": Object {},
     "core": Object {
@@ -2252,6 +2266,7 @@ Object {
     },
   },
   "documentRels": Object {
+    "customXmlCount": 0,
     "hasComments": true,
     "hasNumberings": false,
     "imageIds": Array [],
@@ -2476,6 +2491,7 @@ Object {
     "children": Array [],
   },
   "contentType": Object {
+    "custom_xml_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -2493,6 +2509,9 @@ Object {
     },
     "web_extension_count": 1,
   },
+  "customItemProps": Array [],
+  "customItemRels": Array [],
+  "customItems": Array [],
   "docProps": Object {
     "app": Object {},
     "core": Object {
@@ -4741,6 +4760,7 @@ Object {
     },
   },
   "documentRels": Object {
+    "customXmlCount": 0,
     "hasComments": false,
     "hasNumberings": false,
     "imageIds": Array [],
@@ -5334,6 +5354,7 @@ Object {
     "children": Array [],
   },
   "contentType": Object {
+    "custom_xml_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -5351,6 +5372,9 @@ Object {
     },
     "web_extension_count": 1,
   },
+  "customItemProps": Array [],
+  "customItemRels": Array [],
+  "customItems": Array [],
   "docProps": Object {
     "app": Object {},
     "core": Object {
@@ -5786,6 +5810,7 @@ Object {
     },
   },
   "documentRels": Object {
+    "customXmlCount": 0,
     "hasComments": false,
     "hasNumberings": false,
     "imageIds": Array [],
@@ -9067,6 +9092,7 @@ Object {
     ],
   },
   "contentType": Object {
+    "custom_xml_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -9084,6 +9110,9 @@ Object {
     },
     "web_extension_count": 1,
   },
+  "customItemProps": Array [],
+  "customItemRels": Array [],
+  "customItems": Array [],
   "docProps": Object {
     "app": Object {},
     "core": Object {
@@ -10307,6 +10336,7 @@ Object {
     },
   },
   "documentRels": Object {
+    "customXmlCount": 0,
     "hasComments": true,
     "hasNumberings": false,
     "imageIds": Array [],
@@ -13024,6 +13054,7 @@ Object {
     "children": Array [],
   },
   "contentType": Object {
+    "custom_xml_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -13041,6 +13072,9 @@ Object {
     },
     "web_extension_count": 1,
   },
+  "customItemProps": Array [],
+  "customItemRels": Array [],
+  "customItems": Array [],
   "docProps": Object {
     "app": Object {},
     "core": Object {
@@ -13880,6 +13914,7 @@ Object {
     },
   },
   "documentRels": Object {
+    "customXmlCount": 0,
     "hasComments": false,
     "hasNumberings": false,
     "imageIds": Array [],
@@ -14626,6 +14661,7 @@ Object {
     "children": Array [],
   },
   "contentType": Object {
+    "custom_xml_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -14643,6 +14679,9 @@ Object {
     },
     "web_extension_count": 1,
   },
+  "customItemProps": Array [],
+  "customItemRels": Array [],
+  "customItems": Array [],
   "docProps": Object {
     "app": Object {},
     "core": Object {
@@ -15149,6 +15188,7 @@ Object {
     },
   },
   "documentRels": Object {
+    "customXmlCount": 0,
     "hasComments": false,
     "hasNumberings": false,
     "imageIds": Array [],
@@ -15877,6 +15917,7 @@ Object {
     "children": Array [],
   },
   "contentType": Object {
+    "custom_xml_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -15894,6 +15935,9 @@ Object {
     },
     "web_extension_count": 1,
   },
+  "customItemProps": Array [],
+  "customItemRels": Array [],
+  "customItems": Array [],
   "docProps": Object {
     "app": Object {},
     "core": Object {
@@ -16201,6 +16245,7 @@ Object {
     },
   },
   "documentRels": Object {
+    "customXmlCount": 0,
     "hasComments": false,
     "hasNumberings": false,
     "imageIds": Array [],
@@ -16847,6 +16892,52 @@ exports[`writer should write custom props 4`] = `
 <w:numbering xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\"><w:abstractNum w:abstractNumId=\\"1\\"><w:lvl w:ilvl=\\"0\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%1.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"420\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"1\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%2)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"840\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"2\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%3\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1260\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"3\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%4.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1680\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"4\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%5)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2100\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"5\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%6\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2520\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"6\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%7.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2940\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"7\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%8)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3360\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"8\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%9\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3780\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl></w:abstractNum><w:num w:numId=\\"1\\">
   <w:abstractNumId w:val=\\"1\\" />
 </w:num></w:numbering>"
+`;
+
+exports[`writer should write customItem 1`] = `""`;
+
+exports[`writer should write customItem 2`] = `""`;
+
+exports[`writer should write customItem 3`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties\\" Target=\\"docProps/core.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties\\" Target=\\"docProps/app.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\\" Target=\\"word/document.xml\\" />
+  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties\\" Target=\\"docProps/custom.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write customItem 4`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
+  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
+  <Relationship Id=\\"rId8\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml\\" Target=\\"../customXml/item1.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write customItem 5`] = `""`;
+
+exports[`writer should write customItem 6`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXmlProps\\" Target=\\"itemProps1.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write customItem 7`] = `
+"<root>
+    <item name=\\"Cheap Item\\" price=\\"$193.95\\">
+    </item>
+    <item name=\\"Expensive Item\\" price=\\"$931.88\\">
+    </item>
+
+</root>
+"
 `;
 
 exports[`writer should write default font 1`] = `

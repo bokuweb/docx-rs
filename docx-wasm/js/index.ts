@@ -81,6 +81,7 @@ export class Docx {
   sectionProperty: SectionProperty = new SectionProperty();
   _taskpanes: boolean = false;
   webextensions: WebExtension[] = [];
+  customItems: { id: string; xml: string }[] = [];
   styles = new Styles();
 
   addParagraph(p: Paragraph) {
@@ -191,6 +192,11 @@ export class Docx {
 
   webextension(e: WebExtension) {
     this.webextensions.push(e);
+    return this;
+  }
+
+  addCustomItem(id: string, xml: string) {
+    this.customItems.push({ id, xml });
     return this;
   }
 
@@ -887,6 +893,10 @@ export class Docx {
         }
         docx = docx.web_extension(ext);
       }
+    }
+
+    for (const item of this.customItems) {
+      docx = docx.add_custom_item(item.id, item.xml);
     }
 
     return docx;

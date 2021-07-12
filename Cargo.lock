@@ -29,12 +29,6 @@ checksum = "f8aac770f1885fd7e387acedd76065302551364496e46b3dd00860b2f8359b9d"
 
 [[package]]
 name = "bitflags"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aad18937a628ec6abcd26d1489012cc0e18c21798210f491af69ded9b881106d"
-
-[[package]]
-name = "bitflags"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693"
@@ -175,8 +169,7 @@ dependencies = [
  "serde_json",
  "thiserror",
  "wasm-bindgen",
- "xml-rs 0.8.3",
- "xmlJSON",
+ "xml-rs",
  "zip",
 ]
 
@@ -413,7 +406,7 @@ version = "0.16.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dfe7f9f1c730833200b134370e1d5098964231af8450bce9b78ee3ab5278b970"
 dependencies = [
- "bitflags 1.2.1",
+ "bitflags",
  "crc32fast",
  "deflate",
  "miniz_oxide 0.3.6",
@@ -478,12 +471,6 @@ dependencies = [
  "lazy_static",
  "num_cpus",
 ]
-
-[[package]]
-name = "rustc-serialize"
-version = "0.3.24"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dcf128d1287d2ea9d80910b5f1120d0b8eede3fbf1abe91c40d39ea7d51e6fda"
 
 [[package]]
 name = "ryu"
@@ -700,28 +687,9 @@ checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 
 [[package]]
 name = "xml-rs"
-version = "0.3.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7ec6c39eaa68382c8e31e35239402c0a9489d4141a8ceb0c716099a0b515b562"
-dependencies = [
- "bitflags 0.7.0",
-]
-
-[[package]]
-name = "xml-rs"
 version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b07db065a5cf61a7e4ba64f29e67db906fb1787316516c4e6e5ff0fea1efcd8a"
-
-[[package]]
-name = "xmlJSON"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ccddd9a7a1807eb4d6a7306da75d75d249b4b44e726b544ad929ac4280f259b4"
-dependencies = [
- "rustc-serialize",
- "xml-rs 0.3.6",
-]
 
 [[package]]
 name = "yaml-rust"

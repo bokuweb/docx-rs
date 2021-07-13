@@ -120,7 +120,11 @@ fn map_owned_attributes(attrs: Vec<xml::attribute::OwnedAttribute>) -> Vec<(Stri
         .into_iter()
         .map(|attr| {
             let fmt_name = if attr.name.prefix.is_some() {
-                format!("{}:{}", attr.name.prefix.unwrap(), attr.name.local_name)
+                if !attr.name.local_name.is_empty() {
+                    format!("{}:{}", attr.name.prefix.unwrap(), attr.name.local_name)
+                } else {
+                    attr.name.prefix.unwrap()
+                }
             } else {
                 attr.name.local_name.clone()
             };
@@ -145,7 +149,11 @@ fn parse(
                 namespace,
             } => {
                 let fmt_name = if name.prefix.is_some() {
-                    format!("{}:{}", name.prefix.unwrap(), name.local_name)
+                    if !name.local_name.is_empty() {
+                        format!("{}:{}", name.prefix.unwrap(), name.local_name)
+                    } else {
+                        name.prefix.unwrap()
+                    }
                 } else {
                     name.local_name
                 };
@@ -165,7 +173,11 @@ fn parse(
                         .map(|(k, v)| OwnedAttribute {
                             name: OwnedName {
                                 local_name: k.to_string(),
-                                namespace: Some(v.to_string()),
+                                namespace: if v == namespace::NS_NO_PREFIX {
+                                    None
+                                } else {
+                                    Some(v.to_string())
+                                },
                                 prefix: Some("xmlns".to_string()),
                             },
                             value: v.to_string(),
@@ -202,7 +214,11 @@ fn parse(
             }
             XmlEvent::EndElement { name } => {
                 let fmt_name = if name.prefix.is_some() {
-                    format!("{}:{}", name.prefix.unwrap(), name.local_name)
+                    if !name.local_name.is_empty() {
+                        format!("{}:{}", name.prefix.unwrap(), name.local_name)
+                    } else {
+                        name.prefix.unwrap()
+                    }
                 } else {
                     name.local_name.clone()
                 };

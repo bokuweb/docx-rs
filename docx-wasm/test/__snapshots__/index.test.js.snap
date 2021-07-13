@@ -16930,7 +16930,7 @@ exports[`writer should write customItem 6`] = `
 `;
 
 exports[`writer should write customItem 7`] = `
-"<root xmlns:=\\"https://example.com\\">
+"<root xmlns=\\"https://example.com\\">
     <item name=\\"Cheap Item\\" price=\\"$193.95\\">
     </item>
     <item name=\\"Expensive Item\\" price=\\"$931.88\\">

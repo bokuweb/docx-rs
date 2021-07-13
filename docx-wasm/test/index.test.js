@@ -325,7 +325,7 @@ describe("writer", () => {
       .addParagraph(p)
       .addCustomItem(
         "06AC5857-5C65-A94A-BCEC-37356A209BC3",
-        '<root><item name="Cheap Item" price="$193.95"/><item name="Expensive Item" price="$931.88"/></root>'
+        '<root xmlns="https://example.com"><item name="Cheap Item" price="$193.95"/><item name="Expensive Item" price="$931.88"/></root>'
       )
       .build();
     writeFileSync("../output/custom-item.docx", buffer);

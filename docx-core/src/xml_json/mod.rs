@@ -157,9 +157,8 @@ fn parse(
                     let n = namespace.clone();
                     let ns = n
                         .into_iter()
-                        .filter(|&(k, v)| {
-                            (k != namespace::NS_NO_PREFIX)
-                                && (v != namespace::NS_EMPTY_URI)
+                        .filter(|&(_k, v)| {
+                            (v != namespace::NS_EMPTY_URI)
                                 && (v != namespace::NS_XMLNS_URI)
                                 && (v != namespace::NS_XML_URI)
                         })

@@ -7,11 +7,11 @@
 // Contribution
 // Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
 // use serde::Serialize;
+use serde::Serialize;
 use std::fmt;
 use std::io::prelude::*;
 use std::io::Cursor;
 use std::str::FromStr;
-use serde::Serialize;
 use xml::attribute::OwnedAttribute;
 use xml::name::OwnedName;
 use xml::namespace::{self, Namespace};
@@ -210,7 +210,7 @@ fn parse(
                 if let Some(crnt) = current {
                     if crnt.name == fmt_name {
                         current_vec.push(crnt);
-                        return Ok((current_vec, data));
+                        Ok((current_vec, data))
                     } else {
                         Err(format!(
                             "Invalid end tag: expected {}, got {}",
@@ -241,7 +241,7 @@ impl XmlDocument {
 
         parse(events, None, Vec::new(), trim, Namespace::empty())
             .map(|(data, _)| XmlDocument { data })
-            .map_err(|e| ParseXmlError(e))
+            .map_err(ParseXmlError)
     }
 }
 

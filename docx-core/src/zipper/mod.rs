@@ -75,7 +75,7 @@ where
         }
     }
 
-    if xml.custom_items.len() != 0 {
+    if !xml.custom_items.is_empty() {
         zip.add_directory("customXml/_rels", Default::default())?;
     }
 

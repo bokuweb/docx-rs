@@ -11,6 +11,7 @@ use std::fmt;
 use std::io::prelude::*;
 use std::io::Cursor;
 use std::str::FromStr;
+use serde::Serialize;
 use xml::attribute::OwnedAttribute;
 use xml::name::OwnedName;
 use xml::namespace::{self, Namespace};
@@ -46,7 +47,7 @@ impl fmt::Display for XmlDocument {
 ///     <sub></sub>
 /// </foo>
 /// ```
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct XmlData {
     /// Name of the tag (i.e. "foo")
     pub name: String,
@@ -55,7 +56,7 @@ pub struct XmlData {
     /// Data (i.e. "test text")
     pub data: Option<String>,
     /// Sub elements (i.e. an XML element of "sub")
-    pub sub_elements: Vec<XmlData>,
+    pub children: Vec<XmlData>,
 }
 
 // Generate indentation
@@ -77,11 +78,11 @@ fn attributes_to_string(attributes: &[(String, String)]) -> String {
 
 // Format the XML data as a string
 fn format(data: &XmlData, depth: usize) -> String {
-    let sub = if data.sub_elements.is_empty() {
+    let sub = if data.children.is_empty() {
         String::new()
     } else {
         let mut sub = "\n".to_string();
-        for elmt in data.sub_elements.iter() {
+        for elmt in data.children.iter() {
             sub = format!("{}{}", sub, format(elmt, depth + 1));
         }
         sub
@@ -178,13 +179,13 @@ fn parse(
                     name: fmt_name,
                     attributes: map_owned_attributes(attributes),
                     data: None,
-                    sub_elements: Vec::new(),
+                    children: Vec::new(),
                 };
 
                 let (inner, rest) = parse(data, Some(inner), Vec::new(), trim, namespace.clone())?;
 
                 if let Some(mut crnt) = current {
-                    crnt.sub_elements.extend(inner);
+                    crnt.children.extend(inner);
                     parse(rest, Some(crnt), current_vec, trim, namespace)
                 } else {
                     current_vec.extend(inner);

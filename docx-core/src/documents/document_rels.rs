@@ -10,11 +10,17 @@ pub struct DocumentRels {
     pub has_comments: bool,
     pub has_numberings: bool,
     pub image_ids: Vec<usize>,
+    pub custom_xml_count: usize,
 }
 
 impl DocumentRels {
     pub fn new() -> DocumentRels {
         Default::default()
+    }
+
+    pub fn add_custom_item(mut self) -> Self {
+        self.custom_xml_count += 1;
+        self
     }
 }
 
@@ -24,6 +30,7 @@ impl Default for DocumentRels {
             has_comments: false,
             has_numberings: false,
             image_ids: vec![],
+            custom_xml_count: 0,
         }
     }
 }
@@ -73,6 +80,14 @@ impl BuildXML for DocumentRels {
                 "rId7",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering",
                 "numbering.xml",
+            )
+        }
+
+        for i in 0..self.custom_xml_count {
+            b = b.relationship(
+                &format!("rId{}", i + 8),
+                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml",
+                &format!("../customXml/item{}.xml", i + 1),
             )
         }
 

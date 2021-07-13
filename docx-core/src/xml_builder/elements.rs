@@ -358,6 +358,15 @@ impl XMLBuilder {
     );
     closed!(webextensionref, "wetp:webextensionref", "xmlns:r", "r:id");
 
+    // customXML
+    open!(
+        open_data_store_item,
+        "ds:datastoreItem",
+        "xmlns:ds",
+        "ds:itemID"
+    );
+    open!(open_data_store_schema_refs, "ds:schemaRefs");
+
     // CommentExtended
     // w15:commentEx w15:paraId="00000001" w15:paraIdParent="57D1BD7C" w15:done="0"
     pub(crate) fn comment_extended(

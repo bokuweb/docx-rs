@@ -113,6 +113,11 @@ impl Docx {
         self
     }
 
+    pub fn add_custom_item(mut self, id: &str, xml: &str) -> Self {
+        self.0 = self.0.add_custom_item(id, xml);
+        self
+    }
+
     pub fn doc_grid(
         mut self,
         grid_type: docx_rs::DocGridType,

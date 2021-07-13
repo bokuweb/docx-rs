@@ -1,9 +1,12 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, str::FromStr};
 
 mod build_xml;
 mod comments;
 mod comments_extended;
 mod content_types;
+mod custom_item;
+mod custom_item_property;
+mod custom_item_rels;
 mod doc_props;
 mod document;
 mod document_rels;
@@ -32,6 +35,9 @@ pub(crate) use pic_id::*;
 pub use comments::*;
 pub use comments_extended::*;
 pub use content_types::*;
+pub use custom_item::*;
+pub use custom_item_property::*;
+pub use custom_item_rels::*;
 pub use doc_props::*;
 pub use document::*;
 pub use document_rels::*;
@@ -50,7 +56,7 @@ pub use xml_docx::*;
 
 use serde::Serialize;
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Docx {
     pub content_type: ContentTypes,
@@ -70,6 +76,9 @@ pub struct Docx {
     pub taskpanes: Option<Taskpanes>,
     pub taskpanes_rels: TaskpanesRels,
     pub web_extensions: Vec<WebExtension>,
+    pub custom_items: Vec<CustomItem>,
+    pub custom_item_props: Vec<CustomItemProperty>,
+    pub custom_item_rels: Vec<CustomItemRels>,
 }
 
 impl Default for Docx {
@@ -107,6 +116,9 @@ impl Default for Docx {
             taskpanes: None,
             taskpanes_rels: TaskpanesRels::new(),
             web_extensions: vec![],
+            custom_items: vec![],
+            custom_item_props: vec![],
+            custom_item_rels: vec![],
         }
     }
 }
@@ -291,6 +303,17 @@ impl Docx {
         self
     }
 
+    pub fn add_custom_item(mut self, id: &str, xml: &str) -> Self {
+        let x = CustomItem::from_str(xml).expect("should parse xml string");
+        self.content_type = self.content_type.add_custom_xml();
+        let rel = CustomItemRels::new().add_item();
+        self.custom_item_props.push(CustomItemProperty::new(id));
+        self.document_rels = self.document_rels.add_custom_item();
+        self.custom_item_rels.push(rel);
+        self.custom_items.push(x);
+        self
+    }
+
     pub fn build(&mut self) -> XMLDocx {
         self.reset();
 
@@ -299,6 +322,13 @@ impl Docx {
         let (image_ids, images) = self.create_images();
 
         let web_extensions = self.web_extensions.iter().map(|ext| ext.build()).collect();
+        let custom_items = self.custom_items.iter().map(|xml| xml.build()).collect();
+        let custom_item_props = self.custom_item_props.iter().map(|p| p.build()).collect();
+        let custom_item_rels = self
+            .custom_item_rels
+            .iter()
+            .map(|rel| rel.build())
+            .collect();
 
         self.document_rels.image_ids = image_ids;
 
@@ -319,6 +349,9 @@ impl Docx {
             taskpanes: self.taskpanes.map(|taskpanes| taskpanes.build()),
             taskpanes_rels: self.taskpanes_rels.build(),
             web_extensions,
+            custom_items,
+            custom_item_rels,
+            custom_item_props,
         }
     }
 

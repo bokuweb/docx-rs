@@ -18,7 +18,16 @@ impl FromXML for CommentsExtended {
                     let e = XMLElement::from_str(&name.local_name)
                         .expect("should convert to XMLElement");
                     if let XMLElement::CommentExtended = e {
-                        comments_extended.push(CommentExtended::read(&mut r, &attributes)?);
+                        if let Ok(ex) = CommentExtended::read(&mut r, &attributes) {
+                            if let Some(pos) = comments_extended
+                                .iter()
+                                .position(|e| e.paragraph_id == ex.paragraph_id)
+                            {
+                                comments_extended[pos] = ex;
+                            } else {
+                                comments_extended.push(ex);
+                            }
+                        }
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {

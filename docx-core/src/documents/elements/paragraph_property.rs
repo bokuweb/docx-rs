@@ -18,6 +18,7 @@ pub struct ParagraphProperty {
     pub keep_lines: bool,
     pub page_break_before: bool,
     pub window_control: bool,
+    pub outline_lvl: Option<OutlineLvl>,
     // read only
     pub(crate) div_id: Option<String>,
 }
@@ -35,6 +36,7 @@ impl Default for ParagraphProperty {
             keep_lines: false,
             page_break_before: false,
             window_control: false,
+            outline_lvl: None,
             div_id: None,
         }
     }
@@ -91,6 +93,11 @@ impl ParagraphProperty {
         self
     }
 
+    pub fn outline_lvl(mut self, v: usize) -> Self {
+        self.outline_lvl = Some(OutlineLvl::new(v));
+        self
+    }
+
     pub fn page_break_before(mut self, v: bool) -> Self {
         self.page_break_before = v;
         self
@@ -130,7 +137,8 @@ impl BuildXML for ParagraphProperty {
             .add_optional_child(&self.numbering_property)
             .add_optional_child(&self.alignment)
             .add_optional_child(&self.indent)
-            .add_optional_child(&spacing);
+            .add_optional_child(&spacing)
+            .add_optional_child(&self.outline_lvl);
 
         if self.keep_next {
             b = b.keep_next()
@@ -196,6 +204,16 @@ mod tests {
             r#"<w:pPr><w:rPr /><w:keepNext />
 </w:pPr>"#
         );
+    }
+
+    #[test]
+    fn test_outline_lvl() {
+        let props = ParagraphProperty::new();
+        let bytes = props.outline_lvl(1).build();
+        assert_eq!(
+            str::from_utf8(&bytes).unwrap(),
+            r#"<w:pPr><w:rPr /><w:outlineLvl w:val="1" /></w:pPr>"#
+        )
     }
 
     #[test]

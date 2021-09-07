@@ -177,6 +177,11 @@ impl Paragraph {
         self
     }
 
+    pub fn outline_lvl(mut self, v: usize) -> Self {
+        self.property = self.property.outline_lvl(v);
+        self
+    }
+
     pub fn page_break_before(mut self, v: bool) -> Self {
         self.property = self.property.page_break_before(v);
         self

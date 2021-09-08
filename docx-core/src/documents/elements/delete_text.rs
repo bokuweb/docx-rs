@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::documents::BuildXML;
+use crate::escape::escape;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
@@ -13,7 +14,7 @@ pub struct DeleteText {
 impl DeleteText {
     pub fn new(text: impl Into<String>) -> DeleteText {
         DeleteText {
-            text: text.into(),
+            text: escape(&text.into()),
             preserve_space: true,
         }
     }
@@ -39,6 +40,15 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:delText xml:space="preserve">Hello</w:delText>"#
+        );
+    }
+
+    #[test]
+    fn test_escape() {
+        let b = DeleteText::new("<div />").build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:delText xml:space="preserve">&lt;div /&gt;</w:delText>"#
         );
     }
 }

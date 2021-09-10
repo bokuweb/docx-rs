@@ -71,6 +71,8 @@ impl XMLBuilder {
     open!(open_paragraph, "w:p", "w14:paraId");
     open!(open_paragraph_property, "w:pPr");
     open!(open_doc_defaults, "w:docDefaults");
+    // i.e. <w:outlineLvl ...>
+    closed_with_usize!(outline_lvl, "w:outlineLvl");
     // i.e. <w:name ... >
     closed_with_str!(name, "w:name");
     // i.e. <w:jc ... >

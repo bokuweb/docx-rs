@@ -112,8 +112,14 @@ impl Paragraph {
         self
     }
 
-    pub fn line_height(mut self, line_height: u32) -> Self {
-        self.0 = self.0.line_height(line_height);
+    pub fn line_spacing(
+        mut self,
+        before: Option<u32>,
+        after: Option<u32>,
+        line: Option<u32>,
+        spacing_type: Option<docx_rs::LineSpacingType>,
+    ) -> Self {
+        self.0 = self.0.line_spacing(before, after, line, spacing_type);
         self
     }
 

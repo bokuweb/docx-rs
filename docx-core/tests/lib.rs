@@ -415,3 +415,28 @@ pub fn date() -> Result<(), DocxError> {
         .pack(file)?;
     Ok(())
 }
+
+#[test]
+pub fn line_spacing() -> Result<(), DocxError> {
+    let path = std::path::Path::new("./tests/output/line_spacing.docx");
+    let file = std::fs::File::create(&path).unwrap();
+    Docx::new()
+        .add_paragraph(
+            Paragraph::new()
+                .add_run(Run::new().add_text(DUMMY))
+                .line_spacing(Some(300), None, Some(300), Some(LineSpacingType::Auto)),
+        )
+        .add_paragraph(
+            Paragraph::new()
+                .add_run(Run::new().add_text(DUMMY))
+                .line_spacing(None, None, Some(300), Some(LineSpacingType::AtLeast)),
+        )
+        .add_paragraph(
+            Paragraph::new()
+                .add_run(Run::new().add_text(DUMMY).character_spacing(100))
+                .line_spacing(None, Some(300), Some(300), Some(LineSpacingType::Exact)),
+        )
+        .build()
+        .pack(file)?;
+    Ok(())
+}

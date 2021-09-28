@@ -1,5 +1,6 @@
 use super::XMLBuilder;
 use super::XmlEvent;
+use crate::types::line_spacing_type::LineSpacingType;
 use crate::types::*;
 
 const EXPECT_MESSAGE: &str = "should write buf";
@@ -153,25 +154,53 @@ impl XMLBuilder {
     }
 
     // i.e. <w:spacing ... >
-    pub(crate) fn spacing(mut self, s: crate::types::SpacingType) -> Self {
-        match s {
-            SpacingType::Value(v) => {
-                self.writer
-                    .write(XmlEvent::start_element("w:spacing").attr("w:val", &format!("{}", v)))
-                    .expect(EXPECT_MESSAGE);
-                self.close()
-            }
-            SpacingType::Line(v) => {
-                self.writer
-                    .write(
-                        XmlEvent::start_element("w:spacing")
-                            .attr("w:line", &format!("{}", v))
-                            .attr("w:lineRule", "auto"),
-                    )
-                    .expect(EXPECT_MESSAGE);
-                self.close()
+    pub(crate) fn spacing(mut self, s: i32) -> Self {
+        self.writer
+            .write(XmlEvent::start_element("w:spacing").attr("w:val", &format!("{}", s)))
+            .expect(EXPECT_MESSAGE);
+        self.close()
+    }
+
+    // i.e. <w:spacing ... >
+    pub(crate) fn line_spacing(
+        mut self,
+        before: Option<u32>,
+        after: Option<u32>,
+        line: Option<u32>,
+        spacing: Option<LineSpacingType>,
+    ) -> Self {
+        let mut xml_event = XmlEvent::start_element("w:spacing");
+        let before_val: String;
+        let after_val: String;
+        let line_val: String;
+
+        if let Some(before) = before {
+            before_val = format!("{}", before);
+            xml_event = xml_event.attr("w:before", &before_val)
+        }
+        if let Some(after) = after {
+            after_val = format!("{}", after);
+            xml_event = xml_event.attr("w:after", &after_val)
+        }
+        if let Some(line) = line {
+            line_val = format!("{}", line);
+            xml_event = xml_event.attr("w:line", &line_val)
+        }
+        if let Some(spacing_type) = spacing {
+            match spacing_type {
+                LineSpacingType::Auto => {
+                    xml_event = xml_event.attr("w:lineRule", "auto");
+                }
+                LineSpacingType::AtLeast => {
+                    xml_event = xml_event.attr("w:lineRule", "atLeast");
+                }
+                LineSpacingType::Exact => {
+                    xml_event = xml_event.attr("w:lineRule", "exact");
+                }
             }
         }
+        self.writer.write(xml_event).expect(EXPECT_MESSAGE);
+        self.close()
     }
 
     //

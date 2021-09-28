@@ -13,7 +13,7 @@ pub type LineSpacingResult = Result<
     ReaderError,
 >;
 
-pub fn read_line_spacing(attributes: &Vec<OwnedAttribute>) -> LineSpacingResult {
+pub fn read_line_spacing(attributes: &[OwnedAttribute]) -> LineSpacingResult {
     let mut before: Option<u32> = None;
     let mut after: Option<u32> = None;
     let mut line: Option<u32> = None;

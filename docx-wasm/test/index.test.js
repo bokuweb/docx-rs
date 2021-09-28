@@ -62,6 +62,14 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read line spacing docx", () => {
+    const buffer = readFileSync(
+        "../fixtures/line_spacing/line_spacing.docx"
+    );
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {
@@ -332,6 +340,20 @@ describe("writer", () => {
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/item1.xml|_rels|item1Props/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write line spacing", () => {
+    const p = new w.Paragraph()
+        .addRun(new w.Run().addText("Hello "))
+        .lineSpacing(100, "", 100, 1);
+    const buffer = new w.Docx().addParagraph(p).build();
+    writeFileSync("../output/line_spacing.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }

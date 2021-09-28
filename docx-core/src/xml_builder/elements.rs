@@ -442,7 +442,7 @@ impl XMLBuilder {
             w = w.attr("w:linePitch", &line_pitch_string);
         }
         if char_space.is_some() {
-            w = w.attr("w:charSpace", &&char_space_string);
+            w = w.attr("w:charSpace", &char_space_string);
         }
         self.writer.write(w).expect(EXPECT_MESSAGE);
 

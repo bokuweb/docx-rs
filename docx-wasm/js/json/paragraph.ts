@@ -1,6 +1,7 @@
 import { RunJSON, RunPropertyJSON } from "./run";
 import { IndentJSON } from "./indent";
 import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
+import {LineSpacingJSON} from "./line_spacing";
 
 export type ParagraphChildJSON =
   | RunJSON
@@ -22,7 +23,7 @@ export type ParagraphPropertyJSON = {
   numberingProperty: NumberingPropertyJSON | null;
   alignment: "left" | "center" | "right" | "justified" | "both";
   indent: IndentJSON | null;
-  lineHeight: number | null;
+  lineSpacing: LineSpacingJSON | null;
   divId: string | null;
   keepNext: boolean;
   keepLines: boolean;

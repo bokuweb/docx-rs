@@ -29,7 +29,7 @@ pub fn read_document_rels(
         .ok_or(ReaderError::DocumentRelsNotFoundError)?;
     let p = find_rels_filename(&main_path)?;
     let p = p.to_str().ok_or(ReaderError::DocumentRelsNotFoundError)?;
-    let data = read_zip(archive, &p)?;
+    let data = read_zip(archive, p)?;
     let rels = read_rels_xml(&data[..], dir)?;
     Ok(rels)
 }

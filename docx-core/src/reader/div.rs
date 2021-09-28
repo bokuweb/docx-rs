@@ -11,7 +11,7 @@ impl ElementReader for Div {
         r: &mut EventReader<R>,
         attrs: &[OwnedAttribute],
     ) -> Result<Self, ReaderError> {
-        let id = read_id(&attrs).unwrap_or_default();
+        let id = read_id(attrs).unwrap_or_default();
         let mut div = Div::new(id);
         loop {
             let e = r.next();

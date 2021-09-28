@@ -57,8 +57,8 @@ impl XMLBuilder {
         self.writer
             .write(
                 XmlEvent::start_element("Override")
-                    .attr("PartName", &name)
-                    .attr("ContentType", &content_type),
+                    .attr("PartName", name)
+                    .attr("ContentType", content_type),
             )
             .expect("should write to buf");
         self.close()
@@ -68,8 +68,8 @@ impl XMLBuilder {
         self.writer
             .write(
                 XmlEvent::start_element("Default")
-                    .attr("ContentType", &extension)
-                    .attr("Extension", &name),
+                    .attr("ContentType", extension)
+                    .attr("Extension", name),
             )
             .expect("should write to buf");
         self.close()

@@ -97,39 +97,39 @@ impl BuildXML for CoreProps {
                 self.config
                     .created
                     .as_ref()
-                    .map_or_else(|| "1970-01-01T00:00:00Z", |v| &v),
+                    .map_or_else(|| "1970-01-01T00:00:00Z", |v| v),
             )
             .dc_creator(
                 self.config
                     .creator
                     .as_ref()
-                    .map_or_else(|| "unknown", |v| &v),
+                    .map_or_else(|| "unknown", |v| v),
             )
             .cp_last_modified_by(
                 self.config
                     .last_modified_by
                     .as_ref()
-                    .map_or_else(|| "unknown", |v| &v),
+                    .map_or_else(|| "unknown", |v| v),
             )
             .dcterms_modified(
                 "dcterms:W3CDTF",
                 self.config
                     .modified
                     .as_ref()
-                    .map_or_else(|| "1970-01-01T00:00:00Z", |v| &v),
+                    .map_or_else(|| "1970-01-01T00:00:00Z", |v| v),
             )
             .cp_revision(&self.config.revision.map_or_else(|| "1".to_owned(), convert));
         if let Some(v) = self.config.description.as_ref() {
-            base = base.dc_description(&v);
+            base = base.dc_description(v);
         }
         if let Some(v) = self.config.language.as_ref() {
-            base = base.dc_language(&v);
+            base = base.dc_language(v);
         }
         if let Some(v) = self.config.subject.as_ref() {
-            base = base.dc_subject(&v);
+            base = base.dc_subject(v);
         }
         if let Some(v) = self.config.title.as_ref() {
-            base = base.dc_title(&v);
+            base = base.dc_title(v);
         }
         base.close().build()
     }
@@ -185,8 +185,8 @@ mod tests {
         });
         let b = c.build();
         assert_eq!(
-                str::from_utf8(&b).unwrap(),
-                r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            str::from_utf8(&b).unwrap(),
+            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <dcterms:created xsi:type="dcterms:W3CDTF">2019-01-01</dcterms:created>
   <dc:creator>foo</dc:creator>
@@ -198,6 +198,6 @@ mod tests {
   <dc:subject>subject</dc:subject>
   <dc:title>title</dc:title>
 </cp:coreProperties>"#
-            );
+        );
     }
 }

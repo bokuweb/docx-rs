@@ -3,6 +3,7 @@ mod border;
 mod id;
 mod indent;
 mod indent_level;
+pub(crate) mod line_spacing;
 mod name;
 mod val;
 mod width;

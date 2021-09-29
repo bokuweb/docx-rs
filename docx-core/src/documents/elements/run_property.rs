@@ -19,7 +19,7 @@ pub struct RunProperty {
     pub italic: Option<Italic>,
     pub italic_cs: Option<ItalicCs>,
     pub vanish: Option<Vanish>,
-    pub spacing: Option<i32>,
+    pub character_spacing: Option<CharacterSpacing>,
     pub fonts: Option<RunFonts>,
     pub text_border: Option<TextBorder>,
     pub del: Option<Delete>,
@@ -38,7 +38,7 @@ impl RunProperty {
     }
 
     pub fn spacing(mut self, spacing: i32) -> RunProperty {
-        self.spacing = Some(spacing);
+        self.character_spacing = Some(CharacterSpacing::new(spacing));
         self
     }
 
@@ -127,7 +127,7 @@ impl Default for RunProperty {
             italic_cs: None,
             vanish: None,
             fonts: None,
-            spacing: None,
+            character_spacing: None,
             text_border: None,
             del: None,
             ins: None,
@@ -138,9 +138,6 @@ impl Default for RunProperty {
 impl BuildXML for RunProperty {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        let spacing = self
-            .spacing
-            .map(|s| Spacing::new(crate::SpacingType::Value(s)));
         b.open_run_property()
             .add_optional_child(&self.sz)
             .add_optional_child(&self.sz_cs)
@@ -157,7 +154,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.ins)
             .add_optional_child(&self.del)
             .add_optional_child(&self.vert_align)
-            .add_optional_child(&spacing)
+            .add_optional_child(&self.character_spacing)
             .close()
             .build()
     }
@@ -228,6 +225,15 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:rPr><w:rFonts w:eastAsia="Hiragino" /></w:rPr>"#
+        );
+    }
+    #[test]
+    fn test_character_spacing() {
+        let c = RunProperty::new().spacing(20);
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rPr><w:spacing w:val="20" /></w:rPr>"#
         );
     }
 }

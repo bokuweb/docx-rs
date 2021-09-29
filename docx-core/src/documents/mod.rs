@@ -637,7 +637,7 @@ impl Docx {
                                 if let RunChild::Drawing(d) = child {
                                     if let Some(DrawingData::Pic(pic)) = &mut d.data {
                                         image_ids.push(pic.id);
-                                        let b = std::mem::replace(&mut pic.image, vec![]);
+                                        let b = std::mem::take(&mut pic.image);
                                         images.push((pic.id, b));
                                     }
                                 }
@@ -659,10 +659,7 @@ impl Docx {
                                                             &mut d.data
                                                         {
                                                             image_ids.push(pic.id);
-                                                            let b = std::mem::replace(
-                                                                &mut pic.image,
-                                                                vec![],
-                                                            );
+                                                            let b = std::mem::take(&mut pic.image);
                                                             images.push((pic.id, b));
                                                         }
                                                     }

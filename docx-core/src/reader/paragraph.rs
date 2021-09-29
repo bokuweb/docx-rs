@@ -9,16 +9,6 @@ use super::*;
 use super::attributes::*;
 use crate::types::*;
 
-fn read_lineheight(attributes: &[OwnedAttribute]) -> Option<u32> {
-    for a in attributes {
-        let local_name = &a.name.local_name;
-        if let "line" = local_name.as_str() {
-            return value_to_dax(&a.value).ok().map(|l| l as u32);
-        }
-    }
-    None
-}
-
 impl ElementReader for Paragraph {
     fn read<R: Read>(
         r: &mut EventReader<R>,
@@ -95,9 +85,9 @@ impl ElementReader for Paragraph {
                             continue;
                         }
                         XMLElement::Spacing => {
-                            if let Some(line) = read_lineheight(&attributes) {
-                                p = p.line_height(line);
-                            }
+                            let (before, after, line, spacing_type) =
+                                attributes::line_spacing::read_line_spacing(&attributes)?;
+                            p = p.line_spacing(before, after, line, spacing_type);
                             continue;
                         }
                         XMLElement::Justification => {
@@ -194,7 +184,7 @@ mod tests {
                         Some(1270),
                         None,
                     )),
-                    line_height: None,
+                    line_spacing: None,
                     ..Default::default()
                 },
                 has_numbering: false,
@@ -230,7 +220,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: Some(Indent::new(None, None, None, Some(100))),
-                    line_height: None,
+                    line_spacing: None,
                     ..Default::default()
                 },
                 has_numbering: false,
@@ -261,7 +251,7 @@ mod tests {
                     numbering_property: None,
                     alignment: Some(Justification::new(AlignmentType::Left.to_string())),
                     indent: None,
-                    line_height: None,
+                    line_spacing: None,
                     ..Default::default()
                 },
                 has_numbering: false,
@@ -296,7 +286,7 @@ mod tests {
                     ),
                     alignment: None,
                     indent: None,
-                    line_height: None,
+                    line_spacing: None,
                     ..Default::default()
                 },
                 has_numbering: true,
@@ -333,7 +323,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: None,
-                    line_height: None,
+                    line_spacing: None,
                     ..Default::default()
                 },
                 has_numbering: false,
@@ -372,7 +362,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: None,
-                    line_height: None,
+                    line_spacing: None,
                     ..Default::default()
                 },
                 has_numbering: false,
@@ -410,7 +400,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: None,
-                    line_height: None,
+                    line_spacing: None,
                     ..Default::default()
                 },
                 has_numbering: false,
@@ -460,7 +450,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: None,
-                    line_height: None,
+                    line_spacing: None,
                     ..Default::default()
                 },
                 has_numbering: false,
@@ -502,7 +492,7 @@ mod tests {
                     numbering_property: None,
                     alignment: None,
                     indent: None,
-                    line_height: None,
+                    line_spacing: None,
                     ..Default::default()
                 },
                 has_numbering: false,

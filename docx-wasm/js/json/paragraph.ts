@@ -50,7 +50,7 @@ export type InsertJSON = {
       | CommentRangeEndJSON
     )[];
     author: string;
-    data: string;
+    date: string;
   };
 };
 
@@ -59,7 +59,7 @@ export type DeleteJSON = {
   data: {
     children: DeleteChildJSON[];
     author: string;
-    data: string;
+    date: string;
   };
 };
 

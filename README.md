@@ -16,7 +16,7 @@
 
 ```
 [dependencies]
-docx-rs = "0.2.0"
+docx-rs = "0.2"
 ```
 
 ### Browser/Node.js

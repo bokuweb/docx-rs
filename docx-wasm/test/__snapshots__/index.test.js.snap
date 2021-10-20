@@ -15805,8 +15805,12 @@ Object {
             "startChars": null,
           },
           "keepLines": false,
-          "keepNext": false,
-          "lineSpacing": null,
+          "keepNext": true,
+          "lineSpacing": Object {
+            "before": 200,
+            "line": 360,
+            "lineRule": "Exact",
+          },
           "numberingProperty": null,
           "outlineLvl": 0,
           "pageBreakBefore": false,
@@ -15941,9 +15945,16 @@ Object {
           "divId": null,
           "indent": null,
           "keepLines": false,
-          "keepNext": false,
-          "lineSpacing": null,
-          "numberingProperty": null,
+          "keepNext": true,
+          "lineSpacing": Object {
+            "before": 100,
+            "line": 320,
+            "lineRule": "Exact",
+          },
+          "numberingProperty": Object {
+            "id": 1,
+            "level": 1,
+          },
           "outlineLvl": 1,
           "pageBreakBefore": false,
           "runProperty": Object {
@@ -16085,8 +16096,14 @@ Object {
           },
           "keepLines": false,
           "keepNext": false,
-          "lineSpacing": null,
-          "numberingProperty": null,
+          "lineSpacing": Object {
+            "line": 300,
+            "lineRule": "Exact",
+          },
+          "numberingProperty": Object {
+            "id": 1,
+            "level": 2,
+          },
           "outlineLvl": 2,
           "pageBreakBefore": false,
           "runProperty": Object {
@@ -16228,8 +16245,14 @@ Object {
           },
           "keepLines": false,
           "keepNext": false,
-          "lineSpacing": null,
-          "numberingProperty": null,
+          "lineSpacing": Object {
+            "line": 320,
+            "lineRule": "Exact",
+          },
+          "numberingProperty": Object {
+            "id": 1,
+            "level": 3,
+          },
           "outlineLvl": 3,
           "pageBreakBefore": false,
           "runProperty": Object {
@@ -16374,8 +16397,14 @@ Object {
           },
           "keepLines": false,
           "keepNext": false,
-          "lineSpacing": null,
-          "numberingProperty": null,
+          "lineSpacing": Object {
+            "line": 320,
+            "lineRule": "Exact",
+          },
+          "numberingProperty": Object {
+            "id": 1,
+            "level": 4,
+          },
           "outlineLvl": 4,
           "pageBreakBefore": false,
           "runProperty": Object {
@@ -16517,8 +16546,14 @@ Object {
           },
           "keepLines": false,
           "keepNext": false,
-          "lineSpacing": null,
-          "numberingProperty": null,
+          "lineSpacing": Object {
+            "line": 320,
+            "lineRule": "Exact",
+          },
+          "numberingProperty": Object {
+            "id": 1,
+            "level": 5,
+          },
           "outlineLvl": 5,
           "pageBreakBefore": false,
           "runProperty": Object {
@@ -16652,9 +16687,15 @@ Object {
           "divId": null,
           "indent": null,
           "keepLines": false,
-          "keepNext": false,
-          "lineSpacing": null,
-          "numberingProperty": null,
+          "keepNext": true,
+          "lineSpacing": Object {
+            "line": 320,
+            "lineRule": "Exact",
+          },
+          "numberingProperty": Object {
+            "id": 2,
+            "level": 6,
+          },
           "outlineLvl": 6,
           "pageBreakBefore": false,
           "runProperty": Object {

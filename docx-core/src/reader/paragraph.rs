@@ -7,7 +7,6 @@ use xml::reader::{EventReader, XmlEvent};
 use super::*;
 
 use super::attributes::*;
-use crate::types::*;
 
 impl ElementReader for Paragraph {
     fn read<R: Read>(
@@ -71,62 +70,13 @@ impl ElementReader for Paragraph {
                             }
                             continue;
                         }
-                        XMLElement::Indent => {
-                            let (start, end, special, start_chars, hanging_chars, first_line_chars) =
-                                read_indent(&attributes)?;
-                            p = p.indent(start, special, end, start_chars);
-
-                            if let Some(chars) = hanging_chars {
-                                p = p.hanging_chars(chars);
-                            }
-                            if let Some(chars) = first_line_chars {
-                                p = p.first_line_chars(chars);
+                        // pPr
+                        XMLElement::ParagraphProperty => {
+                            if let Ok(pr) = ParagraphProperty::read(r, attrs) {
+                                p.has_numbering = pr.numbering_property.is_some();
+                                p.property = pr;
                             }
                             continue;
-                        }
-                        XMLElement::Spacing => {
-                            let (before, after, line, spacing_type) =
-                                attributes::line_spacing::read_line_spacing(&attributes)?;
-                            p = p.line_spacing(before, after, line, spacing_type);
-                            continue;
-                        }
-                        XMLElement::Justification => {
-                            p = p.align(AlignmentType::from_str(&attributes[0].value)?);
-                            continue;
-                        }
-                        XMLElement::ParagraphStyle => {
-                            p = p.style(&attributes[0].value);
-                            continue;
-                        }
-                        XMLElement::DivId => {
-                            if let Some(val) = read_val(&attributes) {
-                                p.property.div_id = Some(val)
-                            }
-                            continue;
-                        }
-                        XMLElement::NumberingProperty => {
-                            let num_pr = NumberingProperty::read(r, attrs)?;
-                            if num_pr.id.is_some() && num_pr.level.is_some() {
-                                p = p.numbering(num_pr.id.unwrap(), num_pr.level.unwrap());
-                            }
-                            continue;
-                        }
-                        XMLElement::RunProperty => {
-                            let run_pr = RunProperty::read(r, attrs)?;
-                            p = p.run_property(run_pr);
-                            continue;
-                        }
-                        XMLElement::KeepNext => {
-                            p.property.keep_next = true;
-                        }
-                        XMLElement::KeepLines => {
-                            p.property.keep_lines = true;
-                        }
-                        XMLElement::PageBreakBefore => {
-                            p.property.page_break_before = true;
-                        }
-                        XMLElement::WindowControl => {
-                            p.property.window_control = true;
                         }
                         _ => {}
                     }
@@ -148,6 +98,7 @@ impl ElementReader for Paragraph {
 mod tests {
 
     use super::*;
+    use crate::types::*;
     #[cfg(test)]
     use pretty_assertions::assert_eq;
 

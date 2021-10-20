@@ -43,29 +43,9 @@ impl ElementReader for Style {
                             continue;
                         }
                         // pPr
-                        XMLElement::Indent => {
-                            let (start, end, special, start_chars, hanging_chars, first_line_chars) =
-                                read_indent(&attributes)?;
-                            style = style.indent(start, special, end, start_chars);
-
-                            if let Some(chars) = hanging_chars {
-                                style = style.hanging_chars(chars);
-                            }
-                            if let Some(chars) = first_line_chars {
-                                style = style.first_line_chars(chars);
-                            }
-
-                            continue;
-                        }
-                        XMLElement::Justification => {
-                            style = style.align(AlignmentType::from_str(&attributes[0].value)?);
-                            continue;
-                        }
-                        XMLElement::OutlineLvl => {
-                            if let Some(val) = read_val(&attributes) {
-                                if let Ok(val) = usize::from_str(&val) {
-                                    style = style.outline_lvl(val);
-                                }
+                        XMLElement::ParagraphProperty => {
+                            if let Ok(pr) = ParagraphProperty::read(r, attrs) {
+                                style.paragraph_property = pr;
                             }
                             continue;
                         }

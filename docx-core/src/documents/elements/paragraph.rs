@@ -239,7 +239,7 @@ impl Paragraph {
         self
     }
 
-    pub(crate) fn run_property(mut self, p: RunProperty) -> Self {
+    pub fn run_property(mut self, p: RunProperty) -> Self {
         self.property.run_property = p;
         self
     }

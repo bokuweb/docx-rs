@@ -25,6 +25,7 @@ mod mc_fallback;
 mod numbering_property;
 mod numberings;
 mod paragraph;
+mod paragraph_property;
 mod read_zip;
 mod rels;
 mod run;

@@ -177,6 +177,11 @@ impl Paragraph {
         self
     }
 
+    pub fn outline_lvl(mut self, v: usize) -> Self {
+        self.property = self.property.outline_lvl(v);
+        self
+    }
+
     pub fn page_break_before(mut self, v: bool) -> Self {
         self.property = self.property.page_break_before(v);
         self
@@ -198,12 +203,12 @@ impl Paragraph {
         self
     }
 
-    pub(crate) fn hanging_chars(mut self, chars: i32) -> Paragraph {
+    pub fn hanging_chars(mut self, chars: i32) -> Paragraph {
         self.property = self.property.hanging_chars(chars);
         self
     }
 
-    pub(crate) fn first_line_chars(mut self, chars: i32) -> Paragraph {
+    pub fn first_line_chars(mut self, chars: i32) -> Paragraph {
         self.property = self.property.first_line_chars(chars);
         self
     }
@@ -234,13 +239,21 @@ impl Paragraph {
         self
     }
 
-    pub(crate) fn run_property(mut self, p: RunProperty) -> Self {
+    pub fn run_property(mut self, p: RunProperty) -> Self {
         self.property.run_property = p;
         self
     }
 
-    pub fn line_height(mut self, h: u32) -> Self {
-        self.property = self.property.line_height(h);
+    pub fn line_spacing(
+        mut self,
+        before: Option<u32>,
+        after: Option<u32>,
+        line: Option<u32>,
+        spacing_type: Option<LineSpacingType>,
+    ) -> Self {
+        self.property = self
+            .property
+            .line_spacing(before, after, line, spacing_type);
         self
     }
 }
@@ -320,12 +333,24 @@ mod tests {
     }
 
     #[test]
+    fn test_line_spacing_and_character_spacing() {
+        let b = Paragraph::new()
+            .line_spacing(Some(20), Some(30), Some(200), Some(LineSpacingType::Auto))
+            .add_run(Run::new().add_text("Hello"))
+            .build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:spacing w:before="20" w:after="30" w:line="200" w:lineRule="auto" /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
+        );
+    }
+
+    #[test]
     fn test_paragraph_run_json() {
         let run = Run::new().add_text("Hello");
         let p = Paragraph::new().add_run(run);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"id":"12345678","children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineHeight":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"divId":null},"hasNumbering":false}"#,
+            r#"{"id":"12345678","children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"characterSpacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"characterSpacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"divId":null},"hasNumbering":false}"#,
         );
     }
 
@@ -336,7 +361,7 @@ mod tests {
         let p = Paragraph::new().add_insert(ins);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"id":"12345678","children":[{"type":"insert","data":{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineHeight":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"divId":null},"hasNumbering":false}"#
+            r#"{"id":"12345678","children":[{"type":"insert","data":{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"characterSpacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"characterSpacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"divId":null},"hasNumbering":false}"#
         );
     }
 }

@@ -10,6 +10,7 @@ use crate::reader::ReaderError;
 pub enum XMLElement {
     Body,
     Paragraph,
+    ParagraphProperty,
     Run,
     RunProperty,
     Color,
@@ -40,6 +41,7 @@ pub enum XMLElement {
     IndentLevel,
     NumberingId,
     Justification,
+    OutlineLvl,
     Insert,
     KeepNext,
     KeepLines,
@@ -205,6 +207,7 @@ impl FromStr for XMLElement {
         match s {
             "body" => Ok(XMLElement::Body),
             "p" => Ok(XMLElement::Paragraph),
+            "pPr" => Ok(XMLElement::ParagraphProperty),
             "r" => Ok(XMLElement::Run),
             "rPr" => Ok(XMLElement::RunProperty),
             "rPrChange" => Ok(XMLElement::RunPropertyChange),
@@ -300,6 +303,7 @@ impl FromStr for XMLElement {
             "lvlText" => Ok(XMLElement::LevelText),
             "lvlRestart" => Ok(XMLElement::LevelRestart),
             "lvlJc" => Ok(XMLElement::LevelJustification),
+            "outlineLvl" => Ok(XMLElement::OutlineLvl),
             "numStyleLink" => Ok(XMLElement::NumStyleLink),
             "styleLink" => Ok(XMLElement::StyleLink),
             "vAlign" => Ok(XMLElement::VAlign),

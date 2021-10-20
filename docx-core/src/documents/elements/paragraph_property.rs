@@ -2,7 +2,7 @@ use serde::Serialize;
 
 use super::*;
 use crate::documents::BuildXML;
-use crate::types::{AlignmentType, SpecialIndentType};
+use crate::types::{AlignmentType, LineSpacingType, SpecialIndentType};
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
@@ -13,11 +13,12 @@ pub struct ParagraphProperty {
     pub numbering_property: Option<NumberingProperty>,
     pub alignment: Option<Justification>,
     pub indent: Option<Indent>,
-    pub line_height: Option<u32>,
+    pub line_spacing: Option<LineSpacing>,
     pub keep_next: bool,
     pub keep_lines: bool,
     pub page_break_before: bool,
     pub window_control: bool,
+    pub outline_lvl: Option<OutlineLvl>,
     // read only
     pub(crate) div_id: Option<String>,
 }
@@ -30,11 +31,12 @@ impl Default for ParagraphProperty {
             numbering_property: None,
             alignment: None,
             indent: None,
-            line_height: None,
+            line_spacing: None,
             keep_next: false,
             keep_lines: false,
             page_break_before: false,
             window_control: false,
+            outline_lvl: None,
             div_id: None,
         }
     }
@@ -76,8 +78,19 @@ impl ParagraphProperty {
         self
     }
 
-    pub fn line_height(mut self, h: u32) -> Self {
-        self.line_height = Some(h);
+    pub fn line_spacing(
+        mut self,
+        before: Option<u32>,
+        after: Option<u32>,
+        line: Option<u32>,
+        spacing_type: Option<LineSpacingType>,
+    ) -> Self {
+        self.line_spacing = Some(
+            LineSpacing::new(spacing_type)
+                .after(after)
+                .before(before)
+                .line(line),
+        );
         self
     }
 
@@ -88,6 +101,14 @@ impl ParagraphProperty {
 
     pub fn keep_lines(mut self, v: bool) -> Self {
         self.keep_lines = v;
+        self
+    }
+
+    pub fn outline_lvl(mut self, v: usize) -> Self {
+        if v >= 10 {
+            return self;
+        }
+        self.outline_lvl = Some(OutlineLvl::new(v));
         self
     }
 
@@ -118,11 +139,6 @@ impl ParagraphProperty {
 
 impl BuildXML for ParagraphProperty {
     fn build(&self) -> Vec<u8> {
-        let spacing = if let Some(s) = self.line_height {
-            Some(Spacing::new(crate::SpacingType::Line(s)))
-        } else {
-            None
-        };
         let mut b = XMLBuilder::new()
             .open_paragraph_property()
             .add_child(&self.run_property)
@@ -130,7 +146,8 @@ impl BuildXML for ParagraphProperty {
             .add_optional_child(&self.numbering_property)
             .add_optional_child(&self.alignment)
             .add_optional_child(&self.indent)
-            .add_optional_child(&spacing);
+            .add_optional_child(&self.line_spacing)
+            .add_optional_child(&self.outline_lvl);
 
         if self.keep_next {
             b = b.keep_next()
@@ -199,12 +216,34 @@ mod tests {
     }
 
     #[test]
+    fn test_outline_lvl() {
+        let props = ParagraphProperty::new();
+        let bytes = props.outline_lvl(1).build();
+        assert_eq!(
+            str::from_utf8(&bytes).unwrap(),
+            r#"<w:pPr><w:rPr /><w:outlineLvl w:val="1" /></w:pPr>"#
+        )
+    }
+
+    #[test]
     fn test_indent_json() {
         let c = ParagraphProperty::new();
         let b = c.indent(Some(20), Some(SpecialIndentType::FirstLine(10)), None, None);
         assert_eq!(
             serde_json::to_string(&b).unwrap(),
-            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"spacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"style":null,"numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10},"hangingChars":null,"firstLineChars":null},"lineHeight":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"divId":null}"#
+            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"characterSpacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"style":null,"numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10},"hangingChars":null,"firstLineChars":null},"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"divId":null}"#
         );
+    }
+
+    #[test]
+    fn test_line_spacing() {
+        let props = ParagraphProperty::new();
+        let bytes = props
+            .line_spacing(None, None, Some(100), Some(LineSpacingType::AtLeast))
+            .build();
+        assert_eq!(
+            str::from_utf8(&bytes).unwrap(),
+            r#"<w:pPr><w:rPr /><w:spacing w:line="100" w:lineRule="atLeast" /></w:pPr>"#
+        )
     }
 }

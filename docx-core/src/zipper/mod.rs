@@ -71,7 +71,7 @@ where
                 format!("word/webextensions/webextension{}.xml", i + 1),
                 options,
             )?;
-            zip.write_all(&ext)?;
+            zip.write_all(ext)?;
         }
     }
 

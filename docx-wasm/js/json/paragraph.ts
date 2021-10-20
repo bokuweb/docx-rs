@@ -1,6 +1,7 @@
 import { RunJSON, RunPropertyJSON } from "./run";
 import { IndentJSON } from "./indent";
 import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
+import { LineSpacingJSON } from "./line_spacing";
 
 export type ParagraphChildJSON =
   | RunJSON
@@ -22,12 +23,13 @@ export type ParagraphPropertyJSON = {
   numberingProperty: NumberingPropertyJSON | null;
   alignment: "left" | "center" | "right" | "justified" | "both";
   indent: IndentJSON | null;
-  lineHeight: number | null;
+  lineSpacing: LineSpacingJSON | null;
   divId: string | null;
   keepNext: boolean;
   keepLines: boolean;
   pageBreakBefore: boolean;
   windowControl: boolean;
+  outlineLvl: number | null;
 };
 
 export type ParagraphJSON = {
@@ -49,7 +51,7 @@ export type InsertJSON = {
       | CommentRangeEndJSON
     )[];
     author: string;
-    data: string;
+    date: string;
   };
 };
 
@@ -58,7 +60,7 @@ export type DeleteJSON = {
   data: {
     children: DeleteChildJSON[];
     author: string;
-    data: string;
+    date: string;
   };
 };
 

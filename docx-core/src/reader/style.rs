@@ -61,6 +61,14 @@ impl ElementReader for Style {
                             style = style.align(AlignmentType::from_str(&attributes[0].value)?);
                             continue;
                         }
+                        XMLElement::OutlineLvl => {
+                            if let Some(val) = read_val(&attributes) {
+                                if let Ok(val) = usize::from_str(&val) {
+                                    style = style.outline_lvl(val);
+                                }
+                            }
+                            continue;
+                        }
                         // rPr
                         XMLElement::RunProperty => {
                             let p = RunProperty::read(r, &attributes)?;

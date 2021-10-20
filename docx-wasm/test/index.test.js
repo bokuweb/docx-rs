@@ -64,9 +64,13 @@ describe("reader", () => {
   });
 
   test("should read line spacing docx", () => {
-    const buffer = readFileSync(
-        "../fixtures/line_spacing/line_spacing.docx"
-    );
+    const buffer = readFileSync("../fixtures/line_spacing/line_spacing.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
+
+  test("should read outlineLvl docx", () => {
+    const buffer = readFileSync("../fixtures/outline_lvl/outline_lvl.docx");
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
@@ -347,8 +351,8 @@ describe("writer", () => {
 
   test("should write line spacing", () => {
     const p = new w.Paragraph()
-        .addRun(new w.Run().addText("Hello "))
-        .lineSpacing(100, "", 100, 1);
+      .addRun(new w.Run().addText("Hello "))
+      .lineSpacing(100, "", 100, 1);
     const buffer = new w.Docx().addParagraph(p).build();
     writeFileSync("../output/line_spacing.docx", buffer);
     const z = new Zip(Buffer.from(buffer));

@@ -121,6 +121,11 @@ impl Style {
         self
     }
 
+    pub fn outline_lvl(mut self, l: usize) -> Self {
+        self.paragraph_property = self.paragraph_property.outline_lvl(l);
+        self
+    }
+
     pub fn table_property(mut self, p: TableProperty) -> Self {
         self.table_property = p;
         self

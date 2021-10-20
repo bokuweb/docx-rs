@@ -1,7 +1,7 @@
 import { RunJSON, RunPropertyJSON } from "./run";
 import { IndentJSON } from "./indent";
 import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
-import {LineSpacingJSON} from "./line_spacing";
+import { LineSpacingJSON } from "./line_spacing";
 
 export type ParagraphChildJSON =
   | RunJSON
@@ -29,6 +29,7 @@ export type ParagraphPropertyJSON = {
   keepLines: boolean;
   pageBreakBefore: boolean;
   windowControl: boolean;
+  outlineLvl: number | null;
 };
 
 export type ParagraphJSON = {

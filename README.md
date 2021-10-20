@@ -22,7 +22,7 @@ docx-rs = "0.2"
 ### Browser/Node.js
 
 ```
-yarn add docx-wasm
+$ yarn add docx-wasm
 ```
 
 ## Example
@@ -83,6 +83,69 @@ writeFileSync("hello.docx", buffer);
 - [Comment](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/comment.rs)
 - [Image](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/image_inline.rs)
 - [History](https://github.com/bokuweb/docx-rs/blob/master/docx-core/examples/history.rs)
+
+## Development
+
+### Requirements
+
+- Node.js 16+
+- yarn 1+
+- wasm-pack (https://rustwasm.github.io/wasm-pack/)
+- insta (https://github.com/mitsuhiko/insta)
+
+### Examples
+
+You can run example with following code.
+Please see `examples` directory.
+
+``` sh
+$ cargo run --example [EXAMPLE_NAME]
+```
+
+For Example if you want to run `hello` example.
+Please run following command.
+
+``` sh
+$ cargo run --example hello
+```
+
+So you can see output file in output directory.
+
+### Testing
+
+#### Rust
+
+Please run following command.
+
+```
+make lint && make test
+```
+
+If snapshot testing is failed, fix code or update snapshot files. (See https://insta.rs/).
+
+```
+$ cargo-insta review
+```
+
+Then re run test.
+
+```
+$ make test
+```
+
+#### Wasm
+
+Please run following command.
+
+```
+$ cd docx-wasm && yarn install && yarn test
+```
+
+If snapshot testing is failed, fix code or update snapshot files. (See https://jestjs.io/docs/snapshot-testing).
+
+```
+$ yarn test -- --updateSnapshot
+```
 
 ## Features
 

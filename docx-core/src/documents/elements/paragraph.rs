@@ -203,12 +203,12 @@ impl Paragraph {
         self
     }
 
-    pub(crate) fn hanging_chars(mut self, chars: i32) -> Paragraph {
+    pub fn hanging_chars(mut self, chars: i32) -> Paragraph {
         self.property = self.property.hanging_chars(chars);
         self
     }
 
-    pub(crate) fn first_line_chars(mut self, chars: i32) -> Paragraph {
+    pub fn first_line_chars(mut self, chars: i32) -> Paragraph {
         self.property = self.property.first_line_chars(chars);
         self
     }
@@ -239,7 +239,7 @@ impl Paragraph {
         self
     }
 
-    pub(crate) fn run_property(mut self, p: RunProperty) -> Self {
+    pub fn run_property(mut self, p: RunProperty) -> Self {
         self.property.run_property = p;
         self
     }

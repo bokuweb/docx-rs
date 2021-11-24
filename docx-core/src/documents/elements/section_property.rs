@@ -13,6 +13,7 @@ pub struct SectionProperty {
     columns: usize,
     doc_grid: DocGrid,
     header_reference: HeaderReference,
+    footer_reference: Option<FooterReference>,
     section_type: Option<SectionType>,
 }
 
@@ -40,6 +41,11 @@ impl SectionProperty {
         self.doc_grid = doc_grid;
         self
     }
+
+    pub fn footer_reference(mut self, r: FooterReference) -> Self {
+        self.footer_reference = Some(r);
+        self
+    }
 }
 
 impl Default for SectionProperty {
@@ -50,6 +56,7 @@ impl Default for SectionProperty {
             columns: 425,
             doc_grid: DocGrid::default(),
             header_reference: HeaderReference::default(),
+            footer_reference: None,
             section_type: None,
         }
     }
@@ -64,7 +71,8 @@ impl BuildXML for SectionProperty {
             .add_child(&self.page_margin)
             .add_child(&self.header_reference)
             .columns(&format!("{}", &self.columns))
-            .add_child(&self.doc_grid);
+            .add_child(&self.doc_grid)
+            .add_optional_child(&self.footer_reference);
 
         if let Some(t) = self.section_type {
             b = b.type_tag(&t.to_string());
@@ -88,6 +96,16 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:headerReference w:type="default" r:id="rId4" /><w:cols w:space="425" /><w:docGrid w:type="lines" w:linePitch="360" /></w:sectPr>"#
+        );
+    }
+
+    #[test]
+    fn test_section_property_with_footer() {
+        let c = SectionProperty::new().footer_reference(FooterReference::new("default", "rId6"));
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:headerReference w:type="default" r:id="rId4" /><w:cols w:space="425" /><w:docGrid w:type="lines" w:linePitch="360" /><w:footerReference w:type="default" r:id="rId6" /></w:sectPr>"#
         );
     }
 }

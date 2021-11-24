@@ -262,6 +262,7 @@ impl XMLBuilder {
 
     open!(open_section_property, "w:sectPr");
     closed!(header_reference, "w:headerReference", "w:type", "r:id");
+    closed!(footer_reference, "w:footerReference", "w:type", "r:id");
 
     closed_with_str!(type_tag, "w:type");
     closed!(page_size, "w:pgSz", "w:w", "w:h");

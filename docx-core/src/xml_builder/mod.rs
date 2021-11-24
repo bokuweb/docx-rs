@@ -10,6 +10,7 @@ mod document;
 mod drawing;
 mod elements;
 mod fonts;
+mod footer;
 mod header;
 mod numbering;
 mod pic;

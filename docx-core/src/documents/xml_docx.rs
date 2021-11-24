@@ -18,6 +18,7 @@ pub struct XMLDocx {
     pub numberings: Vec<u8>,
     pub media: Vec<(usize, Vec<u8>)>,
     pub header: Vec<u8>,
+    pub footer: Option<Vec<u8>>,
     pub comments_extended: Vec<u8>,
     pub taskpanes: Option<Vec<u8>>,
     pub taskpanes_rels: Vec<u8>,

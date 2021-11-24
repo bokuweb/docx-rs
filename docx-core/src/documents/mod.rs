@@ -12,6 +12,8 @@ mod document;
 mod document_rels;
 mod elements;
 mod font_table;
+mod footer;
+mod footer_id;
 mod header;
 mod header_id;
 mod history_id;
@@ -43,6 +45,8 @@ pub use document::*;
 pub use document_rels::*;
 pub use elements::*;
 pub use font_table::*;
+pub use footer::*;
+pub use footer_id::*;
 pub use header::*;
 pub use numberings::*;
 pub use rels::*;
@@ -71,6 +75,7 @@ pub struct Docx {
     pub font_table: FontTable,
     pub media: Vec<(usize, Vec<u8>)>,
     pub header: Header,
+    pub footer: Option<Footer>,
     pub comments_extended: CommentsExtended,
     pub web_settings: WebSettings,
     pub taskpanes: Option<Taskpanes>,
@@ -111,6 +116,7 @@ impl Default for Docx {
             font_table,
             media,
             header,
+            footer: None,
             comments_extended,
             web_settings,
             taskpanes: None,
@@ -219,6 +225,30 @@ impl Docx {
         self
     }
 
+    pub fn add_footer_paragraph(mut self, p: Paragraph) -> Docx {
+        if p.has_numbering {
+            // If this document has numbering, set numberings.xml to document_rels.
+            // This is because numberings.xml without numbering cause an error on word online.
+            self.document_rels.has_numberings = true;
+        }
+        if self.footer.is_none() {
+            self.footer = Some(Footer::new());
+            self.document.section_property = self
+                .document
+                .section_property
+                // Add default footer reference
+                .footer_reference(FooterReference::new("default", create_footer_rid(1)));
+            self.document_rels.footer_count += 1;
+            self.content_type = self.content_type.add_footer();
+        }
+
+        if let Some(footer) = self.footer {
+            let footer = footer.add_paragraph(p);
+            self.footer = Some(footer);
+        }
+        self
+    }
+
     pub fn add_abstract_numbering(mut self, num: AbstractNumbering) -> Docx {
         self.numberings = self.numberings.add_abstract_numbering(num);
         self
@@ -320,7 +350,6 @@ impl Docx {
         self.update_comments();
 
         let (image_ids, images) = self.create_images();
-
         let web_extensions = self.web_extensions.iter().map(|ext| ext.build()).collect();
         let custom_items = self.custom_items.iter().map(|xml| xml.build()).collect();
         let custom_item_props = self.custom_item_props.iter().map(|p| p.build()).collect();
@@ -331,6 +360,8 @@ impl Docx {
             .collect();
 
         self.document_rels.image_ids = image_ids;
+
+        let footer = self.footer.as_ref().map(|footer| footer.build());
 
         XMLDocx {
             content_type: self.content_type.build(),
@@ -345,6 +376,7 @@ impl Docx {
             numberings: self.numberings.build(),
             media: images,
             header: self.header.build(),
+            footer,
             comments_extended: self.comments_extended.build(),
             taskpanes: self.taskpanes.map(|taskpanes| taskpanes.build()),
             taskpanes_rels: self.taskpanes_rels.build(),

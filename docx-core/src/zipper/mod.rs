@@ -48,6 +48,11 @@ where
     zip.start_file("word/commentsExtended.xml", options)?;
     zip.write_all(&xml.comments_extended)?;
 
+    if let Some(footer) = xml.footer {
+        zip.start_file("word/footer1.xml", options)?;
+        zip.write_all(&footer)?;
+    }
+
     if !xml.media.is_empty() {
         zip.add_directory("word/media/", Default::default())?;
         for m in xml.media {

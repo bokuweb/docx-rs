@@ -165,7 +165,7 @@ $ yarn test -- --updateSnapshot
   - [x] TextBorder
 - [x] Break
 - [x] Header
-- [ ] Footer
+- [x] Footer
 - [x] Comment
 - [x] Image
 - [x] Style

@@ -823,9 +823,11 @@ export class Docx {
     });
 
     if (this.sectionProperty._footer) {
+      let footer = wasm.createFooter();
       this.sectionProperty._footer.children.forEach((c) => {
-        docx = docx.add_footer_paragraph(this.buildParagraph(c));
+        footer = footer.add_paragraph(this.buildParagraph(c));
       });
+      docx = docx.footer(footer);
     }
 
     if (this.sectionProperty._pageMargin) {

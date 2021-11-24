@@ -73,8 +73,8 @@ impl Docx {
         self
     }
 
-    pub fn add_footer_paragraph(mut self, p: Paragraph) -> Self {
-        self.0 = self.0.add_footer_paragraph(p.take());
+    pub fn footer(mut self, footer: Footer) -> Self {
+        self.0 = self.0.footer(footer.take());
         self
     }
 

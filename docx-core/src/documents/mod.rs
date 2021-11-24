@@ -225,6 +225,25 @@ impl Docx {
         self
     }
 
+    pub fn footer(mut self, footer: Footer) -> Docx {
+        if footer.has_numbering {
+            // If this document has numbering, set numberings.xml to document_rels.
+            // This is because numberings.xml without numbering cause an error on word online.
+            self.document_rels.has_numberings = true;
+        }
+        if self.footer.is_none() {
+            self.document.section_property = self
+                .document
+                .section_property
+                // Add default footer reference
+                .footer_reference(FooterReference::new("default", create_footer_rid(1)));
+            self.document_rels.footer_count += 1;
+            self.content_type = self.content_type.add_footer();
+        }
+        self.footer = Some(footer);
+        self
+    }
+
     pub fn add_footer_paragraph(mut self, p: Paragraph) -> Docx {
         if p.has_numbering {
             // If this document has numbering, set numberings.xml to document_rels.

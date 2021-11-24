@@ -11,7 +11,6 @@ impl XMLBuilder {
         "distR"
     );
 
-    #[allow(clippy::too_many_arguments)]
     open!(
         open_wp_anchor,
         "wp:anchor",

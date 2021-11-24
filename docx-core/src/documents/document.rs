@@ -149,6 +149,11 @@ impl Document {
         self.section_property = property;
         self
     }
+
+    pub fn footer_reference(mut self, r: FooterReference) -> Self {
+        self.section_property = self.section_property.footer_reference(r);
+        self
+    }
 }
 
 impl BuildXML for DocumentChild {

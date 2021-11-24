@@ -12,6 +12,7 @@ pub struct ContentTypes {
     types: BTreeMap<String, String>,
     web_extension_count: usize,
     custom_xml_count: usize,
+    footer_count: usize,
 }
 
 impl ContentTypes {
@@ -114,6 +115,15 @@ impl ContentTypes {
         self.custom_xml_count += 1;
         self
     }
+
+    pub fn add_footer(mut self) -> Self {
+        self.types.insert(
+            format!("/word/footer{}.xml", self.footer_count),
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml".to_owned(),
+        );
+        self.footer_count += 1;
+        self
+    }
 }
 
 impl Default for ContentTypes {
@@ -122,6 +132,7 @@ impl Default for ContentTypes {
             types: BTreeMap::new(),
             web_extension_count: 1,
             custom_xml_count: 1,
+            footer_count: 1,
         }
     }
 }
@@ -200,7 +211,8 @@ mod tests {
             ContentTypes {
                 types,
                 web_extension_count: 1,
-                custom_xml_count: 1
+                custom_xml_count: 1,
+                footer_count: 1,
             },
             c
         );

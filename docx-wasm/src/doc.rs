@@ -73,6 +73,11 @@ impl Docx {
         self
     }
 
+    pub fn add_footer_paragraph(mut self, p: Paragraph) -> Self {
+        self.0 = self.0.add_footer_paragraph(p.take());
+        self
+    }
+
     pub fn page_size(mut self, w: u32, h: u32) -> Docx {
         self.0 = self.0.page_size(w, h);
         self

@@ -362,4 +362,18 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write footer for default section", () => {
+    const p1 = new w.Paragraph().addRun(new w.Run().addText("Hello Footer"));
+    const p2 = new w.Paragraph().addRun(new w.Run().addText("World "));
+    const footer = new w.Footer().addParagraph(p1);
+    const buffer = new w.Docx().footer(footer).addParagraph(p2).build();
+    writeFileSync("../output/footer.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|footer1.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

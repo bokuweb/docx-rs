@@ -1,4 +1,5 @@
 import { DocGridType } from ".";
+import { Footer } from "./footer";
 
 export type DocGrid = {
   gridType: DocGridType;
@@ -16,6 +17,7 @@ export class SectionProperty {
     gridType: "lines",
     linePitch: 360,
   };
+  _footer: Footer | null = null;
 
   pageSize(w: number, h: number) {
     this._pageSize.w = w;
@@ -35,6 +37,11 @@ export class SectionProperty {
 
   docGrid(gridType: DocGridType, linePitch?: number, charSpace?: number) {
     this._docGrid = { gridType, linePitch, charSpace };
+    return this;
+  }
+
+  footer(footer: Footer) {
+    this._footer = footer;
     return this;
   }
 }

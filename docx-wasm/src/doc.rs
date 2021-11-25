@@ -73,6 +73,11 @@ impl Docx {
         self
     }
 
+    pub fn header(mut self, header: Header) -> Self {
+        self.0 = self.0.header(header.take());
+        self
+    }
+
     pub fn footer(mut self, footer: Footer) -> Self {
         self.0 = self.0.footer(footer.take());
         self

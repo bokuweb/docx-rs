@@ -20,6 +20,7 @@ import { DocProps } from "./doc-props";
 import { Styles } from "./styles";
 import { WebExtension } from "./webextension";
 import { Footer } from "./footer";
+import { Header } from "./header";
 import {
   SectionProperty,
   PageMargin,
@@ -148,6 +149,11 @@ export class Docx {
 
   addDocVar(name: string, val: string) {
     this.settings.addDocVar(name, val);
+    return this;
+  }
+
+  header(f: Header) {
+    this.sectionProperty._header = f;
     return this;
   }
 
@@ -849,6 +855,14 @@ export class Docx {
       docx = docx.add_doc_var(v.name, v.val);
     });
 
+    if (this.sectionProperty._header) {
+      let header = wasm.createHeader();
+      this.sectionProperty._header.children.forEach((c) => {
+        header = header.add_paragraph(this.buildParagraph(c));
+      });
+      docx = docx.header(header);
+    }
+
     if (this.sectionProperty._footer) {
       let footer = wasm.createFooter();
       this.sectionProperty._footer.children.forEach((c) => {
@@ -1008,4 +1022,5 @@ export * from "./level";
 export * from "./tab";
 export * from "./json";
 export * from "./webextension";
+export * from "./header";
 export * from "./footer";

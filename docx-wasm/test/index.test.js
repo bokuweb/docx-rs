@@ -384,4 +384,18 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write header for default section", () => {
+    const p1 = new w.Paragraph().addRun(new w.Run().addText("Hello Header"));
+    const p2 = new w.Paragraph().addRun(new w.Run().addText("World "));
+    const header = new w.Header().addParagraph(p1);
+    const buffer = new w.Docx().header(header).addParagraph(p2).build();
+    writeFileSync("../output/header.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|footer1.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

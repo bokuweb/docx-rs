@@ -1,5 +1,6 @@
 import { DocGridType } from ".";
 import { Footer } from "./footer";
+import { Header } from "./header";
 
 export type DocGrid = {
   gridType: DocGridType;
@@ -17,6 +18,7 @@ export class SectionProperty {
     gridType: "lines",
     linePitch: 360,
   };
+  _header: Header | null = null;
   _footer: Footer | null = null;
 
   pageSize(w: number, h: number) {
@@ -37,6 +39,11 @@ export class SectionProperty {
 
   docGrid(gridType: DocGridType, linePitch?: number, charSpace?: number) {
     this._docGrid = { gridType, linePitch, charSpace };
+    return this;
+  }
+
+  header(header: Header) {
+    this._header = header;
     return this;
   }
 

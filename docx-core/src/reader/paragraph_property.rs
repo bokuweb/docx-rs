@@ -40,9 +40,11 @@ impl ElementReader for ParagraphProperty {
                             continue;
                         }
                         XMLElement::Spacing => {
-                            let (before, after, line, spacing_type) =
-                                attributes::line_spacing::read_line_spacing(&attributes)?;
-                            p = p.line_spacing(before, after, line, spacing_type);
+                            if let Ok(spacing) =
+                                attributes::line_spacing::read_line_spacing(&attributes)
+                            {
+                                p = p.line_spacing(spacing);
+                            }
                             continue;
                         }
                         XMLElement::Justification => {

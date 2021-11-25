@@ -4,7 +4,7 @@ use crate::xml_builder::*;
 use crate::line_spacing_type::LineSpacingType;
 use serde::*;
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct LineSpacing {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -14,28 +14,45 @@ pub struct LineSpacing {
     #[serde(skip_serializing_if = "Option::is_none")]
     after: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    before_lines: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    after_lines: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     line: Option<u32>,
 }
 
 impl LineSpacing {
-    pub fn new(spacing: Option<LineSpacingType>) -> Self {
-        Self {
-            line_rule: spacing,
-            before: None,
-            after: None,
-            line: None,
-        }
+    pub fn new() -> Self {
+        Self::default()
     }
-    pub fn before(mut self, before: Option<u32>) -> Self {
-        self.before = before;
+
+    pub fn line_rule(mut self, t: LineSpacingType) -> Self {
+        self.line_rule = Some(t);
         self
     }
-    pub fn after(mut self, after: Option<u32>) -> Self {
-        self.after = after;
+
+    pub fn before(mut self, before: u32) -> Self {
+        self.before = Some(before);
         self
     }
-    pub fn line(mut self, line: Option<u32>) -> Self {
-        self.line = line;
+
+    pub fn after(mut self, after: u32) -> Self {
+        self.after = Some(after);
+        self
+    }
+
+    pub fn before_lines(mut self, before: u32) -> Self {
+        self.before_lines = Some(before);
+        self
+    }
+
+    pub fn after_lines(mut self, after: u32) -> Self {
+        self.after_lines = Some(after);
+        self
+    }
+
+    pub fn line(mut self, line: u32) -> Self {
+        self.line = Some(line);
         self
     }
 }
@@ -43,8 +60,15 @@ impl LineSpacing {
 impl BuildXML for LineSpacing {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.line_spacing(self.before, self.after, self.line, self.line_rule)
-            .build()
+        b.line_spacing(
+            self.before,
+            self.after,
+            self.line,
+            self.before_lines,
+            self.after_lines,
+            self.line_rule,
+        )
+        .build()
     }
 }
 
@@ -58,12 +82,25 @@ mod tests {
 
     #[test]
     fn test_spacing() {
-        let b = LineSpacing::new(Some(LineSpacingType::Auto))
-            .line(Some(100))
+        let b = LineSpacing::new()
+            .line_rule(LineSpacingType::Auto)
+            .line(100)
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:spacing w:line="100" w:lineRule="auto" />"#
+        );
+    }
+
+    #[test]
+    fn test_spacing_after_lines() {
+        let b = LineSpacing::new()
+            .line_rule(LineSpacingType::Auto)
+            .after_lines(100)
+            .build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:spacing w:afterLines="100" w:lineRule="auto" />"#
         );
     }
 
@@ -73,6 +110,8 @@ mod tests {
             line_rule: Some(LineSpacingType::Auto),
             before: None,
             after: None,
+            before_lines: None,
+            after_lines: None,
             line: Some(100),
         };
         assert_eq!(

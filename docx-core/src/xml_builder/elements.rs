@@ -167,11 +167,15 @@ impl XMLBuilder {
         before: Option<u32>,
         after: Option<u32>,
         line: Option<u32>,
+        before_lines: Option<u32>,
+        after_lines: Option<u32>,
         spacing: Option<LineSpacingType>,
     ) -> Self {
         let mut xml_event = XmlEvent::start_element("w:spacing");
         let before_val: String;
         let after_val: String;
+        let before_lines_val: String;
+        let after_lines_val: String;
         let line_val: String;
 
         if let Some(before) = before {
@@ -181,6 +185,14 @@ impl XMLBuilder {
         if let Some(after) = after {
             after_val = format!("{}", after);
             xml_event = xml_event.attr("w:after", &after_val)
+        }
+        if let Some(before_lines) = before_lines {
+            before_lines_val = format!("{}", before_lines);
+            xml_event = xml_event.attr("w:beforeLines", &before_lines_val)
+        }
+        if let Some(after_lines) = after_lines {
+            after_lines_val = format!("{}", after_lines);
+            xml_event = xml_event.attr("w:afterLines", &after_lines_val)
         }
         if let Some(line) = line {
             line_val = format!("{}", line);

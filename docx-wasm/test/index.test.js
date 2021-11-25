@@ -74,6 +74,12 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read afterLines docx", () => {
+    const buffer = readFileSync("../fixtures/after_lines/after_lines.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {
@@ -352,7 +358,9 @@ describe("writer", () => {
   test("should write line spacing", () => {
     const p = new w.Paragraph()
       .addRun(new w.Run().addText("Hello "))
-      .lineSpacing(100, "", 100, 1);
+      .lineSpacing(
+        new w.LineSpacing().before(100).after(0).line(100).afterLines(400)
+      );
     const buffer = new w.Docx().addParagraph(p).build();
     writeFileSync("../output/line_spacing.docx", buffer);
     const z = new Zip(Buffer.from(buffer));

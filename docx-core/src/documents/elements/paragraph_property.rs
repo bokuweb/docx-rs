@@ -2,7 +2,7 @@ use serde::Serialize;
 
 use super::*;
 use crate::documents::BuildXML;
-use crate::types::{AlignmentType, LineSpacingType, SpecialIndentType};
+use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
@@ -78,19 +78,8 @@ impl ParagraphProperty {
         self
     }
 
-    pub fn line_spacing(
-        mut self,
-        before: Option<u32>,
-        after: Option<u32>,
-        line: Option<u32>,
-        spacing_type: Option<LineSpacingType>,
-    ) -> Self {
-        self.line_spacing = Some(
-            LineSpacing::new(spacing_type)
-                .after(after)
-                .before(before)
-                .line(line),
-        );
+    pub fn line_spacing(mut self, spacing: LineSpacing) -> Self {
+        self.line_spacing = Some(spacing);
         self
     }
 
@@ -173,6 +162,7 @@ impl BuildXML for ParagraphProperty {
 mod tests {
 
     use super::*;
+    use crate::types::LineSpacingType;
     #[cfg(test)]
     use pretty_assertions::assert_eq;
     use std::str;
@@ -238,9 +228,10 @@ mod tests {
     #[test]
     fn test_line_spacing() {
         let props = ParagraphProperty::new();
-        let bytes = props
-            .line_spacing(None, None, Some(100), Some(LineSpacingType::AtLeast))
-            .build();
+        let spacing = LineSpacing::new()
+            .line_rule(LineSpacingType::AtLeast)
+            .line(100);
+        let bytes = props.line_spacing(spacing).build();
         assert_eq!(
             str::from_utf8(&bytes).unwrap(),
             r#"<w:pPr><w:rPr /><w:spacing w:line="100" w:lineRule="atLeast" /></w:pPr>"#

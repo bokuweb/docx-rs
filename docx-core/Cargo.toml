@@ -1,6 +1,6 @@
 [package]
 name = "docx-rs"
-version = "0.2.14"
+version = "0.3.0"
 authors = ["bokuweb <bokuweb12@gmail.com>"]
 repository = "https://github.com/bokuweb/docx-rs"
 edition = "2018"

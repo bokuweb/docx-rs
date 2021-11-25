@@ -343,7 +343,7 @@ export class Docx {
     const { lineSpacing } = p;
     if (lineSpacing == null) return null;
     let kind;
-    switch (lineSpacing.lineRule) {
+    switch (lineSpacing._lineRule) {
       case "atLeast": {
         kind = wasm.LineSpacingType.AtLeast;
         break;
@@ -358,16 +358,24 @@ export class Docx {
       }
     }
     let spacing = wasm.createLineSpacing();
-    if (lineSpacing.before != null) {
-      spacing = spacing.before(lineSpacing.before);
+    if (lineSpacing._before != null) {
+      spacing = spacing.before(lineSpacing._before);
     }
 
-    if (lineSpacing.after != null) {
-      spacing = spacing.after(lineSpacing.after);
+    if (lineSpacing._after != null) {
+      spacing = spacing.after(lineSpacing._after);
     }
 
-    if (lineSpacing.line != null) {
-      spacing = spacing.line(lineSpacing.line);
+    if (lineSpacing._beforeLines != null) {
+      spacing = spacing.before_lines(lineSpacing._beforeLines);
+    }
+
+    if (lineSpacing._afterLines != null) {
+      spacing = spacing.after_lines(lineSpacing._afterLines);
+    }
+
+    if (lineSpacing._line != null) {
+      spacing = spacing.line(lineSpacing._line);
     }
 
     if (kind != null) {

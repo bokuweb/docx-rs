@@ -28,14 +28,39 @@ export type SpecialIndentKind = "firstLine" | "hanging";
 
 export type LineSpacingType = "atLeast" | "auto" | "exact";
 
-export type LineSpacing = {
-  before?: number;
-  after?: number;
-  beforeLines?: number;
-  afterLines?: number;
-  line?: number;
-  lineRule?: LineSpacingType;
-};
+export class LineSpacing {
+  _before?: number;
+  _after?: number;
+  _beforeLines?: number;
+  _afterLines?: number;
+  _line?: number;
+  _lineRule?: LineSpacingType;
+
+  before(v: number) {
+    this._before = v;
+    return this;
+  }
+  after(v: number) {
+    this._after = v;
+    return this;
+  }
+  beforeLines(v: number) {
+    this._beforeLines = v;
+    return this;
+  }
+  afterLines(v: number) {
+    this._afterLines = v;
+    return this;
+  }
+  line(v: number) {
+    this._line = v;
+    return this;
+  }
+  lineRule(v: LineSpacingType) {
+    this._lineRule = v;
+    return this;
+  }
+}
 
 export type ParagraphProperty = {
   align?: AlignmentType;
@@ -132,18 +157,8 @@ export class Paragraph {
     return this;
   }
 
-  lineSpacing(
-    before?: number,
-    after?: number,
-    line?: number,
-    lineRule?: LineSpacingType
-  ) {
-    this.property.lineSpacing = {
-      before,
-      after,
-      line,
-      lineRule,
-    };
+  lineSpacing(spacing: LineSpacing) {
+    this.property.lineSpacing = spacing;
     return this;
   }
 

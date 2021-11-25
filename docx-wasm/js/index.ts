@@ -1,4 +1,4 @@
-import { Paragraph } from "./paragraph";
+import { Paragraph, ParagraphProperty } from "./paragraph";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
 import { DeleteText } from "./delete-text";
@@ -339,6 +339,43 @@ export class Docx {
     return comment;
   }
 
+  buildLineSpacing(p: ParagraphProperty): wasm.LineSpacing | null {
+    const { lineSpacing } = p;
+    if (lineSpacing == null) return null;
+    let kind;
+    switch (lineSpacing.lineRule) {
+      case "atLeast": {
+        kind = wasm.LineSpacingType.AtLeast;
+        break;
+      }
+      case "auto": {
+        kind = wasm.LineSpacingType.Auto;
+        break;
+      }
+      case "exact": {
+        kind = wasm.LineSpacingType.Exact;
+        break;
+      }
+    }
+    let spacing = wasm.createLineSpacing();
+    if (lineSpacing.before != null) {
+      spacing = spacing.before(lineSpacing.before);
+    }
+
+    if (lineSpacing.after != null) {
+      spacing = spacing.after(lineSpacing.after);
+    }
+
+    if (lineSpacing.line != null) {
+      spacing = spacing.line(lineSpacing.line);
+    }
+
+    if (kind != null) {
+      spacing = spacing.line_rule(kind);
+    }
+    return spacing;
+  }
+
   buildParagraph(p: Paragraph) {
     let paragraph = wasm.createParagraph();
     p.children.forEach((child) => {
@@ -424,28 +461,10 @@ export class Docx {
     }
 
     if (typeof p.property.lineSpacing !== "undefined") {
-      const { lineSpacing } = p.property;
-      let kind;
-      switch (p.property.lineSpacing.lineRule) {
-        case "atLeast": {
-          kind = wasm.LineSpacingType.AtLeast;
-          break;
-        }
-        case "auto": {
-          kind = wasm.LineSpacingType.Auto;
-          break;
-        }
-        case "exact": {
-          kind = wasm.LineSpacingType.Exact;
-          break;
-        }
+      const spacing = this.buildLineSpacing(p.property);
+      if (spacing) {
+        paragraph = paragraph.line_spacing(spacing);
       }
-      paragraph = paragraph.line_spacing(
-        lineSpacing.before,
-        lineSpacing.after,
-        lineSpacing.line,
-        kind
-      );
     }
 
     if (p.property.runProperty.italic) {

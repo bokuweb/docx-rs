@@ -12,6 +12,7 @@ pub struct ContentTypes {
     types: BTreeMap<String, String>,
     web_extension_count: usize,
     custom_xml_count: usize,
+    header_count: usize,
     footer_count: usize,
 }
 
@@ -72,10 +73,6 @@ impl ContentTypes {
                 .to_owned(),
         );
         self.types.insert(
-            "/word/header1.xml".to_owned(),
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml".to_owned(),
-        );
-        self.types.insert(
             "/word/commentsExtended.xml".to_owned(),
             "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml"
                 .to_owned(),
@@ -116,6 +113,15 @@ impl ContentTypes {
         self
     }
 
+    pub fn add_header(mut self) -> Self {
+        self.types.insert(
+            format!("/word/header{}.xml", self.header_count),
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml".to_owned(),
+        );
+        self.header_count += 1;
+        self
+    }
+
     pub fn add_footer(mut self) -> Self {
         self.types.insert(
             format!("/word/footer{}.xml", self.footer_count),
@@ -132,6 +138,7 @@ impl Default for ContentTypes {
             types: BTreeMap::new(),
             web_extension_count: 1,
             custom_xml_count: 1,
+            header_count: 1,
             footer_count: 1,
         }
     }
@@ -212,6 +219,7 @@ mod tests {
                 types,
                 web_extension_count: 1,
                 custom_xml_count: 1,
+                header_count: 1,
                 footer_count: 1,
             },
             c

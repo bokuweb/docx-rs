@@ -12,7 +12,7 @@ pub struct SectionProperty {
     page_margin: PageMargin,
     columns: usize,
     doc_grid: DocGrid,
-    header_reference: HeaderReference,
+    header_reference: Option<HeaderReference>,
     footer_reference: Option<FooterReference>,
     section_type: Option<SectionType>,
 }
@@ -42,6 +42,11 @@ impl SectionProperty {
         self
     }
 
+    pub fn header_reference(mut self, r: HeaderReference) -> Self {
+        self.header_reference = Some(r);
+        self
+    }
+
     pub fn footer_reference(mut self, r: FooterReference) -> Self {
         self.footer_reference = Some(r);
         self
@@ -55,7 +60,7 @@ impl Default for SectionProperty {
             page_margin: PageMargin::new(),
             columns: 425,
             doc_grid: DocGrid::default(),
-            header_reference: HeaderReference::default(),
+            header_reference: None,
             footer_reference: None,
             section_type: None,
         }
@@ -69,9 +74,9 @@ impl BuildXML for SectionProperty {
             .open_section_property()
             .add_child(&self.page_size)
             .add_child(&self.page_margin)
-            .add_child(&self.header_reference)
             .columns(&format!("{}", &self.columns))
             .add_child(&self.doc_grid)
+            .add_optional_child(&self.header_reference)
             .add_optional_child(&self.footer_reference);
 
         if let Some(t) = self.section_type {
@@ -95,7 +100,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:headerReference w:type="default" r:id="rId4" /><w:cols w:space="425" /><w:docGrid w:type="lines" w:linePitch="360" /></w:sectPr>"#
+            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" /><w:docGrid w:type="lines" w:linePitch="360" /></w:sectPr>"#
         );
     }
 
@@ -105,7 +110,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:headerReference w:type="default" r:id="rId4" /><w:cols w:space="425" /><w:docGrid w:type="lines" w:linePitch="360" /><w:footerReference w:type="default" r:id="rId6" /></w:sectPr>"#
+            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" /><w:docGrid w:type="lines" w:linePitch="360" /><w:footerReference w:type="default" r:id="rId6" /></w:sectPr>"#
         );
     }
 }

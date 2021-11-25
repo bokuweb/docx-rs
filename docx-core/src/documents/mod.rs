@@ -48,6 +48,7 @@ pub use font_table::*;
 pub use footer::*;
 pub use footer_id::*;
 pub use header::*;
+pub use header_id::*;
 pub use numberings::*;
 pub use rels::*;
 pub use settings::*;
@@ -74,7 +75,7 @@ pub struct Docx {
     pub settings: Settings,
     pub font_table: FontTable,
     pub media: Vec<(usize, Vec<u8>)>,
-    pub header: Header,
+    pub header: Option<Header>,
     pub footer: Option<Footer>,
     pub comments_extended: CommentsExtended,
     pub web_settings: WebSettings,
@@ -99,7 +100,6 @@ impl Default for Docx {
         let comments = Comments::new();
         let numberings = Numberings::new();
         let media = vec![];
-        let header = Header::new();
         let comments_extended = CommentsExtended::new();
         let web_settings = WebSettings::new();
 
@@ -115,7 +115,7 @@ impl Default for Docx {
             settings,
             font_table,
             media,
-            header,
+            header: None,
             footer: None,
             comments_extended,
             web_settings,
@@ -215,13 +215,22 @@ impl Docx {
         self
     }
 
-    pub fn add_header_paragraph(mut self, p: Paragraph) -> Docx {
-        if p.has_numbering {
+    pub fn header(mut self, header: Header) -> Self {
+        if header.has_numbering {
             // If this document has numbering, set numberings.xml to document_rels.
             // This is because numberings.xml without numbering cause an error on word online.
             self.document_rels.has_numberings = true;
         }
-        self.header = self.header.add_paragraph(p);
+        if self.header.is_none() {
+            self.document.section_property = self
+                .document
+                .section_property
+                // Add default header reference
+                .header_reference(HeaderReference::new("default", create_header_rid(1)));
+            self.document_rels.header_count += 1;
+            self.content_type = self.content_type.add_header();
+        }
+        self.header = Some(header);
         self
     }
 
@@ -241,30 +250,6 @@ impl Docx {
             self.content_type = self.content_type.add_footer();
         }
         self.footer = Some(footer);
-        self
-    }
-
-    pub fn add_footer_paragraph(mut self, p: Paragraph) -> Docx {
-        if p.has_numbering {
-            // If this document has numbering, set numberings.xml to document_rels.
-            // This is because numberings.xml without numbering cause an error on word online.
-            self.document_rels.has_numberings = true;
-        }
-        if self.footer.is_none() {
-            self.footer = Some(Footer::new());
-            self.document.section_property = self
-                .document
-                .section_property
-                // Add default footer reference
-                .footer_reference(FooterReference::new("default", create_footer_rid(1)));
-            self.document_rels.footer_count += 1;
-            self.content_type = self.content_type.add_footer();
-        }
-
-        if let Some(footer) = self.footer {
-            let footer = footer.add_paragraph(p);
-            self.footer = Some(footer);
-        }
         self
     }
 
@@ -381,6 +366,7 @@ impl Docx {
         self.document_rels.image_ids = image_ids;
 
         let footer = self.footer.as_ref().map(|footer| footer.build());
+        let header = self.header.as_ref().map(|header| header.build());
 
         XMLDocx {
             content_type: self.content_type.build(),
@@ -394,7 +380,7 @@ impl Docx {
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
             media: images,
-            header: self.header.build(),
+            header,
             footer,
             comments_extended: self.comments_extended.build(),
             taskpanes: self.taskpanes.map(|taskpanes| taskpanes.build()),

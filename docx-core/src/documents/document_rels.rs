@@ -11,6 +11,7 @@ pub struct DocumentRels {
     pub has_numberings: bool,
     pub image_ids: Vec<usize>,
     pub custom_xml_count: usize,
+    pub header_count: usize,
     pub footer_count: usize,
 }
 
@@ -32,6 +33,7 @@ impl Default for DocumentRels {
             has_numberings: false,
             image_ids: vec![],
             custom_xml_count: 0,
+            header_count: 0,
             footer_count: 0,
         }
     }
@@ -82,6 +84,14 @@ impl BuildXML for DocumentRels {
                 "rId7",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering",
                 "numbering.xml",
+            )
+        }
+
+        for i in 0..self.header_count {
+            b = b.relationship(
+                &create_header_rid(i + 1),
+                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header",
+                &format!("header{}.xml", i + 1),
             )
         }
 

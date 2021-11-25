@@ -43,10 +43,13 @@ where
     zip.write_all(&xml.comments)?;
     zip.start_file("word/numbering.xml", options)?;
     zip.write_all(&xml.numberings)?;
-    zip.start_file("word/header1.xml", options)?;
-    zip.write_all(&xml.header)?;
     zip.start_file("word/commentsExtended.xml", options)?;
     zip.write_all(&xml.comments_extended)?;
+
+    if let Some(header) = xml.header {
+        zip.start_file("word/header1.xml", options)?;
+        zip.write_all(&header)?;
+    }
 
     if let Some(footer) = xml.footer {
         zip.start_file("word/footer1.xml", options)?;

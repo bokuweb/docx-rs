@@ -16,8 +16,7 @@ pub fn generate_header_id() -> usize {
 pub fn generate_header_id() -> usize {
     123
 }
-
-pub fn create_header_rid(id: usize) -> String {
-    format!("rIdImage{}", id)
-}
 */
+pub fn create_header_rid(id: usize) -> String {
+    format!("rIdHeader{}", id)
+}

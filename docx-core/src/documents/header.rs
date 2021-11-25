@@ -8,6 +8,7 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Header {
+    pub has_numbering: bool,
     pub children: Vec<HeaderChild>,
 }
 
@@ -17,19 +18,17 @@ impl Header {
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> Self {
-        // TODO: support numberings
-        // if p.has_numbering {
-        //     self.has_numbering = true
-        // }
+        if p.has_numbering {
+            self.has_numbering = true
+        }
         self.children.push(HeaderChild::Paragraph(p));
         self
     }
 
     pub fn add_table(mut self, t: Table) -> Self {
-        // TODO: support numberings
-        // if t.has_numbering {
-        //     self.has_numbering = true
-        // }
+        if t.has_numbering {
+            self.has_numbering = true
+        }
         self.children.push(HeaderChild::Table(t));
         self
     }
@@ -37,7 +36,10 @@ impl Header {
 
 impl Default for Header {
     fn default() -> Self {
-        Self { children: vec![] }
+        Self {
+            children: vec![],
+            has_numbering: false,
+        }
     }
 }
 

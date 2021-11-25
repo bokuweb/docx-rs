@@ -244,16 +244,8 @@ impl Paragraph {
         self
     }
 
-    pub fn line_spacing(
-        mut self,
-        before: Option<u32>,
-        after: Option<u32>,
-        line: Option<u32>,
-        spacing_type: Option<LineSpacingType>,
-    ) -> Self {
-        self.property = self
-            .property
-            .line_spacing(before, after, line, spacing_type);
+    pub fn line_spacing(mut self, spacing: LineSpacing) -> Self {
+        self.property = self.property.line_spacing(spacing);
         self
     }
 }
@@ -334,8 +326,13 @@ mod tests {
 
     #[test]
     fn test_line_spacing_and_character_spacing() {
+        let spacing = LineSpacing::new()
+            .line_rule(LineSpacingType::Auto)
+            .before(20)
+            .after(30)
+            .line(200);
         let b = Paragraph::new()
-            .line_spacing(Some(20), Some(30), Some(200), Some(LineSpacingType::Auto))
+            .line_spacing(spacing)
             .add_run(Run::new().add_text("Hello"))
             .build();
         assert_eq!(

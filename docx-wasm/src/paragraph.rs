@@ -112,14 +112,8 @@ impl Paragraph {
         self
     }
 
-    pub fn line_spacing(
-        mut self,
-        before: Option<u32>,
-        after: Option<u32>,
-        line: Option<u32>,
-        spacing_type: Option<docx_rs::LineSpacingType>,
-    ) -> Self {
-        self.0 = self.0.line_spacing(before, after, line, spacing_type);
+    pub fn line_spacing(mut self, spacing: LineSpacing) -> Self {
+        self.0 = self.0.line_spacing(spacing.take());
         self
     }
 

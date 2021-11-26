@@ -150,8 +150,18 @@ impl Document {
         self
     }
 
-    pub fn header_reference(mut self, r: HeaderReference) -> Self {
-        self.section_property = self.section_property.header_reference(r);
+    pub fn header(mut self, h: Header, rid: &str) -> Self {
+        self.section_property = self.section_property.header(h, rid);
+        self
+    }
+
+    pub fn first_header(mut self, h: Header, rid: &str) -> Self {
+        self.section_property = self.section_property.first_header(h, rid);
+        self
+    }
+
+    pub fn even_header(mut self, h: Header, rid: &str) -> Self {
+        self.section_property = self.section_property.even_header(h, rid);
         self
     }
 

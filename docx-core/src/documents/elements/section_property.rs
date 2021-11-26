@@ -2,19 +2,33 @@ use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
+use crate::Header;
 
 use serde::Serialize;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SectionProperty {
-    page_size: PageSize,
-    page_margin: PageMargin,
-    columns: usize,
-    doc_grid: DocGrid,
-    header_reference: Option<HeaderReference>,
-    footer_reference: Option<FooterReference>,
-    section_type: Option<SectionType>,
+    pub page_size: PageSize,
+    pub page_margin: PageMargin,
+    pub columns: usize,
+    pub doc_grid: DocGrid,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub header_reference: Option<HeaderReference>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub header: Option<Header>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub first_header_reference: Option<HeaderReference>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub first_header: Option<Header>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub even_header_reference: Option<HeaderReference>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub even_header: Option<Header>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub footer_reference: Option<FooterReference>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub section_type: Option<SectionType>,
 }
 
 impl SectionProperty {
@@ -42,9 +56,36 @@ impl SectionProperty {
         self
     }
 
-    pub fn header_reference(mut self, r: HeaderReference) -> Self {
-        self.header_reference = Some(r);
+    pub fn header(mut self, h: Header, rid: &str) -> Self {
+        self.header_reference = Some(HeaderReference::new("default", rid));
+        self.header = Some(h);
         self
+    }
+
+    pub fn first_header(mut self, h: Header, rid: &str) -> Self {
+        self.first_header_reference = Some(HeaderReference::new("first", rid));
+        self.first_header = Some(h);
+        self
+    }
+
+    pub fn even_header(mut self, h: Header, rid: &str) -> Self {
+        self.even_header_reference = Some(HeaderReference::new("even", rid));
+        self.even_header = Some(h);
+        self
+    }
+
+    pub fn get_headers(&self) -> Vec<&Header> {
+        let mut headers = vec![];
+        if let Some(ref header) = self.header {
+            headers.push(header);
+        }
+        if let Some(ref header) = self.first_header {
+            headers.push(header);
+        }
+        if let Some(ref header) = self.even_header {
+            headers.push(header);
+        }
+        headers
     }
 
     pub fn footer_reference(mut self, r: FooterReference) -> Self {
@@ -61,6 +102,11 @@ impl Default for SectionProperty {
             columns: 425,
             doc_grid: DocGrid::default(),
             header_reference: None,
+            header: None,
+            first_header_reference: None,
+            first_header: None,
+            even_header_reference: None,
+            even_header: None,
             footer_reference: None,
             section_type: None,
         }
@@ -77,6 +123,8 @@ impl BuildXML for SectionProperty {
             .columns(&format!("{}", &self.columns))
             .add_child(&self.doc_grid)
             .add_optional_child(&self.header_reference)
+            .add_optional_child(&self.first_header_reference)
+            .add_optional_child(&self.even_header_reference)
             .add_optional_child(&self.footer_reference);
 
         if let Some(t) = self.section_type {

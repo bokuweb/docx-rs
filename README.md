@@ -90,7 +90,7 @@ writeFileSync("hello.docx", buffer);
 
 - Node.js 16+
 - yarn 1+
-- wasm-pack (https://rustwasm.github.io/wasm-pack/)
+- wasm-pack0.10.1 (https://rustwasm.github.io/wasm-pack/)
 - insta (https://github.com/mitsuhiko/insta)
 
 ### Examples
@@ -174,6 +174,3 @@ $ yarn test -- --updateSnapshot
 - [ ] Table of contents
 - [ ] Section
 
-## Requirements
-
-- wasm-pack 0.9.1+

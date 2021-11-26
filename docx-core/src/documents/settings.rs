@@ -12,6 +12,7 @@ pub struct Settings {
     zoom: Zoom,
     doc_id: Option<DocId>,
     doc_vars: Vec<DocVar>,
+    even_and_odd_headers: bool,
 }
 
 impl Settings {
@@ -33,6 +34,11 @@ impl Settings {
         self.doc_vars.push(DocVar::new(name, val));
         self
     }
+
+    pub fn even_and_odd_headers(mut self) -> Self {
+        self.even_and_odd_headers = true;
+        self
+    }
 }
 
 impl Default for Settings {
@@ -42,6 +48,7 @@ impl Default for Settings {
             zoom: Zoom::new(100),
             doc_id: None,
             doc_vars: vec![],
+            even_and_odd_headers: false,
         }
     }
 }
@@ -101,6 +108,10 @@ impl BuildXML for Settings {
                 b = b.add_child(v);
             }
             b = b.close();
+        }
+
+        if self.even_and_odd_headers {
+            b = b.even_and_odd_headers();
         }
         b.close().build()
     }

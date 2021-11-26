@@ -12,6 +12,7 @@ pub struct SectionProperty {
     pub page_size: PageSize,
     pub page_margin: PageMargin,
     pub columns: usize,
+    pub title_pg: bool,
     pub doc_grid: DocGrid,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub header_reference: Option<HeaderReference>,
@@ -66,6 +67,11 @@ impl SectionProperty {
         self
     }
 
+    pub fn title_pg(mut self) -> Self {
+        self.title_pg = true;
+        self
+    }
+
     pub fn header(mut self, h: Header, rid: &str) -> Self {
         self.header_reference = Some(HeaderReference::new("default", rid));
         self.header = Some(h);
@@ -73,6 +79,13 @@ impl SectionProperty {
     }
 
     pub fn first_header(mut self, h: Header, rid: &str) -> Self {
+        self.first_header_reference = Some(HeaderReference::new("first", rid));
+        self.first_header = Some(h);
+        self.title_pg = true;
+        self
+    }
+
+    pub fn first_header_without_title_pg(mut self, h: Header, rid: &str) -> Self {
         self.first_header_reference = Some(HeaderReference::new("first", rid));
         self.first_header = Some(h);
         self
@@ -91,6 +104,13 @@ impl SectionProperty {
     }
 
     pub fn first_footer(mut self, h: Footer, rid: &str) -> Self {
+        self.first_footer_reference = Some(FooterReference::new("first", rid));
+        self.first_footer = Some(h);
+        self.title_pg = true;
+        self
+    }
+
+    pub fn first_footer_without_title_pg(mut self, h: Footer, rid: &str) -> Self {
         self.first_footer_reference = Some(FooterReference::new("first", rid));
         self.first_footer = Some(h);
         self
@@ -137,6 +157,7 @@ impl Default for SectionProperty {
             page_size: PageSize::new(),
             page_margin: PageMargin::new(),
             columns: 425,
+            title_pg: false,
             doc_grid: DocGrid::default(),
             // headers
             header_reference: None,
@@ -176,6 +197,11 @@ impl BuildXML for SectionProperty {
         if let Some(t) = self.section_type {
             b = b.type_tag(&t.to_string());
         }
+
+        if self.title_pg {
+            b = b.title_pg();
+        }
+
         b.close().build()
     }
 }
@@ -205,6 +231,17 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" /><w:docGrid w:type="lines" w:linePitch="360" /><w:footerReference w:type="default" r:id="rId6" /></w:sectPr>"#
+        );
+    }
+
+    #[test]
+    fn test_section_property_with_title_pf() {
+        let c = SectionProperty::new().title_pg();
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" /><w:docGrid w:type="lines" w:linePitch="360" /><w:titlePg />
+</w:sectPr>"#
         );
     }
 }

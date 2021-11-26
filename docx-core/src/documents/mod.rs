@@ -258,6 +258,7 @@ impl Docx {
             .even_header(header, &create_header_rid(count));
         self.document_rels.header_count = count;
         self.content_type = self.content_type.add_header();
+        self.settings = self.settings.even_and_odd_headers();
         self
     }
 
@@ -300,6 +301,7 @@ impl Docx {
             .even_footer(footer, &create_footer_rid(count));
         self.document_rels.footer_count = count;
         self.content_type = self.content_type.add_footer();
+        self.settings = self.settings.even_and_odd_headers();
         self
     }
 

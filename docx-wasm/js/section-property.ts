@@ -19,7 +19,11 @@ export class SectionProperty {
     linePitch: 360,
   };
   _header: Header | null = null;
+  _firstHeader: Header | null = null;
+  _evenHeader: Header | null = null;
   _footer: Footer | null = null;
+  _firstFooter: Footer | null = null;
+  _evenFooter: Footer | null = null;
 
   pageSize(w: number, h: number) {
     this._pageSize.w = w;
@@ -47,8 +51,28 @@ export class SectionProperty {
     return this;
   }
 
+  firstHeader(header: Header) {
+    this._firstHeader = header;
+    return this;
+  }
+
+  evenHeader(header: Header) {
+    this._evenHeader = header;
+    return this;
+  }
+
   footer(footer: Footer) {
     this._footer = footer;
+    return this;
+  }
+
+  firstFooter(footer: Footer) {
+    this._firstFooter = footer;
+    return this;
+  }
+
+  evenFooter(footer: Footer) {
+    this._evenFooter = footer;
     return this;
   }
 }

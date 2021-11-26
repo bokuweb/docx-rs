@@ -863,12 +863,44 @@ export class Docx {
       docx = docx.header(header);
     }
 
+    if (this.sectionProperty._firstHeader) {
+      let header = wasm.createHeader();
+      this.sectionProperty._firstHeader.children.forEach((c) => {
+        header = header.add_paragraph(this.buildParagraph(c));
+      });
+      docx = docx.first_header(header);
+    }
+
+    if (this.sectionProperty._evenHeader) {
+      let header = wasm.createHeader();
+      this.sectionProperty._evenHeader.children.forEach((c) => {
+        header = header.add_paragraph(this.buildParagraph(c));
+      });
+      docx = docx.even_header(header);
+    }
+
     if (this.sectionProperty._footer) {
       let footer = wasm.createFooter();
       this.sectionProperty._footer.children.forEach((c) => {
         footer = footer.add_paragraph(this.buildParagraph(c));
       });
       docx = docx.footer(footer);
+    }
+
+    if (this.sectionProperty._firstFooter) {
+      let footer = wasm.createFooter();
+      this.sectionProperty._firstFooter.children.forEach((c) => {
+        footer = footer.add_paragraph(this.buildParagraph(c));
+      });
+      docx = docx.first_footer(footer);
+    }
+
+    if (this.sectionProperty._evenFooter) {
+      let footer = wasm.createFooter();
+      this.sectionProperty._evenFooter.children.forEach((c) => {
+        footer = footer.add_paragraph(this.buildParagraph(c));
+      });
+      docx = docx.even_footer(footer);
     }
 
     if (this.sectionProperty._pageMargin) {

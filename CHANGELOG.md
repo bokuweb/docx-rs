@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# docx-wasm@0.0.214 (26. November, 2021)
+
+- Fixed a missed pkg.
+
 # docx-rs@0.3.1/docx-wasm@0.0.212 (25. November, 2021)
 
 - Fix #327. Disable header if empty. (https://github.com/bokuweb/docx-rs/pull/369)

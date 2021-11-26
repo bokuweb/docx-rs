@@ -51,9 +51,9 @@ where
         zip.write_all(h)?;
     }
 
-    if let Some(footer) = xml.footer {
-        zip.start_file("word/footer1.xml", options)?;
-        zip.write_all(&footer)?;
+    for (i, h) in xml.footers.iter().enumerate() {
+        zip.start_file(format!("word/footer{}.xml", i + 1), options)?;
+        zip.write_all(h)?;
     }
 
     if !xml.media.is_empty() {

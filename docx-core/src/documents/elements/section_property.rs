@@ -2,7 +2,7 @@ use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
-use crate::Header;
+use crate::{Footer, Header};
 
 use serde::Serialize;
 
@@ -27,6 +27,16 @@ pub struct SectionProperty {
     pub even_header: Option<Header>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub footer_reference: Option<FooterReference>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub footer: Option<Footer>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub first_footer_reference: Option<FooterReference>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub first_footer: Option<Footer>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub even_footer_reference: Option<FooterReference>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub even_footer: Option<Footer>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub section_type: Option<SectionType>,
 }
@@ -74,6 +84,24 @@ impl SectionProperty {
         self
     }
 
+    pub fn footer(mut self, h: Footer, rid: &str) -> Self {
+        self.footer_reference = Some(FooterReference::new("default", rid));
+        self.footer = Some(h);
+        self
+    }
+
+    pub fn first_footer(mut self, h: Footer, rid: &str) -> Self {
+        self.first_footer_reference = Some(FooterReference::new("first", rid));
+        self.first_footer = Some(h);
+        self
+    }
+
+    pub fn even_footer(mut self, h: Footer, rid: &str) -> Self {
+        self.even_footer_reference = Some(FooterReference::new("even", rid));
+        self.even_footer = Some(h);
+        self
+    }
+
     pub fn get_headers(&self) -> Vec<&Header> {
         let mut headers = vec![];
         if let Some(ref header) = self.header {
@@ -88,9 +116,18 @@ impl SectionProperty {
         headers
     }
 
-    pub fn footer_reference(mut self, r: FooterReference) -> Self {
-        self.footer_reference = Some(r);
-        self
+    pub fn get_footers(&self) -> Vec<&Footer> {
+        let mut footers = vec![];
+        if let Some(ref footer) = self.footer {
+            footers.push(footer);
+        }
+        if let Some(ref footer) = self.first_footer {
+            footers.push(footer);
+        }
+        if let Some(ref footer) = self.even_footer {
+            footers.push(footer);
+        }
+        footers
     }
 }
 
@@ -101,13 +138,20 @@ impl Default for SectionProperty {
             page_margin: PageMargin::new(),
             columns: 425,
             doc_grid: DocGrid::default(),
+            // headers
             header_reference: None,
             header: None,
             first_header_reference: None,
             first_header: None,
             even_header_reference: None,
             even_header: None,
+            // footers
             footer_reference: None,
+            footer: None,
+            first_footer_reference: None,
+            first_footer: None,
+            even_footer_reference: None,
+            even_footer: None,
             section_type: None,
         }
     }
@@ -125,7 +169,9 @@ impl BuildXML for SectionProperty {
             .add_optional_child(&self.header_reference)
             .add_optional_child(&self.first_header_reference)
             .add_optional_child(&self.even_header_reference)
-            .add_optional_child(&self.footer_reference);
+            .add_optional_child(&self.footer_reference)
+            .add_optional_child(&self.first_footer_reference)
+            .add_optional_child(&self.even_footer_reference);
 
         if let Some(t) = self.section_type {
             b = b.type_tag(&t.to_string());
@@ -154,7 +200,7 @@ mod tests {
 
     #[test]
     fn test_section_property_with_footer() {
-        let c = SectionProperty::new().footer_reference(FooterReference::new("default", "rId6"));
+        let c = SectionProperty::new().footer(Footer::new(), "rId6");
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

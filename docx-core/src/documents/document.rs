@@ -165,8 +165,18 @@ impl Document {
         self
     }
 
-    pub fn footer_reference(mut self, r: FooterReference) -> Self {
-        self.section_property = self.section_property.footer_reference(r);
+    pub fn footer(mut self, h: Footer, rid: &str) -> Self {
+        self.section_property = self.section_property.footer(h, rid);
+        self
+    }
+
+    pub fn first_footer(mut self, h: Footer, rid: &str) -> Self {
+        self.section_property = self.section_property.first_footer(h, rid);
+        self
+    }
+
+    pub fn even_footer(mut self, h: Footer, rid: &str) -> Self {
+        self.section_property = self.section_property.even_footer(h, rid);
         self
     }
 }

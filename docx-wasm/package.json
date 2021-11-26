@@ -1,6 +1,6 @@
 {
   "name": "docx-wasm",
-  "version": "0.0.213",
+  "version": "0.0.214",
   "main": "dist/node/index.js",
   "browser": "dist/web/index.js",
   "author": "bokuweb <bokuweb12@gmail.com>",
@@ -40,7 +40,9 @@
     "webpack-merge": "5.8.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "dist/web/pkg/*",
+    "dist/node/pkg/*"
   ],
   "module": "dist/web/index.js",
   "types": "dist/web/index.d.ts",

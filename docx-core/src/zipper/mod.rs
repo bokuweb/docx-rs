@@ -46,14 +46,14 @@ where
     zip.start_file("word/commentsExtended.xml", options)?;
     zip.write_all(&xml.comments_extended)?;
 
-    if let Some(header) = xml.header {
-        zip.start_file("word/header1.xml", options)?;
-        zip.write_all(&header)?;
+    for (i, h) in xml.headers.iter().enumerate() {
+        zip.start_file(format!("word/header{}.xml", i + 1), options)?;
+        zip.write_all(h)?;
     }
 
-    if let Some(footer) = xml.footer {
-        zip.start_file("word/footer1.xml", options)?;
-        zip.write_all(&footer)?;
+    for (i, h) in xml.footers.iter().enumerate() {
+        zip.start_file(format!("word/footer{}.xml", i + 1), options)?;
+        zip.write_all(h)?;
     }
 
     if !xml.media.is_empty() {

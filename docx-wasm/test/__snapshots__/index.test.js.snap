@@ -953,8 +953,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 1701,
         "footer": 992,
@@ -969,7 +967,7 @@ Object {
         "orient": null,
         "w": 11900,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -981,8 +979,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [],
@@ -1016,6 +1012,7 @@ Object {
     "defaultTabStop": 840,
     "docId": "FB0AE6E2-8FB8-3345-A8FC-78CE6F3ABE4E",
     "docVars": Array [],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {
@@ -1698,8 +1695,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 1701,
         "footer": 992,
@@ -1714,7 +1709,7 @@ Object {
         "orient": null,
         "w": 11906,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -1726,8 +1721,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [],
@@ -1761,6 +1754,7 @@ Object {
     "defaultTabStop": 840,
     "docId": null,
     "docVars": Array [],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {
@@ -2357,8 +2351,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 1701,
         "footer": 992,
@@ -2373,7 +2365,7 @@ Object {
         "orient": null,
         "w": 11900,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -2385,8 +2377,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [],
@@ -2420,6 +2410,7 @@ Object {
     "defaultTabStop": 840,
     "docId": "A1898E6C-1AED-3C4D-9CCF-C24208DA732E",
     "docVars": Array [],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {
@@ -3824,8 +3815,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 1701,
         "footer": 992,
@@ -3840,7 +3829,7 @@ Object {
         "orient": null,
         "w": 11906,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -3852,8 +3841,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [],
@@ -3887,6 +3874,7 @@ Object {
     "defaultTabStop": 709,
     "docId": "50d61cff-8055-4197-917b-3993d0243c46",
     "docVars": Array [],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {
@@ -6342,8 +6330,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 600,
         "footer": 992,
@@ -6358,7 +6344,7 @@ Object {
         "orient": null,
         "w": 11906,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -6370,8 +6356,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [],
@@ -6405,6 +6389,7 @@ Object {
     "defaultTabStop": 840,
     "docId": "E43E077A-3477-A242-BD53-4313974E06A2",
     "docVars": Array [],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {
@@ -7240,8 +7225,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 1701,
         "footer": 992,
@@ -7256,7 +7239,7 @@ Object {
         "orient": null,
         "w": 11906,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -7268,8 +7251,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [],
@@ -7303,6 +7284,7 @@ Object {
     "defaultTabStop": 840,
     "docId": null,
     "docVars": Array [],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {
@@ -7927,8 +7909,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 1701,
         "footer": 992,
@@ -7943,7 +7923,7 @@ Object {
         "orient": null,
         "w": 11900,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -7955,8 +7935,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [
@@ -9955,6 +9933,7 @@ Object {
     "defaultTabStop": 840,
     "docId": "10BE20B6-DCA9-7441-B548-606D7D9EDD92",
     "docVars": Array [],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {
@@ -12512,8 +12491,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 1701,
         "footer": 992,
@@ -12528,7 +12505,7 @@ Object {
         "orient": null,
         "w": 11906,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -12540,8 +12517,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [
@@ -13772,6 +13747,7 @@ Object {
         "val": "{\\"id\\":\\"c3327226-c646-42fd-8747-366d471232d7\\",\\"commentHash\\":\\"8b1a9953c4611296a827abf8c47804d7\\",\\"articleId\\":\\"55b04568-28f5-467e-b69c-51a057caeda2\\",\\"commentRangeId\\":\\"6a46e35b-c93f-4462-8aff-6361aa20f521\\",\\"createdBy\\":\\"admin\\",\\"updatedAt\\":\\"2020-12-18T06:28:45.760Z\\",\\"parentCommentId\\":null}",
       },
     ],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {
@@ -15809,8 +15785,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 1701,
         "footer": 992,
@@ -15825,7 +15799,7 @@ Object {
         "orient": null,
         "w": 11900,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -15837,8 +15811,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [
@@ -17191,6 +17163,7 @@ Object {
     "defaultTabStop": 840,
     "docId": "F952540B-8E26-9040-BEAB-F11A2F10B576",
     "docVars": Array [],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {
@@ -20584,8 +20557,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 1701,
         "footer": 992,
@@ -20600,7 +20571,7 @@ Object {
         "orient": null,
         "w": 11900,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -20612,8 +20583,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [],
@@ -20647,6 +20616,7 @@ Object {
     "defaultTabStop": 840,
     "docId": "C272B628-6DE8-264A-8734-9D2219FFD42F",
     "docVars": Array [],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {
@@ -21869,8 +21839,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 1701,
         "footer": 992,
@@ -21885,7 +21853,7 @@ Object {
         "orient": null,
         "w": 11900,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -21897,8 +21865,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [],
@@ -21932,6 +21898,7 @@ Object {
     "defaultTabStop": 840,
     "docId": "9F52F717-3F03-584C-ACEF-96E0106FA905",
     "docVars": Array [],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {
@@ -22932,8 +22899,6 @@ Object {
         "gridType": "lines",
         "linePitch": 360,
       },
-      "footerReference": null,
-      "headerReference": null,
       "pageMargin": Object {
         "bottom": 1701,
         "footer": 992,
@@ -22948,7 +22913,7 @@ Object {
         "orient": null,
         "w": 11900,
       },
-      "sectionType": null,
+      "titlePg": false,
     },
   },
   "documentRels": Object {
@@ -22960,8 +22925,6 @@ Object {
     "imageIds": Array [],
   },
   "fontTable": Object {},
-  "footer": null,
-  "header": null,
   "media": Array [],
   "numberings": Object {
     "abstractNums": Array [],
@@ -22995,6 +22958,7 @@ Object {
     "defaultTabStop": 840,
     "docId": "7501A506-09EA-0F4C-ACFF-789B81CBED2D",
     "docVars": Array [],
+    "evenAndOddHeaders": false,
     "zoom": 100,
   },
   "styles": Object {

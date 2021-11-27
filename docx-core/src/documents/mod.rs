@@ -75,8 +75,6 @@ pub struct Docx {
     pub settings: Settings,
     pub font_table: FontTable,
     pub media: Vec<(usize, Vec<u8>)>,
-    pub header: Option<Header>,
-    pub footer: Option<Footer>,
     pub comments_extended: CommentsExtended,
     pub web_settings: WebSettings,
     pub taskpanes: Option<Taskpanes>,
@@ -115,8 +113,6 @@ impl Default for Docx {
             settings,
             font_table,
             media,
-            header: None,
-            footer: None,
             comments_extended,
             web_settings,
             taskpanes: None,
@@ -217,39 +213,87 @@ impl Docx {
 
     pub fn header(mut self, header: Header) -> Self {
         if header.has_numbering {
-            // If this document has numbering, set numberings.xml to document_rels.
-            // This is because numberings.xml without numbering cause an error on word online.
             self.document_rels.has_numberings = true;
         }
-        if self.header.is_none() {
-            self.document.section_property = self
-                .document
-                .section_property
-                // Add default header reference
-                .header_reference(HeaderReference::new("default", create_header_rid(1)));
-            self.document_rels.header_count += 1;
-            self.content_type = self.content_type.add_header();
-        }
-        self.header = Some(header);
+        let count = self.document_rels.header_count + 1;
+        self.document.section_property = self
+            .document
+            .section_property
+            .header(header, &create_header_rid(count));
+        self.document_rels.header_count = count;
+        self.content_type = self.content_type.add_header();
         self
     }
 
-    pub fn footer(mut self, footer: Footer) -> Docx {
-        if footer.has_numbering {
-            // If this document has numbering, set numberings.xml to document_rels.
-            // This is because numberings.xml without numbering cause an error on word online.
+    pub fn first_header(mut self, header: Header) -> Self {
+        if header.has_numbering {
             self.document_rels.has_numberings = true;
         }
-        if self.footer.is_none() {
-            self.document.section_property = self
-                .document
-                .section_property
-                // Add default footer reference
-                .footer_reference(FooterReference::new("default", create_footer_rid(1)));
-            self.document_rels.footer_count += 1;
-            self.content_type = self.content_type.add_footer();
+        let count = self.document_rels.header_count + 1;
+        self.document.section_property = self
+            .document
+            .section_property
+            .first_header(header, &create_header_rid(count));
+        self.document_rels.header_count = count;
+        self.content_type = self.content_type.add_header();
+        self
+    }
+
+    pub fn even_header(mut self, header: Header) -> Self {
+        if header.has_numbering {
+            self.document_rels.has_numberings = true;
         }
-        self.footer = Some(footer);
+        let count = self.document_rels.header_count + 1;
+        self.document.section_property = self
+            .document
+            .section_property
+            .even_header(header, &create_header_rid(count));
+        self.document_rels.header_count = count;
+        self.content_type = self.content_type.add_header();
+        self.settings = self.settings.even_and_odd_headers();
+        self
+    }
+
+    pub fn footer(mut self, footer: Footer) -> Self {
+        if footer.has_numbering {
+            self.document_rels.has_numberings = true;
+        }
+        let count = self.document_rels.footer_count + 1;
+        self.document.section_property = self
+            .document
+            .section_property
+            .footer(footer, &create_footer_rid(count));
+        self.document_rels.footer_count = count;
+        self.content_type = self.content_type.add_footer();
+        self
+    }
+
+    pub fn first_footer(mut self, footer: Footer) -> Self {
+        if footer.has_numbering {
+            self.document_rels.has_numberings = true;
+        }
+        let count = self.document_rels.footer_count + 1;
+        self.document.section_property = self
+            .document
+            .section_property
+            .first_footer(footer, &create_footer_rid(count));
+        self.document_rels.footer_count = count;
+        self.content_type = self.content_type.add_footer();
+        self
+    }
+
+    pub fn even_footer(mut self, footer: Footer) -> Self {
+        if footer.has_numbering {
+            self.document_rels.has_numberings = true;
+        }
+        let count = self.document_rels.footer_count + 1;
+        self.document.section_property = self
+            .document
+            .section_property
+            .even_footer(footer, &create_footer_rid(count));
+        self.document_rels.footer_count = count;
+        self.content_type = self.content_type.add_footer();
+        self.settings = self.settings.even_and_odd_headers();
         self
     }
 
@@ -365,8 +409,21 @@ impl Docx {
 
         self.document_rels.image_ids = image_ids;
 
-        let footer = self.footer.as_ref().map(|footer| footer.build());
-        let header = self.header.as_ref().map(|header| header.build());
+        let headers: Vec<Vec<u8>> = self
+            .document
+            .section_property
+            .get_headers()
+            .iter()
+            .map(|h| h.build())
+            .collect();
+
+        let footers: Vec<Vec<u8>> = self
+            .document
+            .section_property
+            .get_footers()
+            .iter()
+            .map(|h| h.build())
+            .collect();
 
         XMLDocx {
             content_type: self.content_type.build(),
@@ -380,8 +437,8 @@ impl Docx {
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
             media: images,
-            header,
-            footer,
+            headers,
+            footers,
             comments_extended: self.comments_extended.build(),
             taskpanes: self.taskpanes.map(|taskpanes| taskpanes.build()),
             taskpanes_rels: self.taskpanes_rels.build(),

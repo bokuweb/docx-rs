@@ -277,6 +277,8 @@ impl XMLBuilder {
     closed!(footer_reference, "w:footerReference", "w:type", "r:id");
 
     closed_with_str!(type_tag, "w:type");
+    closed!(title_pg, "w:titlePg");
+    closed!(even_and_odd_headers, "w:evenAndOddHeaders");
     closed!(page_size, "w:pgSz", "w:w", "w:h");
     closed!(page_size_with_orient, "w:pgSz", "w:w", "w:h", "w:orient");
     closed!(

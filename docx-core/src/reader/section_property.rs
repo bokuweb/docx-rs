@@ -121,6 +121,7 @@ impl ElementReader for SectionProperty {
                                 }
                             }
                         }
+                        XMLElement::TitlePg => sp = sp.title_pg(),
                         _ => {}
                     }
                 }

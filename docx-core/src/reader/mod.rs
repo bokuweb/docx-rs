@@ -232,7 +232,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     docx = docx.document(document);
 
     // assign headers
-    if let Some(ref h) = docx.document.section_property.header_reference.clone() {
+    if let Some(h) = docx.document.section_property.header_reference.clone() {
         if let Some(header) = headers.get(&h.id) {
             docx.document = docx.document.header(header.clone(), &h.id);
         }

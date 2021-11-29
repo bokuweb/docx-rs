@@ -61,11 +61,6 @@ impl BuildXML for DocumentRels {
                 "settings.xml",
             )
             .relationship(
-                "rId4",
-                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header",
-                "header1.xml",
-            )
-            .relationship(
                 "rId5",
                 "http://schemas.microsoft.com/office/2011/relationships/commentsExtended",
                 "commentsExtended.xml",

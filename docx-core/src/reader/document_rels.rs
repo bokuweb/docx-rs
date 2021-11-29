@@ -9,13 +9,15 @@ use xml::reader::{EventReader, XmlEvent};
 use super::errors::*;
 use super::*;
 
+pub type RId = String;
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct ReadDocumentRels {
-    rels: BTreeMap<String, HashSet<PathBuf>>,
+    rels: BTreeMap<String, HashSet<(RId, PathBuf)>>,
 }
 
 impl ReadDocumentRels {
-    pub fn find_target_path(&self, target: &str) -> Option<Vec<PathBuf>> {
+    pub fn find_target_path(&self, target: &str) -> Option<Vec<(RId, PathBuf)>> {
         self.rels
             .get(target)
             .map(|s| s.clone().into_iter().collect())
@@ -54,6 +56,7 @@ fn read_rels_xml<R: Read>(
                 let e = XMLElement::from_str(&name.local_name).unwrap();
                 if let XMLElement::Relationship = e {
                     let mut rel_type = "".to_owned();
+                    let mut rid = "".to_owned();
                     let mut target = PathBuf::default();
                     for a in attributes {
                         let local_name = &a.name.local_name;
@@ -61,14 +64,16 @@ fn read_rels_xml<R: Read>(
                             rel_type = a.value.to_owned();
                         } else if local_name == "Target" {
                             target = Path::new(dir.as_ref()).join(a.value);
+                        } else if local_name == "Id" {
+                            rid = a.value.to_owned();
                         }
                     }
                     let current = rels.rels.remove(&rel_type);
                     if let Some(mut paths) = current {
-                        paths.insert(target);
+                        paths.insert((rid, target));
                         rels.rels.insert(rel_type, paths);
                     } else {
-                        let s: HashSet<PathBuf> = vec![target].into_iter().collect();
+                        let s: HashSet<(RId, PathBuf)> = vec![(rid, target)].into_iter().collect();
                         rels.rels.insert(rel_type, s);
                     }
                     continue;

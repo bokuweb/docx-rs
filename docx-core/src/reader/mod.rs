@@ -51,7 +51,7 @@ mod wps_shape;
 mod wps_text_box;
 mod xml_element;
 
-use std::io::Cursor;
+use std::{collections::HashMap, io::Cursor};
 
 use crate::documents::*;
 
@@ -124,8 +124,26 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
     let rels = read_document_rels(&mut archive, &document_path)?;
 
-    let header_path = rels.find_target_path(HEADER_TYPE);
-    dbg!(header_path);
+    let header_paths = rels.find_target_path(HEADER_TYPE);
+    let headers: HashMap<RId, Header> = header_paths
+        .unwrap_or_default()
+        .into_iter()
+        .filter_map(|(rid, path)| {
+            let data = read_zip(
+                &mut archive,
+                path.to_str().expect("should have header path."),
+            );
+            if let Ok(d) = data {
+                if let Ok(h) = Header::from_xml(&d[..]) {
+                    Some((rid, h))
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        })
+        .collect();
 
     // Read commentsExtended
     let comments_extended_path = rels.find_target_path(COMMENTS_EXTENDED_TYPE);
@@ -206,6 +224,28 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         Document::from_xml(&data[..])?
     };
     docx = docx.document(document);
+
+    // assign headers
+    if let Some(ref h) = docx.document.section_property.header_reference.clone() {
+        if let Some(header) = headers.get(&h.id) {
+            docx.document = docx.document.header(header.clone(), &h.id);
+        }
+    }
+    if let Some(ref h) = docx
+        .document
+        .section_property
+        .first_header_reference
+        .clone()
+    {
+        if let Some(header) = headers.get(&h.id) {
+            docx.document = docx.document.first_header(header.clone(), &h.id);
+        }
+    }
+    if let Some(ref h) = docx.document.section_property.even_header_reference.clone() {
+        if let Some(header) = headers.get(&h.id) {
+            docx.document = docx.document.even_header(header.clone(), &h.id);
+        }
+    }
 
     // store comments to paragraphs.
     if !comments.inner().is_empty() {

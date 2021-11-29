@@ -6,8 +6,8 @@ use serde::Serialize;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct HeaderReference {
-    header_type: String,
-    id: String,
+    pub header_type: String,
+    pub id: String,
 }
 
 impl Default for HeaderReference {

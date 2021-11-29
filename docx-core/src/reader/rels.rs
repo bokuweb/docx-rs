@@ -52,13 +52,14 @@ mod tests {
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml" />
 </Relationships>"#;
         let c = Rels::from_xml(xml.as_bytes()).unwrap();
-        let mut rels = Vec::new();
-        rels.push((
+        let rels =
+            vec![
+        (
             "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"
                 .to_owned(),
             "rId1".to_owned(),
             "docProps/core.xml".to_owned(),
-        ));
+        )];
         assert_eq!(Rels { rels }, c);
     }
 }

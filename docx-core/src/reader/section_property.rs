@@ -57,6 +57,24 @@ fn read_page_margin(
     Ok(margin)
 }
 
+fn read_header_reference(attributes: &[OwnedAttribute]) -> Result<(String, String), ReaderError> {
+    let mut rid = "".to_owned();
+    let mut header_type = "default".to_owned();
+    for a in attributes {
+        let local_name = &a.name.local_name;
+        match local_name.as_str() {
+            "type" => {
+                header_type = a.value.to_owned();
+            }
+            "id" => {
+                rid = a.value.to_owned();
+            }
+            _ => {}
+        }
+    }
+    Ok((rid, header_type))
+}
+
 impl ElementReader for SectionProperty {
     fn read<R: Read>(
         r: &mut EventReader<R>,
@@ -84,6 +102,26 @@ impl ElementReader for SectionProperty {
                                 sp = sp.doc_grid(doc_grid);
                             }
                         }
+                        XMLElement::HeaderReference => {
+                            if let Ok((rid, header_type)) = read_header_reference(&attributes) {
+                                match header_type.as_str() {
+                                    "default" => {
+                                        sp.header_reference =
+                                            Some(HeaderReference::new(header_type, rid));
+                                    }
+                                    "first" => {
+                                        sp.first_header_reference =
+                                            Some(HeaderReference::new(header_type, rid));
+                                    }
+                                    "even" => {
+                                        sp.even_header_reference =
+                                            Some(HeaderReference::new(header_type, rid));
+                                    }
+                                    _ => {}
+                                }
+                            }
+                        }
+                        XMLElement::TitlePg => sp = sp.title_pg(),
                         _ => {}
                     }
                 }

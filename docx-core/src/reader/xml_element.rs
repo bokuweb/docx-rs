@@ -139,6 +139,9 @@ pub enum XMLElement {
     PageSize,
     PageMargin,
     WebSettings,
+    HeaderReference,
+    TitlePg,
+    EvenAndOddHeaders,
     Unsupported,
 }
 
@@ -335,6 +338,9 @@ impl FromStr for XMLElement {
             "keepLines" => Ok(XMLElement::KeepLines),
             "pageBreakBefore" => Ok(XMLElement::PageBreakBefore),
             "windowControl" => Ok(XMLElement::WindowControl),
+            "headerReference" => Ok(XMLElement::HeaderReference),
+            "titlePg" => Ok(XMLElement::TitlePg),
+            "evenAndOddHeaders" => Ok(XMLElement::EvenAndOddHeaders),
             _ => Ok(XMLElement::Unsupported),
         }
     }

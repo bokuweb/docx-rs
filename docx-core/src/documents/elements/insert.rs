@@ -113,9 +113,10 @@ impl Insert {
     }
 
     pub fn add_comment_start(mut self, comment: Comment) -> Self {
-        self.children.push(InsertChild::CommentStart(Box::new(
-            CommentRangeStart::new(comment),
-        )));
+        self.children
+            .push(InsertChild::CommentStart(Box::new(CommentRangeStart::new(
+                comment,
+            ))));
         self
     }
 
@@ -139,6 +140,7 @@ impl Insert {
 impl HistoryId for Insert {}
 
 impl BuildXML for Insert {
+    #[allow(clippy::needless_borrow)]
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_insert(&self.generate(), &self.author, &self.date)

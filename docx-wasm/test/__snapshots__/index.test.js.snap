@@ -23512,7 +23512,6 @@ exports[`writer should write cell shading 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23551,7 +23550,6 @@ exports[`writer should write custom props 2`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23590,7 +23588,6 @@ exports[`writer should write customItem 4`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
   <Relationship Id=\\"rId8\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml\\" Target=\\"../customXml/item1.xml\\" />
 </Relationships>"
@@ -23622,7 +23619,6 @@ exports[`writer should write default font 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23647,7 +23643,6 @@ exports[`writer should write doc grid 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23672,7 +23667,6 @@ exports[`writer should write doc vars 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23697,7 +23691,6 @@ exports[`writer should write footer for default section 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
   <Relationship Id=\\"rIdFooter1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer\\" Target=\\"footer1.xml\\" />
 </Relationships>"
@@ -23721,7 +23714,6 @@ exports[`writer should write header for default section 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
   <Relationship Id=\\"rIdHeader1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
 </Relationships>"
@@ -23740,7 +23732,6 @@ exports[`writer should write hello 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23765,7 +23756,6 @@ exports[`writer should write line spacing 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23790,7 +23780,6 @@ exports[`writer should write lvlOverride with level 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
   <Relationship Id=\\"rId7\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering\\" Target=\\"numbering.xml\\" />
 </Relationships>"
@@ -23817,7 +23806,6 @@ exports[`writer should write nested table 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23852,7 +23840,6 @@ exports[`writer should write page margin 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23877,7 +23864,6 @@ exports[`writer should write page orientation 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23902,7 +23888,6 @@ exports[`writer should write page size 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23927,7 +23912,6 @@ exports[`writer should write table layout 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23957,7 +23941,6 @@ exports[`writer should write text border 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -23982,7 +23965,6 @@ exports[`writer should write tl2br and tr2bl cells 1`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;
@@ -24027,7 +24009,6 @@ exports[`writer should write webextension 4`] = `
   <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
   <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
   <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId4\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/header\\" Target=\\"header1.xml\\" />
   <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
 </Relationships>"
 `;

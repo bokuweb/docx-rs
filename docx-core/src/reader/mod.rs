@@ -77,6 +77,8 @@ const COMMENTS_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments";
 const WEB_SETTINGS_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings";
+const HEADER_TYPE: &str =
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header";
 // 2011
 const COMMENTS_EXTENDED_TYPE: &str =
     "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
@@ -121,17 +123,25 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
     let rels = read_document_rels(&mut archive, &document_path)?;
 
+    let header_path = rels.find_target_path(HEADER_TYPE);
+    dbg!(header_path);
+
+
     // Read commentsExtended
     let comments_extended_path = rels.find_target_path(COMMENTS_EXTENDED_TYPE);
     let comments_extended = if let Some(comments_extended_path) = comments_extended_path {
-        let data = read_zip(
-            &mut archive,
-            comments_extended_path
-                .to_str()
-                .expect("should have comments extended."),
-        );
-        if let Ok(data) = data {
-            CommentsExtended::from_xml(&data[..])?
+        if let Some(comments_extended_path) = comments_extended_path.get(0) {
+            let data = read_zip(
+                &mut archive,
+                comments_extended_path
+                    .to_str()
+                    .expect("should have comments extended."),
+            );
+            if let Ok(data) = data {
+                CommentsExtended::from_xml(&data[..])?
+            } else {
+                CommentsExtended::default()
+            }
         } else {
             CommentsExtended::default()
         }
@@ -141,45 +151,49 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
     // Read comments
     let comments_path = rels.find_target_path(COMMENTS_TYPE);
-    let comments = if let Some(comments_path) = comments_path {
-        let data = read_zip(
-            &mut archive,
-            comments_path.to_str().expect("should have comments."),
-        );
-        if let Ok(data) = data {
-            let mut comments = Comments::from_xml(&data[..])?.into_inner();
-            for i in 0..comments.len() {
-                let c = &comments[i];
-                let extended = comments_extended.children.iter().find(|ex| {
-                    for child in &c.children {
-                        if let CommentChild::Paragraph(p) = child {
-                            if ex.paragraph_id == p.id {
-                                return true;
-                            }
-                        }
-                    }
-                    false
-                });
-                if let Some(CommentExtended {
-                    parent_paragraph_id: Some(parent_paragraph_id),
-                    ..
-                }) = extended
-                {
-                    if let Some(parent_comment) = comments.iter().find(|c| {
+    let comments = if let Some(paths) = comments_path {
+        if let Some(comments_path) = paths.get(0) {
+            let data = read_zip(
+                &mut archive,
+                comments_path.to_str().expect("should have comments."),
+            );
+            if let Ok(data) = data {
+                let mut comments = Comments::from_xml(&data[..])?.into_inner();
+                for i in 0..comments.len() {
+                    let c = &comments[i];
+                    let extended = comments_extended.children.iter().find(|ex| {
                         for child in &c.children {
                             if let CommentChild::Paragraph(p) = child {
-                                if &p.id == parent_paragraph_id {
+                                if ex.paragraph_id == p.id {
                                     return true;
                                 }
                             }
                         }
                         false
-                    }) {
-                        comments[i].parent_comment_id = Some(parent_comment.id);
+                    });
+                    if let Some(CommentExtended {
+                        parent_paragraph_id: Some(parent_paragraph_id),
+                        ..
+                    }) = extended
+                    {
+                        if let Some(parent_comment) = comments.iter().find(|c| {
+                            for child in &c.children {
+                                if let CommentChild::Paragraph(p) = child {
+                                    if &p.id == parent_paragraph_id {
+                                        return true;
+                                    }
+                                }
+                            }
+                            false
+                        }) {
+                            comments[i].parent_comment_id = Some(parent_comment.id);
+                        }
                     }
                 }
+                Comments { comments }
+            } else {
+                Comments::default()
             }
-            Comments { comments }
         } else {
             Comments::default()
         }
@@ -203,49 +217,56 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read document relationships
     // Read styles
     let style_path = rels.find_target_path(STYLE_RELATIONSHIP_TYPE);
-    if let Some(style_path) = style_path {
-        let data = read_zip(
-            &mut archive,
-            style_path.to_str().expect("should have styles"),
-        )?;
-        let styles = Styles::from_xml(&data[..])?;
-        docx = docx.styles(styles);
+    if let Some(paths) = style_path {
+        if let Some(style_path) = paths.get(0) {
+            let data = read_zip(
+                &mut archive,
+                style_path.to_str().expect("should have styles"),
+            )?;
+            let styles = Styles::from_xml(&data[..])?;
+            docx = docx.styles(styles);
+        }
     }
 
     // Read numberings
     let num_path = rels.find_target_path(NUMBERING_RELATIONSHIP_TYPE);
-    if let Some(num_path) = num_path {
-        let data = read_zip(
-            &mut archive,
-            num_path.to_str().expect("should have numberings"),
-        )?;
-        let nums = Numberings::from_xml(&data[..])?;
-        docx = docx.numberings(nums);
+    if let Some(paths) = num_path {
+        if let Some(num_path) = paths.get(0) {
+            let data = read_zip(
+                &mut archive,
+                num_path.to_str().expect("should have numberings"),
+            )?;
+            let nums = Numberings::from_xml(&data[..])?;
+            docx = docx.numberings(nums);
+        }
     }
 
     // Read settings
     let settings_path = rels.find_target_path(SETTINGS_TYPE);
-    if let Some(settings_path) = settings_path {
-        let data = read_zip(
-            &mut archive,
-            settings_path.to_str().expect("should have settings"),
-        )?;
-        let settings = Settings::from_xml(&data[..])?;
-        docx = docx.settings(settings);
+    if let Some(paths) = settings_path {
+        if let Some(settings_path) = paths.get(0) {
+            let data = read_zip(
+                &mut archive,
+                settings_path.to_str().expect("should have settings"),
+            )?;
+            let settings = Settings::from_xml(&data[..])?;
+            docx = docx.settings(settings);
+        }
     }
 
     // Read web settings
     let web_settings_path = rels.find_target_path(WEB_SETTINGS_TYPE);
-    dbg!(&web_settings_path);
-    if let Some(web_settings_path) = web_settings_path {
-        let data = read_zip(
-            &mut archive,
-            web_settings_path
-                .to_str()
-                .expect("should have web settings"),
-        )?;
-        let web_settings = WebSettings::from_xml(&data[..])?;
-        docx = docx.web_settings(web_settings);
+    if let Some(paths) = web_settings_path {
+        if let Some(web_settings_path) = paths.get(0) {
+            let data = read_zip(
+                &mut archive,
+                web_settings_path
+                    .to_str()
+                    .expect("should have web settings"),
+            )?;
+            let web_settings = WebSettings::from_xml(&data[..])?;
+            docx = docx.web_settings(web_settings);
+        }
     }
 
     Ok(docx)

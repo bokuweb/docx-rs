@@ -1,4 +1,5 @@
 use std::collections::BTreeMap;
+use std::collections::HashSet;
 use std::io::{Cursor, Read};
 use std::path::*;
 use std::str::FromStr;
@@ -10,12 +11,14 @@ use super::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ReadDocumentRels {
-    rels: BTreeMap<String, PathBuf>,
+    rels: BTreeMap<String, HashSet<PathBuf>>,
 }
 
 impl ReadDocumentRels {
-    pub fn find_target_path(&self, target: &str) -> Option<PathBuf> {
-        self.rels.get(target).cloned()
+    pub fn find_target_path(&self, target: &str) -> Option<Vec<PathBuf>> {
+        self.rels
+            .get(target)
+            .map(|s| s.clone().into_iter().collect())
     }
 }
 
@@ -60,7 +63,14 @@ fn read_rels_xml<R: Read>(
                             target = Path::new(dir.as_ref()).join(a.value);
                         }
                     }
-                    rels.rels.insert(rel_type, target);
+                    let current = rels.rels.remove(&rel_type);
+                    if let Some(mut paths) = current {
+                        paths.insert(target);
+                        rels.rels.insert(rel_type, paths);
+                    } else {
+                        let s: HashSet<PathBuf> = vec![target].into_iter().collect();
+                        rels.rels.insert(rel_type, s);
+                    }
                     continue;
                 }
             }

@@ -404,4 +404,36 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write firstHeader with table for default section", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello Header!!"));
+    const table = new w.Table().addRow(
+      new w.TableRow().addCell(new w.TableCell().addParagraph(p))
+    );
+    const header = new w.Header().addTable(table);
+    const buffer = new w.Docx().firstHeader(header).build();
+    writeFileSync("../output/first_header_with_table.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|header[1-9].xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write evenFooter with table for default section", () => {
+    const p = new w.Paragraph().addRun(new w.Run().addText("Hello Footer!!"));
+    const table = new w.Table().addRow(
+      new w.TableRow().addCell(new w.TableCell().addParagraph(p))
+    );
+    const footer = new w.Footer().addTable(table);
+    const buffer = new w.Docx().evenFooter(footer).build();
+    writeFileSync("../output/even_footer_with_table.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|footer[1-9].xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

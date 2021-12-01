@@ -157,8 +157,28 @@ export class Docx {
     return this;
   }
 
+  firstHeader(h: Header) {
+    this.sectionProperty._firstHeader = h;
+    return this;
+  }
+
+  evenHeader(h: Header) {
+    this.sectionProperty._evenHeader = h;
+    return this;
+  }
+
   footer(f: Footer) {
     this.sectionProperty._footer = f;
+    return this;
+  }
+
+  firstFooter(f: Footer) {
+    this.sectionProperty._firstFooter = f;
+    return this;
+  }
+
+  evenFooter(f: Footer) {
+    this.sectionProperty._evenFooter = f;
     return this;
   }
 
@@ -858,7 +878,11 @@ export class Docx {
     if (this.sectionProperty._header) {
       let header = wasm.createHeader();
       this.sectionProperty._header.children.forEach((c) => {
-        header = header.add_paragraph(this.buildParagraph(c));
+        if (c instanceof Paragraph) {
+          header = header.add_paragraph(this.buildParagraph(c));
+        } else {
+          header = header.add_table(this.buildTable(c));
+        }
       });
       docx = docx.header(header);
     }
@@ -866,7 +890,11 @@ export class Docx {
     if (this.sectionProperty._firstHeader) {
       let header = wasm.createHeader();
       this.sectionProperty._firstHeader.children.forEach((c) => {
-        header = header.add_paragraph(this.buildParagraph(c));
+        if (c instanceof Paragraph) {
+          header = header.add_paragraph(this.buildParagraph(c));
+        } else {
+          header = header.add_table(this.buildTable(c));
+        }
       });
       docx = docx.first_header(header);
     }
@@ -874,7 +902,11 @@ export class Docx {
     if (this.sectionProperty._evenHeader) {
       let header = wasm.createHeader();
       this.sectionProperty._evenHeader.children.forEach((c) => {
-        header = header.add_paragraph(this.buildParagraph(c));
+        if (c instanceof Paragraph) {
+          header = header.add_paragraph(this.buildParagraph(c));
+        } else {
+          header = header.add_table(this.buildTable(c));
+        }
       });
       docx = docx.even_header(header);
     }
@@ -882,7 +914,11 @@ export class Docx {
     if (this.sectionProperty._footer) {
       let footer = wasm.createFooter();
       this.sectionProperty._footer.children.forEach((c) => {
-        footer = footer.add_paragraph(this.buildParagraph(c));
+        if (c instanceof Paragraph) {
+          footer = footer.add_paragraph(this.buildParagraph(c));
+        } else {
+          footer = footer.add_table(this.buildTable(c));
+        }
       });
       docx = docx.footer(footer);
     }
@@ -890,7 +926,11 @@ export class Docx {
     if (this.sectionProperty._firstFooter) {
       let footer = wasm.createFooter();
       this.sectionProperty._firstFooter.children.forEach((c) => {
-        footer = footer.add_paragraph(this.buildParagraph(c));
+        if (c instanceof Paragraph) {
+          footer = footer.add_paragraph(this.buildParagraph(c));
+        } else {
+          footer = footer.add_table(this.buildTable(c));
+        }
       });
       docx = docx.first_footer(footer);
     }
@@ -898,7 +938,11 @@ export class Docx {
     if (this.sectionProperty._evenFooter) {
       let footer = wasm.createFooter();
       this.sectionProperty._evenFooter.children.forEach((c) => {
-        footer = footer.add_paragraph(this.buildParagraph(c));
+        if (c instanceof Paragraph) {
+          footer = footer.add_paragraph(this.buildParagraph(c));
+        } else {
+          footer = footer.add_table(this.buildTable(c));
+        }
       });
       docx = docx.even_footer(footer);
     }

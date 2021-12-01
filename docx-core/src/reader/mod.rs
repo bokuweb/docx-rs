@@ -16,6 +16,7 @@ mod document;
 mod document_rels;
 mod drawing;
 mod errors;
+mod footer;
 mod from_xml;
 mod header;
 mod ignore;
@@ -81,6 +82,8 @@ const WEB_SETTINGS_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings";
 const HEADER_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header";
+const FOOTER_TYPE: &str =
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer";
 // 2011
 const COMMENTS_EXTENDED_TYPE: &str =
     "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
@@ -97,16 +100,34 @@ fn read_headers(
             let data = read_zip(archive, path.to_str().expect("should have header path."));
             if let Ok(d) = data {
                 if let Ok(h) = Header::from_xml(&d[..]) {
-                    Some((rid, h))
-                } else {
-                    None
+                    return Some((rid, h));
                 }
-            } else {
-                None
             }
+            None
         })
         .collect();
     headers
+}
+
+fn read_footers(
+    rels: &ReadDocumentRels,
+    archive: &mut ZipArchive<Cursor<&[u8]>>,
+) -> HashMap<RId, Footer> {
+    let footer_paths = rels.find_target_path(FOOTER_TYPE);
+    let footers: HashMap<RId, Footer> = footer_paths
+        .unwrap_or_default()
+        .into_iter()
+        .filter_map(|(rid, path)| {
+            let data = read_zip(archive, path.to_str().expect("should have footer path."));
+            if let Ok(d) = data {
+                if let Ok(h) = Footer::from_xml(&d[..]) {
+                    return Some((rid, h));
+                }
+            }
+            None
+        })
+        .collect();
+    footers
 }
 
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
@@ -150,6 +171,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     let rels = read_document_rels(&mut archive, &document_path)?;
 
     let headers = read_headers(&rels, &mut archive);
+    let footers = read_footers(&rels, &mut archive);
 
     // Read commentsExtended
     let comments_extended_path = rels.find_target_path(COMMENTS_EXTENDED_TYPE);
@@ -250,6 +272,28 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     if let Some(ref h) = docx.document.section_property.even_header_reference.clone() {
         if let Some(header) = headers.get(&h.id) {
             docx.document = docx.document.even_header(header.clone(), &h.id);
+        }
+    }
+
+    // assign footers
+    if let Some(f) = docx.document.section_property.footer_reference.clone() {
+        if let Some(footer) = footers.get(&f.id) {
+            docx.document = docx.document.footer(footer.clone(), &f.id);
+        }
+    }
+    if let Some(ref f) = docx
+        .document
+        .section_property
+        .first_footer_reference
+        .clone()
+    {
+        if let Some(footer) = footers.get(&f.id) {
+            docx.document = docx.document.first_footer(footer.clone(), &f.id);
+        }
+    }
+    if let Some(ref f) = docx.document.section_property.even_footer_reference.clone() {
+        if let Some(footer) = footers.get(&f.id) {
+            docx.document = docx.document.even_footer(footer.clone(), &f.id);
         }
     }
 

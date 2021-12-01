@@ -6,8 +6,8 @@ use serde::Serialize;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FooterReference {
-    footer_type: String,
-    id: String,
+    pub footer_type: String,
+    pub id: String,
 }
 
 impl FooterReference {

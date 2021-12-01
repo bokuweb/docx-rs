@@ -57,7 +57,9 @@ fn read_page_margin(
     Ok(margin)
 }
 
-fn read_header_reference(attributes: &[OwnedAttribute]) -> Result<(String, String), ReaderError> {
+fn read_header_or_footer_reference(
+    attributes: &[OwnedAttribute],
+) -> Result<(String, String), ReaderError> {
     let mut rid = "".to_owned();
     let mut header_type = "default".to_owned();
     for a in attributes {
@@ -103,7 +105,9 @@ impl ElementReader for SectionProperty {
                             }
                         }
                         XMLElement::HeaderReference => {
-                            if let Ok((rid, header_type)) = read_header_reference(&attributes) {
+                            if let Ok((rid, header_type)) =
+                                read_header_or_footer_reference(&attributes)
+                            {
                                 match header_type.as_str() {
                                     "default" => {
                                         sp.header_reference =
@@ -116,6 +120,27 @@ impl ElementReader for SectionProperty {
                                     "even" => {
                                         sp.even_header_reference =
                                             Some(HeaderReference::new(header_type, rid));
+                                    }
+                                    _ => {}
+                                }
+                            }
+                        }
+                        XMLElement::FooterReference => {
+                            if let Ok((rid, footer_type)) =
+                                read_header_or_footer_reference(&attributes)
+                            {
+                                match footer_type.as_str() {
+                                    "default" => {
+                                        sp.footer_reference =
+                                            Some(FooterReference::new(footer_type, rid));
+                                    }
+                                    "first" => {
+                                        sp.first_footer_reference =
+                                            Some(FooterReference::new(footer_type, rid));
+                                    }
+                                    "even" => {
+                                        sp.even_footer_reference =
+                                            Some(FooterReference::new(footer_type, rid));
                                     }
                                     _ => {}
                                 }

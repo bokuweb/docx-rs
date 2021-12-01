@@ -114,20 +114,20 @@ impl ContentTypes {
     }
 
     pub fn add_header(mut self) -> Self {
+        self.header_count += 1;
         self.types.insert(
             format!("/word/header{}.xml", self.header_count),
             "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml".to_owned(),
         );
-        self.header_count += 1;
         self
     }
 
     pub fn add_footer(mut self) -> Self {
+        self.footer_count += 1;
         self.types.insert(
             format!("/word/footer{}.xml", self.footer_count),
             "application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml".to_owned(),
         );
-        self.footer_count += 1;
         self
     }
 }
@@ -138,8 +138,8 @@ impl Default for ContentTypes {
             types: BTreeMap::new(),
             web_extension_count: 1,
             custom_xml_count: 1,
-            header_count: 1,
-            footer_count: 1,
+            header_count: 0,
+            footer_count: 0,
         }
     }
 }
@@ -219,8 +219,8 @@ mod tests {
                 types,
                 web_extension_count: 1,
                 custom_xml_count: 1,
-                header_count: 1,
-                footer_count: 1,
+                header_count: 0,
+                footer_count: 0,
             },
             c
         );

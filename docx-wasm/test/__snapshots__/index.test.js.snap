@@ -10,8 +10,8 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
-    "header_count": 1,
+    "footer_count": 0,
+    "header_count": 0,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -1570,7 +1570,7 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
+    "footer_count": 0,
     "header_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
@@ -1582,6 +1582,7 @@ Object {
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
       "/word/document.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
       "/word/fontTable.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml",
+      "/word/header1.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml",
       "/word/numbering.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml",
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
@@ -1725,7 +1726,7 @@ Object {
     "footerCount": 0,
     "hasComments": false,
     "hasNumberings": false,
-    "headerCount": 0,
+    "headerCount": 1,
     "imageIds": Array [],
   },
   "fontTable": Object {},
@@ -1948,8 +1949,8 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
-    "header_count": 1,
+    "footer_count": 0,
+    "header_count": 0,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -3278,7 +3279,7 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
+    "footer_count": 0,
     "header_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
@@ -3290,6 +3291,7 @@ Object {
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
       "/word/document.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
       "/word/fontTable.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml",
+      "/word/header1.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml",
       "/word/numbering.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml",
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
@@ -3853,7 +3855,7 @@ Object {
     "footerCount": 0,
     "hasComments": true,
     "hasNumberings": false,
-    "headerCount": 0,
+    "headerCount": 1,
     "imageIds": Array [],
   },
   "fontTable": Object {},
@@ -4076,8 +4078,8 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
-    "header_count": 1,
+    "footer_count": 3,
+    "header_count": 3,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -4088,6 +4090,12 @@ Object {
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
       "/word/document.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
       "/word/fontTable.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml",
+      "/word/footer1.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml",
+      "/word/footer2.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml",
+      "/word/footer3.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml",
+      "/word/header1.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml",
+      "/word/header2.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml",
+      "/word/header3.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml",
       "/word/numbering.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml",
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
@@ -4538,10 +4546,10 @@ Object {
   },
   "documentRels": Object {
     "customXmlCount": 0,
-    "footerCount": 0,
+    "footerCount": 3,
     "hasComments": false,
     "hasNumberings": false,
-    "headerCount": 0,
+    "headerCount": 3,
     "imageIds": Array [],
   },
   "fontTable": Object {},
@@ -5680,8 +5688,8 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
-    "header_count": 1,
+    "footer_count": 0,
+    "header_count": 0,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -8567,7 +8575,7 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
+    "footer_count": 0,
     "header_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
@@ -8579,6 +8587,7 @@ Object {
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
       "/word/document.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
       "/word/fontTable.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml",
+      "/word/header1.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml",
       "/word/numbering.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml",
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
@@ -8875,7 +8884,7 @@ Object {
     "footerCount": 0,
     "hasComments": false,
     "hasNumberings": false,
-    "headerCount": 0,
+    "headerCount": 1,
     "imageIds": Array [],
   },
   "fontTable": Object {},
@@ -9098,8 +9107,8 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
-    "header_count": 1,
+    "footer_count": 0,
+    "header_count": 0,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -12881,7 +12890,7 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
+    "footer_count": 0,
     "header_count": 1,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
@@ -12893,6 +12902,7 @@ Object {
       "/word/commentsExtended.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.commentsExtended+xml",
       "/word/document.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
       "/word/fontTable.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml",
+      "/word/header1.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml",
       "/word/numbering.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml",
       "/word/settings.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml",
       "/word/styles.xml": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml",
@@ -14214,7 +14224,7 @@ Object {
     "footerCount": 0,
     "hasComments": true,
     "hasNumberings": false,
-    "headerCount": 0,
+    "headerCount": 1,
     "imageIds": Array [],
   },
   "fontTable": Object {},
@@ -16958,8 +16968,8 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
-    "header_count": 1,
+    "footer_count": 0,
+    "header_count": 0,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -21407,8 +21417,8 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
-    "header_count": 1,
+    "footer_count": 0,
+    "header_count": 0,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -23029,8 +23039,8 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
-    "header_count": 1,
+    "footer_count": 0,
+    "header_count": 0,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",
@@ -24293,8 +24303,8 @@ Object {
   },
   "contentType": Object {
     "custom_xml_count": 1,
-    "footer_count": 1,
-    "header_count": 1,
+    "footer_count": 0,
+    "header_count": 0,
     "types": Object {
       "/_rels/.rels": "application/vnd.openxmlformats-package.relationships+xml",
       "/docProps/app.xml": "application/vnd.openxmlformats-officedocument.extended-properties+xml",

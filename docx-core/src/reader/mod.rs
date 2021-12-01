@@ -257,6 +257,9 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     if let Some(h) = docx.document.section_property.header_reference.clone() {
         if let Some(header) = headers.get(&h.id) {
             docx.document = docx.document.header(header.clone(), &h.id);
+            let count = docx.document_rels.header_count + 1;
+            docx.document_rels.header_count = count;
+            docx.content_type = docx.content_type.add_header();
         }
     }
     if let Some(ref h) = docx
@@ -267,11 +270,17 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     {
         if let Some(header) = headers.get(&h.id) {
             docx.document = docx.document.first_header(header.clone(), &h.id);
+            let count = docx.document_rels.header_count + 1;
+            docx.document_rels.header_count = count;
+            docx.content_type = docx.content_type.add_header();
         }
     }
     if let Some(ref h) = docx.document.section_property.even_header_reference.clone() {
         if let Some(header) = headers.get(&h.id) {
             docx.document = docx.document.even_header(header.clone(), &h.id);
+            let count = docx.document_rels.header_count + 1;
+            docx.document_rels.header_count = count;
+            docx.content_type = docx.content_type.add_header();
         }
     }
 
@@ -279,6 +288,9 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     if let Some(f) = docx.document.section_property.footer_reference.clone() {
         if let Some(footer) = footers.get(&f.id) {
             docx.document = docx.document.footer(footer.clone(), &f.id);
+            let count = docx.document_rels.footer_count + 1;
+            docx.document_rels.footer_count = count;
+            docx.content_type = docx.content_type.add_footer();
         }
     }
     if let Some(ref f) = docx
@@ -289,11 +301,17 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     {
         if let Some(footer) = footers.get(&f.id) {
             docx.document = docx.document.first_footer(footer.clone(), &f.id);
+            let count = docx.document_rels.footer_count + 1;
+            docx.document_rels.footer_count = count;
+            docx.content_type = docx.content_type.add_footer();
         }
     }
     if let Some(ref f) = docx.document.section_property.even_footer_reference.clone() {
         if let Some(footer) = footers.get(&f.id) {
             docx.document = docx.document.even_footer(footer.clone(), &f.id);
+            let count = docx.document_rels.footer_count + 1;
+            docx.document_rels.footer_count = count;
+            docx.content_type = docx.content_type.add_footer();
         }
     }
 

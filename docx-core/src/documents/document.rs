@@ -21,6 +21,7 @@ pub enum DocumentChild {
     BookmarkEnd(BookmarkEnd),
     CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
+    StructuredDataTag(StructuredDataTag),
 }
 
 impl Serialize for DocumentChild {
@@ -62,6 +63,12 @@ impl Serialize for DocumentChild {
             DocumentChild::CommentEnd(ref r) => {
                 let mut t = serializer.serialize_struct("CommentRangeEnd", 2)?;
                 t.serialize_field("type", "commentRangeEnd")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            DocumentChild::StructuredDataTag(ref r) => {
+                let mut t = serializer.serialize_struct("StructuredDataTag", 2)?;
+                t.serialize_field("type", "structuredDataTag")?;
                 t.serialize_field("data", r)?;
                 t.end()
             }
@@ -179,6 +186,14 @@ impl Document {
         self.section_property = self.section_property.even_footer(h, rid);
         self
     }
+
+    pub fn add_structured_data_tag(mut self, t: StructuredDataTag) -> Self {
+        if t.has_numbering {
+            self.has_numbering = true
+        }
+        self.children.push(DocumentChild::StructuredDataTag(t));
+        self
+    }
 }
 
 impl BuildXML for DocumentChild {
@@ -190,6 +205,7 @@ impl BuildXML for DocumentChild {
             DocumentChild::BookmarkEnd(v) => v.build(),
             DocumentChild::CommentStart(v) => v.build(),
             DocumentChild::CommentEnd(v) => v.build(),
+            DocumentChild::StructuredDataTag(v) => v.build(),
         }
     }
 }

@@ -191,6 +191,16 @@ impl Docx {
         self
     }
 
+    pub fn add_structured_data_tag(mut self, t: StructuredDataTag) -> Docx {
+        if t.has_numbering {
+            // If this document has numbering, set numberings.xml to document_rels.
+            // This is because numberings.xml without numbering cause an error on word online.
+            self.document_rels.has_numberings = true;
+        }
+        self.document = self.document.add_structured_data_tag(t);
+        self
+    }
+
     pub fn add_bookmark_start(mut self, id: usize, name: impl Into<String>) -> Docx {
         self.document = self.document.add_bookmark_start(id, name);
         self

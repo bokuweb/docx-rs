@@ -72,6 +72,11 @@ impl XMLBuilder {
     open!(open_paragraph, "w:p", "w14:paraId");
     open!(open_paragraph_property, "w:pPr");
     open!(open_doc_defaults, "w:docDefaults");
+
+    open!(open_structured_tag, "w:sdt");
+    open!(open_structured_tag_content, "w:sdtContent");
+    open!(open_structured_tag_property, "w:sdtPr");
+
     // i.e. <w:outlineLvl ...>
     closed_with_usize!(outline_lvl, "w:outlineLvl");
     // i.e. <w:name ... >

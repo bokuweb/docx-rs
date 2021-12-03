@@ -92,6 +92,8 @@ impl XMLBuilder {
     // i.e. <w:szCs ... >
     closed_with_usize!(sz_cs, "w:szCs");
 
+    closed!(field_character, "w:fldChar", "w:type", "w:dirty");
+
     closed_with_str!(text_direction, "w:textDirection");
 
     closed!(b, "w:b");

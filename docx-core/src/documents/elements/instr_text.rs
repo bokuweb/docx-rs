@@ -1,8 +1,9 @@
 use serde::Serialize;
 
 use crate::documents::*;
-use crate::types::*;
 use crate::xml_builder::*;
+
+use super::instrs::toc::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
 pub enum InstrText {
@@ -10,17 +11,18 @@ pub enum InstrText {
     Unsupported,
 }
 
-// https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TOCTOC_topic_ID0ELZO1.html
-#[derive(Serialize, Debug, Clone, PartialEq)]
-pub struct ToC {}
-
 impl BuildXML for InstrText {
     fn build(&self) -> Vec<u8> {
+        if self == &InstrText::Unsupported {
+            return vec![];
+        }
         XMLBuilder::new()
-            .field_character(
-                &format!("{}", self.field_char_type),
-                &format!("{}", &self.dirty),
-            )
+            .open_instr_text()
+            .add_child(match self {
+                Self::ToC(toc) => toc,
+                _ => unreachable!(),
+            })
+            .close()
             .build()
     }
 }
@@ -34,11 +36,11 @@ mod tests {
     use std::str;
 
     #[test]
-    fn test_field_character() {
-        let b = InstrText::new(FieldCharType::Begin).dirty().build();
+    fn test_toc_instr() {
+        let b = InstrText::ToC(ToC::new().heading_styles_range(1, 3)).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:fldChar w:type="begin" w:dirty="true" />"#
+            r#"<w:instrText>ToC \o "1-3"</w:instrText>"#
         );
     }
 }

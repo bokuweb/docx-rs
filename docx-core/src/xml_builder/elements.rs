@@ -94,6 +94,8 @@ impl XMLBuilder {
 
     closed!(field_character, "w:fldChar", "w:type", "w:dirty");
 
+    open!(open_instr_text, "w:instrText");
+
     closed_with_str!(text_direction, "w:textDirection");
 
     closed!(b, "w:b");

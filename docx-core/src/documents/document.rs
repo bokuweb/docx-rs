@@ -22,6 +22,7 @@ pub enum DocumentChild {
     CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
     StructuredDataTag(StructuredDataTag),
+    TableOfContents(TableOfContents),
 }
 
 impl Serialize for DocumentChild {
@@ -69,6 +70,12 @@ impl Serialize for DocumentChild {
             DocumentChild::StructuredDataTag(ref r) => {
                 let mut t = serializer.serialize_struct("StructuredDataTag", 2)?;
                 t.serialize_field("type", "structuredDataTag")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            DocumentChild::TableOfContents(ref r) => {
+                let mut t = serializer.serialize_struct("TableOfContents", 2)?;
+                t.serialize_field("type", "tableOfContents")?;
                 t.serialize_field("data", r)?;
                 t.end()
             }
@@ -194,6 +201,11 @@ impl Document {
         self.children.push(DocumentChild::StructuredDataTag(t));
         self
     }
+
+    pub fn add_table_of_contents(mut self, t: TableOfContents) -> Self {
+        self.children.push(DocumentChild::TableOfContents(t));
+        self
+    }
 }
 
 impl BuildXML for DocumentChild {
@@ -206,6 +218,7 @@ impl BuildXML for DocumentChild {
             DocumentChild::CommentStart(v) => v.build(),
             DocumentChild::CommentEnd(v) => v.build(),
             DocumentChild::StructuredDataTag(v) => v.build(),
+            DocumentChild::TableOfContents(v) => v.build(),
         }
     }
 }
@@ -243,6 +256,22 @@ mod tests {
             r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:document xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" mc:Ignorable="w14 wp14">
   <w:body><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p><w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" /><w:docGrid w:type="lines" w:linePitch="360" /></w:sectPr></w:body>
+</w:document>"#
+        );
+    }
+
+    #[test]
+    fn test_document_with_toc() {
+        let toc = TableOfContents::new().heading_styles_range(1, 3);
+        let b = Document::new().add_table_of_contents(toc).build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" mc:Ignorable="w14 wp14">
+  <w:body><w:sdt>
+  <w:sdtPr />
+  <w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="true" /><w:instrText>TOC \o &quot;1-3&quot;</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /></w:r></w:p><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
+</w:sdt><w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" /><w:docGrid w:type="lines" w:linePitch="360" /></w:sectPr></w:body>
 </w:document>"#
         );
     }

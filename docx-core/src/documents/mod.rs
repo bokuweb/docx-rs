@@ -155,6 +155,11 @@ impl Docx {
         self
     }
 
+    pub fn add_style(mut self, s: Style) -> Self {
+        self.styles = self.styles.add_style(s);
+        self
+    }
+
     pub fn numberings(mut self, n: Numberings) -> Self {
         self.numberings = n;
         self
@@ -198,6 +203,11 @@ impl Docx {
             self.document_rels.has_numberings = true;
         }
         self.document = self.document.add_structured_data_tag(t);
+        self
+    }
+
+    pub fn add_table_of_contents(mut self, t: TableOfContents) -> Docx {
+        self.document = self.document.add_table_of_contents(t);
         self
     }
 

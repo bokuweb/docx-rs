@@ -32,6 +32,8 @@ pub enum RunChild {
     Drawing(Box<Drawing>),
     CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
+    FieldChar(FieldChar),
+    InstrText(InstrText),
 }
 
 impl Serialize for RunChild {
@@ -81,6 +83,18 @@ impl Serialize for RunChild {
                 t.serialize_field("data", r)?;
                 t.end()
             }
+            RunChild::FieldChar(ref f) => {
+                let mut t = serializer.serialize_struct("FieldChar", 2)?;
+                t.serialize_field("type", "fieldChar")?;
+                t.serialize_field("data", f)?;
+                t.end()
+            }
+            RunChild::InstrText(ref i) => {
+                let mut t = serializer.serialize_struct("InstrText", 2)?;
+                t.serialize_field("type", "instrText")?;
+                t.serialize_field("data", i)?;
+                t.end()
+            }
         }
     }
 }
@@ -100,6 +114,20 @@ impl Run {
     pub fn add_delete_text(mut self, text: impl Into<String>) -> Run {
         self.children
             .push(RunChild::DeleteText(DeleteText::new(text)));
+        self
+    }
+
+    pub fn add_field_char(mut self, t: crate::types::FieldCharType, dirty: bool) -> Run {
+        let mut f = FieldChar::new(t);
+        if dirty {
+            f = f.dirty();
+        };
+        self.children.push(RunChild::FieldChar(f));
+        self
+    }
+
+    pub fn add_instr_text(mut self, i: impl Into<String>) -> Run {
+        self.children.push(RunChild::InstrText(InstrText::new(i)));
         self
     }
 
@@ -216,6 +244,8 @@ impl BuildXML for Run {
                 RunChild::Drawing(t) => b = b.add_child(t),
                 RunChild::CommentStart(c) => b = b.add_child(c),
                 RunChild::CommentEnd(c) => b = b.add_child(c),
+                RunChild::FieldChar(c) => b = b.add_child(c),
+                RunChild::InstrText(c) => b = b.add_child(c),
             }
         }
         b.close().build()

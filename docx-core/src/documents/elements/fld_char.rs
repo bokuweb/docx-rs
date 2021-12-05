@@ -48,7 +48,7 @@ mod tests {
         let b = FieldChar::new(FieldCharType::Begin).dirty().build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:fldChar w:type="begin" w:dirty="true" />"#
+            r#"<w:fldChar w:fldCharType="begin" w:dirty="true" />"#
         );
     }
 }

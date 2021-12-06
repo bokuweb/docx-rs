@@ -10,6 +10,7 @@ use crate::xml_builder::*;
 #[serde(rename_all = "camelCase")]
 pub struct StructuredDataTag {
     pub children: Vec<StructuredDataTagChild>,
+    pub property: StructuredDataTagProperty,
     pub has_numbering: bool,
 }
 
@@ -17,6 +18,7 @@ impl Default for StructuredDataTag {
     fn default() -> Self {
         Self {
             children: Vec::new(),
+            property: StructuredDataTagProperty::new(),
             has_numbering: false,
         }
     }
@@ -26,6 +28,12 @@ impl Default for StructuredDataTag {
 pub enum StructuredDataTagChild {
     Run(Box<Run>),
     Paragraph(Box<Paragraph>),
+    Table(Box<Table>),
+    BookmarkStart(BookmarkStart),
+    BookmarkEnd(BookmarkEnd),
+    CommentStart(Box<CommentRangeStart>),
+    CommentEnd(CommentRangeEnd),
+    StructuredDataTag(StructuredDataTag),
 }
 
 impl BuildXML for StructuredDataTagChild {
@@ -33,6 +41,12 @@ impl BuildXML for StructuredDataTagChild {
         match self {
             StructuredDataTagChild::Run(v) => v.build(),
             StructuredDataTagChild::Paragraph(v) => v.build(),
+            StructuredDataTagChild::Table(v) => v.build(),
+            StructuredDataTagChild::BookmarkStart(v) => v.build(),
+            StructuredDataTagChild::BookmarkEnd(v) => v.build(),
+            StructuredDataTagChild::CommentStart(v) => v.build(),
+            StructuredDataTagChild::CommentEnd(v) => v.build(),
+            StructuredDataTagChild::StructuredDataTag(v) => v.build(),
         }
     }
 }
@@ -52,6 +66,42 @@ impl Serialize for StructuredDataTagChild {
             StructuredDataTagChild::Paragraph(ref r) => {
                 let mut t = serializer.serialize_struct("Paragraph", 2)?;
                 t.serialize_field("type", "paragraph")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            StructuredDataTagChild::Table(ref r) => {
+                let mut t = serializer.serialize_struct("Table", 2)?;
+                t.serialize_field("type", "table")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            StructuredDataTagChild::BookmarkStart(ref c) => {
+                let mut t = serializer.serialize_struct("BookmarkStart", 2)?;
+                t.serialize_field("type", "bookmarkStart")?;
+                t.serialize_field("data", c)?;
+                t.end()
+            }
+            StructuredDataTagChild::BookmarkEnd(ref c) => {
+                let mut t = serializer.serialize_struct("BookmarkEnd", 2)?;
+                t.serialize_field("type", "bookmarkEnd")?;
+                t.serialize_field("data", c)?;
+                t.end()
+            }
+            StructuredDataTagChild::CommentStart(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeStart", 2)?;
+                t.serialize_field("type", "commentRangeStart")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            StructuredDataTagChild::CommentEnd(ref r) => {
+                let mut t = serializer.serialize_struct("CommentRangeEnd", 2)?;
+                t.serialize_field("type", "commentRangeEnd")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            StructuredDataTagChild::StructuredDataTag(ref r) => {
+                let mut t = serializer.serialize_struct("StructuredDataTag", 2)?;
+                t.serialize_field("type", "structuredDataTag")?;
                 t.serialize_field("data", r)?;
                 t.end()
             }
@@ -78,14 +128,22 @@ impl StructuredDataTag {
             .push(StructuredDataTagChild::Paragraph(Box::new(p)));
         self
     }
+
+    pub fn add_table(mut self, t: Table) -> Self {
+        if t.has_numbering {
+            self.has_numbering = true
+        }
+        self.children
+            .push(StructuredDataTagChild::Table(Box::new(t)));
+        self
+    }
 }
 
 impl BuildXML for StructuredDataTag {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_structured_tag()
-            .open_structured_tag_property()
-            .close()
+            .add_child(&self.property)
             .open_structured_tag_content()
             .add_children(&self.children)
             .close()

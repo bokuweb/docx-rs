@@ -27,7 +27,7 @@ impl ElementReader for InstrText {
                             if instr.is_empty() {
                                 return Err(ReaderError::XMLReadError);
                             } else {
-                                return Ok(InstrText::new(instr));
+                                return Ok(InstrText::Unsupported(instr));
                             }
                         }
                         _ => {}

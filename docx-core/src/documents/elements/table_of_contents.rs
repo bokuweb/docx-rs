@@ -21,7 +21,7 @@ impl TableOfContents {
         self
     }
 
-    fn build_instr_text(&self) -> String {
+    pub fn build_instr_text(&self) -> String {
         let mut instr = "TOC".to_string();
 
         if let Some(heading_styles_range) = self.heading_styles_range {
@@ -39,7 +39,7 @@ impl BuildXML for TableOfContents {
         let p1 = Paragraph::new().add_run(
             Run::new()
                 .add_field_char(FieldCharType::Begin, true)
-                .add_instr_text(self.build_instr_text())
+                .add_instr_text(InstrText::TOC(self.clone()))
                 .add_field_char(FieldCharType::Separate, false),
         );
         let p2 = Paragraph::new().add_run(Run::new().add_field_char(FieldCharType::End, false));

@@ -81,6 +81,12 @@ describe("reader", () => {
     expect(json).toMatchSnapshot();
   });
 
+  test("should read toc1 docx", () => {
+    const buffer = readFileSync("../fixtures/toc1/toc1.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
+
   test("should read footer docx", () => {
     const buffer = readFileSync("../fixtures/footer/footer.docx");
     const json = w.readDocx(buffer);

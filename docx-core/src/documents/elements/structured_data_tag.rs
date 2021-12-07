@@ -33,7 +33,7 @@ pub enum StructuredDataTagChild {
     BookmarkEnd(BookmarkEnd),
     CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
-    StructuredDataTag(StructuredDataTag),
+    StructuredDataTag(Box<StructuredDataTag>),
 }
 
 impl BuildXML for StructuredDataTagChild {
@@ -167,9 +167,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sdt>
-  <w:sdtPr />
-  <w:sdtContent><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:sdtContent>
+            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:sdtContent>
 </w:sdt>"#
         );
     }

@@ -86,6 +86,12 @@ impl XMLBuilder {
         self
     }
 
+    pub(crate) fn add_bytes(mut self, child: &[u8]) -> Self {
+        let text = str::from_utf8(child).unwrap();
+        self.writer.write(text).expect("should write to buf");
+        self
+    }
+
     pub(crate) fn add_optional_child<T>(mut self, child: &Option<T>) -> Self
     where
         T: BuildXML,

@@ -6,10 +6,7 @@ use crate::xml_builder::*;
 
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TOCTOC_topic_ID0ELZO1.html
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
-pub struct TableOfContents {
-    //  If no heading range is specified, all heading levels used in the document are listed.
-    heading_styles_range: Option<(usize, usize)>,
-}
+pub struct TableOfContents(pub InstrToC);
 
 impl TableOfContents {
     pub fn new() -> Self {
@@ -17,20 +14,8 @@ impl TableOfContents {
     }
 
     pub fn heading_styles_range(mut self, start: usize, end: usize) -> Self {
-        self.heading_styles_range = Some((start, end));
+        self.0 = self.0.heading_styles_range(start, end);
         self
-    }
-
-    pub fn build_instr_text(&self) -> String {
-        let mut instr = "TOC".to_string();
-
-        if let Some(heading_styles_range) = self.heading_styles_range {
-            instr = format!(
-                "{} \\o &quot;{}-{}&quot;",
-                instr, heading_styles_range.0, heading_styles_range.1
-            );
-        }
-        instr
     }
 }
 
@@ -39,7 +24,7 @@ impl BuildXML for TableOfContents {
         let p1 = Paragraph::new().add_run(
             Run::new()
                 .add_field_char(FieldCharType::Begin, true)
-                .add_instr_text(InstrText::TOC(self.clone()))
+                .add_instr_text(InstrText::TOC(self.0.clone()))
                 .add_field_char(FieldCharType::Separate, false),
         );
         let p2 = Paragraph::new().add_run(Run::new().add_field_char(FieldCharType::End, false));

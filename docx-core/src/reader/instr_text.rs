@@ -24,10 +24,17 @@ impl ElementReader for InstrText {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::InstrText => {
+                            let instr = instr.trim();
                             if instr.is_empty() {
                                 return Err(ReaderError::XMLReadError);
                             } else {
-                                return Ok(InstrText::Unsupported(instr));
+                                if instr.starts_with("TOC") {
+                                    for i in instr.split(' ') {
+                                        dbg!(i);
+                                    }
+                                    return Ok(InstrText::TOC(InstrToC::new()));
+                                }
+                                return Ok(InstrText::Unsupported(instr.to_string()));
                             }
                         }
                         _ => {}

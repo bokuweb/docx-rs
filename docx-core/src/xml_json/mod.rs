@@ -39,7 +39,7 @@ impl fmt::Display for XmlDocument {
 
 /// An XML Tag
 ///
-/// For exammple:
+/// For example:
 ///
 /// ```XML
 /// <foo bar="baz">
@@ -60,12 +60,12 @@ pub struct XmlData {
 }
 
 // Generate indentation
-fn indent(size: usize) -> String {
-    const INDENT: &str = "    ";
-    (0..size)
-        .map(|_| INDENT)
-        .fold(String::with_capacity(size * INDENT.len()), |r, s| r + s)
-}
+// fn indent(size: usize) -> String {
+//     const INDENT: &str = "    ";
+//     (0..size)
+//         .map(|_| INDENT)
+//         .fold(String::with_capacity(size * INDENT.len()), |r, s| r + s)
+// }
 
 // Get the attributes as a string
 fn attributes_to_string(attributes: &[(String, String)]) -> String {
@@ -88,22 +88,20 @@ fn format(data: &XmlData, depth: usize) -> String {
         sub
     };
 
-    let indt = indent(depth);
+    // let indt = indent(depth);
 
     let fmt_data = if let Some(ref d) = data.data {
-        format!("\n{}{}", indent(depth + 1), d)
+        format!("\n{}", d)
     } else {
         "".to_string()
     };
 
     format!(
-        "{}<{}{}>{}{}\n{}</{}>\n",
-        indt,
+        "<{}{}>{}{}</{}>",
         data.name,
         attributes_to_string(&data.attributes),
         fmt_data,
         sub,
-        indt,
         data.name
     )
 }

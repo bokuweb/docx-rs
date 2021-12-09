@@ -10,6 +10,7 @@ use crate::xml_builder::*;
 #[serde(rename_all = "camelCase")]
 pub struct StructuredDataTag {
     pub children: Vec<StructuredDataTagChild>,
+    pub property: StructuredDataTagProperty,
     pub has_numbering: bool,
 }
 
@@ -17,6 +18,7 @@ impl Default for StructuredDataTag {
     fn default() -> Self {
         Self {
             children: Vec::new(),
+            property: StructuredDataTagProperty::new(),
             has_numbering: false,
         }
     }
@@ -78,14 +80,18 @@ impl StructuredDataTag {
             .push(StructuredDataTagChild::Paragraph(Box::new(p)));
         self
     }
+
+    pub fn data_binding(mut self, d: DataBinding) -> Self {
+        self.property = self.property.data_binding(d);
+        self
+    }
 }
 
 impl BuildXML for StructuredDataTag {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_structured_tag()
-            .open_structured_tag_property()
-            .close()
+            .add_child(&self.property)
             .open_structured_tag_content()
             .add_children(&self.children)
             .close()
@@ -105,13 +111,12 @@ mod tests {
     #[test]
     fn test_sdt() {
         let b = StructuredDataTag::new()
+            .data_binding(DataBinding::new().xpath("root/hello"))
             .add_run(Run::new().add_text("Hello"))
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sdt>
-  <w:sdtPr />
-  <w:sdtContent><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:sdtContent>
+            r#"<w:sdt><w:sdtPr><w:rPr /><w:dataBinding w:xpath="root/hello" /></w:sdtPr><w:sdtContent><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:sdtContent>
 </w:sdt>"#
         );
     }

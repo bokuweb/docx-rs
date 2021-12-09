@@ -61,6 +61,27 @@ impl XMLBuilder {
         self.writer.write(text).expect(EXPECT_MESSAGE);
         self.close()
     }
+
+    pub(crate) fn data_binding(
+        mut self,
+        xpath: Option<&String>,
+        prefix_mappings: Option<&String>,
+        store_item_id: Option<&String>,
+    ) -> Self {
+        let mut e = XmlEvent::start_element("w:dataBinding");
+        if let Some(xpath) = xpath {
+            e = e.attr("w:xpath", xpath);
+        }
+        if let Some(prefix_mappings) = prefix_mappings {
+            e = e.attr("w:prefixMappings", prefix_mappings);
+        }
+        if let Some(store_item_id) = store_item_id {
+            e = e.attr("w:storeItemID", store_item_id);
+        }
+        self.writer.write(e).expect(EXPECT_MESSAGE);
+        self.close()
+    }
+
     // i.e. <w:r ... >
     open!(open_run, "w:r");
     open!(open_run_property, "w:rPr");

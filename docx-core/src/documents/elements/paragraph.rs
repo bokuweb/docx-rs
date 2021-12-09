@@ -35,6 +35,7 @@ pub enum ParagraphChild {
     BookmarkEnd(BookmarkEnd),
     CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
+    StructuredDataTag(Box<StructuredDataTag>),
 }
 
 impl BuildXML for ParagraphChild {
@@ -47,6 +48,7 @@ impl BuildXML for ParagraphChild {
             ParagraphChild::BookmarkEnd(v) => v.build(),
             ParagraphChild::CommentStart(v) => v.build(),
             ParagraphChild::CommentEnd(v) => v.build(),
+            ParagraphChild::StructuredDataTag(v) => v.build(),
         }
     }
 }
@@ -99,6 +101,12 @@ impl Serialize for ParagraphChild {
                 t.serialize_field("data", r)?;
                 t.end()
             }
+            ParagraphChild::StructuredDataTag(ref r) => {
+                let mut t = serializer.serialize_struct("StructuredDataTag", 2)?;
+                t.serialize_field("type", "structuredDataTag")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
         }
     }
 }
@@ -119,6 +127,12 @@ impl Paragraph {
 
     pub fn add_run(mut self, run: Run) -> Paragraph {
         self.children.push(ParagraphChild::Run(Box::new(run)));
+        self
+    }
+
+    pub fn add_structured_data_tag(mut self, t: StructuredDataTag) -> Self {
+        self.children
+            .push(ParagraphChild::StructuredDataTag(Box::new(t)));
         self
     }
 

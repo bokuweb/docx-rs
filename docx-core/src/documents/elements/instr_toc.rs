@@ -18,6 +18,8 @@ pub struct InstrToC {
     // A range is specified as for \l.
     #[serde(skip_serializing_if = "Option::is_none")]
     omit_page_numbers_level_range: Option<(usize, usize)>,
+    // \b includes entries only from the portion of the document marked by the bookmark named by text in this switch's field-argument.
+    entry_bookmark_name: Option<String>,
     // \p text in this switch's field-argument specifies a sequence of characters that separate an entry and its page number.
     // .  The default is a tab with leader dots.
     separator_text: Option<String>,
@@ -51,6 +53,11 @@ impl InstrToC {
 
     pub fn separator_text(mut self, t: impl Into<String>) -> Self {
         self.separator_text = Some(t.into());
+        self
+    }
+
+    pub fn entry_bookmark_name(mut self, t: impl Into<String>) -> Self {
+        self.entry_bookmark_name = Some(t.into());
         self
     }
 
@@ -156,6 +163,12 @@ impl std::str::FromStr for InstrToC {
                         if let Some(r) = s.next() {
                             let r = r.replace("&quot;", "").replace("\"", "");
                             toc = toc.separator_text(r);
+                        }
+                    }
+                    "\\b" => {
+                        if let Some(r) = s.next() {
+                            let r = r.replace("&quot;", "").replace("\"", "");
+                            toc = toc.entry_bookmark_name(r);
                         }
                     }
                     "\\u" => toc = toc.use_applied_paragraph_line_level(),

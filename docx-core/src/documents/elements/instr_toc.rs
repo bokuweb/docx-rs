@@ -2,10 +2,18 @@ use serde::Serialize;
 
 use crate::documents::*;
 
+#[derive(Serialize, Debug, Clone, PartialEq, Default)]
+pub struct StyleWithLevel(pub (String, usize));
+
+impl StyleWithLevel {
+    pub fn new(s: impl Into<String>, l: usize) -> Self {
+        Self((s.into(), l))
+    }
+}
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TOCTOC_topic_ID0ELZO1.html
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
 pub struct InstrToC {
-    //  If no heading range is specified, all heading levels used in the document are listed.
+    // \o If no heading range is specified, all heading levels used in the document are listed.
     #[serde(skip_serializing_if = "Option::is_none")]
     heading_styles_range: Option<(usize, usize)>,
     // \l Includes TC fields that assign entries to one of the levels specified by text in this switch's field-argument as a range having the form startLevel-endLevel,
@@ -20,12 +28,30 @@ pub struct InstrToC {
     omit_page_numbers_level_range: Option<(usize, usize)>,
     // \b includes entries only from the portion of the document marked by the bookmark named by text in this switch's field-argument.
     entry_bookmark_name: Option<String>,
-    // \p text in this switch's field-argument specifies a sequence of characters that separate an entry and its page number.
+    // \t Uses paragraphs formatted with styles other than the built-in heading styles.
+    // .  text in this switch's field-argument specifies those styles as a set of comma-separated doublets,
+    //    with each doublet being a comma-separated set of style name and table of content level. \t can be combined with \o.
+    styles_with_levels: Vec<StyleWithLevel>,
+    //  struct S texWin Lis switch's field-argument specifies a sequence of character
     // .  The default is a tab with leader dots.
-    separator_text: Option<String>,
+    entry_and_page_number_separator: Option<String>,
+    // \d
+    sequence_and_page_numbers_separator: Option<String>,
+    // \a
+    caption_label: Option<String>,
+    // \c
+    caption_label_including_numbers: Option<String>,
+    // \s
+    seq_field_identifier_for_prefix: Option<String>,
+    // \f
+    tc_field_identifier: Option<String>,
+    // \h
     hyperlink: bool,
+    // \w
     preserve_tab: bool,
+    // \x
     preserve_new_line: bool,
+    // \u
     use_applied_paragraph_line_level: bool,
     // \z Hides tab leader and page numbers in Web layout view.
     hide_tab_and_page_numbers_in_webview: bool,
@@ -46,18 +72,43 @@ impl InstrToC {
         self
     }
 
+    pub fn tc_field_identifier(mut self, t: impl Into<String>) -> Self {
+        self.tc_field_identifier = Some(t.into());
+        self
+    }
+
     pub fn omit_page_numbers_level_range(mut self, start: usize, end: usize) -> Self {
         self.omit_page_numbers_level_range = Some((start, end));
         self
     }
 
-    pub fn separator_text(mut self, t: impl Into<String>) -> Self {
-        self.separator_text = Some(t.into());
+    pub fn entry_and_page_number_separator(mut self, t: impl Into<String>) -> Self {
+        self.entry_and_page_number_separator = Some(t.into());
         self
     }
 
     pub fn entry_bookmark_name(mut self, t: impl Into<String>) -> Self {
         self.entry_bookmark_name = Some(t.into());
+        self
+    }
+
+    pub fn caption_label(mut self, t: impl Into<String>) -> Self {
+        self.caption_label = Some(t.into());
+        self
+    }
+
+    pub fn caption_label_including_numbers(mut self, t: impl Into<String>) -> Self {
+        self.caption_label_including_numbers = Some(t.into());
+        self
+    }
+
+    pub fn sequence_and_page_numbers_separator(mut self, t: impl Into<String>) -> Self {
+        self.sequence_and_page_numbers_separator = Some(t.into());
+        self
+    }
+
+    pub fn seq_field_identifier_for_prefix(mut self, t: impl Into<String>) -> Self {
+        self.seq_field_identifier_for_prefix = Some(t.into());
         self
     }
 
@@ -85,6 +136,11 @@ impl InstrToC {
         self.hide_tab_and_page_numbers_in_webview = true;
         self
     }
+
+    pub fn add_style_with_level(mut self, s: StyleWithLevel) -> Self {
+        self.styles_with_levels.push(s);
+        self
+    }
 }
 
 impl BuildXML for InstrToC {
@@ -98,7 +154,7 @@ impl BuildXML for InstrToC {
             );
         }
 
-        if let Some(ref t) = self.separator_text {
+        if let Some(ref t) = self.entry_and_page_number_separator {
             instr = format!("{} \\p &quot;{}&quot;", instr, t);
         }
 
@@ -138,13 +194,37 @@ impl std::str::FromStr for InstrToC {
         loop {
             if let Some(i) = s.next() {
                 match i {
-                    "\\o" => {
+                    "\\a" => {
                         if let Some(r) = s.next() {
-                            if let Some((s, e)) = parse_level_range(r) {
-                                toc = toc.heading_styles_range(s, e);
-                            }
+                            let r = r.replace("&quot;", "").replace("\"", "");
+                            toc = toc.caption_label(r);
                         }
                     }
+                    "\\b" => {
+                        if let Some(r) = s.next() {
+                            let r = r.replace("&quot;", "").replace("\"", "");
+                            toc = toc.entry_bookmark_name(r);
+                        }
+                    }
+                    "\\c" => {
+                        if let Some(r) = s.next() {
+                            let r = r.replace("&quot;", "").replace("\"", "");
+                            toc = toc.caption_label_including_numbers(r);
+                        }
+                    }
+                    "\\d" => {
+                        if let Some(r) = s.next() {
+                            let r = r.replace("&quot;", "").replace("\"", "");
+                            toc = toc.sequence_and_page_numbers_separator(r);
+                        }
+                    }
+                    "\\f" => {
+                        if let Some(r) = s.next() {
+                            let r = r.replace("&quot;", "").replace("\"", "");
+                            toc = toc.tc_field_identifier(r);
+                        }
+                    }
+                    "\\h" => toc = toc.hyperlink(),
                     "\\l" => {
                         if let Some(r) = s.next() {
                             if let Some((s, e)) = parse_level_range(r) {
@@ -159,20 +239,48 @@ impl std::str::FromStr for InstrToC {
                             }
                         }
                     }
+                    "\\o" => {
+                        if let Some(r) = s.next() {
+                            if let Some((s, e)) = parse_level_range(r) {
+                                toc = toc.heading_styles_range(s, e);
+                            }
+                        }
+                    }
                     "\\p" => {
                         if let Some(r) = s.next() {
                             let r = r.replace("&quot;", "").replace("\"", "");
-                            toc = toc.separator_text(r);
+                            toc = toc.entry_and_page_number_separator(r);
                         }
                     }
-                    "\\b" => {
+                    "\\s" => {
                         if let Some(r) = s.next() {
                             let r = r.replace("&quot;", "").replace("\"", "");
-                            toc = toc.entry_bookmark_name(r);
+                            toc = toc.seq_field_identifier_for_prefix(r);
+                        }
+                    }
+                    "\\t" => {
+                        if let Some(r) = s.next() {
+                            let r = r.replace("&quot;", "").replace("\"", "");
+                            dbg!(&r);
+                            let mut r = r.split(',');
+                            loop {
+                                if let Some(style) = r.next() {
+                                    if let Some(level) = r
+                                    .next() {
+                                        if let Ok(level) = usize::from_str(level) {
+                                            toc = toc.add_style_with_level(StyleWithLevel((
+                                                style.to_string(),
+                                                level,
+                                            )));
+                                            continue;
+                                        }
+                                    }
+                                }
+                                break;
+                            }
                         }
                     }
                     "\\u" => toc = toc.use_applied_paragraph_line_level(),
-                    "\\h" => toc = toc.hyperlink(),
                     "\\w" => toc = toc.preserve_tab(),
                     "\\x" => toc = toc.preserve_new_line(),
                     "\\z" => toc = toc.hide_tab_and_page_numbers_in_webview(),
@@ -200,14 +308,14 @@ mod tests {
     }
 
     #[test]
-    fn read_toc_1() {
+    fn read_toc_with_o_and_h() {
         let i = r#"TOC \o &quot;1-3&quot; \h"#;
         let i = InstrToC::from_str(i).unwrap();
         assert_eq!(i, InstrToC::new().heading_styles_range(1, 3).hyperlink());
     }
 
     #[test]
-    fn read_toc_2() {
+    fn read_toc_with_l_and_n() {
         let i = r#"TOC \o &quot;1-3&quot; \l &quot;4-5&quot; \n &quot;1-4&quot; \h"#;
         let i = InstrToC::from_str(i).unwrap();
         assert_eq!(
@@ -217,6 +325,21 @@ mod tests {
                 .hyperlink()
                 .omit_page_numbers_level_range(1, 4)
                 .tc_field_level_range(4, 5)
+        );
+    }
+
+    #[test]
+    fn read_toc_with_a_and_b_and_t() {
+        let i = r#"TOC \a &quot;hoge&quot; \b &quot;test&quot; \o &quot;1-3&quot; \t &quot;MySpectacularStyle,1,MySpectacularStyle2,4&quot;"#;
+        let i = InstrToC::from_str(i).unwrap();
+        assert_eq!(
+            i,
+            InstrToC::new()
+                .caption_label("hoge")
+                .entry_bookmark_name("test")
+                .heading_styles_range(1, 3)
+                .add_style_with_level(StyleWithLevel::new("MySpectacularStyle", 1))
+                .add_style_with_level(StyleWithLevel::new("MySpectacularStyle2", 4))
         );
     }
 }

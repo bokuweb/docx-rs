@@ -29,10 +29,19 @@ impl ElementReader for InstrText {
                                 return Err(ReaderError::XMLReadError);
                             } else {
                                 if instr.starts_with("TOC") {
-                                    for i in instr.split(' ') {
-                                        dbg!(i);
+                                    if let Ok(instr) = InstrToC::from_str(instr) {
+                                        return Ok(InstrText::TOC(instr));
                                     }
-                                    return Ok(InstrText::TOC(InstrToC::new()));
+                                }
+                                if instr.starts_with("TC") {
+                                    if let Ok(instr) = InstrTC::from_str(instr) {
+                                        return Ok(InstrText::TC(instr));
+                                    }
+                                }
+                                if instr.starts_with("PAGEREF") {
+                                    if let Ok(instr) = InstrPAGEREF::from_str(instr) {
+                                        return Ok(InstrText::PAGEREF(instr));
+                                    }
                                 }
                                 return Ok(InstrText::Unsupported(instr.to_string()));
                             }

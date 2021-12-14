@@ -8,6 +8,7 @@ use crate::xml_builder::*;
 pub enum InstrText {
     TOC(InstrToC),
     TC(InstrTC),
+    PAGEREF(InstrPAGEREF),
     Unsupported(String),
 }
 
@@ -16,6 +17,7 @@ impl BuildXML for Box<InstrText> {
         let instr = match self.as_ref() {
             InstrText::TOC(toc) => toc.build(),
             InstrText::TC(tc) => tc.build(),
+            InstrText::PAGEREF(page_ref) => page_ref.build(),
             InstrText::Unsupported(s) => s.as_bytes().to_vec(),
         };
         XMLBuilder::new()
@@ -44,6 +46,12 @@ impl Serialize for InstrText {
                 t.serialize_field("data", s)?;
                 t.end()
             }
+            InstrText::PAGEREF(ref s) => {
+                let mut t = serializer.serialize_struct("PAGEREF", 2)?;
+                t.serialize_field("type", "pageref")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
             InstrText::Unsupported(ref s) => {
                 let mut t = serializer.serialize_struct("Unsupported", 2)?;
                 t.serialize_field("type", "unsupported")?;
@@ -68,6 +76,18 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:instrText>TOC \o &quot;1-3&quot;</w:instrText>"#
+        );
+    }
+
+    #[test]
+    fn test_pageref_instr() {
+        let b = Box::new(InstrText::PAGEREF(
+            InstrPAGEREF::new("_Toc90425847").hyperlink(),
+        ))
+        .build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:instrText>PAGEREF _Toc90425847 \h</w:instrText>"#
         );
     }
 }

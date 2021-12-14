@@ -44,19 +44,17 @@ mod tests {
     #[test]
     fn test_custom_xml() {
         let c = CustomItem::from_str(
-            r#"<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-        <ds:datastoreItem ds:itemID="{06AC5857-5C65-A94A-BCEC-37356A209BC3}"
-            xmlns:ds="http://schemas.openxmlformats.org/officeDocument/2006/customXml">
-            <ds:schemaRefs>
-                <ds:schemaRef ds:uri="https://hoge.com"/>
-            </ds:schemaRefs>
-        </ds:datastoreItem>"#,
+            r#"<ds:datastoreItem ds:itemID="{06AC5857-5C65-A94A-BCEC-37356A209BC3}" xmlns:ds="http://schemas.openxmlformats.org/officeDocument/2006/customXml">
+<ds:schemaRefs>
+<ds:schemaRef ds:uri="https://hoge.com"></ds:schemaRef></ds:schemaRefs></ds:datastoreItem>"#,
         )
         .unwrap();
 
         assert_eq!(
             c.0.to_string(),
-        "<ds:datastoreItem ds:itemID=\"{06AC5857-5C65-A94A-BCEC-37356A209BC3}\" xmlns:ds=\"http://schemas.openxmlformats.org/officeDocument/2006/customXml\">\n    <ds:schemaRefs>\n        <ds:schemaRef ds:uri=\"https://hoge.com\">\n        </ds:schemaRef>\n\n    </ds:schemaRefs>\n\n</ds:datastoreItem>\n"
+            r#"<ds:datastoreItem ds:itemID="{06AC5857-5C65-A94A-BCEC-37356A209BC3}" xmlns:ds="http://schemas.openxmlformats.org/officeDocument/2006/customXml">
+<ds:schemaRefs>
+<ds:schemaRef ds:uri="https://hoge.com"></ds:schemaRef></ds:schemaRefs></ds:datastoreItem>"#
         );
         assert_eq!(
             serde_json::to_string(&c).unwrap(),

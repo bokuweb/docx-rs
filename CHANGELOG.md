@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# docx-rs@0.3.2 (9. December, 2021)
+
+- Add `DataBinding` API. See docx-core/examples/data_binding.rs
+- Add minimum `ToC` API. See docx-core/examples/dirty_toc.rs
+
 # docx-wasm@0.0.215 (26. November, 2021)
 
 - Add before/afterLines to LineSpacingJSON.

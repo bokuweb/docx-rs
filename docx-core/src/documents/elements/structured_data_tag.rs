@@ -137,6 +137,11 @@ impl StructuredDataTag {
             .push(StructuredDataTagChild::Table(Box::new(t)));
         self
     }
+
+    pub fn data_binding(mut self, d: DataBinding) -> Self {
+        self.property = self.property.data_binding(d);
+        self
+    }
 }
 
 impl BuildXML for StructuredDataTag {
@@ -163,11 +168,12 @@ mod tests {
     #[test]
     fn test_sdt() {
         let b = StructuredDataTag::new()
+            .data_binding(DataBinding::new().xpath("root/hello"))
             .add_run(Run::new().add_text("Hello"))
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:sdtContent>
+            r#"<w:sdt><w:sdtPr><w:rPr /><w:dataBinding w:xpath="root/hello" /></w:sdtPr><w:sdtContent><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:sdtContent>
 </w:sdt>"#
         );
     }

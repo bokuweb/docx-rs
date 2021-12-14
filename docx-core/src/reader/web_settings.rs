@@ -17,7 +17,6 @@ impl FromXML for WebSettings {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    dbg!(&e);
                     if let XMLElement::Div = e {
                         if let Ok(div) = Div::read(&mut parser, &attributes) {
                             settings.divs.push(div);

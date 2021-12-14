@@ -2,6 +2,7 @@ use serde::Serialize;
 
 use super::*;
 use crate::documents::BuildXML;
+// use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
@@ -13,7 +14,7 @@ pub struct StructuredDataTagProperty {
 
 impl Default for StructuredDataTagProperty {
     fn default() -> Self {
-        StructuredDataTagProperty {
+        Self {
             run_property: RunProperty::new(),
             data_binding: None,
         }

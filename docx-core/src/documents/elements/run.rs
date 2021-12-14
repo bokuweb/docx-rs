@@ -33,7 +33,7 @@ pub enum RunChild {
     CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
     FieldChar(FieldChar),
-    InstrText(InstrText),
+    InstrText(Box<InstrText>),
 }
 
 impl Serialize for RunChild {
@@ -126,8 +126,8 @@ impl Run {
         self
     }
 
-    pub fn add_instr_text(mut self, i: impl Into<String>) -> Run {
-        self.children.push(RunChild::InstrText(InstrText::new(i)));
+    pub fn add_instr_text(mut self, i: InstrText) -> Run {
+        self.children.push(RunChild::InstrText(Box::new(i)));
         self
     }
 

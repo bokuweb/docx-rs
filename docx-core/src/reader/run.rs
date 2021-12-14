@@ -8,14 +8,43 @@ use xml::reader::{EventReader, XmlEvent};
 
 use super::Run;
 
-use crate::reader::*;
 use crate::types::BreakType;
+use crate::{reader::*, FieldCharType};
 
 #[derive(PartialEq, Debug)]
 enum TextState {
     Idle,
     Text,
     Delete,
+}
+
+fn read_field_char(attributes: &[OwnedAttribute]) -> Result<FieldChar, ReaderError> {
+    let mut t: Option<FieldCharType> = None;
+    let mut dirty = false;
+    for a in attributes {
+        let local_name = &a.name.local_name;
+        match local_name.as_str() {
+            "fldCharType" => {
+                if let Ok(ty) = FieldCharType::from_str(&a.value) {
+                    t = Some(ty);
+                }
+            }
+            "dirty" => {
+                dirty = !is_false(&a.value);
+            }
+            _ => {}
+        }
+    }
+
+    if let Some(t) = t {
+        let mut f = FieldChar::new(t);
+        if dirty {
+            f = f.dirty();
+        }
+        Ok(f)
+    } else {
+        Err(ReaderError::XMLReadError)
+    }
 }
 
 impl ElementReader for Run {
@@ -55,8 +84,19 @@ impl ElementReader for Run {
                                     }
                                 }
                                 XMLElement::Drawing => {
-                                    let drawing = Drawing::read(r, &attributes)?;
-                                    run = run.add_drawing(drawing);
+                                    if let Ok(drawing) = Drawing::read(r, &attributes) {
+                                        run = run.add_drawing(drawing);
+                                    }
+                                }
+                                XMLElement::FieldChar => {
+                                    if let Ok(f) = read_field_char(&attributes) {
+                                        run.children.push(RunChild::FieldChar(f));
+                                    }
+                                }
+                                XMLElement::InstrText => {
+                                    if let Ok(i) = InstrText::read(r, &attributes) {
+                                        run.children.push(RunChild::InstrText(Box::new(i)));
+                                    }
                                 }
                                 _ => {}
                             }

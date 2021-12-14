@@ -7,6 +7,7 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, PartialEq)]
 pub enum InstrText {
     TOC(InstrToC),
+    TC(InstrTC),
     Unsupported(String),
 }
 
@@ -14,6 +15,7 @@ impl BuildXML for Box<InstrText> {
     fn build(&self) -> Vec<u8> {
         let instr = match self.as_ref() {
             InstrText::TOC(toc) => toc.build(),
+            InstrText::TC(tc) => tc.build(),
             InstrText::Unsupported(s) => s.as_bytes().to_vec(),
         };
         XMLBuilder::new()
@@ -33,6 +35,12 @@ impl Serialize for InstrText {
             InstrText::TOC(ref s) => {
                 let mut t = serializer.serialize_struct("TOC", 2)?;
                 t.serialize_field("type", "toc")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+            InstrText::TC(ref s) => {
+                let mut t = serializer.serialize_struct("TC", 2)?;
+                t.serialize_field("type", "tc")?;
                 t.serialize_field("data", s)?;
                 t.end()
             }

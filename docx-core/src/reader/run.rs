@@ -95,7 +95,7 @@ impl ElementReader for Run {
                                 }
                                 XMLElement::InstrText => {
                                     if let Ok(i) = InstrText::read(r, &attributes) {
-                                        run.children.push(RunChild::InstrText(i));
+                                        run.children.push(RunChild::InstrText(Box::new(i)));
                                     }
                                 }
                                 _ => {}

@@ -10,9 +10,9 @@ pub enum InstrText {
     Unsupported(String),
 }
 
-impl BuildXML for InstrText {
+impl BuildXML for Box<InstrText> {
     fn build(&self) -> Vec<u8> {
-        let instr = match self {
+        let instr = match self.as_ref() {
             InstrText::TOC(toc) => toc.build(),
             InstrText::Unsupported(s) => s.as_bytes().to_vec(),
         };
@@ -56,7 +56,7 @@ mod tests {
 
     #[test]
     fn test_toc_instr() {
-        let b = InstrText::TOC(InstrToC::new().heading_styles_range(1, 3)).build();
+        let b = Box::new(InstrText::TOC(InstrToC::new().heading_styles_range(1, 3))).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:instrText>TOC \o &quot;1-3&quot;</w:instrText>"#

@@ -82,6 +82,26 @@ impl XMLBuilder {
         self.close()
     }
 
+    pub(crate) fn open_hyperlink(
+        mut self,
+        rid: Option<&String>,
+        anchor: Option<&String>,
+        history: bool,
+    ) -> Self {
+        let mut e = XmlEvent::start_element("w:hyperlink");
+        if let Some(rid) = rid {
+            e = e.attr("w:rid", rid);
+        }
+        if let Some(anchor) = anchor {
+            e = e.attr("w:anchor", anchor);
+        }
+        if history {
+            e = e.attr("w:history", "true");
+        }
+        self.writer.write(e).expect(EXPECT_MESSAGE);
+        self
+    }
+
     // i.e. <w:r ... >
     open!(open_run, "w:r");
     open!(open_run_property, "w:rPr");

@@ -5,11 +5,13 @@ import { BookmarkStart } from "./bookmark-start";
 import { BookmarkEnd } from "./bookmark-end";
 import { Comment } from "./comment";
 import { CommentEnd } from "./comment-end";
+import { Hyperlink } from "./hyperlink";
 
 export type ParagraphChild =
   | Run
   | Insert
   | Delete
+  | Hyperlink
   | BookmarkStart
   | BookmarkEnd
   | Comment
@@ -99,6 +101,11 @@ export class Paragraph {
 
   addRun(run: Run) {
     this.children.push(run);
+    return this;
+  }
+
+  addHyperlink(link: Hyperlink) {
+    this.children.push(link);
     return this;
   }
 

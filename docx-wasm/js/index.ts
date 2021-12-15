@@ -1,6 +1,7 @@
 import { Paragraph, ParagraphProperty } from "./paragraph";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
+import { Hyperlink } from "./hyperlink";
 import { DeleteText } from "./delete-text";
 import { Table } from "./table";
 import { TableCell, toTextDirectionWasmType } from "./table-cell";
@@ -320,6 +321,43 @@ export class Docx {
     return run;
   }
 
+  buildHyperlink(link: Hyperlink) {
+    let hyperlink = wasm.createHyperlink();
+    if (link._history) {
+      hyperlink = hyperlink.history();
+    }
+    if (link._anchor) {
+      hyperlink = hyperlink.anchor(link._anchor);
+    }
+    if (link._rid) {
+      hyperlink = hyperlink.rid(link._rid);
+    }
+
+    link.children.forEach((child) => {
+      if (child instanceof Run) {
+        const run = this.buildRun(child);
+        hyperlink = hyperlink.add_run(run);
+      } else if (child instanceof Insert) {
+        const insert = this.buildInsert(child);
+        hyperlink = hyperlink.add_insert(insert);
+      } else if (child instanceof Delete) {
+        const del = this.buildDelete(child);
+        hyperlink = hyperlink.add_delete(del);
+      } else if (child instanceof BookmarkStart) {
+        hyperlink = hyperlink.add_bookmark_start(child.id, child.name);
+      } else if (child instanceof BookmarkEnd) {
+        hyperlink = hyperlink.add_bookmark_end(child.id);
+      } else if (child instanceof Comment) {
+        const comment = this.buildComment(child);
+        hyperlink = hyperlink.add_comment_start(comment);
+      } else if (child instanceof CommentEnd) {
+        hyperlink = hyperlink.add_comment_end(child.id);
+      }
+    });
+
+    return hyperlink;
+  }
+
   buildInsert(i: Insert) {
     const run = this.buildRun(i.run);
     let insert = wasm.createInsert(run);
@@ -422,6 +460,9 @@ export class Docx {
       } else if (child instanceof Delete) {
         const del = this.buildDelete(child);
         paragraph = paragraph.add_delete(del);
+      } else if (child instanceof Hyperlink) {
+        const hyperlink = this.buildHyperlink(child);
+        paragraph = paragraph.add_hyperlink(hyperlink);
       } else if (child instanceof BookmarkStart) {
         paragraph = paragraph.add_bookmark_start(child.id, child.name);
       } else if (child instanceof BookmarkEnd) {
@@ -1086,6 +1127,7 @@ export * from "./run";
 export * from "./text";
 export * from "./style";
 export * from "./styles";
+export * from "./hyperlink";
 export * from "./comment";
 export * from "./comment-end";
 export * from "./numbering";

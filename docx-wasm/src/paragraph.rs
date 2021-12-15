@@ -17,6 +17,11 @@ impl Paragraph {
         self
     }
 
+    pub fn add_hyperlink(mut self, link: Hyperlink) -> Paragraph {
+        self.0 = self.0.add_hyperlink(link.take());
+        self
+    }
+
     pub fn add_insert(mut self, i: Insert) -> Paragraph {
         self.0
             .children

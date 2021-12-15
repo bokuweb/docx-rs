@@ -138,6 +138,11 @@ impl Paragraph {
         self
     }
 
+    pub fn add_hyperlink(mut self, link: Hyperlink) -> Self {
+        self.children.push(ParagraphChild::Hyperlink(link));
+        self
+    }
+
     pub fn add_structured_data_tag(mut self, t: StructuredDataTag) -> Self {
         self.children
             .push(ParagraphChild::StructuredDataTag(Box::new(t)));

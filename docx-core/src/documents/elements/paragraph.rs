@@ -32,6 +32,7 @@ pub enum ParagraphChild {
     Insert(Insert),
     Delete(Delete),
     BookmarkStart(BookmarkStart),
+    Hyperlink(Hyperlink),
     BookmarkEnd(BookmarkEnd),
     CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
@@ -44,6 +45,7 @@ impl BuildXML for ParagraphChild {
             ParagraphChild::Run(v) => v.build(),
             ParagraphChild::Insert(v) => v.build(),
             ParagraphChild::Delete(v) => v.build(),
+            ParagraphChild::Hyperlink(v) => v.build(),
             ParagraphChild::BookmarkStart(v) => v.build(),
             ParagraphChild::BookmarkEnd(v) => v.build(),
             ParagraphChild::CommentStart(v) => v.build(),
@@ -74,6 +76,12 @@ impl Serialize for ParagraphChild {
             ParagraphChild::Delete(ref r) => {
                 let mut t = serializer.serialize_struct("Delete", 2)?;
                 t.serialize_field("type", "delete")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            ParagraphChild::Hyperlink(ref r) => {
+                let mut t = serializer.serialize_struct("hyperlink", 2)?;
+                t.serialize_field("type", "hyperlink")?;
                 t.serialize_field("data", r)?;
                 t.end()
             }
@@ -127,6 +135,11 @@ impl Paragraph {
 
     pub fn add_run(mut self, run: Run) -> Paragraph {
         self.children.push(ParagraphChild::Run(Box::new(run)));
+        self
+    }
+
+    pub fn add_hyperlink(mut self, link: Hyperlink) -> Self {
+        self.children.push(ParagraphChild::Hyperlink(link));
         self
     }
 

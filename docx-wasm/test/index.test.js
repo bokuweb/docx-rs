@@ -442,4 +442,24 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write hyperlink", () => {
+    const p1 = new w.Paragraph().addHyperlink(
+      new w.Hyperlink().anchor("anchor").addRun(new w.Run().addText("Hello!!"))
+    );
+    const p2 = new w.Paragraph()
+      .addBookmarkStart(1, "anchor")
+      .addRun(new w.Run().addText("World!!"))
+      .pageBreakBefore(true)
+      .addBookmarkEnd(1);
+    const buffer = new w.Docx().addParagraph(p1).addParagraph(p2).build();
+
+    writeFileSync("../output/hyperlink.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

@@ -27,6 +27,7 @@ pub struct InstrToC {
     #[serde(skip_serializing_if = "Option::is_none")]
     omit_page_numbers_level_range: Option<(usize, usize)>,
     // \b includes entries only from the portion of the document marked by the bookmark named by text in this switch's field-argument.
+    #[serde(skip_serializing_if = "Option::is_none")]
     entry_bookmark_name: Option<String>,
     // \t Uses paragraphs formatted with styles other than the built-in heading styles.
     // .  text in this switch's field-argument specifies those styles as a set of comma-separated doublets,
@@ -34,16 +35,21 @@ pub struct InstrToC {
     styles_with_levels: Vec<StyleWithLevel>,
     //  struct S texWin Lis switch's field-argument specifies a sequence of character
     // .  The default is a tab with leader dots.
+    #[serde(skip_serializing_if = "Option::is_none")]
     entry_and_page_number_separator: Option<String>,
     // \d
+    #[serde(skip_serializing_if = "Option::is_none")]
     sequence_and_page_numbers_separator: Option<String>,
     // \a
     caption_label: Option<String>,
     // \c
+    #[serde(skip_serializing_if = "Option::is_none")]
     caption_label_including_numbers: Option<String>,
     // \s
+    #[serde(skip_serializing_if = "Option::is_none")]
     seq_field_identifier_for_prefix: Option<String>,
     // \f
+    #[serde(skip_serializing_if = "Option::is_none")]
     tc_field_identifier: Option<String>,
     // \h
     hyperlink: bool,
@@ -147,21 +153,88 @@ impl BuildXML for InstrToC {
     fn build(&self) -> Vec<u8> {
         let mut instr = "TOC".to_string();
 
-        if let Some(heading_styles_range) = self.heading_styles_range {
-            instr = format!(
-                "{} \\o &quot;{}-{}&quot;",
-                instr, heading_styles_range.0, heading_styles_range.1
-            );
+        // \a
+        if let Some(ref t) = self.caption_label {
+            instr = format!("{} \\a &quot;{}&quot;", instr, t);
         }
 
+        // \b
+        if let Some(ref t) = self.entry_bookmark_name {
+            instr = format!("{} \\b &quot;{}&quot;", instr, t);
+        }
+
+        // \c
+        if let Some(ref t) = self.caption_label_including_numbers {
+            instr = format!("{} \\c &quot;{}&quot;", instr, t);
+        }
+
+        // \d
+        if let Some(ref t) = self.sequence_and_page_numbers_separator {
+            instr = format!("{} \\d &quot;{}&quot;", instr, t);
+        }
+
+        // \f
+        if let Some(ref t) = self.tc_field_identifier {
+            instr = format!("{} \\f &quot;{}&quot;", instr, t);
+        }
+
+        // \l
+        if let Some(range) = self.tc_field_level_range {
+            instr = format!("{} \\l &quot;{}-{}&quot;", instr, range.0, range.1);
+        }
+
+        // \n
+        if let Some(range) = self.omit_page_numbers_level_range {
+            instr = format!("{} \\n &quot;{}-{}&quot;", instr, range.0, range.1);
+        }
+
+        // \o
+        if let Some(range) = self.heading_styles_range {
+            instr = format!("{} \\o &quot;{}-{}&quot;", instr, range.0, range.1);
+        }
+
+        // \p
         if let Some(ref t) = self.entry_and_page_number_separator {
             instr = format!("{} \\p &quot;{}&quot;", instr, t);
         }
 
+        // \s
+        if let Some(ref t) = self.seq_field_identifier_for_prefix {
+            instr = format!("{} \\s &quot;{}&quot;", instr, t);
+        }
+
+        // \t
+        if !self.styles_with_levels.is_empty() {
+            let s = self
+                .styles_with_levels
+                .iter()
+                .map(|s| format!("{},{}", (s.0).0, (s.0).1))
+                .collect::<Vec<String>>()
+                .join(",");
+            instr = format!("{} \\t &quot;{}&quot;", instr, s);
+        }
+
+        // \h
         if self.hyperlink {
             instr = format!("{} \\h", instr);
         }
 
+        // \u
+        if self.use_applied_paragraph_line_level {
+            instr = format!("{} \\u", instr);
+        }
+
+        // \w
+        if self.preserve_tab {
+            instr = format!("{} \\w", instr);
+        }
+
+        // \x
+        if self.preserve_new_line {
+            instr = format!("{} \\x", instr);
+        }
+
+        // \z
         if self.hide_tab_and_page_numbers_in_webview {
             instr = format!("{} \\z", instr);
         }
@@ -261,12 +334,10 @@ impl std::str::FromStr for InstrToC {
                     "\\t" => {
                         if let Some(r) = s.next() {
                             let r = r.replace("&quot;", "").replace("\"", "");
-                            dbg!(&r);
                             let mut r = r.split(',');
                             loop {
                                 if let Some(style) = r.next() {
-                                    if let Some(level) = r
-                                    .next() {
+                                    if let Some(level) = r.next() {
                                         if let Ok(level) = usize::from_str(level) {
                                             toc = toc.add_style_with_level(StyleWithLevel((
                                                 style.to_string(),
@@ -305,6 +376,19 @@ mod tests {
     fn test_toc() {
         let b = InstrToC::new().heading_styles_range(1, 3).build();
         assert_eq!(str::from_utf8(&b).unwrap(), r#"TOC \o &quot;1-3&quot;"#);
+    }
+
+    #[test]
+    fn test_toc_with_styles() {
+        let b = InstrToC::new()
+            .heading_styles_range(1, 3)
+            .add_style_with_level(StyleWithLevel::new("style1", 2))
+            .add_style_with_level(StyleWithLevel::new("style2", 3))
+            .build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"TOC \o &quot;1-3&quot; \t &quot;style1,2,style2,3&quot;"#
+        );
     }
 
     #[test]

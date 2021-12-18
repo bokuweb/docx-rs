@@ -23123,9 +23123,6 @@ Object {
                     "data": Object {
                       "data": Object {
                         "caption_label": null,
-                        "caption_label_including_numbers": null,
-                        "entry_and_page_number_separator": null,
-                        "entry_bookmark_name": null,
                         "heading_styles_range": Array [
                           1,
                           3,
@@ -23134,10 +23131,7 @@ Object {
                         "hyperlink": true,
                         "preserve_new_line": false,
                         "preserve_tab": false,
-                        "seq_field_identifier_for_prefix": null,
-                        "sequence_and_page_numbers_separator": null,
                         "styles_with_levels": Array [],
-                        "tc_field_identifier": null,
                         "use_applied_paragraph_line_level": true,
                       },
                       "type": "toc",

@@ -10,6 +10,7 @@ use crate::xml_builder::*;
 pub struct StructuredDataTagProperty {
     pub run_property: RunProperty,
     pub data_binding: Option<DataBinding>,
+    pub alias: Option<String>,
 }
 
 impl Default for StructuredDataTagProperty {
@@ -17,6 +18,7 @@ impl Default for StructuredDataTagProperty {
         Self {
             run_property: RunProperty::new(),
             data_binding: None,
+            alias: None,
         }
     }
 }
@@ -30,16 +32,25 @@ impl StructuredDataTagProperty {
         self.data_binding = Some(d);
         self
     }
+
+    pub fn alias(mut self, v: impl Into<String>) -> Self {
+        self.alias = Some(v.into());
+        self
+    }
 }
 
 impl BuildXML for StructuredDataTagProperty {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        let mut b = XMLBuilder::new()
             .open_structured_tag_property()
             .add_child(&self.run_property)
-            .add_optional_child(&self.data_binding)
-            .close()
-            .build()
+            .add_optional_child(&self.data_binding);
+
+        if let Some(ref alias) = self.alias {
+            b = b.alias(alias);
+        }
+
+        b.close().build()
     }
 }
 
@@ -58,6 +69,17 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:sdtPr><w:rPr /></w:sdtPr>"#
+        );
+    }
+
+    #[test]
+    fn test_with_alias() {
+        let c = StructuredDataTagProperty::new().alias("summary");
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:sdtPr><w:rPr /><w:alias w:val="summary" />
+</w:sdtPr>"#
         );
     }
 }

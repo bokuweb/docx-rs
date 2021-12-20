@@ -1,6 +1,5 @@
 use super::XMLBuilder;
 use super::XmlEvent;
-use crate::types::line_spacing_type::LineSpacingType;
 use crate::types::*;
 
 const EXPECT_MESSAGE: &str = "should write buf";
@@ -117,6 +116,7 @@ impl XMLBuilder {
     open!(open_structured_tag, "w:sdt");
     open!(open_structured_tag_content, "w:sdtContent");
     open!(open_structured_tag_property, "w:sdtPr");
+    closed_with_str!(alias, "w:alias");
 
     // i.e. <w:outlineLvl ...>
     closed_with_usize!(outline_lvl, "w:outlineLvl");
@@ -310,7 +310,6 @@ impl XMLBuilder {
 
     closed!(shd, "w:shd", "w:val", "w:color", "w:fill");
 
-    closed!(tab, "w:tab");
     closed!(tab_with_pos, "w:tab", "w:val", "w:pos");
 
     closed!(br, "w:br", "w:type");
@@ -510,6 +509,43 @@ impl XMLBuilder {
             w = w.attr("w:charSpace", &char_space_string);
         }
         self.writer.write(w).expect(EXPECT_MESSAGE);
+
+        self.close()
+    }
+
+    pub(crate) fn tab(
+        mut self,
+        v: Option<TabValueType>,
+        leader: Option<TabLeaderType>,
+        pos: Option<usize>,
+    ) -> Self {
+        let v_string = if let Some(v) = v {
+            v.to_string()
+        } else {
+            "".to_string()
+        };
+
+        let leader_string = if let Some(leader) = leader {
+            leader.to_string()
+        } else {
+            "".to_string()
+        };
+
+        let pos_string = format!("{}", pos.unwrap_or_default());
+
+        let mut t = XmlEvent::start_element("w:tab");
+        if v.is_some() {
+            t = t.attr("w:val", &v_string);
+        }
+
+        if leader.is_some() {
+            t = t.attr("w:leader", &leader_string);
+        }
+
+        if pos.is_some() {
+            t = t.attr("w:pos", &pos_string);
+        }
+        self.writer.write(t).expect(EXPECT_MESSAGE);
 
         self.close()
     }

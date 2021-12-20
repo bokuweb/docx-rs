@@ -138,6 +138,11 @@ impl Paragraph {
         self
     }
 
+    pub(crate) fn unshift_run(mut self, run: Run) -> Paragraph {
+        self.children.insert(0, ParagraphChild::Run(Box::new(run)));
+        self
+    }
+
     pub fn add_hyperlink(mut self, link: Hyperlink) -> Self {
         self.children.push(ParagraphChild::Hyperlink(link));
         self

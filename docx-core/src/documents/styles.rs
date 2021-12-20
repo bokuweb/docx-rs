@@ -41,6 +41,24 @@ impl Styles {
         self.doc_defaults = doc_defaults;
         self
     }
+
+    pub fn find_style_by_id(&self, id: &str) -> Option<&Style> {
+        self.styles.iter().find(|s| s.style_id == id)
+    }
+
+    pub fn create_heading_style_map(&self) -> std::collections::HashMap<&str, usize> {
+        self.styles
+            .iter()
+            .filter_map(|s| {
+                if s.name.is_heading() {
+                    let n = s.name.get_heading_number();
+                    n.map(|n| (s.style_id.as_str(), n))
+                } else {
+                    None
+                }
+            })
+            .collect()
+    }
 }
 
 impl Default for Styles {
@@ -83,5 +101,14 @@ mod tests {
             str::from_utf8(&b).unwrap(),
             r#"<w:styles xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" mc:Ignorable="w14 w15"><w:docDefaults><w:rPrDefault><w:rPr /></w:rPrDefault></w:docDefaults><w:style w:type="paragraph" w:styleId="Normal"><w:name w:val="Normal" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:basedOn w:val="Normal" /><w:next w:val="Normal" /><w:qFormat /></w:style><w:style w:type="paragraph" w:styleId="Title"><w:name w:val="TitleName" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:basedOn w:val="Normal" /><w:next w:val="Normal" /><w:qFormat /></w:style></w:styles>"#
         );
+    }
+
+    #[test]
+    fn test_heading_style() {
+        let c = Styles::new().add_style(Style::new("ToC", StyleType::Paragraph).name("heading 3"));
+        let mut m = std::collections::HashMap::new();
+        m.insert("ToC", 3);
+        let b = c.create_heading_style_map();
+        assert_eq!(b, m);
     }
 }

@@ -661,6 +661,31 @@ impl Docx {
         self.comments.add_comments(comments);
     }
 
+    fn collect_toc_items(&self, toc: &InstrToC) -> Vec<Paragraph> {
+        let mut items = vec![];
+        for child in &self.document.children {
+            match child {
+                DocumentChild::Paragraph(paragraph) => {}
+                DocumentChild::Table(table) => {
+                    for row in &table.rows {
+                        for cell in &row.cells {
+                            for content in &cell.children {
+                                match content {
+                                    TableCellContent::Paragraph(paragraph) => {}
+                                    TableCellContent::Table(_) => {
+                                        // TODO: correct paragraph in table
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                _ => {}
+            }
+        }
+        items
+    }
+
     // Traverse and clone comments from document and add to comments node.
     pub(crate) fn store_comments(&mut self, comments: &[Comment]) {
         for child in &mut self.document.children {

@@ -298,6 +298,10 @@ export class Docx {
       run = run.italic();
     }
 
+    if (r.property.strike) {
+      run = run.strike();
+    }
+
     if (r.property.underline) {
       run = run.underline(r.property.underline);
     }

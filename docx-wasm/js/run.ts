@@ -22,6 +22,7 @@ export type RunProperty = {
   vertAlign?: VertAlignType;
   bold?: boolean;
   italic?: boolean;
+  strike?: boolean;
   underline?: string;
   vanish?: boolean;
   fonts?: RunFonts;
@@ -106,6 +107,11 @@ export class Run {
 
   bold() {
     this.property = { ...this.property, bold: true };
+    return this;
+  }
+
+  strike() {
+    this.property = { ...this.property, strike: true };
     return this;
   }
 

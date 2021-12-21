@@ -144,6 +144,9 @@ impl XMLBuilder {
 
     closed!(i, "w:i");
     closed!(i_cs, "w:iCs");
+
+    closed!(strike, "w:strike");
+
     // Build w:style element
     // i.e. <w:style ... >
     pub(crate) fn open_style(mut self, style_type: StyleType, id: &str) -> Self {

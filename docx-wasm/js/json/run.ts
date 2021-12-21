@@ -12,21 +12,22 @@ export type TextBorderJSON = {
 };
 
 export type RunPropertyJSON = {
-  sz: number | null;
-  szCs: number | null;
-  color: string | null;
-  highlight: string | null;
-  vertAlign: VertAlignType | null;
-  underline: string | null;
-  bold: boolean | null;
-  boldCs: boolean | null;
-  italic: boolean | null;
-  italicCs: boolean | null;
-  vanish: boolean | null;
-  spacing: number | null;
-  textBorder: TextBorderJSON | null;
-  ins: InsertJSON | null;
-  del: DeleteJSON | null;
+  sz?: number | null;
+  szCs?: number | null;
+  color?: string | null;
+  highlight?: string | null;
+  vertAlign?: VertAlignType | null;
+  underline?: string | null;
+  bold?: boolean | null;
+  boldCs?: boolean | null;
+  italic?: boolean | null;
+  italicCs?: boolean | null;
+  vanish?: boolean | null;
+  spacing?: number | null;
+  textBorder?: TextBorderJSON | null;
+  ins?: InsertJSON | null;
+  del?: DeleteJSON | null;
+  strike?: boolean;
 };
 
 export type RunChildJSON =

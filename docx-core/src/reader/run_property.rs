@@ -30,6 +30,13 @@ impl ElementReader for RunProperty {
                             rp = rp.bold();
                         }
                         XMLElement::Highlight => rp = rp.highlight(attributes[0].value.clone()),
+                        XMLElement::Strike => {
+                            if !read_bool(&attributes) {
+                                rp.strike = Some(Strike::new().disable());
+                                continue;
+                            }
+                            rp = rp.strike();
+                        }
                         XMLElement::VertAlign => {
                             if let Ok(v) = VertAlignType::from_str(&attributes[0].value) {
                                 rp = rp.vert_align(v)

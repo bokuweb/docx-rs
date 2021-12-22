@@ -5,7 +5,7 @@ use crate::documents::BuildXML;
 use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;
 
-#[derive(Serialize, Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct ParagraphProperty {
     pub run_property: RunProperty,
@@ -19,27 +19,9 @@ pub struct ParagraphProperty {
     pub page_break_before: bool,
     pub window_control: bool,
     pub outline_lvl: Option<OutlineLvl>,
+    pub tabs: Vec<Tab>,
     // read only
     pub(crate) div_id: Option<String>,
-}
-
-impl Default for ParagraphProperty {
-    fn default() -> Self {
-        ParagraphProperty {
-            run_property: RunProperty::new(),
-            style: None,
-            numbering_property: None,
-            alignment: None,
-            indent: None,
-            line_spacing: None,
-            keep_next: false,
-            keep_lines: false,
-            page_break_before: false,
-            window_control: false,
-            outline_lvl: None,
-            div_id: None,
-        }
-    }
 }
 
 // 17.3.1.26
@@ -111,6 +93,11 @@ impl ParagraphProperty {
         self
     }
 
+    pub fn add_tab(mut self, t: Tab) -> Self {
+        self.tabs.push(t);
+        self
+    }
+
     pub(crate) fn hanging_chars(mut self, chars: i32) -> Self {
         if let Some(indent) = self.indent {
             self.indent = Some(indent.hanging_chars(chars));
@@ -152,6 +139,14 @@ impl BuildXML for ParagraphProperty {
 
         if self.window_control {
             b = b.window_control()
+        }
+
+        if !self.tabs.is_empty() {
+            b = b.open_tabs();
+            for t in self.tabs.iter() {
+                b = b.tab(t.val, t.leader, t.pos);
+            }
+            b = b.close();
         }
 
         b.close().build()

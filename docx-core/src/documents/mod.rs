@@ -661,12 +661,22 @@ impl Docx {
         self.comments.add_comments(comments);
     }
 
-    fn collect_toc_items(&self, toc: &InstrToC) -> Vec<Paragraph> {
+    fn collect_toc_items(&self, toc: &InstrToC) -> Vec<TableOfContentsItem> {
         let heading_map = self.styles.create_heading_style_map();
         let mut items = vec![];
         for child in &self.document.children {
             match child {
-                DocumentChild::Paragraph(paragraph) => {}
+                DocumentChild::Paragraph(paragraph) => {
+                    if let Some(_heading_level) = paragraph
+                        .property
+                        .style
+                        .as_ref()
+                        .and_then(|p| Some(p.val.to_string()))
+                        .and_then(|sid| heading_map.get(&sid))
+                    {
+                        items.push(TableOfContentsItem::new().text(paragraph.raw_text()));
+                    }
+                }
                 DocumentChild::Table(table) => {
                     for row in &table.rows {
                         for cell in &row.cells {

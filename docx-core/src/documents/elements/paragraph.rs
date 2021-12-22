@@ -224,6 +224,11 @@ impl Paragraph {
         self
     }
 
+    pub fn add_tab(mut self, t: Tab) -> Self {
+        self.property = self.property.add_tab(t);
+        self
+    }
+
     pub fn indent(
         mut self,
         left: Option<i32>,

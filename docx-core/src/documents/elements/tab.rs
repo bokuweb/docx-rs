@@ -12,8 +12,23 @@ pub struct Tab {
 }
 
 impl Tab {
-    pub fn new() -> Tab {
+    pub fn new() -> Self {
         Default::default()
+    }
+
+    pub fn val(mut self, v: TabValueType) -> Self {
+        self.val = Some(v);
+        self
+    }
+
+    pub fn leader(mut self, v: TabLeaderType) -> Self {
+        self.leader = Some(v);
+        self
+    }
+
+    pub fn pos(mut self, v: usize) -> Self {
+        self.pos = Some(v);
+        self
     }
 }
 

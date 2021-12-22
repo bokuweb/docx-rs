@@ -46,13 +46,13 @@ impl Styles {
         self.styles.iter().find(|s| s.style_id == id)
     }
 
-    pub fn create_heading_style_map(&self) -> std::collections::HashMap<&str, usize> {
+    pub fn create_heading_style_map(&self) -> std::collections::HashMap<String, usize> {
         self.styles
             .iter()
             .filter_map(|s| {
                 if s.name.is_heading() {
                     let n = s.name.get_heading_number();
-                    n.map(|n| (s.style_id.as_str(), n))
+                    n.map(|n| (s.style_id.clone(), n))
                 } else {
                     None
                 }
@@ -107,7 +107,7 @@ mod tests {
     fn test_heading_style() {
         let c = Styles::new().add_style(Style::new("ToC", StyleType::Paragraph).name("heading 3"));
         let mut m = std::collections::HashMap::new();
-        m.insert("ToC", 3);
+        m.insert("ToC".to_string(), 3);
         let b = c.create_heading_style_map();
         assert_eq!(b, m);
     }

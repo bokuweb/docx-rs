@@ -280,6 +280,35 @@ impl Paragraph {
         self.property = self.property.line_spacing(spacing);
         self
     }
+
+    pub fn raw_text(&self) -> String {
+        let mut s = "".to_string();
+        // For now support only run and ins.
+        for c in self.children.iter() {
+            match c {
+                ParagraphChild::Insert(i) => {
+                    for c in i.children.iter() {
+                        if let InsertChild::Run(r) = c {
+                            for c in r.children.iter() {
+                                if let RunChild::Text(t) = c {
+                                    s.push_str(&t.text);
+                                }
+                            }
+                        }
+                    }
+                }
+                ParagraphChild::Run(run) => {
+                    for c in run.children.iter() {
+                        if let RunChild::Text(t) = c {
+                            s.push_str(&t.text);
+                        }
+                    }
+                }
+                _ => {}
+            }
+        }
+        s
+    }
 }
 
 impl BuildXML for Paragraph {
@@ -392,5 +421,15 @@ mod tests {
             serde_json::to_string(&p).unwrap(),
             r#"{"id":"12345678","children":[{"type":"insert","data":{"children":[{"type":"run","data":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"characterSpacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"characterSpacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"divId":null},"hasNumbering":false}"#
         );
+    }
+
+    #[test]
+    fn test_raw_text() {
+        let b = Paragraph::new()
+            .add_run(Run::new().add_text("Hello"))
+            .add_insert(Insert::new(Run::new().add_text("World")))
+            .add_delete(Delete::new().add_run(Run::new().add_delete_text("!!!!!")))
+            .raw_text();
+        assert_eq!(b, "HelloWorld".to_owned());
     }
 }

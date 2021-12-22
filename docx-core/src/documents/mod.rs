@@ -662,6 +662,7 @@ impl Docx {
     }
 
     fn collect_toc_items(&self, toc: &InstrToC) -> Vec<Paragraph> {
+        let heading_map = self.styles.create_heading_style_map();
         let mut items = vec![];
         for child in &self.document.children {
             match child {

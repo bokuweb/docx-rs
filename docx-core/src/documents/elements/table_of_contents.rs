@@ -50,35 +50,15 @@ impl BuildXML for TableOfContents {
                 .close()
                 .build()
         } else {
-            let mut b = XMLBuilder::new()
+            XMLBuilder::new()
                 .open_structured_tag()
                 .open_structured_tag_property()
                 .close()
                 .open_structured_tag_content()
-                .add_child(&self.items);
-
-            // for (i, p) in self.items.iter().enumerate() {
-            //     if i == 0 {
-            //         let mut p = p.clone().unshift_run(
-            //             Run::new()
-            //                 .add_field_char(FieldCharType::Begin, false)
-            //                 .add_instr_text(InstrText::TOC(self.instr.clone()))
-            //                 .add_field_char(FieldCharType::Separate, false),
-            //         );
-            //         if i == self.items.len() - 1 {
-            //             p = p.add_run(Run::new().add_field_char(FieldCharType::End, false));
-            //         }
-            //         b = b.add_child(&p);
-            //     } else if i == self.items.len() - 1 {
-            //         let p = p
-            //             .clone()
-            //             .add_run(Run::new().add_field_char(FieldCharType::End, false));
-            //         b = b.add_child(&p);
-            //     } else {
-            //         b = b.add_child(p);
-            //     }
-            // }
-            b.close().close().build()
+                .add_child(&self.items)
+                .close()
+                .close()
+                .build()
         }
     }
 }

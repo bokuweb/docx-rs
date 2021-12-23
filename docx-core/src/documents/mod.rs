@@ -417,6 +417,29 @@ impl Docx {
 
         self.update_comments();
 
+        let tocs: Vec<(usize, TableOfContents)> = self
+            .document
+            .children
+            .iter()
+            .enumerate()
+            .filter_map(|(i, child)| {
+                if let DocumentChild::TableOfContents(toc) = child {
+                    Some((i, toc.clone()))
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+            dbg!(&tocs);
+
+        for (i, mut toc) in tocs {
+            let items = collect_toc_items(&self.document.children, &self.styles, &toc);
+            dbg!(&items);
+            toc.items = items;
+            self.document.children[i] = DocumentChild::TableOfContents(toc);
+        }
+
         let (image_ids, images) = self.create_images();
         let web_extensions = self.web_extensions.iter().map(|ext| ext.build()).collect();
         let custom_items = self.custom_items.iter().map(|xml| xml.build()).collect();
@@ -661,42 +684,6 @@ impl Docx {
         self.comments.add_comments(comments);
     }
 
-    fn collect_toc_items(&self, toc: &InstrToC) -> Vec<TableOfContentsItem> {
-        let heading_map = self.styles.create_heading_style_map();
-        let mut items = vec![];
-        for child in &self.document.children {
-            match child {
-                DocumentChild::Paragraph(paragraph) => {
-                    if let Some(_heading_level) = paragraph
-                        .property
-                        .style
-                        .as_ref()
-                        .and_then(|p| Some(p.val.to_string()))
-                        .and_then(|sid| heading_map.get(&sid))
-                    {
-                        items.push(TableOfContentsItem::new().text(paragraph.raw_text()));
-                    }
-                }
-                DocumentChild::Table(table) => {
-                    for row in &table.rows {
-                        for cell in &row.cells {
-                            for content in &cell.children {
-                                match content {
-                                    TableCellContent::Paragraph(paragraph) => {}
-                                    TableCellContent::Table(_) => {
-                                        // TODO: correct paragraph in table
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                _ => {}
-            }
-        }
-        items
-    }
-
     // Traverse and clone comments from document and add to comments node.
     pub(crate) fn store_comments(&mut self, comments: &[Comment]) {
         for child in &mut self.document.children {
@@ -862,4 +849,45 @@ impl Docx {
         }
         (image_ids, images)
     }
+}
+
+fn collect_toc_items(
+    document_children: &[DocumentChild],
+    styles: &Styles,
+    _toc: &TableOfContents,
+) -> Vec<TableOfContentsItem> {
+    let heading_map = styles.create_heading_style_map();
+    let mut items = vec![];
+    for child in document_children {
+        match child {
+            DocumentChild::Paragraph(paragraph) => {
+                dbg!(&paragraph.property.style, &heading_map);
+                if let Some(_heading_level) = paragraph
+                    .property
+                    .style
+                    .as_ref()
+                    .map(|p| p.val.to_string())
+                    .and_then(|sid| heading_map.get(&sid))
+                {
+                    items.push(TableOfContentsItem::new().text(paragraph.raw_text()));
+                }
+            }
+            DocumentChild::Table(table) => {
+                for row in &table.rows {
+                    for cell in &row.cells {
+                        for content in &cell.children {
+                            match content {
+                                TableCellContent::Paragraph(paragraph) => {}
+                                TableCellContent::Table(_) => {
+                                    // TODO: Support table in table
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+    items
 }

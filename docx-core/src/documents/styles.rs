@@ -50,7 +50,9 @@ impl Styles {
         self.styles
             .iter()
             .filter_map(|s| {
+                dbg!(&s.name);
                 if s.name.is_heading() {
+                    dbg!("-0-0-0-");
                     let n = s.name.get_heading_number();
                     n.map(|n| (s.style_id.clone(), n))
                 } else {

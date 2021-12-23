@@ -20,11 +20,11 @@ impl Name {
     }
 
     pub fn is_heading(&self) -> bool {
-        self.name.starts_with("heading")
+        self.name.to_lowercase().starts_with("heading")
     }
 
     pub fn get_heading_number(&self) -> Option<usize> {
-        let replaced = self.name.replace("heading ", "");
+        let replaced = self.name.to_lowercase().replace("heading ", "");
         if let Ok(n) = usize::from_str(&replaced) {
             Some(n)
         } else {

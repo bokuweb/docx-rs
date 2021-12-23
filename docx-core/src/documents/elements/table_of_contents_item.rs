@@ -47,18 +47,14 @@ impl BuildXML for Vec<TableOfContentsItem> {
                             .leader(TabLeaderType::Dot)
                             .pos(10000),
                     )
-                    .add_run(Run::new().add_text(&t.text).add_tab())
-                    // TODO: placeholder
-                    .add_run(Run::new().add_text("1"));
+                    .add_run(Run::new().add_text(&t.text).add_tab());
 
+                let last_run = Run::new().add_text("1");
+                // TODO: placeholder
                 if i == self.len() - 1 {
-                    p = p.add_run(Run::new().add_field_char(FieldCharType::End, false));
+                    p = p.add_run(last_run.add_field_char(FieldCharType::End, false));
                 }
                 dbg!(&p);
-                b = b.add_child(&p);
-            } else if i == self.len() - 1 {
-                let mut p = Paragraph::new();
-                p = p.add_run(Run::new().add_field_char(FieldCharType::End, false));
                 b = b.add_child(&p);
             } else {
                 let mut p = Paragraph::new();
@@ -69,9 +65,13 @@ impl BuildXML for Vec<TableOfContentsItem> {
                             .leader(TabLeaderType::Dot)
                             .pos(10000),
                     )
-                    .add_run(Run::new().add_text(&t.text).add_tab())
-                    // TODO: placeholder
-                    .add_run(Run::new().add_text("1"));
+                    .add_run(Run::new().add_text(&t.text).add_tab());
+
+                let last_run = Run::new().add_text("1");
+                // TODO: placeholder
+                if i == self.len() - 1 {
+                    p = p.add_run(last_run.add_field_char(FieldCharType::End, false));
+                }
                 b = b.add_child(&p);
             }
         }

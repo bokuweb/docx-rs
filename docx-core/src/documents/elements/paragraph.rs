@@ -143,6 +143,17 @@ impl Paragraph {
         self
     }
 
+    pub(crate) fn wrap_by_bookmark(mut self, id: usize, name: impl Into<String>) -> Paragraph {
+        self.children.insert(
+            0,
+            ParagraphChild::BookmarkStart(BookmarkStart::new(id, name)),
+        );
+        self.children
+            .push(ParagraphChild::BookmarkEnd(BookmarkEnd::new(id)));
+
+        self
+    }
+
     pub fn add_hyperlink(mut self, link: Hyperlink) -> Self {
         self.children.push(ParagraphChild::Hyperlink(link));
         self

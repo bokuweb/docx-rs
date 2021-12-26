@@ -65,3 +65,21 @@ impl std::str::FromStr for InstrPAGEREF {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+    #[cfg(test)]
+    use pretty_assertions::assert_eq;
+    use std::str;
+
+    #[test]
+    fn test_page_ref() {
+        let b = InstrPAGEREF::new("_Toc00000000").hyperlink().build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"PAGEREF _Toc00000000 \h"#
+        );
+    }
+}

@@ -15,52 +15,52 @@ impl StyleWithLevel {
 pub struct InstrToC {
     // \o If no heading range is specified, all heading levels used in the document are listed.
     #[serde(skip_serializing_if = "Option::is_none")]
-    heading_styles_range: Option<(usize, usize)>,
+    pub heading_styles_range: Option<(usize, usize)>,
     // \l Includes TC fields that assign entries to one of the levels specified by text in this switch's field-argument as a range having the form startLevel-endLevel,
     //    where startLevel and endLevel are integers, and startLevel has a value equal-to or less-than endLevel.
     //    TC fields that assign entries to lower levels are skipped.
     #[serde(skip_serializing_if = "Option::is_none")]
-    tc_field_level_range: Option<(usize, usize)>,
+    pub tc_field_level_range: Option<(usize, usize)>,
     // \n Without field-argument, omits page numbers from the table of contents.
     // .Page numbers are omitted from all levels unless a range of entry levels is specified by text in this switch's field-argument.
     // A range is specified as for \l.
     #[serde(skip_serializing_if = "Option::is_none")]
-    omit_page_numbers_level_range: Option<(usize, usize)>,
+    pub omit_page_numbers_level_range: Option<(usize, usize)>,
     // \b includes entries only from the portion of the document marked by the bookmark named by text in this switch's field-argument.
     #[serde(skip_serializing_if = "Option::is_none")]
-    entry_bookmark_name: Option<String>,
+    pub entry_bookmark_name: Option<String>,
     // \t Uses paragraphs formatted with styles other than the built-in heading styles.
     // .  text in this switch's field-argument specifies those styles as a set of comma-separated doublets,
     //    with each doublet being a comma-separated set of style name and table of content level. \t can be combined with \o.
-    styles_with_levels: Vec<StyleWithLevel>,
+    pub styles_with_levels: Vec<StyleWithLevel>,
     //  struct S texWin Lis switch's field-argument specifies a sequence of character
     // .  The default is a tab with leader dots.
     #[serde(skip_serializing_if = "Option::is_none")]
-    entry_and_page_number_separator: Option<String>,
+    pub entry_and_page_number_separator: Option<String>,
     // \d
     #[serde(skip_serializing_if = "Option::is_none")]
-    sequence_and_page_numbers_separator: Option<String>,
+    pub sequence_and_page_numbers_separator: Option<String>,
     // \a
-    caption_label: Option<String>,
+    pub caption_label: Option<String>,
     // \c
     #[serde(skip_serializing_if = "Option::is_none")]
-    caption_label_including_numbers: Option<String>,
+    pub caption_label_including_numbers: Option<String>,
     // \s
     #[serde(skip_serializing_if = "Option::is_none")]
-    seq_field_identifier_for_prefix: Option<String>,
+    pub seq_field_identifier_for_prefix: Option<String>,
     // \f
     #[serde(skip_serializing_if = "Option::is_none")]
-    tc_field_identifier: Option<String>,
+    pub tc_field_identifier: Option<String>,
     // \h
-    hyperlink: bool,
+    pub hyperlink: bool,
     // \w
-    preserve_tab: bool,
+    pub preserve_tab: bool,
     // \x
-    preserve_new_line: bool,
+    pub preserve_new_line: bool,
     // \u
-    use_applied_paragraph_line_level: bool,
+    pub use_applied_paragraph_line_level: bool,
     // \z Hides tab leader and page numbers in Web layout view.
-    hide_tab_and_page_numbers_in_webview: bool,
+    pub hide_tab_and_page_numbers_in_webview: bool,
 }
 
 impl InstrToC {

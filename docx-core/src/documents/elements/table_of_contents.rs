@@ -50,12 +50,21 @@ impl BuildXML for TableOfContents {
                 .close()
                 .build()
         } else {
+            let items: Vec<TableOfContentsItem> = self
+                .items
+                .iter()
+                .map(|item| {
+                    let mut item = item.clone();
+                    item.instr = self.instr.clone();
+                    item
+                })
+                .collect();
             XMLBuilder::new()
                 .open_structured_tag()
                 .open_structured_tag_property()
                 .close()
                 .open_structured_tag_content()
-                .add_child(&self.items)
+                .add_child(&items)
                 .close()
                 .close()
                 .build()

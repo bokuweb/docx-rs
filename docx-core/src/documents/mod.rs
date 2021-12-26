@@ -866,20 +866,25 @@ fn update_document_by_toc(
     for child in document_children.into_iter() {
         match child {
             DocumentChild::Paragraph(mut paragraph) => {
-                if let Some(_heading_level) = paragraph
+                if let Some(heading_level) = paragraph
                     .property
                     .style
                     .as_ref()
                     .map(|p| p.val.to_string())
                     .and_then(|sid| heading_map.get(&sid))
                 {
-                    let toc_key = TocKey::generate();
-                    items.push(
-                        TableOfContentsItem::new()
-                            .text(paragraph.raw_text())
-                            .toc_key(&toc_key),
-                    );
-                    paragraph = paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
+                    if let Some((min, max)) = toc.instr.heading_styles_range {
+                        if min <= *heading_level && max >= *heading_level {
+                            let toc_key = TocKey::generate();
+                            items.push(
+                                TableOfContentsItem::new()
+                                    .text(paragraph.raw_text())
+                                    .toc_key(&toc_key),
+                            );
+                            paragraph =
+                                paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
+                        }
+                    }
                 }
                 children.push(DocumentChild::Paragraph(paragraph));
             }

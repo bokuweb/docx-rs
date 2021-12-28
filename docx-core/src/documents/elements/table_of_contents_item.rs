@@ -9,6 +9,7 @@ pub struct TableOfContentsItem {
     pub instr: InstrToC,
     pub text: String,
     pub toc_key: String,
+    pub level: usize,
 }
 
 impl TableOfContentsItem {
@@ -18,6 +19,11 @@ impl TableOfContentsItem {
 
     pub fn text(mut self, text: impl Into<String>) -> Self {
         self.text = text.into();
+        self
+    }
+
+    pub fn level(mut self, level: usize) -> Self {
+        self.level = level;
         self
     }
 
@@ -36,7 +42,7 @@ impl BuildXML for Vec<TableOfContentsItem> {
             .open_structured_tag_content();
 
         for (i, t) in self.iter().enumerate() {
-            let mut p = Paragraph::new();
+            let mut p = Paragraph::new().style(&format!("ToC{}", t.level));
             if i == 0 {
                 p = p.unshift_run(
                     Run::new()
@@ -65,7 +71,7 @@ impl BuildXML for Vec<TableOfContentsItem> {
                     );
                 b = b.add_child(&p);
             } else {
-                let mut p = Paragraph::new();
+                let mut p = Paragraph::new().style(&format!("ToC{}", t.level));
                 p = p
                     .add_tab(
                         Tab::new()
@@ -89,7 +95,7 @@ impl BuildXML for Vec<TableOfContentsItem> {
             }
 
             if i == self.len() - 1 {
-                let mut p = Paragraph::new();
+                let mut p = Paragraph::new().style(&format!("ToC{}", t.level));
                 p = p.add_run(Run::new().add_field_char(FieldCharType::End, false));
                 b = b.add_child(&p);
             }

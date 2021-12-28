@@ -21,6 +21,7 @@ mod history_id;
 mod numberings;
 mod paragraph_id;
 mod pic_id;
+mod preset_styles;
 mod rels;
 mod settings;
 mod styles;
@@ -436,6 +437,15 @@ impl Docx {
             .collect();
 
         dbg!(&tocs);
+
+        if !tocs.is_empty() {
+            self.styles = self
+                .styles
+                .add_style(crate::documents::preset_styles::toc1());
+            self.styles = self
+                .styles
+                .add_style(crate::documents::preset_styles::toc2());
+        }
 
         for (i, toc) in tocs {
             let children = update_document_by_toc(self.document.children, &self.styles, toc, i);
@@ -879,7 +889,8 @@ fn update_document_by_toc(
                             items.push(
                                 TableOfContentsItem::new()
                                     .text(paragraph.raw_text())
-                                    .toc_key(&toc_key),
+                                    .toc_key(&toc_key)
+                                    .level(*heading_level),
                             );
                             paragraph =
                                 paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);

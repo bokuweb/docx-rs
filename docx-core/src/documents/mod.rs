@@ -896,6 +896,10 @@ fn update_document_by_toc(
                                 paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
                         }
                     }
+
+                    if let Some((_min, _max)) = toc.instr.tc_field_level_range {
+                        // TODO: check tc field
+                    }
                 }
                 children.push(DocumentChild::Paragraph(paragraph));
             }

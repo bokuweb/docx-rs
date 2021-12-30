@@ -22,10 +22,15 @@ impl TableOfContents {
         self
     }
 
-    pub fn tc_field_level_range(mut self, start: usize, end: usize) -> Self {
-        self.instr = self.instr.tc_field_level_range(start, end);
+    pub fn hyperlink(mut self) -> Self {
+        self.instr = self.instr.hyperlink();
         self
     }
+
+    // pub fn tc_field_level_range(mut self, start: usize, end: usize) -> Self {
+    //     self.instr = self.instr.tc_field_level_range(start, end);
+    //     self
+    // }
 
     pub fn add_items(mut self, t: TableOfContentsItem) -> Self {
         self.items.push(t);

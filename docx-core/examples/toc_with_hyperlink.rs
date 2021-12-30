@@ -25,7 +25,8 @@ pub fn main() -> Result<(), DocxError> {
         .add_table_of_contents(
             TableOfContents::new()
                 .heading_styles_range(1, 3)
-                .hyperlink(),
+                .hyperlink()
+                .alias("table of contents"),
         )
         .add_paragraph(p1)
         .add_paragraph(p2)

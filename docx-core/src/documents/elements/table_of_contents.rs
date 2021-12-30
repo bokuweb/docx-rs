@@ -10,6 +10,7 @@ use crate::xml_builder::*;
 pub struct TableOfContents {
     pub instr: InstrToC,
     pub items: Vec<TableOfContentsItem>,
+    pub alias: Option<String>,
 }
 
 impl TableOfContents {
@@ -27,6 +28,11 @@ impl TableOfContents {
         self
     }
 
+    pub fn alias(mut self, a: impl Into<String>) -> Self {
+        self.alias = Some(a.into());
+        self
+    }
+
     // pub fn tc_field_level_range(mut self, start: usize, end: usize) -> Self {
     //     self.instr = self.instr.tc_field_level_range(start, end);
     //     self
@@ -40,6 +46,10 @@ impl TableOfContents {
 
 impl BuildXML for TableOfContents {
     fn build(&self) -> Vec<u8> {
+        let mut p = StructuredDataTagProperty::new();
+        if let Some(ref alias) = self.alias {
+            p = p.alias(alias);
+        }
         if self.items.is_empty() {
             let p1 = Paragraph::new().add_run(
                 Run::new()
@@ -51,8 +61,7 @@ impl BuildXML for TableOfContents {
 
             XMLBuilder::new()
                 .open_structured_tag()
-                .open_structured_tag_property()
-                .close()
+                .add_child(&p)
                 .open_structured_tag_content()
                 .add_child(&p1)
                 .add_child(&p2)
@@ -71,8 +80,7 @@ impl BuildXML for TableOfContents {
                 .collect();
             XMLBuilder::new()
                 .open_structured_tag()
-                .open_structured_tag_property()
-                .close()
+                .add_child(&p)
                 .open_structured_tag_content()
                 .add_child(&items)
                 .close()

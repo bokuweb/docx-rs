@@ -448,8 +448,10 @@ impl Docx {
         }
 
         for (i, toc) in tocs {
-            let children = update_document_by_toc(self.document.children, &self.styles, toc, i);
-            self.document.children = children;
+            if !toc.disable_auto_items {
+                let children = update_document_by_toc(self.document.children, &self.styles, toc, i);
+                self.document.children = children;
+            }
         }
 
         let (image_ids, images) = self.create_images();

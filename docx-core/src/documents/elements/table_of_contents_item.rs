@@ -10,6 +10,7 @@ pub struct TableOfContentsItem {
     pub text: String,
     pub toc_key: String,
     pub level: usize,
+    pub dirty: bool,
     pub page_ref: Option<String>,
 }
 
@@ -55,7 +56,7 @@ impl BuildXML for Vec<TableOfContentsItem> {
             if i == 0 {
                 p = p.unshift_run(
                     Run::new()
-                        .add_field_char(FieldCharType::Begin, false)
+                        .add_field_char(FieldCharType::Begin, t.dirty)
                         .add_instr_text(InstrText::TOC(t.instr.clone()))
                         .add_field_char(FieldCharType::Separate, false),
                 );

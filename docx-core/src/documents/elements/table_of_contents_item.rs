@@ -22,6 +22,11 @@ impl TableOfContentsItem {
         }
     }
 
+    pub fn instr(mut self, instr: InstrToC) -> Self {
+        self.instr = instr;
+        self
+    }
+
     pub fn text(mut self, text: impl Into<String>) -> Self {
         self.text = text.into();
         self
@@ -64,7 +69,7 @@ impl BuildXML for Vec<TableOfContentsItem> {
                     Tab::new()
                         .val(TabValueType::Right)
                         .leader(TabLeaderType::Dot)
-                        // TODO: for now set 20000
+                        // TODO: for now set 80000
                         .pos(80000),
                 );
 
@@ -87,7 +92,10 @@ impl BuildXML for Vec<TableOfContentsItem> {
                             .add_run(page_ref),
                     );
                 } else {
-                    p = p.add_run(run).add_run(page_ref);
+                    p = p
+                        .add_run(run)
+                        .add_run(Run::new().add_tab())
+                        .add_run(page_ref);
                 }
                 b = b.add_child(&p);
             } else {
@@ -96,7 +104,7 @@ impl BuildXML for Vec<TableOfContentsItem> {
                     Tab::new()
                         .val(TabValueType::Right)
                         .leader(TabLeaderType::Dot)
-                        // TODO: for now set 20000
+                        // TODO: for now set 80000
                         .pos(80000),
                 );
 
@@ -119,7 +127,10 @@ impl BuildXML for Vec<TableOfContentsItem> {
                             .add_run(page_ref),
                     )
                 } else {
-                    p = p.add_run(run).add_run(page_ref);
+                    p = p
+                        .add_run(run)
+                        .add_run(Run::new().add_tab())
+                        .add_run(page_ref);
                 }
                 b = b.add_child(&p);
             }

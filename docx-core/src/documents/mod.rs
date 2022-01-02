@@ -436,19 +436,16 @@ impl Docx {
             })
             .collect();
 
-        dbg!(&tocs);
-
         if !tocs.is_empty() {
-            self.styles = self
-                .styles
-                .add_style(crate::documents::preset_styles::toc1());
-            self.styles = self
-                .styles
-                .add_style(crate::documents::preset_styles::toc2());
+            for i in 1..=9 {
+                self.styles = self
+                    .styles
+                    .add_style(crate::documents::preset_styles::toc(i));
+            }
         }
 
         for (i, toc) in tocs {
-            if !toc.disable_auto_items {
+            if toc.items.is_empty() {
                 let children = update_document_by_toc(self.document.children, &self.styles, toc, i);
                 self.document.children = children;
             }

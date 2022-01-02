@@ -1,5 +1,6 @@
 use std::{collections::HashMap, str::FromStr};
 
+mod bookmark_id;
 mod build_xml;
 mod comments;
 mod comments_extended;
@@ -20,11 +21,13 @@ mod history_id;
 mod numberings;
 mod paragraph_id;
 mod pic_id;
+mod preset_styles;
 mod rels;
 mod settings;
 mod styles;
 mod taskpanes;
 mod taskpanes_rels;
+mod toc_key;
 mod web_settings;
 mod webextension;
 mod xml_docx;
@@ -34,6 +37,7 @@ pub(crate) use history_id::HistoryId;
 pub(crate) use paragraph_id::*;
 pub(crate) use pic_id::*;
 
+pub use bookmark_id::*;
 pub use comments::*;
 pub use comments_extended::*;
 pub use content_types::*;
@@ -55,6 +59,7 @@ pub use settings::*;
 pub use styles::*;
 pub use taskpanes::*;
 pub use taskpanes_rels::*;
+pub use toc_key::*;
 pub use web_settings::*;
 pub use webextension::*;
 pub use xml_docx::*;
@@ -412,10 +417,39 @@ impl Docx {
         self
     }
 
-    pub fn build(&mut self) -> XMLDocx {
+    pub fn build(mut self) -> XMLDocx {
         self.reset();
 
         self.update_comments();
+
+        let tocs: Vec<(usize, TableOfContents)> = self
+            .document
+            .children
+            .iter()
+            .enumerate()
+            .filter_map(|(i, child)| {
+                if let DocumentChild::TableOfContents(toc) = child {
+                    Some((i, toc.clone()))
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+        if !tocs.is_empty() {
+            for i in 1..=9 {
+                self.styles = self
+                    .styles
+                    .add_style(crate::documents::preset_styles::toc(i));
+            }
+        }
+
+        for (i, toc) in tocs {
+            if toc.items.is_empty() {
+                let children = update_document_by_toc(self.document.children, &self.styles, toc, i);
+                self.document.children = children;
+            }
+        }
 
         let (image_ids, images) = self.create_images();
         let web_extensions = self.web_extensions.iter().map(|ext| ext.build()).collect();
@@ -826,4 +860,72 @@ impl Docx {
         }
         (image_ids, images)
     }
+}
+
+fn update_document_by_toc(
+    document_children: Vec<DocumentChild>,
+    styles: &Styles,
+    toc: TableOfContents,
+    toc_index: usize,
+) -> Vec<DocumentChild> {
+    let heading_map = styles.create_heading_style_map();
+    let mut items = vec![];
+    let mut children = vec![];
+
+    for child in document_children.into_iter() {
+        match child {
+            DocumentChild::Paragraph(mut paragraph) => {
+                if let Some(heading_level) = paragraph
+                    .property
+                    .style
+                    .as_ref()
+                    .map(|p| p.val.to_string())
+                    .and_then(|sid| heading_map.get(&sid))
+                {
+                    if let Some((min, max)) = toc.instr.heading_styles_range {
+                        if min <= *heading_level && max >= *heading_level {
+                            let toc_key = TocKey::generate();
+                            items.push(
+                                TableOfContentsItem::new()
+                                    .text(paragraph.raw_text())
+                                    .toc_key(&toc_key)
+                                    .level(*heading_level),
+                            );
+                            paragraph =
+                                paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
+                        }
+                    }
+
+                    if let Some((_min, _max)) = toc.instr.tc_field_level_range {
+                        // TODO: check tc field
+                    }
+                }
+                children.push(DocumentChild::Paragraph(paragraph));
+            }
+            DocumentChild::Table(ref _table) => {
+                // TODO:
+                // for row in &table.rows {
+                //     for cell in &row.cells {
+                //         for content in &cell.children {
+                //             match content {
+                //                 TableCellContent::Paragraph(paragraph) => {}
+                //                 TableCellContent::Table(_) => {
+                //                     // TODO: Support table in table
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
+                children.push(child);
+            }
+            _ => {
+                children.push(child);
+            }
+        }
+    }
+
+    let mut toc = toc;
+    toc.items = items;
+    children[toc_index] = DocumentChild::TableOfContents(toc);
+    children
 }

@@ -165,7 +165,7 @@ impl Docx {
         self
     }
 
-    pub fn build(&mut self, has_numberings: bool) -> Result<Vec<u8>, JsValue> {
+    pub fn build(mut self, has_numberings: bool) -> Result<Vec<u8>, JsValue> {
         let buf = Vec::new();
         let mut cur = std::io::Cursor::new(buf);
         if has_numberings {

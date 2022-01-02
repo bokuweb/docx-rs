@@ -90,7 +90,7 @@ mod tests {
             .num_style_link("style1");
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"id":0,"styleLink":null,"numStyleLink":"style1","levels":[{"level":1,"start":1,"format":"decimal","text":"%4.","jc":"left","paragraphProperty":{"runProperty":{},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"divId":null},"runProperty":{},"suffix":"tab","pstyle":null,"levelRestart":null}]}"#,
+            r#"{"id":0,"styleLink":null,"numStyleLink":"style1","levels":[{"level":1,"start":1,"format":"decimal","text":"%4.","jc":"left","paragraphProperty":{"runProperty":{},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"tabs":[],"divId":null},"runProperty":{},"suffix":"tab","pstyle":null,"levelRestart":null}]}"#,
         );
     }
 }

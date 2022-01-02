@@ -1,5 +1,7 @@
 use serde::{Serialize, Serializer};
 
+use std::str::FromStr;
+
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
@@ -11,6 +13,23 @@ pub struct Name {
 impl Name {
     pub fn new(name: impl Into<String>) -> Name {
         Name { name: name.into() }
+    }
+
+    pub fn starts_with(&self, s: &str) -> bool {
+        self.name.starts_with(s)
+    }
+
+    pub fn is_heading(&self) -> bool {
+        self.name.to_lowercase().starts_with("heading")
+    }
+
+    pub fn get_heading_number(&self) -> Option<usize> {
+        let replaced = self.name.to_lowercase().replace("heading ", "");
+        if let Ok(n) = usize::from_str(&replaced) {
+            Some(n)
+        } else {
+            None
+        }
     }
 }
 

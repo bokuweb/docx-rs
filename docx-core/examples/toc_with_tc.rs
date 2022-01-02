@@ -1,7 +1,7 @@
 use docx_rs::*;
 
 pub fn main() -> Result<(), DocxError> {
-    let path = std::path::Path::new("./output/dirty_toc.docx");
+    let path = std::path::Path::new("./output/toc_with_tc.docx");
     let file = std::fs::File::create(&path).unwrap();
     let p1 = Paragraph::new()
         .add_run(Run::new().add_text("Hello"))
@@ -12,20 +12,24 @@ pub fn main() -> Result<(), DocxError> {
         .add_run(Run::new().add_text("World"))
         .style("Heading2")
         .page_break_before(true);
-    let style2 = Style::new("Heading2", StyleType::Paragraph).name("Heading 2");
-    let p4 = Paragraph::new()
-        .add_run(Run::new().add_text("Foo"))
-        .style("Heading4")
+    let tc = Paragraph::new()
+        .add_run(
+            Run::new()
+                .add_field_char(FieldCharType::Begin, false)
+                .add_instr_text(InstrText::TC(InstrTC::new("tc_test").level(4)))
+                .add_field_char(FieldCharType::Separate, false)
+                .add_field_char(FieldCharType::End, false),
+        )
         .page_break_before(true);
-    let style4 = Style::new("Heading4", StyleType::Paragraph).name("Heading 4");
+
     Docx::new()
         .add_style(style1)
-        .add_style(style2)
-        .add_style(style4)
-        .add_table_of_contents(TableOfContents::new().heading_styles_range(1, 3))
+        .add_table_of_contents(
+            TableOfContents::new().heading_styles_range(1, 3), // .tc_field_level_range(3, 4),
+        )
         .add_paragraph(p1)
         .add_paragraph(p2)
-        .add_paragraph(p4)
+        .add_paragraph(tc)
         .build()
         .pack(file)?;
     Ok(())

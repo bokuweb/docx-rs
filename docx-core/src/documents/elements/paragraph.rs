@@ -138,6 +138,22 @@ impl Paragraph {
         self
     }
 
+    pub(crate) fn unshift_run(mut self, run: Run) -> Paragraph {
+        self.children.insert(0, ParagraphChild::Run(Box::new(run)));
+        self
+    }
+
+    pub(crate) fn wrap_by_bookmark(mut self, id: usize, name: impl Into<String>) -> Paragraph {
+        self.children.insert(
+            0,
+            ParagraphChild::BookmarkStart(BookmarkStart::new(id, name)),
+        );
+        self.children
+            .push(ParagraphChild::BookmarkEnd(BookmarkEnd::new(id)));
+
+        self
+    }
+
     pub fn add_hyperlink(mut self, link: Hyperlink) -> Self {
         self.children.push(ParagraphChild::Hyperlink(link));
         self
@@ -219,6 +235,11 @@ impl Paragraph {
         self
     }
 
+    pub fn add_tab(mut self, t: Tab) -> Self {
+        self.property = self.property.add_tab(t);
+        self
+    }
+
     pub fn indent(
         mut self,
         left: Option<i32>,
@@ -274,6 +295,35 @@ impl Paragraph {
     pub fn line_spacing(mut self, spacing: LineSpacing) -> Self {
         self.property = self.property.line_spacing(spacing);
         self
+    }
+
+    pub fn raw_text(&self) -> String {
+        let mut s = "".to_string();
+        // For now support only run and ins.
+        for c in self.children.iter() {
+            match c {
+                ParagraphChild::Insert(i) => {
+                    for c in i.children.iter() {
+                        if let InsertChild::Run(r) = c {
+                            for c in r.children.iter() {
+                                if let RunChild::Text(t) = c {
+                                    s.push_str(&t.text);
+                                }
+                            }
+                        }
+                    }
+                }
+                ParagraphChild::Run(run) => {
+                    for c in run.children.iter() {
+                        if let RunChild::Text(t) = c {
+                            s.push_str(&t.text);
+                        }
+                    }
+                }
+                _ => {}
+            }
+        }
+        s
     }
 }
 
@@ -374,7 +424,7 @@ mod tests {
         let p = Paragraph::new().add_run(run);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"divId":null},"hasNumbering":false}"#,
+            r#"{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"tabs":[],"divId":null},"hasNumbering":false}"#,
         );
     }
 
@@ -385,7 +435,17 @@ mod tests {
         let p = Paragraph::new().add_insert(ins);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"id":"12345678","children":[{"type":"insert","data":{"children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"divId":null},"hasNumbering":false}"#
+            r#"{"id":"12345678","children":[{"type":"insert","data":{"children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{},"style":null,"numberingProperty":null,"alignment":null,"indent":null,"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"tabs":[],"divId":null},"hasNumbering":false}"#
         );
     }
-}
+
+    #[test]
+    fn test_raw_text() {
+        let b = Paragraph::new()
+            .add_run(Run::new().add_text("Hello"))
+            .add_insert(Insert::new(Run::new().add_text("World")))
+            .add_delete(Delete::new().add_run(Run::new().add_delete_text("!!!!!")))
+            .raw_text();
+        assert_eq!(b, "HelloWorld".to_owned());
+    }}
+

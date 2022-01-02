@@ -198,7 +198,6 @@ pub fn read_xml(xml: &str) -> Result<Docx, ReaderError> {
 
         // Read web settings
         let web_settings_path = rels.find_target_path(WEB_SETTINGS_TYPE);
-        dbg!(&web_settings_path);
         if let Some(web_settings_path) = web_settings_path {
             let data = read_zip(
                 &mut archive,

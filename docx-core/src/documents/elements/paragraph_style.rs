@@ -5,7 +5,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ParagraphStyle {
-    val: String,
+    pub val: String,
 }
 
 impl Default for ParagraphStyle {

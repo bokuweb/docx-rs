@@ -216,7 +216,7 @@ mod tests {
         let b = c.indent(Some(20), Some(SpecialIndentType::FirstLine(10)), None, None);
         assert_eq!(
             serde_json::to_string(&b).unwrap(),
-            r#"{"runProperty":{"sz":null,"szCs":null,"color":null,"highlight":null,"vertAlign":null,"underline":null,"bold":null,"boldCs":null,"italic":null,"italicCs":null,"vanish":null,"characterSpacing":null,"fonts":null,"textBorder":null,"del":null,"ins":null},"style":null,"numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10},"hangingChars":null,"firstLineChars":null},"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"tabs":[],"divId":null}"#
+            r#"{"runProperty":{},"style":null,"numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10},"hangingChars":null,"firstLineChars":null},"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"tabs":[],"divId":null}"#
         );
     }
 

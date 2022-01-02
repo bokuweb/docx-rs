@@ -313,7 +313,7 @@ mod tests {
         };
         assert_eq!(
             serde_json::to_string(&run).unwrap(),
-            r#"{"runProperty":{"sz":30,"szCs":30,"color":"C9211E","highlight":"yellow","vertAlign":null,"underline":"single","bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true,"characterSpacing":100,"fonts":null,"textBorder":null,"del":null,"ins":null},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#,
+            r#"{"runProperty":{"sz":30,"szCs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true,"characterSpacing":100},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#,
         );
     }
 }

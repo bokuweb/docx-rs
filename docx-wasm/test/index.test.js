@@ -92,6 +92,12 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read strike docx", () => {
+    const buffer = readFileSync("../fixtures/strike/strike.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {
@@ -104,6 +110,20 @@ describe("writer", () => {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }
+  });
+
+  test("should write strike", () => {
+    const p = new w.Paragraph().addRun(
+      new w.Run().addText("Hello world!!").strike()
+    );
+    const buffer = new w.Docx().addParagraph(p).build();
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+    writeFileSync("../output/strike.docx", buffer);
   });
 
   test("should write lvlOverride with level", () => {

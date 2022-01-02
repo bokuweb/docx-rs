@@ -8,22 +8,40 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct RunProperty {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub sz: Option<Sz>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub sz_cs: Option<SzCs>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub color: Option<Color>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub highlight: Option<Highlight>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub vert_align: Option<VertAlign>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub underline: Option<Underline>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub bold: Option<Bold>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub bold_cs: Option<BoldCs>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub italic: Option<Italic>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub italic_cs: Option<ItalicCs>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub vanish: Option<Vanish>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub character_spacing: Option<CharacterSpacing>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub fonts: Option<RunFonts>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub text_border: Option<TextBorder>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub del: Option<Delete>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub ins: Option<Insert>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub strike: Option<Strike>,
 }
 
 impl RunProperty {
@@ -72,6 +90,11 @@ impl RunProperty {
     pub fn italic(mut self) -> RunProperty {
         self.italic = Some(Italic::new());
         self.italic_cs = Some(ItalicCs::new());
+        self
+    }
+
+    pub fn strike(mut self) -> RunProperty {
+        self.strike = Some(Strike::new());
         self
     }
 
@@ -131,6 +154,7 @@ impl Default for RunProperty {
             text_border: None,
             del: None,
             ins: None,
+            strike: None,
         }
     }
 }
@@ -146,6 +170,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.bold_cs)
             .add_optional_child(&self.italic)
             .add_optional_child(&self.italic_cs)
+            .add_optional_child(&self.strike)
             .add_optional_child(&self.highlight)
             .add_optional_child(&self.underline)
             .add_optional_child(&self.vanish)
@@ -195,6 +220,16 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:rPr><w:b /><w:bCs /></w:rPr>"#
+        );
+    }
+
+    #[test]
+    fn test_strike() {
+        let c = RunProperty::new().strike();
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rPr><w:strike /></w:rPr>"#
         );
     }
 

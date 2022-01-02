@@ -66,6 +66,11 @@ impl Run {
         self
     }
 
+    pub fn strike(mut self) -> Run {
+        self.0.run_property = self.0.run_property.strike();
+        self
+    }
+
     pub fn underline(mut self, line_type: &str) -> Run {
         self.0.run_property = self.0.run_property.underline(line_type);
         self

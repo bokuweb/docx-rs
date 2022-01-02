@@ -1105,7 +1105,7 @@ export class Docx {
   build() {
     const docx = this.createDocx();
     const buf = docx.build(this.hasNumberings);
-    docx.free();
+    // docx.free();
     return buf;
   }
 }

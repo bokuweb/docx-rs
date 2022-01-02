@@ -902,7 +902,7 @@ fn update_document_by_toc(
                 }
                 children.push(DocumentChild::Paragraph(paragraph));
             }
-            DocumentChild::Table(ref table) => {
+            DocumentChild::Table(ref _table) => {
                 // TODO:
                 // for row in &table.rows {
                 //     for cell in &row.cells {

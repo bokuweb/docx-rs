@@ -1060,6 +1060,7 @@ export class Docx {
     }
 
     for (const s of this.styles?.styles) {
+      console.log(s)
       docx = docx.add_style(s.buildWasmObject());
     }
 

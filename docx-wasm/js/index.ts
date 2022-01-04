@@ -4,6 +4,7 @@ import { Delete } from "./delete";
 import { Hyperlink } from "./hyperlink";
 import { DeleteText } from "./delete-text";
 import { Table } from "./table";
+import { TableOfContents } from "./table-of-contents";
 import { TableCell, toTextDirectionWasmType } from "./table-cell";
 import { BorderType } from "./border";
 import { Run, RunFonts } from "./run";
@@ -18,6 +19,7 @@ import { BookmarkStart } from "./bookmark-start";
 import { BookmarkEnd } from "./bookmark-end";
 import { Settings } from "./settings";
 import { DocProps } from "./doc-props";
+import { Style } from "./style";
 import { Styles } from "./styles";
 import { WebExtension } from "./webextension";
 import { Footer } from "./footer";
@@ -75,7 +77,13 @@ const convertWidthType = (t: WidthType) => {
 };
 
 export class Docx {
-  children: (Paragraph | Table | BookmarkStart | BookmarkEnd)[] = [];
+  children: (
+    | Paragraph
+    | Table
+    | BookmarkStart
+    | BookmarkEnd
+    | TableOfContents
+  )[] = [];
   hasNumberings = false;
   abstractNumberings: AbstractNumbering[] = [];
   numberings: Numbering[] = [];
@@ -86,6 +94,16 @@ export class Docx {
   webextensions: WebExtension[] = [];
   customItems: { id: string; xml: string }[] = [];
   styles = new Styles();
+
+  addTableOfContents(t: TableOfContents) {
+    this.children.push(t);
+    return this;
+  }
+
+  addStyle(s: Style) {
+    this.styles.styles.push(s);
+    return this;
+  }
 
   addParagraph(p: Paragraph) {
     if (p.hasNumberings) {
@@ -876,6 +894,8 @@ export class Docx {
         docx = docx.add_bookmark_start(child.id, child.name);
       } else if (child instanceof BookmarkEnd) {
         docx = docx.add_bookmark_end(child.id);
+      } else if (child instanceof TableOfContents) {
+        docx = docx.add_table_of_contents(child.buildWasmObject());
       }
     });
 
@@ -1039,6 +1059,10 @@ export class Docx {
       docx = docx.doc_grid(type, linePitch, charSpace);
     }
 
+    for (const s of this.styles?.styles) {
+      docx = docx.add_style(s.buildWasmObject());
+    }
+
     if (this.styles?.docDefaults) {
       if (this.styles.docDefaults.runProperty?.fonts) {
         const fonts = this.buildRunFonts(
@@ -1126,6 +1150,7 @@ export * from "./table";
 export * from "./table-cell";
 export * from "./table-cell-border";
 export * from "./table-cell-borders";
+export * from "./table-of-contents";
 export * from "./table-row";
 export * from "./run";
 export * from "./text";

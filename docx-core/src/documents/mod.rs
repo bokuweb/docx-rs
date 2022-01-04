@@ -445,7 +445,7 @@ impl Docx {
         }
 
         for (i, toc) in tocs {
-            if toc.items.is_empty() {
+            if toc.items.is_empty() && !toc.disable_auto_items {
                 let children = update_document_by_toc(self.document.children, &self.styles, toc, i);
                 self.document.children = children;
             }

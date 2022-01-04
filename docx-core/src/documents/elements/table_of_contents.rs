@@ -10,7 +10,7 @@ use crate::xml_builder::*;
 pub struct TableOfContents {
     pub instr: InstrToC,
     pub items: Vec<TableOfContentsItem>,
-    // pub disable_auto_items: bool,
+    pub disable_auto_items: bool,
     pub dirty: bool,
     pub alias: Option<String>,
 }
@@ -45,10 +45,10 @@ impl TableOfContents {
         self
     }
 
-    // pub fn disable_auto_items(mut self) -> Self {
-    //     self.disable_auto_items = true;
-    //     self
-    // }
+    pub fn disable_auto_items(mut self) -> Self {
+        self.disable_auto_items = true;
+        self
+    }
 
     pub fn dirty(mut self) -> Self {
         self.dirty = true;

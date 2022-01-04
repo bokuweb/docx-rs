@@ -3,7 +3,7 @@ import { DocDefaults } from "./doc-defaults";
 import { RunFonts } from "./run";
 
 export class Styles {
-  styles: Style[];
+  styles: Style[] = [];
   docDefaults = new DocDefaults();
 
   defaultSize(size: number) {

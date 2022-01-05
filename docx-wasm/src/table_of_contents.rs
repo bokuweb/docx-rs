@@ -1,5 +1,7 @@
 use wasm_bindgen::prelude::*;
 
+use super::*;
+
 #[wasm_bindgen]
 #[derive(Debug)]
 pub struct TableOfContents(docx_rs::TableOfContents);
@@ -32,10 +34,10 @@ impl TableOfContents {
         self
     }
 
-    // pub fn add_item(mut self, t: TableOfContentsItem) -> Self {
-    //     self.items.push(t);
-    //     self
-    // }
+    pub fn add_item(mut self, t: TableOfContentsItem) -> Self {
+        self.0.items.push(t.take());
+        self
+    }
 
     pub fn disable_auto_items(mut self) -> Self {
         self.0.disable_auto_items = true;

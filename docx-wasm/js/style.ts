@@ -53,7 +53,6 @@ export class Style {
   };
 
   buildWasmObject = () => {
-    console.log(this._name, this._styleId);
     const styleType = this.buildStyleType();
     let s = wasm.createStyle(this._styleId, styleType);
 

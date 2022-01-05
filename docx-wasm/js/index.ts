@@ -1060,7 +1060,6 @@ export class Docx {
     }
 
     for (const s of this.styles?.styles) {
-      console.log(s)
       docx = docx.add_style(s.buildWasmObject());
     }
 
@@ -1152,6 +1151,7 @@ export * from "./table-cell";
 export * from "./table-cell-border";
 export * from "./table-cell-borders";
 export * from "./table-of-contents";
+export * from "./table-of-contents-item";
 export * from "./table-row";
 export * from "./run";
 export * from "./text";

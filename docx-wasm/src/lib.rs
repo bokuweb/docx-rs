@@ -21,6 +21,7 @@ mod table;
 mod table_cell;
 mod table_cell_border;
 mod table_of_contents;
+mod table_of_contents_item;
 mod table_row;
 mod web_extension;
 
@@ -47,5 +48,6 @@ pub use table::*;
 pub use table_cell::*;
 pub use table_cell_border::*;
 pub use table_of_contents::*;
+pub use table_of_contents_item::*;
 pub use table_row::*;
 pub use web_extension::*;

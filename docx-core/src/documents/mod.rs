@@ -894,6 +894,16 @@ fn update_document_by_toc(
                             paragraph =
                                 paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
                         }
+                    } else {
+                        // If no heading range is specified, all heading levels used in the document are listed.
+                        let toc_key = TocKey::generate();
+                        items.push(
+                            TableOfContentsItem::new()
+                                .text(paragraph.raw_text())
+                                .toc_key(&toc_key)
+                                .level(*heading_level),
+                        );
+                        paragraph = paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
                     }
 
                     if let Some((_min, _max)) = toc.instr.tc_field_level_range {

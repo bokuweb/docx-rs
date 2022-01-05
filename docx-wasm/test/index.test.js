@@ -18,14 +18,14 @@ describe("reader", () => {
   test("should read tr2bl docx", () => {
     const buffer = readFileSync("../fixtures/tr2bl/tr2bl.docx");
     const json = w.readDocx(buffer);
-    writeFileSync("../output/tr2bl.json", JSON.stringify(json, null, 2));
+    writeFileSync("../output/js/tr2bl.json", JSON.stringify(json, null, 2));
     expect(json).toMatchSnapshot();
   });
 
   test("should read custom docx", () => {
     const buffer = readFileSync("../fixtures/custom/custom.docx");
     const json = w.readDocx(buffer);
-    writeFileSync("../output/custom.json", JSON.stringify(json, null, 2));
+    writeFileSync("../output/js/custom.json", JSON.stringify(json, null, 2));
     expect(json).toMatchSnapshot();
   });
 
@@ -123,7 +123,7 @@ describe("writer", () => {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }
-    writeFileSync("../output/strike.docx", buffer);
+    writeFileSync("../output/js/strike.docx", buffer);
   });
 
   test("should write lvlOverride with level", () => {
@@ -176,7 +176,7 @@ describe("writer", () => {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }
-    writeFileSync("../output/nested_table.docx", buffer);
+    writeFileSync("../output/js/nested_table.docx", buffer);
   });
 
   test("should write tl2br and tr2bl cells", () => {
@@ -207,7 +207,7 @@ describe("writer", () => {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }
-    writeFileSync("../output/cell_borders.docx", buffer);
+    writeFileSync("../output/js/cell_borders.docx", buffer);
   });
 
   test("should write cell shading", () => {
@@ -224,7 +224,7 @@ describe("writer", () => {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }
-    writeFileSync("../output/cell_shading.docx", buffer);
+    writeFileSync("../output/js/cell_shading.docx", buffer);
   });
 
   test("should write page margin", () => {
@@ -252,7 +252,7 @@ describe("writer", () => {
       .defaultSize(40)
       .defaultFonts(fonts)
       .build();
-    writeFileSync("../output/default_font.docx", buffer);
+    writeFileSync("../output/js/default_font.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
@@ -264,7 +264,7 @@ describe("writer", () => {
   test("should write doc vars", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!!!"));
     const buffer = new w.Docx().addParagraph(p).addDocVar("foo", "bar").build();
-    writeFileSync("../output/doc_vars.docx", buffer);
+    writeFileSync("../output/js/doc_vars.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
@@ -276,7 +276,7 @@ describe("writer", () => {
   test("should write doc grid", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!!!"));
     const buffer = new w.Docx().addParagraph(p).docGrid("default", 360).build();
-    writeFileSync("../output/doc_grid.docx", buffer);
+    writeFileSync("../output/js/doc_grid.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
@@ -297,7 +297,7 @@ describe("writer", () => {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }
-    writeFileSync("../output/table_layout.docx", buffer);
+    writeFileSync("../output/js/table_layout.docx", buffer);
   });
 
   test("should write text border", () => {
@@ -305,7 +305,7 @@ describe("writer", () => {
       .addRun(new w.Run().addText("Hello "))
       .addRun(new w.Run().addText("World!").textBorder("single", 4, 0, "auto"));
     const buffer = new w.Docx().addParagraph(p).build();
-    writeFileSync("../output/text_border.docx", buffer);
+    writeFileSync("../output/js/text_border.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
@@ -321,7 +321,7 @@ describe("writer", () => {
       .pageSize(16838, 11906)
       .pageOrientation("landscape")
       .build();
-    writeFileSync("../output/page_orientation.docx", buffer);
+    writeFileSync("../output/js/page_orientation.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
@@ -336,7 +336,7 @@ describe("writer", () => {
       .addParagraph(p)
       .customProperty("hello", '{"world": 0}')
       .build();
-    writeFileSync("../output/custom.docx", buffer);
+    writeFileSync("../output/js/custom.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml|custom.xml/)) {
@@ -360,7 +360,7 @@ describe("writer", () => {
         ).property("hello", JSON.stringify({ hello: "world" }))
       )
       .build();
-    writeFileSync("../output/webextension.docx", buffer);
+    writeFileSync("../output/js/webextension.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/webextension1.xml|_rels|taskpanes.xml.rel/)) {
@@ -378,7 +378,7 @@ describe("writer", () => {
         '<root xmlns="https://example.com"><item name="Cheap Item" price="$193.95"/><item name="Expensive Item" price="$931.88"/></root>'
       )
       .build();
-    writeFileSync("../output/custom-item.docx", buffer);
+    writeFileSync("../output/js/custom-item.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/item1.xml|_rels|item1Props/)) {
@@ -394,7 +394,7 @@ describe("writer", () => {
         new w.LineSpacing().before(100).after(0).line(100).afterLines(400)
       );
     const buffer = new w.Docx().addParagraph(p).build();
-    writeFileSync("../output/line_spacing.docx", buffer);
+    writeFileSync("../output/js/line_spacing.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
@@ -408,7 +408,7 @@ describe("writer", () => {
     const p2 = new w.Paragraph().addRun(new w.Run().addText("World "));
     const footer = new w.Footer().addParagraph(p1);
     const buffer = new w.Docx().footer(footer).addParagraph(p2).build();
-    writeFileSync("../output/footer.docx", buffer);
+    writeFileSync("../output/js/footer.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|footer1.xml/)) {
@@ -422,7 +422,7 @@ describe("writer", () => {
     const p2 = new w.Paragraph().addRun(new w.Run().addText("World "));
     const header = new w.Header().addParagraph(p1);
     const buffer = new w.Docx().header(header).addParagraph(p2).build();
-    writeFileSync("../output/header.docx", buffer);
+    writeFileSync("../output/js/header.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|footer1.xml/)) {
@@ -438,7 +438,7 @@ describe("writer", () => {
     );
     const header = new w.Header().addTable(table);
     const buffer = new w.Docx().firstHeader(header).build();
-    writeFileSync("../output/first_header_with_table.docx", buffer);
+    writeFileSync("../output/js/first_header_with_table.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|header[1-9].xml/)) {
@@ -454,7 +454,7 @@ describe("writer", () => {
     );
     const footer = new w.Footer().addTable(table);
     const buffer = new w.Docx().evenFooter(footer).build();
-    writeFileSync("../output/even_footer_with_table.docx", buffer);
+    writeFileSync("../output/js/even_footer_with_table.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|footer[1-9].xml/)) {
@@ -474,7 +474,7 @@ describe("writer", () => {
       .addBookmarkEnd(1);
     const buffer = new w.Docx().addParagraph(p1).addParagraph(p2).build();
 
-    writeFileSync("../output/hyperlink.docx", buffer);
+    writeFileSync("../output/js/hyperlink.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml/)) {
@@ -506,7 +506,7 @@ describe("writer", () => {
       .addStyle(style1)
       .addStyle(style2)
       .build();
-    writeFileSync("../output/toc_dirty_and_disable_auto_items.docx", buffer);
+    writeFileSync("../output/js/toc_dirty_and_disable_auto_items.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml/)) {
@@ -533,7 +533,55 @@ describe("writer", () => {
       .addStyle(style1)
       .addStyle(style2)
       .build();
-    writeFileSync("../output/toc_auto_items.docx", buffer);
+    writeFileSync("../output/js/toc_auto_items.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write ToC with items", () => {
+    const p1 = new w.Paragraph()
+      .addBookmarkStart(1, "_Toc00000000")
+      .addRun(new w.Run().addText("Hello!!"))
+      .addBookmarkEnd(1)
+      .pageBreakBefore(true)
+      .style("Heading1");
+    const style1 = new w.Style("Heading1", "paragraph").name("Heading 1");
+    const p2 = new w.Paragraph()
+      .addBookmarkStart(2, "_Toc00000001")
+      .addRun(new w.Run().addText("World"))
+      .addBookmarkEnd(2)
+      .pageBreakBefore(true)
+      .style("Heading2");
+    const style2 = new w.Style("Heading2", "paragraph").name("Heading 2");
+    const buffer = new w.Docx()
+      .addTableOfContents(
+        new w.TableOfContents()
+          .alias("Table of contents")
+          .addItem(
+            new w.TableOfContentsItem()
+              .text("Hello!!")
+              .level(1)
+              .pageRef("2")
+              .tocKey("_Toc00000000")
+          )
+          .addItem(
+            new w.TableOfContentsItem()
+              .text("World")
+              .level(2)
+              .pageRef("3")
+              .tocKey("_Toc00000001")
+          )
+      )
+      .addParagraph(p1)
+      .addParagraph(p2)
+      .addStyle(style1)
+      .addStyle(style2)
+      .build();
+    writeFileSync("../output/js/toc_with_items.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml/)) {

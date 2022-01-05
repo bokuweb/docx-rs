@@ -1,11 +1,14 @@
 import * as wasm from "./pkg";
 
+import { TableOfContentsItem } from "./table-of-contents-item";
+
 export class TableOfContents {
   _headingStylesRange: [number, number] | null = null;
   _hyperlink = false;
   _alias = "";
   _disableAutoItems = false;
   _dirty = false;
+  _items: TableOfContentsItem[] = [];
 
   headingStylesRange = (r: [number, number]) => {
     this._headingStylesRange = r;
@@ -32,6 +35,11 @@ export class TableOfContents {
     return this;
   };
 
+  addItem = (item: TableOfContentsItem) => {
+    this._items.push(item);
+    return this;
+  };
+
   buildWasmObject = () => {
     let toc = wasm.createTableOfContents();
     if (this._headingStylesRange) {
@@ -55,6 +63,10 @@ export class TableOfContents {
 
     if (this._dirty) {
       toc = toc.dirty();
+    }
+
+    for (const item of this._items) {
+      toc = toc.add_item(item.buildWasmObject());
     }
 
     return toc;

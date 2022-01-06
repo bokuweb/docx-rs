@@ -6,7 +6,7 @@ export class TableOfContents {
   _headingStylesRange: [number, number] | null = null;
   _hyperlink = false;
   _alias = "";
-  _disableAutoItems = false;
+  _auto = false;
   _dirty = false;
   _items: TableOfContentsItem[] = [];
 
@@ -25,8 +25,8 @@ export class TableOfContents {
     return this;
   };
 
-  disableAutoItems = () => {
-    this._disableAutoItems = true;
+  auto = () => {
+    this._auto = true;
     return this;
   };
 
@@ -57,8 +57,8 @@ export class TableOfContents {
       toc = toc.alias(this._alias);
     }
 
-    if (this._disableAutoItems) {
-      toc = toc.disable_auto_items();
+    if (this._auto) {
+      toc = toc.auto();
     }
 
     if (this._dirty) {

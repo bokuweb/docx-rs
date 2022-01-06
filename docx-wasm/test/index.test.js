@@ -496,10 +496,7 @@ describe("writer", () => {
     const style2 = new w.Style("Heading2", "paragraph").name("Heading 2");
     const buffer = new w.Docx()
       .addTableOfContents(
-        new w.TableOfContents()
-          .alias("Table of contents")
-          .dirty()
-          .disableAutoItems()
+        new w.TableOfContents().alias("Table of contents").dirty()
       )
       .addParagraph(p1)
       .addParagraph(p2)
@@ -527,7 +524,9 @@ describe("writer", () => {
       .style("Heading2");
     const style2 = new w.Style("Heading2", "paragraph").name("Heading 2");
     const buffer = new w.Docx()
-      .addTableOfContents(new w.TableOfContents().alias("Table of contents"))
+      .addTableOfContents(
+        new w.TableOfContents().alias("Table of contents").auto()
+      )
       .addParagraph(p1)
       .addParagraph(p2)
       .addStyle(style1)

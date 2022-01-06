@@ -39,8 +39,8 @@ impl TableOfContents {
         self
     }
 
-    pub fn disable_auto_items(mut self) -> Self {
-        self.0.disable_auto_items = true;
+    pub fn auto(mut self) -> Self {
+        self.0.auto = true;
         self
     }
 

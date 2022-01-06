@@ -24,8 +24,9 @@ impl FromXML for Styles {
                             continue;
                         }
                         XMLElement::DocDefaults => {
-                            let d = DocDefaults::read(&mut parser, &attributes)?;
-                            styles = styles.doc_defaults(d);
+                            if let Ok(d) = DocDefaults::read(&mut parser, &attributes) {
+                                styles = styles.doc_defaults(d);
+                            }
                             continue;
                         }
                         _ => {}

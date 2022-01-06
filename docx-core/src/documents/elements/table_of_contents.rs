@@ -10,9 +10,10 @@ use crate::xml_builder::*;
 pub struct TableOfContents {
     pub instr: InstrToC,
     pub items: Vec<TableOfContentsItem>,
-    // pub disable_auto_items: bool,
+    pub auto: bool,
     pub dirty: bool,
     pub alias: Option<String>,
+    pub page_ref_placeholder: Option<String>,
 }
 
 impl TableOfContents {
@@ -45,10 +46,10 @@ impl TableOfContents {
         self
     }
 
-    // pub fn disable_auto_items(mut self) -> Self {
-    //     self.disable_auto_items = true;
-    //     self
-    // }
+    pub fn auto(mut self) -> Self {
+        self.auto = true;
+        self
+    }
 
     pub fn dirty(mut self) -> Self {
         self.dirty = true;
@@ -88,6 +89,9 @@ impl BuildXML for TableOfContents {
                     let mut item = item.clone();
                     item.instr = self.instr.clone();
                     item.dirty = self.dirty;
+                    if item.page_ref.is_none() {
+                        item.page_ref = self.page_ref_placeholder.clone();
+                    }
                     item
                 })
                 .collect();

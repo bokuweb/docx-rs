@@ -23628,6 +23628,66 @@ Object {
 }
 `;
 
+exports[`writer should write ToC with items 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write ToC with items 2`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<w:document xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\" xmlns:w10=\\"urn:schemas-microsoft-com:office:word\\" xmlns:wp=\\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\\" xmlns:wps=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\\" xmlns:wpg=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\\" xmlns:mc=\\"http://schemas.openxmlformats.org/markup-compatibility/2006\\" xmlns:wp14=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\\" xmlns:w14=\\"http://schemas.microsoft.com/office/word/2010/wordml\\" xmlns:w15=\\"http://schemas.microsoft.com/office/word/2012/wordml\\" mc:Ignorable=\\"w14 wp14\\">
+  <w:body><w:sdt><w:sdtPr><w:rPr /><w:alias w:val=\\"Table of contents\\" />
+</w:sdtPr><w:sdtContent><w:sdt>
+  <w:sdtPr />
+  <w:sdtContent><w:p w14:paraId=\\"00000001\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"ToC1\\" /><w:tabs>
+    <w:tab w:val=\\"right\\" w:leader=\\"dot\\" w:pos=\\"80000\\" />
+  </w:tabs>
+</w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType=\\"begin\\" w:dirty=\\"false\\" /><w:instrText>TOC</w:instrText><w:fldChar w:fldCharType=\\"separate\\" w:dirty=\\"false\\" /></w:r><w:r><w:rPr /><w:t xml:space=\\"preserve\\">Hello!!</w:t></w:r><w:r><w:rPr /><w:tab /></w:r><w:r><w:rPr /><w:fldChar w:fldCharType=\\"begin\\" w:dirty=\\"false\\" /><w:instrText>PAGEREF _Toc00000000 \\\\h</w:instrText><w:fldChar w:fldCharType=\\"separate\\" w:dirty=\\"false\\" /><w:t xml:space=\\"preserve\\">2</w:t><w:fldChar w:fldCharType=\\"end\\" w:dirty=\\"false\\" /></w:r></w:p><w:p w14:paraId=\\"00000003\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"ToC2\\" /><w:tabs>
+    <w:tab w:val=\\"right\\" w:leader=\\"dot\\" w:pos=\\"80000\\" />
+  </w:tabs>
+</w:pPr><w:r><w:rPr /><w:t xml:space=\\"preserve\\">World</w:t></w:r><w:r><w:rPr /><w:tab /></w:r><w:r><w:rPr /><w:fldChar w:fldCharType=\\"begin\\" w:dirty=\\"false\\" /><w:instrText>PAGEREF _Toc00000001 \\\\h</w:instrText><w:fldChar w:fldCharType=\\"separate\\" w:dirty=\\"false\\" /><w:t xml:space=\\"preserve\\">3</w:t><w:fldChar w:fldCharType=\\"end\\" w:dirty=\\"false\\" /></w:r></w:p><w:p w14:paraId=\\"00000004\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"ToC2\\" /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType=\\"end\\" w:dirty=\\"false\\" /></w:r></w:p></w:sdtContent>
+</w:sdt></w:sdtContent>
+</w:sdt><w:p w14:paraId=\\"00000005\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"Heading1\\" /><w:pageBreakBefore />
+</w:pPr><w:bookmarkStart w:id=\\"1\\" w:name=\\"_Toc00000000\\" /><w:r><w:rPr><w:rFonts /></w:rPr><w:t xml:space=\\"preserve\\">Hello!!</w:t></w:r><w:bookmarkEnd w:id=\\"1\\" /></w:p><w:p w14:paraId=\\"00000006\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"Heading2\\" /><w:pageBreakBefore />
+</w:pPr><w:bookmarkStart w:id=\\"2\\" w:name=\\"_Toc00000001\\" /><w:r><w:rPr><w:rFonts /></w:rPr><w:t xml:space=\\"preserve\\">World</w:t></w:r><w:bookmarkEnd w:id=\\"2\\" /></w:p><w:sectPr><w:pgSz w:w=\\"11906\\" w:h=\\"16838\\" /><w:pgMar w:top=\\"1985\\" w:right=\\"1701\\" w:bottom=\\"1701\\" w:left=\\"1701\\" w:header=\\"851\\" w:footer=\\"992\\" w:gutter=\\"0\\" /><w:cols w:space=\\"425\\" /><w:docGrid w:type=\\"lines\\" w:linePitch=\\"360\\" /></w:sectPr></w:body>
+</w:document>"
+`;
+
+exports[`writer should write auto items ToC 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write auto items ToC 2`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<w:document xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\" xmlns:w10=\\"urn:schemas-microsoft-com:office:word\\" xmlns:wp=\\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\\" xmlns:wps=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\\" xmlns:wpg=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\\" xmlns:mc=\\"http://schemas.openxmlformats.org/markup-compatibility/2006\\" xmlns:wp14=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\\" xmlns:w14=\\"http://schemas.microsoft.com/office/word/2010/wordml\\" xmlns:w15=\\"http://schemas.microsoft.com/office/word/2012/wordml\\" mc:Ignorable=\\"w14 wp14\\">
+  <w:body><w:sdt><w:sdtPr><w:rPr /><w:alias w:val=\\"Table of contents\\" />
+</w:sdtPr><w:sdtContent><w:sdt>
+  <w:sdtPr />
+  <w:sdtContent><w:p w14:paraId=\\"00000001\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"ToC1\\" /><w:tabs>
+    <w:tab w:val=\\"right\\" w:leader=\\"dot\\" w:pos=\\"80000\\" />
+  </w:tabs>
+</w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType=\\"begin\\" w:dirty=\\"false\\" /><w:instrText>TOC</w:instrText><w:fldChar w:fldCharType=\\"separate\\" w:dirty=\\"false\\" /></w:r><w:r><w:rPr /><w:t xml:space=\\"preserve\\">Hello!!</w:t></w:r><w:r><w:rPr /><w:tab /></w:r><w:r><w:rPr /><w:fldChar w:fldCharType=\\"begin\\" w:dirty=\\"false\\" /><w:instrText>PAGEREF _Toc00000000 \\\\h</w:instrText><w:fldChar w:fldCharType=\\"separate\\" w:dirty=\\"false\\" /><w:t xml:space=\\"preserve\\">1</w:t><w:fldChar w:fldCharType=\\"end\\" w:dirty=\\"false\\" /></w:r></w:p><w:p w14:paraId=\\"00000003\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"ToC2\\" /><w:tabs>
+    <w:tab w:val=\\"right\\" w:leader=\\"dot\\" w:pos=\\"80000\\" />
+  </w:tabs>
+</w:pPr><w:r><w:rPr /><w:t xml:space=\\"preserve\\">World</w:t></w:r><w:r><w:rPr /><w:tab /></w:r><w:r><w:rPr /><w:fldChar w:fldCharType=\\"begin\\" w:dirty=\\"false\\" /><w:instrText>PAGEREF _Toc00000001 \\\\h</w:instrText><w:fldChar w:fldCharType=\\"separate\\" w:dirty=\\"false\\" /><w:t xml:space=\\"preserve\\">1</w:t><w:fldChar w:fldCharType=\\"end\\" w:dirty=\\"false\\" /></w:r></w:p><w:p w14:paraId=\\"00000004\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"ToC2\\" /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType=\\"end\\" w:dirty=\\"false\\" /></w:r></w:p></w:sdtContent>
+</w:sdt></w:sdtContent>
+</w:sdt><w:p w14:paraId=\\"00000003\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"Heading1\\" /><w:pageBreakBefore />
+</w:pPr><w:bookmarkStart w:id=\\"1\\" w:name=\\"_Toc00000000\\" /><w:r><w:rPr><w:rFonts /></w:rPr><w:t xml:space=\\"preserve\\">Hello!!</w:t></w:r><w:bookmarkEnd w:id=\\"1\\" /></w:p><w:p w14:paraId=\\"00000004\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"Heading2\\" /><w:pageBreakBefore />
+</w:pPr><w:bookmarkStart w:id=\\"2\\" w:name=\\"_Toc00000001\\" /><w:r><w:rPr><w:rFonts /></w:rPr><w:t xml:space=\\"preserve\\">World</w:t></w:r><w:bookmarkEnd w:id=\\"2\\" /></w:p><w:sectPr><w:pgSz w:w=\\"11906\\" w:h=\\"16838\\" /><w:pgMar w:top=\\"1985\\" w:right=\\"1701\\" w:bottom=\\"1701\\" w:left=\\"1701\\" w:header=\\"851\\" w:footer=\\"992\\" w:gutter=\\"0\\" /><w:cols w:space=\\"425\\" /><w:docGrid w:type=\\"lines\\" w:linePitch=\\"360\\" /></w:sectPr></w:body>
+</w:document>"
+`;
+
 exports[`writer should write cell shading 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
@@ -23751,6 +23811,27 @@ exports[`writer should write default font 3`] = `
 <w:numbering xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\"><w:abstractNum w:abstractNumId=\\"1\\"><w:lvl w:ilvl=\\"0\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%1.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"420\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"1\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%2)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"840\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"2\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%3\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1260\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"3\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%4.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1680\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"4\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%5)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2100\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"5\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%6\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2520\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"6\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%7.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2940\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"7\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%8)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3360\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"8\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%9\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3780\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl></w:abstractNum><w:num w:numId=\\"1\\">
   <w:abstractNumId w:val=\\"1\\" />
 </w:num></w:numbering>"
+`;
+
+exports[`writer should write dirty and disable auto items ToC 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write dirty and disable auto items ToC 2`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<w:document xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\" xmlns:w10=\\"urn:schemas-microsoft-com:office:word\\" xmlns:wp=\\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\\" xmlns:wps=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\\" xmlns:wpg=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\\" xmlns:mc=\\"http://schemas.openxmlformats.org/markup-compatibility/2006\\" xmlns:wp14=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\\" xmlns:w14=\\"http://schemas.microsoft.com/office/word/2010/wordml\\" xmlns:w15=\\"http://schemas.microsoft.com/office/word/2012/wordml\\" mc:Ignorable=\\"w14 wp14\\">
+  <w:body><w:sdt><w:sdtPr><w:rPr /><w:alias w:val=\\"Table of contents\\" />
+</w:sdtPr><w:sdtContent><w:p w14:paraId=\\"00000001\\"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType=\\"begin\\" w:dirty=\\"true\\" /><w:instrText>TOC</w:instrText><w:fldChar w:fldCharType=\\"separate\\" w:dirty=\\"false\\" /></w:r></w:p><w:p w14:paraId=\\"00000002\\"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType=\\"end\\" w:dirty=\\"false\\" /></w:r></w:p></w:sdtContent>
+</w:sdt><w:p w14:paraId=\\"00000001\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"Heading1\\" /><w:pageBreakBefore />
+</w:pPr><w:r><w:rPr><w:rFonts /></w:rPr><w:t xml:space=\\"preserve\\">Hello!!</w:t></w:r></w:p><w:p w14:paraId=\\"00000002\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"Heading2\\" /><w:pageBreakBefore />
+</w:pPr><w:r><w:rPr><w:rFonts /></w:rPr><w:t xml:space=\\"preserve\\">World</w:t></w:r></w:p><w:sectPr><w:pgSz w:w=\\"11906\\" w:h=\\"16838\\" /><w:pgMar w:top=\\"1985\\" w:right=\\"1701\\" w:bottom=\\"1701\\" w:left=\\"1701\\" w:header=\\"851\\" w:footer=\\"992\\" w:gutter=\\"0\\" /><w:cols w:space=\\"425\\" /><w:docGrid w:type=\\"lines\\" w:linePitch=\\"360\\" /></w:sectPr></w:body>
+</w:document>"
 `;
 
 exports[`writer should write doc grid 1`] = `

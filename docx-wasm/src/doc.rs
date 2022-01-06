@@ -18,6 +18,11 @@ impl Docx {
         self
     }
 
+    pub fn add_table_of_contents(mut self, t: TableOfContents) -> Self {
+        self.0 = self.0.add_table_of_contents(t.take());
+        self
+    }
+
     pub fn add_bookmark_start(mut self, id: usize, name: &str) -> Self {
         self.0 = self.0.add_bookmark_start(id, name);
         self
@@ -115,6 +120,11 @@ impl Docx {
 
     pub fn page_margin(mut self, margin: PageMargin) -> Docx {
         self.0 = self.0.page_margin(margin.take());
+        self
+    }
+
+    pub fn add_style(mut self, s: Style) -> Self {
+        self.0.styles = self.0.styles.add_style(s.take());
         self
     }
 

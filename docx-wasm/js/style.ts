@@ -1,3 +1,5 @@
+import * as wasm from "./pkg";
+
 import { createDefaultTableCellMargins, TableProperty } from "./table";
 import { RunProperty, createDefaultRunProperty } from "./run";
 import { createDefaultParagraphProperty, ParagraphProperty } from "./paragraph";
@@ -31,5 +33,33 @@ export class Style {
     this._basedOn = null;
   }
 
-  // TODO: Add setter
+  name = (n: string) => {
+    this._name = n;
+    return this;
+  };
+
+  buildStyleType = () => {
+    switch (this._styleType) {
+      case "character":
+        return wasm.StyleType.Character;
+      case "numbering":
+        return wasm.StyleType.Numbering;
+      case "paragraph":
+        return wasm.StyleType.Paragraph;
+      case "table":
+        return wasm.StyleType.Table;
+    }
+    return wasm.StyleType.Paragraph;
+  };
+
+  buildWasmObject = () => {
+    const styleType = this.buildStyleType();
+    let s = wasm.createStyle(this._styleId, styleType);
+
+    if (this._name) {
+      s = s.name(this._name);
+    }
+
+    return s;
+  };
 }

@@ -11,10 +11,21 @@ export type TextBorderJSON = {
   color: string;
 };
 
+export type RunFontsJSON = {
+  ascii?: string;
+  hiAnsi?: string;
+  eastAsia?: string;
+  cs?: string;
+  asciiTheme?: string;
+  hiAnsiTheme?: string;
+  eastAsiaTheme?: string;
+  csTheme?: string;
+};
+
 export type RunPropertyJSON = {
   sz?: number | null;
   szCs?: number | null;
-  fonts?: string | null;
+  fonts?: RunFontsJSON | null;
   color?: string | null;
   highlight?: string | null;
   vertAlign?: VertAlignType | null;

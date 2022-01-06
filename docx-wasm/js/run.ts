@@ -1,3 +1,5 @@
+import * as wasm from "./pkg";
+
 import { Text } from "./text";
 import { DeleteText } from "./delete-text";
 import { Tab } from "./tab";
@@ -39,6 +41,10 @@ export class RunFonts {
   _hiAnsi?: string;
   _eastAsia?: string;
   _cs?: string;
+  _asciiTheme?: string;
+  _hiAnsiTheme?: string;
+  _eastAsiaTheme?: string;
+  _csTheme?: string;
 
   ascii(f: string) {
     this._ascii = f;
@@ -59,6 +65,43 @@ export class RunFonts {
     this._eastAsia = f;
     return this;
   }
+
+  asciiTheme(f: string) {
+    this._asciiTheme = f;
+    return this;
+  }
+
+  hiAnsiTheme(f: string) {
+    this._hiAnsiTheme = f;
+    return this;
+  }
+
+  csTheme(f: string) {
+    this._csTheme = f;
+    return this;
+  }
+
+  eastAsiaTheme(f: string) {
+    this._eastAsia = f;
+    return this;
+  }
+
+  buildWasmObject = () => {
+    let f = wasm.createRunFonts();
+    if (this?._ascii) {
+      f = f.ascii(this._ascii);
+    }
+    if (this?._hiAnsi) {
+      f = f.hi_ansi(this._hiAnsi);
+    }
+    if (this?._cs) {
+      f = f.cs(this._cs);
+    }
+    if (this?._eastAsia) {
+      f = f.east_asia(this._eastAsia);
+    }
+    return f;
+  };
 }
 
 export class Run {

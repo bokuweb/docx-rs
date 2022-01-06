@@ -337,8 +337,10 @@ export class Docx {
       run = run.text_border(convertBorderType(borderType), size, space, color);
     }
 
-    const fonts = this.buildRunFonts(r.property.fonts);
-    run = run.fonts(fonts);
+    if (r.property.fonts) {
+      const fonts = r.property.fonts.buildWasmObject();
+      run = run.fonts(fonts);
+    }
 
     return run;
   }

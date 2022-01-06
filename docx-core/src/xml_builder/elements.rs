@@ -23,12 +23,17 @@ impl XMLBuilder {
         self.close()
     }
 
+    #[allow(clippy::too_many_arguments)]
     pub(crate) fn run_fonts(
         mut self,
         ascii: Option<&String>,
         hi_ansi: Option<&String>,
         cs: Option<&String>,
         east_asia: Option<&String>,
+        ascii_theme: Option<&String>,
+        hi_ansi_theme: Option<&String>,
+        cs_theme: Option<&String>,
+        east_asia_theme: Option<&String>,
     ) -> Self {
         let mut w = XmlEvent::start_element("w:rFonts");
         if let Some(ascii) = ascii {
@@ -42,6 +47,18 @@ impl XMLBuilder {
         }
         if let Some(east_asia) = east_asia {
             w = w.attr("w:eastAsia", east_asia);
+        }
+        if let Some(ascii_theme) = ascii_theme {
+            w = w.attr("w:asciiTheme", ascii_theme);
+        }
+        if let Some(hi_ansi_theme) = hi_ansi_theme {
+            w = w.attr("w:hAnsiTheme", hi_ansi_theme);
+        }
+        if let Some(cs_theme) = cs_theme {
+            w = w.attr("w:cstheme", cs_theme);
+        }
+        if let Some(east_asia_theme) = east_asia_theme {
+            w = w.attr("w:eastAsiaTheme", east_asia_theme);
         }
         self.writer.write(w).expect(EXPECT_MESSAGE);
         self.close()

@@ -14,6 +14,7 @@ export type TextBorderJSON = {
 export type RunPropertyJSON = {
   sz?: number | null;
   szCs?: number | null;
+  fonts?: string | null;
   color?: string | null;
   highlight?: string | null;
   vertAlign?: VertAlignType | null;

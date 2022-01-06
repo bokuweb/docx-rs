@@ -34,6 +34,11 @@ impl TableOfContents {
         self
     }
 
+    pub fn page_ref_placeholder(mut self, a: &str) -> Self {
+        self.0.page_ref_placeholder = Some(a.into());
+        self
+    }
+
     pub fn add_item(mut self, t: TableOfContentsItem) -> Self {
         self.0.items.push(t.take());
         self

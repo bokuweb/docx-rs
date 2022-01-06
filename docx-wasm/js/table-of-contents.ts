@@ -9,6 +9,7 @@ export class TableOfContents {
   _auto = false;
   _dirty = false;
   _items: TableOfContentsItem[] = [];
+  _pageRefPlaceholder = "";
 
   headingStylesRange = (r: [number, number]) => {
     this._headingStylesRange = r;
@@ -22,6 +23,11 @@ export class TableOfContents {
 
   alias = (alias: string) => {
     this._alias = alias;
+    return this;
+  };
+
+  pageRefPlaceholder = (placeholder: string) => {
+    this._pageRefPlaceholder = placeholder;
     return this;
   };
 
@@ -63,6 +69,10 @@ export class TableOfContents {
 
     if (this._dirty) {
       toc = toc.dirty();
+    }
+
+    if (this._pageRefPlaceholder) {
+      toc = toc.page_ref_placeholder(this._pageRefPlaceholder);
     }
 
     for (const item of this._items) {

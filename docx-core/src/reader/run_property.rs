@@ -14,17 +14,30 @@ fn read_run_fonts(attributes: &[OwnedAttribute]) -> Result<RunFonts, ReaderError
         let local_name = &a.name.local_name;
         match local_name.as_str() {
             "asciiTheme" => {
-                f = f.ascii(&a.value);
+                f = f.ascii_theme(&a.value);
             }
             "eastAsiaTheme" => {
-                f = f.east_asia(&a.value);
+                f = f.east_asia_theme(&a.value);
             }
             "hAnsiTheme" => {
-                f = f.hi_ansi(&a.value);
+                f = f.hi_ansi_theme(&a.value);
             }
             "cstheme" => {
+                f = f.cs_theme(&a.value);
+            }
+            "ascii" => {
+                f = f.ascii(&a.value);
+            }
+            "eastAsia" => {
+                f = f.east_asia(&a.value);
+            }
+            "hAnsi" => {
+                f = f.hi_ansi(&a.value);
+            }
+            "cs" => {
                 f = f.cs(&a.value);
             }
+
             _ => {}
         }
     }

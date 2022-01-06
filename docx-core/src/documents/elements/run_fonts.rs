@@ -21,6 +21,14 @@ pub struct RunFonts {
     east_asia: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     cs: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    ascii_theme: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    hi_ansi_theme: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    east_asia_theme: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    cs_theme: Option<String>,
 }
 
 impl RunFonts {
@@ -47,6 +55,26 @@ impl RunFonts {
         self.cs = Some(f.into());
         self
     }
+
+    pub fn ascii_theme(mut self, f: impl Into<String>) -> Self {
+        self.ascii_theme = Some(f.into());
+        self
+    }
+
+    pub fn hi_ansi_theme(mut self, f: impl Into<String>) -> Self {
+        self.hi_ansi_theme = Some(f.into());
+        self
+    }
+
+    pub fn east_asia_theme(mut self, f: impl Into<String>) -> Self {
+        self.east_asia_theme = Some(f.into());
+        self
+    }
+
+    pub fn cs_theme(mut self, f: impl Into<String>) -> Self {
+        self.cs_theme = Some(f.into());
+        self
+    }
 }
 
 impl BuildXML for RunFonts {
@@ -57,6 +85,10 @@ impl BuildXML for RunFonts {
             self.hi_ansi.as_ref(),
             self.cs.as_ref(),
             self.east_asia.as_ref(),
+            self.ascii_theme.as_ref(),
+            self.hi_ansi_theme.as_ref(),
+            self.cs_theme.as_ref(),
+            self.east_asia_theme.as_ref(),
         )
         .build()
     }

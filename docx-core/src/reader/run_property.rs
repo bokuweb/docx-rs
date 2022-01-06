@@ -8,6 +8,29 @@ use crate::VertAlignType;
 
 use super::*;
 
+fn read_run_fonts(attributes: &[OwnedAttribute]) -> Result<RunFonts, ReaderError> {
+    let mut f = RunFonts::new();
+    for a in attributes {
+        let local_name = &a.name.local_name;
+        match local_name.as_str() {
+            "asciiTheme" => {
+                f = f.ascii(&a.value);
+            }
+            "eastAsiaTheme" => {
+                f = f.east_asia(&a.value);
+            }
+            "hAnsiTheme" => {
+                f = f.hi_ansi(&a.value);
+            }
+            "cstheme" => {
+                f = f.cs(&a.value);
+            }
+            _ => {}
+        }
+    }
+    Ok(f)
+}
+
 impl ElementReader for RunProperty {
     fn read<R: Read>(
         r: &mut EventReader<R>,
@@ -50,8 +73,11 @@ impl ElementReader for RunProperty {
                                 rp = rp.spacing(v)
                             }
                         }
-                        // TODO: Implement later
-                        XMLElement::RunFonts => {}
+                        XMLElement::RunFonts => {
+                            if let Ok(f) = read_run_fonts(&attributes) {
+                                rp = rp.fonts(f);
+                            }
+                        }
                         XMLElement::Underline => rp = rp.underline(&attributes[0].value.clone()),
                         XMLElement::Italic => {
                             if !read_bool(&attributes) {

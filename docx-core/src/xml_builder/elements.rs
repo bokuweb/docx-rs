@@ -23,6 +23,7 @@ impl XMLBuilder {
         self.close()
     }
 
+    #[allow(clippy::too_many_arguments)]
     pub(crate) fn run_fonts(
         mut self,
         ascii: Option<&String>,

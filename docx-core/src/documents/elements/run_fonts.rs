@@ -13,9 +13,13 @@ use crate::xml_builder::*;
 */
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Default)]
 pub struct RunFonts {
+    #[serde(skip_serializing_if = "Option::is_none")]
     ascii: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     hi_ansi: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     east_asia: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     cs: Option<String>,
 }
 
@@ -100,9 +104,6 @@ mod tests {
     fn test_run_fonts_cs_build() {
         let c = RunFonts::new().cs("Arial");
         let b = c.build();
-        assert_eq!(
-            str::from_utf8(&b).unwrap(),
-            r#"<w:rFonts w:cs="Arial" />"#
-        );
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:rFonts w:cs="Arial" />"#);
     }
 }

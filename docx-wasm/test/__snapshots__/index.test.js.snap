@@ -67,12 +67,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -89,12 +84,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -111,12 +101,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -157,12 +142,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -220,12 +200,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -242,12 +217,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -264,12 +234,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -286,12 +251,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -308,12 +268,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -354,12 +309,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -378,12 +328,7 @@ Object {
             "outlineLvl": null,
             "pageBreakBefore": false,
             "runProperty": Object {
-              "fonts": Object {
-                "ascii": null,
-                "cs": null,
-                "east_asia": null,
-                "hi_ansi": null,
-              },
+              "fonts": Object {},
             },
             "style": null,
             "tabs": Array [],
@@ -407,12 +352,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -429,12 +369,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -451,12 +386,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -473,12 +403,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -495,12 +420,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -544,12 +464,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -566,12 +481,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -628,12 +538,7 @@ Object {
             "outlineLvl": null,
             "pageBreakBefore": false,
             "runProperty": Object {
-              "fonts": Object {
-                "ascii": null,
-                "cs": null,
-                "east_asia": null,
-                "hi_ansi": null,
-              },
+              "fonts": Object {},
             },
             "style": null,
             "tabs": Array [],
@@ -1504,12 +1409,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -1526,12 +1426,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -1548,12 +1443,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -1570,12 +1460,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -1592,12 +1477,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -1626,12 +1506,7 @@ Object {
             "outlineLvl": null,
             "pageBreakBefore": false,
             "runProperty": Object {
-              "fonts": Object {
-                "ascii": null,
-                "cs": null,
-                "east_asia": null,
-                "hi_ansi": null,
-              },
+              "fonts": Object {},
             },
             "style": null,
             "tabs": Array [],
@@ -1655,12 +1530,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -1679,12 +1549,7 @@ Object {
             "outlineLvl": null,
             "pageBreakBefore": false,
             "runProperty": Object {
-              "fonts": Object {
-                "ascii": null,
-                "cs": null,
-                "east_asia": null,
-                "hi_ansi": null,
-              },
+              "fonts": Object {},
             },
             "style": null,
             "tabs": Array [],
@@ -2344,12 +2209,7 @@ Object {
                       },
                     ],
                     "runProperty": Object {
-                      "fonts": Object {
-                        "ascii": null,
-                        "cs": null,
-                        "east_asia": null,
-                        "hi_ansi": null,
-                      },
+                      "fonts": Object {},
                     },
                   },
                   "type": "run",
@@ -2398,12 +2258,7 @@ Object {
                       },
                     ],
                     "runProperty": Object {
-                      "fonts": Object {
-                        "ascii": null,
-                        "cs": null,
-                        "east_asia": null,
-                        "hi_ansi": null,
-                      },
+                      "fonts": Object {},
                     },
                   },
                   "type": "run",
@@ -2517,12 +2372,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                   "sz": 21,
                   "szCs": 21,
                 },
@@ -2549,12 +2399,7 @@ Object {
                                 },
                               ],
                               "runProperty": Object {
-                                "fonts": Object {
-                                  "ascii": null,
-                                  "cs": null,
-                                  "east_asia": null,
-                                  "hi_ansi": null,
-                                },
+                                "fonts": Object {},
                               },
                             },
                             "type": "run",
@@ -2616,12 +2461,7 @@ Object {
                                 },
                               ],
                               "runProperty": Object {
-                                "fonts": Object {
-                                  "ascii": null,
-                                  "cs": null,
-                                  "east_asia": null,
-                                  "hi_ansi": null,
-                                },
+                                "fonts": Object {},
                               },
                             },
                             "type": "run",
@@ -2675,12 +2515,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                   "sz": 21,
                   "szCs": 21,
                 },
@@ -2783,12 +2618,7 @@ Object {
               "data": Object {
                 "children": Array [],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -2897,12 +2727,7 @@ Object {
     "docDefaults": Object {
       "runPropertyDefault": Object {
         "runProperty": Object {
-          "fonts": Object {
-            "ascii": null,
-            "cs": null,
-            "east_asia": null,
-            "hi_ansi": null,
-          },
+          "fonts": Object {},
           "sz": 21,
           "szCs": 21,
         },
@@ -3260,12 +3085,7 @@ Object {
                       },
                     ],
                     "runProperty": Object {
-                      "fonts": Object {
-                        "ascii": null,
-                        "cs": null,
-                        "east_asia": null,
-                        "hi_ansi": null,
-                      },
+                      "fonts": Object {},
                     },
                   },
                   "type": "run",
@@ -3299,12 +3119,7 @@ Object {
                 "outlineLvl": null,
                 "pageBreakBefore": false,
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
                 "style": "a5",
                 "tabs": Array [],
@@ -4414,7 +4229,6 @@ Object {
                           "runProperty": Object {
                             "fonts": Object {
                               "ascii": "minorEastAsia",
-                              "cs": null,
                               "east_asia": "minorEastAsia",
                               "hi_ansi": "minorEastAsia",
                             },
@@ -4505,12 +4319,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 22,
                             "szCs": 22,
                           },
@@ -4591,12 +4400,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 18,
                             "szCs": 18,
                           },
@@ -4690,12 +4494,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 22,
                             "szCs": 22,
                           },
@@ -4776,12 +4575,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 18,
                             "szCs": 18,
                           },
@@ -4875,12 +4669,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -4961,12 +4750,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -5060,12 +4844,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -5146,12 +4925,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -5245,12 +5019,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -5331,12 +5100,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -5417,12 +5181,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -5516,12 +5275,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -5602,12 +5356,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -5688,12 +5437,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -5787,12 +5531,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -5867,12 +5606,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -5947,12 +5681,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -6046,12 +5775,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -6132,12 +5856,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -6218,12 +5937,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                             "sz": 20,
                             "szCs": 20,
                           },
@@ -6317,12 +6031,7 @@ Object {
             "outlineLvl": null,
             "pageBreakBefore": false,
             "runProperty": Object {
-              "fonts": Object {
-                "ascii": null,
-                "cs": null,
-                "east_asia": null,
-                "hi_ansi": null,
-              },
+              "fonts": Object {},
             },
             "style": null,
             "tabs": Array [],
@@ -6437,12 +6146,7 @@ Object {
           "windowControl": false,
         },
         "runProperty": Object {
-          "fonts": Object {
-            "ascii": null,
-            "cs": null,
-            "east_asia": null,
-            "hi_ansi": null,
-          },
+          "fonts": Object {},
         },
         "styleId": "a",
         "styleType": "paragraph",
@@ -7266,12 +6970,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -7337,12 +7036,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -7481,12 +7175,7 @@ Object {
             "outlineLvl": null,
             "pageBreakBefore": false,
             "runProperty": Object {
-              "fonts": Object {
-                "ascii": null,
-                "cs": null,
-                "east_asia": null,
-                "hi_ansi": null,
-              },
+              "fonts": Object {},
             },
             "style": "a3",
             "tabs": Array [],
@@ -9284,12 +8973,7 @@ Object {
                       },
                     ],
                     "runProperty": Object {
-                      "fonts": Object {
-                        "ascii": null,
-                        "cs": null,
-                        "east_asia": null,
-                        "hi_ansi": null,
-                      },
+                      "fonts": Object {},
                     },
                   },
                   "type": "run",
@@ -9323,12 +9007,7 @@ Object {
                 "outlineLvl": null,
                 "pageBreakBefore": false,
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -9353,12 +9032,7 @@ Object {
                 "outlineLvl": null,
                 "pageBreakBefore": false,
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -9383,12 +9057,7 @@ Object {
                 "outlineLvl": null,
                 "pageBreakBefore": false,
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -9413,12 +9082,7 @@ Object {
                 "outlineLvl": null,
                 "pageBreakBefore": false,
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -9443,12 +9107,7 @@ Object {
                 "outlineLvl": null,
                 "pageBreakBefore": false,
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -9473,12 +9132,7 @@ Object {
                 "outlineLvl": null,
                 "pageBreakBefore": false,
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -9503,12 +9157,7 @@ Object {
                 "outlineLvl": null,
                 "pageBreakBefore": false,
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -10008,12 +9657,7 @@ Object {
                                 },
                               ],
                               "runProperty": Object {
-                                "fonts": Object {
-                                  "ascii": null,
-                                  "cs": null,
-                                  "east_asia": null,
-                                  "hi_ansi": null,
-                                },
+                                "fonts": Object {},
                               },
                             },
                             "type": "run",
@@ -10047,12 +9691,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -10077,12 +9716,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -10107,12 +9741,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -10137,12 +9766,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -10167,12 +9791,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -10197,12 +9816,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -10227,12 +9841,7 @@ Object {
                           "outlineLvl": null,
                           "pageBreakBefore": false,
                           "runProperty": Object {
-                            "fonts": Object {
-                              "ascii": null,
-                              "cs": null,
-                              "east_asia": null,
-                              "hi_ansi": null,
-                            },
+                            "fonts": Object {},
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -10262,12 +9871,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -10320,12 +9924,7 @@ Object {
             "outlineLvl": null,
             "pageBreakBefore": false,
             "runProperty": Object {
-              "fonts": Object {
-                "ascii": null,
-                "cs": null,
-                "east_asia": null,
-                "hi_ansi": null,
-              },
+              "fonts": Object {},
             },
             "style": null,
             "tabs": Array [],
@@ -11052,12 +10651,7 @@ Object {
     "docDefaults": Object {
       "runPropertyDefault": Object {
         "runProperty": Object {
-          "fonts": Object {
-            "ascii": null,
-            "cs": null,
-            "east_asia": null,
-            "hi_ansi": null,
-          },
+          "fonts": Object {},
           "sz": 21,
           "szCs": 21,
         },
@@ -12278,12 +11872,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -12356,12 +11945,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -12427,12 +12011,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -12480,12 +12059,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -13495,7 +13069,6 @@ Object {
           "fonts": Object {
             "ascii": "majorHAnsi",
             "cs": "majorBidi",
-            "east_asia": null,
             "hi_ansi": "majorHAnsi",
           },
           "sz": 32,
@@ -13615,7 +13188,6 @@ Object {
           "fonts": Object {
             "ascii": "majorHAnsi",
             "cs": "majorBidi",
-            "east_asia": null,
             "hi_ansi": "majorHAnsi",
           },
           "sz": 24,
@@ -13740,7 +13312,6 @@ Object {
           "fonts": Object {
             "ascii": "majorHAnsi",
             "cs": "majorBidi",
-            "east_asia": null,
             "hi_ansi": "majorHAnsi",
           },
         },
@@ -13861,10 +13432,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
             "cs": "majorBidi",
-            "east_asia": null,
-            "hi_ansi": null,
           },
         },
         "styleId": "4",
@@ -13989,7 +13557,6 @@ Object {
           "fonts": Object {
             "ascii": "majorHAnsi",
             "cs": "majorBidi",
-            "east_asia": null,
             "hi_ansi": "majorHAnsi",
           },
         },
@@ -14110,10 +13677,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
             "cs": "majorBidi",
-            "east_asia": null,
-            "hi_ansi": null,
           },
         },
         "styleId": "6",
@@ -14226,10 +13790,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
             "cs": "majorBidi",
-            "east_asia": null,
-            "hi_ansi": null,
           },
         },
         "styleId": "7",
@@ -14613,7 +14174,6 @@ Object {
           "fonts": Object {
             "ascii": "majorHAnsi",
             "cs": "majorBidi",
-            "east_asia": null,
             "hi_ansi": "majorHAnsi",
           },
           "sz": 32,
@@ -14725,7 +14285,6 @@ Object {
           "fonts": Object {
             "ascii": "majorHAnsi",
             "cs": "majorBidi",
-            "east_asia": null,
             "hi_ansi": "majorHAnsi",
           },
           "sz": 24,
@@ -14837,7 +14396,6 @@ Object {
           "fonts": Object {
             "ascii": "majorHAnsi",
             "cs": "majorBidi",
-            "east_asia": null,
             "hi_ansi": "majorHAnsi",
           },
         },
@@ -14945,10 +14503,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
             "cs": "majorBidi",
-            "east_asia": null,
-            "hi_ansi": null,
           },
         },
         "styleId": "40",
@@ -15057,7 +14612,6 @@ Object {
           "fonts": Object {
             "ascii": "majorHAnsi",
             "cs": "majorBidi",
-            "east_asia": null,
             "hi_ansi": "majorHAnsi",
           },
         },
@@ -15165,10 +14719,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
             "cs": "majorBidi",
-            "east_asia": null,
-            "hi_ansi": null,
           },
         },
         "styleId": "60",
@@ -15275,10 +14826,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
             "cs": "majorBidi",
-            "east_asia": null,
-            "hi_ansi": null,
           },
         },
         "styleId": "70",
@@ -15445,12 +14993,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                   "strike": true,
                 },
               },
@@ -15524,12 +15067,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -15587,12 +15125,7 @@ Object {
             "outlineLvl": null,
             "pageBreakBefore": false,
             "runProperty": Object {
-              "fonts": Object {
-                "ascii": null,
-                "cs": null,
-                "east_asia": null,
-                "hi_ansi": null,
-              },
+              "fonts": Object {},
             },
             "style": null,
             "tabs": Array [],
@@ -17559,10 +17092,7 @@ Object {
                   "bold": false,
                   "boldCs": false,
                   "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
                     "east_asia": "minorEastAsia",
-                    "hi_ansi": null,
                   },
                   "italic": false,
                   "italicCs": false,
@@ -17701,10 +17231,7 @@ Object {
               "bold": false,
               "boldCs": false,
               "fonts": Object {
-                "ascii": null,
-                "cs": null,
                 "east_asia": "minorEastAsia",
-                "hi_ansi": null,
               },
               "italic": false,
               "italicCs": false,
@@ -17747,10 +17274,7 @@ Object {
                   "bold": false,
                   "boldCs": false,
                   "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
                     "east_asia": "minorEastAsia",
-                    "hi_ansi": null,
                   },
                   "sz": 21,
                   "szCs": 21,
@@ -17887,10 +17411,7 @@ Object {
               "bold": false,
               "boldCs": false,
               "fonts": Object {
-                "ascii": null,
-                "cs": null,
                 "east_asia": "minorEastAsia",
-                "hi_ansi": null,
               },
               "sz": 21,
               "szCs": 21,
@@ -17931,10 +17452,7 @@ Object {
                   "bold": false,
                   "boldCs": false,
                   "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
                     "east_asia": "minorEastAsia",
-                    "hi_ansi": null,
                   },
                   "italic": false,
                   "italicCs": false,
@@ -18073,10 +17591,7 @@ Object {
               "bold": false,
               "boldCs": false,
               "fonts": Object {
-                "ascii": null,
-                "cs": null,
                 "east_asia": "minorEastAsia",
-                "hi_ansi": null,
               },
               "italic": false,
               "italicCs": false,
@@ -18119,10 +17634,7 @@ Object {
                   "bold": false,
                   "boldCs": false,
                   "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
                     "east_asia": "minorEastAsia",
-                    "hi_ansi": null,
                   },
                   "sz": 21,
                   "szCs": 21,
@@ -18259,10 +17771,7 @@ Object {
               "bold": false,
               "boldCs": false,
               "fonts": Object {
-                "ascii": null,
-                "cs": null,
                 "east_asia": "minorEastAsia",
-                "hi_ansi": null,
               },
               "sz": 21,
               "szCs": 21,
@@ -18399,12 +17908,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -18473,12 +17977,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -18615,12 +18114,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -18674,12 +18168,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -20907,10 +20396,7 @@ Object {
           "bold": true,
           "boldCs": true,
           "fonts": Object {
-            "ascii": null,
-            "cs": null,
             "east_asia": "minorHAnsi",
-            "hi_ansi": null,
           },
           "italic": true,
           "italicCs": true,
@@ -21032,10 +20518,7 @@ Object {
           "bold": true,
           "boldCs": true,
           "fonts": Object {
-            "ascii": null,
-            "cs": null,
             "east_asia": "minorHAnsi",
-            "hi_ansi": null,
           },
           "sz": 22,
           "szCs": 22,
@@ -21151,10 +20634,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
-            "cs": null,
             "east_asia": "minorHAnsi",
-            "hi_ansi": null,
           },
           "sz": 20,
           "szCs": 20,
@@ -21270,10 +20750,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
-            "cs": null,
             "east_asia": "minorHAnsi",
-            "hi_ansi": null,
           },
           "sz": 20,
           "szCs": 20,
@@ -21389,10 +20866,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
-            "cs": null,
             "east_asia": "minorHAnsi",
-            "hi_ansi": null,
           },
           "sz": 20,
           "szCs": 20,
@@ -21508,10 +20982,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
-            "cs": null,
             "east_asia": "minorHAnsi",
-            "hi_ansi": null,
           },
           "sz": 20,
           "szCs": 20,
@@ -21627,10 +21098,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
-            "cs": null,
             "east_asia": "minorHAnsi",
-            "hi_ansi": null,
           },
           "sz": 20,
           "szCs": 20,
@@ -21746,10 +21214,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
-            "cs": null,
             "east_asia": "minorHAnsi",
-            "hi_ansi": null,
           },
           "sz": 20,
           "szCs": 20,
@@ -21865,10 +21330,7 @@ Object {
         },
         "runProperty": Object {
           "fonts": Object {
-            "ascii": null,
-            "cs": null,
             "east_asia": "minorHAnsi",
-            "hi_ansi": null,
           },
           "sz": 20,
           "szCs": 20,
@@ -23418,12 +22880,7 @@ Object {
     "docDefaults": Object {
       "runPropertyDefault": Object {
         "runProperty": Object {
-          "fonts": Object {
-            "ascii": null,
-            "cs": null,
-            "east_asia": null,
-            "hi_ansi": null,
-          },
+          "fonts": Object {},
           "sz": 21,
           "szCs": 21,
         },
@@ -23989,12 +23446,7 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {
-                    "ascii": null,
-                    "cs": null,
-                    "east_asia": null,
-                    "hi_ansi": null,
-                  },
+                  "fonts": Object {},
                 },
               },
               "type": "run",
@@ -24101,12 +23553,7 @@ Object {
             "outlineLvl": null,
             "pageBreakBefore": false,
             "runProperty": Object {
-              "fonts": Object {
-                "ascii": null,
-                "cs": null,
-                "east_asia": null,
-                "hi_ansi": null,
-              },
+              "fonts": Object {},
             },
             "style": null,
             "tabs": Array [],

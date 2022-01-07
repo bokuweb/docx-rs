@@ -23,8 +23,6 @@ impl ElementReader for ParagraphProperty {
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
 
-                    ignore::ignore_element(e.clone(), XMLElement::ParagraphPropertyChange, r);
-
                     match e {
                         XMLElement::Indent => {
                             let (start, end, special, start_chars, hanging_chars, first_line_chars) =
@@ -85,16 +83,21 @@ impl ElementReader for ParagraphProperty {
                             continue;
                         }
                         XMLElement::KeepNext => {
-                            p.keep_next = true;
+                            p.keep_next = Some(true);
                         }
                         XMLElement::KeepLines => {
-                            p.keep_lines = true;
+                            p.keep_lines = Some(true);
                         }
                         XMLElement::PageBreakBefore => {
-                            p.page_break_before = true;
+                            p.page_break_before = Some(true);
                         }
                         XMLElement::WindowControl => {
-                            p.window_control = true;
+                            p.window_control = Some(true);
+                        }
+                        XMLElement::ParagraphPropertyChange => {
+                            if let Ok(ppr_change) = ParagraphPropertyChange::read(r, attrs) {
+                                p.paragraph_property_change = Some(ppr_change);
+                            }
                         }
                         _ => {}
                     }

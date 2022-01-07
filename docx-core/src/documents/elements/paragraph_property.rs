@@ -9,19 +9,32 @@ use crate::xml_builder::*;
 #[serde(rename_all = "camelCase")]
 pub struct ParagraphProperty {
     pub run_property: RunProperty,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub style: Option<ParagraphStyle>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub numbering_property: Option<NumberingProperty>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub alignment: Option<Justification>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub indent: Option<Indent>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub line_spacing: Option<LineSpacing>,
-    pub keep_next: bool,
-    pub keep_lines: bool,
-    pub page_break_before: bool,
-    pub window_control: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub keep_next: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub keep_lines: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub page_break_before: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub window_control: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub outline_lvl: Option<OutlineLvl>,
     pub tabs: Vec<Tab>,
     // read only
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) div_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub paragraph_property_change: Option<ParagraphPropertyChange>,
 }
 
 // 17.3.1.26
@@ -66,12 +79,12 @@ impl ParagraphProperty {
     }
 
     pub fn keep_next(mut self, v: bool) -> Self {
-        self.keep_next = v;
+        self.keep_next = Some(v);
         self
     }
 
     pub fn keep_lines(mut self, v: bool) -> Self {
-        self.keep_lines = v;
+        self.keep_lines = Some(v);
         self
     }
 
@@ -84,17 +97,22 @@ impl ParagraphProperty {
     }
 
     pub fn page_break_before(mut self, v: bool) -> Self {
-        self.page_break_before = v;
+        self.page_break_before = Some(v);
         self
     }
 
     pub fn window_control(mut self, v: bool) -> Self {
-        self.window_control = v;
+        self.window_control = Some(v);
         self
     }
 
     pub fn add_tab(mut self, t: Tab) -> Self {
         self.tabs.push(t);
+        self
+    }
+
+    pub fn paragraph_property_change(mut self, p: ParagraphPropertyChange) -> Self {
+        self.paragraph_property_change = Some(p);
         self
     }
 
@@ -113,43 +131,62 @@ impl ParagraphProperty {
     }
 }
 
-impl BuildXML for ParagraphProperty {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new()
-            .open_paragraph_property()
-            .add_child(&self.run_property)
-            .add_optional_child(&self.style)
-            .add_optional_child(&self.numbering_property)
-            .add_optional_child(&self.alignment)
-            .add_optional_child(&self.indent)
-            .add_optional_child(&self.line_spacing)
-            .add_optional_child(&self.outline_lvl);
+fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
+    let mut b = XMLBuilder::new()
+        .open_paragraph_property()
+        .add_child(&p.run_property)
+        .add_optional_child(&p.style)
+        .add_optional_child(&p.numbering_property)
+        .add_optional_child(&p.alignment)
+        .add_optional_child(&p.indent)
+        .add_optional_child(&p.line_spacing)
+        .add_optional_child(&p.outline_lvl)
+        .add_optional_child(&p.paragraph_property_change);
 
-        if self.keep_next {
+    if let Some(v) = p.keep_next {
+        if v {
             b = b.keep_next()
         }
+    }
 
-        if self.keep_lines {
+    if let Some(v) = p.keep_lines {
+        if v {
             b = b.keep_lines()
         }
+    }
 
-        if self.page_break_before {
+    if let Some(v) = p.page_break_before {
+        if v {
             b = b.page_break_before()
         }
+    }
 
-        if self.window_control {
+    if let Some(v) = p.window_control {
+        if v {
             b = b.window_control()
         }
+    }
 
-        if !self.tabs.is_empty() {
-            b = b.open_tabs();
-            for t in self.tabs.iter() {
-                b = b.tab(t.val, t.leader, t.pos);
-            }
-            b = b.close();
+    if !p.tabs.is_empty() {
+        b = b.open_tabs();
+        for t in p.tabs.iter() {
+            b = b.tab(t.val, t.leader, t.pos);
         }
+        b = b.close();
+    }
 
-        b.close().build()
+    b.close().build()
+}
+
+impl BuildXML for ParagraphProperty {
+    fn build(&self) -> Vec<u8> {
+        inner_build(self)
+    }
+}
+
+impl BuildXML for Box<ParagraphProperty> {
+    fn build(&self) -> Vec<u8> {
+        inner_build(self)
     }
 }
 
@@ -216,7 +253,7 @@ mod tests {
         let b = c.indent(Some(20), Some(SpecialIndentType::FirstLine(10)), None, None);
         assert_eq!(
             serde_json::to_string(&b).unwrap(),
-            r#"{"runProperty":{},"style":null,"numberingProperty":null,"alignment":null,"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10},"hangingChars":null,"firstLineChars":null},"lineSpacing":null,"keepNext":false,"keepLines":false,"pageBreakBefore":false,"windowControl":false,"outlineLvl":null,"tabs":[],"divId":null}"#
+            r#"{"runProperty":{},"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10},"hangingChars":null,"firstLineChars":null},"tabs":[]}"#
         );
     }
 

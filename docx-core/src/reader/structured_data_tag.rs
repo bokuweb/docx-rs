@@ -22,8 +22,6 @@ impl ElementReader for StructuredDataTag {
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
 
-                    ignore::ignore_element(e.clone(), XMLElement::ParagraphPropertyChange, r);
-
                     match e {
                         XMLElement::Paragraph => {
                             if let Ok(p) = Paragraph::read(r, &attributes) {

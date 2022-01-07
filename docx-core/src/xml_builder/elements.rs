@@ -366,6 +366,7 @@ impl XMLBuilder {
 
     open!(open_insert, "w:ins", "w:id", "w:author", "w:date");
     open!(open_delete, "w:del", "w:id", "w:author", "w:date");
+    open!(open_paragraph_property_change, "w:pPrChange", "w:id", "w:author", "w:date");
 
     closed!(bookmark_start, "w:bookmarkStart", "w:id", "w:name");
     closed!(bookmark_end, "w:bookmarkEnd", "w:id");

@@ -29,6 +29,7 @@ mod numbering_property;
 mod numberings;
 mod paragraph;
 mod paragraph_property;
+mod paragraph_property_change;
 mod read_zip;
 mod rels;
 mod run;

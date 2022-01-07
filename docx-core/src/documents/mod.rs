@@ -20,6 +20,7 @@ mod header_id;
 mod history_id;
 mod numberings;
 mod paragraph_id;
+mod paragraph_property_change_id;
 mod pic_id;
 mod preset_styles;
 mod rels;
@@ -35,6 +36,7 @@ mod xml_docx;
 pub(crate) use build_xml::BuildXML;
 pub(crate) use history_id::HistoryId;
 pub(crate) use paragraph_id::*;
+pub(crate) use paragraph_property_change_id::ParagraphPropertyChangeId;
 pub(crate) use pic_id::*;
 
 pub use bookmark_id::*;

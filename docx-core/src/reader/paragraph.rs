@@ -25,8 +25,6 @@ impl ElementReader for Paragraph {
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
 
-                    ignore::ignore_element(e.clone(), XMLElement::ParagraphPropertyChange, r);
-
                     match e {
                         XMLElement::Run => {
                             let run = Run::read(r, attrs)?;

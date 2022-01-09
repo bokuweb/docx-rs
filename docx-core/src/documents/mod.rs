@@ -873,6 +873,19 @@ fn update_document_by_toc(
     let heading_map = styles.create_heading_style_map();
     let mut items = vec![];
     let mut children = vec![];
+    let style_map: std::collections::HashMap<String, usize> = toc
+        .instr
+        .styles_with_levels
+        .iter()
+        .map(|sl| sl.0.clone())
+        .collect();
+
+    if toc.instr.heading_styles_range.is_none() && !toc.instr.styles_with_levels.is_empty() {
+        // INFO: if \t option set without heading styles ranges, Microsoft word does not show ToC items...
+        return document_children;
+    }
+
+    let (min, max) = toc.instr.heading_styles_range.unwrap_or((0, 9));
 
     for child in document_children.into_iter() {
         match child {
@@ -884,20 +897,7 @@ fn update_document_by_toc(
                     .map(|p| p.val.to_string())
                     .and_then(|sid| heading_map.get(&sid))
                 {
-                    if let Some((min, max)) = toc.instr.heading_styles_range {
-                        if min <= *heading_level && max >= *heading_level {
-                            let toc_key = TocKey::generate();
-                            items.push(
-                                TableOfContentsItem::new()
-                                    .text(paragraph.raw_text())
-                                    .toc_key(&toc_key)
-                                    .level(*heading_level),
-                            );
-                            paragraph =
-                                paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
-                        }
-                    } else {
-                        // If no heading range is specified, all heading levels used in the document are listed.
+                    if min <= *heading_level && max >= *heading_level {
                         let toc_key = TocKey::generate();
                         items.push(
                             TableOfContentsItem::new()
@@ -912,6 +912,26 @@ fn update_document_by_toc(
                         // TODO: check tc field
                     }
                 }
+
+                // Support \t option. Collect toc items if style id matched.
+                if let Some(level) = paragraph
+                    .property
+                    .style
+                    .as_ref()
+                    .and_then(|s| style_map.get(&s.val))
+                {
+                    if min <= *level && max >= *level {
+                        let toc_key = TocKey::generate();
+                        items.push(
+                            TableOfContentsItem::new()
+                                .text(paragraph.raw_text())
+                                .toc_key(&toc_key)
+                                .level(*level),
+                        );
+                        paragraph = paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
+                    }
+                }
+
                 children.push(DocumentChild::Paragraph(paragraph));
             }
             DocumentChild::Table(ref _table) => {

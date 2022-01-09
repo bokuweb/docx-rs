@@ -26,6 +26,11 @@ impl TableOfContents {
         self
     }
 
+    pub fn add_style_with_level(mut self, s: StyleWithLevel) -> Self {
+        self.instr = self.instr.add_style_with_level(s);
+        self
+    }
+
     pub fn hyperlink(mut self) -> Self {
         self.instr = self.instr.hyperlink();
         self

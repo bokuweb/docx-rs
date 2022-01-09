@@ -24,6 +24,14 @@ impl TableOfContents {
         self
     }
 
+    pub fn add_style_with_level(mut self, style: &str, level: usize) -> Self {
+        self.0.instr = self
+            .0
+            .instr
+            .add_style_with_level(docx_rs::StyleWithLevel::new(style, level));
+        self
+    }
+
     pub fn hyperlink(mut self) -> Self {
         self.0.instr = self.0.instr.hyperlink();
         self

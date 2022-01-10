@@ -4,6 +4,7 @@ import { TableOfContentsItem } from "./table-of-contents-item";
 
 export class TableOfContents {
   _headingStylesRange: [number, number] | null = null;
+  _styleWithLevels: { styleId: string; level: number }[] = [];
   _hyperlink = false;
   _alias = "";
   _auto = false;
@@ -13,6 +14,11 @@ export class TableOfContents {
 
   headingStylesRange = (r: [number, number]) => {
     this._headingStylesRange = r;
+    return this;
+  };
+
+  addStyleWithLevel = (styleId: string, level: number) => {
+    this._styleWithLevels.push({ styleId, level });
     return this;
   };
 
@@ -73,6 +79,10 @@ export class TableOfContents {
 
     if (this._pageRefPlaceholder) {
       toc = toc.page_ref_placeholder(this._pageRefPlaceholder);
+    }
+
+    for (const sl of this._styleWithLevels) {
+      toc = toc.add_style_with_level(sl.styleId, sl.level);
     }
 
     for (const item of this._items) {

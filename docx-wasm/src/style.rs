@@ -81,6 +81,16 @@ impl Style {
         self
     }
 
+    // pub fn run_property(mut self, p: docx_rs::RunProperty) -> Self {
+    //     self.0.run_property = p;
+    //     self
+    // }
+
+    // pub fn paragraph_property(mut self, p: docx_rs::ParagraphProperty) -> Self {
+    //     self.0.paragraph_property = p;
+    //     self
+    // }
+
     pub fn table_property(mut self, p: docx_rs::TableProperty) -> Self {
         self.0.table_property = p;
         self

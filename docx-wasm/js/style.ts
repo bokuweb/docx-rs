@@ -38,6 +38,28 @@ export class Style {
     return this;
   };
 
+  basedOn = (n: string) => {
+    this._basedOn = n;
+    return this;
+  };
+
+  // TODO:
+  // runProperty = (n: RunProperty) => {
+  //   this._runProperty = n;
+  //   return this;
+  // };
+
+  // TODO:
+  // paragraphProperty = (n: ParagraphProperty) => {
+  //   this._paragraphProperty = n;
+  //   return this;
+  // };
+
+  tableProperty = (n: TableProperty) => {
+    this._tableProperty = n;
+    return this;
+  };
+
   buildStyleType = () => {
     switch (this._styleType) {
       case "character":
@@ -58,6 +80,10 @@ export class Style {
 
     if (this._name) {
       s = s.name(this._name);
+    }
+
+    if (this._basedOn) {
+      s = s.based_on(this._basedOn);
     }
 
     return s;

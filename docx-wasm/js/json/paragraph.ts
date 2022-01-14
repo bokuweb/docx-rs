@@ -19,17 +19,22 @@ export type NumberingPropertyJSON = {
 
 export type ParagraphPropertyJSON = {
   runProperty: RunPropertyJSON;
-  style: string | null;
-  numberingProperty: NumberingPropertyJSON | null;
-  alignment: "left" | "center" | "right" | "justified" | "both";
-  indent: IndentJSON | null;
-  lineSpacing: LineSpacingJSON | null;
-  divId: string | null;
-  keepNext: boolean;
-  keepLines: boolean;
-  pageBreakBefore: boolean;
-  windowControl: boolean;
-  outlineLvl: number | null;
+  style?: string | null;
+  numberingProperty?: NumberingPropertyJSON | null;
+  alignment?: "left" | "center" | "right" | "justified" | "both";
+  indent?: IndentJSON | null;
+  lineSpacing?: LineSpacingJSON | null;
+  divId?: string | null;
+  keepNext?: boolean;
+  keepLines?: boolean;
+  pageBreakBefore?: boolean;
+  windowControl?: boolean;
+  outlineLvl?: number | null;
+  paragraphPropertyChange?: {
+    author: string;
+    date: string;
+    property: ParagraphPropertyJSON;
+  };
 };
 
 export type ParagraphJSON = {

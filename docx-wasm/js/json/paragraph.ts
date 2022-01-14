@@ -28,7 +28,7 @@ export type ParagraphPropertyJSON = {
   keepNext?: boolean;
   keepLines?: boolean;
   pageBreakBefore?: boolean;
-  windowControl?: boolean;
+  widowControl?: boolean;
   outlineLvl?: number | null;
   paragraphPropertyChange?: {
     author: string;

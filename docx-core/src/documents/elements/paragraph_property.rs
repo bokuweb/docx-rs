@@ -26,7 +26,7 @@ pub struct ParagraphProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub page_break_before: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub window_control: Option<bool>,
+    pub widow_control: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub outline_lvl: Option<OutlineLvl>,
     pub tabs: Vec<Tab>,
@@ -73,6 +73,11 @@ impl ParagraphProperty {
         self
     }
 
+    pub fn numbering_property(mut self, np: NumberingProperty) -> Self {
+        self.numbering_property = Some(np);
+        self
+    }
+
     pub fn line_spacing(mut self, spacing: LineSpacing) -> Self {
         self.line_spacing = Some(spacing);
         self
@@ -101,8 +106,8 @@ impl ParagraphProperty {
         self
     }
 
-    pub fn window_control(mut self, v: bool) -> Self {
-        self.window_control = Some(v);
+    pub fn widow_control(mut self, v: bool) -> Self {
+        self.widow_control = Some(v);
         self
     }
 
@@ -161,9 +166,9 @@ fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
         }
     }
 
-    if let Some(v) = p.window_control {
+    if let Some(v) = p.widow_control {
         if v {
-            b = b.window_control()
+            b = b.widow_control()
         }
     }
 

@@ -81,7 +81,7 @@ export type ParagraphProperty = {
   keepNext: boolean;
   keepLines: boolean;
   pageBreakBefore: boolean;
-  windowControl: boolean;
+  widowControl: boolean;
 };
 
 export const createDefaultParagraphProperty = (): ParagraphProperty => {
@@ -90,7 +90,7 @@ export const createDefaultParagraphProperty = (): ParagraphProperty => {
     keepNext: false,
     keepLines: false,
     pageBreakBefore: false,
-    windowControl: false,
+    widowControl: false,
   };
 };
 
@@ -184,8 +184,8 @@ export class Paragraph {
     return this;
   }
 
-  windowControl(v: boolean) {
-    this.property = { ...this.property, windowControl: v };
+  widowControl(v: boolean) {
+    this.property = { ...this.property, widowControl: v };
     return this;
   }
 

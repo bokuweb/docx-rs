@@ -98,6 +98,14 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read paragraph property change docx", () => {
+    const buffer = readFileSync(
+      "../fixtures/paragraph_property_change/paragraph_property_change.docx"
+    );
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {

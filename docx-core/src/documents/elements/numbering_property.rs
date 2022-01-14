@@ -25,6 +25,11 @@ impl NumberingProperty {
         Default::default()
     }
 
+    pub fn id(mut self, id: NumberingId) -> NumberingProperty {
+        self.id = Some(id);
+        self
+    }
+
     pub fn add_num(mut self, id: NumberingId, level: IndentLevel) -> NumberingProperty {
         self.id = Some(id);
         self.level = Some(level);

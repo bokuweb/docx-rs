@@ -22,7 +22,6 @@ impl ElementReader for ParagraphProperty {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-
                     match e {
                         XMLElement::Indent => {
                             let (start, end, special, start_chars, hanging_chars, first_line_chars) =
@@ -68,9 +67,8 @@ impl ElementReader for ParagraphProperty {
                             continue;
                         }
                         XMLElement::NumberingProperty => {
-                            let num_pr = NumberingProperty::read(r, attrs)?;
-                            if num_pr.id.is_some() && num_pr.level.is_some() {
-                                p = p.numbering(num_pr.id.unwrap(), num_pr.level.unwrap());
+                            if let Ok(num_pr) = NumberingProperty::read(r, attrs) {
+                                p = p.numbering_property(num_pr);
                             }
                             continue;
                         }
@@ -91,8 +89,8 @@ impl ElementReader for ParagraphProperty {
                         XMLElement::PageBreakBefore => {
                             p.page_break_before = Some(true);
                         }
-                        XMLElement::WindowControl => {
-                            p.window_control = Some(true);
+                        XMLElement::WidowControl => {
+                            p.widow_control = Some(true);
                         }
                         XMLElement::ParagraphPropertyChange => {
                             if let Ok(ppr_change) = ParagraphPropertyChange::read(r, attrs) {

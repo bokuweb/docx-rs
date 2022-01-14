@@ -603,8 +603,8 @@ export class Docx {
       paragraph = paragraph.page_break_before(true);
     }
 
-    if (p.property.windowControl) {
-      paragraph = paragraph.window_control(true);
+    if (p.property.widowControl) {
+      paragraph = paragraph.widow_control(true);
     }
 
     return paragraph;

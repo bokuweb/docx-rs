@@ -137,8 +137,8 @@ impl Paragraph {
         self
     }
 
-    pub fn window_control(mut self, v: bool) -> Self {
-        self.0 = self.0.window_control(v);
+    pub fn widow_control(mut self, v: bool) -> Self {
+        self.0 = self.0.widow_control(v);
         self
     }
 }

@@ -230,8 +230,8 @@ impl Paragraph {
         self
     }
 
-    pub fn window_control(mut self, v: bool) -> Self {
-        self.property = self.property.window_control(v);
+    pub fn widow_control(mut self, v: bool) -> Self {
+        self.property = self.property.widow_control(v);
         self
     }
 

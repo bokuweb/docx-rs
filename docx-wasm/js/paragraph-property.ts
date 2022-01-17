@@ -93,8 +93,27 @@ export class ParagraphPropertyChange {
     return this;
   }
 
-  property(p: ParagraphProperty) {
-    this._property = p;
+  align(type: AlignmentType) {
+    this._property.align = type;
+    return this;
+  }
+
+  style(id: string) {
+    this._property.styleId = id;
+    return this;
+  }
+
+  indent(
+    left: number,
+    specialIndentKind?: SpecialIndentKind,
+    specialIndentSize?: number
+  ) {
+    this._property.indent = { left, specialIndentKind, specialIndentSize };
+    return this;
+  }
+
+  numbering(id: number, level: number) {
+    this._property.numbering = { id, level };
     return this;
   }
 }

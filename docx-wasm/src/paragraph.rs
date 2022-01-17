@@ -28,6 +28,31 @@ impl ParagraphPropertyChange {
         self.0.property = Box::new(self.0.property.numbering(id, level));
         self
     }
+
+    pub fn align(mut self, alignment_type: docx_rs::AlignmentType) -> Self {
+        self.0.property = Box::new(self.0.property.align(alignment_type));
+        self
+    }
+
+    pub fn style(mut self, style_id: &str) -> Self {
+        self.0.property = Box::new(self.0.property.style(style_id));
+        self
+    }
+
+    pub fn indent(
+        mut self,
+        left: i32,
+        special_indent_kind: Option<docx_rs::SpecialIndentKind>,
+        special_indent_size: Option<i32>,
+    ) -> Self {
+        let special_indent = create_special_indent(special_indent_kind, special_indent_size);
+        self.0.property = Box::new(
+            self.0
+                .property
+                .indent(Some(left), special_indent, None, None),
+        );
+        self
+    }
 }
 
 impl ParagraphPropertyChange {

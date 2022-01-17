@@ -620,4 +620,27 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write pPrChange with deleted numbering", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello world!!"))
+      .paragraphPropertyChange(
+        new w.ParagraphPropertyChange().author("bokuweb").numbering(1, 0)
+      );
+
+    const num = new w.Numbering(1, 0);
+    const buffer = new w.Docx().addParagraph(p).addNumbering(num).build();
+
+    writeFileSync(
+      "../output/js/pprchange_with_deleted_numbering.docx",
+      buffer
+    );
+
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

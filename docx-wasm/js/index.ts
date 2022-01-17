@@ -620,6 +620,7 @@ export class Docx {
           p.property.paragraphPropertyChange._property.numbering.level
         );
       }
+      // TODO: add style, indent, alignment
       paragraph = paragraph.paragraph_property_change(change);
     }
 

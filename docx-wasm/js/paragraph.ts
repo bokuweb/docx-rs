@@ -1,4 +1,12 @@
-import { Run, RunProperty, RunFonts, createDefaultRunProperty } from "./run";
+import { Run, RunFonts } from "./run";
+import {
+  createDefaultParagraphProperty,
+  ParagraphProperty,
+  LineSpacing,
+  AlignmentType,
+  SpecialIndentKind,
+  ParagraphPropertyChange,
+} from "./paragraph-property";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
 import { BookmarkStart } from "./bookmark-start";
@@ -16,83 +24,6 @@ export type ParagraphChild =
   | BookmarkEnd
   | Comment
   | CommentEnd;
-
-export type AlignmentType =
-  | "center"
-  | "left"
-  | "right"
-  | "both"
-  | "justified"
-  | "distribute"
-  | "end";
-
-export type SpecialIndentKind = "firstLine" | "hanging";
-
-export type LineSpacingType = "atLeast" | "auto" | "exact";
-
-export class LineSpacing {
-  _before?: number;
-  _after?: number;
-  _beforeLines?: number;
-  _afterLines?: number;
-  _line?: number;
-  _lineRule?: LineSpacingType;
-
-  before(v: number) {
-    this._before = v;
-    return this;
-  }
-  after(v: number) {
-    this._after = v;
-    return this;
-  }
-  beforeLines(v: number) {
-    this._beforeLines = v;
-    return this;
-  }
-  afterLines(v: number) {
-    this._afterLines = v;
-    return this;
-  }
-  line(v: number) {
-    this._line = v;
-    return this;
-  }
-  lineRule(v: LineSpacingType) {
-    this._lineRule = v;
-    return this;
-  }
-}
-
-export type ParagraphProperty = {
-  align?: AlignmentType;
-  styleId?: string;
-  indent?: {
-    left: number;
-    specialIndentKind?: SpecialIndentKind;
-    specialIndentSize?: number;
-  };
-  numbering?: {
-    id: number;
-    level: number;
-  };
-  lineSpacing?: LineSpacing;
-  runProperty: RunProperty;
-  keepNext: boolean;
-  keepLines: boolean;
-  pageBreakBefore: boolean;
-  widowControl: boolean;
-};
-
-export const createDefaultParagraphProperty = (): ParagraphProperty => {
-  return {
-    runProperty: createDefaultRunProperty(),
-    keepNext: false,
-    keepLines: false,
-    pageBreakBefore: false,
-    widowControl: false,
-  };
-};
 
 export class Paragraph {
   hasNumberings = false;
@@ -207,6 +138,21 @@ export class Paragraph {
 
   fonts(fonts: RunFonts) {
     this.property.runProperty = { ...this.property.runProperty, fonts };
+    return this;
+  }
+
+  delete(author: string, date: string) {
+    this.property.runProperty.del = { author, date };
+    return this;
+  }
+
+  insert(author: string, date: string) {
+    this.property.runProperty.ins = { author, date };
+    return this;
+  }
+
+  paragraphPropertyChange(propertyChange: ParagraphPropertyChange) {
+    this.property.paragraphPropertyChange = propertyChange;
     return this;
   }
 }

@@ -17,6 +17,16 @@ export type TextBorder = {
 
 export type VertAlignType = "baseline" | "superscript" | "subscript";
 
+export type RunPropertyDel = {
+  author: string;
+  date: string;
+};
+
+export type RunPropertyIns = {
+  author: string;
+  date: string;
+};
+
 export type RunProperty = {
   size?: number;
   color?: string;
@@ -30,6 +40,8 @@ export type RunProperty = {
   fonts?: RunFonts;
   spacing?: number;
   textBorder?: TextBorder;
+  ins?: RunPropertyIns;
+  del?: RunPropertyDel;
 };
 
 export const createDefaultRunProperty = (): RunProperty => {
@@ -180,6 +192,16 @@ export class Run {
 
   spacing(spacing: number) {
     this.property = { ...this.property, spacing };
+    return this;
+  }
+
+  delete(author: string, date: string) {
+    this.property = { ...this.property, del: { author, date } };
+    return this;
+  }
+
+  insert(author: string, date: string) {
+    this.property = { ...this.property, ins: { author, date } };
     return this;
   }
 

@@ -596,4 +596,28 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write pPrChange with inserted numbering", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello world!!"))
+      .numbering(1, 0)
+      .paragraphPropertyChange(
+        new w.ParagraphPropertyChange().author("bokuweb")
+      );
+
+    const num = new w.Numbering(1, 0);
+    const buffer = new w.Docx().addParagraph(p).addNumbering(num).build();
+
+    writeFileSync(
+      "../output/js/pprchange_with_inserted_numbering.docx",
+      buffer
+    );
+
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

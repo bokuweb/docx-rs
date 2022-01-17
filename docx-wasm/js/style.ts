@@ -2,7 +2,7 @@ import * as wasm from "./pkg";
 
 import { createDefaultTableCellMargins, TableProperty } from "./table";
 import { RunProperty, createDefaultRunProperty } from "./run";
-import { createDefaultParagraphProperty, ParagraphProperty } from "./paragraph";
+import { createDefaultParagraphProperty, ParagraphProperty } from "./paragraph-property";
 
 export type StyleType =
   | "paragraph"

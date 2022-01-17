@@ -3,7 +3,7 @@ import {
   createDefaultParagraphProperty,
   ParagraphProperty,
   SpecialIndentKind,
-} from "./paragraph";
+} from "./paragraph-property";
 import { RunFonts, RunProperty } from "./run";
 
 export type LevelSuffixType = "nothing" | "tab" | "space";

@@ -297,6 +297,21 @@ impl Paragraph {
         self
     }
 
+    pub fn delete(mut self, author: impl Into<String>, date: impl Into<String>) -> Self {
+        self.property.run_property.del = Some(Delete::new().author(author).date(date));
+        self
+    }
+
+    pub fn insert(mut self, author: impl Into<String>, date: impl Into<String>) -> Self {
+        self.property.run_property.ins = Some(Insert::new_with_empty().author(author).date(date));
+        self
+    }
+
+    pub fn paragraph_property_change(mut self, p: ParagraphPropertyChange) -> Self {
+        self.property = self.property.paragraph_property_change(p);
+        self
+    }
+
     pub fn raw_text(&self) -> String {
         let mut s = "".to_string();
         // For now support only run and ins.
@@ -447,5 +462,5 @@ mod tests {
             .add_delete(Delete::new().add_run(Run::new().add_delete_text("!!!!!")))
             .raw_text();
         assert_eq!(b, "HelloWorld".to_owned());
-    }}
-
+    }
+}

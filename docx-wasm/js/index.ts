@@ -1,4 +1,5 @@
-import { Paragraph, ParagraphProperty } from "./paragraph";
+import { Paragraph } from "./paragraph";
+import { ParagraphProperty } from "./paragraph-property";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
 import { Hyperlink } from "./hyperlink";
@@ -607,6 +608,21 @@ export class Docx {
       paragraph = paragraph.widow_control(true);
     }
 
+    if (p.property.paragraphPropertyChange) {
+      let change = wasm.createParagraphPropertyChange();
+      change = change
+        .author(p.property.paragraphPropertyChange._author)
+        .date(p.property.paragraphPropertyChange._date);
+
+      if (p.property.paragraphPropertyChange._property.numbering) {
+        change = change.numbering(
+          p.property.paragraphPropertyChange._property.numbering.id,
+          p.property.paragraphPropertyChange._property.numbering.level
+        );
+      }
+      paragraph = paragraph.paragraph_property_change(change);
+    }
+
     return paragraph;
   }
 
@@ -1145,6 +1161,7 @@ export const readDocx = (buf: Uint8Array) => {
 };
 
 export * from "./paragraph";
+export * from "./paragraph-property";
 export * from "./insert";
 export * from "./delete";
 export * from "./border";

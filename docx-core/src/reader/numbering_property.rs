@@ -39,11 +39,12 @@ impl ElementReader for NumberingProperty {
                             return Ok(NumberingProperty::new()
                                 .id(NumberingId::new(id.expect("should id exists"))));
                         }
-                        let np = NumberingProperty::new().add_num(
-                            NumberingId::new(id.unwrap()),
-                            IndentLevel::new(level.unwrap()),
-                        );
-                        return Ok(np);
+                        if let Some(id) = id {
+                            let np = NumberingProperty::new()
+                                .add_num(NumberingId::new(id), IndentLevel::new(level.unwrap()));
+                            return Ok(np);
+                        }
+                        return Ok(NumberingProperty::new());
                     }
                 }
                 Err(_) => return Err(ReaderError::XMLReadError),

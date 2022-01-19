@@ -93,7 +93,7 @@ impl ElementReader for ParagraphProperty {
                             p.widow_control = Some(true);
                         }
                         XMLElement::ParagraphPropertyChange => {
-                            if let Ok(ppr_change) = ParagraphPropertyChange::read(r, attrs) {
+                            if let Ok(ppr_change) = ParagraphPropertyChange::read(r, &attributes) {
                                 p.paragraph_property_change = Some(ppr_change);
                             }
                         }

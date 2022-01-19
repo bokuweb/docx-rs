@@ -13086,8 +13086,8 @@ Object {
               "startChars": null,
             },
             "paragraphPropertyChange": Object {
-              "author": "unnamed",
-              "date": "1970-01-01T00:00:00Z",
+              "author": "bokuweb",
+              "date": "2022-01-07T17:20:00Z",
               "property": Object {
                 "alignment": "left",
                 "indent": Object {

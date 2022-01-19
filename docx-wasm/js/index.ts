@@ -575,6 +575,20 @@ export class Docx {
       paragraph = paragraph.size(p.property.runProperty.size);
     }
 
+    if (p.property.runProperty.del) {
+      paragraph = paragraph.delete(
+        p.property.runProperty.del.author,
+        p.property.runProperty.del.date
+      );
+    }
+
+    if (p.property.runProperty.ins) {
+      paragraph = paragraph.insert(
+        p.property.runProperty.ins.author,
+        p.property.runProperty.ins.date
+      );
+    }
+
     if (p.property.runProperty.fonts) {
       let f = wasm.createRunFonts();
       if (p.property.runProperty.fonts._ascii) {

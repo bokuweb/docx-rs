@@ -202,6 +202,16 @@ impl Paragraph {
         self
     }
 
+    pub fn delete(mut self, author: &str, date: &str) -> Self {
+        self.0 = self.0.delete(author, date);
+        self
+    }
+
+    pub fn insert(mut self, author: &str, date: &str) -> Self {
+        self.0 = self.0.insert(author, date);
+        self
+    }
+
     pub fn paragraph_property_change(mut self, p: ParagraphPropertyChange) -> Self {
         self.0.property = self.0.property.paragraph_property_change(p.take());
         self

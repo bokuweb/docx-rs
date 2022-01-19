@@ -637,10 +637,34 @@ describe("writer", () => {
     const num = new w.Numbering(1, 0);
     const buffer = new w.Docx().addParagraph(p).addNumbering(num).build();
 
-    writeFileSync(
-      "../output/js/pprchange_with_deleted_numbering.docx",
-      buffer
-    );
+    writeFileSync("../output/js/pprchange_with_deleted_numbering.docx", buffer);
+
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write paragraph delete", () => {
+    const p1 = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello world!!"))
+      .numbering(1, 0)
+      .delete("bokuweb", "2021-12-23T18:16:00Z");
+    const p2 = new w.Paragraph()
+      .addRun(new w.Run().addText("Foo"))
+      .numbering(1, 0);
+
+    const num = new w.Numbering(1, 0);
+
+    const buffer = new w.Docx()
+      .addParagraph(p1)
+      .addParagraph(p2)
+      .addNumbering(num)
+      .build();
+
+    writeFileSync("../output/js/paragraph_delete.docx", buffer);
 
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {

@@ -37,8 +37,8 @@ export type RunPropertyJSON = {
   vanish?: boolean | null;
   spacing?: number | null;
   textBorder?: TextBorderJSON | null;
-  ins?: InsertJSON | null;
-  del?: DeleteJSON | null;
+  ins?: InsertJSON['data'] | null;
+  del?: DeleteJSON['data'] | null;
   strike?: boolean;
 };
 

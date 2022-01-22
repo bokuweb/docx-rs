@@ -1,4 +1,5 @@
 import { ParagraphPropertyJSON } from "./paragraph";
+import { RunPropertyJSON } from "./run";
 
 export type LevelJSON = {
   level: number;
@@ -8,6 +9,7 @@ export type LevelJSON = {
   jc: string;
   suffix: "tab" | "nothing" | "space";
   paragraphProperty: ParagraphPropertyJSON;
+  runProperty: RunPropertyJSON;
   pstyle: string | null;
   levelRestart: number | null;
 };

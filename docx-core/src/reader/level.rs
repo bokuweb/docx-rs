@@ -14,6 +14,7 @@ impl ElementReader for Level {
     ) -> Result<Self, ReaderError> {
         let level = read_indent_level(attrs)?;
         let mut style_id = None;
+        let mut ppr = ParagraphProperty::new();
         let mut start = Start::default();
         let mut num_fmt = NumberFormat::new("decimal");
         let mut level_text = LevelText::new("");
@@ -38,6 +39,12 @@ impl ElementReader for Level {
                         XMLElement::ParagraphStyle => {
                             let id = attributes[0].value.clone();
                             style_id = Some(id);
+                        }
+                        XMLElement::ParagraphProperty => {
+                            if let Ok(pr) = ParagraphProperty::read(r, attrs) {
+                                ppr = pr;
+                            }
+                            continue;
                         }
                         XMLElement::Start => {
                             start = Start::new(usize::from_str(&attributes[0].value)?);
@@ -81,6 +88,7 @@ impl ElementReader for Level {
                         if has_indent {
                             l = l.indent(indent_start, special_indent, indent_end, start_chars);
                         }
+                        l.paragraph_property = ppr;
                         l.level_restart = level_restart;
                         return Ok(l);
                     }

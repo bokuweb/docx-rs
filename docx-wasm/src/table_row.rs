@@ -19,7 +19,7 @@ impl TableRow {
 #[wasm_bindgen]
 impl TableRow {
     pub fn add_cell(mut self, cell: TableCell) -> TableRow {
-        self.0.cells.push(cell.take());
+        self.0.cells.push(docx_rs::TableRowChild::TableCell(cell.take()));
         self
     }
 

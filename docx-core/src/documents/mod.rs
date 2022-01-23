@@ -586,8 +586,8 @@ impl Docx {
                     }
                 }
                 DocumentChild::Table(table) => {
-                    for row in &table.rows {
-                        for cell in &row.cells {
+                    for TableChild::TableRow(row) in &table.rows {
+                        for TableRowChild::TableCell(cell) in &row.cells {
                             for content in &cell.children {
                                 match content {
                                     TableCellContent::Paragraph(paragraph) => {
@@ -646,8 +646,8 @@ impl Docx {
                     }
                 }
                 DocumentChild::Table(table) => {
-                    for row in &table.rows {
-                        for cell in &row.cells {
+                    for TableChild::TableRow(row) in &table.rows {
+                        for TableRowChild::TableCell(cell) in &row.cells {
                             for content in &cell.children {
                                 match content {
                                     TableCellContent::Paragraph(paragraph) => {
@@ -739,8 +739,8 @@ impl Docx {
                     }
                 }
                 DocumentChild::Table(table) => {
-                    for row in &mut table.rows {
-                        for cell in &mut row.cells {
+                    for TableChild::TableRow(row) in &mut table.rows {
+                        for TableRowChild::TableCell(cell) in &mut row.cells {
                             for content in &mut cell.children {
                                 match content {
                                     TableCellContent::Paragraph(paragraph) => {
@@ -828,8 +828,8 @@ impl Docx {
                     }
                 }
                 DocumentChild::Table(table) => {
-                    for row in &mut table.rows {
-                        for cell in &mut row.cells {
+                    for TableChild::TableRow(row) in &mut table.rows {
+                        for TableRowChild::TableCell(cell) in &mut row.cells {
                             for content in &mut cell.children {
                                 match content {
                                     TableCellContent::Paragraph(paragraph) => {

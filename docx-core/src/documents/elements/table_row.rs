@@ -1,3 +1,4 @@
+use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
 use super::{TableCell, TableRowProperty};
@@ -7,15 +8,29 @@ use crate::{documents::BuildXML, HeightRule};
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TableRow {
-    pub cells: Vec<TableCell>,
+    pub cells: Vec<TableRowChild>,
     pub has_numbering: bool,
     pub property: TableRowProperty,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum TableRowChild {
+    TableCell(TableCell),
+}
+
+impl BuildXML for TableRowChild {
+    fn build(&self) -> Vec<u8> {
+        match self {
+            TableRowChild::TableCell(v) => v.build(),
+        }
+    }
 }
 
 impl TableRow {
     pub fn new(cells: Vec<TableCell>) -> TableRow {
         let property = TableRowProperty::new();
         let has_numbering = cells.iter().any(|c| c.has_numbering);
+        let cells = cells.into_iter().map(TableRowChild::TableCell).collect();
         Self {
             cells,
             property,
@@ -64,6 +79,22 @@ impl BuildXML for TableRow {
     }
 }
 
+impl Serialize for TableRowChild {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            TableRowChild::TableCell(ref r) => {
+                let mut t = serializer.serialize_struct("TableCell", 2)?;
+                t.serialize_field("type", "tableCell")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
 
@@ -86,7 +117,7 @@ mod tests {
         let r = TableRow::new(vec![TableCell::new()]);
         assert_eq!(
             serde_json::to_string(&r).unwrap(),
-            r#"{"cells":[{"children":[],"property":{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":null,"textDirection":null,"shading":null},"hasNumbering":false}],"hasNumbering":false,"property":{"gridAfter":null,"widthAfter":null,"gridBefore":null,"widthBefore":null,"rowHeight":null,"heightRule":null}}"#
+            r#"{"cells":[{"type":"tableCell","data":{"children":[],"property":{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":null,"textDirection":null,"shading":null},"hasNumbering":false}}],"hasNumbering":false,"property":{"gridAfter":null,"widthAfter":null,"gridBefore":null,"widthBefore":null,"rowHeight":null,"heightRule":null}}"#
         );
     }
 }

@@ -20,7 +20,7 @@ impl Table {
 #[wasm_bindgen]
 impl Table {
     pub fn add_row(mut self, row: TableRow) -> Table {
-        self.0.rows.push(row.take());
+        self.0.rows.push(docx_rs::TableChild::TableRow(row.take()));
         self
     }
 

@@ -1,3 +1,4 @@
+use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
 use super::*;
@@ -8,10 +9,23 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Table {
-    pub rows: Vec<TableRow>,
+    pub rows: Vec<TableChild>,
     pub grid: Vec<usize>,
     pub has_numbering: bool,
     pub property: TableProperty,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum TableChild {
+    TableRow(TableRow),
+}
+
+impl BuildXML for TableChild {
+    fn build(&self) -> Vec<u8> {
+        match self {
+            TableChild::TableRow(v) => v.build(),
+        }
+    }
 }
 
 impl Table {
@@ -19,6 +33,7 @@ impl Table {
         let property = TableProperty::new();
         let has_numbering = rows.iter().any(|c| c.has_numbering);
         let grid = vec![];
+        let rows = rows.into_iter().map(TableChild::TableRow).collect();
         Self {
             property,
             rows,
@@ -31,6 +46,7 @@ impl Table {
         let property = TableProperty::without_borders();
         let has_numbering = rows.iter().any(|c| c.has_numbering);
         let grid = vec![];
+        let rows = rows.into_iter().map(TableChild::TableRow).collect();
         Self {
             property,
             rows,
@@ -40,7 +56,7 @@ impl Table {
     }
 
     pub fn add_row(mut self, row: TableRow) -> Table {
-        self.rows.push(row);
+        self.rows.push(TableChild::TableRow(row));
         self
     }
 
@@ -109,6 +125,22 @@ impl BuildXML for Table {
             .add_child(&grid)
             .add_children(&self.rows);
         b.close().build()
+    }
+}
+
+impl Serialize for TableChild {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            TableChild::TableRow(ref r) => {
+                let mut t = serializer.serialize_struct("TableRow", 2)?;
+                t.serialize_field("type", "tableRow")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+        }
     }
 }
 

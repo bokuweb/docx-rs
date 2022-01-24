@@ -36,13 +36,19 @@ export type TableRowPropertyJSON = {
 };
 
 export type TableCellJSON = {
-  children: TableCellChildJSON[];
-  property: TableCellPropertyJSON;
+  type: "tableCell";
+  data: {
+    children: TableCellChildJSON[];
+    property: TableCellPropertyJSON;
+  };
 };
 
 export type TableRowJSON = {
-  cells: TableCellJSON[];
-  property: TableRowPropertyJSON;
+  type: "tableRow";
+  data: {
+    cells: TableCellJSON[];
+    property: TableRowPropertyJSON;
+  };
 };
 
 export type TableCellMarginJSON = { val: number; widthType: WidthType };

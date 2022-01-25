@@ -17,6 +17,7 @@ impl ElementReader for TableRow {
         let mut grid_before = None;
         let mut width_before = None;
         let mut row_height = None;
+        let mut del = None;
         let mut height_rule = Some(HeightRule::AtLeast);
         loop {
             let e = r.next();
@@ -68,6 +69,11 @@ impl ElementReader for TableRow {
                                 }
                             }
                         }
+                        XMLElement::Delete => {
+                            if let Ok(d) = Delete::read(r, &attributes) {
+                                del = Some(d);
+                            }
+                        }
                         _ => {}
                     }
                 }
@@ -97,6 +103,10 @@ impl ElementReader for TableRow {
 
                         if let Some(height_rule) = height_rule {
                             row = row.height_rule(height_rule);
+                        }
+
+                        if let Some(del) = del {
+                            row = row.delete(del);
                         }
 
                         return Ok(row);

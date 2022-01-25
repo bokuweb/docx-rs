@@ -1,7 +1,7 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
-use super::{TableCell, TableRowProperty};
+use super::{TableCell, TableRowProperty, Delete};
 use crate::xml_builder::*;
 use crate::{documents::BuildXML, HeightRule};
 
@@ -65,6 +65,11 @@ impl TableRow {
 
     pub fn height_rule(mut self, r: HeightRule) -> TableRow {
         self.property = self.property.height_rule(r);
+        self
+    }
+
+    pub fn delete(mut self, d: Delete) -> TableRow {
+        self.property = self.property.delete(d);
         self
     }
 }

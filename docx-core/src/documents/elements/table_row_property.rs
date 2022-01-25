@@ -1,5 +1,6 @@
 use serde::Serialize;
 
+use super::*;
 use crate::xml_builder::*;
 use crate::{documents::BuildXML, HeightRule};
 
@@ -12,6 +13,8 @@ pub struct TableRowProperty {
     width_before: Option<f32>,
     row_height: Option<f32>,
     height_rule: Option<HeightRule>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub del: Option<Delete>,
 }
 
 impl TableRowProperty {
@@ -48,6 +51,11 @@ impl TableRowProperty {
         self.height_rule = Some(r);
         self
     }
+
+    pub fn delete(mut self, d: Delete) -> Self {
+        self.del = Some(d);
+        self
+    }
 }
 
 impl Default for TableRowProperty {
@@ -59,13 +67,16 @@ impl Default for TableRowProperty {
             width_before: None,
             row_height: None,
             height_rule: None,
+            del: None,
         }
     }
 }
 
 impl BuildXML for TableRowProperty {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new().open_table_row_property();
+        let mut b = XMLBuilder::new()
+            .open_table_row_property()
+            .add_optional_child(&self.del);
         if let Some(h) = self.row_height {
             b = b.table_row_height(
                 &format!("{}", h),

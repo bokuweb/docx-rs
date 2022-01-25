@@ -19,7 +19,9 @@ impl TableRow {
 #[wasm_bindgen]
 impl TableRow {
     pub fn add_cell(mut self, cell: TableCell) -> TableRow {
-        self.0.cells.push(docx_rs::TableRowChild::TableCell(cell.take()));
+        self.0
+            .cells
+            .push(docx_rs::TableRowChild::TableCell(cell.take()));
         self
     }
 
@@ -30,6 +32,13 @@ impl TableRow {
 
     pub fn height_rule(mut self, r: docx_rs::HeightRule) -> TableRow {
         self.0 = self.0.height_rule(r);
+        self
+    }
+
+    pub fn delete(mut self, author: &str, date: &str) -> Self {
+        self.0 = self
+            .0
+            .delete(docx_rs::Delete::new().author(author).date(date));
         self
     }
 }

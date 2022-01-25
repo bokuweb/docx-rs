@@ -654,6 +654,10 @@ export class Docx {
         row = row.row_height(r.height);
       }
 
+      if (r.del) {
+        row = row.delete(r.del.author, r.del.date);
+      }
+
       if (r.hRule) {
         switch (r.hRule) {
           case "auto": {

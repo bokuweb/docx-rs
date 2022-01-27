@@ -8,7 +8,7 @@ pub fn read_zip(
 ) -> Result<Vec<u8>, ReaderError> {
     let mut p = name.to_owned();
     // Archives zipped on Windows keep '\' in paths, replace them to avoid zip error.
-    let mut p = str::replace(&p, "\\", "/");
+    let p = str::replace(&p, "\\", "/");
     if p.starts_with('/') {
         p.remove(0);
     }

@@ -20,6 +20,7 @@ export type RunFontsJSON = {
   hiAnsiTheme?: string;
   eastAsiaTheme?: string;
   csTheme?: string;
+  hint?: string;
 };
 
 export type RunPropertyJSON = {
@@ -37,8 +38,8 @@ export type RunPropertyJSON = {
   vanish?: boolean | null;
   spacing?: number | null;
   textBorder?: TextBorderJSON | null;
-  ins?: InsertJSON['data'] | null;
-  del?: DeleteJSON['data'] | null;
+  ins?: InsertJSON["data"] | null;
+  del?: DeleteJSON["data"] | null;
   strike?: boolean;
 };
 

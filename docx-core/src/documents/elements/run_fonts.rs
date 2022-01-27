@@ -29,6 +29,8 @@ pub struct RunFonts {
     east_asia_theme: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     cs_theme: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    hint: Option<String>,
 }
 
 impl RunFonts {
@@ -75,6 +77,11 @@ impl RunFonts {
         self.cs_theme = Some(f.into());
         self
     }
+
+    pub fn hint(mut self, f: impl Into<String>) -> Self {
+        self.hint = Some(f.into());
+        self
+    }
 }
 
 impl BuildXML for RunFonts {
@@ -89,6 +96,7 @@ impl BuildXML for RunFonts {
             self.hi_ansi_theme.as_ref(),
             self.cs_theme.as_ref(),
             self.east_asia_theme.as_ref(),
+            self.hint.as_ref(),
         )
         .build()
     }

@@ -67,7 +67,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -84,7 +86,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -101,7 +105,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -131,7 +137,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -179,7 +187,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -196,7 +206,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -213,7 +225,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -230,7 +244,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -247,7 +263,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -277,7 +295,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -287,7 +307,9 @@ Object {
           "id": "1302AFDA",
           "property": Object {
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "tabs": Array [],
           },
@@ -309,7 +331,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -326,7 +350,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -343,7 +369,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -360,7 +388,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -377,7 +407,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -411,7 +443,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -428,7 +462,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -465,7 +501,9 @@ Object {
           "id": "4047C950",
           "property": Object {
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "tabs": Array [],
           },
@@ -1262,6 +1300,7 @@ Object {
                   "fonts": Object {
                     "ascii": "inherit",
                     "hi_ansi": "inherit",
+                    "hint": "eastAsia",
                   },
                 },
               },
@@ -1322,6 +1361,7 @@ Object {
                   "fonts": Object {
                     "ascii": "inherit",
                     "hi_ansi": "inherit",
+                    "hint": "eastAsia",
                   },
                 },
               },
@@ -1368,6 +1408,7 @@ Object {
               "fonts": Object {
                 "ascii": "inherit",
                 "hi_ansi": "inherit",
+                "hint": "eastAsia",
               },
             },
             "tabs": Array [],
@@ -1408,6 +1449,7 @@ Object {
               "fonts": Object {
                 "ascii": "inherit",
                 "hi_ansi": "inherit",
+                "hint": "eastAsia",
               },
             },
             "tabs": Array [],
@@ -2769,7 +2811,9 @@ Object {
                       },
                     ],
                     "runProperty": Object {
-                      "fonts": Object {},
+                      "fonts": Object {
+                        "hint": "eastAsia",
+                      },
                     },
                   },
                   "type": "run",
@@ -2794,7 +2838,9 @@ Object {
               "id": "768559F9",
               "property": Object {
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
                 "style": "a5",
                 "tabs": Array [],
@@ -5572,7 +5618,9 @@ Object {
           "id": "6B1CEEA4",
           "property": Object {
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "tabs": Array [],
           },
@@ -6431,7 +6479,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -6489,7 +6539,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -6591,7 +6643,9 @@ Object {
               "level": 0,
             },
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "style": "a3",
             "tabs": Array [],
@@ -6662,7 +6716,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -7146,7 +7202,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -8027,7 +8085,9 @@ Object {
                       },
                     ],
                     "runProperty": Object {
-                      "fonts": Object {},
+                      "fonts": Object {
+                        "hint": "eastAsia",
+                      },
                     },
                   },
                   "type": "run",
@@ -8052,7 +8112,9 @@ Object {
               "id": "6BD9526A",
               "property": Object {
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -8067,7 +8129,9 @@ Object {
               "id": "0B3BA2D3",
               "property": Object {
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -8082,7 +8146,9 @@ Object {
               "id": "09E224F0",
               "property": Object {
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -8097,7 +8163,9 @@ Object {
               "id": "4A34DA48",
               "property": Object {
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -8112,7 +8180,9 @@ Object {
               "id": "68A6CCC7",
               "property": Object {
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -8127,7 +8197,9 @@ Object {
               "id": "620AD937",
               "property": Object {
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -8142,7 +8214,9 @@ Object {
               "id": "4E7C0B2F",
               "property": Object {
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
                 "style": "a3",
                 "tabs": Array [],
@@ -8556,7 +8630,9 @@ Object {
                                 },
                               ],
                               "runProperty": Object {
-                                "fonts": Object {},
+                                "fonts": Object {
+                                  "hint": "eastAsia",
+                                },
                               },
                             },
                             "type": "run",
@@ -8581,7 +8657,9 @@ Object {
                         "id": "6BD9526A",
                         "property": Object {
                           "runProperty": Object {
-                            "fonts": Object {},
+                            "fonts": Object {
+                              "hint": "eastAsia",
+                            },
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -8596,7 +8674,9 @@ Object {
                         "id": "0B3BA2D3",
                         "property": Object {
                           "runProperty": Object {
-                            "fonts": Object {},
+                            "fonts": Object {
+                              "hint": "eastAsia",
+                            },
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -8611,7 +8691,9 @@ Object {
                         "id": "09E224F0",
                         "property": Object {
                           "runProperty": Object {
-                            "fonts": Object {},
+                            "fonts": Object {
+                              "hint": "eastAsia",
+                            },
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -8626,7 +8708,9 @@ Object {
                         "id": "4A34DA48",
                         "property": Object {
                           "runProperty": Object {
-                            "fonts": Object {},
+                            "fonts": Object {
+                              "hint": "eastAsia",
+                            },
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -8641,7 +8725,9 @@ Object {
                         "id": "68A6CCC7",
                         "property": Object {
                           "runProperty": Object {
-                            "fonts": Object {},
+                            "fonts": Object {
+                              "hint": "eastAsia",
+                            },
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -8656,7 +8742,9 @@ Object {
                         "id": "620AD937",
                         "property": Object {
                           "runProperty": Object {
-                            "fonts": Object {},
+                            "fonts": Object {
+                              "hint": "eastAsia",
+                            },
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -8671,7 +8759,9 @@ Object {
                         "id": "4E7C0B2F",
                         "property": Object {
                           "runProperty": Object {
-                            "fonts": Object {},
+                            "fonts": Object {
+                              "hint": "eastAsia",
+                            },
                           },
                           "style": "a3",
                           "tabs": Array [],
@@ -8700,7 +8790,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -8744,7 +8836,9 @@ Object {
           "id": "0288E91C",
           "property": Object {
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "tabs": Array [],
           },
@@ -10371,7 +10465,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -10426,7 +10522,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -10473,7 +10571,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -10512,7 +10612,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -10622,6 +10724,7 @@ Object {
               "fonts": Object {
                 "ascii": "Meiryo UI",
                 "east_asia": "Meiryo UI",
+                "hint": "eastAsia",
               },
               "italic": false,
               "italicCs": false,
@@ -10665,6 +10768,7 @@ Object {
               "fonts": Object {
                 "ascii": "Meiryo UI",
                 "east_asia": "Meiryo UI",
+                "hint": "eastAsia",
               },
               "italic": false,
               "italicCs": false,
@@ -10704,7 +10808,9 @@ Object {
               "bold": false,
               "boldCs": false,
               "characterSpacing": 0,
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
               "italic": false,
               "italicCs": false,
               "strike": false,
@@ -10741,6 +10847,7 @@ Object {
               "fonts": Object {
                 "ascii": "Meiryo UI",
                 "east_asia": "Meiryo UI",
+                "hint": "eastAsia",
               },
               "sz": 21,
               "szCs": 21,
@@ -10808,7 +10915,9 @@ Object {
             },
             "pstyle": "6",
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 10,
             "suffix": "nothing",
@@ -10836,7 +10945,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 1,
             "suffix": "nothing",
@@ -10864,7 +10975,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -10892,7 +11005,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -10931,7 +11046,9 @@ Object {
               "boldCs": false,
               "characterSpacing": 0,
               "color": "000000",
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
               "italic": false,
               "italicCs": false,
               "strike": false,
@@ -10969,7 +11086,9 @@ Object {
               "boldCs": false,
               "characterSpacing": 0,
               "color": "000000",
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
               "italic": false,
               "italicCs": false,
               "strike": false,
@@ -11003,7 +11122,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 1,
             "suffix": "nothing",
@@ -11031,7 +11152,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 1,
             "suffix": "nothing",
@@ -11059,7 +11182,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 1,
             "suffix": "nothing",
@@ -11087,7 +11212,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 10,
             "suffix": "nothing",
@@ -11115,7 +11242,9 @@ Object {
             },
             "pstyle": "7",
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 1,
             "suffix": "nothing",
@@ -11143,7 +11272,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -11175,7 +11306,9 @@ Object {
               "boldCs": false,
               "characterSpacing": 0,
               "color": "000000",
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
               "italic": false,
               "italicCs": false,
               "strike": false,
@@ -13328,7 +13461,9 @@ Object {
               },
             },
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "tabs": Array [],
             "widowControl": true,
@@ -14255,7 +14390,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                   "strike": true,
                 },
               },
@@ -14318,7 +14455,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -14367,7 +14506,9 @@ Object {
           "id": "12206EB1",
           "property": Object {
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "tabs": Array [],
           },
@@ -17603,7 +17744,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "default",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -17846,7 +17989,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "default",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -18515,7 +18660,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "default",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -18550,7 +18697,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "default",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -18588,6 +18737,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18620,6 +18770,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18651,6 +18802,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18682,6 +18834,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18714,6 +18867,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18745,6 +18899,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18776,6 +18931,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18808,6 +18964,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18839,6 +18996,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18877,6 +19035,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18909,6 +19068,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18940,6 +19100,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -18971,6 +19132,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19003,6 +19165,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19034,6 +19197,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19065,6 +19229,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19097,6 +19262,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19128,6 +19294,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19166,6 +19333,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19198,6 +19366,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19229,6 +19398,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19260,6 +19430,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19292,6 +19463,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19323,6 +19495,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19354,6 +19527,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19386,6 +19560,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19417,6 +19592,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19454,7 +19630,9 @@ Object {
             "runProperty": Object {
               "bold": true,
               "boldCs": true,
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "default",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -19702,6 +19880,7 @@ Object {
                 "cs": "Times New Roman",
                 "east_asia": "Times New Roman",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 0,
@@ -19734,6 +19913,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19762,7 +19942,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "default",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -19793,6 +19975,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19825,6 +20008,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19856,6 +20040,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19887,6 +20072,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19919,6 +20105,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19950,6 +20137,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -19985,7 +20173,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "default",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -20018,6 +20208,7 @@ Object {
                 "cs": "Arial",
                 "east_asia": "Times New Roman",
                 "hi_ansi": "Arial",
+                "hint": "default",
               },
             },
             "start": 0,
@@ -20235,7 +20426,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "default",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -20481,6 +20674,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -20513,6 +20707,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -20544,6 +20739,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -20575,6 +20771,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -20607,6 +20804,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -20638,6 +20836,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -20669,6 +20868,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -20701,6 +20901,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -20732,6 +20933,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -20767,7 +20969,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "default",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -21155,6 +21359,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21187,6 +21392,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21218,6 +21424,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21249,6 +21456,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21281,6 +21489,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21312,6 +21521,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21343,6 +21553,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21375,6 +21586,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21406,6 +21618,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21444,6 +21657,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21476,6 +21690,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21507,6 +21722,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21538,6 +21754,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21570,6 +21787,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21601,6 +21819,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21632,6 +21851,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21664,6 +21884,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21695,6 +21916,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21735,6 +21957,7 @@ Object {
                 "cs": "Arial",
                 "east_asia": "Times New Roman",
                 "hi_ansi": "Arial",
+                "hint": "default",
               },
             },
             "start": 2,
@@ -21767,6 +21990,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21798,6 +22022,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21829,6 +22054,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21861,6 +22087,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21892,6 +22119,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21923,6 +22151,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21955,6 +22184,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -21986,6 +22216,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -22266,6 +22497,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -22298,6 +22530,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -22329,6 +22562,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -22360,6 +22594,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -22392,6 +22627,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -22423,6 +22659,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -22454,6 +22691,7 @@ Object {
               "fonts": Object {
                 "ascii": "Symbol",
                 "hi_ansi": "Symbol",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -22486,6 +22724,7 @@ Object {
                 "ascii": "Courier New",
                 "cs": "Courier New",
                 "hi_ansi": "Courier New",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -22517,6 +22756,7 @@ Object {
               "fonts": Object {
                 "ascii": "Wingdings",
                 "hi_ansi": "Wingdings",
+                "hint": "default",
               },
             },
             "start": 1,
@@ -22552,7 +22792,9 @@ Object {
             },
             "pstyle": null,
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "default",
+              },
             },
             "start": 1,
             "suffix": "tab",
@@ -37421,7 +37663,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -37480,7 +37724,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -37588,7 +37834,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -37632,7 +37880,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -42405,7 +42655,9 @@ Object {
                   },
                 ],
                 "runProperty": Object {
-                  "fonts": Object {},
+                  "fonts": Object {
+                    "hint": "eastAsia",
+                  },
                 },
               },
               "type": "run",
@@ -42503,7 +42755,9 @@ Object {
           "id": "63971CD5",
           "property": Object {
             "runProperty": Object {
-              "fonts": Object {},
+              "fonts": Object {
+                "hint": "eastAsia",
+              },
             },
             "tabs": Array [],
           },

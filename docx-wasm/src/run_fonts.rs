@@ -36,4 +36,29 @@ impl RunFonts {
         self.0 = self.0.east_asia(f);
         self
     }
+
+    pub fn ascii_theme(mut self, f: String) -> Self {
+        self.0 = self.0.ascii_theme(f);
+        self
+    }
+
+    pub fn hi_ansi_theme(mut self, f: String) -> Self {
+        self.0 = self.0.hi_ansi_theme(f);
+        self
+    }
+
+    pub fn cs_theme(mut self, f: String) -> Self {
+        self.0 = self.0.cs_theme(f);
+        self
+    }
+
+    pub fn east_asia_theme(mut self, f: String) -> Self {
+        self.0 = self.0.east_asia_theme(f);
+        self
+    }
+
+    pub fn hint(mut self, f: String) -> Self {
+        self.0 = self.0.hint(f);
+        self
+    }
 }

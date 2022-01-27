@@ -937,6 +937,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -1211,6 +1607,7 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -1896,6 +2293,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [
@@ -2620,6 +3413,7 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -3663,6 +4457,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -6061,6 +7251,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -6405,6 +7991,7 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -7948,6 +9535,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -10371,6 +12354,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -13291,6 +15670,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -14316,6 +17091,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -15034,6 +18205,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -35584,6 +39151,258 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "ＭＳ ゴシック",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "宋体",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+          ],
+          "latin": "Cambria",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "ＭＳ 明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "宋体",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+          ],
+          "latin": "Calibri",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [
@@ -36773,6 +40592,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -41686,6 +45901,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -42581,6 +47192,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],
@@ -43191,6 +48198,402 @@ Object {
   "taskpanesRels": Object {
     "rels": Array [],
   },
+  "themes": Array [
+    Object {
+      "fontSchema": Object {
+        "majorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游ゴシック Light",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线 Light",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Angsana New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "MoolBoran",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Times New Roman",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游ゴシック Light",
+        },
+        "minorFont": Object {
+          "cs": "",
+          "ea": "",
+          "fonts": Array [
+            Object {
+              "script": "Jpan",
+              "typeface": "游明朝",
+            },
+            Object {
+              "script": "Hang",
+              "typeface": "맑은 고딕",
+            },
+            Object {
+              "script": "Hans",
+              "typeface": "等线",
+            },
+            Object {
+              "script": "Hant",
+              "typeface": "新細明體",
+            },
+            Object {
+              "script": "Arab",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Hebr",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Thai",
+              "typeface": "Cordia New",
+            },
+            Object {
+              "script": "Ethi",
+              "typeface": "Nyala",
+            },
+            Object {
+              "script": "Beng",
+              "typeface": "Vrinda",
+            },
+            Object {
+              "script": "Gujr",
+              "typeface": "Shruti",
+            },
+            Object {
+              "script": "Khmr",
+              "typeface": "DaunPenh",
+            },
+            Object {
+              "script": "Knda",
+              "typeface": "Tunga",
+            },
+            Object {
+              "script": "Guru",
+              "typeface": "Raavi",
+            },
+            Object {
+              "script": "Cans",
+              "typeface": "Euphemia",
+            },
+            Object {
+              "script": "Cher",
+              "typeface": "Plantagenet Cherokee",
+            },
+            Object {
+              "script": "Yiii",
+              "typeface": "Microsoft Yi Baiti",
+            },
+            Object {
+              "script": "Tibt",
+              "typeface": "Microsoft Himalaya",
+            },
+            Object {
+              "script": "Thaa",
+              "typeface": "MV Boli",
+            },
+            Object {
+              "script": "Deva",
+              "typeface": "Mangal",
+            },
+            Object {
+              "script": "Telu",
+              "typeface": "Gautami",
+            },
+            Object {
+              "script": "Taml",
+              "typeface": "Latha",
+            },
+            Object {
+              "script": "Syrc",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Orya",
+              "typeface": "Kalinga",
+            },
+            Object {
+              "script": "Mlym",
+              "typeface": "Kartika",
+            },
+            Object {
+              "script": "Laoo",
+              "typeface": "DokChampa",
+            },
+            Object {
+              "script": "Sinh",
+              "typeface": "Iskoola Pota",
+            },
+            Object {
+              "script": "Mong",
+              "typeface": "Mongolian Baiti",
+            },
+            Object {
+              "script": "Viet",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Uigh",
+              "typeface": "Microsoft Uighur",
+            },
+            Object {
+              "script": "Geor",
+              "typeface": "Sylfaen",
+            },
+            Object {
+              "script": "Armn",
+              "typeface": "Arial",
+            },
+            Object {
+              "script": "Bugi",
+              "typeface": "Leelawadee UI",
+            },
+            Object {
+              "script": "Bopo",
+              "typeface": "Microsoft JhengHei",
+            },
+            Object {
+              "script": "Java",
+              "typeface": "Javanese Text",
+            },
+            Object {
+              "script": "Lisu",
+              "typeface": "Segoe UI",
+            },
+            Object {
+              "script": "Mymr",
+              "typeface": "Myanmar Text",
+            },
+            Object {
+              "script": "Nkoo",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Olck",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Osma",
+              "typeface": "Ebrima",
+            },
+            Object {
+              "script": "Phag",
+              "typeface": "Phagspa",
+            },
+            Object {
+              "script": "Syrn",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syrj",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Syre",
+              "typeface": "Estrangelo Edessa",
+            },
+            Object {
+              "script": "Sora",
+              "typeface": "Nirmala UI",
+            },
+            Object {
+              "script": "Tale",
+              "typeface": "Microsoft Tai Le",
+            },
+            Object {
+              "script": "Talu",
+              "typeface": "Microsoft New Tai Lue",
+            },
+            Object {
+              "script": "Tfng",
+              "typeface": "Ebrima",
+            },
+          ],
+          "latin": "游明朝",
+        },
+      },
+    },
+  ],
   "webExtensions": Array [],
   "webSettings": Object {
     "divs": Array [],

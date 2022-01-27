@@ -16,6 +16,8 @@ mod document;
 mod document_rels;
 mod drawing;
 mod errors;
+mod font_group;
+mod font_scheme;
 mod footer;
 mod from_xml;
 mod header;
@@ -49,6 +51,7 @@ mod table_cell_property;
 mod table_property;
 mod table_row;
 mod text_box_content;
+mod theme;
 mod web_settings;
 mod wp_anchor;
 mod wps_shape;
@@ -87,6 +90,8 @@ const HEADER_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header";
 const FOOTER_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer";
+const THEME_TYPE: &str =
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme";
 // 2011
 const COMMENTS_EXTENDED_TYPE: &str =
     "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
@@ -133,6 +138,23 @@ fn read_footers(
     footers
 }
 
+fn read_themes(rels: &ReadDocumentRels, archive: &mut ZipArchive<Cursor<&[u8]>>) -> Vec<Theme> {
+    let theme_paths = rels.find_target_path(THEME_TYPE);
+    theme_paths
+        .unwrap_or_default()
+        .into_iter()
+        .filter_map(|(_rid, path)| {
+            let data = read_zip(archive, path.to_str().expect("should have footer path."));
+            if let Ok(d) = data {
+                if let Ok(h) = Theme::from_xml(&d[..]) {
+                    return Some(h);
+                }
+            }
+            None
+        })
+        .collect()
+}
+
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     let mut docx = Docx::new();
     let cur = Cursor::new(buf);
@@ -175,6 +197,8 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
     let headers = read_headers(&rels, &mut archive);
     let footers = read_footers(&rels, &mut archive);
+
+    docx.themes = read_themes(&rels, &mut archive);
 
     // Read commentsExtended
     let comments_extended_path = rels.find_target_path(COMMENTS_EXTENDED_TYPE);
@@ -379,6 +403,5 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx = docx.web_settings(web_settings);
         }
     }
-
     Ok(docx)
 }

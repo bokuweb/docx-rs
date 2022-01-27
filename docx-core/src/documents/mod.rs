@@ -28,6 +28,7 @@ mod settings;
 mod styles;
 mod taskpanes;
 mod taskpanes_rels;
+mod theme;
 mod toc_key;
 mod web_settings;
 mod webextension;
@@ -61,6 +62,7 @@ pub use settings::*;
 pub use styles::*;
 pub use taskpanes::*;
 pub use taskpanes_rels::*;
+pub use theme::*;
 pub use toc_key::*;
 pub use web_settings::*;
 pub use webextension::*;
@@ -90,6 +92,8 @@ pub struct Docx {
     pub custom_items: Vec<CustomItem>,
     pub custom_item_props: Vec<CustomItemProperty>,
     pub custom_item_rels: Vec<CustomItemRels>,
+    // reader only
+    pub themes: Vec<Theme>,
 }
 
 impl Default for Docx {
@@ -128,6 +132,7 @@ impl Default for Docx {
             custom_items: vec![],
             custom_item_props: vec![],
             custom_item_rels: vec![],
+            themes: vec![],
         }
     }
 }

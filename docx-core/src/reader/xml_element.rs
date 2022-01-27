@@ -181,6 +181,13 @@ pub enum AXMLElement {
     PrstGeom,
     SolidFill,
     Ln,
+    FontScheme,
+    MajorFont,
+    MinorFont,
+    Latin,
+    Ea,
+    Cs,
+    Font,
     Unsupported,
 }
 
@@ -396,6 +403,13 @@ impl FromStr for AXMLElement {
             "prstGeom" => Ok(AXMLElement::PrstGeom),
             "solidFill" => Ok(AXMLElement::SolidFill),
             "ln" => Ok(AXMLElement::Ln),
+            "fontScheme" => Ok(AXMLElement::FontScheme),
+            "majorFont" => Ok(AXMLElement::MajorFont),
+            "minorFont" => Ok(AXMLElement::MinorFont),
+            "latin" => Ok(AXMLElement::Latin),
+            "ea" => Ok(AXMLElement::Ea),
+            "cs" => Ok(AXMLElement::Cs),
+            "font" => Ok(AXMLElement::Font),
             _ => Ok(AXMLElement::Unsupported),
         }
     }

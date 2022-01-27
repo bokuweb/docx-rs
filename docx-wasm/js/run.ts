@@ -57,6 +57,7 @@ export class RunFonts {
   _hiAnsiTheme?: string;
   _eastAsiaTheme?: string;
   _csTheme?: string;
+  _hint?: string;
 
   ascii(f: string) {
     this._ascii = f;
@@ -98,6 +99,11 @@ export class RunFonts {
     return this;
   }
 
+  hint(f: string) {
+    this._hint = f;
+    return this;
+  }
+
   buildWasmObject = () => {
     let f = wasm.createRunFonts();
     if (this?._ascii) {
@@ -111,6 +117,24 @@ export class RunFonts {
     }
     if (this?._eastAsia) {
       f = f.east_asia(this._eastAsia);
+    }
+
+    // theme
+    if (this?._asciiTheme) {
+      f = f.ascii_theme(this._asciiTheme);
+    }
+    if (this?._hiAnsiTheme) {
+      f = f.hi_ansi_theme(this._hiAnsiTheme);
+    }
+    if (this?._csTheme) {
+      f = f.cs_theme(this._csTheme);
+    }
+    if (this?._eastAsiaTheme) {
+      f = f.east_asia_theme(this._eastAsiaTheme);
+    }
+
+    if (this?._hint) {
+      f = f.hint(this._hint);
     }
     return f;
   };

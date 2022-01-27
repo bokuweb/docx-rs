@@ -34,6 +34,7 @@ impl XMLBuilder {
         hi_ansi_theme: Option<&String>,
         cs_theme: Option<&String>,
         east_asia_theme: Option<&String>,
+        hint: Option<&String>,
     ) -> Self {
         let mut w = XmlEvent::start_element("w:rFonts");
         if let Some(ascii) = ascii {
@@ -59,6 +60,9 @@ impl XMLBuilder {
         }
         if let Some(east_asia_theme) = east_asia_theme {
             w = w.attr("w:eastAsiaTheme", east_asia_theme);
+        }
+        if let Some(hint) = hint {
+            w = w.attr("w:hint", hint);
         }
         self.writer.write(w).expect(EXPECT_MESSAGE);
         self.close()
@@ -366,7 +370,13 @@ impl XMLBuilder {
 
     open!(open_insert, "w:ins", "w:id", "w:author", "w:date");
     open!(open_delete, "w:del", "w:id", "w:author", "w:date");
-    open!(open_paragraph_property_change, "w:pPrChange", "w:id", "w:author", "w:date");
+    open!(
+        open_paragraph_property_change,
+        "w:pPrChange",
+        "w:id",
+        "w:author",
+        "w:date"
+    );
 
     closed!(bookmark_start, "w:bookmarkStart", "w:id", "w:name");
     closed!(bookmark_end, "w:bookmarkEnd", "w:id");

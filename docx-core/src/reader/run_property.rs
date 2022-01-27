@@ -37,7 +37,9 @@ fn read_run_fonts(attributes: &[OwnedAttribute]) -> Result<RunFonts, ReaderError
             "cs" => {
                 f = f.cs(&a.value);
             }
-
+            "hint" => {
+                f = f.hint(&a.value);
+            }
             _ => {}
         }
     }

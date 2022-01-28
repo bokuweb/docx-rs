@@ -259,9 +259,9 @@ dependencies = [
 
 [[package]]
 name = "insta"
-version = "1.11.0"
+version = "1.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da408b722765c64aad796c666b756aa1dda2a6c1b44f98797f2d8ea8f197746f"
+checksum = "f4c0c443f6dceb3a1cb7607c87501aa91e4b9c976044f725c2a74ca2152c91a4"
 dependencies = [
  "console",
  "once_cell",

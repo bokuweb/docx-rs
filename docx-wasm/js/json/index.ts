@@ -4,7 +4,7 @@ import { NumberingsJSON } from "./numbering";
 import { CommentJSON } from "./comment";
 import { WebSettingsJSON } from "./web-settings";
 
-import { Theme } from "../../../docx-core/bindings/Theme";
+import { Theme } from "./bindings/Theme";
 
 export type DocxJSON = {
   contentType: {

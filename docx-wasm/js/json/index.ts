@@ -70,3 +70,5 @@ export * from "./web-settings";
 export * from "./comment";
 export * from "./textbox-content";
 export * from "./section-property";
+
+export * from "./bindings/Theme";

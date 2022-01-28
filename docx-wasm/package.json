@@ -1,6 +1,6 @@
 {
   "name": "docx-wasm",
-  "version": "0.0.235",
+  "version": "0.0.240",
   "main": "dist/node/index.js",
   "browser": "dist/web/index.js",
   "author": "bokuweb <bokuweb12@gmail.com>",
@@ -14,9 +14,11 @@
     "tsc:node": "tsc -p tsconfig.node.json",
     "tsc": "run-s tsc:*",
     "test": "npm run build && tsc && jest",
-    "build": "run-s wasm-pack tsc",
+    "build": "run-s tsrs copy:bindings wasm-pack tsc",
     "serve": "webpack-dev-server --open --config webpack.dev.js",
     "copy": "cpy 'dist/node/pkg/package.json'  'dist/web/pkg'",
+    "tsrs": "cd ../ && make test",
+    "copy:bindings": "cpy '../docx-core/bindings' './js/json/bindings'",
     "prepublishOnly": "npm run build"
   },
   "resolutions": {

@@ -12,6 +12,7 @@ use crate::xml_builder::*;
   - Complex Script
 */
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Default)]
+#[serde(rename_all = "camelCase")]
 pub struct RunFonts {
     #[serde(skip_serializing_if = "Option::is_none")]
     ascii: Option<String>,

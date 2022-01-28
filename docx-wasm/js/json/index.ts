@@ -4,6 +4,8 @@ import { NumberingsJSON } from "./numbering";
 import { CommentJSON } from "./comment";
 import { WebSettingsJSON } from "./web-settings";
 
+import { Theme } from "../../../docx-core/bindings/Theme";
+
 export type DocxJSON = {
   contentType: {
     types: {
@@ -44,6 +46,7 @@ export type DocxJSON = {
   settings: SettingsJSON;
   webSettings: WebSettingsJSON;
   fontTable: {};
+  themes: Theme[];
 };
 
 export type SettingsJSON = {

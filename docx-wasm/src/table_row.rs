@@ -41,4 +41,11 @@ impl TableRow {
             .delete(docx_rs::Delete::new().author(author).date(date));
         self
     }
+
+    pub fn insert(mut self, author: &str, date: &str) -> Self {
+        self.0 = self
+            .0
+            .insert(docx_rs::Insert::new_with_empty().author(author).date(date));
+        self
+    }
 }

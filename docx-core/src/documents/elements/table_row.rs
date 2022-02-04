@@ -1,7 +1,7 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
-use super::{TableCell, TableRowProperty, Delete};
+use super::{Delete, Insert, TableCell, TableRowProperty};
 use crate::xml_builder::*;
 use crate::{documents::BuildXML, HeightRule};
 
@@ -70,6 +70,11 @@ impl TableRow {
 
     pub fn delete(mut self, d: Delete) -> TableRow {
         self.property = self.property.delete(d);
+        self
+    }
+
+    pub fn insert(mut self, i: Insert) -> TableRow {
+        self.property = self.property.insert(i);
         self
     }
 }

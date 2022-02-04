@@ -658,6 +658,10 @@ export class Docx {
         row = row.delete(r.del.author, r.del.date);
       }
 
+      if (r.ins) {
+        row = row.insert(r.ins.author, r.ins.date);
+      }
+
       if (r.hRule) {
         switch (r.hRule) {
           case "auto": {

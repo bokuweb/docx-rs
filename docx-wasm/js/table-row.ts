@@ -8,6 +8,7 @@ export class TableRow {
   height: number | null = null;
   hRule: HeightRule = "atLeast";
   del: { author: string; date: string } | null = null;
+  ins: { author: string; date: string } | null = null;
 
   addCell(cell: TableCell) {
     if (cell.hasNumberings) {
@@ -29,6 +30,11 @@ export class TableRow {
 
   delete(author: string, date: string) {
     this.del = { author, date };
+    return this;
+  }
+
+  insert(author: string, date: string) {
+    this.ins = { author, date };
     return this;
   }
 }

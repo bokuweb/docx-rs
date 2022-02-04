@@ -15,6 +15,8 @@ pub struct TableRowProperty {
     height_rule: Option<HeightRule>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub del: Option<Delete>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub ins: Option<Insert>,
 }
 
 impl TableRowProperty {
@@ -56,6 +58,11 @@ impl TableRowProperty {
         self.del = Some(d);
         self
     }
+
+    pub fn insert(mut self, i: Insert) -> Self {
+        self.ins = Some(i);
+        self
+    }
 }
 
 impl Default for TableRowProperty {
@@ -68,6 +75,7 @@ impl Default for TableRowProperty {
             row_height: None,
             height_rule: None,
             del: None,
+            ins: None,
         }
     }
 }
@@ -76,7 +84,8 @@ impl BuildXML for TableRowProperty {
     fn build(&self) -> Vec<u8> {
         let mut b = XMLBuilder::new()
             .open_table_row_property()
-            .add_optional_child(&self.del);
+            .add_optional_child(&self.del)
+            .add_optional_child(&self.ins);
         if let Some(h) = self.row_height {
             b = b.table_row_height(
                 &format!("{}", h),

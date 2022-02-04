@@ -4,7 +4,7 @@ import { HeightRule } from "../table-row";
 import { TextDirectionType } from "../table-cell";
 import { ShadingJSON } from "./shading";
 import { TableLayoutType } from "../table";
-import { DeleteJSON } from "..";
+import { DeleteJSON, InsertJSON } from "..";
 
 export type TableCellChildJSON = ParagraphJSON;
 
@@ -35,6 +35,7 @@ export type TableRowPropertyJSON = {
   widthAfter: number | null;
   widthBefore: number | null;
   del?: DeleteJSON["data"];
+  ins?: InsertJSON["data"];
 };
 
 export type TableCellJSON = {

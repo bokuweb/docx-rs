@@ -1,6 +1,6 @@
 {
   "name": "docx-wasm",
-  "version": "0.0.242",
+  "version": "0.0.243",
   "main": "dist/node/index.js",
   "browser": "dist/web/index.js",
   "author": "bokuweb <bokuweb12@gmail.com>",
@@ -10,8 +10,8 @@
     "wasm-pack:web": "wasm-pack build --release --out-dir dist/web/pkg",
     "wasm-pack:node": "wasm-pack build --release --out-dir dist/node/pkg --target nodejs",
     "wasm-pack": "run-s wasm-pack:*",
-    "tsc:web": "tsc -p tsconfig.web.json",
-    "tsc:node": "tsc -p tsconfig.node.json",
+    "tsc:web": "tsc -p tsconfig.web.json --sourcemap",
+    "tsc:node": "tsc -p tsconfig.node.json --sourcemap",
     "tsc": "run-s tsc:*",
     "test": "npm run build && tsc && jest",
     "build": "run-s tsrs copy:bindings wasm-pack tsc",

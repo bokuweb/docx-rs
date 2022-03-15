@@ -20,8 +20,8 @@ impl ElementReader for Insert {
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
-                        XMLElement::Run => ins = ins.add_run(Run::read(r, attrs)?),
-                        XMLElement::Delete => ins = ins.add_delete(Delete::read(r, attrs)?),
+                        XMLElement::Run => ins = ins.add_run(Run::read(r, &attributes)?),
+                        XMLElement::Delete => ins = ins.add_delete(Delete::read(r, &attributes)?),
                         XMLElement::CommentRangeStart => {
                             if let Some(id) = read(&attributes, "id") {
                                 if let Ok(id) = usize::from_str(&id) {

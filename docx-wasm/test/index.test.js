@@ -112,6 +112,12 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read del_in_ins docx", () => {
+    const buffer = readFileSync("../fixtures/del_in_ins/del_in_ins.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {

@@ -28,6 +28,7 @@ export type RunPropertyIns = {
 };
 
 export type RunProperty = {
+  style?: string;
   size?: number;
   color?: string;
   highlight?: string;
@@ -161,6 +162,11 @@ export class Run {
 
   addBreak(type: BreakType) {
     this.children.push(new Break(type));
+    return this;
+  }
+
+  style(style: string) {
+    this.property = { ...this.property, style };
     return this;
   }
 

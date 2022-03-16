@@ -5,9 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## docx-wasm@0.0.246, docx-rs@0.3.4 (16. March, 2022)
+
+- Support `rStyle`.
+
 ## docx-wasm@0.0.245, docx-rs@0.3.3 (15. March, 2022)
 
 - Fixed a author of `del` in `ins`.
+
 ## docx-wasm@0.0.242 (4. February, 2022)
 
 - Support `ins` in table row property

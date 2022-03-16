@@ -1724,7 +1724,7 @@ Object {
                       "author": "Legal",
                       "children": Array [
                         Object {
-                          "data": Object
+                          "data": Object {
                             "children": Array [
                               Object {
                                 "data": Object {

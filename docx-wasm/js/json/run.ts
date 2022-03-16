@@ -24,6 +24,7 @@ export type RunFontsJSON = {
 };
 
 export type RunPropertyJSON = {
+  style?: string | null;
   sz?: number | null;
   szCs?: number | null;
   fonts?: RunFontsJSON | null;

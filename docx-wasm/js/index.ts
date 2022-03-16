@@ -289,6 +289,11 @@ export class Docx {
       }
     });
 
+    if (r.property.style) {
+      run = run.style(r.property.style);
+    }
+
+
     if (typeof r.property.size !== "undefined") {
       run = run.size(r.property.size);
     }

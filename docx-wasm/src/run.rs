@@ -41,6 +41,11 @@ impl Run {
         self
     }
 
+    pub fn style(mut self, style: &str) -> Run {
+        self.0.run_property = self.0.run_property.style(style);
+        self
+    }
+
     pub fn size(mut self, size: usize) -> Run {
         self.0.run_property = self.0.run_property.size(size);
         self

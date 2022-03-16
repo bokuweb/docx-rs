@@ -149,6 +149,8 @@ impl XMLBuilder {
     closed_with_str!(vert_align, "w:vertAlign");
     // i.e. <w:pStyle ... >
     closed_with_str!(paragraph_style, "w:pStyle");
+    // i.e. <w:rStyle ... >
+    closed_with_str!(run_style, "w:rStyle");
     // i.e. <w:sz ... >
     closed_with_usize!(sz, "w:sz");
     // i.e. <w:szCs ... >

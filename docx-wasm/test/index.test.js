@@ -118,6 +118,12 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read font docx", () => {
+    const buffer = readFileSync("../fixtures/font/font.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {

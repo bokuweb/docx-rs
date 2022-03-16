@@ -60,6 +60,11 @@ impl ElementReader for RunProperty {
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
+                        XMLElement::RunStyle => {
+                            if let Some(v) = read_val(&attributes) {
+                                rp = rp.style(&v);
+                            }
+                        }
                         XMLElement::Bold => {
                             if !read_bool(&attributes) {
                                 rp = rp.disable_bold();

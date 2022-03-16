@@ -5,9 +5,11 @@ use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct RunProperty {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub style: Option<RunStyle>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub sz: Option<Sz>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -47,6 +49,11 @@ pub struct RunProperty {
 impl RunProperty {
     pub fn new() -> RunProperty {
         Default::default()
+    }
+
+    pub fn style(mut self, style_id: &str) -> Self {
+        self.style = Some(RunStyle::new(style_id));
+        self
     }
 
     pub fn size(mut self, size: usize) -> RunProperty {
@@ -132,30 +139,6 @@ impl RunProperty {
     pub fn insert(mut self, i: Insert) -> Self {
         self.ins = Some(i);
         self
-    }
-}
-
-impl Default for RunProperty {
-    fn default() -> Self {
-        Self {
-            color: None,
-            sz: None,
-            sz_cs: None,
-            highlight: None,
-            vert_align: None,
-            underline: None,
-            bold: None,
-            bold_cs: None,
-            italic: None,
-            italic_cs: None,
-            vanish: None,
-            fonts: None,
-            character_spacing: None,
-            text_border: None,
-            del: None,
-            ins: None,
-            strike: None,
-        }
     }
 }
 

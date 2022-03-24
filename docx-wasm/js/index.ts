@@ -62,15 +62,19 @@ const convertBorderType = (t: BorderType) => {
   }
 };
 
-const convertWidthType = (t: WidthType) => {
+const convertWidthType = (t: string) => {
   switch (t) {
     case "nil":
+    case "Nil":
       return wasm.WidthType.Nil;
     case "Pct":
+    case "pct":
       return wasm.WidthType.Pct;
     case "DXA":
+    case "dxa":
       return wasm.WidthType.DXA;
     case "Auto":
+    case "auto":
       return wasm.WidthType.Auto;
     default:
       return wasm.WidthType.DXA;

@@ -20,7 +20,7 @@ impl TableIndent {
 impl BuildXML for TableIndent {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
-            .table_indent(self.width, WidthType::DXA)
+            .table_indent(self.width, WidthType::Dxa)
             .build()
     }
 }
@@ -35,7 +35,7 @@ mod tests {
 
     #[test]
     fn test_table_indent() {
-        let b = TableIndent::new(20, WidthType::DXA).build();
+        let b = TableIndent::new(20, WidthType::Dxa).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:tblInd w:w="20" w:type="dxa" />"#

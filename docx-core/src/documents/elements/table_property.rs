@@ -46,7 +46,7 @@ impl TableProperty {
     }
 
     pub fn indent(mut self, v: i32) -> TableProperty {
-        self.indent = Some(TableIndent::new(v, WidthType::DXA));
+        self.indent = Some(TableIndent::new(v, WidthType::Dxa));
         self
     }
 
@@ -160,7 +160,7 @@ mod tests {
         let p = TableProperty::new().indent(100);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"width":{"width":0,"widthType":"Auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}},"margins":{"top":{"val":0,"widthType":"DXA"},"left":{"val":55,"widthType":"DXA"},"bottom":{"val":0,"widthType":"DXA"},"right":{"val":55,"widthType":"DXA"}},"indent":{"width":100,"widthType":"DXA"},"style":null,"layout":null}"#
+            r#"{"width":{"width":0,"widthType":"auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}},"margins":{"top":{"val":0,"widthType":"dxa"},"left":{"val":55,"widthType":"dxa"},"bottom":{"val":0,"widthType":"dxa"},"right":{"val":55,"widthType":"dxa"}},"indent":{"width":100,"widthType":"dxa"},"style":null,"layout":null}"#
         );
     }
 }

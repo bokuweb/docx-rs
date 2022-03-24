@@ -20,7 +20,7 @@ impl TableCellWidth {
 impl BuildXML for TableCellWidth {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
-            .table_cell_width(self.width as i32, WidthType::DXA)
+            .table_cell_width(self.width as i32, WidthType::Dxa)
             .build()
     }
 }
@@ -35,7 +35,7 @@ mod tests {
 
     #[test]
     fn test_table_width() {
-        let b = TableCellWidth::new(20, WidthType::DXA).build();
+        let b = TableCellWidth::new(20, WidthType::Dxa).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:tcW w:w="20" w:type="dxa" />"#

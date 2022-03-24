@@ -21,7 +21,7 @@ impl Default for CellMargin {
     fn default() -> CellMargin {
         CellMargin {
             val: 55,
-            width_type: WidthType::DXA,
+            width_type: WidthType::Dxa,
         }
     }
 }
@@ -40,12 +40,12 @@ impl Default for TableCellMargins {
         TableCellMargins {
             top: CellMargin {
                 val: 0,
-                width_type: WidthType::DXA,
+                width_type: WidthType::Dxa,
             },
             left: CellMargin::default(),
             bottom: CellMargin {
                 val: 0,
-                width_type: WidthType::DXA,
+                width_type: WidthType::Dxa,
             },
             right: CellMargin::default(),
         }
@@ -59,10 +59,10 @@ impl TableCellMargins {
 
     pub fn margin(self, top: usize, right: usize, bottom: usize, left: usize) -> TableCellMargins {
         TableCellMargins {
-            top: CellMargin::new(top, WidthType::DXA),
-            left: CellMargin::new(left, WidthType::DXA),
-            bottom: CellMargin::new(bottom, WidthType::DXA),
-            right: CellMargin::new(right, WidthType::DXA),
+            top: CellMargin::new(top, WidthType::Dxa),
+            left: CellMargin::new(left, WidthType::Dxa),
+            bottom: CellMargin::new(bottom, WidthType::Dxa),
+            right: CellMargin::new(right, WidthType::Dxa),
         }
     }
 

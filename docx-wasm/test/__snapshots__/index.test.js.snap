@@ -1874,7 +1874,7 @@ Object {
             },
             "lineSpacing": Object {
               "line": 360,
-              "lineRule": "Auto",
+              "lineRule": "auto",
             },
             "outlineLvl": 0,
             "runProperty": Object {
@@ -3126,7 +3126,7 @@ Object {
           "lineSpacing": Object {
             "after": 5,
             "line": 294,
-            "lineRule": "Auto",
+            "lineRule": "auto",
           },
           "runProperty": Object {},
           "tabs": Array [],
@@ -11672,7 +11672,7 @@ Object {
             "lineSpacing": Object {
               "before": 300,
               "line": 300,
-              "lineRule": "Auto",
+              "lineRule": "auto",
             },
             "runProperty": Object {},
             "tabs": Array [],
@@ -11704,7 +11704,7 @@ Object {
           "property": Object {
             "lineSpacing": Object {
               "line": 300,
-              "lineRule": "AtLeast",
+              "lineRule": "atLeast",
             },
             "runProperty": Object {},
             "tabs": Array [],
@@ -11739,7 +11739,7 @@ Object {
             "lineSpacing": Object {
               "after": 300,
               "line": 300,
-              "lineRule": "Exact",
+              "lineRule": "exact",
             },
             "runProperty": Object {},
             "tabs": Array [],
@@ -17872,7 +17872,7 @@ Object {
             "before": 200,
             "beforeLines": 200,
             "line": 360,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "numberingProperty": Object {
             "id": 1,
@@ -17987,7 +17987,7 @@ Object {
             "before": 100,
             "beforeLines": 100,
             "line": 320,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "numberingProperty": Object {
             "id": 1,
@@ -18105,7 +18105,7 @@ Object {
           },
           "lineSpacing": Object {
             "line": 300,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "numberingProperty": Object {
             "id": 1,
@@ -18222,7 +18222,7 @@ Object {
           },
           "lineSpacing": Object {
             "line": 320,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "numberingProperty": Object {
             "id": 1,
@@ -18342,7 +18342,7 @@ Object {
           },
           "lineSpacing": Object {
             "line": 320,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "numberingProperty": Object {
             "id": 1,
@@ -18459,7 +18459,7 @@ Object {
           },
           "lineSpacing": Object {
             "line": 320,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "numberingProperty": Object {
             "id": 1,
@@ -18569,7 +18569,7 @@ Object {
           "keepNext": true,
           "lineSpacing": Object {
             "line": 320,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "numberingProperty": Object {
             "id": 2,
@@ -33240,7 +33240,7 @@ Object {
           "lineSpacing": Object {
             "before": 180,
             "line": 300,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "runProperty": Object {},
           "tabs": Array [],
@@ -34157,7 +34157,7 @@ Object {
           "lineSpacing": Object {
             "before": 180,
             "line": 300,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "runProperty": Object {},
           "tabs": Array [],
@@ -36807,7 +36807,7 @@ Object {
           "lineSpacing": Object {
             "before": 2400,
             "line": 300,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "runProperty": Object {},
           "tabs": Array [],
@@ -38222,7 +38222,7 @@ Object {
           "lineSpacing": Object {
             "before": 5880,
             "line": 300,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "runProperty": Object {},
           "tabs": Array [],
@@ -39250,7 +39250,7 @@ Object {
           },
           "lineSpacing": Object {
             "line": 300,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "runProperty": Object {},
           "tabs": Array [],
@@ -42046,7 +42046,7 @@ Object {
           "lineSpacing": Object {
             "before": 200,
             "line": 240,
-            "lineRule": "Auto",
+            "lineRule": "auto",
           },
           "runProperty": Object {},
           "tabs": Array [],
@@ -42366,7 +42366,7 @@ Object {
             "after": 160,
             "before": 0,
             "line": 240,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "runProperty": Object {},
           "tabs": Array [],
@@ -42483,7 +42483,7 @@ Object {
             "after": 160,
             "before": 0,
             "line": 240,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "runProperty": Object {},
           "tabs": Array [],
@@ -42595,7 +42595,7 @@ Object {
             "after": 160,
             "before": 0,
             "line": 240,
-            "lineRule": "Exact",
+            "lineRule": "exact",
           },
           "runProperty": Object {},
           "tabs": Array [],
@@ -47939,7 +47939,7 @@ Object {
           "lineSpacing": Object {
             "before": 480,
             "line": 276,
-            "lineRule": "Auto",
+            "lineRule": "auto",
           },
           "outlineLvl": 9,
           "runProperty": Object {},

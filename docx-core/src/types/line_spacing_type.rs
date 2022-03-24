@@ -6,6 +6,7 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub enum LineSpacingType {
     Auto,
     AtLeast,

@@ -116,7 +116,7 @@ mod tests {
         };
         assert_eq!(
             serde_json::to_string(&s).unwrap(),
-            r#"{"lineRule":"Auto","line":100}"#
+            r#"{"lineRule":"auto","line":100}"#
         );
     }
 }

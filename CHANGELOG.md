@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## docx-wasm@0.0.24y (16. March, 2022)
+## docx-wasm@0.0.249 (25. March, 2022)
+
+- Change `widthType` case to camelCase in JS.
+
+## docx-wasm@0.0.248 (24. March, 2022)
+
+- Change `lineRule` case to camelCase in JS.
+
+## docx-wasm@0.0.247 (16. March, 2022)
 
 - Add js interface for `rStyle`.
 

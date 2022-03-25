@@ -166,10 +166,10 @@ mod tests {
         let c = TableCellProperty::new()
             .vertical_merge(VMergeType::Continue)
             .grid_span(3)
-            .width(200, WidthType::DXA);
+            .width(200, WidthType::Dxa);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"width":{"width":200,"widthType":"DXA"},"borders":null,"gridSpan":3,"verticalMerge":"continue","verticalAlign":null,"textDirection":null,"shading":null}"#
+            r#"{"width":{"width":200,"widthType":"dxa"},"borders":null,"gridSpan":3,"verticalMerge":"continue","verticalAlign":null,"textDirection":null,"shading":null}"#
         );
     }
 

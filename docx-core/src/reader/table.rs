@@ -103,7 +103,7 @@ mod tests {
             t,
             Table::without_borders(vec![])
                 .set_grid(vec![3212, 3213, 3213])
-                .width(9638, WidthType::DXA)
+                .width(9638, WidthType::Dxa)
         );
     }
 

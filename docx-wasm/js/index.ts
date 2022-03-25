@@ -30,7 +30,7 @@ import {
   PageMargin,
   PageOrientationType,
 } from "./section-property";
-import { DocGridType, DocxJSON, WidthType } from "./json";
+import { DocGridType, DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
 import { Level } from "./level";
@@ -62,18 +62,22 @@ const convertBorderType = (t: BorderType) => {
   }
 };
 
-const convertWidthType = (t: WidthType) => {
+const convertWidthType = (t: string) => {
   switch (t) {
     case "nil":
+    case "Nil":
       return wasm.WidthType.Nil;
     case "Pct":
+    case "pct":
       return wasm.WidthType.Pct;
     case "DXA":
-      return wasm.WidthType.DXA;
+    case "dxa":
+      return wasm.WidthType.Dxa;
     case "Auto":
+    case "auto":
       return wasm.WidthType.Auto;
     default:
-      return wasm.WidthType.DXA;
+      return wasm.WidthType.Dxa;
   }
 };
 

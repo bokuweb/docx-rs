@@ -84,7 +84,7 @@ mod tests {
             cell,
             TableCell::new()
                 .add_paragraph(Paragraph::new().add_run(Run::new()))
-                .width(6425, WidthType::DXA)
+                .width(6425, WidthType::Dxa)
                 .grid_span(2)
                 .vertical_merge(VMergeType::Restart)
                 .set_border(TableCellBorder::new(TableCellBorderPosition::Top))
@@ -123,7 +123,7 @@ mod tests {
             cell,
             TableCell::new()
                 .add_paragraph(Paragraph::new().add_run(Run::new()))
-                .width(6425, WidthType::DXA)
+                .width(6425, WidthType::Dxa)
                 .vertical_merge(VMergeType::Continue),
         );
     }
@@ -149,7 +149,7 @@ mod tests {
             cell,
             TableCell::new()
                 .add_paragraph(Paragraph::new().add_run(Run::new()))
-                .width(6425, WidthType::DXA)
+                .width(6425, WidthType::Dxa)
                 .vertical_align(VAlignType::Bottom),
         );
     }

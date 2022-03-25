@@ -8,7 +8,8 @@ import { DeleteJSON, InsertJSON } from "..";
 
 export type TableCellChildJSON = ParagraphJSON;
 
-export type WidthType = "DXA" | "Auto" | "Pct" | "nil";
+export type WidthType = "dxa" | "auto" | "pct" | "nil";
+
 export { TextDirectionType } from "../table-cell";
 
 export { HeightRule } from "../table-row";

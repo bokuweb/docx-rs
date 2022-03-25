@@ -19,10 +19,10 @@ export type TableProperty = {
 
 export const createDefaultTableCellMargins = () => {
   return {
-    top: { val: 0, type: "DXA" },
-    left: { val: 55, type: "DXA" },
-    bottom: { val: 0, type: "DXA" },
-    right: { val: 55, type: "DXA" },
+    top: { val: 0, type: "dxa" },
+    left: { val: 55, type: "dxa" },
+    bottom: { val: 0, type: "dxa" },
+    right: { val: 55, type: "dxa" },
   } as const;
 };
 
@@ -69,10 +69,10 @@ export class Table {
 
   cellMargins(top: number, right: number, bottom: number, left: number) {
     this.property.cellMargins = {
-      top: { val: top, type: "DXA" },
-      left: { val: left, type: "DXA" },
-      bottom: { val: bottom, type: "DXA" },
-      right: { val: right, type: "DXA" },
+      top: { val: top, type: "dxa" },
+      left: { val: left, type: "dxa" },
+      bottom: { val: bottom, type: "dxa" },
+      right: { val: right, type: "dxa" },
     };
     return this;
   }

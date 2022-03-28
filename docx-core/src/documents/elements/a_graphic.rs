@@ -4,7 +4,7 @@ use serde::Serialize;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct AGraphic {
     pub children: Vec<AGraphicData>,
@@ -18,12 +18,6 @@ impl AGraphic {
     pub fn add_graphic_data(mut self, g: AGraphicData) -> Self {
         self.children.push(g);
         self
-    }
-}
-
-impl Default for AGraphic {
-    fn default() -> Self {
-        Self { children: vec![] }
     }
 }
 

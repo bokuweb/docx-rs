@@ -83,7 +83,7 @@ pub struct Docx {
     pub numberings: Numberings,
     pub settings: Settings,
     pub font_table: FontTable,
-    pub media: Vec<(usize, Vec<u8>)>,
+    pub media: Vec<(String, Vec<u8>)>,
     pub comments_extended: CommentsExtended,
     pub web_settings: WebSettings,
     pub taskpanes: Option<Taskpanes>,
@@ -811,9 +811,9 @@ impl Docx {
     }
 
     // Traverse and collect images from document.
-    fn create_images(&mut self) -> (Vec<usize>, Vec<(usize, Vec<u8>)>) {
-        let mut image_ids: Vec<usize> = vec![];
-        let mut images: Vec<(usize, Vec<u8>)> = vec![];
+    fn create_images(&mut self) -> (Vec<String>, Vec<(String, Vec<u8>)>) {
+        let mut image_ids: Vec<String> = vec![];
+        let mut images: Vec<(String, Vec<u8>)> = vec![];
 
         for child in &mut self.document.children {
             match child {
@@ -823,9 +823,9 @@ impl Docx {
                             for child in &mut run.children {
                                 if let RunChild::Drawing(d) = child {
                                     if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                                        image_ids.push(pic.id);
+                                        image_ids.push(pic.id.clone());
                                         let b = std::mem::take(&mut pic.image);
-                                        images.push((pic.id, b));
+                                        images.push((pic.id.clone(), b));
                                     }
                                 }
                             }
@@ -845,9 +845,9 @@ impl Docx {
                                                         if let Some(DrawingData::Pic(pic)) =
                                                             &mut d.data
                                                         {
-                                                            image_ids.push(pic.id);
+                                                            image_ids.push(pic.id.clone());
                                                             let b = std::mem::take(&mut pic.image);
-                                                            images.push((pic.id, b));
+                                                            images.push((pic.id.clone(), b));
                                                         }
                                                     }
                                                 }

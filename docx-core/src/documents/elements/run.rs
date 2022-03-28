@@ -3,7 +3,7 @@ use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
 use crate::documents::BuildXML;
-use crate::types::BreakType;
+use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
@@ -137,25 +137,12 @@ impl Run {
     }
 
     pub fn add_image(mut self, pic: Pic) -> Run {
-        if pic.position_type == DrawingPositionType::Anchor {
-            let pos_h = pic.position_h;
-            let pos_v = pic.position_v;
-            self.children.push(RunChild::Drawing(Box::new(
-                Drawing::new()
-                    .pic(pic)
-                    .floating()
-                    .position_h(pos_h)
-                    .position_v(pos_v),
-            )));
-        } else {
-            self.children
-                .push(RunChild::Drawing(Box::new(Drawing::new().pic(pic))));
-        }
+        self.children
+            .push(RunChild::Drawing(Box::new(Drawing::new().pic(pic))));
         self
     }
 
-    // TODO: Remove later
-    pub fn add_drawing(mut self, d: Drawing) -> Run {
+    pub(crate) fn add_drawing(mut self, d: Drawing) -> Run {
         self.children.push(RunChild::Drawing(Box::new(d)));
         self
     }

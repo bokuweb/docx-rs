@@ -9,7 +9,7 @@ use crate::xml_builder::*;
 pub struct DocumentRels {
     pub has_comments: bool,
     pub has_numberings: bool,
-    pub image_ids: Vec<usize>,
+    pub image_ids: Vec<String>,
     pub custom_xml_count: usize,
     pub header_count: usize,
     pub footer_count: usize,
@@ -108,7 +108,7 @@ impl BuildXML for DocumentRels {
 
         for id in self.image_ids.iter() {
             b = b.relationship(
-                &create_pic_rid(*id),
+                id,
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",
                 &format!("media/image{}.jpg", *id),
             )

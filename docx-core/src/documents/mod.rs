@@ -68,7 +68,23 @@ pub use web_settings::*;
 pub use webextension::*;
 pub use xml_docx::*;
 
-use serde::Serialize;
+use serde::{ser, Serialize};
+
+#[derive(Debug, Clone)]
+pub struct Image(pub Vec<u8>);
+
+pub type ImageIdAndPath = (String, String);
+pub type ImageIdAndBuf = (String, Vec<u8>);
+
+impl ser::Serialize for Image {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: ser::Serializer,
+    {
+        let base64 = base64::display::Base64Display::with_config(&*self.0, base64::STANDARD);
+        serializer.collect_str(&base64)
+    }
+}
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -94,6 +110,8 @@ pub struct Docx {
     pub custom_item_rels: Vec<CustomItemRels>,
     // reader only
     pub themes: Vec<Theme>,
+    // reader only
+    pub images: Vec<Image>,
 }
 
 impl Default for Docx {
@@ -133,6 +151,7 @@ impl Default for Docx {
             custom_item_props: vec![],
             custom_item_rels: vec![],
             themes: vec![],
+            images: vec![],
         }
     }
 }
@@ -185,6 +204,12 @@ impl Docx {
     // reader only
     pub(crate) fn web_settings(mut self, s: WebSettings) -> Self {
         self.web_settings = s;
+        self
+    }
+
+    // reader only
+    pub(crate) fn add_image(mut self, buf: Vec<u8>) -> Self {
+        self.images.push(Image(buf));
         self
     }
 
@@ -429,7 +454,7 @@ impl Docx {
 
         self.update_comments();
 
-        let tocs: Vec<(usize, TableOfContents)> = self
+        let tocs: Vec<(usize, Box<TableOfContents>)> = self
             .document
             .children
             .iter()
@@ -453,12 +478,13 @@ impl Docx {
 
         for (i, toc) in tocs {
             if toc.items.is_empty() && toc.auto {
-                let children = update_document_by_toc(self.document.children, &self.styles, toc, i);
+                let children =
+                    update_document_by_toc(self.document.children, &self.styles, *toc, i);
                 self.document.children = children;
             }
         }
 
-        let (image_ids, images) = self.create_images();
+        let (images, images_bufs) = self.create_images();
         let web_extensions = self.web_extensions.iter().map(|ext| ext.build()).collect();
         let custom_items = self.custom_items.iter().map(|xml| xml.build()).collect();
         let custom_item_props = self.custom_item_props.iter().map(|p| p.build()).collect();
@@ -468,7 +494,7 @@ impl Docx {
             .map(|rel| rel.build())
             .collect();
 
-        self.document_rels.image_ids = image_ids;
+        self.document_rels.images = images;
 
         let headers: Vec<Vec<u8>> = self
             .document
@@ -497,7 +523,7 @@ impl Docx {
             settings: self.settings.build(),
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
-            media: images,
+            media: images_bufs,
             headers,
             footers,
             comments_extended: self.comments_extended.build(),
@@ -811,9 +837,9 @@ impl Docx {
     }
 
     // Traverse and collect images from document.
-    fn create_images(&mut self) -> (Vec<String>, Vec<(String, Vec<u8>)>) {
-        let mut image_ids: Vec<String> = vec![];
-        let mut images: Vec<(String, Vec<u8>)> = vec![];
+    fn create_images(&mut self) -> (Vec<ImageIdAndPath>, Vec<ImageIdAndBuf>) {
+        let mut images: Vec<(String, String)> = vec![];
+        let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
 
         for child in &mut self.document.children {
             match child {
@@ -823,9 +849,12 @@ impl Docx {
                             for child in &mut run.children {
                                 if let RunChild::Drawing(d) = child {
                                     if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                                        image_ids.push(pic.id.clone());
+                                        images.push((
+                                            pic.id.clone(),
+                                            format!("media/{}.jpg", pic.id),
+                                        ));
                                         let b = std::mem::take(&mut pic.image);
-                                        images.push((pic.id.clone(), b));
+                                        image_bufs.push((pic.id.clone(), b));
                                     }
                                 }
                             }
@@ -845,9 +874,12 @@ impl Docx {
                                                         if let Some(DrawingData::Pic(pic)) =
                                                             &mut d.data
                                                         {
-                                                            image_ids.push(pic.id.clone());
+                                                            images.push((
+                                                                pic.id.clone(),
+                                                                format!("media/{}.jpg", pic.id),
+                                                            ));
                                                             let b = std::mem::take(&mut pic.image);
-                                                            images.push((pic.id.clone(), b));
+                                                            image_bufs.push((pic.id.clone(), b));
                                                         }
                                                     }
                                                 }
@@ -865,7 +897,7 @@ impl Docx {
                 _ => {}
             }
         }
-        (image_ids, images)
+        (images, image_bufs)
     }
 }
 
@@ -910,7 +942,8 @@ fn update_document_by_toc(
                                 .toc_key(&toc_key)
                                 .level(*heading_level),
                         );
-                        paragraph = paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
+                        paragraph =
+                            Box::new(paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key));
                     }
 
                     if let Some((_min, _max)) = toc.instr.tc_field_level_range {
@@ -933,7 +966,8 @@ fn update_document_by_toc(
                                 .toc_key(&toc_key)
                                 .level(*level),
                         );
-                        paragraph = paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
+                        paragraph =
+                            Box::new(paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key));
                     }
                 }
 
@@ -963,6 +997,6 @@ fn update_document_by_toc(
 
     let mut toc = toc;
     toc.items = items;
-    children[toc_index] = DocumentChild::TableOfContents(toc);
+    children[toc_index] = DocumentChild::TableOfContents(Box::new(toc));
     children
 }

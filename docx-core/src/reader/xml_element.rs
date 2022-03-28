@@ -160,6 +160,7 @@ pub enum McXMLElement {
 
 #[derive(PartialEq, Debug)]
 pub enum WpXMLElement {
+    Inline,
     Anchor,
     SimplePos,
     PositionH,
@@ -177,6 +178,7 @@ pub enum AXMLElement {
     Graphic,
     GraphicData,
     Xfrm,
+    Blip,
     Off,
     Ext,
     PrstGeom,
@@ -213,6 +215,12 @@ pub enum VXMLElement {
 
 pub enum VtXMLElement {
     Lpwstr,
+    Unsupported,
+}
+
+#[derive(PartialEq, Debug)]
+pub enum PicXMLElement {
+    Pic,
     Unsupported,
 }
 
@@ -380,6 +388,7 @@ impl FromStr for WpXMLElement {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "anchor" => Ok(WpXMLElement::Anchor),
+            "inline" => Ok(WpXMLElement::Inline),
             "simplePos" => Ok(WpXMLElement::SimplePos),
             "positionH" => Ok(WpXMLElement::PositionH),
             "posOffset" => Ok(WpXMLElement::PosOffset),
@@ -400,6 +409,7 @@ impl FromStr for AXMLElement {
             "graphic" => Ok(AXMLElement::Graphic),
             "graphicData" => Ok(AXMLElement::GraphicData),
             "xfrm" => Ok(AXMLElement::Xfrm),
+            "blip" => Ok(AXMLElement::Blip),
             "off" => Ok(AXMLElement::Off),
             "ext" => Ok(AXMLElement::Ext),
             "prstGeom" => Ok(AXMLElement::PrstGeom),
@@ -451,6 +461,16 @@ impl FromStr for VtXMLElement {
         match s {
             "lpwstr" => Ok(VtXMLElement::Lpwstr),
             _ => Ok(VtXMLElement::Unsupported),
+        }
+    }
+}
+
+impl FromStr for PicXMLElement {
+    type Err = ();
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "pic" => Ok(PicXMLElement::Pic),
+            _ => Ok(PicXMLElement::Unsupported),
         }
     }
 }

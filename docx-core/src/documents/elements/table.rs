@@ -128,6 +128,12 @@ impl BuildXML for Table {
     }
 }
 
+impl BuildXML for Box<Table> {
+    fn build(&self) -> Vec<u8> {
+        Table::build(self)
+    }
+}
+
 impl Serialize for TableChild {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where

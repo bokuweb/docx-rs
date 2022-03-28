@@ -32,6 +32,7 @@ mod numberings;
 mod paragraph;
 mod paragraph_property;
 mod paragraph_property_change;
+mod pic;
 mod read_zip;
 mod rels;
 mod run;
@@ -92,11 +93,14 @@ const FOOTER_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer";
 const THEME_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme";
+const IMAGE_TYPE: &str =
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image";
 // 2011
 const COMMENTS_EXTENDED_TYPE: &str =
     "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
 
-fn read_headers(
+fn read_headers( 
+
     rels: &ReadDocumentRels,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
 ) -> HashMap<RId, Header> {
@@ -401,6 +405,15 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             )?;
             let web_settings = WebSettings::from_xml(&data[..])?;
             docx = docx.web_settings(web_settings);
+        }
+    }
+
+    // Read media
+    let media = rels.find_target_path(IMAGE_TYPE);
+    if let Some(paths) = media {
+        if let Some((_, media)) = paths.get(0) {
+            let data = read_zip(&mut archive, media.to_str().expect("should have media"))?;
+            docx = docx.add_image(data);
         }
     }
     Ok(docx)

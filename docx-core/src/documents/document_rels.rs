@@ -4,12 +4,12 @@ use super::*;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct DocumentRels {
     pub has_comments: bool,
     pub has_numberings: bool,
-    pub image_ids: Vec<usize>,
+    pub images: Vec<(String, String)>,
     pub custom_xml_count: usize,
     pub header_count: usize,
     pub footer_count: usize,
@@ -23,19 +23,6 @@ impl DocumentRels {
     pub fn add_custom_item(mut self) -> Self {
         self.custom_xml_count += 1;
         self
-    }
-}
-
-impl Default for DocumentRels {
-    fn default() -> Self {
-        Self {
-            has_comments: false,
-            has_numberings: false,
-            image_ids: vec![],
-            custom_xml_count: 0,
-            header_count: 0,
-            footer_count: 0,
-        }
     }
 }
 
@@ -106,11 +93,11 @@ impl BuildXML for DocumentRels {
             )
         }
 
-        for id in self.image_ids.iter() {
+        for (id, path) in self.images.iter() {
             b = b.relationship(
-                &create_pic_rid(*id),
+                id,
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",
-                &format!("media/image{}.jpg", *id),
+                path,
             )
         }
 

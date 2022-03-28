@@ -22,6 +22,7 @@ pub struct AGraphicData {
 #[derive(Debug, Clone, PartialEq)]
 pub enum GraphicDataChild {
     Shape(WpsShape),
+    Pic(Pic),
 }
 
 impl Serialize for GraphicDataChild {
@@ -33,6 +34,12 @@ impl Serialize for GraphicDataChild {
             GraphicDataChild::Shape(ref s) => {
                 let mut t = serializer.serialize_struct("Shape", 2)?;
                 t.serialize_field("type", "shape")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+            GraphicDataChild::Pic(ref s) => {
+                let mut t = serializer.serialize_struct("Pic", 2)?;
+                t.serialize_field("type", "pic")?;
                 t.serialize_field("data", s)?;
                 t.end()
             }
@@ -94,6 +101,7 @@ impl BuildXML for AGraphicData {
         for c in &self.children {
             match c {
                 GraphicDataChild::Shape(t) => b = b.add_child(t),
+                GraphicDataChild::Pic(t) => b = b.add_child(t),
             }
         }
         b.close().build()

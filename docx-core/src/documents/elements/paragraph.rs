@@ -353,6 +353,12 @@ impl BuildXML for Paragraph {
     }
 }
 
+impl BuildXML for Box<Paragraph> {
+    fn build(&self) -> Vec<u8> {
+        Paragraph::build(self)
+    }
+}
+
 #[cfg(test)]
 mod tests {
 

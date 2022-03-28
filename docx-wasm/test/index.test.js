@@ -124,6 +124,12 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read image inline and anchor docx", () => {
+    const buffer = readFileSync("../fixtures/image_inline_and_anchor/image_inline_and_anchor.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {

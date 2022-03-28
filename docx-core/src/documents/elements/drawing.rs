@@ -1,56 +1,20 @@
 use super::*;
-use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
 use crate::documents::BuildXML;
+use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, Default)]
+#[serde(rename_all = "camelCase")]
 pub struct Drawing {
-    pub position_type: DrawingPositionType,
-    pub position_h: DrawingPosition,
-    pub position_v: DrawingPosition,
     pub data: Option<DrawingData>,
-    // TODO: Old definition, remove later
-    pub children: Vec<DrawingChild>,
 }
 
 #[derive(Debug, Clone, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub enum DrawingData {
     Pic(Pic),
-}
-
-// TODO: Old definition, remove later
-#[derive(Debug, Clone, PartialEq)]
-pub enum DrawingChild {
-    WpAnchor(WpAnchor),
-}
-
-#[derive(Debug, Clone, Serialize, PartialEq)]
-pub enum DrawingPositionType {
-    Anchor,
-    Inline {
-        dist_t: usize,
-        dist_b: usize,
-        dist_l: usize,
-        dist_r: usize,
-    },
-}
-
-impl Serialize for DrawingChild {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        match *self {
-            DrawingChild::WpAnchor(ref s) => {
-                let mut t = serializer.serialize_struct("WpAnchor", 2)?;
-                t.serialize_field("type", "anchor")?;
-                t.serialize_field("data", s)?;
-                t.end()
-            }
-        }
-    }
 }
 
 impl Drawing {
@@ -58,47 +22,9 @@ impl Drawing {
         Default::default()
     }
 
-    // TODO: Remove later
-    pub fn add_anchor(mut self, a: WpAnchor) -> Drawing {
-        self.children.push(DrawingChild::WpAnchor(a));
-        self
-    }
-
     pub fn pic(mut self, pic: Pic) -> Drawing {
         self.data = Some(DrawingData::Pic(pic));
         self
-    }
-
-    pub fn floating(mut self) -> Drawing {
-        self.position_type = DrawingPositionType::Anchor;
-        self
-    }
-
-    pub fn position_h(mut self, pos: DrawingPosition) -> Drawing {
-        self.position_h = pos;
-        self
-    }
-
-    pub fn position_v(mut self, pos: DrawingPosition) -> Drawing {
-        self.position_v = pos;
-        self
-    }
-}
-
-impl Default for Drawing {
-    fn default() -> Self {
-        Drawing {
-            position_type: DrawingPositionType::Inline {
-                dist_t: 0,
-                dist_b: 0,
-                dist_l: 0,
-                dist_r: 0,
-            },
-            data: None,
-            position_v: DrawingPosition::Offset(0),
-            position_h: DrawingPosition::Offset(0),
-            children: vec![],
-        }
     }
 }
 
@@ -107,29 +33,50 @@ impl BuildXML for Box<Drawing> {
         let b = XMLBuilder::new();
         let mut b = b.open_drawing();
 
-        if let DrawingPositionType::Inline { .. } = self.position_type {
-            b = b.open_wp_inline("0", "0", "0", "0")
-        } else {
-            b = b
-                .open_wp_anchor("0", "0", "0", "0", "0", "1", "0", "0", "1", "1905000")
-                .simple_pos("0", "0")
-                .open_position_h("page");
-            if let DrawingPosition::Offset(x) = self.position_h {
-                let x = format!("{}", crate::types::emu::from_px(x as u32));
-                b = b.pos_offset(&x).close();
-            }
-
-            b = b.open_position_v("page");
-
-            if let DrawingPosition::Offset(y) = self.position_v {
-                let y = format!("{}", crate::types::emu::from_px(y as u32));
-                b = b.pos_offset(&y).close();
-            }
-        }
         match &self.data {
             Some(DrawingData::Pic(p)) => {
-                let w = format!("{}", crate::types::emu::from_px(p.size.0));
-                let h = format!("{}", crate::types::emu::from_px(p.size.1));
+                if let DrawingPositionType::Inline { .. } = p.position_type {
+                    b = b.open_wp_inline(
+                        &format!("{}", p.dist_t),
+                        &format!("{}", p.dist_b),
+                        &format!("{}", p.dist_l),
+                        &format!("{}", p.dist_r),
+                    )
+                } else {
+                    b = b
+                        .open_wp_anchor(
+                            &format!("{}", p.dist_t),
+                            &format!("{}", p.dist_b),
+                            &format!("{}", p.dist_l),
+                            &format!("{}", p.dist_r),
+                            "0",
+                            if p.simple_pos { "1" } else { "0" },
+                            "0",
+                            "0",
+                            if p.layout_in_cell { "1" } else { "0" },
+                            &format!("{}", p.relative_height),
+                        )
+                        .simple_pos(
+                            &format!("{}", p.simple_pos_x),
+                            &format!("{}", p.simple_pos_y),
+                        )
+                        .open_position_h(&format!("{}", p.relative_from_h));
+
+                    if let DrawingPosition::Offset(x) = p.position_h {
+                        let x = format!("{}", x as u32);
+                        b = b.pos_offset(&x).close();
+                    }
+
+                    b = b.open_position_v(&format!("{}", p.relative_from_v));
+
+                    if let DrawingPosition::Offset(y) = p.position_v {
+                        let y = format!("{}", y as u32);
+                        b = b.pos_offset(&y).close();
+                    }
+                }
+
+                let w = format!("{}", p.size.0);
+                let h = format!("{}", p.size.1);
                 b = b
                     // Please see 20.4.2.7 extent (Drawing Object Size)
                     // One inch equates to 914400 EMUs and a centimeter is 360000
@@ -149,7 +96,9 @@ impl BuildXML for Box<Drawing> {
                     .close()
                     .close();
             }
-            None => {}
+            None => {
+                unimplemented!()
+            }
         }
         b.close().close().build()
     }

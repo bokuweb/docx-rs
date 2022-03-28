@@ -15,14 +15,14 @@ pub struct Document {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum DocumentChild {
-    Paragraph(Paragraph),
-    Table(Table),
+    Paragraph(Box<Paragraph>),
+    Table(Box<Table>),
     BookmarkStart(BookmarkStart),
     BookmarkEnd(BookmarkEnd),
     CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
-    StructuredDataTag(StructuredDataTag),
-    TableOfContents(TableOfContents),
+    StructuredDataTag(Box<StructuredDataTag>),
+    TableOfContents(Box<TableOfContents>),
 }
 
 impl Serialize for DocumentChild {
@@ -102,7 +102,7 @@ impl Document {
         if p.has_numbering {
             self.has_numbering = true
         }
-        self.children.push(DocumentChild::Paragraph(p));
+        self.children.push(DocumentChild::Paragraph(Box::new(p)));
         self
     }
 
@@ -110,7 +110,7 @@ impl Document {
         if t.has_numbering {
             self.has_numbering = true
         }
-        self.children.push(DocumentChild::Table(t));
+        self.children.push(DocumentChild::Table(Box::new(t)));
         self
     }
 
@@ -198,12 +198,13 @@ impl Document {
         if t.has_numbering {
             self.has_numbering = true
         }
-        self.children.push(DocumentChild::StructuredDataTag(t));
+        self.children
+            .push(DocumentChild::StructuredDataTag(Box::new(t)));
         self
     }
 
     pub fn add_table_of_contents(mut self, t: TableOfContents) -> Self {
-        self.children.push(DocumentChild::TableOfContents(t));
+        self.children.push(DocumentChild::TableOfContents(Box::new(t)));
         self
     }
 }

@@ -13,8 +13,8 @@ pub struct TextBoxContent {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum TextBoxContentChild {
-    Paragraph(Paragraph),
-    Table(Table),
+    Paragraph(Box<Paragraph>),
+    Table(Box<Table>),
 }
 
 impl Serialize for TextBoxContentChild {
@@ -48,7 +48,8 @@ impl TextBoxContent {
         if p.has_numbering {
             self.has_numbering = true
         }
-        self.children.push(TextBoxContentChild::Paragraph(p));
+        self.children
+            .push(TextBoxContentChild::Paragraph(Box::new(p)));
         self
     }
 
@@ -56,7 +57,7 @@ impl TextBoxContent {
         if t.has_numbering {
             self.has_numbering = true
         }
-        self.children.push(TextBoxContentChild::Table(t));
+        self.children.push(TextBoxContentChild::Table(Box::new(t)));
         self
     }
 }

@@ -1,10 +1,24 @@
 import { TextBoxContentJSON } from "./textbox-content";
+import { Pic as InnerPic } from "./bindings/Pic";
+import { ParagraphJSON, TableJSON } from "..";
+
+export interface Pic extends Omit<InnerPic, "image"> {
+  image: string;
+}
 
 export type DrawingJSON = {
   type: "drawing";
-  data: {
-    type: "pic";
-  };
+  data:
+    | {
+        type: "pic";
+        data: Pic;
+      }
+    | {
+        type: "textBox";
+        data: {
+          children: (ParagraphJSON | TableJSON)[];
+        };
+      };
 };
 
 export type WpAnchorJSON = {

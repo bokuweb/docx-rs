@@ -5,34 +5,16 @@ use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq, Default)]
+#[derive(Debug, Clone, PartialEq, Default, Serialize)]
 pub struct Drawing {
+    #[serde(flatten)]
     pub data: Option<DrawingData>,
-}
-
-impl Serialize for Drawing {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        match self.data {
-            Some(DrawingData::Pic(ref pic)) => {
-                let mut t = serializer.serialize_struct("Drawing", 2)?;
-                t.serialize_field("type", "pic")?;
-                t.serialize_field("data", pic)?;
-                t.end()
-            }
-            _ => {
-                let t = serializer.serialize_struct("Drawing", 2)?;
-                t.end()
-            }
-        }
-    }
 }
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum DrawingData {
     Pic(Pic),
+    TextBox(TextBox),
 }
 
 impl Serialize for DrawingData {
@@ -47,6 +29,12 @@ impl Serialize for DrawingData {
                 t.serialize_field("data", pic)?;
                 t.end()
             }
+            DrawingData::TextBox(ref text_box) => {
+                let mut t = serializer.serialize_struct("TextBox", 2)?;
+                t.serialize_field("type", "textBox")?;
+                t.serialize_field("data", text_box)?;
+                t.end()
+            }
         }
     }
 }
@@ -58,6 +46,11 @@ impl Drawing {
 
     pub fn pic(mut self, pic: Pic) -> Drawing {
         self.data = Some(DrawingData::Pic(pic));
+        self
+    }
+
+    pub fn text_box(mut self, t: TextBox) -> Drawing {
+        self.data = Some(DrawingData::TextBox(t));
         self
     }
 }
@@ -130,6 +123,7 @@ impl BuildXML for Box<Drawing> {
                     .close()
                     .close();
             }
+            Some(DrawingData::TextBox(_t)) => unimplemented!("TODO: Support textBox writer"),
             None => {
                 unimplemented!()
             }

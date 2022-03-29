@@ -41,6 +41,12 @@ pub struct TextBox {
     pub dist_r: i32,
 }
 
+impl Default for TextBox {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl TextBox {
     pub fn new() -> Self {
         Self {

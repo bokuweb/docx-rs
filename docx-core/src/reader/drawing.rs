@@ -6,6 +6,7 @@ use std::str::FromStr;
 use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
+use crate::types::*;
 use crate::{DrawingPositionType, RelativeFromHType, RelativeFromVType};
 
 use super::*;

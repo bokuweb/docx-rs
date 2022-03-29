@@ -3,11 +3,9 @@ import { TextBoxContentJSON } from "./textbox-content";
 export type DrawingJSON = {
   type: "drawing";
   data: {
-    children: DrawingChildJSON[];
+    type: "pic";
   };
 };
-
-export type DrawingChildJSON = WpAnchorJSON;
 
 export type WpAnchorJSON = {
   type: "anchor";

@@ -5,23 +5,8 @@ use crate::documents::*;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Copy, Serialize, PartialEq)]
-#[serde(rename_all = "camelCase")]
-pub enum PicAlign {
-    Left,
-    Right,
-    Bottom,
-    Top,
-}
-
-#[derive(Debug, Clone, Copy, Serialize, PartialEq)]
-#[serde(rename_all = "camelCase")]
-pub enum DrawingPosition {
-    Offset(i32),
-    Align(PicAlign),
-}
-
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, ts_rs::TS)]
+#[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub struct Pic {
     pub id: String,
@@ -62,8 +47,7 @@ pub struct Pic {
 }
 
 impl Pic {
-    pub fn 
-    new(buf: Vec<u8>) -> Pic {
+    pub fn new(buf: Vec<u8>) -> Pic {
         let id = create_pic_rid(generate_pic_id());
         let dimg = image::load_from_memory(&buf).unwrap();
         let size = dimg.dimensions();

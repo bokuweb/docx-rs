@@ -1,20 +1,54 @@
 use super::*;
-use serde::Serialize;
+use serde::{ser::*, Serialize};
 
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Serialize, PartialEq, Default)]
-#[serde(rename_all = "camelCase")]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub struct Drawing {
     pub data: Option<DrawingData>,
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
-#[serde(rename_all = "camelCase")]
+impl Serialize for Drawing {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match self.data {
+            Some(DrawingData::Pic(ref pic)) => {
+                let mut t = serializer.serialize_struct("Drawing", 2)?;
+                t.serialize_field("type", "pic")?;
+                t.serialize_field("data", pic)?;
+                t.end()
+            }
+            _ => {
+                let t = serializer.serialize_struct("Drawing", 2)?;
+                t.end()
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
 pub enum DrawingData {
     Pic(Pic),
+}
+
+impl Serialize for DrawingData {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            DrawingData::Pic(ref pic) => {
+                let mut t = serializer.serialize_struct("Pic", 2)?;
+                t.serialize_field("type", "pic")?;
+                t.serialize_field("data", pic)?;
+                t.end()
+            }
+        }
+    }
 }
 
 impl Drawing {

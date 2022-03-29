@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## docx-rs@0.4.0, docx-wasm@0.0.252 (29. March, 2022)
+
+- [Breaking] Change image size unit `px` to `emu`.
+- [Breaking] fix `drawing` json types.
+
 ## docx-wasm@0.0.249 (25. March, 2022)
 
 - Change `widthType` case to camelCase in JS.

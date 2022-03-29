@@ -75,6 +75,44 @@ fn read_position_v<R: Read>(
     }
 }
 
+fn read_textbox_content<R: Read>(
+    r: &mut EventReader<R>,
+    _attrs: &[OwnedAttribute],
+) -> Result<Vec<TextBoxContentChild>, ReaderError> {
+    let mut children = vec![];
+    loop {
+        let e = r.next();
+        match e {
+            Ok(XmlEvent::StartElement {
+                attributes, name, ..
+            }) => {
+                let e = XMLElement::from_str(&name.local_name).unwrap();
+                match e {
+                    XMLElement::Paragraph => {
+                        let p = Paragraph::read(r, &attributes)?;
+                        children.push(TextBoxContentChild::Paragraph(Box::new(p)));
+                        continue;
+                    }
+                    XMLElement::Table => {
+                        let t = Table::read(r, &attributes)?;
+                        children.push(TextBoxContentChild::Table(Box::new(t)));
+                        continue;
+                    }
+                    _ => {}
+                }
+            }
+            Ok(XmlEvent::EndElement { name, .. }) => {
+                let e = WpsXMLElement::from_str(&name.local_name).unwrap();
+                if e == WpsXMLElement::Txbx {
+                    return Ok(children);
+                }
+            }
+            Err(_) => return Err(ReaderError::XMLReadError),
+            _ => {}
+        }
+    }
+}
+
 impl ElementReader for Drawing {
     fn read<R: Read>(
         r: &mut EventReader<R>,
@@ -220,6 +258,31 @@ impl ElementReader for Drawing {
                             pic.position_v = DrawingPosition::Offset(position_v);
                             pic.position_h = DrawingPosition::Offset(position_h);
                             drawing = drawing.pic(pic);
+                        }
+                    }
+
+                    // wps:
+                    if let Ok(WpsXMLElement::Txbx) = WpsXMLElement::from_str(&name.local_name) {
+                        if let Ok(children) = read_textbox_content(r, &attributes) {
+                            let mut text_box = TextBox::new();
+                            text_box.position_type = drawing_position_type;
+                            text_box.simple_pos = simple_pos;
+                            text_box.simple_pos_x = simple_pos_x;
+                            text_box.simple_pos_y = simple_pos_y;
+                            text_box.layout_in_cell = layout_in_cell;
+                            text_box.relative_height = relative_height;
+                            text_box.allow_overlap = allow_overlap;
+                            text_box.dist_r = dist_r;
+                            text_box.dist_t = dist_t;
+                            text_box.dist_b = dist_b;
+                            text_box.dist_l = dist_l;
+                            text_box.dist_r = dist_r;
+                            text_box.relative_from_h = relative_from_h;
+                            text_box.relative_from_v = relative_from_v;
+                            text_box.position_v = DrawingPosition::Offset(position_v);
+                            text_box.position_h = DrawingPosition::Offset(position_h);
+                            text_box.children = children;
+                            drawing = drawing.text_box(text_box);
                         }
                     }
                 }

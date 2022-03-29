@@ -99,8 +99,7 @@ const IMAGE_TYPE: &str =
 const COMMENTS_EXTENDED_TYPE: &str =
     "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
 
-fn read_headers( 
-
+fn read_headers(
     rels: &ReadDocumentRels,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
 ) -> HashMap<RId, Header> {
@@ -411,7 +410,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read media
     let media = rels.find_target_path(IMAGE_TYPE);
     if let Some(paths) = media {
-        if let Some((_, media)) = paths.get(0) {
+        for (_, media) in paths {
             let data = read_zip(&mut archive, media.to_str().expect("should have media"))?;
             docx = docx.add_image(data);
         }

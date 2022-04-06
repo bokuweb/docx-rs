@@ -31,5 +31,5 @@ image = "0.23.14"
 ts-rs = "6.1"
 
 [dev-dependencies]
-pretty_assertions = "1.2.0"
+pretty_assertions = "1.2.1"
 insta = "1.14"

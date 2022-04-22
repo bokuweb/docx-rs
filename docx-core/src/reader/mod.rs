@@ -175,6 +175,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         let data = read_zip(&mut archive, "_rels/.rels")?;
         Rels::from_xml(&data[..])?
     };
+
     // Finally, the minimum content for the Main Document part must be defined
     // (physically located at /document.xml in the package):
     let main_rel = rels
@@ -323,6 +324,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.content_type = docx.content_type.add_footer();
         }
     }
+
     if let Some(ref f) = docx
         .document
         .section_property
@@ -406,13 +408,13 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx = docx.web_settings(web_settings);
         }
     }
-
     // Read media
     let media = rels.find_target_path(IMAGE_TYPE);
     if let Some(paths) = media {
         for (_, media) in paths {
-            let data = read_zip(&mut archive, media.to_str().expect("should have media"))?;
-            docx = docx.add_image(data);
+            if let Ok(data) = read_zip(&mut archive, media.to_str().expect("should have media")) {
+                docx = docx.add_image(data);
+            }
         }
     }
     Ok(docx)

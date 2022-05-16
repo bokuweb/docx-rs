@@ -3,11 +3,11 @@ use serde::Serialize;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PageMargin {
-    pub top: u32,
-    pub left: u32,
-    pub bottom: u32,
-    pub right: u32,
-    pub header: u32,
-    pub footer: u32,
-    pub gutter: u32,
+    pub top: i32,
+    pub left: i32,
+    pub bottom: i32,
+    pub right: i32,
+    pub header: i32,
+    pub footer: i32,
+    pub gutter: i32,
 }

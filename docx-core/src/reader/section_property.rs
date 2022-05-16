@@ -31,25 +31,25 @@ fn read_page_margin(
         let local_name = &a.name.local_name;
         match local_name.as_str() {
             "top" => {
-                margin = margin.top(value_to_dax(&a.value)? as u32);
+                margin = margin.top(value_to_dax(&a.value)? as i32);
             }
             "right" => {
-                margin = margin.right(value_to_dax(&a.value)? as u32);
+                margin = margin.right(value_to_dax(&a.value)? as i32);
             }
             "bottom" => {
-                margin = margin.bottom(value_to_dax(&a.value)? as u32);
+                margin = margin.bottom(value_to_dax(&a.value)? as i32);
             }
             "left" => {
-                margin = margin.left(value_to_dax(&a.value)? as u32);
+                margin = margin.left(value_to_dax(&a.value)? as i32);
             }
             "header" => {
-                margin = margin.header(value_to_dax(&a.value)? as u32);
+                margin = margin.header(value_to_dax(&a.value)? as i32);
             }
             "footer" => {
-                margin = margin.footer(value_to_dax(&a.value)? as u32);
+                margin = margin.footer(value_to_dax(&a.value)? as i32);
             }
             "gutter" => {
-                margin = margin.gutter(value_to_dax(&a.value)? as u32);
+                margin = margin.gutter(value_to_dax(&a.value)? as i32);
             }
             _ => {}
         }

@@ -23,31 +23,31 @@ impl PageMargin {
         Default::default()
     }
 
-    pub fn top(self, v: u32) -> PageMargin {
+    pub fn top(self, v: i32) -> PageMargin {
         PageMargin { top: v, ..self }
     }
 
-    pub fn left(self, v: u32) -> PageMargin {
+    pub fn left(self, v: i32) -> PageMargin {
         PageMargin { left: v, ..self }
     }
 
-    pub fn bottom(self, v: u32) -> PageMargin {
+    pub fn bottom(self, v: i32) -> PageMargin {
         PageMargin { bottom: v, ..self }
     }
 
-    pub fn right(self, v: u32) -> PageMargin {
+    pub fn right(self, v: i32) -> PageMargin {
         PageMargin { right: v, ..self }
     }
 
-    pub fn header(self, v: u32) -> PageMargin {
+    pub fn header(self, v: i32) -> PageMargin {
         PageMargin { header: v, ..self }
     }
 
-    pub fn footer(self, v: u32) -> PageMargin {
+    pub fn footer(self, v: i32) -> PageMargin {
         PageMargin { footer: v, ..self }
     }
 
-    pub fn gutter(self, v: u32) -> PageMargin {
+    pub fn gutter(self, v: i32) -> PageMargin {
         PageMargin { gutter: v, ..self }
     }
 }

@@ -17,40 +17,40 @@ impl PageMargin {
 
 #[wasm_bindgen]
 impl PageMargin {
-    pub fn top(self, v: u32) -> PageMargin {
+    pub fn top(self, v: i32) -> PageMargin {
         PageMargin(docx_rs::PageMargin { top: v, ..self.0 })
     }
 
-    pub fn left(self, v: u32) -> PageMargin {
+    pub fn left(self, v: i32) -> PageMargin {
         PageMargin(docx_rs::PageMargin { left: v, ..self.0 })
     }
 
-    pub fn bottom(self, v: u32) -> PageMargin {
+    pub fn bottom(self, v: i32) -> PageMargin {
         PageMargin(docx_rs::PageMargin {
             bottom: v,
             ..self.0
         })
     }
 
-    pub fn right(self, v: u32) -> PageMargin {
+    pub fn right(self, v: i32) -> PageMargin {
         PageMargin(docx_rs::PageMargin { right: v, ..self.0 })
     }
 
-    pub fn header(self, v: u32) -> PageMargin {
+    pub fn header(self, v: i32) -> PageMargin {
         PageMargin(docx_rs::PageMargin {
             header: v,
             ..self.0
         })
     }
 
-    pub fn footer(self, v: u32) -> PageMargin {
+    pub fn footer(self, v: i32) -> PageMargin {
         PageMargin(docx_rs::PageMargin {
             footer: v,
             ..self.0
         })
     }
 
-    pub fn gutter(self, v: u32) -> PageMargin {
+    pub fn gutter(self, v: i32) -> PageMargin {
         PageMargin(docx_rs::PageMargin {
             gutter: v,
             ..self.0

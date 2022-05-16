@@ -81,16 +81,24 @@ impl ElementReader for ParagraphProperty {
                             continue;
                         }
                         XMLElement::KeepNext => {
-                            p.keep_next = Some(true);
+                            if read_bool(&attributes) {
+                                p.keep_next = Some(true);
+                            }
                         }
                         XMLElement::KeepLines => {
-                            p.keep_lines = Some(true);
+                            if read_bool(&attributes) {
+                                p.keep_lines = Some(true);
+                            }
                         }
                         XMLElement::PageBreakBefore => {
-                            p.page_break_before = Some(true);
+                            if read_bool(&attributes) {
+                                p.page_break_before = Some(true);
+                            }
                         }
                         XMLElement::WidowControl => {
-                            p.widow_control = Some(true);
+                            if read_bool(&attributes) {
+                                p.widow_control = Some(true);
+                            }
                         }
                         XMLElement::ParagraphPropertyChange => {
                             if let Ok(ppr_change) = ParagraphPropertyChange::read(r, &attributes) {

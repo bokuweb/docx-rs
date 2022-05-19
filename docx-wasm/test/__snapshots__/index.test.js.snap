@@ -601,11 +601,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -695,6 +695,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -787,6 +788,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -843,6 +845,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -1514,6 +1517,7 @@ Object {
       Object {
         "basedOn": "Normal",
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -2773,6 +2777,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -2874,6 +2879,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -2966,6 +2972,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -3022,6 +3029,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -3114,6 +3122,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "annotation text",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": 176,
@@ -3229,6 +3238,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "コメント文字列 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -3328,6 +3338,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Level 1",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -3342,7 +3353,6 @@ Object {
           },
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -3437,6 +3447,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Level 2",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -3451,7 +3462,6 @@ Object {
           },
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -3546,6 +3556,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "List Paragraph",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -3646,6 +3657,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Revision",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -4495,11 +4507,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -4589,6 +4601,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -4681,6 +4694,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -4737,6 +4751,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -5858,6 +5873,7 @@ Object {
       Object {
         "basedOn": "Normal",
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -6240,11 +6256,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -6334,6 +6350,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -6426,6 +6443,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -6482,6 +6500,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -6574,6 +6593,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "Subtle Emphasis",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -6670,6 +6690,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Subtitle",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "outlineLvl": 1,
@@ -6767,6 +6788,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "副題 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -6862,6 +6884,7 @@ Object {
       Object {
         "basedOn": "a3",
         "name": "test",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -7699,11 +7722,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -7793,6 +7816,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -7885,6 +7909,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -7941,6 +7966,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -8033,6 +8059,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "header",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -8125,6 +8152,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "ヘッダー (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -8217,6 +8245,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "footer",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -8309,6 +8338,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "フッター (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -10855,11 +10885,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -10956,6 +10986,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -11048,6 +11079,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -11104,6 +11136,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -11999,11 +12032,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -12093,6 +12126,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -12185,6 +12219,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -12241,6 +12276,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -12982,6 +13018,7 @@ Object {
       Object {
         "basedOn": "Normal",
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -14185,11 +14222,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -14279,6 +14316,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -14371,6 +14409,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -14427,6 +14466,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -14519,6 +14559,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "List Paragraph",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -16460,6 +16501,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -16552,6 +16594,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -16644,6 +16687,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -16700,6 +16744,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -16792,6 +16837,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "annotation text",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -16884,6 +16930,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "コメント文字列 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -16976,6 +17023,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "annotation reference",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -17071,6 +17119,7 @@ Object {
       Object {
         "basedOn": "a3",
         "name": "annotation subject",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -17166,6 +17215,7 @@ Object {
       Object {
         "basedOn": "a4",
         "name": "コメント内容 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -17261,6 +17311,7 @@ Object {
       Object {
         "basedOn": "a1",
         "name": "Table Grid",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -17353,6 +17404,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Revision",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -18913,11 +18965,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -19007,6 +19059,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "heading 1",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -19130,6 +19183,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "heading 2",
+        "next": null,
         "paragraphProperty": Object {
           "keepNext": true,
           "lineSpacing": Object {
@@ -19243,6 +19297,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "heading 3",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -19263,7 +19318,6 @@ Object {
           "outlineLvl": 2,
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -19360,6 +19414,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "heading 4",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -19380,7 +19435,6 @@ Object {
           "outlineLvl": 3,
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -19477,6 +19531,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "heading 5",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -19500,7 +19555,6 @@ Object {
           "outlineLvl": 4,
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -19597,6 +19651,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "heading 6",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -19617,7 +19672,6 @@ Object {
           "outlineLvl": 5,
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -19714,6 +19768,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "heading 7",
+        "next": null,
         "paragraphProperty": Object {
           "keepNext": true,
           "lineSpacing": Object {
@@ -19823,6 +19878,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -19915,6 +19971,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -19971,6 +20028,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -20063,6 +20121,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 1 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -20166,6 +20225,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 2 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -20267,6 +20327,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 3 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -20366,6 +20427,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 4 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -20465,6 +20527,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 5 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -20564,6 +20627,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 6 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -20663,6 +20727,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 7 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -21758,11 +21823,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -21852,6 +21917,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -21944,6 +22010,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -22000,6 +22067,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -22092,6 +22160,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Revision",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -22873,11 +22942,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -22967,6 +23036,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -23059,6 +23129,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -23115,6 +23186,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -23207,6 +23279,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Revision",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -32119,6 +32192,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "indent": Object {
@@ -32228,6 +32302,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "heading 1",
+        "next": null,
         "paragraphProperty": Object {
           "keepLines": true,
           "keepNext": true,
@@ -32340,6 +32415,7 @@ Object {
       Object {
         "basedOn": "1",
         "name": "heading 2",
+        "next": null,
         "paragraphProperty": Object {
           "numberingProperty": Object {
             "id": null,
@@ -32440,6 +32516,7 @@ Object {
       Object {
         "basedOn": "2",
         "name": "heading 3",
+        "next": null,
         "paragraphProperty": Object {
           "numberingProperty": Object {
             "id": null,
@@ -32540,6 +32617,7 @@ Object {
       Object {
         "basedOn": "3",
         "name": "heading 4",
+        "next": null,
         "paragraphProperty": Object {
           "numberingProperty": Object {
             "id": null,
@@ -32637,6 +32715,7 @@ Object {
       Object {
         "basedOn": "4",
         "name": "heading 5",
+        "next": null,
         "paragraphProperty": Object {
           "numberingProperty": Object {
             "id": null,
@@ -32734,6 +32813,7 @@ Object {
       Object {
         "basedOn": "5",
         "name": "heading 6",
+        "next": null,
         "paragraphProperty": Object {
           "numberingProperty": Object {
             "id": null,
@@ -32833,6 +32913,7 @@ Object {
       Object {
         "basedOn": "6",
         "name": "heading 7",
+        "next": null,
         "paragraphProperty": Object {
           "numberingProperty": Object {
             "id": null,
@@ -32933,6 +33014,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "heading 8",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -33045,6 +33127,7 @@ Object {
       Object {
         "basedOn": "8",
         "name": "heading 9",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "after": 90,
@@ -33145,6 +33228,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -33237,6 +33321,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -33293,6 +33378,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -33385,6 +33471,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Body Text",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "after": 120,
@@ -33480,6 +33567,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "List",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -33583,6 +33671,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "List 2",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -33686,6 +33775,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "List Bullet",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -33789,6 +33879,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "List Continue",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -33892,6 +33983,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Body Text Indent",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -33995,6 +34087,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Normal Indent",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -34095,6 +34188,7 @@ Object {
       Object {
         "basedOn": "a1",
         "name": "page number",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -34187,6 +34281,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "header",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -34284,6 +34379,7 @@ Object {
       Object {
         "basedOn": "aa",
         "name": "footer",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -34376,6 +34472,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "toc 1",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -34492,6 +34589,7 @@ Object {
       Object {
         "basedOn": "10",
         "name": "toc 2",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -34501,7 +34599,6 @@ Object {
             "start": 907,
             "startChars": null,
           },
-          "keepNext": true,
           "lineSpacing": Object {
             "before": 60,
           },
@@ -34599,6 +34696,7 @@ Object {
       Object {
         "basedOn": "21",
         "name": "toc 3",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -34699,6 +34797,7 @@ Object {
       Object {
         "basedOn": "21",
         "name": "toc 4",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -34802,6 +34901,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 5",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": 720,
@@ -34902,6 +35002,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 6",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": 720,
@@ -35002,6 +35103,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 7",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": 720,
@@ -35102,8 +35204,8 @@ Object {
       Object {
         "basedOn": "10",
         "name": "toc 8",
+        "next": null,
         "paragraphProperty": Object {
-          "keepNext": true,
           "runProperty": Object {},
           "tabs": Array [],
         },
@@ -35198,8 +35300,8 @@ Object {
       Object {
         "basedOn": "10",
         "name": "toc 9",
+        "next": null,
         "paragraphProperty": Object {
-          "keepNext": true,
           "runProperty": Object {},
           "tabs": Array [],
         },
@@ -35294,6 +35396,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "footnote text",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -35402,6 +35505,7 @@ Object {
       Object {
         "basedOn": "a1",
         "name": "footnote reference",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -35497,6 +35601,7 @@ Object {
       Object {
         "basedOn": "a1",
         "name": "annotation reference",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -35592,6 +35697,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "annotation text",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -35687,6 +35793,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "index 7",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -35787,6 +35894,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "index 6",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -35887,6 +35995,7 @@ Object {
       Object {
         "basedOn": "22",
         "name": "index 5",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -35987,6 +36096,7 @@ Object {
       Object {
         "basedOn": "22",
         "name": "index 4",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -36087,6 +36197,7 @@ Object {
       Object {
         "basedOn": "22",
         "name": "index 3",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -36187,6 +36298,7 @@ Object {
       Object {
         "basedOn": "11",
         "name": "index 2",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -36287,6 +36399,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "index 1",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -36391,6 +36504,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "index heading",
+        "next": null,
         "paragraphProperty": Object {
           "keepNext": true,
           "runProperty": Object {},
@@ -36489,6 +36603,7 @@ Object {
       Object {
         "basedOn": "List1",
         "name": "List2",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -36589,6 +36704,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "List1",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -36692,6 +36808,7 @@ Object {
       Object {
         "basedOn": "ChapterTitle",
         "name": "cover text",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "before": 5280,
@@ -36790,6 +36907,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Chapter Title",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "keepNext": true,
@@ -36897,6 +37015,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Table Title",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -37006,6 +37125,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Logo/Manual",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "right",
           "runProperty": Object {},
@@ -37104,6 +37224,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "courier 10",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -37204,6 +37325,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "TableNormal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -37311,6 +37433,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Note",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -37418,6 +37541,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Screen",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "keepNext": true,
@@ -37523,6 +37647,7 @@ Object {
       Object {
         "basedOn": "List2Indent",
         "name": "List3 Indent",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -37626,6 +37751,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Comverse",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "indent": Object {
@@ -37735,6 +37861,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Address",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "indent": Object {
@@ -37841,6 +37968,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Pic Large",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -37946,6 +38074,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Caution",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "indent": Object {
@@ -38055,6 +38184,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Notice Text",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -38155,6 +38285,7 @@ Object {
       Object {
         "basedOn": "List1",
         "name": "KWNList1",
+        "next": null,
         "paragraphProperty": Object {
           "keepNext": true,
           "runProperty": Object {},
@@ -38248,6 +38379,7 @@ Object {
       Object {
         "basedOn": "List2",
         "name": "KWNList2",
+        "next": null,
         "paragraphProperty": Object {
           "keepNext": true,
           "runProperty": Object {},
@@ -38341,6 +38473,7 @@ Object {
       Object {
         "basedOn": "LogoManual",
         "name": "TRILOGO",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "before": 5280,
@@ -38441,6 +38574,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Caution/Notice",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "indent": Object {
@@ -38451,7 +38585,6 @@ Object {
             "start": 0,
             "startChars": null,
           },
-          "keepLines": true,
           "lineSpacing": Object {
             "before": 8640,
           },
@@ -38552,6 +38685,7 @@ Object {
       Object {
         "basedOn": "PicLarge",
         "name": "Pic Normal",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -38652,6 +38786,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Table Caption",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -38764,8 +38899,8 @@ Object {
       Object {
         "basedOn": "TableCaption",
         "name": "Figure Caption",
+        "next": null,
         "paragraphProperty": Object {
-          "keepNext": true,
           "lineSpacing": Object {
             "after": 120,
           },
@@ -38860,6 +38995,7 @@ Object {
       Object {
         "basedOn": "List2",
         "name": "List3",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -38960,6 +39096,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Screen Courier",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "keepNext": true,
@@ -39062,6 +39199,7 @@ Object {
       Object {
         "basedOn": "BulletinDescription",
         "name": "Bulletin Title",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -39161,6 +39299,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "caption",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "after": 120,
@@ -39259,6 +39398,7 @@ Object {
       Object {
         "basedOn": "courier10",
         "name": "courier 10 bold",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -39361,6 +39501,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Notice",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "indent": Object {
@@ -39473,6 +39614,7 @@ Object {
       Object {
         "basedOn": "aa",
         "name": "HeaderEvenPageLandscape",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "after": 360,
@@ -39569,6 +39711,7 @@ Object {
       Object {
         "basedOn": "HeaderEvenPageLandscape",
         "name": "HeaderOddPageLandscape",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "before": 1440,
@@ -39664,6 +39807,7 @@ Object {
       Object {
         "basedOn": "ab",
         "name": "FooterEvenPageLandscape",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "after": 1440,
@@ -39760,6 +39904,7 @@ Object {
       Object {
         "basedOn": "FooterEvenPageLandscape",
         "name": "FooterOddPageLandscape",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "after": 600,
@@ -39855,6 +40000,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Bulletin Address",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -39865,7 +40011,6 @@ Object {
             "start": 0,
             "startChars": null,
           },
-          "keepLines": true,
           "lineSpacing": Object {
             "before": 0,
           },
@@ -39968,6 +40113,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Bulletin Description",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -40073,6 +40219,7 @@ Object {
       Object {
         "basedOn": "ab",
         "name": "Bulletin Footer",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -40170,6 +40317,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Bulletin Logo",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -40279,6 +40427,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Front Cover",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "indent": Object {
@@ -40289,7 +40438,6 @@ Object {
             "start": -284,
             "startChars": null,
           },
-          "keepLines": true,
           "lineSpacing": Object {
             "before": 1440,
           },
@@ -40391,6 +40539,7 @@ Object {
       Object {
         "basedOn": "List3",
         "name": "List4",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -40495,6 +40644,7 @@ Object {
       Object {
         "basedOn": "TableNormal",
         "name": "TableWrap",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -40598,6 +40748,7 @@ Object {
       Object {
         "basedOn": "List2",
         "name": "List2 Indent",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -40701,6 +40852,7 @@ Object {
       Object {
         "basedOn": "List1",
         "name": "List1 Indent",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -40804,6 +40956,7 @@ Object {
       Object {
         "basedOn": "ab",
         "name": "Footer Front Matter Cover",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -40896,6 +41049,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "KWNNormal",
+        "next": null,
         "paragraphProperty": Object {
           "keepNext": true,
           "runProperty": Object {},
@@ -40989,6 +41143,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Bulletin Cover",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -41097,6 +41252,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "logo. line 1",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "runProperty": Object {},
@@ -41197,6 +41353,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "logo. line 2",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "runProperty": Object {},
@@ -41299,6 +41456,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "logo. line 3",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "runProperty": Object {},
@@ -41397,6 +41555,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "logo. line 4",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -41494,6 +41653,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "logo. line 5",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "before": 60,
@@ -41596,6 +41756,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "List2 No Hang Indent",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -41688,6 +41849,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "List3 No Hang Indent",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -41788,6 +41950,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "BulletinLogo",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "right",
           "indent": Object {
@@ -41892,6 +42055,7 @@ Object {
       Object {
         "basedOn": "TableWrap",
         "name": "TableListEnd",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "before": 0,
@@ -41987,6 +42151,7 @@ Object {
       Object {
         "basedOn": "TableWrap",
         "name": "TableListMiddle",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "after": 0,
@@ -42083,6 +42248,7 @@ Object {
       Object {
         "basedOn": "TableListEnd",
         "name": "TableListStart",
+        "next": null,
         "paragraphProperty": Object {
           "lineSpacing": Object {
             "after": 0,
@@ -42179,6 +42345,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "List4 No Hang Indent",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -42279,6 +42446,7 @@ Object {
       Object {
         "basedOn": "TableNormal",
         "name": "KWNTableNormal",
+        "next": null,
         "paragraphProperty": Object {
           "keepNext": true,
           "runProperty": Object {},
@@ -42372,6 +42540,7 @@ Object {
       Object {
         "basedOn": "a1",
         "name": "bold",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -42467,6 +42636,7 @@ Object {
       Object {
         "basedOn": "TableNormal",
         "name": "TableWrap2",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -42570,6 +42740,7 @@ Object {
       Object {
         "basedOn": "a1",
         "name": "Hyperlink",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -42668,6 +42839,7 @@ Object {
       Object {
         "basedOn": "1",
         "name": "apenhead",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -42772,6 +42944,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Body Text Indent 2",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -42871,6 +43044,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Body Text 2",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -42978,6 +43152,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Body Text Indent 3",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -42987,7 +43162,6 @@ Object {
             "start": 851,
             "startChars": null,
           },
-          "keepLines": true,
           "runProperty": Object {},
           "tabs": Array [],
         },
@@ -43086,6 +43260,7 @@ Object {
       Object {
         "basedOn": "a1",
         "name": "FollowedHyperlink",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -43181,6 +43356,7 @@ Object {
       Object {
         "basedOn": "10",
         "name": "cover page",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
           "indent": Object {
@@ -43194,7 +43370,6 @@ Object {
             "start": 0,
             "startChars": null,
           },
-          "keepNext": true,
           "lineSpacing": Object {
             "before": 200,
             "line": 240,
@@ -43298,6 +43473,7 @@ Object {
       Object {
         "basedOn": "a2",
         "name": "Table Grid",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "indent": Object {
@@ -43403,6 +43579,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Balloon Text",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -43503,6 +43680,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Char",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -43513,7 +43691,6 @@ Object {
             "start": 0,
             "startChars": null,
           },
-          "keepLines": true,
           "lineSpacing": Object {
             "after": 160,
             "before": 0,
@@ -43621,6 +43798,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Char1 Char Char Znak Znak1",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": 0,
@@ -43630,7 +43808,6 @@ Object {
             "start": 0,
             "startChars": null,
           },
-          "keepLines": true,
           "lineSpacing": Object {
             "after": 160,
             "before": 0,
@@ -43639,7 +43816,6 @@ Object {
           },
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {
           "characterSpacing": 0,
@@ -43733,6 +43909,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Char1",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": 0,
@@ -43742,7 +43919,6 @@ Object {
             "start": 0,
             "startChars": null,
           },
-          "keepLines": true,
           "lineSpacing": Object {
             "after": 160,
             "before": 0,
@@ -43751,7 +43927,6 @@ Object {
           },
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {
           "characterSpacing": 0,
@@ -43845,6 +44020,7 @@ Object {
       Object {
         "basedOn": "a1",
         "name": "Strong",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -43940,6 +44116,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "List Paragraph",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -44040,6 +44217,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "Alert_text",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": 0,
@@ -44049,7 +44227,6 @@ Object {
             "start": 0,
             "startChars": null,
           },
-          "keepLines": true,
           "lineSpacing": Object {
             "after": 80,
             "before": 80,
@@ -44155,6 +44332,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Revision",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -45249,11 +45427,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -45343,6 +45521,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -45435,6 +45614,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -45515,6 +45695,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -45607,6 +45788,7 @@ Object {
       Object {
         "basedOn": "a1",
         "name": "Table Grid",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -46347,11 +46529,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -46441,6 +46623,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -46533,6 +46716,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -46589,6 +46773,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -48566,11 +48751,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -48660,6 +48845,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "heading 1",
+        "next": null,
         "paragraphProperty": Object {
           "keepNext": true,
           "numberingProperty": Object {
@@ -48767,6 +48953,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "heading 2",
+        "next": null,
         "paragraphProperty": Object {
           "keepNext": true,
           "numberingProperty": Object {
@@ -48872,6 +49059,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "heading 3",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -48985,6 +49173,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "heading 4",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -49094,6 +49283,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "heading 5",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -49207,6 +49397,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "heading 6",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -49316,6 +49507,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "heading 7",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -49422,6 +49614,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "heading 8",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -49528,6 +49721,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "heading 9",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -49634,6 +49828,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -49726,6 +49921,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -49782,6 +49978,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -49874,6 +50071,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "List Paragraph",
+        "next": null,
         "paragraphProperty": Object {
           "indent": Object {
             "end": null,
@@ -49974,6 +50172,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 1 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -50075,6 +50274,7 @@ Object {
       Object {
         "basedOn": "1",
         "name": "TOC Heading",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "keepLines": true,
@@ -50182,6 +50382,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 1",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "lineSpacing": Object {
@@ -50288,6 +50489,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 2",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -50400,6 +50602,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 3",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -50507,6 +50710,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 4",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -50614,6 +50818,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 5",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -50721,6 +50926,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 6",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -50828,6 +51034,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 7",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -50935,6 +51142,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 8",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -51042,6 +51250,7 @@ Object {
       Object {
         "basedOn": "a",
         "name": "toc 9",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
           "indent": Object {
@@ -51149,6 +51358,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 2 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -51248,6 +51458,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 3 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -51347,6 +51558,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 4 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -51442,6 +51654,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 5 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -51541,6 +51754,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 6 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -51636,6 +51850,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 7 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -51728,6 +51943,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 8 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -51820,6 +52036,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "見出し 9 (文字)",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -51912,6 +52129,7 @@ Object {
       Object {
         "basedOn": "a0",
         "name": "Hyperlink",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -52875,6 +53093,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -52967,6 +53186,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -53059,6 +53279,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -53115,6 +53336,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -53207,6 +53429,7 @@ Object {
       Object {
         "basedOn": "a1",
         "name": "Table Grid",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -53972,11 +54195,11 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal",
+        "next": null,
         "paragraphProperty": Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
-          "widowControl": true,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -54066,6 +54289,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Default Paragraph Font",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -54158,6 +54382,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "Normal Table",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
@@ -54214,6 +54439,7 @@ Object {
       Object {
         "basedOn": null,
         "name": "No List",
+        "next": null,
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],

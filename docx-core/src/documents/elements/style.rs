@@ -18,6 +18,7 @@ pub struct Style {
     pub table_property: TableProperty,
     pub table_cell_property: TableCellProperty,
     pub based_on: Option<BasedOn>,
+    pub next: Option<Next>,
 }
 
 impl Default for Style {
@@ -34,6 +35,7 @@ impl Default for Style {
             table_property: TableProperty::new(),
             table_cell_property: TableCellProperty::new(),
             based_on: None,
+            next: None,
         }
     }
 }
@@ -55,6 +57,11 @@ impl Style {
 
     pub fn based_on(mut self, base: impl Into<String>) -> Self {
         self.based_on = Some(BasedOn::new(base));
+        self
+    }
+
+    pub fn next(mut self, next: impl Into<String>) -> Self {
+        self.next = Some(Next::new(next));
         self
     }
 
@@ -141,13 +148,21 @@ impl BuildXML for Style {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         // Set "Normal" as default if you need change these values please fix it
-        b.open_style(self.style_type, &self.style_id)
+        let mut b = b
+            .open_style(self.style_type, &self.style_id)
             .add_child(&self.name)
             .add_child(&self.run_property)
-            .add_child(&self.paragraph_property)
-            .add_child(&BasedOn::new("Normal"))
-            .add_child(&Next::new("Normal"))
-            .add_child(&QFormat::new())
+            .add_child(&self.paragraph_property);
+
+        if let Some(ref based_on) = self.based_on {
+            b = b.add_child(based_on)
+        }
+
+        if let Some(ref next) = self.next {
+            b = b.add_child(next)
+        }
+
+        b.add_child(&QFormat::new())
             .add_optional_child(&self.based_on)
             .close()
             .build()
@@ -168,7 +183,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:style w:type="paragraph" w:styleId="Heading"><w:name w:val="Heading1" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:basedOn w:val="Normal" /><w:next w:val="Normal" /><w:qFormat /></w:style>"#
+            r#"<w:style w:type="paragraph" w:styleId="Heading"><w:name w:val="Heading1" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:qFormat /></w:style>"#
         );
     }
 }

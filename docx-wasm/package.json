@@ -36,7 +36,7 @@
     "text-encoding": "0.7.0",
     "ts-loader": "9.2.8",
     "typescript": "4.6.4",
-    "webpack": "4.46.0",
+    "webpack": "5.72.1",
     "webpack-cli": "3.3.12",
     "webpack-dev-server": "3.11.3",
     "webpack-merge": "5.8.0"

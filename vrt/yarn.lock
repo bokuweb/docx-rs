@@ -2,12 +2,10 @@
 # yarn lockfile v1
 
 
-async@^2.6.2:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/async/-/async-2.6.4.tgz#706b7ff6084664cd7eae713f6f965433b5504221"
-  integrity sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==
-  dependencies:
-    lodash "^4.17.14"
+async@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/async/-/async-3.2.3.tgz#ac53dafd3f4720ee9e8a160628f18ea91df196c9"
+  integrity sha512-spZRyzKL5l5BZQrr/6m/SqFdBN0q3OCI0f9rjfBzCMBIP4p75P620rR3gTmaksNOhmzgdxcaxdNfMy6anrbM0g==
 
 balanced-match@^1.0.0:
   version "1.0.0"
@@ -76,18 +74,13 @@ inherits@2:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-libreoffice-convert@1.3.5:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/libreoffice-convert/-/libreoffice-convert-1.3.5.tgz#86c8ddac3ae44eb92b80f6362db7339de7526647"
-  integrity sha512-nWwToElKATfDoHtbXJALdGoZfQdCNiITvSExVtRQBA32ZP9uwSaw7tDpBgeedJMWWnyoUZU1FWpPF6o4d13Pjw==
+libreoffice-convert@1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/libreoffice-convert/-/libreoffice-convert-1.4.1.tgz#408af52e00677486effcf97df4d2894f2d02ad93"
+  integrity sha512-ojTK0P0tSuqYhjP5f7lXpVe6FWq6HzxxWOiBC+i78vO0T+OWPO1bG3bhPI1VTyaJeSYGx9MTbJ3Dvfcx6rL2rA==
   dependencies:
-    async "^2.6.2"
+    async "^3.2.3"
     tmp "^0.2.1"
-
-lodash@^4.17.14:
-  version "4.17.21"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
-  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 minimatch@^3.0.4:
   version "3.0.4"

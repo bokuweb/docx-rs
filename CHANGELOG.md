@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## docx-wasm@0.0.258 (19. May, 2022)
+
+- [Breaking] Use `self.based_on` and `self.next` in `style` instead of `Normal`.
+
+## docx-wasm@0.0.257 (18. May, 2022)
+
+- [Breaking] Use `i32` for `PageMargin` props instead of unsigned.
+
 ## docx-rs@0.4.0, docx-wasm@0.0.252 (29. March, 2022)
 
 - [Breaking] Change image size unit `px` to `emu`.

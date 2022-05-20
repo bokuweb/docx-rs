@@ -47,8 +47,8 @@ export type DocxJSON = {
   webSettings: WebSettingsJSON;
   fontTable: {};
   themes: ThemeJSON[];
-  // base64 encoded iamges
-  images: string[];
+  //(id, path, base64 encoded image data)
+  images: [string, string, string][];
 };
 
 export type SettingsJSON = {

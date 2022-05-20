@@ -411,9 +411,9 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read media
     let media = rels.find_target_path(IMAGE_TYPE);
     if let Some(paths) = media {
-        for (_, media) in paths {
+        for (id, media) in paths {
             if let Ok(data) = read_zip(&mut archive, media.to_str().expect("should have media")) {
-                docx = docx.add_image(data);
+                docx = docx.add_image(id, media.to_str().unwrap().to_string(), data);
             }
         }
     }

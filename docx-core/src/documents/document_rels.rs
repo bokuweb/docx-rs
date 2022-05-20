@@ -24,6 +24,11 @@ impl DocumentRels {
         self.custom_xml_count += 1;
         self
     }
+
+    pub fn add_image(mut self, id: impl Into<String>, path: impl Into<String>) -> Self {
+        self.images.push((id.into(), path.into()));
+        self
+    }
 }
 
 impl BuildXML for DocumentRels {

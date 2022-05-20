@@ -111,7 +111,7 @@ pub struct Docx {
     // reader only
     pub themes: Vec<Theme>,
     // reader only
-    pub images: Vec<Image>,
+    pub images: Vec<(String, String, Image)>,
 }
 
 impl Default for Docx {
@@ -208,8 +208,13 @@ impl Docx {
     }
 
     // reader only
-    pub(crate) fn add_image(mut self, buf: Vec<u8>) -> Self {
-        self.images.push(Image(buf));
+    pub(crate) fn add_image(
+        mut self,
+        id: impl Into<String>,
+        path: impl Into<String>,
+        buf: Vec<u8>,
+    ) -> Self {
+        self.images.push((id.into(), path.into(), Image(buf)));
         self
     }
 

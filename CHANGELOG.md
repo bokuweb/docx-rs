@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## docx-wasm@0.0.259 (20. May, 2022)
+
+- [BUGFIX] Use default `numPr` if numId not found to avoid panic.
+
 ## docx-wasm@0.0.258 (19. May, 2022)
 
 - [Breaking] Use `self.based_on` and `self.next` in `style` instead of `Normal`.

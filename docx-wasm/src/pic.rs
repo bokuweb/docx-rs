@@ -5,7 +5,7 @@ use wasm_bindgen::prelude::*;
 pub struct Pic(docx_rs::Pic);
 
 #[wasm_bindgen(js_name = createPic)]
-pub fn create_pic(buf: Vec<u8>) -> Pic {
+pub fn create_pic(buf: &[u8]) -> Pic {
     Pic(docx_rs::Pic::new(buf))
 }
 

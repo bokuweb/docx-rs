@@ -25,6 +25,8 @@ import { Styles } from "./styles";
 import { WebExtension } from "./webextension";
 import { Footer } from "./footer";
 import { Header } from "./header";
+import { Image } from "./image";
+
 import {
   SectionProperty,
   PageMargin,

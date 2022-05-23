@@ -13,17 +13,21 @@ export class Image {
   size = (w: number, h: number) => {
     this.w = w;
     this.h = h;
+    return this;
   };
 
   floating = () => {
     this._floating = true;
+    return this;
   };
 
   offsetX = (x: number) => {
     this._offsetX = x;
+    return this;
   };
 
   offsetY = (y: number) => {
     this._offsetY = y;
+    return this;
   };
 }

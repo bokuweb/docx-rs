@@ -10,7 +10,7 @@ pub fn main() -> Result<(), DocxError> {
     let mut buf = Vec::new();
     let _ = img.read_to_end(&mut buf).unwrap();
 
-    let pic = Pic::new(buf)
+    let pic = Pic::new(&buf)
         .size(320 * 9525, 240 * 9525)
         .floating()
         .offset_x(300 * 9525)

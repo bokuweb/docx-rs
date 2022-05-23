@@ -49,7 +49,7 @@ pub struct Pic {
 impl Pic {
     pub fn new(buf: Vec<u8>) -> Pic {
         let id = create_pic_rid(generate_pic_id());
-        let dimg = image::load_from_memory(&buf).unwrap();
+        let dimg = image::load_from_memory(&buf).expect("Should load image from memory.");
         let size = dimg.dimensions();
         let mut image = vec![];
         dimg.write_to(&mut image, ImageFormat::Png)

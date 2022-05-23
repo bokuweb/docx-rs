@@ -18,6 +18,11 @@ impl Run {
         self
     }
 
+    pub fn add_image(mut self, pic: Pic) -> Run {
+        self.0 = self.0.add_image(pic.take());
+        self
+    }
+
     pub fn add_delete_text(mut self, text: &str) -> Run {
         self.0
             .children

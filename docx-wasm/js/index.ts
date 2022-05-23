@@ -25,6 +25,8 @@ import { Styles } from "./styles";
 import { WebExtension } from "./webextension";
 import { Footer } from "./footer";
 import { Header } from "./header";
+import { Image } from "./image";
+
 import {
   SectionProperty,
   PageMargin,
@@ -290,6 +292,21 @@ export class Docx {
         } else if (child.type === "textWrapping") {
           run = run.add_break(wasm.BreakType.TextWrapping);
         }
+      } else if (child instanceof Image) {
+        let pic = wasm.createPic(child.data);
+        if (child.w != null && child.h != null) {
+          pic = pic.size(child.w, child.h);
+        }
+        if (child._floating) {
+          pic = pic.floating();
+        }
+        if (child._offsetX != null) {
+          pic = pic.offset_x(child._offsetX);
+        }
+        if (child._offsetY != null) {
+          pic = pic.offset_x(child._offsetY);
+        }
+        run = run.add_image(pic);
       }
     });
 
@@ -1222,3 +1239,4 @@ export * from "./json";
 export * from "./webextension";
 export * from "./header";
 export * from "./footer";
+export * from "./image";

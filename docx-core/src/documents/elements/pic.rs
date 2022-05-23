@@ -47,13 +47,14 @@ pub struct Pic {
 }
 
 impl Pic {
-    pub fn new(buf: Vec<u8>) -> Pic {
+    pub fn new(buf: &[u8]) -> Pic {
         let id = create_pic_rid(generate_pic_id());
-        let dimg = image::load_from_memory(&buf).unwrap();
+        let dimg = image::load_from_memory(buf).expect("Should load image from memory.");
         let size = dimg.dimensions();
         let mut image = vec![];
+        // For now only png supported
         dimg.write_to(&mut image, ImageFormat::Png)
-            .expect("Unable to write");
+            .expect("Unable to write dynamic image");
         Self {
             id,
             image,
@@ -224,7 +225,7 @@ mod tests {
         let mut img = std::fs::File::open("../images/cat_min.jpg").unwrap();
         let mut buf = Vec::new();
         let _ = img.read_to_end(&mut buf).unwrap();
-        let b = Pic::new(buf).build();
+        let b = Pic::new(&buf).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">

@@ -5,8 +5,9 @@ import { DeleteText } from "./delete-text";
 import { Tab } from "./tab";
 import { Break, BreakType } from "./break";
 import { BorderType } from "./border";
+import { Image } from "./image";
 
-export type RunChild = Text | DeleteText | Tab | Break;
+export type RunChild = Text | DeleteText | Tab | Break | Image;
 
 export type TextBorder = {
   borderType: BorderType;
@@ -147,6 +148,11 @@ export class Run {
 
   addText(text: string) {
     this.children.push(new Text(text));
+    return this;
+  }
+
+  addImage(image: Image) {
+    this.children.push(image);
     return this;
   }
 

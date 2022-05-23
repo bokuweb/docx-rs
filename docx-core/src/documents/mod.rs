@@ -856,7 +856,8 @@ impl Docx {
                                     if let Some(DrawingData::Pic(pic)) = &mut d.data {
                                         images.push((
                                             pic.id.clone(),
-                                            format!("media/{}.jpg", pic.id),
+                                            // For now only png supported
+                                            format!("media/{}.png", pic.id),
                                         ));
                                         let b = std::mem::take(&mut pic.image);
                                         image_bufs.push((pic.id.clone(), b));
@@ -881,7 +882,8 @@ impl Docx {
                                                         {
                                                             images.push((
                                                                 pic.id.clone(),
-                                                                format!("media/{}.jpg", pic.id),
+                                                                // For now only png supported
+                                                                format!("media/{}.png", pic.id),
                                                             ));
                                                             let b = std::mem::take(&mut pic.image);
                                                             image_bufs.push((pic.id.clone(), b));

@@ -59,7 +59,8 @@ where
     if !xml.media.is_empty() {
         zip.add_directory("word/media/", Default::default())?;
         for m in xml.media {
-            zip.start_file(format!("word/media/image{}.jpg", m.0), options)?;
+            // For now only png supported
+            zip.start_file(format!("word/media/{}.png", m.0), options)?;
             zip.write_all(&m.1)?;
         }
     }

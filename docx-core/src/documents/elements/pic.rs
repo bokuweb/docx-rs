@@ -51,13 +51,13 @@ impl Pic {
         let id = create_pic_rid(generate_pic_id());
         let dimg = image::load_from_memory(buf).expect("Should load image from memory.");
         let size = dimg.dimensions();
-        let mut image = vec![];
+        let mut image = std::io::Cursor::new(vec![]);
         // For now only png supported
         dimg.write_to(&mut image, ImageFormat::Png)
             .expect("Unable to write dynamic image");
         Self {
             id,
-            image,
+            image: image.into_inner(),
             size: (from_px(size.0), from_px(size.1)),
             position_type: DrawingPositionType::Inline,
             simple_pos: false,

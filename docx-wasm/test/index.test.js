@@ -726,4 +726,22 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write inline jpeg image", () => {
+    const buf = Buffer.from(require("./cat"), "base64");
+    const image = new w.Image(buf).size(320 * 9525, 240 * 9525);
+    const p = new w.Paragraph().addRun(
+      new w.Run().addText("Hello world!!").addImage(image)
+    );
+    const buffer = new w.Docx().addParagraph(p).build();
+
+    writeFileSync("../output/js/inline_image.docx", buffer);
+
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

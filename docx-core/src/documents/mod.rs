@@ -849,23 +849,7 @@ impl Docx {
         for child in &mut self.document.children {
             match child {
                 DocumentChild::Paragraph(paragraph) => {
-                    for child in &mut paragraph.children {
-                        if let ParagraphChild::Run(run) = child {
-                            for child in &mut run.children {
-                                if let RunChild::Drawing(d) = child {
-                                    if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                                        images.push((
-                                            pic.id.clone(),
-                                            // For now only png supported
-                                            format!("media/{}.png", pic.id),
-                                        ));
-                                        let b = std::mem::take(&mut pic.image);
-                                        image_bufs.push((pic.id.clone(), b));
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs);
                 }
                 DocumentChild::Table(table) => {
                     for TableChild::TableRow(row) in &mut table.rows {
@@ -873,25 +857,11 @@ impl Docx {
                             for content in &mut cell.children {
                                 match content {
                                     TableCellContent::Paragraph(paragraph) => {
-                                        for child in &mut paragraph.children {
-                                            if let ParagraphChild::Run(run) = child {
-                                                for child in &mut run.children {
-                                                    if let RunChild::Drawing(d) = child {
-                                                        if let Some(DrawingData::Pic(pic)) =
-                                                            &mut d.data
-                                                        {
-                                                            images.push((
-                                                                pic.id.clone(),
-                                                                // For now only png supported
-                                                                format!("media/{}.png", pic.id),
-                                                            ));
-                                                            let b = std::mem::take(&mut pic.image);
-                                                            image_bufs.push((pic.id.clone(), b));
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
+                                        collect_images_from_paragraph(
+                                            paragraph,
+                                            &mut images,
+                                            &mut image_bufs,
+                                        );
                                     }
                                     TableCellContent::Table(_) => {
                                         // TODO: support comment
@@ -905,6 +875,88 @@ impl Docx {
             }
         }
         (images, image_bufs)
+    }
+}
+
+fn collect_images_from_paragraph(
+    paragraph: &mut Paragraph,
+    images: &mut Vec<(String, String)>,
+    image_bufs: &mut Vec<(String, Vec<u8>)>,
+) {
+    for child in &mut paragraph.children {
+        if let ParagraphChild::Run(run) = child {
+            for child in &mut run.children {
+                if let RunChild::Drawing(d) = child {
+                    if let Some(DrawingData::Pic(pic)) = &mut d.data {
+                        images.push((
+                            pic.id.clone(),
+                            // For now only png supported
+                            format!("media/{}.png", pic.id),
+                        ));
+                        let b = std::mem::take(&mut pic.image);
+                        image_bufs.push((pic.id.clone(), b));
+                    }
+                }
+            }
+        } else if let ParagraphChild::Insert(ins) = child {
+            for child in &mut ins.children {
+                match child {
+                    InsertChild::Run(run) => {
+                        for child in &mut run.children {
+                            if let RunChild::Drawing(d) = child {
+                                if let Some(DrawingData::Pic(pic)) = &mut d.data {
+                                    images.push((
+                                        pic.id.clone(),
+                                        // For now only png supported
+                                        format!("media/{}.png", pic.id),
+                                    ));
+                                    let b = std::mem::take(&mut pic.image);
+                                    image_bufs.push((pic.id.clone(), b));
+                                }
+                            }
+                        }
+                    }
+                    InsertChild::Delete(del) => {
+                        for d in &mut del.children {
+                            if let DeleteChild::Run(run) = d {
+                                for child in &mut run.children {
+                                    if let RunChild::Drawing(d) = child {
+                                        if let Some(DrawingData::Pic(pic)) = &mut d.data {
+                                            images.push((
+                                                pic.id.clone(),
+                                                // For now only png supported
+                                                format!("media/{}.png", pic.id),
+                                            ));
+                                            let b = std::mem::take(&mut pic.image);
+                                            image_bufs.push((pic.id.clone(), b));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    _ => {}
+                }
+            }
+        } else if let ParagraphChild::Delete(del) = child {
+            for d in &mut del.children {
+                if let DeleteChild::Run(run) = d {
+                    for child in &mut run.children {
+                        if let RunChild::Drawing(d) = child {
+                            if let Some(DrawingData::Pic(pic)) = &mut d.data {
+                                images.push((
+                                    pic.id.clone(),
+                                    // For now only png supported
+                                    format!("media/{}.png", pic.id),
+                                ));
+                                let b = std::mem::take(&mut pic.image);
+                                image_bufs.push((pic.id.clone(), b));
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

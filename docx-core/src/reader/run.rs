@@ -88,6 +88,10 @@ impl ElementReader for Run {
                                         run = run.add_drawing(drawing);
                                     }
                                 }
+                                // For now, we treat pict ad drawing
+                                XMLElement::Pict => {
+
+                                }
                                 XMLElement::FieldChar => {
                                     if let Ok(f) = read_field_char(&attributes) {
                                         run.children.push(RunChild::FieldChar(f));

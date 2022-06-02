@@ -744,4 +744,46 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write jpeg image with ins", () => {
+    const buf = Buffer.from(require("./cat"), "base64");
+    const image = new w.Image(buf).size(320 * 9525, 240 * 9525);
+    const p = new w.Paragraph().addInsert(
+      new w.Insert(new w.Run().addImage(image))
+        .author("bokuweb")
+        .date("2021-12-23T18:16:00Z")
+    );
+
+    const buffer = new w.Docx().addParagraph(p).build();
+
+    writeFileSync("../output/js/image_with_ins.docx", buffer);
+
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write jpeg image with del", () => {
+    const buf = Buffer.from(require("./cat"), "base64");
+    const image = new w.Image(buf).size(320 * 9525, 240 * 9525);
+    const p = new w.Paragraph().addDelete(
+      new w.Delete(new w.Run().addImage(image))
+        .author("bokuweb")
+        .date("2021-12-23T18:16:00Z")
+    );
+
+    const buffer = new w.Docx().addParagraph(p).build();
+
+    writeFileSync("../output/js/image_with_del.docx", buffer);
+
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

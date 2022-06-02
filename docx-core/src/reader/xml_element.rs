@@ -210,6 +210,7 @@ pub enum VXMLElement {
     Stroke,
     Fill,
     TextBox,
+    Shape,
     Unsupported,
 }
 
@@ -450,6 +451,7 @@ impl FromStr for VXMLElement {
             "stroke" => Ok(VXMLElement::Stroke),
             "fill" => Ok(VXMLElement::Fill),
             "textbox" => Ok(VXMLElement::TextBox),
+            "shape" => Ok(VXMLElement::Shape),
             _ => Ok(VXMLElement::Unsupported),
         }
     }

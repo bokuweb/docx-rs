@@ -1,4 +1,5 @@
 import { DrawingJSON } from "./drawing";
+import { ShapeJSON } from "./shape";
 import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
 import { BorderType } from "../border";
 import { InsertJSON, DeleteJSON } from "./paragraph";
@@ -50,6 +51,7 @@ export type RunChildJSON =
   | TabJSON
   | BreakJSON
   | DrawingJSON
+  | ShapeJSON
   | CommentRangeStartJSON
   | CommentRangeEndJSON;
 

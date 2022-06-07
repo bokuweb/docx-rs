@@ -211,6 +211,7 @@ pub enum VXMLElement {
     Fill,
     TextBox,
     Shape,
+    ImageData,
     Unsupported,
 }
 
@@ -452,6 +453,7 @@ impl FromStr for VXMLElement {
             "fill" => Ok(VXMLElement::Fill),
             "textbox" => Ok(VXMLElement::TextBox),
             "shape" => Ok(VXMLElement::Shape),
+            "imagedata" => Ok(VXMLElement::ImageData),
             _ => Ok(VXMLElement::Unsupported),
         }
     }

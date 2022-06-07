@@ -10,6 +10,7 @@ mod comments_extended;
 mod custom_properties;
 mod delete;
 mod div;
+mod shape;
 mod doc_defaults;
 mod doc_grid;
 mod document;

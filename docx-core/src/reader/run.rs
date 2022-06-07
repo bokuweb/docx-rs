@@ -88,10 +88,6 @@ impl ElementReader for Run {
                                         run = run.add_drawing(drawing);
                                     }
                                 }
-                                // For now, we treat pict ad drawing
-                                XMLElement::Pict => {
-
-                                }
                                 XMLElement::FieldChar => {
                                     if let Ok(f) = read_field_char(&attributes) {
                                         run.children.push(RunChild::FieldChar(f));
@@ -110,6 +106,18 @@ impl ElementReader for Run {
                             match e {
                                 McXMLElement::Fallback => {
                                     let _ = McFallback::read(r, &attributes)?;
+                                }
+                                _ => {}
+                            }
+                        }
+                        Some("v") => {
+                            let e = VXMLElement::from_str(&name.local_name).unwrap();
+                            match e {
+                                // Experimental For now support only imageData in shape
+                                VXMLElement::Shape => {
+                                    if let Ok(shape) = Shape::read(r, &attributes) {
+                                        run.children.push(RunChild::Shape(Box::new(shape)));
+                                    }
                                 }
                                 _ => {}
                             }

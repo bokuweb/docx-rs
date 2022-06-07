@@ -18,7 +18,7 @@
     "serve": "webpack-dev-server --open --config webpack.dev.js",
     "copy": "cpy 'dist/node/pkg/package.json'  'dist/web/pkg'",
     "tsrs": "cd ../ && make test",
-    "copy:bindings": "cpy '../docx-core/bindings' './js/json/bindings'",
+    "copy:bindings": "cpy '../docx-core/bindings' './js/json'",
     "prepublishOnly": "npm run build"
   },
   "resolutions": {

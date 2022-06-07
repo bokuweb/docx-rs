@@ -30,6 +30,7 @@ pub enum RunChild {
     Tab(Tab),
     Break(Break),
     Drawing(Box<Drawing>),
+    Shape(Box<Shape>),
     CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
     FieldChar(FieldChar),
@@ -68,6 +69,12 @@ impl Serialize for RunChild {
             RunChild::Drawing(ref s) => {
                 let mut t = serializer.serialize_struct("Drawing", 2)?;
                 t.serialize_field("type", "drawing")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+            RunChild::Shape(ref s) => {
+                let mut t = serializer.serialize_struct("Shape", 2)?;
+                t.serialize_field("type", "shape")?;
                 t.serialize_field("data", s)?;
                 t.end()
             }
@@ -148,6 +155,12 @@ impl Run {
         self.children.push(RunChild::Drawing(Box::new(d)));
         self
     }
+
+    // For now reader only
+    //    pub(crate) fn add_shape(mut self, d: Shape) -> Run {
+    //        self.children.push(RunChild::Shape(Box::new(d)));
+    //        self
+    //    }
 
     pub fn add_break(mut self, break_type: BreakType) -> Run {
         self.children.push(RunChild::Break(Break::new(break_type)));
@@ -236,6 +249,9 @@ impl BuildXML for Run {
                 RunChild::Tab(t) => b = b.add_child(t),
                 RunChild::Break(t) => b = b.add_child(t),
                 RunChild::Drawing(t) => b = b.add_child(t),
+                RunChild::Shape(_t) => {
+                    todo!("Support shape writer.")
+                }
                 RunChild::CommentStart(c) => b = b.add_child(c),
                 RunChild::CommentEnd(c) => b = b.add_child(c),
                 RunChild::FieldChar(c) => b = b.add_child(c),

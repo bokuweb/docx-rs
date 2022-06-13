@@ -863,8 +863,12 @@ impl Docx {
                                             &mut image_bufs,
                                         );
                                     }
-                                    TableCellContent::Table(_) => {
-                                        // TODO: support comment
+                                    TableCellContent::Table(table) => {
+                                        collect_images_from_table(
+                                            table,
+                                            &mut images,
+                                            &mut image_bufs,
+                                        );
                                     }
                                 }
                             }
@@ -953,6 +957,27 @@ fn collect_images_from_paragraph(
                                 image_bufs.push((pic.id.clone(), b));
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+fn collect_images_from_table(
+    table: &mut Table,
+    images: &mut Vec<(String, String)>,
+    image_bufs: &mut Vec<(String, Vec<u8>)>,
+) {
+    for TableChild::TableRow(row) in &mut table.rows {
+        for TableRowChild::TableCell(cell) in &mut row.cells {
+            for content in &mut cell.children {
+                match content {
+                    TableCellContent::Paragraph(paragraph) => {
+                        collect_images_from_paragraph(paragraph, images, image_bufs);
+                    }
+                    TableCellContent::Table(table) => {
+                        collect_images_from_table(table, images, image_bufs)
                     }
                 }
             }

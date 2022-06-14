@@ -592,31 +592,7 @@ impl Docx {
                 let para_id = child.id.clone();
                 comment_map.insert(comment_id, para_id.clone());
             }
-            // TODO: Support table
-        }
-    }
-
-    fn push_comment_and_comment_extended(
-        &self,
-        comments: &mut Vec<Comment>,
-        comments_extended: &mut Vec<CommentExtended>,
-        comment_map: &HashMap<usize, String>,
-        c: &CommentRangeStart,
-    ) {
-        let comment = c.get_comment();
-        for child in comment.children {
-            if let CommentChild::Paragraph(child) = child {
-                let para_id = child.id.clone();
-                comments.push(c.get_comment());
-                let comment_extended = CommentExtended::new(para_id);
-                if let Some(parent_comment_id) = comment.parent_comment_id {
-                    let parent_para_id = comment_map.get(&parent_comment_id).unwrap().clone();
-                    comments_extended.push(comment_extended.parent_paragraph_id(parent_para_id));
-                } else {
-                    comments_extended.push(comment_extended);
-                }
-            }
-            // TODO: Support table
+            // TODO: Support table in comment
         }
     }
 
@@ -643,34 +619,12 @@ impl Docx {
                     }
                 }
                 DocumentChild::Table(table) => {
-                    for TableChild::TableRow(row) in &table.rows {
-                        for TableRowChild::TableCell(cell) in &row.cells {
-                            for content in &cell.children {
-                                match content {
-                                    TableCellContent::Paragraph(paragraph) => {
-                                        for child in &paragraph.children {
-                                            if let ParagraphChild::CommentStart(c) = child {
-                                                self.insert_comment_to_map(&mut comment_map, c);
-                                            }
-                                            if let ParagraphChild::Hyperlink(h) = child {
-                                                for child in &h.children {
-                                                    if let ParagraphChild::CommentStart(c) = child {
-                                                        self.insert_comment_to_map(
-                                                            &mut comment_map,
-                                                            c,
-                                                        );
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    TableCellContent::Table(_) => {
-                                        // TODO: correct comment
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    collect_comments_in_table(
+                        table,
+                        &mut comments,
+                        &mut comments_extended,
+                        &mut comment_map,
+                    );
                 }
                 _ => {}
             }
@@ -681,7 +635,7 @@ impl Docx {
                 DocumentChild::Paragraph(paragraph) => {
                     for child in &paragraph.children {
                         if let ParagraphChild::CommentStart(c) = child {
-                            self.push_comment_and_comment_extended(
+                            push_comment_and_comment_extended(
                                 &mut comments,
                                 &mut comments_extended,
                                 &comment_map,
@@ -691,7 +645,7 @@ impl Docx {
                         if let ParagraphChild::Hyperlink(h) = child {
                             for child in &h.children {
                                 if let ParagraphChild::CommentStart(c) = child {
-                                    self.push_comment_and_comment_extended(
+                                    push_comment_and_comment_extended(
                                         &mut comments,
                                         &mut comments_extended,
                                         &comment_map,
@@ -703,41 +657,12 @@ impl Docx {
                     }
                 }
                 DocumentChild::Table(table) => {
-                    for TableChild::TableRow(row) in &table.rows {
-                        for TableRowChild::TableCell(cell) in &row.cells {
-                            for content in &cell.children {
-                                match content {
-                                    TableCellContent::Paragraph(paragraph) => {
-                                        for child in &paragraph.children {
-                                            if let ParagraphChild::CommentStart(c) = child {
-                                                self.push_comment_and_comment_extended(
-                                                    &mut comments,
-                                                    &mut comments_extended,
-                                                    &comment_map,
-                                                    c,
-                                                );
-                                            }
-                                            if let ParagraphChild::Hyperlink(h) = child {
-                                                for child in &h.children {
-                                                    if let ParagraphChild::CommentStart(c) = child {
-                                                        self.push_comment_and_comment_extended(
-                                                            &mut comments,
-                                                            &mut comments_extended,
-                                                            &comment_map,
-                                                            c,
-                                                        );
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    TableCellContent::Table(_) => {
-                                        // TODO: correct comment
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    collect_comments_in_table(
+                        table,
+                        &mut comments,
+                        &mut comments_extended,
+                        &mut comment_map,
+                    );
                 }
                 _ => {}
             }
@@ -755,6 +680,7 @@ impl Docx {
     }
 
     // Traverse and clone comments from document and add to comments node.
+    // reader only
     pub(crate) fn store_comments(&mut self, comments: &[Comment]) {
         for child in &mut self.document.children {
             match child {
@@ -795,64 +721,7 @@ impl Docx {
                         }
                     }
                 }
-                DocumentChild::Table(table) => {
-                    for TableChild::TableRow(row) in &mut table.rows {
-                        for TableRowChild::TableCell(cell) in &mut row.cells {
-                            for content in &mut cell.children {
-                                match content {
-                                    TableCellContent::Paragraph(paragraph) => {
-                                        for child in &mut paragraph.children {
-                                            if let ParagraphChild::CommentStart(ref mut c) = child {
-                                                let comment_id = c.get_id();
-                                                if let Some(comment) =
-                                                    comments.iter().find(|c| c.id() == comment_id)
-                                                {
-                                                    let comment = comment.clone();
-                                                    c.as_mut().comment(comment);
-                                                }
-                                            }
-                                            if let ParagraphChild::Insert(ref mut insert) = child {
-                                                for child in &mut insert.children {
-                                                    if let InsertChild::CommentStart(ref mut c) =
-                                                        child
-                                                    {
-                                                        let comment_id = c.get_id();
-                                                        if let Some(comment) = comments
-                                                            .iter()
-                                                            .find(|c| c.id() == comment_id)
-                                                        {
-                                                            let comment = comment.clone();
-                                                            c.as_mut().comment(comment);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            if let ParagraphChild::Delete(ref mut delete) = child {
-                                                for child in &mut delete.children {
-                                                    if let DeleteChild::CommentStart(ref mut c) =
-                                                        child
-                                                    {
-                                                        let comment_id = c.get_id();
-                                                        if let Some(comment) = comments
-                                                            .iter()
-                                                            .find(|c| c.id() == comment_id)
-                                                        {
-                                                            let comment = comment.clone();
-                                                            c.as_mut().comment(comment);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    TableCellContent::Table(_) => {
-                                        // TODO: support comment
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                DocumentChild::Table(table) => store_comments_in_table(table, comments),
                 _ => {}
             }
         }
@@ -900,6 +769,102 @@ impl Docx {
             }
         }
         (images, image_bufs)
+    }
+}
+
+fn collect_comments_in_table(
+    table: &Table,
+    comments: &mut Vec<Comment>,
+    comments_extended: &mut Vec<CommentExtended>,
+    comment_map: &mut HashMap<usize, String>,
+) {
+    for TableChild::TableRow(row) in &table.rows {
+        for TableRowChild::TableCell(cell) in &row.cells {
+            for content in &cell.children {
+                match content {
+                    TableCellContent::Paragraph(paragraph) => {
+                        for child in &paragraph.children {
+                            if let ParagraphChild::CommentStart(c) = child {
+                                push_comment_and_comment_extended(
+                                    comments,
+                                    comments_extended,
+                                    comment_map,
+                                    c,
+                                );
+                            }
+                            if let ParagraphChild::Hyperlink(h) = child {
+                                for child in &h.children {
+                                    if let ParagraphChild::CommentStart(c) = child {
+                                        push_comment_and_comment_extended(
+                                            comments,
+                                            comments_extended,
+                                            comment_map,
+                                            c,
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    TableCellContent::Table(table) => {
+                        collect_comments_in_table(table, comments, comments_extended, comment_map)
+                    }
+                }
+            }
+        }
+    }
+}
+
+fn store_comments_in_table(table: &mut Table, comments: &[Comment]) {
+    for TableChild::TableRow(row) in &mut table.rows {
+        for TableRowChild::TableCell(cell) in &mut row.cells {
+            for content in &mut cell.children {
+                match content {
+                    TableCellContent::Paragraph(paragraph) => {
+                        for child in &mut paragraph.children {
+                            if let ParagraphChild::CommentStart(ref mut c) = child {
+                                let comment_id = c.get_id();
+                                if let Some(comment) =
+                                    comments.iter().find(|c| c.id() == comment_id)
+                                {
+                                    let comment = comment.clone();
+                                    c.as_mut().comment(comment);
+                                }
+                            }
+                            if let ParagraphChild::Insert(ref mut insert) = child {
+                                for child in &mut insert.children {
+                                    if let InsertChild::CommentStart(ref mut c) = child {
+                                        let comment_id = c.get_id();
+                                        if let Some(comment) =
+                                            comments.iter().find(|c| c.id() == comment_id)
+                                        {
+                                            let comment = comment.clone();
+                                            c.as_mut().comment(comment);
+                                        }
+                                    }
+                                }
+                            }
+                            if let ParagraphChild::Delete(ref mut delete) = child {
+                                for child in &mut delete.children {
+                                    if let DeleteChild::CommentStart(ref mut c) = child {
+                                        let comment_id = c.get_id();
+                                        if let Some(comment) =
+                                            comments.iter().find(|c| c.id() == comment_id)
+                                        {
+                                            let comment = comment.clone();
+                                            c.as_mut().comment(comment);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    TableCellContent::Table(ref mut table) => {
+                        store_comments_in_table(table, comments);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -982,6 +947,29 @@ fn collect_images_from_paragraph(
                 }
             }
         }
+    }
+}
+
+fn push_comment_and_comment_extended(
+    comments: &mut Vec<Comment>,
+    comments_extended: &mut Vec<CommentExtended>,
+    comment_map: &HashMap<usize, String>,
+    c: &CommentRangeStart,
+) {
+    let comment = c.get_comment();
+    for child in comment.children {
+        if let CommentChild::Paragraph(child) = child {
+            let para_id = child.id.clone();
+            comments.push(c.get_comment());
+            let comment_extended = CommentExtended::new(para_id);
+            if let Some(parent_comment_id) = comment.parent_comment_id {
+                let parent_para_id = comment_map.get(&parent_comment_id).unwrap().clone();
+                comments_extended.push(comment_extended.parent_paragraph_id(parent_para_id));
+            } else {
+                comments_extended.push(comment_extended);
+            }
+        }
+        // TODO: Support table in comment
     }
 }
 

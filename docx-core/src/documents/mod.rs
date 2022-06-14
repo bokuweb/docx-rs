@@ -36,6 +36,7 @@ mod xml_docx;
 
 pub(crate) use build_xml::BuildXML;
 pub(crate) use history_id::HistoryId;
+use image::ImageFormat;
 pub(crate) use paragraph_id::*;
 pub(crate) use paragraph_property_change_id::ParagraphPropertyChangeId;
 pub(crate) use pic_id::*;
@@ -73,10 +74,23 @@ use serde::{ser, Serialize};
 #[derive(Debug, Clone)]
 pub struct Image(pub Vec<u8>);
 
+#[derive(Debug, Clone)]
+pub struct Png(pub Vec<u8>);
+
 pub type ImageIdAndPath = (String, String);
 pub type ImageIdAndBuf = (String, Vec<u8>);
 
 impl ser::Serialize for Image {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: ser::Serializer,
+    {
+        let base64 = base64::display::Base64Display::with_config(&*self.0, base64::STANDARD);
+        serializer.collect_str(&base64)
+    }
+}
+
+impl ser::Serialize for Png {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: ser::Serializer,
@@ -111,7 +125,7 @@ pub struct Docx {
     // reader only
     pub themes: Vec<Theme>,
     // reader only
-    pub images: Vec<(String, String, Image)>,
+    pub images: Vec<(String, String, Image, Png)>,
 }
 
 impl Default for Docx {
@@ -214,7 +228,14 @@ impl Docx {
         path: impl Into<String>,
         buf: Vec<u8>,
     ) -> Self {
-        self.images.push((id.into(), path.into(), Image(buf)));
+        let dimg = image::load_from_memory(&buf).expect("Should load image from memory.");
+        let mut png = std::io::Cursor::new(vec![]);
+        // For now only png supported
+        dimg.write_to(&mut png, ImageFormat::Png)
+            .expect("Unable to write dynamic image");
+
+        self.images
+            .push((id.into(), path.into(), Image(buf), Png(png.into_inner())));
         self
     }
 

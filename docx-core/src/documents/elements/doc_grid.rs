@@ -9,7 +9,7 @@ use crate::xml_builder::*;
 pub struct DocGrid {
     grid_type: DocGridType,
     line_pitch: Option<usize>,
-    char_space: Option<usize>,
+    char_space: Option<isize>,
 }
 
 impl DocGrid {
@@ -35,7 +35,7 @@ impl DocGrid {
         self
     }
 
-    pub fn char_space(mut self, char_space: usize) -> Self {
+    pub fn char_space(mut self, char_space: isize) -> Self {
         self.char_space = Some(char_space);
         self
     }

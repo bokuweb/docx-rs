@@ -23,7 +23,7 @@ impl ElementReader for DocGrid {
                 doc_grid = doc_grid.line_pitch(line_pitch as usize);
             } else if local_name == "charSpace" {
                 let char_space = f32::from_str(&a.value)?;
-                doc_grid = doc_grid.char_space(char_space as usize);
+                doc_grid = doc_grid.char_space(char_space as isize);
             }
         }
         Ok(doc_grid)

@@ -529,7 +529,7 @@ impl XMLBuilder {
         mut self,
         t: &DocGridType,
         line_pitch: Option<usize>,
-        char_space: Option<usize>,
+        char_space: Option<isize>,
     ) -> Self {
         let t = t.to_string();
         let line_pitch_string = format!("{}", line_pitch.unwrap_or_default());

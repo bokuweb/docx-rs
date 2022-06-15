@@ -162,7 +162,7 @@ impl Docx {
         mut self,
         grid_type: docx_rs::DocGridType,
         line_pitch: Option<usize>,
-        char_space: Option<usize>,
+        char_space: Option<isize>,
     ) -> Self {
         let mut doc_grid = docx_rs::DocGrid::with_empty().grid_type(grid_type);
         if let Some(line_pitch) = line_pitch {

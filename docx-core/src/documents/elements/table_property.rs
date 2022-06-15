@@ -13,9 +13,13 @@ pub struct TableProperty {
     width: TableWidth,
     justification: Justification,
     borders: TableBorders,
+    #[serde(skip_serializing_if = "Option::is_none")]
     margins: Option<TableCellMargins>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     indent: Option<TableIndent>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     style: Option<TableStyle>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     layout: Option<TableLayout>,
 }
 
@@ -166,12 +170,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tblPr><w:tblW w:w="0" w:type="dxa" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders><w:tblCellMar>
-  <w:top w:w="0" w:type="dxa" />
-  <w:left w:w="55" w:type="dxa" />
-  <w:bottom w:w="0" w:type="dxa" />
-  <w:right w:w="55" w:type="dxa" />
-</w:tblCellMar></w:tblPr>"#
+            r#"<w:tblPr><w:tblW w:w="0" w:type="dxa" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders></w:tblPr>"#
         );
     }
 
@@ -180,7 +179,7 @@ mod tests {
         let p = TableProperty::new().indent(100);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"width":{"width":0,"widthType":"auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}},"margins":{"top":{"val":0,"widthType":"dxa"},"left":{"val":55,"widthType":"dxa"},"bottom":{"val":0,"widthType":"dxa"},"right":{"val":55,"widthType":"dxa"}},"indent":{"width":100,"widthType":"dxa"},"style":null,"layout":null}"#
+            r#"{"width":{"width":0,"widthType":"auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}},"indent":{"width":100,"widthType":"dxa"}}"#
         );
     }
 }

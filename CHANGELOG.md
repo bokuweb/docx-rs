@@ -5,9 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## docx-wasm@0.0.271 (15. Jun, 2022)
+## docx-wasm@0.0.271, @0.0.272 (15. Jun, 2022)
 
 - [Breaking] Remove default `TableCellMargin`. Please specify if needed.
+- Support table cell margins reader.
 
 ## docx-wasm@0.0.269, @0.0.270 (14. Jun, 2022)
 

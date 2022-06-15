@@ -148,8 +148,8 @@ describe("reader", () => {
     expect(json).toMatchSnapshot();
   });
 
-  test("should read imagedata in shape", () => {
-    const buffer = readFileSync("../fixtures/shape/shape.docx");
+  test("should read nested table", () => {
+    const buffer = readFileSync("../fixtures/nested_table/nested_table.docx");
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });

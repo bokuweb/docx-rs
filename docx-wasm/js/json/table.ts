@@ -6,7 +6,7 @@ import { ShadingJSON } from "./shading";
 import { TableLayoutType } from "../table";
 import { DeleteJSON, InsertJSON } from "..";
 
-export type TableCellChildJSON = ParagraphJSON;
+export type TableCellChildJSON = ParagraphJSON | TableJSON;
 
 export type WidthType = "dxa" | "auto" | "pct" | "nil";
 

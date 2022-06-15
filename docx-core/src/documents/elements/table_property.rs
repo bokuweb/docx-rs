@@ -1,5 +1,5 @@
-use wasm_bindgen::prelude::*;
 use serde::Serialize;
+use wasm_bindgen::prelude::*;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -13,7 +13,7 @@ pub struct TableProperty {
     width: TableWidth,
     justification: Justification,
     borders: TableBorders,
-    margins: TableCellMargins,
+    margins: Option<TableCellMargins>,
     indent: Option<TableIndent>,
     style: Option<TableStyle>,
     layout: Option<TableLayout>,
@@ -25,7 +25,7 @@ impl Default for TableProperty {
             width: TableWidth::new(0, WidthType::Auto),
             justification: Justification::new("left"),
             borders: TableBorders::new(),
-            margins: TableCellMargins::new(),
+            margins: None,
             indent: None,
             style: None,
             layout: None,
@@ -61,27 +61,47 @@ impl TableProperty {
     }
 
     pub fn set_margins(mut self, margins: TableCellMargins) -> Self {
-        self.margins = margins;
+        self.margins = Some(margins);
         self
     }
 
     pub fn cell_margin_top(mut self, v: usize, t: WidthType) -> Self {
-        self.margins = self.margins.margin_top(v, t);
+        if let Some(margins) = self.margins {
+            self.margins = Some(margins.margin_top(v, t));
+        } else {
+            let margins = TableCellMargins::new();
+            self.margins = Some(margins.margin_top(v, t));
+        }
         self
     }
 
     pub fn cell_margin_right(mut self, v: usize, t: WidthType) -> Self {
-        self.margins = self.margins.margin_right(v, t);
+        if let Some(margins) = self.margins {
+            self.margins = Some(margins.margin_right(v, t));
+        } else {
+            let margins = TableCellMargins::new();
+            self.margins = Some(margins.margin_right(v, t));
+        }
         self
     }
 
     pub fn cell_margin_bottom(mut self, v: usize, t: WidthType) -> Self {
-        self.margins = self.margins.margin_bottom(v, t);
+        if let Some(margins) = self.margins {
+            self.margins = Some(margins.margin_bottom(v, t));
+        } else {
+            let margins = TableCellMargins::new();
+            self.margins = Some(margins.margin_bottom(v, t));
+        }
         self
     }
 
     pub fn cell_margin_left(mut self, v: usize, t: WidthType) -> Self {
-        self.margins = self.margins.margin_left(v, t);
+        if let Some(margins) = self.margins {
+            self.margins = Some(margins.margin_left(v, t));
+        } else {
+            let margins = TableCellMargins::new();
+            self.margins = Some(margins.margin_left(v, t));
+        }
         self
     }
 
@@ -123,7 +143,7 @@ impl BuildXML for TableProperty {
             .add_child(&self.width)
             .add_child(&self.justification)
             .add_child(&self.borders)
-            .add_child(&self.margins)
+            .add_optional_child(&self.margins)
             .add_optional_child(&self.indent)
             .add_optional_child(&self.style)
             .add_optional_child(&self.layout)

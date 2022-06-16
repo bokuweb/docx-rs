@@ -4,6 +4,7 @@ use std::str::FromStr;
 use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
+use crate::escape;
 use super::*;
 
 impl ElementReader for Comment {
@@ -14,7 +15,7 @@ impl ElementReader for Comment {
         let id = usize::from_str(&read(attrs, "id").expect("should comment id exists."))?;
         let mut comment = Comment::new(id);
         if let Some(author) = read(attrs, "author") {
-            comment = comment.author(author);
+            comment = comment.author(escape::escape(author.as_str()));
         };
         if let Some(date) = read(attrs, "date") {
             comment = comment.date(date);

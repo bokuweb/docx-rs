@@ -66,19 +66,15 @@ impl ElementReader for RunProperty {
                             }
                         }
                         XMLElement::Bold => {
-                            if !read_bool(&attributes) {
-                                rp = rp.disable_bold();
-                                continue;
+                            if read_bool(&attributes) {
+                                rp = rp.bold();
                             }
-                            rp = rp.bold();
                         }
                         XMLElement::Highlight => rp = rp.highlight(attributes[0].value.clone()),
                         XMLElement::Strike => {
-                            if !read_bool(&attributes) {
-                                rp.strike = Some(Strike::new().disable());
-                                continue;
+                            if read_bool(&attributes) {
+                                rp = rp.strike();
                             }
-                            rp = rp.strike();
                         }
                         XMLElement::VertAlign => {
                             if let Ok(v) = VertAlignType::from_str(&attributes[0].value) {
@@ -100,11 +96,10 @@ impl ElementReader for RunProperty {
                         }
                         XMLElement::Underline => rp = rp.underline(&attributes[0].value.clone()),
                         XMLElement::Italic => {
-                            if !read_bool(&attributes) {
-                                rp = rp.disable_italic();
-                                continue;
+                            if read_bool(&attributes) {
+                                rp = rp.italic();
                             }
-                            rp = rp.italic();
+                            
                         }
                         XMLElement::Vanish => rp = rp.vanish(),
                         XMLElement::TextBorder => {

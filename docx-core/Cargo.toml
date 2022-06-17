@@ -32,4 +32,4 @@ ts-rs = "6.1"
 
 [dev-dependencies]
 pretty_assertions = "1.2.1"
-insta = "1.14"
+insta = "1.15"

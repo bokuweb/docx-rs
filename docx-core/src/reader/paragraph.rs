@@ -31,6 +31,11 @@ impl ElementReader for Paragraph {
                             p = p.add_run(run);
                             continue;
                         }
+                        XMLElement::Hyperlink => {
+                            let link = Hyperlink::read(r, attrs)?;
+                            p = p.add_hyperlink(link);
+                            continue;
+                        }
                         XMLElement::Insert => {
                             let ins = Insert::read(r, &attributes)?;
                             p = p.add_insert(ins);

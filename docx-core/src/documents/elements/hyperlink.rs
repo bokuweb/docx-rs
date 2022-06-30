@@ -5,18 +5,29 @@ use crate::documents::BuildXML;
 use crate::{create_hyperlink_rid, generate_hyperlink_id, xml_builder::*};
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[serde(tag = "type")]
+#[serde(rename_all = "camelCase")]
 pub enum HyperlinkData {
-    External { rid: String, path: String },
-    Anchor { anchor: String },
+    External {
+        rid: String,
+        // path is writer only
+        #[serde(skip_serializing_if = "String::is_empty")]
+        path: String,
+    },
+    Anchor {
+        anchor: String,
+    },
 }
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub enum HyperlinkType {
     External,
     Anchor,
 }
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[serde(rename_all = "camelCase")]
 pub struct Hyperlink {
     pub data: HyperlinkData,
     pub history: usize,

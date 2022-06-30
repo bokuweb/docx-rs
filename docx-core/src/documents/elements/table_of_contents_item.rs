@@ -85,8 +85,7 @@ impl BuildXML for Vec<TableOfContentsItem> {
 
                 if t.instr.hyperlink {
                     p = p.add_hyperlink(
-                        Hyperlink::new()
-                            .anchor(&t.toc_key)
+                        Hyperlink::new(&t.toc_key, HyperlinkType::Anchor)
                             .add_run(run)
                             .add_run(Run::new().add_tab())
                             .add_run(page_ref),
@@ -120,8 +119,7 @@ impl BuildXML for Vec<TableOfContentsItem> {
 
                 if t.instr.hyperlink {
                     p = p.add_hyperlink(
-                        Hyperlink::new()
-                            .anchor(&t.toc_key)
+                        Hyperlink::new(&t.toc_key, HyperlinkType::Anchor)
                             .add_run(run)
                             .add_run(Run::new().add_tab())
                             .add_run(page_ref),

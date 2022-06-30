@@ -8,6 +8,14 @@ impl XMLBuilder {
 
     // Build Relationship
     closed!(relationship, "Relationship", "Id", "Type", "Target");
+    closed!(
+        relationship_with_mode,
+        "Relationship",
+        "Id",
+        "Type",
+        "Target",
+        "TargetMode"
+    );
 }
 
 #[cfg(test)]

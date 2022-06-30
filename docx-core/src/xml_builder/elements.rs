@@ -106,18 +106,18 @@ impl XMLBuilder {
         mut self,
         rid: Option<&String>,
         anchor: Option<&String>,
-        history: bool,
+        history: Option<usize>,
     ) -> Self {
         let mut e = XmlEvent::start_element("w:hyperlink");
+        let history = history.unwrap_or(1);
         if let Some(rid) = rid {
-            e = e.attr("w:rid", rid);
+            e = e.attr("r:id", rid);
         }
         if let Some(anchor) = anchor {
             e = e.attr("w:anchor", anchor);
         }
-        if history {
-            e = e.attr("w:history", "true");
-        }
+        let s = format!("{}", history);
+        e = e.attr("w:history", s.as_str());
         self.writer.write(e).expect(EXPECT_MESSAGE);
         self
     }

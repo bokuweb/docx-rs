@@ -2,34 +2,45 @@ use serde::Serialize;
 
 use super::*;
 use crate::documents::BuildXML;
-use crate::xml_builder::*;
+use crate::{create_hyperlink_rid, generate_hyperlink_id, xml_builder::*};
 
-#[derive(Serialize, Debug, Clone, PartialEq, Default)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
+pub enum HyperlinkData {
+    External { rid: String, path: String },
+    Anchor { anchor: String },
+}
+
+#[derive(Serialize, Debug, Clone, PartialEq)]
+pub enum HyperlinkType {
+    External,
+    Anchor,
+}
+
+#[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct Hyperlink {
-    pub rid: Option<String>,
-    pub anchor: Option<String>,
-    pub history: bool,
+    pub data: HyperlinkData,
+    pub history: usize,
     pub children: Vec<ParagraphChild>,
 }
 
 impl Hyperlink {
-    pub fn new() -> Self {
-        Hyperlink::default()
-    }
-
-    pub fn rid(mut self, rid: impl Into<String>) -> Self {
-        self.rid = Some(rid.into());
-        self
-    }
-
-    pub fn anchor(mut self, anchor: impl Into<String>) -> Self {
-        self.anchor = Some(anchor.into());
-        self
-    }
-
-    pub fn history(mut self) -> Self {
-        self.history = true;
-        self
+    pub fn new(value: impl Into<String>, t: HyperlinkType) -> Self {
+        let data = {
+            match t {
+                HyperlinkType::External => HyperlinkData::External {
+                    rid: create_hyperlink_rid(generate_hyperlink_id()),
+                    path: value.into(),
+                },
+                HyperlinkType::Anchor => HyperlinkData::Anchor {
+                    anchor: value.into(),
+                },
+            }
+        };
+        Hyperlink {
+            data,
+            history: 1,
+            children: vec![],
+        }
     }
 
     pub fn add_run(mut self, run: Run) -> Self {
@@ -81,11 +92,16 @@ impl Hyperlink {
 
 impl BuildXML for Hyperlink {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.open_hyperlink(self.rid.as_ref(), self.anchor.as_ref(), self.history)
-            .add_children(&self.children)
-            .close()
-            .build()
+        let mut b = XMLBuilder::new();
+        match self.data {
+            HyperlinkData::Anchor { ref anchor } => {
+                b = b.open_hyperlink(None, Some(anchor.clone()).as_ref(), Some(self.history))
+            }
+            HyperlinkData::External { ref rid, .. } => {
+                b = b.open_hyperlink(Some(rid.clone()).as_ref(), None, Some(self.history))
+            }
+        };
+        b.add_children(&self.children).close().build()
     }
 }
 
@@ -99,9 +115,7 @@ mod tests {
 
     #[test]
     fn test_hyperlink() {
-        let l = Hyperlink::new()
-            .anchor("ToC1")
-            .add_run(Run::new().add_text("hello"));
+        let l = Hyperlink::new("ToC1", HyperlinkType::Anchor).add_run(Run::new().add_text("hello"));
         let b = l.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

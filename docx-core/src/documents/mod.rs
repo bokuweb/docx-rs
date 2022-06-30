@@ -22,6 +22,7 @@ mod numberings;
 mod paragraph_id;
 mod paragraph_property_change_id;
 mod pic_id;
+mod hyperlink_id;
 mod preset_styles;
 mod rels;
 mod settings;
@@ -40,6 +41,7 @@ use image::ImageFormat;
 pub(crate) use paragraph_id::*;
 pub(crate) use paragraph_property_change_id::ParagraphPropertyChangeId;
 pub(crate) use pic_id::*;
+pub(crate) use hyperlink_id::*;
 
 pub use bookmark_id::*;
 pub use comments::*;

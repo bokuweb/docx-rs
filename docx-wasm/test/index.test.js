@@ -524,9 +524,9 @@ describe("writer", () => {
     }
   });
 
-  test("should write hyperlink", () => {
+  test("should write anchor hyperlink", () => {
     const p1 = new w.Paragraph().addHyperlink(
-      new w.Hyperlink().anchor("anchor").addRun(new w.Run().addText("Hello!!"))
+      new w.Hyperlink("anchor", "anchor").addRun(new w.Run().addText("Hello!!"))
     );
     const p2 = new w.Paragraph()
       .addBookmarkStart(1, "anchor")
@@ -535,7 +535,24 @@ describe("writer", () => {
       .addBookmarkEnd(1);
     const buffer = new w.Docx().addParagraph(p1).addParagraph(p2).build();
 
-    writeFileSync("../output/js/hyperlink.docx", buffer);
+    writeFileSync("../output/js/anchor-hyperlink.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write external hyperlink", () => {
+    const p1 = new w.Paragraph().addHyperlink(
+      new w.Hyperlink("https://example.com", "external").addRun(
+        new w.Run().addText("Hello!!")
+      )
+    );
+    const buffer = new w.Docx().addParagraph(p1).build();
+
+    writeFileSync("../output/js/external-hyperlink.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml/)) {

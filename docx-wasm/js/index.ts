@@ -2,7 +2,7 @@ import { Paragraph } from "./paragraph";
 import { ParagraphProperty } from "./paragraph-property";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
-import { Hyperlink } from "./hyperlink";
+import { convertHyperlinkType, Hyperlink } from "./hyperlink";
 import { DeleteText } from "./delete-text";
 import { Table } from "./table";
 import { TableOfContents } from "./table-of-contents";
@@ -372,16 +372,7 @@ export class Docx {
   }
 
   buildHyperlink(link: Hyperlink) {
-    let hyperlink = wasm.createHyperlink();
-    if (link._history) {
-      hyperlink = hyperlink.history();
-    }
-    if (link._anchor) {
-      hyperlink = hyperlink.anchor(link._anchor);
-    }
-    if (link._rid) {
-      hyperlink = hyperlink.rid(link._rid);
-    }
+    let hyperlink = wasm.createHyperlink(link.v, convertHyperlinkType(link));
 
     link.children.forEach((child) => {
       if (child instanceof Run) {

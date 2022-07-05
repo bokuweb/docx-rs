@@ -15,8 +15,9 @@ impl ElementReader for Hyperlink {
     ) -> Result<Self, ReaderError> {
         let mut rid: Option<String> = read(attrs, "id");
         let mut anchor: Option<String> = read(attrs, "anchor");
+        let history: Option<String> = read(attrs, "history");
         let mut link = Hyperlink {
-            data: if anchor.is_some() {
+            link: if anchor.is_some() {
                 HyperlinkData::Anchor {
                     anchor: anchor.take().unwrap(),
                 }
@@ -26,7 +27,7 @@ impl ElementReader for Hyperlink {
                     path: String::default(), // not used
                 }
             },
-            history: 1,
+            history: history.map(|h| usize::from_str(&h).unwrap_or(1)),
             children: vec![],
         };
 

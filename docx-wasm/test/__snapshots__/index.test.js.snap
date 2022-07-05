@@ -542,6 +542,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -1401,6 +1402,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 1,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -1846,6 +1848,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -4169,6 +4172,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -5472,6 +5476,7 @@ Object {
     "hasComments": true,
     "hasNumberings": false,
     "headerCount": 1,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -5831,6 +5836,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -7147,6 +7153,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 3,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -10139,6 +10146,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -10942,15 +10950,25 @@ Object {
                 "children": Array [
                   Object {
                     "data": Object {
-                      "preserveSpace": true,
-                      "text": "Hello",
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "Hello",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {},
                     },
-                    "type": "text",
+                    "type": "run",
                   },
                 ],
-                "runProperty": Object {},
+                "history": null,
+                "rid": "rId4",
+                "type": "external",
               },
-              "type": "run",
+              "type": "hyperlink",
             },
             Object {
               "data": Object {
@@ -11009,6 +11027,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -12304,6 +12323,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -13246,6 +13266,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 1,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -13652,6 +13673,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -16193,6 +16215,7 @@ Object {
     "hasComments": true,
     "hasNumberings": false,
     "headerCount": 1,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -18367,6 +18390,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -19483,6 +19507,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -22350,6 +22375,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -23708,6 +23734,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -27031,6 +27058,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 1,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -43564,6 +43592,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -44579,6 +44608,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -45429,155 +45459,165 @@ Object {
             },
             Object {
               "data": Object {
+                "anchor": "_Toc89816785",
                 "children": Array [
                   Object {
                     "data": Object {
-                      "preserveSpace": true,
-                      "text": "第１章",
-                    },
-                    "type": "text",
-                  },
-                ],
-                "runProperty": Object {
-                  "style": "a5",
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "type": "tab",
-                  },
-                ],
-                "runProperty": Object {
-                  "bold": false,
-                  "boldCs": false,
-                  "fonts": Object {
-                    "eastAsiaTheme": "minorEastAsia",
-                  },
-                  "italic": false,
-                  "italicCs": false,
-                  "sz": 21,
-                  "szCs": 21,
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "preserveSpace": true,
-                      "text": "Hello",
-                    },
-                    "type": "text",
-                  },
-                ],
-                "runProperty": Object {
-                  "style": "a5",
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "type": "tab",
-                  },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "dirty": false,
-                      "field_char_type": "Begin",
-                    },
-                    "type": "fieldChar",
-                  },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "data": Object {
-                        "hyperlink": true,
-                        "page_ref": "PAGEREF",
-                        "relative_position": false,
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "第１章",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "style": "a5",
                       },
-                      "type": "pageref",
                     },
-                    "type": "instrText",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "dirty": false,
-                      "field_char_type": "Separate",
+                      "children": Array [
+                        Object {
+                          "type": "tab",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "bold": false,
+                        "boldCs": false,
+                        "fonts": Object {
+                          "eastAsiaTheme": "minorEastAsia",
+                        },
+                        "italic": false,
+                        "italicCs": false,
+                        "sz": 21,
+                        "szCs": 21,
+                      },
                     },
-                    "type": "fieldChar",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "preserveSpace": true,
-                      "text": "2",
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "Hello",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "style": "a5",
+                      },
                     },
-                    "type": "text",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "dirty": false,
-                      "field_char_type": "End",
+                      "children": Array [
+                        Object {
+                          "type": "tab",
+                        },
+                      ],
+                      "runProperty": Object {},
                     },
-                    "type": "fieldChar",
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "Begin",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "data": Object {
+                              "hyperlink": true,
+                              "page_ref": "PAGEREF",
+                              "relative_position": false,
+                            },
+                            "type": "pageref",
+                          },
+                          "type": "instrText",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "Separate",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "2",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "End",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
                   },
                 ],
-                "runProperty": Object {},
+                "history": 1,
+                "type": "anchor",
               },
-              "type": "run",
+              "type": "hyperlink",
             },
           ],
           "hasNumbering": false,
@@ -45605,153 +45645,163 @@ Object {
           "children": Array [
             Object {
               "data": Object {
+                "anchor": "_Toc89816786",
                 "children": Array [
                   Object {
                     "data": Object {
-                      "preserveSpace": true,
-                      "text": "第１節",
-                    },
-                    "type": "text",
-                  },
-                ],
-                "runProperty": Object {
-                  "style": "a5",
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "type": "tab",
-                  },
-                ],
-                "runProperty": Object {
-                  "bold": false,
-                  "boldCs": false,
-                  "fonts": Object {
-                    "eastAsiaTheme": "minorEastAsia",
-                  },
-                  "sz": 21,
-                  "szCs": 21,
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "preserveSpace": true,
-                      "text": "World",
-                    },
-                    "type": "text",
-                  },
-                ],
-                "runProperty": Object {
-                  "style": "a5",
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "type": "tab",
-                  },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "dirty": false,
-                      "field_char_type": "Begin",
-                    },
-                    "type": "fieldChar",
-                  },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "data": Object {
-                        "hyperlink": true,
-                        "page_ref": "PAGEREF",
-                        "relative_position": false,
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "第１節",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "style": "a5",
                       },
-                      "type": "pageref",
                     },
-                    "type": "instrText",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "dirty": false,
-                      "field_char_type": "Separate",
+                      "children": Array [
+                        Object {
+                          "type": "tab",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "bold": false,
+                        "boldCs": false,
+                        "fonts": Object {
+                          "eastAsiaTheme": "minorEastAsia",
+                        },
+                        "sz": 21,
+                        "szCs": 21,
+                      },
                     },
-                    "type": "fieldChar",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "preserveSpace": true,
-                      "text": "2",
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "World",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "style": "a5",
+                      },
                     },
-                    "type": "text",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "dirty": false,
-                      "field_char_type": "End",
+                      "children": Array [
+                        Object {
+                          "type": "tab",
+                        },
+                      ],
+                      "runProperty": Object {},
                     },
-                    "type": "fieldChar",
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "Begin",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "data": Object {
+                              "hyperlink": true,
+                              "page_ref": "PAGEREF",
+                              "relative_position": false,
+                            },
+                            "type": "pageref",
+                          },
+                          "type": "instrText",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "Separate",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "2",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "End",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
                   },
                 ],
-                "runProperty": Object {},
+                "history": 1,
+                "type": "anchor",
               },
-              "type": "run",
+              "type": "hyperlink",
             },
           ],
           "hasNumbering": false,
@@ -45777,155 +45827,165 @@ Object {
           "children": Array [
             Object {
               "data": Object {
+                "anchor": "_Toc89816787",
                 "children": Array [
                   Object {
                     "data": Object {
-                      "preserveSpace": true,
-                      "text": "第２章",
-                    },
-                    "type": "text",
-                  },
-                ],
-                "runProperty": Object {
-                  "style": "a5",
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "type": "tab",
-                  },
-                ],
-                "runProperty": Object {
-                  "bold": false,
-                  "boldCs": false,
-                  "fonts": Object {
-                    "eastAsiaTheme": "minorEastAsia",
-                  },
-                  "italic": false,
-                  "italicCs": false,
-                  "sz": 21,
-                  "szCs": 21,
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "preserveSpace": true,
-                      "text": "こんにちは",
-                    },
-                    "type": "text",
-                  },
-                ],
-                "runProperty": Object {
-                  "style": "a5",
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "type": "tab",
-                  },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "dirty": false,
-                      "field_char_type": "Begin",
-                    },
-                    "type": "fieldChar",
-                  },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "data": Object {
-                        "hyperlink": true,
-                        "page_ref": "PAGEREF",
-                        "relative_position": false,
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "第２章",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "style": "a5",
                       },
-                      "type": "pageref",
                     },
-                    "type": "instrText",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "dirty": false,
-                      "field_char_type": "Separate",
+                      "children": Array [
+                        Object {
+                          "type": "tab",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "bold": false,
+                        "boldCs": false,
+                        "fonts": Object {
+                          "eastAsiaTheme": "minorEastAsia",
+                        },
+                        "italic": false,
+                        "italicCs": false,
+                        "sz": 21,
+                        "szCs": 21,
+                      },
                     },
-                    "type": "fieldChar",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "preserveSpace": true,
-                      "text": "3",
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "こんにちは",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "style": "a5",
+                      },
                     },
-                    "type": "text",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "dirty": false,
-                      "field_char_type": "End",
+                      "children": Array [
+                        Object {
+                          "type": "tab",
+                        },
+                      ],
+                      "runProperty": Object {},
                     },
-                    "type": "fieldChar",
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "Begin",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "data": Object {
+                              "hyperlink": true,
+                              "page_ref": "PAGEREF",
+                              "relative_position": false,
+                            },
+                            "type": "pageref",
+                          },
+                          "type": "instrText",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "Separate",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "3",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "End",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
                   },
                 ],
-                "runProperty": Object {},
+                "history": 1,
+                "type": "anchor",
               },
-              "type": "run",
+              "type": "hyperlink",
             },
           ],
           "hasNumbering": false,
@@ -45953,153 +46013,163 @@ Object {
           "children": Array [
             Object {
               "data": Object {
+                "anchor": "_Toc89816788",
                 "children": Array [
                   Object {
                     "data": Object {
-                      "preserveSpace": true,
-                      "text": "第１節",
-                    },
-                    "type": "text",
-                  },
-                ],
-                "runProperty": Object {
-                  "style": "a5",
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "type": "tab",
-                  },
-                ],
-                "runProperty": Object {
-                  "bold": false,
-                  "boldCs": false,
-                  "fonts": Object {
-                    "eastAsiaTheme": "minorEastAsia",
-                  },
-                  "sz": 21,
-                  "szCs": 21,
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "preserveSpace": true,
-                      "text": "世界",
-                    },
-                    "type": "text",
-                  },
-                ],
-                "runProperty": Object {
-                  "style": "a5",
-                },
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "type": "tab",
-                  },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "dirty": false,
-                      "field_char_type": "Begin",
-                    },
-                    "type": "fieldChar",
-                  },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
-                  Object {
-                    "data": Object {
-                      "data": Object {
-                        "hyperlink": true,
-                        "page_ref": "PAGEREF",
-                        "relative_position": false,
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "第１節",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "style": "a5",
                       },
-                      "type": "pageref",
                     },
-                    "type": "instrText",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "dirty": false,
-                      "field_char_type": "Separate",
+                      "children": Array [
+                        Object {
+                          "type": "tab",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "bold": false,
+                        "boldCs": false,
+                        "fonts": Object {
+                          "eastAsiaTheme": "minorEastAsia",
+                        },
+                        "sz": 21,
+                        "szCs": 21,
+                      },
                     },
-                    "type": "fieldChar",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "preserveSpace": true,
-                      "text": "3",
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "世界",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {
+                        "style": "a5",
+                      },
                     },
-                    "type": "text",
+                    "type": "run",
                   },
-                ],
-                "runProperty": Object {},
-              },
-              "type": "run",
-            },
-            Object {
-              "data": Object {
-                "children": Array [
                   Object {
                     "data": Object {
-                      "dirty": false,
-                      "field_char_type": "End",
+                      "children": Array [
+                        Object {
+                          "type": "tab",
+                        },
+                      ],
+                      "runProperty": Object {},
                     },
-                    "type": "fieldChar",
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "Begin",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "data": Object {
+                              "hyperlink": true,
+                              "page_ref": "PAGEREF",
+                              "relative_position": false,
+                            },
+                            "type": "pageref",
+                          },
+                          "type": "instrText",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "Separate",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "preserveSpace": true,
+                            "text": "3",
+                          },
+                          "type": "text",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
+                  },
+                  Object {
+                    "data": Object {
+                      "children": Array [
+                        Object {
+                          "data": Object {
+                            "dirty": false,
+                            "field_char_type": "End",
+                          },
+                          "type": "fieldChar",
+                        },
+                      ],
+                      "runProperty": Object {},
+                    },
+                    "type": "run",
                   },
                 ],
-                "runProperty": Object {},
+                "history": 1,
+                "type": "anchor",
               },
-              "type": "run",
+              "type": "hyperlink",
             },
           ],
           "hasNumbering": false,
@@ -46487,6 +46557,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -50361,6 +50432,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -51376,6 +51448,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -52422,6 +52495,7 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 2,
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
@@ -65170,6 +65244,24 @@ exports[`writer should write ToC with items 2`] = `
 </w:document>"
 `;
 
+exports[`writer should write anchor hyperlink 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write anchor hyperlink 2`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<w:document xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\" xmlns:w10=\\"urn:schemas-microsoft-com:office:word\\" xmlns:wp=\\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\\" xmlns:wps=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\\" xmlns:wpg=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\\" xmlns:mc=\\"http://schemas.openxmlformats.org/markup-compatibility/2006\\" xmlns:wp14=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\\" xmlns:w14=\\"http://schemas.microsoft.com/office/word/2010/wordml\\" xmlns:w15=\\"http://schemas.microsoft.com/office/word/2012/wordml\\" mc:Ignorable=\\"w14 wp14\\">
+  <w:body><w:p w14:paraId=\\"00000001\\"><w:pPr><w:rPr /></w:pPr><w:hyperlink w:anchor=\\"anchor\\" w:history=\\"1\\"><w:r><w:rPr /><w:t xml:space=\\"preserve\\">Hello!!</w:t></w:r></w:hyperlink></w:p><w:p w14:paraId=\\"00000002\\"><w:pPr><w:rPr /><w:pageBreakBefore />
+</w:pPr><w:bookmarkStart w:id=\\"1\\" w:name=\\"anchor\\" /><w:r><w:rPr /><w:t xml:space=\\"preserve\\">World!!</w:t></w:r><w:bookmarkEnd w:id=\\"1\\" /></w:p><w:sectPr><w:pgSz w:w=\\"11906\\" w:h=\\"16838\\" /><w:pgMar w:top=\\"1985\\" w:right=\\"1701\\" w:bottom=\\"1701\\" w:left=\\"1701\\" w:header=\\"851\\" w:footer=\\"992\\" w:gutter=\\"0\\" /><w:cols w:space=\\"425\\" /><w:docGrid w:type=\\"lines\\" w:linePitch=\\"360\\" /></w:sectPr></w:body>
+</w:document>"
+`;
+
 exports[`writer should write auto items ToC 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
@@ -65422,6 +65514,24 @@ exports[`writer should write evenFooter with table for default section 3`] = `
 </w:tblCellMar><w:tblInd w:w=\\"0\\" w:type=\\"dxa\\" /></w:tblPr><w:tblGrid /><w:tr><w:trPr /><w:tc><w:tcPr><w:tcBorders><w:top w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:left w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:bottom w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:right w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:insideH w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:insideV w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /></w:tcBorders></w:tcPr><w:p w14:paraId=\\"00000001\\"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space=\\"preserve\\">Hello Footer!!</w:t></w:r></w:p></w:tc></w:tr></w:tbl></w:ftr>"
 `;
 
+exports[`writer should write external hyperlink 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
+  <Relationship Id=\\"rIdHyperlink1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink\\" Target=\\"https://example.com\\" TargetMode=\\"External\\" />
+</Relationships>"
+`;
+
+exports[`writer should write external hyperlink 2`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<w:document xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\" xmlns:w10=\\"urn:schemas-microsoft-com:office:word\\" xmlns:wp=\\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\\" xmlns:wps=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\\" xmlns:wpg=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\\" xmlns:mc=\\"http://schemas.openxmlformats.org/markup-compatibility/2006\\" xmlns:wp14=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\\" xmlns:w14=\\"http://schemas.microsoft.com/office/word/2010/wordml\\" xmlns:w15=\\"http://schemas.microsoft.com/office/word/2012/wordml\\" mc:Ignorable=\\"w14 wp14\\">
+  <w:body><w:p w14:paraId=\\"00000001\\"><w:pPr><w:rPr /></w:pPr><w:hyperlink r:id=\\"rIdHyperlink1\\" w:history=\\"1\\"><w:r><w:rPr /><w:t xml:space=\\"preserve\\">Hello!!</w:t></w:r></w:hyperlink></w:p><w:sectPr><w:pgSz w:w=\\"11906\\" w:h=\\"16838\\" /><w:pgMar w:top=\\"1985\\" w:right=\\"1701\\" w:bottom=\\"1701\\" w:left=\\"1701\\" w:header=\\"851\\" w:footer=\\"992\\" w:gutter=\\"0\\" /><w:cols w:space=\\"425\\" /><w:docGrid w:type=\\"lines\\" w:linePitch=\\"360\\" /></w:sectPr></w:body>
+</w:document>"
+`;
+
 exports[`writer should write firstHeader with table for default section 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
@@ -65514,24 +65624,6 @@ exports[`writer should write hello 3`] = `
 <w:numbering xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\"><w:abstractNum w:abstractNumId=\\"1\\"><w:lvl w:ilvl=\\"0\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%1.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"420\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"1\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%2)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"840\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"2\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%3\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1260\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"3\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%4.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1680\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"4\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%5)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2100\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"5\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%6\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2520\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"6\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%7.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2940\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"7\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%8)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3360\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"8\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%9\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3780\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl></w:abstractNum><w:num w:numId=\\"1\\">
   <w:abstractNumId w:val=\\"1\\" />
 </w:num></w:numbering>"
-`;
-
-exports[`writer should write hyperlink 1`] = `
-"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
-<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
-  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
-  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
-  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
-  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
-</Relationships>"
-`;
-
-exports[`writer should write hyperlink 2`] = `
-"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
-<w:document xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\" xmlns:w10=\\"urn:schemas-microsoft-com:office:word\\" xmlns:wp=\\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\\" xmlns:wps=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\\" xmlns:wpg=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\\" xmlns:mc=\\"http://schemas.openxmlformats.org/markup-compatibility/2006\\" xmlns:wp14=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\\" xmlns:w14=\\"http://schemas.microsoft.com/office/word/2010/wordml\\" xmlns:w15=\\"http://schemas.microsoft.com/office/word/2012/wordml\\" mc:Ignorable=\\"w14 wp14\\">
-  <w:body><w:p w14:paraId=\\"00000001\\"><w:pPr><w:rPr /></w:pPr><w:hyperlink w:anchor=\\"anchor\\"><w:r><w:rPr /><w:t xml:space=\\"preserve\\">Hello!!</w:t></w:r></w:hyperlink></w:p><w:p w14:paraId=\\"00000002\\"><w:pPr><w:rPr /><w:pageBreakBefore />
-</w:pPr><w:bookmarkStart w:id=\\"1\\" w:name=\\"anchor\\" /><w:r><w:rPr /><w:t xml:space=\\"preserve\\">World!!</w:t></w:r><w:bookmarkEnd w:id=\\"1\\" /></w:p><w:sectPr><w:pgSz w:w=\\"11906\\" w:h=\\"16838\\" /><w:pgMar w:top=\\"1985\\" w:right=\\"1701\\" w:bottom=\\"1701\\" w:left=\\"1701\\" w:header=\\"851\\" w:footer=\\"992\\" w:gutter=\\"0\\" /><w:cols w:space=\\"425\\" /><w:docGrid w:type=\\"lines\\" w:linePitch=\\"360\\" /></w:sectPr></w:body>
-</w:document>"
 `;
 
 exports[`writer should write inline image 1`] = `

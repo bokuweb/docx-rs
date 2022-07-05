@@ -27,12 +27,12 @@ impl ElementReader for Paragraph {
 
                     match e {
                         XMLElement::Run => {
-                            let run = Run::read(r, attrs)?;
+                            let run = Run::read(r, &attributes)?;
                             p = p.add_run(run);
                             continue;
                         }
                         XMLElement::Hyperlink => {
-                            let link = Hyperlink::read(r, attrs)?;
+                            let link = Hyperlink::read(r, &attributes)?;
                             p = p.add_hyperlink(link);
                             continue;
                         }
@@ -75,7 +75,7 @@ impl ElementReader for Paragraph {
                         }
                         // pPr
                         XMLElement::ParagraphProperty => {
-                            if let Ok(pr) = ParagraphProperty::read(r, attrs) {
+                            if let Ok(pr) = ParagraphProperty::read(r, &attributes) {
                                 p.has_numbering = pr.numbering_property.is_some();
                                 p.property = pr;
                             }

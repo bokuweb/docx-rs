@@ -614,7 +614,7 @@ impl Docx {
                             self.insert_comment_to_map(&mut comment_map, c);
                         }
                         if let ParagraphChild::Hyperlink(h) = child {
-                            if let HyperlinkData::External { rid, path } = h.data.clone() {
+                            if let HyperlinkData::External { rid, path } = h.link.clone() {
                                 hyperlink_map.insert(rid, path);
                             };
                             for child in &h.children {
@@ -651,7 +651,7 @@ impl Docx {
                             );
                         }
                         if let ParagraphChild::Hyperlink(h) = child {
-                            if let HyperlinkData::External { rid, path } = h.data.clone() {
+                            if let HyperlinkData::External { rid, path } = h.link.clone() {
                                 hyperlink_map.insert(rid, path);
                             };
                             for child in &h.children {
@@ -810,7 +810,7 @@ fn collect_dependencies_in_table(
                                 );
                             }
                             if let ParagraphChild::Hyperlink(h) = child {
-                                if let HyperlinkData::External { rid, path } = h.data.clone() {
+                                if let HyperlinkData::External { rid, path } = h.link.clone() {
                                     hyperlink_map.insert(rid, path);
                                 };
                                 for child in &h.children {

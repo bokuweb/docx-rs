@@ -1,3 +1,5 @@
+import * as wasm from "./pkg";
+
 import { Run } from "./run";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
@@ -7,11 +9,17 @@ import { Comment } from "./comment";
 import { CommentEnd } from "./comment-end";
 import { ParagraphChild } from "./paragraph";
 
+export type HyperlinkType = "anchor" | "external";
+
 export class Hyperlink {
-  _rid?: string;
-  _anchor?: string;
-  _history: boolean = false;
+  v: string;
+  type: HyperlinkType;
   children: ParagraphChild[] = [];
+
+  constructor(v: string, t: HyperlinkType) {
+    this.v = v;
+    this.type = t;
+  }
 
   addRun(run: Run) {
     this.children.push(run);
@@ -47,19 +55,11 @@ export class Hyperlink {
     this.children.push(end);
     return this;
   }
-
-  rid(rid: string) {
-    this._rid = rid;
-    return this;
-  }
-
-  anchor(anchor: string) {
-    this._anchor = anchor;
-    return this;
-  }
-
-  history() {
-    this._history = true;
-    return this;
-  }
 }
+
+export const convertHyperlinkType = (link: Hyperlink): wasm.HyperlinkType => {
+  if (link.type === "anchor") {
+    return wasm.HyperlinkType.Anchor;
+  }
+  return wasm.HyperlinkType.External;
+};

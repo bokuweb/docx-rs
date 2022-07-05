@@ -2,6 +2,7 @@ use serde::Serialize;
 
 use super::*;
 use crate::documents::BuildXML;
+use crate::types::*;
 use crate::{create_hyperlink_rid, generate_hyperlink_id, xml_builder::*};
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
@@ -21,22 +22,16 @@ pub enum HyperlinkData {
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
-pub enum HyperlinkType {
-    External,
-    Anchor,
-}
-
-#[derive(Serialize, Debug, Clone, PartialEq)]
-#[serde(rename_all = "camelCase")]
 pub struct Hyperlink {
-    pub data: HyperlinkData,
-    pub history: usize,
+    #[serde(flatten)]
+    pub link: HyperlinkData,
+    pub history: Option<usize>,
     pub children: Vec<ParagraphChild>,
 }
 
 impl Hyperlink {
     pub fn new(value: impl Into<String>, t: HyperlinkType) -> Self {
-        let data = {
+        let link = {
             match t {
                 HyperlinkType::External => HyperlinkData::External {
                     rid: create_hyperlink_rid(generate_hyperlink_id()),
@@ -48,8 +43,8 @@ impl Hyperlink {
             }
         };
         Hyperlink {
-            data,
-            history: 1,
+            link,
+            history: None,
             children: vec![],
         }
     }
@@ -104,12 +99,20 @@ impl Hyperlink {
 impl BuildXML for Hyperlink {
     fn build(&self) -> Vec<u8> {
         let mut b = XMLBuilder::new();
-        match self.data {
+        match self.link {
             HyperlinkData::Anchor { ref anchor } => {
-                b = b.open_hyperlink(None, Some(anchor.clone()).as_ref(), Some(self.history))
+                b = b.open_hyperlink(
+                    None,
+                    Some(anchor.clone()).as_ref(),
+                    Some(self.history.unwrap_or(1)),
+                )
             }
             HyperlinkData::External { ref rid, .. } => {
-                b = b.open_hyperlink(Some(rid.clone()).as_ref(), None, Some(self.history))
+                b = b.open_hyperlink(
+                    Some(rid.clone()).as_ref(),
+                    None,
+                    Some(self.history.unwrap_or(1)),
+                )
             }
         };
         b.add_children(&self.children).close().build()
@@ -130,7 +133,7 @@ mod tests {
         let b = l.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:hyperlink w:anchor="ToC1"><w:r><w:rPr /><w:t xml:space="preserve">hello</w:t></w:r></w:hyperlink>"#
+            r#"<w:hyperlink w:anchor="ToC1" w:history="1"><w:r><w:rPr /><w:t xml:space="preserve">hello</w:t></w:r></w:hyperlink>"#
         );
     }
 }

@@ -85,7 +85,7 @@ impl BuildXML for Vec<TableOfContentsItem> {
 
                 if t.instr.hyperlink {
                     p = p.add_hyperlink(
-                        Hyperlink::new(&t.toc_key, HyperlinkType::Anchor)
+                        Hyperlink::new(&t.toc_key, crate::types::HyperlinkType::Anchor)
                             .add_run(run)
                             .add_run(Run::new().add_tab())
                             .add_run(page_ref),

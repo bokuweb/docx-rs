@@ -7,6 +7,16 @@ export type ParagraphChildJSON =
   | RunJSON
   | InsertJSON
   | DeleteJSON
+  | HyperlinkJSON
+  | CommentRangeStartJSON
+  | CommentRangeEndJSON
+  | BookmarkStartJSON
+  | BookmarkEndJSON;
+
+export type HyperlinkChildJSON =
+  | RunJSON
+  | InsertJSON
+  | DeleteJSON
   | CommentRangeStartJSON
   | CommentRangeEndJSON
   | BookmarkStartJSON
@@ -67,6 +77,21 @@ export type DeleteJSON = {
     author: string;
     date: string;
   };
+};
+
+export type HyperlinkJSON = {
+  type: "hyperlink";
+  data:
+    | {
+        type: "external";
+        rid: string;
+        children: HyperlinkChildJSON[];
+        history: number | null;
+      }
+    | {
+        type: "anchor";
+        anchor: string;
+      };
 };
 
 export type DeleteChildJSON =

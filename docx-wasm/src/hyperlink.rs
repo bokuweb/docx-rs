@@ -7,27 +7,12 @@ use super::*;
 pub struct Hyperlink(docx_rs::Hyperlink);
 
 #[wasm_bindgen(js_name = createHyperlink)]
-pub fn create_hyperlink() -> Hyperlink {
-    Hyperlink(docx_rs::Hyperlink::new())
+pub fn create_hyperlink(v: &str, t: docx_rs::HyperlinkType) -> Hyperlink {
+    Hyperlink(docx_rs::Hyperlink::new(v, t))
 }
 
 #[wasm_bindgen]
 impl Hyperlink {
-    pub fn rid(mut self, rid: &str) -> Self {
-        self.0 = self.0.rid(rid);
-        self
-    }
-
-    pub fn anchor(mut self, anchor: &str) -> Self {
-        self.0 = self.0.anchor(anchor);
-        self
-    }
-
-    pub fn history(mut self) -> Self {
-        self.0 = self.0.history();
-        self
-    }
-
     pub fn add_run(mut self, run: Run) -> Self {
         self.0 = self.0.add_run(run.take());
         self

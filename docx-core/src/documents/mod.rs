@@ -18,6 +18,7 @@ mod footer_id;
 mod header;
 mod header_id;
 mod history_id;
+mod hyperlink_id;
 mod numberings;
 mod paragraph_id;
 mod paragraph_property_change_id;
@@ -36,6 +37,7 @@ mod xml_docx;
 
 pub(crate) use build_xml::BuildXML;
 pub(crate) use history_id::HistoryId;
+pub(crate) use hyperlink_id::*;
 use image::ImageFormat;
 pub(crate) use paragraph_id::*;
 pub(crate) use paragraph_property_change_id::ParagraphPropertyChangeId;
@@ -478,7 +480,7 @@ impl Docx {
     pub fn build(mut self) -> XMLDocx {
         self.reset();
 
-        self.update_comments();
+        self.update_dependencies();
 
         let tocs: Vec<(usize, Box<TableOfContents>)> = self
             .document
@@ -572,7 +574,7 @@ impl Docx {
     pub fn json_with_update_comments(&mut self) -> String {
         self.reset();
 
-        self.update_comments();
+        self.update_dependencies();
         serde_json::to_string_pretty(&self).unwrap()
     }
 
@@ -597,11 +599,13 @@ impl Docx {
     }
 
     // Traverse and clone comments from document and add to comments node.
-    fn update_comments(&mut self) {
+    fn update_dependencies(&mut self) {
         let mut comments: Vec<Comment> = vec![];
         let mut comments_extended: Vec<CommentExtended> = vec![];
-
         let mut comment_map: HashMap<usize, String> = HashMap::new();
+
+        let mut hyperlink_map: HashMap<String, String> = HashMap::new();
+
         for child in &self.document.children {
             match child {
                 DocumentChild::Paragraph(paragraph) => {
@@ -610,6 +614,9 @@ impl Docx {
                             self.insert_comment_to_map(&mut comment_map, c);
                         }
                         if let ParagraphChild::Hyperlink(h) = child {
+                            if let HyperlinkData::External { rid, path } = h.link.clone() {
+                                hyperlink_map.insert(rid, path);
+                            };
                             for child in &h.children {
                                 if let ParagraphChild::CommentStart(c) = child {
                                     self.insert_comment_to_map(&mut comment_map, c);
@@ -619,11 +626,12 @@ impl Docx {
                     }
                 }
                 DocumentChild::Table(table) => {
-                    collect_comments_in_table(
+                    collect_dependencies_in_table(
                         table,
                         &mut comments,
                         &mut comments_extended,
                         &mut comment_map,
+                        &mut hyperlink_map,
                     );
                 }
                 _ => {}
@@ -643,6 +651,9 @@ impl Docx {
                             );
                         }
                         if let ParagraphChild::Hyperlink(h) = child {
+                            if let HyperlinkData::External { rid, path } = h.link.clone() {
+                                hyperlink_map.insert(rid, path);
+                            };
                             for child in &h.children {
                                 if let ParagraphChild::CommentStart(c) = child {
                                     push_comment_and_comment_extended(
@@ -657,11 +668,12 @@ impl Docx {
                     }
                 }
                 DocumentChild::Table(table) => {
-                    collect_comments_in_table(
+                    collect_dependencies_in_table(
                         table,
                         &mut comments,
                         &mut comments_extended,
                         &mut comment_map,
+                        &mut hyperlink_map,
                     );
                 }
                 _ => {}
@@ -677,6 +689,10 @@ impl Docx {
             .add_comments_extended(comments_extended);
 
         self.comments.add_comments(comments);
+
+        for (id, d) in hyperlink_map {
+            self.document_rels.hyperlinks.push((id, d));
+        }
     }
 
     // Traverse and clone comments from document and add to comments node.
@@ -772,11 +788,12 @@ impl Docx {
     }
 }
 
-fn collect_comments_in_table(
+fn collect_dependencies_in_table(
     table: &Table,
     comments: &mut Vec<Comment>,
     comments_extended: &mut Vec<CommentExtended>,
     comment_map: &mut HashMap<usize, String>,
+    hyperlink_map: &mut HashMap<String, String>,
 ) {
     for TableChild::TableRow(row) in &table.rows {
         for TableRowChild::TableCell(cell) in &row.cells {
@@ -793,6 +810,9 @@ fn collect_comments_in_table(
                                 );
                             }
                             if let ParagraphChild::Hyperlink(h) = child {
+                                if let HyperlinkData::External { rid, path } = h.link.clone() {
+                                    hyperlink_map.insert(rid, path);
+                                };
                                 for child in &h.children {
                                     if let ParagraphChild::CommentStart(c) = child {
                                         push_comment_and_comment_extended(
@@ -806,9 +826,13 @@ fn collect_comments_in_table(
                             }
                         }
                     }
-                    TableCellContent::Table(table) => {
-                        collect_comments_in_table(table, comments, comments_extended, comment_map)
-                    }
+                    TableCellContent::Table(table) => collect_dependencies_in_table(
+                        table,
+                        comments,
+                        comments_extended,
+                        comment_map,
+                        hyperlink_map,
+                    ),
                 }
             }
         }

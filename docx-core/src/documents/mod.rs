@@ -230,14 +230,15 @@ impl Docx {
         path: impl Into<String>,
         buf: Vec<u8>,
     ) -> Self {
-        let dimg = image::load_from_memory(&buf).expect("Should load image from memory.");
-        let mut png = std::io::Cursor::new(vec![]);
-        // For now only png supported
-        dimg.write_to(&mut png, ImageFormat::Png)
-            .expect("Unable to write dynamic image");
+        if let Ok(dimg) = image::load_from_memory(&buf) {
+            let mut png = std::io::Cursor::new(vec![]);
+            // For now only png supported
+            dimg.write_to(&mut png, ImageFormat::Png)
+                .expect("Unable to write dynamic image");
 
-        self.images
-            .push((id.into(), path.into(), Image(buf), Png(png.into_inner())));
+            self.images
+                .push((id.into(), path.into(), Image(buf), Png(png.into_inner())));
+        }
         self
     }
 

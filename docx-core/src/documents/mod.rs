@@ -988,8 +988,9 @@ fn push_comment_and_comment_extended(
             comments.push(c.get_comment());
             let comment_extended = CommentExtended::new(para_id);
             if let Some(parent_comment_id) = comment.parent_comment_id {
-                let parent_para_id = comment_map.get(&parent_comment_id).unwrap().clone();
-                comments_extended.push(comment_extended.parent_paragraph_id(parent_para_id));
+                if let Some(parent_para_id) = comment_map.get(&parent_comment_id) {
+                    comments_extended.push(comment_extended.parent_paragraph_id(parent_para_id.clone()));
+                }
             } else {
                 comments_extended.push(comment_extended);
             }

@@ -11,6 +11,7 @@ impl ElementReader for TableCell {
         let mut cell = TableCell::new();
         loop {
             let e = r.next();
+
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

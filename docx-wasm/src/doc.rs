@@ -1,6 +1,8 @@
 use super::*;
 use wasm_bindgen::prelude::*;
 
+extern crate console_error_panic_hook;
+
 #[wasm_bindgen]
 #[derive(Debug)]
 pub struct Docx(docx_rs::Docx);
@@ -8,6 +10,8 @@ pub struct Docx(docx_rs::Docx);
 #[wasm_bindgen]
 #[allow(non_snake_case)]
 pub fn createDocx() -> Docx {
+    use std::panic;
+    panic::set_hook(Box::new(console_error_panic_hook::hook));
     Docx(docx_rs::Docx::new())
 }
 

@@ -128,6 +128,8 @@ pub struct Docx {
     pub themes: Vec<Theme>,
     // reader only
     pub images: Vec<(String, String, Image, Png)>,
+    // reader only
+    pub hyperlinks: Vec<(String, String, String)>,
 }
 
 impl Default for Docx {
@@ -168,6 +170,7 @@ impl Default for Docx {
             custom_item_rels: vec![],
             themes: vec![],
             images: vec![],
+            hyperlinks: vec![],
         }
     }
 }
@@ -249,7 +252,8 @@ impl Docx {
         path: impl Into<String>,
         r#type: impl Into<String>,
     ) -> Self {
-        self.document_rels = self.document_rels.add_hyperlinks(id, path, r#type);
+        self.hyperlinks
+            .push((id.into(), path.into(), r#type.into()));
         self
     }
 

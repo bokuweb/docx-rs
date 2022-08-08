@@ -546,6 +546,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -1406,6 +1407,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -1852,6 +1854,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -4176,6 +4179,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -5480,6 +5484,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -5840,6 +5845,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -7157,6 +7163,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -10150,6 +10157,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -11027,16 +11035,17 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
-    "hyperlinks": Array [
-      Array [
-        "rId4",
-        "word/https://google.com/",
-        "External",
-      ],
-    ],
+    "hyperlinks": Array [],
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [
+    Array [
+      "rId4",
+      "word/https://google.com/",
+      "External",
+    ],
+  ],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -12333,6 +12342,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [
     Array [
       "rId4",
@@ -13276,6 +13286,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -13683,6 +13694,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -16225,6 +16237,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -18400,6 +18413,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -19517,6 +19531,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -22385,6 +22400,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -23744,6 +23760,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -27068,6 +27085,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -43602,6 +43620,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -44618,6 +44637,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -46567,6 +46587,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -50442,6 +50463,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -51458,6 +51480,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {
@@ -52505,6 +52528,7 @@ Object {
     "images": Array [],
   },
   "fontTable": Object {},
+  "hyperlinks": Array [],
   "images": Array [],
   "media": Array [],
   "numberings": Object {

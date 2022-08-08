@@ -91,6 +91,7 @@ export type HyperlinkJSON = {
     | {
         type: "anchor";
         anchor: string;
+        children: HyperlinkChildJSON[];
       };
 };
 

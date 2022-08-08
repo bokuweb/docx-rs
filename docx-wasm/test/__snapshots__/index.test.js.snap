@@ -11027,7 +11027,13 @@ Object {
     "hasComments": false,
     "hasNumberings": false,
     "headerCount": 0,
-    "hyperlinks": Array [],
+    "hyperlinks": Array [
+      Array [
+        "rId4",
+        "word/https://google.com/",
+        "External",
+      ],
+    ],
     "images": Array [],
   },
   "fontTable": Object {},

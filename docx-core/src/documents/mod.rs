@@ -249,7 +249,7 @@ impl Docx {
         path: impl Into<String>,
         r#type: impl Into<String>,
     ) -> Self {
-        self.document_rels.add_hyperlinks(id, path, r#type);
+        self.document_rels = self.document_rels.add_hyperlinks(id, path, r#type);
         self
     }
 

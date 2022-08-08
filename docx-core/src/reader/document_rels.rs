@@ -58,19 +58,27 @@ fn read_rels_xml<R: Read>(
                     let mut rel_type = "".to_owned();
                     let mut rid = "".to_owned();
                     let mut target_mode = None;
-                    let mut target = PathBuf::default();
+                    let mut target_string = "".to_owned();
                     for a in attributes {
                         let local_name = &a.name.local_name;
                         if local_name == "Type" {
                             rel_type = a.value.to_owned();
                         } else if local_name == "Target" {
-                            target = Path::new(dir.as_ref()).join(a.value);
+                            // target_str = Path::new(dir.as_ref()).join(a.value);
+                            target_string = a.value.to_owned();
                         } else if local_name == "Id" {
                             rid = a.value.to_owned();
                         } else if local_name == "TargetMode" {
                             target_mode = Some(a.value.to_owned());
                         }
                     }
+
+                    let target = if !rel_type.ends_with("hyperlink") {
+                        Path::new(dir.as_ref()).join(target_string)
+                    } else {
+                        Path::new("").join(target_string)
+                    };
+
                     let current = rels.rels.remove(&rel_type);
                     if let Some(mut paths) = current {
                         paths.insert((rid, target, target_mode));

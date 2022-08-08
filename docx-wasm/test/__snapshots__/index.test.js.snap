@@ -11042,7 +11042,7 @@ Object {
   "hyperlinks": Array [
     Array [
       "rId4",
-      "word/https://google.com/",
+      "https://google.com/",
       "External",
     ],
   ],

@@ -13,11 +13,11 @@ pub type RId = String;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ReadDocumentRels {
-    rels: BTreeMap<String, HashSet<(RId, PathBuf)>>,
+    rels: BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>>,
 }
 
 impl ReadDocumentRels {
-    pub fn find_target_path(&self, target: &str) -> Option<Vec<(RId, PathBuf)>> {
+    pub fn find_target_path(&self, target: &str) -> Option<Vec<(RId, PathBuf, Option<String>)>> {
         self.rels
             .get(target)
             .map(|s| s.clone().into_iter().collect())
@@ -57,6 +57,7 @@ fn read_rels_xml<R: Read>(
                 if let XMLElement::Relationship = e {
                     let mut rel_type = "".to_owned();
                     let mut rid = "".to_owned();
+                    let mut target_mode = None;
                     let mut target = PathBuf::default();
                     for a in attributes {
                         let local_name = &a.name.local_name;
@@ -66,14 +67,17 @@ fn read_rels_xml<R: Read>(
                             target = Path::new(dir.as_ref()).join(a.value);
                         } else if local_name == "Id" {
                             rid = a.value.to_owned();
+                        } else if local_name == "TargetMode" {
+                            target_mode = Some(a.value.to_owned());
                         }
                     }
                     let current = rels.rels.remove(&rel_type);
                     if let Some(mut paths) = current {
-                        paths.insert((rid, target));
+                        paths.insert((rid, target, target_mode));
                         rels.rels.insert(rel_type, paths);
                     } else {
-                        let s: HashSet<(RId, PathBuf)> = vec![(rid, target)].into_iter().collect();
+                        let s: HashSet<(RId, PathBuf, Option<String>)> =
+                            vec![(rid, target, target_mode)].into_iter().collect();
                         rels.rels.insert(rel_type, s);
                     }
                     continue;

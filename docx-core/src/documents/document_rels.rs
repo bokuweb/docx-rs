@@ -10,7 +10,7 @@ pub struct DocumentRels {
     pub has_comments: bool,
     pub has_numberings: bool,
     pub images: Vec<(String, String)>,
-    pub hyperlinks: Vec<(String, String)>,
+    pub hyperlinks: Vec<(String, String, String)>,
     pub custom_xml_count: usize,
     pub header_count: usize,
     pub footer_count: usize,
@@ -31,8 +31,14 @@ impl DocumentRels {
         self
     }
 
-    pub fn add_hyperlinks(mut self, id: impl Into<String>, path: impl Into<String>) -> Self {
-        self.hyperlinks.push((id.into(), path.into()));
+    pub fn add_hyperlinks(
+        mut self,
+        id: impl Into<String>,
+        path: impl Into<String>,
+        r#type: impl Into<String>,
+    ) -> Self {
+        self.hyperlinks
+            .push((id.into(), path.into(), r#type.into()));
         self
     }
 }
@@ -112,12 +118,12 @@ impl BuildXML for DocumentRels {
             )
         }
 
-        for (id, path) in self.hyperlinks.iter() {
+        for (id, path, r#type) in self.hyperlinks.iter() {
             b = b.relationship_with_mode(
                 id,
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink",
                 path,
-                "External",
+                r#type,
             )
         }
 

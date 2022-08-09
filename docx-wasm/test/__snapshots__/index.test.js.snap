@@ -12189,7 +12189,7 @@ Object {
                     "data": Object {
                       "data": Object {
                         "anchor": false,
-                        "target": "\\"https://example.com/\\"",
+                        "target": "https://example.com/",
                       },
                       "type": "hyperlink",
                     },
@@ -12336,7 +12336,7 @@ Object {
                           "data": Object {
                             "data": Object {
                               "anchor": false,
-                              "target": "\\"https://google.com/\\"",
+                              "target": "https://google.com/",
                             },
                             "type": "hyperlink",
                           },

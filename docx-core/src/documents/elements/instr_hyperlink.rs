@@ -53,7 +53,7 @@ impl std::str::FromStr for InstrHyperlink {
                         let _ = s.next();
                     }
                     _ => {
-                        target = i.to_string();
+                        target = i.replace("&quot;", "").replace("\"", "").to_string();
                     }
                 }
             } else {

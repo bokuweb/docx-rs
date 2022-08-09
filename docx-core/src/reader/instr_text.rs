@@ -38,6 +38,11 @@ impl ElementReader for InstrText {
                                         return Ok(InstrText::TC(instr));
                                     }
                                 }
+                                if instr.starts_with("HYPERLINK") {
+                                    if let Ok(instr) = InstrHyperlink::from_str(instr) {
+                                        return Ok(InstrText::HYPERLINK(instr));
+                                    }
+                                }
                                 if instr.starts_with("PAGEREF") {
                                     if let Ok(instr) = InstrPAGEREF::from_str(instr) {
                                         return Ok(InstrText::PAGEREF(instr));

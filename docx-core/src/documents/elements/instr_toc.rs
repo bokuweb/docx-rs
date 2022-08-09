@@ -12,6 +12,7 @@ impl StyleWithLevel {
 }
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TOCTOC_topic_ID0ELZO1.html
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
+#[serde(rename_all = "camelCase")]
 pub struct InstrToC {
     // \o If no heading range is specified, all heading levels used in the document are listed.
     #[serde(skip_serializing_if = "Option::is_none")]

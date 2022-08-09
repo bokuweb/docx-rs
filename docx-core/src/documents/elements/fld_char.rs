@@ -4,7 +4,9 @@ use crate::documents::*;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Serialize, Debug, Clone, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq, ts_rs::TS)]
+#[ts(export)]
+#[serde(rename_all = "camelCase")]
 pub struct FieldChar {
     pub field_char_type: FieldCharType,
     pub dirty: bool,

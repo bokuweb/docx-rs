@@ -1,7 +1,8 @@
 use serde::Serialize;
 
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_HYPERLINKHYPERLINK_topic_ID0EFYG1.html
-#[derive(Serialize, Debug, Clone, PartialEq, Default)]
+#[derive(Serialize, Debug, Clone, PartialEq, Default, ts_rs::TS)]
+#[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub struct InstrHyperlink {
     pub target: String,

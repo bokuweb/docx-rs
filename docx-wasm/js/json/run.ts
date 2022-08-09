@@ -6,6 +6,7 @@ import { InsertJSON, DeleteJSON } from "./paragraph";
 import { VertAlignType } from "../run";
 import { FieldChar } from "./bindings/FieldChar";
 import { InstrHyperlink } from "./bindings/InstrHyperlink";
+import { InstrToC } from "./bindings/InstrToC";
 
 export type TextBorderJSON = {
   borderType: BorderType;
@@ -101,8 +102,13 @@ export type FieldCharJSON = {
 
 export type InstrTextJSON = {
   type: "instrText";
-  data: {
-    type: "hyperlink";
-    data: InstrHyperlink;
-  };
+  data:
+    | {
+        type: "hyperlink";
+        data: InstrHyperlink;
+      }
+    | {
+        type: "toc";
+        data: InstrToC;
+      };
 };

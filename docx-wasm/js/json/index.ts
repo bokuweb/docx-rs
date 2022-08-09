@@ -49,6 +49,7 @@ export type DocxJSON = {
   themes: ThemeJSON[];
   //(id, path, base64 encoded original image data, base64 encoded png image data)
   images: [string, string, string, string][];
+  hyperlinks: [string, string, string][];
 };
 
 export type SettingsJSON = {

@@ -97,6 +97,8 @@ const THEME_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme";
 const IMAGE_TYPE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image";
+const HYPERLINK_TYPE: &str =
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink";
 // 2011
 const COMMENTS_EXTENDED_TYPE: &str =
     "http://schemas.microsoft.com/office/2011/relationships/commentsExtended";
@@ -109,7 +111,7 @@ fn read_headers(
     let headers: HashMap<RId, Header> = header_paths
         .unwrap_or_default()
         .into_iter()
-        .filter_map(|(rid, path)| {
+        .filter_map(|(rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have header path."));
             if let Ok(d) = data {
                 if let Ok(h) = Header::from_xml(&d[..]) {
@@ -130,7 +132,7 @@ fn read_footers(
     let footers: HashMap<RId, Footer> = footer_paths
         .unwrap_or_default()
         .into_iter()
-        .filter_map(|(rid, path)| {
+        .filter_map(|(rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have footer path."));
             if let Ok(d) = data {
                 if let Ok(h) = Footer::from_xml(&d[..]) {
@@ -148,7 +150,7 @@ fn read_themes(rels: &ReadDocumentRels, archive: &mut ZipArchive<Cursor<&[u8]>>)
     theme_paths
         .unwrap_or_default()
         .into_iter()
-        .filter_map(|(_rid, path)| {
+        .filter_map(|(_rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have footer path."));
             if let Ok(d) = data {
                 if let Ok(h) = Theme::from_xml(&d[..]) {
@@ -209,7 +211,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read commentsExtended
     let comments_extended_path = rels.find_target_path(COMMENTS_EXTENDED_TYPE);
     let comments_extended = if let Some(comments_extended_path) = comments_extended_path {
-        if let Some((_, comments_extended_path)) = comments_extended_path.get(0) {
+        if let Some((_, comments_extended_path, ..)) = comments_extended_path.get(0) {
             let data = read_zip(
                 &mut archive,
                 comments_extended_path
@@ -231,7 +233,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read comments
     let comments_path = rels.find_target_path(COMMENTS_TYPE);
     let comments = if let Some(paths) = comments_path {
-        if let Some((_, comments_path)) = paths.get(0) {
+        if let Some((_, comments_path, ..)) = paths.get(0) {
             let data = read_zip(
                 &mut archive,
                 comments_path.to_str().expect("should have comments."),
@@ -360,7 +362,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read styles
     let style_path = rels.find_target_path(STYLE_RELATIONSHIP_TYPE);
     if let Some(paths) = style_path {
-        if let Some((_, style_path)) = paths.get(0) {
+        if let Some((_, style_path, ..)) = paths.get(0) {
             let data = read_zip(
                 &mut archive,
                 style_path.to_str().expect("should have styles"),
@@ -373,7 +375,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read numberings
     let num_path = rels.find_target_path(NUMBERING_RELATIONSHIP_TYPE);
     if let Some(paths) = num_path {
-        if let Some((_, num_path)) = paths.get(0) {
+        if let Some((_, num_path, ..)) = paths.get(0) {
             let data = read_zip(
                 &mut archive,
                 num_path.to_str().expect("should have numberings"),
@@ -386,7 +388,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read settings
     let settings_path = rels.find_target_path(SETTINGS_TYPE);
     if let Some(paths) = settings_path {
-        if let Some((_, settings_path)) = paths.get(0) {
+        if let Some((_, settings_path, ..)) = paths.get(0) {
             let data = read_zip(
                 &mut archive,
                 settings_path.to_str().expect("should have settings"),
@@ -399,7 +401,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read web settings
     let web_settings_path = rels.find_target_path(WEB_SETTINGS_TYPE);
     if let Some(paths) = web_settings_path {
-        if let Some((_, web_settings_path)) = paths.get(0) {
+        if let Some((_, web_settings_path, ..)) = paths.get(0) {
             let data = read_zip(
                 &mut archive,
                 web_settings_path
@@ -413,11 +415,23 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read media
     let media = rels.find_target_path(IMAGE_TYPE);
     if let Some(paths) = media {
-        for (id, media) in paths {
+        for (id, media, ..) in paths {
             if let Ok(data) = read_zip(&mut archive, media.to_str().expect("should have media")) {
                 docx = docx.add_image(id, media.to_str().unwrap().to_string(), data);
             }
         }
     }
+
+    // Read hyperlinks
+    let links = rels.find_target_path(HYPERLINK_TYPE);
+    if let Some(paths) = links {
+        for (id, target, mode) in paths {
+            if let Some(mode) = mode {
+                docx =
+                    docx.add_hyperlink(id, target.to_str().expect("should convert to str"), mode);
+            }
+        }
+    }
+
     Ok(docx)
 }

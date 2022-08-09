@@ -128,6 +128,8 @@ pub struct Docx {
     pub themes: Vec<Theme>,
     // reader only
     pub images: Vec<(String, String, Image, Png)>,
+    // reader only
+    pub hyperlinks: Vec<(String, String, String)>,
 }
 
 impl Default for Docx {
@@ -168,6 +170,7 @@ impl Default for Docx {
             custom_item_rels: vec![],
             themes: vec![],
             images: vec![],
+            hyperlinks: vec![],
         }
     }
 }
@@ -239,6 +242,18 @@ impl Docx {
             self.images
                 .push((id.into(), path.into(), Image(buf), Png(png.into_inner())));
         }
+        self
+    }
+
+    // reader only
+    pub(crate) fn add_hyperlink(
+        mut self,
+        id: impl Into<String>,
+        path: impl Into<String>,
+        r#type: impl Into<String>,
+    ) -> Self {
+        self.hyperlinks
+            .push((id.into(), path.into(), r#type.into()));
         self
     }
 
@@ -692,7 +707,9 @@ impl Docx {
         self.comments.add_comments(comments);
 
         for (id, d) in hyperlink_map {
-            self.document_rels.hyperlinks.push((id, d));
+            self.document_rels
+                .hyperlinks
+                .push((id, d, "External".to_string())); // Now support external only
         }
     }
 
@@ -989,7 +1006,8 @@ fn push_comment_and_comment_extended(
             let comment_extended = CommentExtended::new(para_id);
             if let Some(parent_comment_id) = comment.parent_comment_id {
                 if let Some(parent_para_id) = comment_map.get(&parent_comment_id) {
-                    comments_extended.push(comment_extended.parent_paragraph_id(parent_para_id.clone()));
+                    comments_extended
+                        .push(comment_extended.parent_paragraph_id(parent_para_id.clone()));
                 }
             } else {
                 comments_extended.push(comment_extended);

@@ -4,6 +4,9 @@ import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
 import { BorderType } from "../border";
 import { InsertJSON, DeleteJSON } from "./paragraph";
 import { VertAlignType } from "../run";
+import { FieldChar } from "./bindings/FieldChar";
+import { InstrHyperlink } from "./bindings/InstrHyperlink";
+import { InstrToC } from "./bindings/InstrToC";
 
 export type TextBorderJSON = {
   borderType: BorderType;
@@ -53,7 +56,9 @@ export type RunChildJSON =
   | DrawingJSON
   | ShapeJSON
   | CommentRangeStartJSON
-  | CommentRangeEndJSON;
+  | CommentRangeEndJSON
+  | FieldCharJSON
+  | InstrTextJSON;
 
 export type TextJSON = {
   type: "text";
@@ -88,4 +93,22 @@ export type RunJSON = {
     runProperty: RunPropertyJSON;
     children: RunChildJSON[];
   };
+};
+
+export type FieldCharJSON = {
+  type: "fieldChar";
+  data: FieldChar;
+};
+
+export type InstrTextJSON = {
+  type: "instrText";
+  data:
+    | {
+        type: "hyperlink";
+        data: InstrHyperlink;
+      }
+    | {
+        type: "toc";
+        data: InstrToC;
+      };
 };

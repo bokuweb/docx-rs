@@ -1,0 +1,3 @@
+import type { StyleWithLevel } from "./StyleWithLevel";
+
+export interface InstrToC { headingStylesRange?: [number, number], tcFieldLevelRange?: [number, number], omitPageNumbersLevelRange?: [number, number], entryBookmarkName?: string, stylesWithLevels: Array<StyleWithLevel>, entryAndPageNumberSeparator?: string, sequenceAndPageNumbersSeparator?: string, captionLabel: string | null, captionLabelIncludingNumbers?: string, seqFieldIdentifierForPrefix?: string, tcFieldIdentifier?: string, hyperlink: boolean, preserveTab: boolean, preserveNewLine: boolean, useAppliedParagraphLineLevel: boolean, hideTabAndPageNumbersInWebview: boolean, }

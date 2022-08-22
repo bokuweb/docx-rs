@@ -10,6 +10,12 @@ pub fn main() -> Result<(), DocxError> {
         .style("Heading1")
         .page_break_before(true);
 
+    let table =
+        Table::new(vec![TableRow::new(vec![TableCell::new().add_paragraph(
+            Paragraph::new().add_run(Run::new().add_text("Hello")),
+        )])])
+        .style("Table1");
+
     let style1 = Style::new("Heading1", StyleType::Paragraph)
         .name("Heading 1")
         .align(AlignmentType::Center);
@@ -18,10 +24,16 @@ pub fn main() -> Result<(), DocxError> {
         .name("Run test")
         .bold();
 
+    let style3 = Style::new("Table1", StyleType::Table)
+        .name("Table test")
+        .table_align(TableAlignmentType::Center);
+
     Docx::new()
         .add_style(style1)
         .add_style(style2)
+        .add_style(style3)
         .add_paragraph(p1)
+        .add_table(table)
         .build()
         .pack(file)?;
     Ok(())

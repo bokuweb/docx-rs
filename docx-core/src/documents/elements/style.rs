@@ -100,6 +100,16 @@ impl Style {
         self
     }
 
+    pub fn text_border(mut self, b: TextBorder) -> Self {
+        self.run_property = self.run_property.text_border(b);
+        self
+    }
+
+    pub fn fonts(mut self, f: RunFonts) -> Self {
+        self.run_property = self.run_property.fonts(f);
+        self
+    }
+
     pub fn align(mut self, alignment_type: AlignmentType) -> Self {
         self.paragraph_property = self.paragraph_property.align(alignment_type);
         self
@@ -138,6 +148,56 @@ impl Style {
         self
     }
 
+    pub fn table_indent(mut self, v: i32) -> Self {
+        self.table_property = self.table_property.indent(v);
+        self
+    }
+
+    pub fn table_align(mut self, v: TableAlignmentType) -> Self {
+        self.table_property = self.table_property.align(v);
+        self
+    }
+
+    pub fn style(mut self, s: impl Into<String>) -> Self {
+        self.table_property = self.table_property.style(s);
+        self
+    }
+
+    pub fn layout(mut self, t: TableLayoutType) -> Self {
+        self.table_property = self.table_property.layout(t);
+        self
+    }
+
+    pub fn width(mut self, w: usize, t: WidthType) -> Self {
+        self.table_property = self.table_property.width(w, t);
+        self
+    }
+
+    pub fn margins(mut self, margins: TableCellMargins) -> Self {
+        self.table_property = self.table_property.set_margins(margins);
+        self
+    }
+
+    pub fn set_borders(mut self, borders: TableBorders) -> Self {
+        self.table_property = self.table_property.set_borders(borders);
+        self
+    }
+
+    pub fn set_border(mut self, border: TableBorder) -> Self {
+        self.table_property = self.table_property.set_border(border);
+        self
+    }
+
+    pub fn clear_border(mut self, position: TableBorderPosition) -> Self {
+        self.table_property = self.table_property.clear_border(position);
+        self
+    }
+
+    pub fn clear_all_border(mut self) -> Self {
+        self.table_property = self.table_property.clear_all_border();
+        self
+    }
+
     pub fn table_cell_property(mut self, p: TableCellProperty) -> Self {
         self.table_cell_property = p;
         self
@@ -152,7 +212,8 @@ impl BuildXML for Style {
             .open_style(self.style_type, &self.style_id)
             .add_child(&self.name)
             .add_child(&self.run_property)
-            .add_child(&self.paragraph_property);
+            .add_child(&self.paragraph_property)
+            .add_child(&self.table_property);
 
         if let Some(ref based_on) = self.based_on {
             b = b.add_child(based_on)

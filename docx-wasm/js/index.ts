@@ -1,5 +1,5 @@
 import { Paragraph } from "./paragraph";
-import { ParagraphProperty } from "./paragraph-property";
+import { ParagraphProperty, setParagraphProperty } from "./paragraph-property";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
 import { convertHyperlinkType, Hyperlink } from "./hyperlink";
@@ -432,79 +432,10 @@ export class Docx {
       }
     });
 
-    switch (p.property.align) {
-      case "center": {
-        paragraph = paragraph.align(wasm.AlignmentType.Center);
-        break;
-      }
-      case "right": {
-        paragraph = paragraph.align(wasm.AlignmentType.Right);
-        break;
-      }
-      case "justified": {
-        paragraph = paragraph.align(wasm.AlignmentType.Justified);
-        break;
-      }
-      case "left": {
-        paragraph = paragraph.align(wasm.AlignmentType.Left);
-        break;
-      }
-      case "distribute": {
-        paragraph = paragraph.align(wasm.AlignmentType.Distribute);
-        break;
-      }
-      case "both": {
-        paragraph = paragraph.align(wasm.AlignmentType.Both);
-        break;
-      }
-      case "end": {
-        paragraph = paragraph.align(wasm.AlignmentType.End);
-        break;
-      }
-    }
-
-    if (typeof p.property.indent !== "undefined") {
-      const { indent } = p.property;
-      let kind;
-      switch (p.property.indent.specialIndentKind) {
-        case "firstLine": {
-          kind = wasm.SpecialIndentKind.FirstLine;
-          break;
-        }
-        case "hanging": {
-          kind = wasm.SpecialIndentKind.Hanging;
-          break;
-        }
-      }
-      paragraph = paragraph.indent(indent.left, kind, indent.specialIndentSize);
-    }
-
-    if (typeof p.property.numbering !== "undefined") {
-      const { numbering } = p.property;
-      paragraph = paragraph.numbering(numbering.id, numbering.level);
-    }
+    paragraph = setParagraphProperty(paragraph, p.property);
 
     if (typeof p.property.styleId !== "undefined") {
       paragraph = paragraph.style(p.property.styleId);
-    }
-
-    if (p.property.runProperty.bold) {
-      paragraph = paragraph.bold();
-    }
-
-    if (typeof p.property.lineSpacing !== "undefined") {
-      const spacing = this.buildLineSpacing(p.property);
-      if (spacing) {
-        paragraph = paragraph.line_spacing(spacing);
-      }
-    }
-
-    if (p.property.runProperty.italic) {
-      paragraph = paragraph.italic();
-    }
-
-    if (p.property.runProperty.size) {
-      paragraph = paragraph.size(p.property.runProperty.size);
     }
 
     if (p.property.runProperty.del) {
@@ -519,39 +450,6 @@ export class Docx {
         p.property.runProperty.ins.author,
         p.property.runProperty.ins.date
       );
-    }
-
-    if (p.property.runProperty.fonts) {
-      let f = wasm.createRunFonts();
-      if (p.property.runProperty.fonts._ascii) {
-        f = f.ascii(p.property.runProperty.fonts._ascii);
-      }
-      if (p.property.runProperty.fonts._hiAnsi) {
-        f = f.hi_ansi(p.property.runProperty.fonts._hiAnsi);
-      }
-      if (p.property.runProperty.fonts._cs) {
-        f = f.cs(p.property.runProperty.fonts._cs);
-      }
-      if (p.property.runProperty.fonts._eastAsia) {
-        f = f.east_asia(p.property.runProperty.fonts._eastAsia);
-      }
-      paragraph = paragraph.fonts(f);
-    }
-
-    if (p.property.keepLines) {
-      paragraph = paragraph.keep_lines(true);
-    }
-
-    if (p.property.keepNext) {
-      paragraph = paragraph.keep_next(true);
-    }
-
-    if (p.property.pageBreakBefore) {
-      paragraph = paragraph.page_break_before(true);
-    }
-
-    if (p.property.widowControl) {
-      paragraph = paragraph.widow_control(true);
     }
 
     if (p.property.paragraphPropertyChange) {

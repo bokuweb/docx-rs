@@ -825,9 +825,11 @@ describe("writer", () => {
   test("should write style", () => {
     const p = new w.Paragraph()
       .addRun(new w.Run().addText("Hello").style("Run"))
-      .style("Paragraph");
+      .style("Heading1");
     const rStyle = new w.Style("Run", "character").name("Run test").bold();
-    // const pStyle = new w.Style("Heading", "paragraph").name("Heading");
+    const pStyle = new w.Style("Heading1", "paragraph")
+      .name("Heading 1")
+      .align("center");
 
     const table = new w.Table().addRow(
       new w.TableRow().addCell(
@@ -838,6 +840,7 @@ describe("writer", () => {
     );
 
     const buffer = new w.Docx()
+      .addStyle(pStyle)
       .addStyle(rStyle)
       .addParagraph(p)
       .addTable(table)
@@ -845,7 +848,7 @@ describe("writer", () => {
 
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
-      if (e.entryName.match(/document.xml|style.xml/)) {
+      if (e.entryName.match(/document.xml|styles.xml/)) {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }

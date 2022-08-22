@@ -18,6 +18,7 @@ import {
   createDefaultParagraphProperty,
   LineSpacing,
   ParagraphProperty,
+  setParagraphProperty,
   SpecialIndentKind,
 } from "./paragraph-property";
 import { BorderType } from "./border";
@@ -293,6 +294,8 @@ export class Style {
     }
 
     s = setRunProperty(s, this._runProperty);
+
+    s = setParagraphProperty(s, this._paragraphProperty);
 
     return s;
   };

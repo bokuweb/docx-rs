@@ -118,6 +118,39 @@ impl Style {
         self
     }
 
+    // TODO: For now only numbering supported.
+    pub fn numbering(mut self, id: usize, level: usize) -> Self {
+        let id = docx_rs::NumberingId::new(id);
+        let level = docx_rs::IndentLevel::new(level);
+        self.0.paragraph_property = self.0.paragraph_property.numbering(id, level);
+        self
+    }
+
+    pub fn line_spacing(mut self, spacing: LineSpacing) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.line_spacing(spacing.take());
+        self
+    }
+
+    pub fn keep_next(mut self, v: bool) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.keep_next(v);
+        self
+    }
+
+    pub fn keep_lines(mut self, v: bool) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.keep_lines(v);
+        self
+    }
+
+    pub fn page_break_before(mut self, v: bool) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.page_break_before(v);
+        self
+    }
+
+    pub fn widow_control(mut self, v: bool) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.widow_control(v);
+        self
+    }
+
     // pub fn run_property(mut self, p: docx_rs::RunProperty) -> Self {
     //     self.0.run_property = p;
     //     self

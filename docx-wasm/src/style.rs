@@ -1,4 +1,5 @@
 use super::*;
+use docx_rs::{BorderType, TextBorder, VertAlignType};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -47,6 +48,11 @@ impl Style {
         self
     }
 
+    pub fn strike(mut self) -> Self {
+        self.0.run_property = self.0.run_property.strike();
+        self
+    }
+
     pub fn underline(mut self, line_type: &str) -> Self {
         self.0.run_property = self.0.run_property.underline(line_type);
         self
@@ -54,6 +60,37 @@ impl Style {
 
     pub fn vanish(mut self) -> Self {
         self.0.run_property = self.0.run_property.vanish();
+        self
+    }
+
+    pub fn fonts(mut self, f: RunFonts) -> Self {
+        self.0 = self.0.fonts(f.take());
+        self
+    }
+
+    pub fn spacing(mut self, spacing: i32) -> Self {
+        self.0.run_property = self.0.run_property.spacing(spacing);
+        self
+    }
+
+    pub fn vert_align(mut self, a: VertAlignType) -> Self {
+        self.0.run_property = self.0.run_property.vert_align(a);
+        self
+    }
+
+    pub fn text_border(
+        mut self,
+        border_type: BorderType,
+        size: usize,
+        space: usize,
+        color: &str,
+    ) -> Self {
+        let border = TextBorder::new()
+            .border_type(border_type)
+            .size(size)
+            .space(space)
+            .color(color);
+        self.0.run_property = self.0.run_property.text_border(border);
         self
     }
 

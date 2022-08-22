@@ -7,8 +7,7 @@ import { DeleteText } from "./delete-text";
 import { Table } from "./table";
 import { TableOfContents } from "./table-of-contents";
 import { TableCell, toTextDirectionWasmType } from "./table-cell";
-import { BorderType } from "./border";
-import { Run, RunFonts } from "./run";
+import { convertBorderType, Run, RunFonts, setRunProperty } from "./run";
 import { Text } from "./text";
 import { Tab } from "./tab";
 import { Break } from "./break";
@@ -36,33 +35,6 @@ import { DocGridType, DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
 import { Level } from "./level";
-
-const convertBorderType = (t: BorderType) => {
-  switch (t) {
-    case "nil":
-      return wasm.BorderType.Nil;
-    case "none":
-      return wasm.BorderType.None;
-    case "single":
-      return wasm.BorderType.Single;
-    case "thick":
-      return wasm.BorderType.Thick;
-    case "double":
-      return wasm.BorderType.Double;
-    case "dotted":
-      return wasm.BorderType.Dotted;
-    case "dashed":
-      return wasm.BorderType.Dashed;
-    case "dotDash":
-      return wasm.BorderType.DotDash;
-    case "dotDotDash":
-      return wasm.BorderType.DotDotDash;
-    case "triple":
-      return wasm.BorderType.Triple;
-    default:
-      return wasm.BorderType.Single;
-  }
-};
 
 const convertWidthType = (t: string) => {
   switch (t) {
@@ -310,63 +282,7 @@ export class Docx {
       }
     });
 
-    if (r.property.style) {
-      run = run.style(r.property.style);
-    }
-
-    if (typeof r.property.size !== "undefined") {
-      run = run.size(r.property.size);
-    }
-
-    if (r.property.color) {
-      run = run.color(r.property.color);
-    }
-
-    if (r.property.highlight) {
-      run = run.highlight(r.property.highlight);
-    }
-
-    if (r.property.vertAlign) {
-      if (r.property.vertAlign === "superscript") {
-        run = run.vert_align(wasm.VertAlignType.SuperScript);
-      } else if (r.property.vertAlign === "subscript") {
-        run = run.vert_align(wasm.VertAlignType.SubScript);
-      }
-    }
-
-    if (r.property.bold) {
-      run = run.bold();
-    }
-
-    if (r.property.italic) {
-      run = run.italic();
-    }
-
-    if (r.property.strike) {
-      run = run.strike();
-    }
-
-    if (r.property.underline) {
-      run = run.underline(r.property.underline);
-    }
-
-    if (r.property.vanish) {
-      run = run.vanish();
-    }
-
-    if (r.property.spacing != null) {
-      run = run.spacing(r.property.spacing);
-    }
-
-    if (r.property.textBorder) {
-      const { borderType, color, space, size } = r.property.textBorder;
-      run = run.text_border(convertBorderType(borderType), size, space, color);
-    }
-
-    if (r.property.fonts) {
-      const fonts = r.property.fonts.buildWasmObject();
-      run = run.fonts(fonts);
-    }
+    run = setRunProperty(run, r.property) as wasm.Run;
 
     return run;
   }

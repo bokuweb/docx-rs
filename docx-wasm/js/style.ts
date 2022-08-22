@@ -11,6 +11,7 @@ import {
   createDefaultRunProperty,
   VertAlignType,
   RunFonts,
+  setRunProperty,
 } from "./run";
 import {
   AlignmentType,
@@ -290,6 +291,8 @@ export class Style {
     if (this._basedOn) {
       s = s.based_on(this._basedOn);
     }
+
+    s = setRunProperty(s, this._runProperty);
 
     return s;
   };

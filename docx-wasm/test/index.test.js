@@ -821,4 +821,34 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write style", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello").style("Run"))
+      .style("Paragraph");
+    const rStyle = new w.Style("Run", "character").name("Run test").bold();
+    // const pStyle = new w.Style("Heading", "paragraph").name("Heading");
+
+    const table = new w.Table().addRow(
+      new w.TableRow().addCell(
+        new w.TableCell().addParagraph(
+          new w.Paragraph().addRun(new w.Run().addText("Hello"))
+        )
+      )
+    );
+
+    const buffer = new w.Docx()
+      .addStyle(rStyle)
+      .addParagraph(p)
+      .addTable(table)
+      .build();
+
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|style.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+    writeFileSync("../output/js/style.docx", buffer);
+  });
 });

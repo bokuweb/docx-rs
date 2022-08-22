@@ -2,6 +2,7 @@ import * as wasm from "./pkg";
 
 import {
   createDefaultTableCellMargins,
+  setTableProperty,
   TableAlignmentType,
   TableLayoutType,
   TableProperty,
@@ -296,6 +297,8 @@ export class Style {
     s = setRunProperty(s, this._runProperty);
 
     s = setParagraphProperty(s, this._paragraphProperty);
+
+    s = setTableProperty(s, this._tableProperty);
 
     return s;
   };

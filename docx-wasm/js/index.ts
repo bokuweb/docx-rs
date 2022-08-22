@@ -4,7 +4,7 @@ import { Insert } from "./insert";
 import { Delete } from "./delete";
 import { convertHyperlinkType, Hyperlink } from "./hyperlink";
 import { DeleteText } from "./delete-text";
-import { Table } from "./table";
+import { setTableProperty, Table } from "./table";
 import { TableOfContents } from "./table-of-contents";
 import { TableCell, toTextDirectionWasmType } from "./table-cell";
 import { convertBorderType, Run, RunFonts, setRunProperty } from "./run";
@@ -35,25 +35,6 @@ import { DocGridType, DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
 import { Level } from "./level";
-
-const convertWidthType = (t: string) => {
-  switch (t) {
-    case "nil":
-    case "Nil":
-      return wasm.WidthType.Nil;
-    case "Pct":
-    case "pct":
-      return wasm.WidthType.Pct;
-    case "DXA":
-    case "dxa":
-      return wasm.WidthType.Dxa;
-    case "Auto":
-    case "auto":
-      return wasm.WidthType.Auto;
-    default:
-      return wasm.WidthType.Dxa;
-  }
-};
 
 export class Docx {
   children: (
@@ -510,43 +491,14 @@ export class Docx {
       }
       table = table.add_row(row);
     });
+
     table = table.set_grid(new Uint32Array(t.grid));
-    table = table.indent(t.property.indent || 0);
 
-    if (t.property.cellMargins) {
-      const { top, right, bottom, left } = t.property.cellMargins;
-      table = table
-        .cell_margin_top(top.val, convertWidthType(top.type))
-        .cell_margin_right(right.val, convertWidthType(right.type))
-        .cell_margin_bottom(bottom.val, convertWidthType(bottom.type))
-        .cell_margin_left(left.val, convertWidthType(left.type));
+    if (t.property.styleId) {
+      table = table.style(t.property.styleId);
     }
 
-    switch (t.property.align) {
-      case "center": {
-        table = table.align(wasm.TableAlignmentType.Center);
-        break;
-      }
-      case "right": {
-        table = table.align(wasm.TableAlignmentType.Right);
-        break;
-      }
-      case "left": {
-        table = table.align(wasm.TableAlignmentType.Left);
-        break;
-      }
-    }
-
-    switch (t.property.layout) {
-      case "fixed": {
-        table = table.layout(wasm.TableLayoutType.Fixed);
-        break;
-      }
-      case "autofit": {
-        table = table.layout(wasm.TableLayoutType.Autofit);
-        break;
-      }
-    }
+    table = setTableProperty(table, t.property);
 
     return table;
   }

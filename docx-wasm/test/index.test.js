@@ -830,18 +830,25 @@ describe("writer", () => {
     const pStyle = new w.Style("Heading1", "paragraph")
       .name("Heading 1")
       .align("center");
+    const tStyle = new w.Style("Table", "table")
+      .name("Table 1")
+      .tableAlign("center")
+      .tableIndent(200);
 
-    const table = new w.Table().addRow(
-      new w.TableRow().addCell(
-        new w.TableCell().addParagraph(
-          new w.Paragraph().addRun(new w.Run().addText("Hello"))
+    const table = new w.Table()
+      .addRow(
+        new w.TableRow().addCell(
+          new w.TableCell().addParagraph(
+            new w.Paragraph().addRun(new w.Run().addText("Hello"))
+          )
         )
       )
-    );
+      .style("Table");
 
     const buffer = new w.Docx()
       .addStyle(pStyle)
       .addStyle(rStyle)
+      .addStyle(tStyle)
       .addParagraph(p)
       .addTable(table)
       .build();

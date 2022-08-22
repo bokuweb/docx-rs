@@ -1,5 +1,5 @@
 use super::*;
-use docx_rs::{BorderType, TextBorder, VertAlignType};
+use docx_rs::{BorderType, TextBorder, VertAlignType, WidthType};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -168,6 +168,53 @@ impl Style {
 
     pub fn table_cell_property(mut self, p: docx_rs::TableCellProperty) -> Self {
         self.0.table_cell_property = p;
+        self
+    }
+
+    pub fn table_indent(mut self, v: i32) -> Self {
+        self.0.table_property = self.0.table_property.indent(v);
+        self
+    }
+
+    pub fn table_align(mut self, v: docx_rs::TableAlignmentType) -> Self {
+        self.0.table_property = self.0.table_property.align(v);
+        self
+    }
+
+    pub fn set_cell_margins(
+        mut self,
+        top: usize,
+        right: usize,
+        bottom: usize,
+        left: usize,
+    ) -> Self {
+        let m = docx_rs::TableCellMargins::new().margin(top, right, bottom, left);
+        self.0.table_property = self.0.table_property.set_margins(m);
+        self
+    }
+
+    pub fn cell_margin_top(mut self, v: usize, t: WidthType) -> Self {
+        self.0.table_property = self.0.table_property.cell_margin_top(v, t);
+        self
+    }
+
+    pub fn cell_margin_right(mut self, v: usize, t: WidthType) -> Self {
+        self.0.table_property = self.0.table_property.cell_margin_right(v, t);
+        self
+    }
+
+    pub fn cell_margin_bottom(mut self, v: usize, t: WidthType) -> Self {
+        self.0.table_property = self.0.table_property.cell_margin_bottom(v, t);
+        self
+    }
+
+    pub fn cell_margin_left(mut self, v: usize, t: WidthType) -> Self {
+        self.0.table_property = self.0.table_property.cell_margin_left(v, t);
+        self
+    }
+
+    pub fn layout(mut self, t: docx_rs::TableLayoutType) -> Self {
+        self.0.table_property = self.0.table_property.layout(t);
         self
     }
 }

@@ -29,6 +29,11 @@ impl Table {
         self
     }
 
+    pub fn style(mut self, style_id: &str) -> Table {
+        self.0.property = self.0.property.style(style_id);
+        self
+    }
+
     pub fn indent(mut self, v: i32) -> Table {
         self.0 = self.0.indent(v);
         self

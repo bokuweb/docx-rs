@@ -28,7 +28,7 @@
     "@types/file-saver": "2.0.5",
     "@wasm-tool/wasm-pack-plugin": "1.6.0",
     "adm-zip": "0.5.9",
-    "cpy-cli": "4.1.0",
+    "cpy-cli": "4.2.0",
     "file-saver": "2.0.5",
     "html-webpack-plugin": "4.5.2",
     "jest": "28.1.3",

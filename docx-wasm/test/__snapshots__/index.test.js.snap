@@ -578,6 +578,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "FB0AE6E2-8FB8-3345-A8FC-78CE6F3ABE4E",
     "docVars": Array [],
@@ -1439,6 +1440,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": null,
     "docVars": Array [],
@@ -2671,6 +2673,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "3A5F0B6E-9417-4662-A075-C7869185C909",
     "docVars": Array [],
@@ -4211,6 +4214,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "A1898E6C-1AED-3C4D-9CCF-C24208DA732E",
     "docVars": Array [],
@@ -5516,6 +5520,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 709,
     "docId": "50d61cff-8055-4197-917b-3993d0243c46",
     "docVars": Array [],
@@ -5877,6 +5882,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "4A9883C0-7AEC-574E-926D-DA6DB000DD90",
     "docVars": Array [],
@@ -7195,6 +7201,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "60C41423-192A-BA49-94E6-2051A402BFCA",
     "docVars": Array [],
@@ -10189,6 +10196,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "E43E077A-3477-A242-BD53-4313974E06A2",
     "docVars": Array [],
@@ -11077,6 +11085,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "B1317C39-ACCF-5B4D-BE97-FD2D73F14B00",
     "docVars": Array [],
@@ -12718,6 +12727,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "1D08889F-3E41-C046-8805-654C0B247DE3",
     "docVars": Array [],
@@ -14264,6 +14274,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "932EBF18-9F5F-C245-A499-C2EB430024C4",
     "docVars": Array [],
@@ -15195,6 +15206,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": null,
     "docVars": Array [],
@@ -16371,6 +16383,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "10BE20B6-DCA9-7441-B548-606D7D9EDD92",
     "docVars": Array [],
@@ -18556,6 +18569,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 709,
     "docId": "70F68831-609A-4ACC-87CE-416E9D216976",
     "docVars": Array [
@@ -20322,6 +20336,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "A8BB00BC-8D6F-2840-B682-9341438874CF",
     "docVars": Array [],
@@ -22135,6 +22150,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "F952540B-8E26-9040-BEAB-F11A2F10B576",
     "docVars": Array [],
@@ -24635,6 +24651,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "D69B5D79-AA39-424E-9D58-EF8E35CE7D20",
     "docVars": Array [],
@@ -25669,6 +25686,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "F963E3C9-F24C-354B-A852-391D33A55DB4",
     "docVars": Array [],
@@ -34816,6 +34834,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": false,
     "defaultTabStop": 720,
     "docId": "D4D4776C-D5E8-4FE1-8892-3B40BC54EF41",
     "docVars": Array [],
@@ -45529,6 +45548,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "C272B628-6DE8-264A-8734-9D2219FFD42F",
     "docVars": Array [],
@@ -46546,6 +46566,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "C11ED300-8EA6-3D41-8D67-5E5DE3410CF8",
     "docVars": Array [],
@@ -48744,6 +48765,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "A3F1E202-8404-D445-9EDD-BBC3885575A6",
     "docVars": Array [],
@@ -52372,6 +52394,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "9F52F717-3F03-584C-ACEF-96E0106FA905",
     "docVars": Array [],
@@ -53389,6 +53412,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 840,
     "docId": "7501A506-09EA-0F4C-ACFF-789B81CBED2D",
     "docVars": Array [],
@@ -62841,6 +62865,7 @@ Object {
     ],
   },
   "settings": Object {
+    "adjustLineHeightInTable": true,
     "defaultTabStop": 420,
     "docId": "A426FE01-5E89-4BAE-8422-F2CC8611EC68",
     "docVars": Array [],

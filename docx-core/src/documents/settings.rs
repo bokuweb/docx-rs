@@ -150,7 +150,6 @@ mod tests {
     <w:doNotLeaveBackslashAlone />
     <w:ulTrailSpace />
     <w:doNotExpandShiftReturn />
-    <w:adjustLineHeightInTable />
     <w:useFELayout />
     <w:compatSetting w:name="compatibilityMode" w:uri="http://schemas.microsoft.com/office/word" w:val="15" />
     <w:compatSetting w:name="overrideTableStyleFontSizeAndJustification" w:uri="http://schemas.microsoft.com/office/word" w:val="1" />

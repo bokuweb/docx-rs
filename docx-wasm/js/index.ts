@@ -228,6 +228,11 @@ export class Docx {
     return this;
   }
 
+  adjustLineHeightInTable() {
+    this.sectionProperty.adjustLineHeightInTable();
+    return this;
+  }
+
   defaultSize(size: number) {
     this.styles.defaultSize(size);
     return this;

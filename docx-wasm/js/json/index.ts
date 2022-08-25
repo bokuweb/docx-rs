@@ -56,6 +56,7 @@ export type SettingsJSON = {
   // w15:docId
   docId: string | null;
   defaultTabStop: number;
+  adjustLineHeightInTable: boolean;
   zoom: number;
   docVars: { name: string; val: string }[];
 };

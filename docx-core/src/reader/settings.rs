@@ -49,6 +49,9 @@ impl FromXML for Settings {
                                 }
                             }
                         }
+                        XMLElement::AdjustLineHeightInTable => {
+                            settings = settings.adjust_line_height_in_table();
+                        }
                         _ => {}
                     }
                 }

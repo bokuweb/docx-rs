@@ -41,8 +41,8 @@ impl Settings {
         self
     }
 
-    pub fn set_adjust_line_height_in_table(mut self, v: bool) -> Self {
-        self.adjust_line_height_in_table = v;
+    pub fn adjust_line_height_in_table(mut self) -> Self {
+        self.adjust_line_height_in_table = true;
         self
     }
 }
@@ -55,7 +55,7 @@ impl Default for Settings {
             doc_id: None,
             doc_vars: vec![],
             even_and_odd_headers: false,
-            adjust_line_height_in_table: true,
+            adjust_line_height_in_table: false,
         }
     }
 }

@@ -8407,7 +8407,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": 970,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -8583,7 +8583,7 @@ Object {
                 "property": Object {
                   "gridAfter": 1,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": 55,
                   "widthAfter": 1065,
                   "widthBefore": null,
@@ -8759,7 +8759,7 @@ Object {
                 "property": Object {
                   "gridAfter": 1,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": 675,
                   "widthAfter": 1065,
                   "widthBefore": null,
@@ -8933,7 +8933,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,
@@ -9107,7 +9107,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,
@@ -9360,7 +9360,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,
@@ -9613,7 +9613,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,
@@ -9854,7 +9854,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,
@@ -10107,7 +10107,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,
@@ -20020,7 +20020,7 @@ Object {
                                   "property": Object {
                                     "gridAfter": null,
                                     "gridBefore": null,
-                                    "heightRule": "atLeast",
+                                    "heightRule": "auto",
                                     "rowHeight": null,
                                     "widthAfter": null,
                                     "widthBefore": null,
@@ -20100,7 +20100,7 @@ Object {
                                   "property": Object {
                                     "gridAfter": null,
                                     "gridBefore": null,
-                                    "heightRule": "atLeast",
+                                    "heightRule": "auto",
                                     "rowHeight": null,
                                     "widthAfter": null,
                                     "widthBefore": null,
@@ -20178,7 +20178,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -20258,7 +20258,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -26905,7 +26905,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -27187,7 +27187,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -27453,7 +27453,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -27719,7 +27719,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -27979,7 +27979,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -28245,7 +28245,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -28511,7 +28511,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -45187,7 +45187,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -45331,7 +45331,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -45475,7 +45475,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -52176,7 +52176,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": 730,
                   "widthAfter": null,
                   "widthBefore": null,
@@ -52324,7 +52324,7 @@ Object {
                 "property": Object {
                   "gridAfter": null,
                   "gridBefore": null,
-                  "heightRule": "atLeast",
+                  "heightRule": "auto",
                   "rowHeight": null,
                   "widthAfter": null,
                   "widthBefore": null,

@@ -367,7 +367,7 @@ impl XMLBuilder {
         "w:footer",
         "w:gutter"
     );
-    closed!(columns, "w:cols", "w:space");
+    closed!(columns, "w:cols", "w:space", "w:num");
     closed!(document_grid, "w:docGrid", "w:type", "w:linePitch");
 
     open!(open_insert, "w:ins", "w:id", "w:author", "w:date");

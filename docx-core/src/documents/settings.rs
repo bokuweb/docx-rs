@@ -13,6 +13,7 @@ pub struct Settings {
     doc_id: Option<DocId>,
     doc_vars: Vec<DocVar>,
     even_and_odd_headers: bool,
+    adjust_line_height_in_table: bool,
 }
 
 impl Settings {
@@ -39,6 +40,11 @@ impl Settings {
         self.even_and_odd_headers = true;
         self
     }
+
+    pub fn adjust_line_height_in_table(mut self) -> Self {
+        self.adjust_line_height_in_table = true;
+        self
+    }
 }
 
 impl Default for Settings {
@@ -49,6 +55,7 @@ impl Default for Settings {
             doc_id: None,
             doc_vars: vec![],
             even_and_odd_headers: false,
+            adjust_line_height_in_table: false,
         }
     }
 }
@@ -66,8 +73,13 @@ impl BuildXML for Settings {
             .balance_single_byte_double_byte_width()
             .do_not_leave_backslash_alone()
             .ul_trail_space()
-            .do_not_expand_shift_return()
-            .adjust_line_height_table()
+            .do_not_expand_shift_return();
+
+        if self.adjust_line_height_in_table {
+            b = b.adjust_line_height_table();
+        }
+
+        b = b
             .use_fe_layout()
             .compat_setting(
                 "compatibilityMode",
@@ -138,7 +150,6 @@ mod tests {
     <w:doNotLeaveBackslashAlone />
     <w:ulTrailSpace />
     <w:doNotExpandShiftReturn />
-    <w:adjustLineHeightInTable />
     <w:useFELayout />
     <w:compatSetting w:name="compatibilityMode" w:uri="http://schemas.microsoft.com/office/word" w:val="15" />
     <w:compatSetting w:name="overrideTableStyleFontSizeAndJustification" w:uri="http://schemas.microsoft.com/office/word" w:val="1" />

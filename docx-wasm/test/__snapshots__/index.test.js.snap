@@ -8583,7 +8583,7 @@ Object {
                 "property": Object {
                   "gridAfter": 1,
                   "gridBefore": null,
-                  "heightRule": "auto",
+                  "heightRule": "exact",
                   "rowHeight": 55,
                   "widthAfter": 1065,
                   "widthBefore": null,
@@ -8933,7 +8933,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "auto",
+                  "heightRule": "exact",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,
@@ -9107,7 +9107,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "auto",
+                  "heightRule": "exact",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,
@@ -9360,7 +9360,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "auto",
+                  "heightRule": "exact",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,
@@ -9613,7 +9613,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "auto",
+                  "heightRule": "exact",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,
@@ -9854,7 +9854,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "auto",
+                  "heightRule": "exact",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,
@@ -10107,7 +10107,7 @@ Object {
                 "property": Object {
                   "gridAfter": 2,
                   "gridBefore": null,
-                  "heightRule": "auto",
+                  "heightRule": "exact",
                   "rowHeight": 397,
                   "widthAfter": 3717,
                   "widthBefore": null,

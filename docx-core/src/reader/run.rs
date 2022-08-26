@@ -94,8 +94,13 @@ impl ElementReader for Run {
                                     }
                                 }
                                 XMLElement::InstrText => {
-                                    if let Ok(i) = InstrText::read(r, &attributes) {
-                                        run.children.push(RunChild::InstrText(Box::new(i)));
+                                    let e = r.next();
+                                    match e {
+                                        Ok(XmlEvent::Characters(c)) => {
+                                            run.children.push(RunChild::InstrTextString(c));
+                                        }
+                                        Err(_) => return Err(ReaderError::XMLReadError),
+                                        _ => {}
                                     }
                                 }
                                 _ => {}

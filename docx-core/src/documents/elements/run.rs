@@ -35,6 +35,8 @@ pub enum RunChild {
     CommentEnd(CommentRangeEnd),
     FieldChar(FieldChar),
     InstrText(Box<InstrText>),
+    // For reader
+    InstrTextString(String),
 }
 
 impl Serialize for RunChild {
@@ -99,6 +101,12 @@ impl Serialize for RunChild {
             RunChild::InstrText(ref i) => {
                 let mut t = serializer.serialize_struct("InstrText", 2)?;
                 t.serialize_field("type", "instrText")?;
+                t.serialize_field("data", i)?;
+                t.end()
+            }
+            RunChild::InstrTextString(ref i) => {
+                let mut t = serializer.serialize_struct("InstrTextString", 2)?;
+                t.serialize_field("type", "instrTextString")?;
                 t.serialize_field("data", i)?;
                 t.end()
             }
@@ -256,6 +264,7 @@ impl BuildXML for Run {
                 RunChild::CommentEnd(c) => b = b.add_child(c),
                 RunChild::FieldChar(c) => b = b.add_child(c),
                 RunChild::InstrText(c) => b = b.add_child(c),
+                _ => {}
             }
         }
         b.close().build()

@@ -1,12 +1,30 @@
 #![allow(clippy::single_match)]
 
+use serde::ser::{SerializeStruct, Serializer};
+use serde::Serialize;
+
 use std::io::Read;
-use std::str::FromStr;
 
 use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
 use crate::reader::*;
+
+// For reader only
+#[derive(PartialEq, Debug)]
+pub struct InstrText(String);
+
+impl Serialize for InstrText {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut t = serializer.serialize_struct("InstrText", 2)?;
+        t.serialize_field("type", "instrText")?;
+        t.serialize_field("data", &self.0)?;
+        t.end()
+    }
+}
 
 impl ElementReader for InstrText {
     fn read<R: Read>(
@@ -20,40 +38,7 @@ impl ElementReader for InstrText {
                 Ok(XmlEvent::Characters(c)) => {
                     instr = c;
                 }
-                Ok(XmlEvent::EndElement { name, .. }) => {
-                    let e = XMLElement::from_str(&name.local_name).unwrap();
-                    match e {
-                        XMLElement::InstrText => {
-                            let instr = instr.trim();
-                            if instr.is_empty() {
-                                return Err(ReaderError::XMLReadError);
-                            } else {
-                                if instr.starts_with("TOC") {
-                                    if let Ok(instr) = InstrToC::from_str(instr) {
-                                        return Ok(InstrText::TOC(instr));
-                                    }
-                                }
-                                if instr.starts_with("TC") {
-                                    if let Ok(instr) = InstrTC::from_str(instr) {
-                                        return Ok(InstrText::TC(instr));
-                                    }
-                                }
-                                if instr.starts_with("HYPERLINK") {
-                                    if let Ok(instr) = InstrHyperlink::from_str(instr) {
-                                        return Ok(InstrText::HYPERLINK(instr));
-                                    }
-                                }
-                                if instr.starts_with("PAGEREF") {
-                                    if let Ok(instr) = InstrPAGEREF::from_str(instr) {
-                                        return Ok(InstrText::PAGEREF(instr));
-                                    }
-                                }
-                                return Ok(InstrText::Unsupported(instr.to_string()));
-                            }
-                        }
-                        _ => {}
-                    }
-                }
+                Ok(XmlEvent::EndElement { name, .. }) => return Ok(InstrText(instr)),
                 Err(_) => return Err(ReaderError::XMLReadError),
                 _ => {}
             }

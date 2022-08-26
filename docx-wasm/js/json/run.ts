@@ -58,7 +58,7 @@ export type RunChildJSON =
   | CommentRangeStartJSON
   | CommentRangeEndJSON
   | FieldCharJSON
-  | InstrTextJSON;
+  | InstrTextStringJSON;
 
 export type TextJSON = {
   type: "text";
@@ -111,4 +111,9 @@ export type InstrTextJSON = {
         type: "toc";
         data: InstrToC;
       };
+};
+
+export type InstrTextStringJSON = {
+  type: "instrTextString";
+  data: string;
 };

@@ -31,5 +31,5 @@ image = { version = "0.24.3", default-features = false, features=["gif", "jpeg",
 ts-rs = "6.1"
 
 [dev-dependencies]
-pretty_assertions = "1.2.1"
+pretty_assertions = "1.3.0"
 insta = "1.16"

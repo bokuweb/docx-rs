@@ -179,6 +179,21 @@ describe("writer", () => {
     }
   });
 
+  test("should write align", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello world!!"))
+      .align("both");
+    const buffer = new w.Docx().addParagraph(p).build();
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+    writeFileSync("../output/js/align.docx", buffer);
+    
+  });
+
   test("should write strike", () => {
     const p = new w.Paragraph().addRun(
       new w.Run().addText("Hello world!!").strike()
@@ -862,4 +877,3 @@ describe("writer", () => {
     writeFileSync("../output/js/style.docx", buffer);
   });
 });
-

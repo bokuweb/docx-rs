@@ -203,7 +203,7 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
   property: ParagraphProperty
 ): T => {
   const alignment = createParagraphAlignment(property.align);
-  if (alignment) {
+  if (alignment != null) {
     target = target.align(alignment) as T;
   }
 

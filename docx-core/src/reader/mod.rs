@@ -24,7 +24,6 @@ mod header;
 mod hyperlink;
 mod ignore;
 mod insert;
-mod instr_text;
 mod level;
 mod level_override;
 mod mc_fallback;

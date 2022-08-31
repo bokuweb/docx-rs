@@ -19,7 +19,7 @@ impl ElementReader for TableRow {
         let mut row_height = None;
         let mut del = None;
         let mut ins = None;
-        let mut height_rule = Some(HeightRule::AtLeast);
+        let mut height_rule = Some(HeightRule::Auto);
         loop {
             let e = r.next();
             match e {
@@ -55,18 +55,18 @@ impl ElementReader for TableRow {
                                 width_before = Some(v.0 as f32);
                             }
                         }
-                        XMLElement::HeightRule => {
-                            if let Some(v) = read_val(&attributes) {
-                                if let Ok(r) = HeightRule::from_str(&v) {
-                                    height_rule = Some(r);
-                                }
-                            }
-                        }
                         XMLElement::TableRowHeight => {
                             if let Some(v) = read_val(&attributes) {
                                 let h = f32::from_str(&v);
                                 if let Ok(h) = h {
                                     row_height = Some(h);
+                                }
+                            }
+
+                            if let Some(v) = read(&attributes, "hRule") {
+                                let h = HeightRule::from_str(&v);
+                                if let Ok(h) = h {
+                                    height_rule = Some(h);
                                 }
                             }
                         }

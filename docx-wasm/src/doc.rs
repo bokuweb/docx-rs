@@ -82,6 +82,11 @@ impl Docx {
         self
     }
 
+    pub fn set_adjust_line_height_in_table(mut self) -> Self {
+        self.0.settings = self.0.settings.adjust_line_height_in_table();
+        self
+    }
+
     pub fn header(mut self, header: Header) -> Self {
         self.0 = self.0.header(header.take());
         self

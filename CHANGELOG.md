@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## docx-wasm@0.0.276-rc12 (26. Aug, 2022)
+
+- [BugFix] Fixed a bug, hRule is not read in reader.
+
+## docx-wasm@0.0.276-rc11 (25. Aug, 2022)
+
+- [Breaking] change table row `hightRule` to `auto` in reader.
+
+## docx-wasm@0.0.276-rc10 (25. Aug, 2022)
+
+- Support `adjustLineHeightInTable` in document setting
+
+## docx-rs@0.4.2 (25. Aug, 2022)
+
+- [Breaking] Hyperlink interface.
+- Support hyperlink reader.
+- [Breaking] Remove default `TableCellMargin`. Please specify if needed.
+- Support table cell margins reader.
+- Support nested table reader.
+- Add png image converter
+- Add `imageData` in `Shape` reader.
+- [BUGFIX] Fixed a bug, it is not able to read jpeg from js.
+- [BUGFIX] Fixed a bug, it is not able to write images.
+- [Breaking] Add `id` and `path` to `images` output.
+- [BUGFIX] Use default `numPr` if numId not found to avoid panic.
+- [Breaking] Use `self.based_on` and `self.next` in `style` instead of `Normal`.
+- [Breaking] Use `i32` for `PageMargin` props instead of unsigned.
+- support `columns` in document.
+
 ## docx-wasm@0.0.275 (8. Aug, 2022)
 
 - re enable Hyperlink interface.

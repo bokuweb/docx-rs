@@ -3,10 +3,15 @@ import { ParagraphPropertyJSON } from "./paragraph";
 import { TablePropertyJSON } from "./table";
 import { TableCellPropertyJSON } from "..";
 
+export type StyleType = "paragraph" | "character" | "table";
+// TODO: Support later.
+//   | "numbering"
+//   | "tableCell";
+
 export type StyleJSON = {
   styleId: string;
   name: string;
-  styleType: string;
+  styleType: StyleType;
   runProperty: RunPropertyJSON;
   paragraphProperty: ParagraphPropertyJSON;
   tableProperty: TablePropertyJSON;

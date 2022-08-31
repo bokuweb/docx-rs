@@ -2,11 +2,7 @@ import { RunPropertyJSON } from "./run";
 import { ParagraphPropertyJSON } from "./paragraph";
 import { TablePropertyJSON } from "./table";
 import { TableCellPropertyJSON } from "..";
-
-export type StyleType = "paragraph" | "character" | "table";
-// TODO: Support later.
-//   | "numbering"
-//   | "tableCell";
+import { StyleType } from "../style";
 
 export type StyleJSON = {
   styleId: string;

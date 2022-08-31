@@ -25,12 +25,7 @@ import {
 import { BorderType } from "./border";
 import { WidthType } from ".";
 
-export type StyleType =
-  | "paragraph"
-  | "character"
-  | "numbering"
-  | "table"
-  | "unsupported";
+export type StyleType = "paragraph" | "character" | "numbering" | "table";
 
 export class Style {
   _styleId: string;

@@ -12204,14 +12204,8 @@ Object {
               "data": Object {
                 "children": Array [
                   Object {
-                    "data": Object {
-                      "data": Object {
-                        "anchor": false,
-                        "target": "https://example.com/",
-                      },
-                      "type": "hyperlink",
-                    },
-                    "type": "instrText",
+                    "data": "HYPERLINK \\"https://example.com/\\"",
+                    "type": "instrTextString",
                   },
                 ],
                 "runProperty": Object {
@@ -12351,14 +12345,8 @@ Object {
                     "data": Object {
                       "children": Array [
                         Object {
-                          "data": Object {
-                            "data": Object {
-                              "anchor": false,
-                              "target": "https://google.com/",
-                            },
-                            "type": "hyperlink",
-                          },
-                          "type": "instrText",
+                          "data": "HYPERLINK \\"https://google.com/\\"",
+                          "type": "instrTextString",
                         },
                       ],
                       "runProperty": Object {
@@ -28671,11 +28659,8 @@ Object {
                   "data": Object {
                     "children": Array [
                       Object {
-                        "data": Object {
-                          "data": "PAGE",
-                          "type": "unsupported",
-                        },
-                        "type": "instrText",
+                        "data": " PAGE ",
+                        "type": "instrTextString",
                       },
                     ],
                     "runProperty": Object {
@@ -28795,11 +28780,8 @@ Object {
                   "data": Object {
                     "children": Array [
                       Object {
-                        "data": Object {
-                          "data": "NUMPAGES",
-                          "type": "unsupported",
-                        },
-                        "type": "instrText",
+                        "data": " NUMPAGES ",
+                        "type": "instrTextString",
                       },
                     ],
                     "runProperty": Object {
@@ -47364,23 +47346,8 @@ Object {
               "data": Object {
                 "children": Array [
                   Object {
-                    "data": Object {
-                      "data": Object {
-                        "captionLabel": null,
-                        "headingStylesRange": Array [
-                          1,
-                          3,
-                        ],
-                        "hideTabAndPageNumbersInWebview": true,
-                        "hyperlink": true,
-                        "preserveNewLine": false,
-                        "preserveTab": false,
-                        "stylesWithLevels": Array [],
-                        "useAppliedParagraphLineLevel": true,
-                      },
-                      "type": "toc",
-                    },
-                    "type": "instrText",
+                    "data": "TOC \\\\o \\"1-3\\" \\\\h \\\\z \\\\u",
+                    "type": "instrTextString",
                   },
                 ],
                 "runProperty": Object {},
@@ -47491,15 +47458,8 @@ Object {
                     "data": Object {
                       "children": Array [
                         Object {
-                          "data": Object {
-                            "data": Object {
-                              "hyperlink": true,
-                              "pageRef": "PAGEREF",
-                              "relativePosition": false,
-                            },
-                            "type": "pageref",
-                          },
-                          "type": "instrText",
+                          "data": " PAGEREF _Toc89816785 \\\\h ",
+                          "type": "instrTextString",
                         },
                       ],
                       "runProperty": Object {},
@@ -47675,15 +47635,8 @@ Object {
                     "data": Object {
                       "children": Array [
                         Object {
-                          "data": Object {
-                            "data": Object {
-                              "hyperlink": true,
-                              "pageRef": "PAGEREF",
-                              "relativePosition": false,
-                            },
-                            "type": "pageref",
-                          },
-                          "type": "instrText",
+                          "data": " PAGEREF _Toc89816786 \\\\h ",
+                          "type": "instrTextString",
                         },
                       ],
                       "runProperty": Object {},
@@ -47859,15 +47812,8 @@ Object {
                     "data": Object {
                       "children": Array [
                         Object {
-                          "data": Object {
-                            "data": Object {
-                              "hyperlink": true,
-                              "pageRef": "PAGEREF",
-                              "relativePosition": false,
-                            },
-                            "type": "pageref",
-                          },
-                          "type": "instrText",
+                          "data": " PAGEREF _Toc89816787 \\\\h ",
+                          "type": "instrTextString",
                         },
                       ],
                       "runProperty": Object {},
@@ -48043,15 +47989,8 @@ Object {
                     "data": Object {
                       "children": Array [
                         Object {
-                          "data": Object {
-                            "data": Object {
-                              "hyperlink": true,
-                              "pageRef": "PAGEREF",
-                              "relativePosition": false,
-                            },
-                            "type": "pageref",
-                          },
-                          "type": "instrText",
+                          "data": " PAGEREF _Toc89816788 \\\\h ",
+                          "type": "instrTextString",
                         },
                       ],
                       "runProperty": Object {},
@@ -54265,11 +54204,8 @@ Object {
                   "data": Object {
                     "children": Array [
                       Object {
-                        "data": Object {
-                          "data": "PAGE",
-                          "type": "unsupported",
-                        },
-                        "type": "instrText",
+                        "data": "PAGE  ",
+                        "type": "instrTextString",
                       },
                     ],
                     "runProperty": Object {},

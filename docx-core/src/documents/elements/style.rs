@@ -153,7 +153,11 @@ impl BuildXML for Style {
             .add_child(&self.name)
             .add_child(&self.run_property)
             .add_child(&self.paragraph_property);
-
+        if self.style_type == StyleType::Table {
+            b = b
+                .add_child(&self.table_cell_property)
+                .add_child(&self.table_property);
+        }
         if let Some(ref based_on) = self.based_on {
             b = b.add_child(based_on)
         }

@@ -1,6 +1,10 @@
 import { RunJSON, RunPropertyJSON } from "./run";
 import { IndentJSON } from "./indent";
-import { CommentRangeStartJSON, CommentRangeEndJSON, SectionPropertyJSON } from "..";
+import {
+  CommentRangeStartJSON,
+  CommentRangeEndJSON,
+  SectionPropertyJSON,
+} from "..";
 import { LineSpacingJSON } from "./line_spacing";
 
 export type ParagraphChildJSON =
@@ -45,7 +49,7 @@ export type ParagraphPropertyJSON = {
     date: string;
     property: ParagraphPropertyJSON;
   };
-  SectionProperty?: SectionPropertyJSON
+  sectionProperty?: SectionPropertyJSON;
 };
 
 export type ParagraphJSON = {

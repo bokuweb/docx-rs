@@ -1,4 +1,5 @@
 use super::*;
+use docx_rs::{BorderType, TextBorder, VertAlignType, WidthType};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -47,6 +48,11 @@ impl Style {
         self
     }
 
+    pub fn strike(mut self) -> Self {
+        self.0.run_property = self.0.run_property.strike();
+        self
+    }
+
     pub fn underline(mut self, line_type: &str) -> Self {
         self.0.run_property = self.0.run_property.underline(line_type);
         self
@@ -54,6 +60,37 @@ impl Style {
 
     pub fn vanish(mut self) -> Self {
         self.0.run_property = self.0.run_property.vanish();
+        self
+    }
+
+    pub fn fonts(mut self, f: RunFonts) -> Self {
+        self.0 = self.0.fonts(f.take());
+        self
+    }
+
+    pub fn spacing(mut self, spacing: i32) -> Self {
+        self.0.run_property = self.0.run_property.spacing(spacing);
+        self
+    }
+
+    pub fn vert_align(mut self, a: VertAlignType) -> Self {
+        self.0.run_property = self.0.run_property.vert_align(a);
+        self
+    }
+
+    pub fn text_border(
+        mut self,
+        border_type: BorderType,
+        size: usize,
+        space: usize,
+        color: &str,
+    ) -> Self {
+        let border = TextBorder::new()
+            .border_type(border_type)
+            .size(size)
+            .space(space)
+            .color(color);
+        self.0.run_property = self.0.run_property.text_border(border);
         self
     }
 
@@ -81,6 +118,39 @@ impl Style {
         self
     }
 
+    // TODO: For now only numbering supported.
+    pub fn numbering(mut self, id: usize, level: usize) -> Self {
+        let id = docx_rs::NumberingId::new(id);
+        let level = docx_rs::IndentLevel::new(level);
+        self.0.paragraph_property = self.0.paragraph_property.numbering(id, level);
+        self
+    }
+
+    pub fn line_spacing(mut self, spacing: LineSpacing) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.line_spacing(spacing.take());
+        self
+    }
+
+    pub fn keep_next(mut self, v: bool) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.keep_next(v);
+        self
+    }
+
+    pub fn keep_lines(mut self, v: bool) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.keep_lines(v);
+        self
+    }
+
+    pub fn page_break_before(mut self, v: bool) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.page_break_before(v);
+        self
+    }
+
+    pub fn widow_control(mut self, v: bool) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.widow_control(v);
+        self
+    }
+
     // pub fn run_property(mut self, p: docx_rs::RunProperty) -> Self {
     //     self.0.run_property = p;
     //     self
@@ -98,6 +168,53 @@ impl Style {
 
     pub fn table_cell_property(mut self, p: docx_rs::TableCellProperty) -> Self {
         self.0.table_cell_property = p;
+        self
+    }
+
+    pub fn table_indent(mut self, v: i32) -> Self {
+        self.0.table_property = self.0.table_property.indent(v);
+        self
+    }
+
+    pub fn table_align(mut self, v: docx_rs::TableAlignmentType) -> Self {
+        self.0.table_property = self.0.table_property.align(v);
+        self
+    }
+
+    pub fn set_cell_margins(
+        mut self,
+        top: usize,
+        right: usize,
+        bottom: usize,
+        left: usize,
+    ) -> Self {
+        let m = docx_rs::TableCellMargins::new().margin(top, right, bottom, left);
+        self.0.table_property = self.0.table_property.set_margins(m);
+        self
+    }
+
+    pub fn cell_margin_top(mut self, v: usize, t: WidthType) -> Self {
+        self.0.table_property = self.0.table_property.cell_margin_top(v, t);
+        self
+    }
+
+    pub fn cell_margin_right(mut self, v: usize, t: WidthType) -> Self {
+        self.0.table_property = self.0.table_property.cell_margin_right(v, t);
+        self
+    }
+
+    pub fn cell_margin_bottom(mut self, v: usize, t: WidthType) -> Self {
+        self.0.table_property = self.0.table_property.cell_margin_bottom(v, t);
+        self
+    }
+
+    pub fn cell_margin_left(mut self, v: usize, t: WidthType) -> Self {
+        self.0.table_property = self.0.table_property.cell_margin_left(v, t);
+        self
+    }
+
+    pub fn layout(mut self, t: docx_rs::TableLayoutType) -> Self {
+        self.0.table_property = self.0.table_property.layout(t);
         self
     }
 }

@@ -67137,6 +67137,23 @@ exports[`writer should write ToC with items 2`] = `
 </w:document>"
 `;
 
+exports[`writer should write align 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write align 2`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<w:document xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\" xmlns:w10=\\"urn:schemas-microsoft-com:office:word\\" xmlns:wp=\\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\\" xmlns:wps=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\\" xmlns:wpg=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\\" xmlns:mc=\\"http://schemas.openxmlformats.org/markup-compatibility/2006\\" xmlns:wp14=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\\" xmlns:w14=\\"http://schemas.microsoft.com/office/word/2010/wordml\\" xmlns:w15=\\"http://schemas.microsoft.com/office/word/2012/wordml\\" mc:Ignorable=\\"w14 wp14\\">
+  <w:body><w:p w14:paraId=\\"00000001\\"><w:pPr><w:rPr /><w:jc w:val=\\"both\\" /></w:pPr><w:r><w:rPr /><w:t xml:space=\\"preserve\\">Hello world!!</w:t></w:r></w:p><w:sectPr><w:pgSz w:w=\\"11906\\" w:h=\\"16838\\" /><w:pgMar w:top=\\"1985\\" w:right=\\"1701\\" w:bottom=\\"1701\\" w:left=\\"1701\\" w:header=\\"851\\" w:footer=\\"992\\" w:gutter=\\"0\\" /><w:cols w:space=\\"425\\" w:num=\\"1\\" /><w:docGrid w:type=\\"lines\\" w:linePitch=\\"360\\" /></w:sectPr></w:body>
+</w:document>"
+`;
+
 exports[`writer should write anchor hyperlink 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
@@ -67993,6 +68010,37 @@ exports[`writer should write strike 3`] = `
 <w:numbering xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\"><w:abstractNum w:abstractNumId=\\"1\\"><w:lvl w:ilvl=\\"0\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%1.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"420\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"1\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%2)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"840\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"2\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%3\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1260\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"3\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%4.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"1680\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"4\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%5)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2100\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"5\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%6\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2520\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"6\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"%7.\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"2940\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"7\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimal\\" /><w:lvlText w:val=\\"(%8)\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3360\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl=\\"8\\"><w:start w:val=\\"1\\" /><w:numFmt w:val=\\"decimalEnclosedCircle\\" /><w:lvlText w:val=\\"%9\\" /><w:lvlJc w:val=\\"left\\" /><w:pPr><w:rPr /><w:ind w:left=\\"3780\\" w:right=\\"0\\" w:hanging=\\"420\\" /></w:pPr><w:rPr /></w:lvl></w:abstractNum><w:num w:numId=\\"1\\">
   <w:abstractNumId w:val=\\"1\\" />
 </w:num></w:numbering>"
+`;
+
+exports[`writer should write style 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<Relationships xmlns=\\"http://schemas.openxmlformats.org/package/2006/relationships\\">
+  <Relationship Id=\\"rId1\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\\" Target=\\"styles.xml\\" />
+  <Relationship Id=\\"rId2\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable\\" Target=\\"fontTable.xml\\" />
+  <Relationship Id=\\"rId3\\" Type=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings\\" Target=\\"settings.xml\\" />
+  <Relationship Id=\\"rId5\\" Type=\\"http://schemas.microsoft.com/office/2011/relationships/commentsExtended\\" Target=\\"commentsExtended.xml\\" />
+</Relationships>"
+`;
+
+exports[`writer should write style 2`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<w:document xmlns:o=\\"urn:schemas-microsoft-com:office:office\\" xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\" xmlns:w10=\\"urn:schemas-microsoft-com:office:word\\" xmlns:wp=\\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\\" xmlns:wps=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\\" xmlns:wpg=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\\" xmlns:mc=\\"http://schemas.openxmlformats.org/markup-compatibility/2006\\" xmlns:wp14=\\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\\" xmlns:w14=\\"http://schemas.microsoft.com/office/word/2010/wordml\\" xmlns:w15=\\"http://schemas.microsoft.com/office/word/2012/wordml\\" mc:Ignorable=\\"w14 wp14\\">
+  <w:body><w:p w14:paraId=\\"00000001\\"><w:pPr><w:rPr /><w:pStyle w:val=\\"Heading1\\" /></w:pPr><w:r><w:rPr><w:rStyle w:val=\\"Run\\" /></w:rPr><w:t xml:space=\\"preserve\\">Hello</w:t></w:r></w:p><w:tbl><w:tblPr><w:tblW w:w=\\"0\\" w:type=\\"dxa\\" /><w:jc w:val=\\"left\\" /><w:tblBorders><w:top w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:left w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:bottom w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:right w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:insideH w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:insideV w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /></w:tblBorders><w:tblCellMar>
+  <w:top w:w=\\"0\\" w:type=\\"dxa\\" />
+  <w:left w:w=\\"55\\" w:type=\\"dxa\\" />
+  <w:bottom w:w=\\"0\\" w:type=\\"dxa\\" />
+  <w:right w:w=\\"55\\" w:type=\\"dxa\\" />
+</w:tblCellMar><w:tblInd w:w=\\"0\\" w:type=\\"dxa\\" /><w:tblStyle w:val=\\"Table\\" /></w:tblPr><w:tblGrid /><w:tr><w:trPr /><w:tc><w:tcPr><w:tcBorders><w:top w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:left w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:bottom w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:right w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:insideH w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:insideV w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /></w:tcBorders></w:tcPr><w:p w14:paraId=\\"00000002\\"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space=\\"preserve\\">Hello</w:t></w:r></w:p></w:tc></w:tr></w:tbl><w:sectPr><w:pgSz w:w=\\"11906\\" w:h=\\"16838\\" /><w:pgMar w:top=\\"1985\\" w:right=\\"1701\\" w:bottom=\\"1701\\" w:left=\\"1701\\" w:header=\\"851\\" w:footer=\\"992\\" w:gutter=\\"0\\" /><w:cols w:space=\\"425\\" w:num=\\"1\\" /><w:docGrid w:type=\\"lines\\" w:linePitch=\\"360\\" /></w:sectPr></w:body>
+</w:document>"
+`;
+
+exports[`writer should write style 3`] = `
+"<w:styles xmlns:mc=\\"http://schemas.openxmlformats.org/markup-compatibility/2006\\" xmlns:r=\\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\\" xmlns:w=\\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\\" xmlns:w14=\\"http://schemas.microsoft.com/office/word/2010/wordml\\" xmlns:w15=\\"http://schemas.microsoft.com/office/word/2012/wordml\\" mc:Ignorable=\\"w14 w15\\"><w:docDefaults><w:rPrDefault><w:rPr /></w:rPrDefault></w:docDefaults><w:style w:type=\\"paragraph\\" w:styleId=\\"Normal\\"><w:name w:val=\\"Normal\\" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:qFormat /></w:style><w:style w:type=\\"paragraph\\" w:styleId=\\"Heading1\\"><w:name w:val=\\"Heading 1\\" /><w:rPr /><w:pPr><w:rPr /><w:jc w:val=\\"center\\" /></w:pPr><w:qFormat /></w:style><w:style w:type=\\"character\\" w:styleId=\\"Run\\"><w:name w:val=\\"Run test\\" /><w:rPr><w:b /><w:bCs /></w:rPr><w:pPr><w:rPr /></w:pPr><w:qFormat /></w:style><w:style w:type=\\"table\\" w:styleId=\\"Table\\"><w:name w:val=\\"Table 1\\" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:tcPr /><w:tblPr><w:tblW w:w=\\"0\\" w:type=\\"dxa\\" /><w:jc w:val=\\"center\\" /><w:tblBorders><w:top w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:left w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:bottom w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:right w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:insideH w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /><w:insideV w:val=\\"single\\" w:sz=\\"2\\" w:space=\\"0\\" w:color=\\"000000\\" /></w:tblBorders><w:tblCellMar>
+  <w:top w:w=\\"0\\" w:type=\\"dxa\\" />
+  <w:left w:w=\\"55\\" w:type=\\"dxa\\" />
+  <w:bottom w:w=\\"0\\" w:type=\\"dxa\\" />
+  <w:right w:w=\\"55\\" w:type=\\"dxa\\" />
+</w:tblCellMar><w:tblInd w:w=\\"200\\" w:type=\\"dxa\\" /></w:tblPr><w:qFormat /></w:style></w:styles>"
 `;
 
 exports[`writer should write table layout 1`] = `

@@ -235,6 +235,11 @@ impl Paragraph {
         self
     }
 
+    pub fn section_property(mut self, s: SectionProperty) -> Self {
+        self.property = self.property.section_property(s);
+        self
+    }
+
     pub fn add_tab(mut self, t: Tab) -> Self {
         self.property = self.property.add_tab(t);
         self

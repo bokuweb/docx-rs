@@ -165,6 +165,12 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read sectionProperty in ppr", () => {
+    const buffer = readFileSync("../fixtures/section_property_in_ppr/section_property_in_ppr.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {

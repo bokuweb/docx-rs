@@ -29,6 +29,8 @@ pub struct ParagraphProperty {
     pub widow_control: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub outline_lvl: Option<OutlineLvl>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub section_property: Option<SectionProperty>,
     pub tabs: Vec<Tab>,
     // read only
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -113,6 +115,11 @@ impl ParagraphProperty {
 
     pub fn add_tab(mut self, t: Tab) -> Self {
         self.tabs.push(t);
+        self
+    }
+
+    pub fn section_property(mut self, s: SectionProperty) -> Self {
+        self.section_property = Some(s);
         self
     }
 

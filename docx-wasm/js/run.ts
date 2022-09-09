@@ -46,6 +46,33 @@ export type RunProperty = {
   del?: RunPropertyDel;
 };
 
+export const convertBorderType = (t: BorderType) => {
+  switch (t) {
+    case "nil":
+      return wasm.BorderType.Nil;
+    case "none":
+      return wasm.BorderType.None;
+    case "single":
+      return wasm.BorderType.Single;
+    case "thick":
+      return wasm.BorderType.Thick;
+    case "double":
+      return wasm.BorderType.Double;
+    case "dotted":
+      return wasm.BorderType.Dotted;
+    case "dashed":
+      return wasm.BorderType.Dashed;
+    case "dotDash":
+      return wasm.BorderType.DotDash;
+    case "dotDotDash":
+      return wasm.BorderType.DotDotDash;
+    case "triple":
+      return wasm.BorderType.Triple;
+    default:
+      return wasm.BorderType.Single;
+  }
+};
+
 export const createDefaultRunProperty = (): RunProperty => {
   return {};
 };
@@ -254,3 +281,73 @@ export class Run {
     return this;
   }
 }
+
+export const setRunProperty = <T extends wasm.Run | wasm.Style>(
+  target: T,
+  property: RunProperty
+): T => {
+  if (property.style && target instanceof wasm.Run) {
+    target = target.style(property.style) as T;
+  }
+
+  if (typeof property.size !== "undefined") {
+    target = target.size(property.size) as T;
+  }
+
+  if (property.color) {
+    target = target.color(property.color) as T;
+  }
+
+  if (property.highlight) {
+    target = target.highlight(property.highlight) as T;
+  }
+
+  if (property.vertAlign) {
+    if (property.vertAlign === "superscript") {
+      target = target.vert_align(wasm.VertAlignType.SuperScript) as T;
+    } else if (property.vertAlign === "subscript") {
+      target = target.vert_align(wasm.VertAlignType.SubScript) as T;
+    }
+  }
+
+  if (property.bold) {
+    target = target.bold() as T;
+  }
+
+  if (property.italic) {
+    target = target.italic() as T;
+  }
+
+  if (property.strike) {
+    target = target.strike() as T;
+  }
+
+  if (property.underline) {
+    target = target.underline(property.underline) as T;
+  }
+
+  if (property.vanish) {
+    target = target.vanish() as T;
+  }
+
+  if (property.spacing != null) {
+    target = target.spacing(property.spacing) as T;
+  }
+
+  if (property.textBorder) {
+    const { borderType, color, space, size } = property.textBorder;
+    target = target.text_border(
+      convertBorderType(borderType),
+      size,
+      space,
+      color
+    ) as T;
+  }
+
+  if (property.fonts) {
+    const fonts = property.fonts.buildWasmObject();
+    target = target.fonts(fonts) as T;
+  }
+
+  return target;
+};

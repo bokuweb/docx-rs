@@ -11,40 +11,43 @@ impl ElementReader for LevelOverride {
         r: &mut EventReader<R>,
         attrs: &[OwnedAttribute],
     ) -> Result<Self, ReaderError> {
-        dbg!("09-90-9", &attrs[0].value);
-        let mut o = LevelOverride::new(usize::from_str(&attrs[0].value)?);
-        loop {
-            let e = r.next();
-            match e {
-                Ok(XmlEvent::StartElement {
-                    attributes, name, ..
-                }) => {
-                    let e = XMLElement::from_str(&name.local_name).unwrap();
-                    match e {
-                        XMLElement::StartOverride => {
-                            if let Ok(val) = usize::from_str(&attributes[0].value) {
-                                o = o.start(val);
+        if let Ok(level) = usize::from_str(&attrs[0].value) {
+            let mut o = LevelOverride::new(level);
+            loop {
+                let e = r.next();
+                match e {
+                    Ok(XmlEvent::StartElement {
+                        attributes, name, ..
+                    }) => {
+                        let e = XMLElement::from_str(&name.local_name).unwrap();
+                        match e {
+                            XMLElement::StartOverride => {
+                                if let Ok(val) = usize::from_str(&attributes[0].value) {
+                                    o = o.start(val);
+                                }
+                                continue;
                             }
-                            continue;
-                        }
-                        XMLElement::Level => {
-                            if let Ok(lvl) = Level::read(r, &attributes) {
-                                o = o.level(lvl);
+                            XMLElement::Level => {
+                                if let Ok(lvl) = Level::read(r, &attributes) {
+                                    o = o.level(lvl);
+                                }
+                                continue;
                             }
-                            continue;
+                            _ => {}
                         }
-                        _ => {}
                     }
-                }
-                Ok(XmlEvent::EndElement { name, .. }) => {
-                    let e = XMLElement::from_str(&name.local_name).unwrap();
-                    if e == XMLElement::LvlOverride {
-                        return Ok(o);
+                    Ok(XmlEvent::EndElement { name, .. }) => {
+                        let e = XMLElement::from_str(&name.local_name).unwrap();
+                        if e == XMLElement::LvlOverride {
+                            return Ok(o);
+                        }
                     }
+                    Err(_) => return Err(ReaderError::XMLReadError),
+                    _ => {}
                 }
-                Err(_) => return Err(ReaderError::XMLReadError),
-                _ => {}
             }
+        } else {
+            Err(ReaderError::XMLReadError)
         }
     }
 }

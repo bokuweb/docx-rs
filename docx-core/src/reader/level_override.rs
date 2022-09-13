@@ -11,6 +11,7 @@ impl ElementReader for LevelOverride {
         r: &mut EventReader<R>,
         attrs: &[OwnedAttribute],
     ) -> Result<Self, ReaderError> {
+        dbg!("09-90-9", &attrs[0].value);
         let mut o = LevelOverride::new(usize::from_str(&attrs[0].value)?);
         loop {
             let e = r.next();
@@ -21,13 +22,15 @@ impl ElementReader for LevelOverride {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::StartOverride => {
-                            let val = usize::from_str(&attributes[0].value)?;
-                            o = o.start(val);
+                            if let Ok(val) = usize::from_str(&attributes[0].value) {
+                                o = o.start(val);
+                            }
                             continue;
                         }
                         XMLElement::Level => {
-                            let lvl = Level::read(r, &attributes)?;
-                            o = o.level(lvl);
+                            if let Ok(lvl) = Level::read(r, &attributes) {
+                                o = o.level(lvl);
+                            }
                             continue;
                         }
                         _ => {}

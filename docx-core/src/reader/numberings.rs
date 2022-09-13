@@ -84,9 +84,11 @@ impl FromXML for Numberings {
                                                 abs_num_id = usize::from_str(&attributes[0].value)?
                                             }
                                             XMLElement::LvlOverride => {
-                                                let o =
-                                                    LevelOverride::read(&mut parser, &attributes)?;
-                                                level_overrides.push(o);
+                                                if let Ok(o) =
+                                                    LevelOverride::read(&mut parser, &attributes)
+                                                {
+                                                    level_overrides.push(o);
+                                                }
                                             }
                                             _ => {}
                                         }

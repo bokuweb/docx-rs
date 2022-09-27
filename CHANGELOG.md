@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support `sectionProperty` in pPr.
 
+## docx-rs@0.4.3 (8. Sep, 2022)
+
+- Support table style #531
+
 ## docx-wasm@0.0.276-rc12 (26. Aug, 2022)
 
 - [BugFix] Fixed a bug, hRule is not read in reader.

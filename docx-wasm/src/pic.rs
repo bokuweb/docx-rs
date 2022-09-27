@@ -17,6 +17,12 @@ impl Pic {
         self
     }
 
+    // unit is deg
+    pub fn rotate(mut self, deg: u16) -> Self {
+        self.0 = self.0.rotate(deg);
+        self
+    }
+
     pub fn floating(mut self) -> Pic {
         self.0 = self.0.floating();
         self

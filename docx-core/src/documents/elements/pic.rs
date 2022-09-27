@@ -44,6 +44,8 @@ pub struct Pic {
     pub dist_b: i32,
     pub dist_l: i32,
     pub dist_r: i32,
+    // deg
+    pub rot: u16,
 }
 
 impl Pic {
@@ -74,6 +76,7 @@ impl Pic {
             dist_b: 0,
             dist_l: 0,
             dist_r: 0,
+            rot: 0,
         }
     }
 
@@ -97,6 +100,7 @@ impl Pic {
             dist_b: 0,
             dist_l: 0,
             dist_r: 0,
+            rot: 0,
         }
     }
 
@@ -108,6 +112,12 @@ impl Pic {
     // unit is emu
     pub fn size(mut self, w_emu: u32, h_emu: u32) -> Pic {
         self.size = (w_emu, h_emu);
+        self
+    }
+
+    // unit is deg
+    pub fn rotate(mut self, deg: u16) -> Pic {
+        self.rot = deg;
         self
     }
 
@@ -197,7 +207,7 @@ impl BuildXML for Pic {
             .close()
             .close()
             .open_pic_sp_pr("auto")
-            .open_a_xfrm()
+            .open_a_xfrm_with_rot(&format!("{}", (self.rot as u32) * 60 * 1000))
             .a_off("0", "0")
             .a_ext(&w, &h)
             .close()
@@ -243,7 +253,7 @@ mod tests {
     </a:stretch>
   </pic:blipFill>
   <pic:spPr bwMode="auto">
-    <a:xfrm>
+    <a:xfrm rot="0">
       <a:off x="0" y="0" />
       <a:ext cx="3048000" cy="2286000" />
     </a:xfrm>

@@ -175,7 +175,7 @@ mod tests {
     </a:stretch>
   </pic:blipFill>
   <pic:spPr bwMode="auto">
-    <a:xfrm>
+    <a:xfrm rot="0">
       <a:off x="0" y="0" />
       <a:ext cx="3048000" cy="2286000" />
     </a:xfrm>

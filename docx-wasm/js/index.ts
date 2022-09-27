@@ -264,6 +264,9 @@ export class Docx {
         if (child._offsetY != null) {
           pic = pic.offset_x(child._offsetY);
         }
+        if (child.rot != null) {
+          pic = pic.rotate(child.rot);
+        }
         run = run.add_image(pic);
       }
     });

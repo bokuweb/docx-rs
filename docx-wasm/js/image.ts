@@ -5,6 +5,7 @@ export class Image {
   _floating: boolean = false;
   _offsetX = 0;
   _offsetY = 0;
+  rot = 0;
 
   constructor(data: Uint8Array) {
     this.data = data;
@@ -13,6 +14,11 @@ export class Image {
   size = (w: number, h: number) => {
     this.w = w;
     this.h = h;
+    return this;
+  };
+
+  rotate = (deg: number) => {
+    this.rot = deg;
     return this;
   };
 

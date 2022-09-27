@@ -21,6 +21,7 @@ impl XMLBuilder {
 
     open!(open_pic_sp_pr, "pic:spPr", "bwMode");
     open!(open_a_xfrm, "a:xfrm");
+    open!(open_a_xfrm_with_rot, "a:xfrm", "rot");
     closed!(a_off, "a:off", "x", "y");
     closed!(a_ext, "a:ext", "cx", "cy");
     open!(open_a_prst_geom, "a:prstGeom", "prst");

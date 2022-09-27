@@ -1,14 +1,13 @@
 import { Paragraph } from "./paragraph";
-import { ParagraphProperty } from "./paragraph-property";
+import { ParagraphProperty, setParagraphProperty } from "./paragraph-property";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
 import { convertHyperlinkType, Hyperlink } from "./hyperlink";
 import { DeleteText } from "./delete-text";
-import { Table } from "./table";
+import { setTableProperty, Table } from "./table";
 import { TableOfContents } from "./table-of-contents";
 import { TableCell, toTextDirectionWasmType } from "./table-cell";
-import { BorderType } from "./border";
-import { Run, RunFonts } from "./run";
+import { convertBorderType, Run, RunFonts, setRunProperty } from "./run";
 import { Text } from "./text";
 import { Tab } from "./tab";
 import { Break } from "./break";
@@ -36,52 +35,6 @@ import { DocGridType, DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
 import { Level } from "./level";
-
-const convertBorderType = (t: BorderType) => {
-  switch (t) {
-    case "nil":
-      return wasm.BorderType.Nil;
-    case "none":
-      return wasm.BorderType.None;
-    case "single":
-      return wasm.BorderType.Single;
-    case "thick":
-      return wasm.BorderType.Thick;
-    case "double":
-      return wasm.BorderType.Double;
-    case "dotted":
-      return wasm.BorderType.Dotted;
-    case "dashed":
-      return wasm.BorderType.Dashed;
-    case "dotDash":
-      return wasm.BorderType.DotDash;
-    case "dotDotDash":
-      return wasm.BorderType.DotDotDash;
-    case "triple":
-      return wasm.BorderType.Triple;
-    default:
-      return wasm.BorderType.Single;
-  }
-};
-
-const convertWidthType = (t: string) => {
-  switch (t) {
-    case "nil":
-    case "Nil":
-      return wasm.WidthType.Nil;
-    case "Pct":
-    case "pct":
-      return wasm.WidthType.Pct;
-    case "DXA":
-    case "dxa":
-      return wasm.WidthType.Dxa;
-    case "Auto":
-    case "auto":
-      return wasm.WidthType.Auto;
-    default:
-      return wasm.WidthType.Dxa;
-  }
-};
 
 export class Docx {
   children: (
@@ -311,67 +264,14 @@ export class Docx {
         if (child._offsetY != null) {
           pic = pic.offset_x(child._offsetY);
         }
+        if (child.rot != null) {
+          pic = pic.rotate(child.rot);
+        }
         run = run.add_image(pic);
       }
     });
 
-    if (r.property.style) {
-      run = run.style(r.property.style);
-    }
-
-    if (typeof r.property.size !== "undefined") {
-      run = run.size(r.property.size);
-    }
-
-    if (r.property.color) {
-      run = run.color(r.property.color);
-    }
-
-    if (r.property.highlight) {
-      run = run.highlight(r.property.highlight);
-    }
-
-    if (r.property.vertAlign) {
-      if (r.property.vertAlign === "superscript") {
-        run = run.vert_align(wasm.VertAlignType.SuperScript);
-      } else if (r.property.vertAlign === "subscript") {
-        run = run.vert_align(wasm.VertAlignType.SubScript);
-      }
-    }
-
-    if (r.property.bold) {
-      run = run.bold();
-    }
-
-    if (r.property.italic) {
-      run = run.italic();
-    }
-
-    if (r.property.strike) {
-      run = run.strike();
-    }
-
-    if (r.property.underline) {
-      run = run.underline(r.property.underline);
-    }
-
-    if (r.property.vanish) {
-      run = run.vanish();
-    }
-
-    if (r.property.spacing != null) {
-      run = run.spacing(r.property.spacing);
-    }
-
-    if (r.property.textBorder) {
-      const { borderType, color, space, size } = r.property.textBorder;
-      run = run.text_border(convertBorderType(borderType), size, space, color);
-    }
-
-    if (r.property.fonts) {
-      const fonts = r.property.fonts.buildWasmObject();
-      run = run.fonts(fonts);
-    }
+    run = setRunProperty(run, r.property) as wasm.Run;
 
     return run;
   }
@@ -521,79 +421,10 @@ export class Docx {
       }
     });
 
-    switch (p.property.align) {
-      case "center": {
-        paragraph = paragraph.align(wasm.AlignmentType.Center);
-        break;
-      }
-      case "right": {
-        paragraph = paragraph.align(wasm.AlignmentType.Right);
-        break;
-      }
-      case "justified": {
-        paragraph = paragraph.align(wasm.AlignmentType.Justified);
-        break;
-      }
-      case "left": {
-        paragraph = paragraph.align(wasm.AlignmentType.Left);
-        break;
-      }
-      case "distribute": {
-        paragraph = paragraph.align(wasm.AlignmentType.Distribute);
-        break;
-      }
-      case "both": {
-        paragraph = paragraph.align(wasm.AlignmentType.Both);
-        break;
-      }
-      case "end": {
-        paragraph = paragraph.align(wasm.AlignmentType.End);
-        break;
-      }
-    }
-
-    if (typeof p.property.indent !== "undefined") {
-      const { indent } = p.property;
-      let kind;
-      switch (p.property.indent.specialIndentKind) {
-        case "firstLine": {
-          kind = wasm.SpecialIndentKind.FirstLine;
-          break;
-        }
-        case "hanging": {
-          kind = wasm.SpecialIndentKind.Hanging;
-          break;
-        }
-      }
-      paragraph = paragraph.indent(indent.left, kind, indent.specialIndentSize);
-    }
-
-    if (typeof p.property.numbering !== "undefined") {
-      const { numbering } = p.property;
-      paragraph = paragraph.numbering(numbering.id, numbering.level);
-    }
+    paragraph = setParagraphProperty(paragraph, p.property);
 
     if (typeof p.property.styleId !== "undefined") {
       paragraph = paragraph.style(p.property.styleId);
-    }
-
-    if (p.property.runProperty.bold) {
-      paragraph = paragraph.bold();
-    }
-
-    if (typeof p.property.lineSpacing !== "undefined") {
-      const spacing = this.buildLineSpacing(p.property);
-      if (spacing) {
-        paragraph = paragraph.line_spacing(spacing);
-      }
-    }
-
-    if (p.property.runProperty.italic) {
-      paragraph = paragraph.italic();
-    }
-
-    if (p.property.runProperty.size) {
-      paragraph = paragraph.size(p.property.runProperty.size);
     }
 
     if (p.property.runProperty.del) {
@@ -608,39 +439,6 @@ export class Docx {
         p.property.runProperty.ins.author,
         p.property.runProperty.ins.date
       );
-    }
-
-    if (p.property.runProperty.fonts) {
-      let f = wasm.createRunFonts();
-      if (p.property.runProperty.fonts._ascii) {
-        f = f.ascii(p.property.runProperty.fonts._ascii);
-      }
-      if (p.property.runProperty.fonts._hiAnsi) {
-        f = f.hi_ansi(p.property.runProperty.fonts._hiAnsi);
-      }
-      if (p.property.runProperty.fonts._cs) {
-        f = f.cs(p.property.runProperty.fonts._cs);
-      }
-      if (p.property.runProperty.fonts._eastAsia) {
-        f = f.east_asia(p.property.runProperty.fonts._eastAsia);
-      }
-      paragraph = paragraph.fonts(f);
-    }
-
-    if (p.property.keepLines) {
-      paragraph = paragraph.keep_lines(true);
-    }
-
-    if (p.property.keepNext) {
-      paragraph = paragraph.keep_next(true);
-    }
-
-    if (p.property.pageBreakBefore) {
-      paragraph = paragraph.page_break_before(true);
-    }
-
-    if (p.property.widowControl) {
-      paragraph = paragraph.widow_control(true);
     }
 
     if (p.property.paragraphPropertyChange) {
@@ -701,43 +499,14 @@ export class Docx {
       }
       table = table.add_row(row);
     });
+
     table = table.set_grid(new Uint32Array(t.grid));
-    table = table.indent(t.property.indent || 0);
 
-    if (t.property.cellMargins) {
-      const { top, right, bottom, left } = t.property.cellMargins;
-      table = table
-        .cell_margin_top(top.val, convertWidthType(top.type))
-        .cell_margin_right(right.val, convertWidthType(right.type))
-        .cell_margin_bottom(bottom.val, convertWidthType(bottom.type))
-        .cell_margin_left(left.val, convertWidthType(left.type));
+    if (t.property.styleId) {
+      table = table.style(t.property.styleId);
     }
 
-    switch (t.property.align) {
-      case "center": {
-        table = table.align(wasm.TableAlignmentType.Center);
-        break;
-      }
-      case "right": {
-        table = table.align(wasm.TableAlignmentType.Right);
-        break;
-      }
-      case "left": {
-        table = table.align(wasm.TableAlignmentType.Left);
-        break;
-      }
-    }
-
-    switch (t.property.layout) {
-      case "fixed": {
-        table = table.layout(wasm.TableLayoutType.Fixed);
-        break;
-      }
-      case "autofit": {
-        table = table.layout(wasm.TableLayoutType.Autofit);
-        break;
-      }
-    }
+    table = setTableProperty(table, t.property);
 
     return table;
   }

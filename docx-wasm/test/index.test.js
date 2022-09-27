@@ -165,6 +165,12 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read sectionProperty in ppr", () => {
+    const buffer = readFileSync("../fixtures/section_property_in_ppr/section_property_in_ppr.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {
@@ -177,6 +183,21 @@ describe("writer", () => {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }
+  });
+
+  test("should write align", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello world!!"))
+      .align("both");
+    const buffer = new w.Docx().addParagraph(p).build();
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+    writeFileSync("../output/js/align.docx", buffer);
+    
   });
 
   test("should write strike", () => {
@@ -820,5 +841,45 @@ describe("writer", () => {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }
+  });
+
+  test("should write style", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello").style("Run"))
+      .style("Heading1");
+    const rStyle = new w.Style("Run", "character").name("Run test").bold();
+    const pStyle = new w.Style("Heading1", "paragraph")
+      .name("Heading 1")
+      .align("center");
+    const tStyle = new w.Style("Table", "table")
+      .name("Table 1")
+      .tableAlign("center")
+      .tableIndent(200);
+
+    const table = new w.Table()
+      .addRow(
+        new w.TableRow().addCell(
+          new w.TableCell().addParagraph(
+            new w.Paragraph().addRun(new w.Run().addText("Hello"))
+          )
+        )
+      )
+      .style("Table");
+
+    const buffer = new w.Docx()
+      .addStyle(pStyle)
+      .addStyle(rStyle)
+      .addStyle(tStyle)
+      .addParagraph(p)
+      .addTable(table)
+      .build();
+
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|styles.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+    writeFileSync("../output/js/style.docx", buffer);
   });
 });

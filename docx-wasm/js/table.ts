@@ -1,3 +1,5 @@
+import * as wasm from "./pkg";
+
 import { WidthType } from ".";
 import { TableRow } from "./table-row";
 
@@ -8,6 +10,7 @@ export type TableProperty = {
   indent?: number;
   align?: TableAlignmentType;
   width?: number;
+  styleId?: string;
   cellMargins: {
     top: { val: number; type: WidthType };
     left: { val: number; type: WidthType };
@@ -39,6 +42,11 @@ export class Table {
       this.hasNumberings = true;
     }
     this.rows.push(row);
+    return this;
+  }
+
+  style(id: string) {
+    this.property.styleId = id;
     return this;
   }
 
@@ -97,3 +105,78 @@ export class Table {
     return this;
   }
 }
+
+export const convertWidthType = (t: string) => {
+  switch (t) {
+    case "nil":
+    case "Nil":
+      return wasm.WidthType.Nil;
+    case "Pct":
+    case "pct":
+      return wasm.WidthType.Pct;
+    case "DXA":
+    case "dxa":
+      return wasm.WidthType.Dxa;
+    case "Auto":
+    case "auto":
+      return wasm.WidthType.Auto;
+    default:
+      return wasm.WidthType.Dxa;
+  }
+};
+
+export const setTableProperty = <T extends wasm.Table | wasm.Style>(
+  target: T,
+  property: TableProperty
+): T => {
+  if (target instanceof wasm.Table) {
+    target = target.indent(property.indent ?? 0) as T;
+  } else if (target instanceof wasm.Style) {
+    target = target.table_indent(property.indent ?? 0) as T;
+  }
+
+  if (property.cellMargins) {
+    const { top, right, bottom, left } = property.cellMargins;
+    target = target
+      .cell_margin_top(top.val, convertWidthType(top.type))
+      .cell_margin_right(right.val, convertWidthType(right.type))
+      .cell_margin_bottom(bottom.val, convertWidthType(bottom.type))
+      .cell_margin_left(left.val, convertWidthType(left.type)) as T;
+  }
+
+  const align = ((): wasm.TableAlignmentType | null => {
+    switch (property.align) {
+      case "center": {
+        return wasm.TableAlignmentType.Center;
+      }
+      case "right": {
+        return wasm.TableAlignmentType.Right;
+      }
+      case "left": {
+        return wasm.TableAlignmentType.Left;
+      }
+      default:
+        return null;
+    }
+  })();
+
+  if (align != null) {
+    if (target instanceof wasm.Table) {
+      target = target.align(align) as T;
+    } else if (target instanceof wasm.Style) {
+      target = target.table_align(align) as T;
+    }
+  }
+
+  switch (property.layout) {
+    case "fixed": {
+      target = target.layout(wasm.TableLayoutType.Fixed) as T;
+      break;
+    }
+    case "autofit": {
+      target = target.layout(wasm.TableLayoutType.Autofit) as T;
+      break;
+    }
+  }
+  return target;
+};

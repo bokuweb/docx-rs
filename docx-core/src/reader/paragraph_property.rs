@@ -105,6 +105,11 @@ impl ElementReader for ParagraphProperty {
                                 p.paragraph_property_change = Some(ppr_change);
                             }
                         }
+                        XMLElement::SectionProperty => {
+                            if let Ok(sp) = SectionProperty::read(r, &attributes) {
+                                p.section_property = Some(sp);
+                            }
+                        }
                         _ => {}
                     }
                 }

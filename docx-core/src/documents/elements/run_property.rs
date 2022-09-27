@@ -163,6 +163,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.del)
             .add_optional_child(&self.vert_align)
             .add_optional_child(&self.character_spacing)
+            .add_optional_child(&self.style)
             .close()
             .build()
     }

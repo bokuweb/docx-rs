@@ -2,7 +2,7 @@ use serde::Serialize;
 
 use super::*;
 use crate::documents::BuildXML;
-use crate::xml_builder::*;
+use crate::{escape::*, xml_builder::*};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
@@ -38,7 +38,7 @@ impl DocumentRels {
         r#type: impl Into<String>,
     ) -> Self {
         self.hyperlinks
-            .push((id.into(), path.into(), r#type.into()));
+            .push((id.into(), escape(&path.into()), r#type.into()));
         self
     }
 }

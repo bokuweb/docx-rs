@@ -160,7 +160,7 @@ impl XMLBuilder {
 
     open!(open_instr_text, "w:instrText");
 
-    closed_with_str!(text_direction, "w:textDirection");
+    closed!(text_direction, "w:textDirection", "w:val");
 
     closed!(b, "w:b");
     closed!(b_cs, "w:bCs");
@@ -368,6 +368,7 @@ impl XMLBuilder {
         "w:gutter"
     );
     closed!(columns, "w:cols", "w:space", "w:num");
+    // closed!(text_direction, "w:val");
     closed!(document_grid, "w:docGrid", "w:type", "w:linePitch");
 
     open!(open_insert, "w:ins", "w:id", "w:author", "w:date");

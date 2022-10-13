@@ -14,6 +14,7 @@ pub struct SectionProperty {
     pub columns: usize,
     pub space: usize,
     pub title_pg: bool,
+    pub text_direction: bool,
     pub doc_grid: DocGrid,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub header_reference: Option<HeaderReference>,
@@ -65,6 +66,11 @@ impl SectionProperty {
 
     pub fn doc_grid(mut self, doc_grid: DocGrid) -> Self {
         self.doc_grid = doc_grid;
+        self
+    }
+
+    pub fn text_direction(mut self, direction: bool) -> Self {
+        self.text_direction = direction;
         self
     }
 
@@ -160,6 +166,7 @@ impl Default for SectionProperty {
             columns: 1,
             space: 425,
             title_pg: false,
+            text_direction: false,
             doc_grid: DocGrid::default(),
             // headers
             header_reference: None,
@@ -195,7 +202,9 @@ impl BuildXML for SectionProperty {
             .add_optional_child(&self.footer_reference)
             .add_optional_child(&self.first_footer_reference)
             .add_optional_child(&self.even_footer_reference);
-
+        if self.text_direction {
+            b = b.text_direction(&"tbRl".to_string());
+        }
         if let Some(t) = self.section_type {
             b = b.type_tag(&t.to_string());
         }
@@ -215,6 +224,18 @@ mod tests {
     #[cfg(test)]
     use pretty_assertions::assert_eq;
     use std::str;
+
+    #[test]
+    fn text_section_text_direction() {
+        let mut c = SectionProperty::new();
+        c = c.text_direction(true);
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" /><w:docGrid w:type="lines" w:linePitch="360" /><w:textDirection w:val="tbRl" />
+</w:sectPr>"#
+        )
+    }
 
     #[test]
     fn test_section_property_default() {

@@ -14,7 +14,7 @@ pub struct SectionProperty {
     pub columns: usize,
     pub space: usize,
     pub title_pg: bool,
-    pub text_direction: bool,
+    pub text_direction: String,
     pub doc_grid: DocGrid,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub header_reference: Option<HeaderReference>,
@@ -69,7 +69,7 @@ impl SectionProperty {
         self
     }
 
-    pub fn text_direction(mut self, direction: bool) -> Self {
+    pub fn text_direction(mut self, direction: String) -> Self {
         self.text_direction = direction;
         self
     }
@@ -166,7 +166,7 @@ impl Default for SectionProperty {
             columns: 1,
             space: 425,
             title_pg: false,
-            text_direction: false,
+            text_direction: "lrTb".to_string(),
             doc_grid: DocGrid::default(),
             // headers
             header_reference: None,
@@ -202,8 +202,8 @@ impl BuildXML for SectionProperty {
             .add_optional_child(&self.footer_reference)
             .add_optional_child(&self.first_footer_reference)
             .add_optional_child(&self.even_footer_reference);
-        if self.text_direction {
-            b = b.text_direction(&"tbRl".to_string());
+        if !self.text_direction.eq("lrTb") {
+            b = b.text_direction(&self.text_direction);
         }
         if let Some(t) = self.section_type {
             b = b.type_tag(&t.to_string());
@@ -228,7 +228,7 @@ mod tests {
     #[test]
     fn text_section_text_direction() {
         let mut c = SectionProperty::new();
-        c = c.text_direction(true);
+        c = c.text_direction("tbRl".to_string());
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

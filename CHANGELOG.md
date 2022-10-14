@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## docx-wasm@0.0.276-rc25 (14. Oct, 2022)
+## docx-wasm@0.0.276-rc26 (14. Oct, 2022)
 
 - Support text direction (#545)
 - read `<sdt>`
@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## docx-rs@0.4.4 (27. Sep, 2022)
 
 - Support rotate in pic
+
+## docx-wasm@0.0.276-rc25 (21. Sep, 2022)
+
+- [BugFix] Fixed a bug, hyperlink is broken with special characters.
 
 ## docx-wasm@0.0.276-rc20 (9. Sep, 2022)
 

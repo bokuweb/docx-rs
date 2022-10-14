@@ -149,6 +149,7 @@ pub enum XMLElement {
     FooterReference,
     TitlePg,
     EvenAndOddHeaders,
+    StructuredDataTag,
     Unsupported,
 }
 
@@ -372,6 +373,7 @@ impl FromStr for XMLElement {
             "footerReference" => Ok(XMLElement::FooterReference),
             "titlePg" => Ok(XMLElement::TitlePg),
             "evenAndOddHeaders" => Ok(XMLElement::EvenAndOddHeaders),
+            "sdt" => Ok(XMLElement::StructuredDataTag),
             _ => Ok(XMLElement::Unsupported),
         }
     }

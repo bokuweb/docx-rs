@@ -72,7 +72,8 @@ impl ElementReader for StructuredDataTag {
                         }
                         XMLElement::Run => {
                             if let Ok(run) = Run::read(r, attrs) {
-                                sdt.children.push(StructuredDataTagChild::Run(Box::new(run)));
+                                sdt.children
+                                    .push(StructuredDataTagChild::Run(Box::new(run)));
                             }
                             continue;
                         }
@@ -81,7 +82,7 @@ impl ElementReader for StructuredDataTag {
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    if e == XMLElement::Paragraph {
+                    if e == XMLElement::StructuredDataTag {
                         return Ok(sdt);
                     }
                 }

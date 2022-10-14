@@ -60,6 +60,12 @@ impl FromXML for Document {
                             doc = doc.default_section_property(e);
                             continue;
                         }
+                        XMLElement::StructuredDataTag => {
+                            if let Ok(tag) = StructuredDataTag::read(&mut parser, &attributes) {
+                                doc = doc.add_structured_data_tag(tag);
+                            }
+                            continue;
+                        }
                         _ => {}
                     }
                 }

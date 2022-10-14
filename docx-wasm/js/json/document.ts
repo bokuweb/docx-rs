@@ -2,6 +2,7 @@ import { ParagraphJSON, BookmarkStartJSON, BookmarkEndJSON } from "./paragraph";
 import { TableJSON } from "./table";
 import { SectionPropertyJSON } from "./section-property";
 import { CommentRangeStartJSON, CommentRangeEndJSON } from "..";
+import { StructuredTagJSON } from "./structured-data-tag";
 
 export type DocumentChildJSON =
   | ParagraphJSON
@@ -9,7 +10,8 @@ export type DocumentChildJSON =
   | CommentRangeStartJSON
   | CommentRangeEndJSON
   | BookmarkStartJSON
-  | BookmarkEndJSON;
+  | BookmarkEndJSON
+  | StructuredTagJSON;
 
 export type DocumentJSON = {
   children: DocumentChildJSON[];

@@ -920,13 +920,15 @@ fn collect_images_from_paragraph(
             for child in &mut run.children {
                 if let RunChild::Drawing(d) = child {
                     if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                        images.push((
-                            pic.id.clone(),
-                            // For now only png supported
-                            format!("media/{}.png", pic.id),
-                        ));
-                        let b = std::mem::take(&mut pic.image);
-                        image_bufs.push((pic.id.clone(), b));
+                        if !images.contains(&(pic.id.clone(), format!("media/{}.png", &pic.id))) {
+                            images.push((
+                                pic.id.clone(),
+                                // For now only png supported
+                                format!("media/{}.png", pic.id),
+                            ));
+                            let b = std::mem::take(&mut pic.image);
+                            image_bufs.push((pic.id.clone(), b));
+                        }
                     }
                 }
             }

@@ -1,8 +1,8 @@
 import { RunJSON, RunPropertyJSON } from "./run";
 import { IndentJSON } from "./indent";
 import {
-  CommentRangeStartJSON,
   CommentRangeEndJSON,
+  CommentRangeStartJSON,
   SectionPropertyJSON,
 } from "..";
 import { LineSpacingJSON } from "./line_spacing";
@@ -61,43 +61,47 @@ export type ParagraphJSON = {
   };
 };
 
+export type InsertJSONData = {
+  children: (
+    | DeleteJSON
+    | RunJSON
+    | CommentRangeStartJSON
+    | CommentRangeEndJSON
+  )[];
+  author: string;
+  date: string;
+};
+
 export type InsertJSON = {
   type: "insert";
-  data: {
-    children: (
-      | DeleteJSON
-      | RunJSON
-      | CommentRangeStartJSON
-      | CommentRangeEndJSON
-    )[];
-    author: string;
-    date: string;
-  };
+  data: InsertJSONData;
+};
+
+export type DeleteJSONData = {
+  children: DeleteChildJSON[];
+  author: string;
+  date: string;
 };
 
 export type DeleteJSON = {
   type: "delete";
-  data: {
-    children: DeleteChildJSON[];
-    author: string;
-    date: string;
-  };
+  data: DeleteJSONData;
 };
 
 export type HyperlinkJSON = {
   type: "hyperlink";
   data:
-    | {
-        type: "external";
-        rid: string;
-        children: HyperlinkChildJSON[];
-        history: number | null;
-      }
-    | {
-        type: "anchor";
-        anchor: string;
-        children: HyperlinkChildJSON[];
-      };
+  | {
+    type: "external";
+    rid: string;
+    children: HyperlinkChildJSON[];
+    history: number | null;
+  }
+  | {
+    type: "anchor";
+    anchor: string;
+    children: HyperlinkChildJSON[];
+  };
 };
 
 export type DeleteChildJSON =

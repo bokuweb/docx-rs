@@ -921,7 +921,9 @@ fn collect_images_from_paragraph(
                 if let RunChild::Drawing(d) = child {
                     if let Some(DrawingData::Pic(pic)) = &mut d.data {
                         let b = std::mem::take(&mut pic.image);
-                        let buf = image_bufs.iter().find(|x| x.1 == b.clone());
+                        let buf = image_bufs
+                            .iter()
+                            .find(|x| x.0 == pic.id.clone() || x.1 == b.clone());
                         if buf.as_ref().is_none() {
                             images.push((
                                 pic.id.clone(),

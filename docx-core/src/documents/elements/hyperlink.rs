@@ -2,6 +2,7 @@ use serde::Serialize;
 
 use super::*;
 use crate::documents::BuildXML;
+use crate::escape::escape;
 use crate::types::*;
 use crate::{create_hyperlink_rid, generate_hyperlink_id, xml_builder::*};
 
@@ -35,7 +36,7 @@ impl Hyperlink {
             match t {
                 HyperlinkType::External => HyperlinkData::External {
                     rid: create_hyperlink_rid(generate_hyperlink_id()),
-                    path: value.into(),
+                    path: escape(&value.into()),
                 },
                 HyperlinkType::Anchor => HyperlinkData::Anchor {
                     anchor: value.into(),

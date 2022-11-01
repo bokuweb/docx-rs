@@ -107,6 +107,7 @@ impl ElementReader for RunProperty {
                             rp = rp.italic();
                         }
                         XMLElement::Vanish => rp = rp.vanish(),
+                        XMLElement::SpecVanish => rp = rp.spec_vanish(),
                         XMLElement::TextBorder => {
                             if let Ok(attr) = read_border(&attributes) {
                                 let mut border = TextBorder::new()

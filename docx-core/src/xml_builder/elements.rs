@@ -410,6 +410,7 @@ impl XMLBuilder {
     closed_with_str!(level_justification, "w:lvlJc");
     closed_with_str!(abstract_num_id, "w:abstractNumId");
     closed!(vanish, "w:vanish");
+    closed!(spec_vanish, "w:specVanish");
 
     open!(open_drawing, "w:drawing");
     open!(open_anchor, "wp:anchor");

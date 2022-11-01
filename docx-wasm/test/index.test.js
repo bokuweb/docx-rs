@@ -166,13 +166,21 @@ describe("reader", () => {
   });
 
   test("should read sectionProperty in ppr", () => {
-    const buffer = readFileSync("../fixtures/section_property_in_ppr/section_property_in_ppr.docx");
+    const buffer = readFileSync(
+      "../fixtures/section_property_in_ppr/section_property_in_ppr.docx"
+    );
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
 
   test("should read toc0", () => {
     const buffer = readFileSync("../fixtures/toc0/toc0.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
+
+  test("should read specVanish", () => {
+    const buffer = readFileSync("../fixtures/spec_vanish/spec_vanish.docx");
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
@@ -202,7 +210,6 @@ describe("writer", () => {
       }
     }
     writeFileSync("../output/js/align.docx", buffer);
-    
   });
 
   test("should write strike", () => {

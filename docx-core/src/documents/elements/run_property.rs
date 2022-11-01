@@ -33,6 +33,8 @@ pub struct RunProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub vanish: Option<Vanish>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub spec_vanish: Option<SpecVanish>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub character_spacing: Option<CharacterSpacing>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub fonts: Option<RunFonts>,
@@ -121,6 +123,11 @@ impl RunProperty {
         self
     }
 
+    pub fn spec_vanish(mut self) -> RunProperty {
+        self.spec_vanish = Some(SpecVanish::new());
+        self
+    }
+
     pub fn fonts(mut self, font: RunFonts) -> RunProperty {
         self.fonts = Some(font);
         self
@@ -157,6 +164,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.highlight)
             .add_optional_child(&self.underline)
             .add_optional_child(&self.vanish)
+            .add_optional_child(&self.spec_vanish)
             .add_optional_child(&self.fonts)
             .add_optional_child(&self.text_border)
             .add_optional_child(&self.ins)

@@ -6,7 +6,7 @@ export class TableRow {
   cells: TableCell[] = [];
   hasNumberings = false;
   height: number | null = null;
-  hRule: HeightRule = "atLeast";
+  hRule: HeightRule | null = null;
   del: { author: string; date: string } | null = null;
   ins: { author: string; date: string } | null = null;
 

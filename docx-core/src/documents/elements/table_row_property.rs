@@ -4,14 +4,16 @@ use super::*;
 use crate::xml_builder::*;
 use crate::{documents::BuildXML, HeightRule};
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct TableRowProperty {
     grid_after: Option<u32>,
     width_after: Option<f32>,
     grid_before: Option<u32>,
     width_before: Option<f32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     row_height: Option<f32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     height_rule: Option<HeightRule>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub del: Option<Delete>,
@@ -65,20 +67,6 @@ impl TableRowProperty {
     }
 }
 
-impl Default for TableRowProperty {
-    fn default() -> Self {
-        TableRowProperty {
-            grid_after: None,
-            width_after: None,
-            grid_before: None,
-            width_before: None,
-            row_height: None,
-            height_rule: None,
-            del: None,
-            ins: None,
-        }
-    }
-}
 
 impl BuildXML for TableRowProperty {
     fn build(&self) -> Vec<u8> {

@@ -4,7 +4,7 @@ use std::fs::File;
 use std::io::{Read, Write};
 
 pub fn main() {
-    let mut file = File::open("./hello.docx").unwrap();
+    let mut file = File::open("./rh.docx").unwrap();
     let mut buf = vec![];
     file.read_to_end(&mut buf).unwrap();
 

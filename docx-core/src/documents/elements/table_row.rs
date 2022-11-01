@@ -127,7 +127,7 @@ mod tests {
         let r = TableRow::new(vec![TableCell::new()]);
         assert_eq!(
             serde_json::to_string(&r).unwrap(),
-            r#"{"cells":[{"type":"tableCell","data":{"children":[],"property":{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":null,"textDirection":null,"shading":null},"hasNumbering":false}}],"hasNumbering":false,"property":{"gridAfter":null,"widthAfter":null,"gridBefore":null,"widthBefore":null,"rowHeight":null,"heightRule":null}}"#
+            r#"{"cells":[{"type":"tableCell","data":{"children":[],"property":{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":null,"textDirection":null,"shading":null},"hasNumbering":false}}],"hasNumbering":false,"property":{"gridAfter":null,"widthAfter":null,"gridBefore":null,"widthBefore":null}}"#
         );
     }
 }

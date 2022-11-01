@@ -19,8 +19,9 @@ impl FromXML for Styles {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::Style => {
-                            let s = Style::read(&mut parser, &attributes)?;
-                            styles = styles.add_style(s);
+                            if let Ok(s) = Style::read(&mut parser, &attributes) {
+                                styles = styles.add_style(s);
+                            }
                             continue;
                         }
                         XMLElement::DocDefaults => {

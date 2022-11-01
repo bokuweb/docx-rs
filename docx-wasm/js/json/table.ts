@@ -24,7 +24,6 @@ export type TableCellPropertyJSON = {
   verticalMerge: "restart" | "continue" | null;
   verticalAlign: "top" | "center" | "bottom" | null;
   textDirection: TextDirectionType | null;
-  hasNumbering: boolean;
   shading: ShadingJSON | null;
 };
 
@@ -70,21 +69,21 @@ export type TablePropertyJSON = {
     widthType: WidthType;
   } | null;
   justification: "left" | "center" | "right";
-  borders: {
-    top: BorderJSON;
-    left: BorderJSON;
-    bottom: BorderJSON;
-    right: BorderJSON;
-    insideH: BorderJSON;
-    insideV: BorderJSON;
+  borders?: {
+    top?: BorderJSON | null;
+    left?: BorderJSON | null;
+    bottom?: BorderJSON | null;
+    right?: BorderJSON | null;
+    insideH?: BorderJSON | null;
+    insideV?: BorderJSON | null;
   } | null;
   margins: TableCellMarginsJSON | null;
-  indent: {
+  indent?: {
     width: number;
     widthType: WidthType;
-  };
-  style: string | null;
-  layout: TableLayoutType | null;
+  } | null;
+  style?: string | null;
+  layout?: TableLayoutType | null;
 };
 
 export type TableJSON = {

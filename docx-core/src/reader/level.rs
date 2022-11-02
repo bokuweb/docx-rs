@@ -28,6 +28,7 @@ impl ElementReader for Level {
         let mut level_restart = None;
         let mut has_indent = false;
         let mut suffix = LevelSuffixType::Tab;
+        let mut is_lgl = None;
 
         loop {
             let e = r.next();
@@ -61,6 +62,9 @@ impl ElementReader for Level {
                         }
                         XMLElement::Suffix => {
                             suffix = LevelSuffixType::from_str(&attributes[0].value)?;
+                        }
+                        XMLElement::IsLgl => {
+                            is_lgl = Some(IsLgl::new());
                         }
                         XMLElement::LevelText => {
                             level_text = LevelText::new(attributes[0].value.clone());
@@ -98,6 +102,7 @@ impl ElementReader for Level {
                         l.paragraph_property = ppr;
                         l.run_property = rpr;
                         l.level_restart = level_restart;
+                        l.is_lgl = is_lgl;
                         return Ok(l);
                     }
                 }

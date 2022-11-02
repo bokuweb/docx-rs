@@ -12,6 +12,7 @@ export type LevelJSON = {
   runProperty: RunPropertyJSON;
   pstyle: string | null;
   levelRestart: number | null;
+  isLgl?: boolean | null; 
 };
 
 export type AbstractNumberingJSON = {

@@ -17,6 +17,8 @@ pub struct Level {
     pub suffix: LevelSuffixType,
     pub pstyle: Option<String>,
     pub level_restart: Option<LevelRestart>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_lgl: Option<IsLgl>,
 }
 
 impl Level {
@@ -38,6 +40,7 @@ impl Level {
             suffix: LevelSuffixType::Tab,
             pstyle: None,
             level_restart: None,
+            is_lgl: None,
         }
     }
 
@@ -114,6 +117,11 @@ impl Level {
         self.level_restart = Some(LevelRestart::new(v));
         self
     }
+
+    pub fn is_lgl(mut self) -> Self {
+        self.is_lgl = Some(IsLgl::new());
+        self
+    }
 }
 
 impl BuildXML for Level {
@@ -126,7 +134,8 @@ impl BuildXML for Level {
             .add_child(&self.jc)
             .add_child(&self.paragraph_property)
             .add_child(&self.run_property)
-            .add_optional_child(&self.level_restart);
+            .add_optional_child(&self.level_restart)
+            .add_optional_child(&self.is_lgl);
 
         if self.suffix != LevelSuffixType::Tab {
             b = b.suffix(&self.suffix.to_string());

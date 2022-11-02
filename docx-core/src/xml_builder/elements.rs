@@ -411,6 +411,7 @@ impl XMLBuilder {
     closed_with_str!(abstract_num_id, "w:abstractNumId");
     closed!(vanish, "w:vanish");
     closed!(spec_vanish, "w:specVanish");
+    closed!(is_lgl, "w:isLgl");
 
     open!(open_drawing, "w:drawing");
     open!(open_anchor, "wp:anchor");

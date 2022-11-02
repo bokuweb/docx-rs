@@ -89,6 +89,15 @@ impl BuildXML for Box<Drawing> {
                         )
                         .open_position_h(&format!("{}", p.relative_from_h));
 
+                    match p.position_h {
+                        DrawingPosition::Offset(x) => {
+                            let x = format!("{}", x as u32);
+                            b = b.pos_offset(&x).close();
+                        }
+                        DrawingPosition::Align(x) => {
+                            b = b.align(&x.to_string()).close();
+                        }
+                    }
                     if let DrawingPosition::Offset(x) = p.position_h {
                         let x = format!("{}", x as u32);
                         b = b.pos_offset(&x).close();
@@ -108,8 +117,13 @@ impl BuildXML for Box<Drawing> {
                     // Please see 20.4.2.7 extent (Drawing Object Size)
                     // One inch equates to 914400 EMUs and a centimeter is 360000
                     .wp_extent(&w, &h)
-                    .wp_effect_extent("0", "0", "0", "0")
-                    .wrap_none()
+                    .wp_effect_extent("0", "0", "0", "0");
+                if p.allow_overlap {
+                    b = b.wrap_none();
+                } else if p.position_type == DrawingPositionType::Anchor {
+                    b = b.wrap_square("bothSides");
+                }
+                b = b
                     .wp_doc_pr("1", "Figure")
                     .open_wp_c_nv_graphic_frame_pr()
                     .a_graphic_frame_locks(
@@ -148,6 +162,55 @@ mod tests {
         let mut buf = Vec::new();
         let _ = img.read_to_end(&mut buf).unwrap();
         let d = Box::new(Drawing::new().pic(Pic::new(&buf))).build();
+        assert_eq!(
+            str::from_utf8(&d).unwrap(),
+            r#"<w:drawing>
+  <wp:inline distT="0" distB="0" distL="0" distR="0">
+    <wp:extent cx="3048000" cy="2286000" />
+    <wp:effectExtent b="0" l="0" r="0" t="0" />
+    <wp:docPr id="1" name="Figure" />
+    <wp:cNvGraphicFramePr>
+      <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1" />
+    </wp:cNvGraphicFramePr>
+    <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+      <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+  <pic:nvPicPr>
+    <pic:cNvPr id="0" name="" />
+    <pic:cNvPicPr>
+      <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
+    </pic:cNvPicPr>
+  </pic:nvPicPr>
+  <pic:blipFill>
+    <a:blip r:embed="rIdImage123" />
+    <a:srcRect />
+    <a:stretch>
+      <a:fillRect />
+    </a:stretch>
+  </pic:blipFill>
+  <pic:spPr bwMode="auto">
+    <a:xfrm rot="0">
+      <a:off x="0" y="0" />
+      <a:ext cx="3048000" cy="2286000" />
+    </a:xfrm>
+    <a:prstGeom prst="rect">
+      <a:avLst />
+    </a:prstGeom>
+  </pic:spPr>
+</pic:pic></a:graphicData>
+    </a:graphic>
+  </wp:inline>
+</w:drawing>"#
+        );
+    }
+
+    #[test]
+    fn test_drawing_build_with_pic_overlap() {
+        use std::io::Read;
+
+        let mut img = std::fs::File::open("../images/cat_min.jpg").unwrap();
+        let mut buf = Vec::new();
+        let _ = img.read_to_end(&mut buf).unwrap();
+        let d = Box::new(Drawing::new().pic(Pic::new(&buf).overlapping())).build();
         assert_eq!(
             str::from_utf8(&d).unwrap(),
             r#"<w:drawing>

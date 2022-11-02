@@ -252,4 +252,65 @@ mod tests {
 </w:drawing>"#
         );
     }
+
+    #[test]
+    fn test_drawing_build_with_pic_align_right() {
+        use std::io::Read;
+
+        let mut img = std::fs::File::open("../images/cat_min.jpg").unwrap();
+        let mut buf = Vec::new();
+        let _ = img.read_to_end(&mut buf).unwrap();
+        let mut pic = Pic::new(&buf).floating();
+        pic = pic.relative_from_h(RelativeFromHType::Column);
+        pic = pic.relative_from_v(RelativeFromVType::Paragraph);
+        pic = pic.position_h(DrawingPosition::Align(PicAlign::Right));
+        let d = Box::new(Drawing::new().pic(pic)).build();
+        assert_eq!(
+            str::from_utf8(&d).unwrap(),
+            r#"<w:drawing>
+  <wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" allowOverlap="0" behindDoc="0" locked="0" layoutInCell="0" relativeHeight="190500">
+    <wp:simplePos x="0" y="0" />
+    <wp:positionH relativeFrom="column">
+      <wp:align alignText="right" />
+    </wp:positionH>
+    <wp:positionV relativeFrom="paragraph">
+      <wp:posOffset>0</wp:posOffset>
+    </wp:positionV>
+    <wp:extent cx="3048000" cy="2286000" />
+    <wp:effectExtent b="0" l="0" r="0" t="0" />
+    <wp:wrapSquare wrapText="bothSides" />
+    <wp:docPr id="1" name="Figure" />
+    <wp:cNvGraphicFramePr>
+      <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1" />
+    </wp:cNvGraphicFramePr>
+    <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+      <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+  <pic:nvPicPr>
+    <pic:cNvPr id="0" name="" />
+    <pic:cNvPicPr>
+      <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
+    </pic:cNvPicPr>
+  </pic:nvPicPr>
+  <pic:blipFill>
+    <a:blip r:embed="rIdImage123" />
+    <a:srcRect />
+    <a:stretch>
+      <a:fillRect />
+    </a:stretch>
+  </pic:blipFill>
+  <pic:spPr bwMode="auto">
+    <a:xfrm rot="0">
+      <a:off x="0" y="0" />
+      <a:ext cx="3048000" cy="2286000" />
+    </a:xfrm>
+    <a:prstGeom prst="rect">
+      <a:avLst />
+    </a:prstGeom>
+  </pic:spPr>
+</pic:pic></a:graphicData>
+    </a:graphic>
+  </wp:anchor>
+</w:drawing>"#
+        );
+    }
 }

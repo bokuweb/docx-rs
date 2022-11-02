@@ -171,7 +171,7 @@ $ yarn test -- --updateSnapshot
 - [x] Style
 - [x] Table
 - [x] HIstory
-- [ ] Table of contents
+- [x] Table of contents
 - [ ] Section
 - [ ] Textbox
 

@@ -1,5 +1,5 @@
 use serde::Serialize;
-use std::fmt::{self};
+use std::fmt;
 
 use wasm_bindgen::prelude::*;
 

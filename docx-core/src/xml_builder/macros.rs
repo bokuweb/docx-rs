@@ -305,6 +305,7 @@ macro_rules! closed_with_child {
 
 macro_rules! closed {
     ($name: ident, $el_name: expr) => {
+        #[allow(clippy::wrong_self_convention)]
         pub(crate) fn $name(mut self) -> Self {
             self.writer
                 .write(XmlEvent::start_element($el_name))
@@ -313,6 +314,8 @@ macro_rules! closed {
         }
     };
     ($name: ident, $el_name: expr, $attr0: expr) => {
+        #[allow(clippy::wrong_self_convention)]
+
         pub(crate) fn $name(mut self, arg0: &str) -> Self {
             self.writer
                 .write(XmlEvent::start_element($el_name).attr($attr0, arg0))
@@ -322,6 +325,7 @@ macro_rules! closed {
     };
     ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr) => {
         #[allow(dead_code)]
+        #[allow(clippy::wrong_self_convention)]
         pub(crate) fn $name(mut self, arg0: &str, arg1: &str) -> Self {
             self.writer
                 .write(

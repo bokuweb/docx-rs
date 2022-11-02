@@ -1,2 +1,2 @@
 
-export type PicAlign = "left" | "right" | "bottom" | "top";
+export type PicAlign = "left" | "right" | "center" | "bottom" | "top";

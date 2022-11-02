@@ -271,7 +271,7 @@ mod tests {
   <wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" allowOverlap="0" behindDoc="0" locked="0" layoutInCell="0" relativeHeight="190500">
     <wp:simplePos x="0" y="0" />
     <wp:positionH relativeFrom="column">
-      <wp:align alignText="right" />
+      <wp:align>right</wp:align>
     </wp:positionH>
     <wp:positionV relativeFrom="paragraph">
       <wp:posOffset>0</wp:posOffset>

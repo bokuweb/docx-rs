@@ -9,3 +9,13 @@ pub(crate) fn escape(text: &str) -> String {
         // .replace('\r', "&#xD;")
         .replace('\r', "")
 }
+
+pub(crate) fn replace_escaped(text: &str) -> String {
+    text.replace("&lt;", "<")
+        .replace("&gt;", ">")
+        .replace("&amp;", "&")
+        .replace("&quot;", "\"")
+        .replace("&#39;", "'")
+        .replace("&apos;", "'")
+        .replace("&nbsp;", " ")
+}

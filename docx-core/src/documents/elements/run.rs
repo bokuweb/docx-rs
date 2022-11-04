@@ -127,10 +127,25 @@ impl Run {
         self
     }
 
+    pub(crate) fn add_text_without_escape(mut self, text: impl Into<String>) -> Run {
+        self.children.push(RunChild::Text(Text::without_escape(
+            text.into().replace('\n', ""),
+        )));
+        self
+    }
+
     pub fn add_delete_text(mut self, text: impl Into<String>) -> Run {
         self.children.push(RunChild::DeleteText(DeleteText::new(
             text.into().replace('\n', ""),
         )));
+        self
+    }
+
+    pub(crate) fn add_delete_text_without_escape(mut self, text: impl Into<String>) -> Run {
+        self.children
+            .push(RunChild::DeleteText(DeleteText::without_escape(
+                text.into().replace('\n', ""),
+            )));
         self
     }
 

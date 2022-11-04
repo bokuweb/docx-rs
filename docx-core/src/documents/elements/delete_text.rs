@@ -18,6 +18,13 @@ impl DeleteText {
             preserve_space: true,
         }
     }
+
+    pub(crate) fn without_escape(text: impl Into<String>) -> DeleteText {
+        DeleteText {
+            text: text.into(),
+            preserve_space: true,
+        }
+    }
 }
 
 impl BuildXML for DeleteText {

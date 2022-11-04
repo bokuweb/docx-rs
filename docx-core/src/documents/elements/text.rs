@@ -19,6 +19,13 @@ impl Text {
             preserve_space: true,
         }
     }
+
+    pub(crate) fn without_escape(text: impl Into<String>) -> Text {
+        Text {
+            text: text.into(),
+            preserve_space: true,
+        }
+    }
 }
 
 impl BuildXML for Text {

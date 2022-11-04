@@ -143,19 +143,19 @@ impl ElementReader for Run {
                 }
                 Ok(XmlEvent::Characters(c)) => match text_state {
                     TextState::Delete => {
-                        run = run.add_delete_text(replace_escaped(&c));
+                        run = run.add_delete_text_without_escape(replace_escaped(&c));
                     }
                     TextState::Text => {
-                        run = run.add_text(replace_escaped(&c));
+                        run = run.add_text_without_escape(replace_escaped(&c));
                     }
                     _ => {}
                 },
                 Ok(XmlEvent::Whitespace(c)) => match text_state {
                     TextState::Delete => {
-                        run = run.add_delete_text(replace_escaped(&c));
+                        run = run.add_delete_text_without_escape(replace_escaped(&c));
                     }
                     TextState::Text => {
-                        run = run.add_text(replace_escaped(&c));
+                        run = run.add_text_without_escape(replace_escaped(&c));
                     }
                     _ => {}
                 },

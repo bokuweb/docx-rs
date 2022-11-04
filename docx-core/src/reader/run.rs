@@ -8,6 +8,7 @@ use xml::reader::{EventReader, XmlEvent};
 
 use super::Run;
 
+use crate::escape::replace_escaped;
 use crate::types::BreakType;
 use crate::{reader::*, FieldCharType};
 
@@ -142,19 +143,19 @@ impl ElementReader for Run {
                 }
                 Ok(XmlEvent::Characters(c)) => match text_state {
                     TextState::Delete => {
-                        run = run.add_delete_text(c);
+                        run = run.add_delete_text(replace_escaped(&c));
                     }
                     TextState::Text => {
-                        run = run.add_text(c);
+                        run = run.add_text(replace_escaped(&c));
                     }
                     _ => {}
                 },
                 Ok(XmlEvent::Whitespace(c)) => match text_state {
                     TextState::Delete => {
-                        run = run.add_delete_text(c);
+                        run = run.add_delete_text(replace_escaped(&c));
                     }
                     TextState::Text => {
-                        run = run.add_text(c);
+                        run = run.add_text(replace_escaped(&c));
                     }
                     _ => {}
                 },

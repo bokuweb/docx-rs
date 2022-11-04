@@ -126,6 +126,11 @@ impl Pic {
         self
     }
 
+    pub fn overlapping(mut self) -> Pic {
+        self.allow_overlap = true;
+        self
+    }
+
     pub fn offset_x(mut self, x: i32) -> Pic {
         self.position_h = DrawingPosition::Offset(x);
         self

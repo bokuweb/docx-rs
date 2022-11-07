@@ -92,23 +92,27 @@ impl BuildXML for Box<Drawing> {
                     match p.position_h {
                         DrawingPosition::Offset(x) => {
                             let x = format!("{}", x as u32);
-                            b = b.pos_offset(&x).close();
+                            b = b.pos_offset(&x);
                         }
                         DrawingPosition::Align(x) => {
-                            b = b.align(&x.to_string()).close();
+                            b = b.align(&x.to_string());
                         }
                     }
                     if let DrawingPosition::Offset(x) = p.position_h {
                         let x = format!("{}", x as u32);
-                        b = b.pos_offset(&x).close();
+                        b = b.pos_offset(&x);
                     }
+
+                    b = b.close();
 
                     b = b.open_position_v(&format!("{}", p.relative_from_v));
 
                     if let DrawingPosition::Offset(y) = p.position_v {
                         let y = format!("{}", y as u32);
-                        b = b.pos_offset(&y).close();
+                        b = b.pos_offset(&y);
                     }
+
+                    b = b.close();
                 }
 
                 let w = format!("{}", p.size.0);

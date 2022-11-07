@@ -35,7 +35,15 @@ export type ParagraphPropertyJSON = {
   runProperty: RunPropertyJSON;
   style?: string | null;
   numberingProperty?: NumberingPropertyJSON | null;
-  alignment?: "left" | "center" | "right" | "justified" | "both";
+  alignment?:
+    | "left"
+    | "center"
+    | "right"
+    | "justified"
+    | "both"
+    | "start"
+    | "end"
+    | "unsupported";
   indent?: IndentJSON | null;
   lineSpacing?: LineSpacingJSON | null;
   divId?: string | null;
@@ -91,17 +99,17 @@ export type DeleteJSON = {
 export type HyperlinkJSON = {
   type: "hyperlink";
   data:
-  | {
-    type: "external";
-    rid: string;
-    children: HyperlinkChildJSON[];
-    history: number | null;
-  }
-  | {
-    type: "anchor";
-    anchor: string;
-    children: HyperlinkChildJSON[];
-  };
+    | {
+        type: "external";
+        rid: string;
+        children: HyperlinkChildJSON[];
+        history: number | null;
+      }
+    | {
+        type: "anchor";
+        anchor: string;
+        children: HyperlinkChildJSON[];
+      };
 };
 
 export type DeleteChildJSON =

@@ -4,8 +4,5 @@ export type LineSpacingJSON = {
   beforeLines?: number | null;
   afterLines?: number | null;
   line?: number | null;
-  lineRule?: {
-    type: "atLeast" | "auto" | "exact";
-    val: number;
-  } | null;
+  lineRule?: "atLeast" | "auto" | "exact" | null;
 };

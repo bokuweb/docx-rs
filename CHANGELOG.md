@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## docx-wasm@0.0.276-rc36 (16. Nov, 2022)
+
+- fix lineRule ts type
+
 ## docx-wasm@0.0.276-rc34, docx-rs@0.4.6 (4. Nov, 2022)
 
 - Support Pic alignment

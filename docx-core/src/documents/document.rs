@@ -106,6 +106,16 @@ impl Document {
         self
     }
 
+    pub fn add_paragraphs(mut self, paragraphs: Vec<Paragraph>) -> Self {
+        for p in paragraphs.into_iter() {
+            if p.has_numbering {
+                self.has_numbering = true
+            }
+            self.children.push(DocumentChild::Paragraph(Box::new(p)));
+        }
+        self
+    }
+
     pub fn add_table(mut self, t: Table) -> Self {
         if t.has_numbering {
             self.has_numbering = true

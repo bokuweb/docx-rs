@@ -277,6 +277,16 @@ impl Docx {
         self
     }
 
+    pub fn add_paragraphs(mut self, paragraphs: Vec<Paragraph>) -> Self {
+        for p in paragraphs.into_iter() {
+            if p.has_numbering {
+                self.document_rels.has_numberings = true
+            }
+            self.document = self.document.add_paragraph(p)
+        }
+        self
+    }
+
     pub fn add_structured_data_tag(mut self, t: StructuredDataTag) -> Docx {
         if t.has_numbering {
             // If this document has numbering, set numberings.xml to document_rels.

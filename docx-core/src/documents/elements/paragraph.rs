@@ -138,6 +138,13 @@ impl Paragraph {
         self
     }
 
+    pub fn add_runs(mut self, runs: Vec<Run>) -> Paragraph {
+        for run in runs.into_iter() {
+            self.children.push(ParagraphChild::Run(Box::new(run)));
+        }
+        self
+    }
+
     pub(crate) fn unshift_run(mut self, run: Run) -> Paragraph {
         self.children.insert(0, ParagraphChild::Run(Box::new(run)));
         self

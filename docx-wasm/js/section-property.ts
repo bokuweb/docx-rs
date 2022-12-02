@@ -24,7 +24,6 @@ export class SectionProperty {
   _footer: Footer | null = null;
   _firstFooter: Footer | null = null;
   _evenFooter: Footer | null = null;
-  _adjustLineHeightInTable: boolean = false;
 
   pageSize(w: number, h: number) {
     this._pageSize.w = w;
@@ -49,11 +48,6 @@ export class SectionProperty {
 
   header(header: Header) {
     this._header = header;
-    return this;
-  }
-
-  adjustLineHeightInTable() {
-    this._adjustLineHeightInTable = true;
     return this;
   }
 

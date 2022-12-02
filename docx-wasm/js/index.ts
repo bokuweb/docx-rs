@@ -182,7 +182,7 @@ export class Docx {
   }
 
   adjustLineHeightInTable() {
-    this.sectionProperty.adjustLineHeightInTable();
+    this.settings.adjustLineHeightInTable();
     return this;
   }
 
@@ -763,6 +763,10 @@ export class Docx {
 
     if (this.settings._docId) {
       docx = docx.doc_id(this.settings._docId);
+    }
+
+    if (this.settings._adjustLineHeightInTable) {
+      docx = docx.set_adjust_line_height_in_table();
     }
 
     docx = docx.default_tab_stop(this.settings._defaultTabStop);

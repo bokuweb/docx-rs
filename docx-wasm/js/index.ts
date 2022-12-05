@@ -44,6 +44,7 @@ export class Docx {
     | BookmarkEnd
     | TableOfContents
   )[] = [];
+
   hasNumberings = false;
   abstractNumberings: AbstractNumbering[] = [];
   numberings: Numbering[] = [];
@@ -54,6 +55,11 @@ export class Docx {
   webextensions: WebExtension[] = [];
   customItems: { id: string; xml: string }[] = [];
   styles = new Styles();
+
+  addStructuredDataTag(t: StructuredDataTag) {
+    this.children.push(t);
+    return this;
+  }
 
   addTableOfContents(t: TableOfContents) {
     this.children.push(t);

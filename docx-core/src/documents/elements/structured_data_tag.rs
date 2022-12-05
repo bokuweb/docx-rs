@@ -142,6 +142,11 @@ impl StructuredDataTag {
         self.property = self.property.data_binding(d);
         self
     }
+
+    pub fn alias(mut self, v: impl Into<String>) -> Self {
+        self.property = self.property.alias(v);
+        self
+    }
 }
 
 impl BuildXML for StructuredDataTag {

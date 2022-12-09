@@ -112,7 +112,23 @@ export class TableOfContents {
     for (const item of this._items) {
       toc = toc.add_item(item.buildWasmObject());
     }
-    
+
+    for (const c of this._beforeContents) {
+      if (c instanceof Paragraph) {
+        toc = toc.add_before_paragraph(c.build());
+      } else if (c instanceof Table) {
+        toc = toc.add_before_table(c.build());
+      }
+    }
+
+    for (const c of this._afterContents) {
+      if (c instanceof Paragraph) {
+        toc = toc.add_after_paragraph(c.build());
+      } else if (c instanceof Table) {
+        toc = toc.add_after_table(c.build());
+      }
+    }
+
     return toc;
   };
 }

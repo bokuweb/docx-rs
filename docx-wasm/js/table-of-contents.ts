@@ -1,4 +1,6 @@
+import { Paragraph } from "./paragraph";
 import * as wasm from "./pkg";
+import { Table } from "./table";
 
 import { TableOfContentsItem } from "./table-of-contents-item";
 
@@ -11,6 +13,28 @@ export class TableOfContents {
   _dirty = false;
   _items: TableOfContentsItem[] = [];
   _pageRefPlaceholder = "";
+  _beforeContents: (Paragraph | Table)[] = [];
+  _afterContents: (Paragraph | Table)[] = [];
+
+  addBeforeParagraph(p: Paragraph) {
+    this._beforeContents.push(p);
+    return this;
+  }
+
+  addBeforeTable(t: Table) {
+    this._beforeContents.push(t);
+    return this;
+  }
+
+  addAfterParagraph(p: Paragraph) {
+    this._afterContents.push(p);
+    return this;
+  }
+
+  addAfterTable(t: Table) {
+    this._afterContents.push(t);
+    return this;
+  }
 
   headingStylesRange = (r: [number, number]) => {
     this._headingStylesRange = r;
@@ -88,7 +112,7 @@ export class TableOfContents {
     for (const item of this._items) {
       toc = toc.add_item(item.buildWasmObject());
     }
-
+    
     return toc;
   };
 }

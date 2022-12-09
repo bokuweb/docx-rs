@@ -61,4 +61,24 @@ impl TableOfContents {
         self.0.dirty = true;
         self
     }
+
+    pub fn add_before_paragraph(mut self, p: Paragraph) -> Self {
+        self.0 = self.0.add_before_paragraph(p.take());
+        self
+    }
+
+    pub fn add_after_paragraph(mut self, p: Paragraph) -> Self {
+        self.0 = self.0.add_after_paragraph(p.take());
+        self
+    }
+
+    pub fn add_before_table(mut self, t: Table) -> Self {
+        self.0 = self.0.add_before_table(t.take());
+        self
+    }
+
+    pub fn add_after_table(mut self, t: Table) -> Self {
+        self.0 = self.0.add_after_table(t.take());
+        self
+    }
 }

@@ -11,6 +11,11 @@ pub fn create_table_of_contents() -> TableOfContents {
     TableOfContents(docx_rs::TableOfContents::new())
 }
 
+#[wasm_bindgen(js_name = createTableOfContentsWithInstrText)]
+pub fn create_table_of_contents_with_instr_text(s: &str) -> TableOfContents {
+    TableOfContents(docx_rs::TableOfContents::with_instr_text(s))
+}
+
 impl TableOfContents {
     pub fn take(self) -> docx_rs::TableOfContents {
         self.0

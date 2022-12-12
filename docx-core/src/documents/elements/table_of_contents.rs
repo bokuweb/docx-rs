@@ -56,6 +56,14 @@ impl TableOfContents {
         Self::default()
     }
 
+    pub fn with_instr_text(s: &str) -> Self {
+        let instr = InstrToC::with_instr_text(s);
+        Self {
+            instr,
+            ..Self::default()
+        }
+    }
+
     pub fn heading_styles_range(mut self, start: usize, end: usize) -> Self {
         self.instr = self.instr.heading_styles_range(start, end);
         self

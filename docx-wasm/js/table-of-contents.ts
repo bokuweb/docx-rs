@@ -5,6 +5,7 @@ import { Table } from "./table";
 import { TableOfContentsItem } from "./table-of-contents-item";
 
 export class TableOfContents {
+  _instrText?: string;
   _headingStylesRange: [number, number] | null = null;
   _styleWithLevels: { styleId: string; level: number }[] = [];
   _hyperlink = false;
@@ -15,6 +16,10 @@ export class TableOfContents {
   _pageRefPlaceholder = "";
   _beforeContents: (Paragraph | Table)[] = [];
   _afterContents: (Paragraph | Table)[] = [];
+
+  constructor(instrText?: string) {
+    this._instrText = instrText;
+  }
 
   addBeforeParagraph(p: Paragraph) {
     this._beforeContents.push(p);
@@ -77,7 +82,9 @@ export class TableOfContents {
   };
 
   buildWasmObject = () => {
-    let toc = wasm.createTableOfContents();
+    let toc = this._instrText
+      ? wasm.createTableOfContentsWithInstrText(this._instrText)
+      : wasm.createTableOfContents();
     if (this._headingStylesRange) {
       toc = toc.heading_styles_range(
         this._headingStylesRange[0],

@@ -756,6 +756,45 @@ describe("writer", () => {
     }
   });
 
+  test("should write ToC with instrText", () => {
+    const before = new w.Paragraph().addRun(
+      new w.Run().addText("Before contents")
+    );
+    const after = new w.Paragraph().addRun(
+      new w.Run().addText("After contents")
+    );
+    const p1 = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello!!"))
+      .pageBreakBefore(true)
+      .style("Heading1");
+    const style1 = new w.Style("Heading1", "paragraph").name("Heading 1");
+    const p2 = new w.Paragraph()
+      .addRun(new w.Run().addText("World"))
+      .pageBreakBefore(true)
+      .style("Heading2");
+    const style2 = new w.Style("Heading2", "paragraph").name("Heading 2");
+    const buffer = new w.Docx()
+      .addTableOfContents(
+        new w.TableOfContents(`TOC \o "1-3" \h \z \\u`)
+          .alias("Table of contents")
+          .addBeforeParagraph(before)
+          .addAfterParagraph(after)
+          .dirty()
+      )
+      .addParagraph(p1)
+      .addParagraph(p2)
+      .addStyle(style1)
+      .addStyle(style2)
+      .build();
+    writeFileSync("../output/js/toc_with_instr_text.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
   test("should write paragraph delete", () => {
     const p1 = new w.Paragraph()
       .addRun(new w.Run().addText("Hello world!!"))

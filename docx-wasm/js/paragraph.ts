@@ -154,6 +154,11 @@ export class Paragraph {
     return this;
   }
 
+  outlineLevel(v: number) {
+    this.property = { ...this.property, outlineLvl: v };
+    return this;
+  }
+
   paragraphPropertyChange(propertyChange: ParagraphPropertyChange) {
     this.property.paragraphPropertyChange = propertyChange;
     return this;

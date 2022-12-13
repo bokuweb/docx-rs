@@ -104,6 +104,57 @@ export class Table {
     this.property.cellMargins.bottom = { val: v, type: t };
     return this;
   }
+
+  build() {
+    let table = wasm.createTable();
+    this.rows.forEach((r) => {
+      let row = wasm.createTableRow();
+      r.cells.forEach((c) => {
+        const cell = c.build();
+        row = row.add_cell(cell);
+      });
+
+      if (r.height) {
+        row = row.row_height(r.height);
+      }
+
+      if (r.del) {
+        row = row.delete(r.del.author, r.del.date);
+      }
+
+      if (r.ins) {
+        row = row.insert(r.ins.author, r.ins.date);
+      }
+
+      if (r.hRule) {
+        switch (r.hRule) {
+          case "auto": {
+            row = row.height_rule(wasm.HeightRule.Auto);
+            break;
+          }
+          case "atLeast": {
+            row = row.height_rule(wasm.HeightRule.AtLeast);
+            break;
+          }
+          case "exact": {
+            row = row.height_rule(wasm.HeightRule.Exact);
+            break;
+          }
+        }
+      }
+      table = table.add_row(row);
+    });
+
+    table = table.set_grid(new Uint32Array(this.grid));
+
+    if (this.property.styleId) {
+      table = table.style(this.property.styleId);
+    }
+
+    table = setTableProperty(table, this.property);
+
+    return table;
+  }
 }
 
 export const convertWidthType = (t: string) => {

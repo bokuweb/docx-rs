@@ -1,8 +1,37 @@
+use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
 use crate::documents::*;
 use crate::types::*;
 use crate::xml_builder::*;
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum TocContent {
+    Paragraph(Box<Paragraph>),
+    Table(Box<Table>),
+}
+
+impl Serialize for TocContent {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            TocContent::Paragraph(ref p) => {
+                let mut t = serializer.serialize_struct("Paragraph", 2)?;
+                t.serialize_field("type", "paragraph")?;
+                t.serialize_field("data", p)?;
+                t.end()
+            }
+            TocContent::Table(ref c) => {
+                let mut t = serializer.serialize_struct("Table", 2)?;
+                t.serialize_field("type", "table")?;
+                t.serialize_field("data", c)?;
+                t.end()
+            }
+        }
+    }
+}
 
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TOCTOC_topic_ID0ELZO1.html
 // This struct is only used by writers
@@ -14,11 +43,25 @@ pub struct TableOfContents {
     pub dirty: bool,
     pub alias: Option<String>,
     pub page_ref_placeholder: Option<String>,
+    // it is inserted in before toc.
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub before_contents: Vec<TocContent>,
+    // it is inserted in after toc.
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub after_contents: Vec<TocContent>,
 }
 
 impl TableOfContents {
     pub fn new() -> Self {
         Self::default()
+    }
+
+    pub fn with_instr_text(s: &str) -> Self {
+        let instr = InstrToC::with_instr_text(s);
+        Self {
+            instr,
+            ..Self::default()
+        }
     }
 
     pub fn heading_styles_range(mut self, start: usize, end: usize) -> Self {
@@ -60,6 +103,27 @@ impl TableOfContents {
         self.dirty = true;
         self
     }
+
+    pub fn add_before_paragraph(mut self, p: Paragraph) -> Self {
+        self.before_contents
+            .push(TocContent::Paragraph(Box::new(p)));
+        self
+    }
+
+    pub fn add_after_paragraph(mut self, p: Paragraph) -> Self {
+        self.after_contents.push(TocContent::Paragraph(Box::new(p)));
+        self
+    }
+
+    pub fn add_before_table(mut self, t: Table) -> Self {
+        self.before_contents.push(TocContent::Table(Box::new(t)));
+        self
+    }
+
+    pub fn add_after_table(mut self, t: Table) -> Self {
+        self.after_contents.push(TocContent::Table(Box::new(t)));
+        self
+    }
 }
 
 impl BuildXML for TableOfContents {
@@ -77,15 +141,36 @@ impl BuildXML for TableOfContents {
             );
             let p2 = Paragraph::new().add_run(Run::new().add_field_char(FieldCharType::End, false));
 
-            XMLBuilder::new()
+            let mut b = XMLBuilder::new()
                 .open_structured_tag()
                 .add_child(&p)
-                .open_structured_tag_content()
-                .add_child(&p1)
-                .add_child(&p2)
-                .close()
-                .close()
-                .build()
+                .open_structured_tag_content();
+
+            for c in self.before_contents.iter() {
+                match c {
+                    TocContent::Paragraph(p) => {
+                        b = b.add_child(p);
+                    }
+                    TocContent::Table(t) => {
+                        b = b.add_child(t);
+                    }
+                }
+            }
+
+            b = b.add_child(&p1).add_child(&p2);
+
+            for c in self.after_contents.iter() {
+                match c {
+                    TocContent::Paragraph(p) => {
+                        b = b.add_child(p);
+                    }
+                    TocContent::Table(t) => {
+                        b = b.add_child(t);
+                    }
+                }
+            }
+
+            b.close().close().build()
         } else {
             let items: Vec<TableOfContentsItem> = self
                 .items
@@ -100,14 +185,37 @@ impl BuildXML for TableOfContents {
                     item
                 })
                 .collect();
-            XMLBuilder::new()
+
+            let mut b = XMLBuilder::new()
                 .open_structured_tag()
                 .add_child(&p)
-                .open_structured_tag_content()
-                .add_child(&items)
-                .close()
-                .close()
-                .build()
+                .open_structured_tag_content();
+
+            for c in self.before_contents.iter() {
+                match c {
+                    TocContent::Paragraph(p) => {
+                        b = b.add_child(p);
+                    }
+                    TocContent::Table(t) => {
+                        b = b.add_child(t);
+                    }
+                }
+            }
+
+            b = b.add_child(&items);
+
+            for c in self.after_contents.iter() {
+                match c {
+                    TocContent::Paragraph(p) => {
+                        b = b.add_child(p);
+                    }
+                    TocContent::Table(t) => {
+                        b = b.add_child(t);
+                    }
+                }
+            }
+
+            b.close().close().build()
         }
     }
 }

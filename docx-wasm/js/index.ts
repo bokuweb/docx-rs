@@ -1,18 +1,8 @@
 import { Paragraph } from "./paragraph";
-import { ParagraphProperty, setParagraphProperty } from "./paragraph-property";
-import { Insert } from "./insert";
-import { Delete } from "./delete";
-import { convertHyperlinkType, Hyperlink } from "./hyperlink";
-import { DeleteText } from "./delete-text";
-import { setTableProperty, Table } from "./table";
+import { ParagraphProperty } from "./paragraph-property";
+import { Table } from "./table";
 import { TableOfContents } from "./table-of-contents";
-import { TableCell, toTextDirectionWasmType } from "./table-cell";
-import { convertBorderType, Run, RunFonts, setRunProperty } from "./run";
-import { Text } from "./text";
-import { Tab } from "./tab";
-import { Break } from "./break";
-import { Comment } from "./comment";
-import { CommentEnd } from "./comment-end";
+import { RunFonts } from "./run";
 import { AbstractNumbering } from "./abstract-numbering";
 import { Numbering } from "./numbering";
 import { BookmarkStart } from "./bookmark-start";
@@ -24,7 +14,6 @@ import { Styles } from "./styles";
 import { WebExtension } from "./webextension";
 import { Footer } from "./footer";
 import { Header } from "./header";
-import { Image } from "./image";
 
 import {
   SectionProperty,
@@ -44,6 +33,7 @@ export class Docx {
     | BookmarkEnd
     | TableOfContents
   )[] = [];
+
   hasNumberings = false;
   abstractNumberings: AbstractNumbering[] = [];
   numberings: Numbering[] = [];
@@ -233,122 +223,6 @@ export class Docx {
     return f;
   };
 
-  buildRun(r: Run) {
-    let run = wasm.createRun();
-    r.children.forEach((child) => {
-      if (child instanceof Text) {
-        run = run.add_text(child.text);
-      } else if (child instanceof DeleteText) {
-        run = run.add_delete_text(child.text);
-      } else if (child instanceof Tab) {
-        run = run.add_tab();
-      } else if (child instanceof Break) {
-        if (child.type === "column") {
-          run = run.add_break(wasm.BreakType.Column);
-        } else if (child.type === "page") {
-          run = run.add_break(wasm.BreakType.Page);
-        } else if (child.type === "textWrapping") {
-          run = run.add_break(wasm.BreakType.TextWrapping);
-        }
-      } else if (child instanceof Image) {
-        let pic = wasm.createPic(child.data);
-        if (child.w != null && child.h != null) {
-          pic = pic.size(child.w, child.h);
-        }
-        if (child._floating) {
-          pic = pic.floating();
-        }
-        if (child._offsetX != null) {
-          pic = pic.offset_x(child._offsetX);
-        }
-        if (child._offsetY != null) {
-          pic = pic.offset_x(child._offsetY);
-        }
-        if (child.rot != null) {
-          pic = pic.rotate(child.rot);
-        }
-        run = run.add_image(pic);
-      }
-    });
-
-    run = setRunProperty(run, r.property) as wasm.Run;
-
-    return run;
-  }
-
-  buildHyperlink(link: Hyperlink) {
-    let hyperlink = wasm.createHyperlink(link.v, convertHyperlinkType(link));
-
-    link.children.forEach((child) => {
-      if (child instanceof Run) {
-        const run = this.buildRun(child);
-        hyperlink = hyperlink.add_run(run);
-      } else if (child instanceof Insert) {
-        const insert = this.buildInsert(child);
-        hyperlink = hyperlink.add_insert(insert);
-      } else if (child instanceof Delete) {
-        const del = this.buildDelete(child);
-        hyperlink = hyperlink.add_delete(del);
-      } else if (child instanceof BookmarkStart) {
-        hyperlink = hyperlink.add_bookmark_start(child.id, child.name);
-      } else if (child instanceof BookmarkEnd) {
-        hyperlink = hyperlink.add_bookmark_end(child.id);
-      } else if (child instanceof Comment) {
-        const comment = this.buildComment(child);
-        hyperlink = hyperlink.add_comment_start(comment);
-      } else if (child instanceof CommentEnd) {
-        hyperlink = hyperlink.add_comment_end(child.id);
-      }
-    });
-
-    return hyperlink;
-  }
-
-  buildInsert(i: Insert) {
-    const run = this.buildRun(i.run);
-    let insert = wasm.createInsert(run);
-    if (i._author) {
-      insert = insert.author(i._author);
-    }
-    if (i._date) {
-      insert = insert.date(i._date);
-    }
-    return insert;
-  }
-
-  buildDelete(d: Delete) {
-    const run = this.buildRun(d.run);
-    let del = wasm.createDelete(run);
-    if (d._author) {
-      del = del.author(d._author);
-    }
-    if (d._date) {
-      del = del.date(d._date);
-    }
-    return del;
-  }
-
-  buildComment(c: Comment) {
-    let comment = wasm.createComment(c.id);
-    c.children.forEach((child) => {
-      if (child instanceof Paragraph) {
-        comment = comment.add_paragraph(this.buildParagraph(child));
-      } else if (child instanceof Table) {
-        // TODO:
-      }
-    });
-    if (c._author) {
-      comment = comment.author(c._author);
-    }
-    if (c._date) {
-      comment = comment.date(c._date);
-    }
-    if (c._parentCommentId) {
-      comment = comment.parent_comment_id(c._parentCommentId);
-    }
-    return comment;
-  }
-
   buildLineSpacing(p: ParagraphProperty): wasm.LineSpacing | null {
     const { lineSpacing } = p;
     if (lineSpacing == null) return null;
@@ -392,267 +266,6 @@ export class Docx {
       spacing = spacing.line_rule(kind);
     }
     return spacing;
-  }
-
-  buildParagraph(p: Paragraph) {
-    let paragraph = wasm.createParagraph();
-    p.children.forEach((child) => {
-      if (child instanceof Run) {
-        const run = this.buildRun(child);
-        paragraph = paragraph.add_run(run);
-      } else if (child instanceof Insert) {
-        const insert = this.buildInsert(child);
-        paragraph = paragraph.add_insert(insert);
-      } else if (child instanceof Delete) {
-        const del = this.buildDelete(child);
-        paragraph = paragraph.add_delete(del);
-      } else if (child instanceof Hyperlink) {
-        const hyperlink = this.buildHyperlink(child);
-        paragraph = paragraph.add_hyperlink(hyperlink);
-      } else if (child instanceof BookmarkStart) {
-        paragraph = paragraph.add_bookmark_start(child.id, child.name);
-      } else if (child instanceof BookmarkEnd) {
-        paragraph = paragraph.add_bookmark_end(child.id);
-      } else if (child instanceof Comment) {
-        const comment = this.buildComment(child);
-        paragraph = paragraph.add_comment_start(comment);
-      } else if (child instanceof CommentEnd) {
-        paragraph = paragraph.add_comment_end(child.id);
-      }
-    });
-
-    paragraph = setParagraphProperty(paragraph, p.property);
-
-    if (typeof p.property.styleId !== "undefined") {
-      paragraph = paragraph.style(p.property.styleId);
-    }
-
-    if (p.property.runProperty.del) {
-      paragraph = paragraph.delete(
-        p.property.runProperty.del.author,
-        p.property.runProperty.del.date
-      );
-    }
-
-    if (p.property.runProperty.ins) {
-      paragraph = paragraph.insert(
-        p.property.runProperty.ins.author,
-        p.property.runProperty.ins.date
-      );
-    }
-
-    if (p.property.paragraphPropertyChange) {
-      let change = wasm.createParagraphPropertyChange();
-      change = change
-        .author(p.property.paragraphPropertyChange._author)
-        .date(p.property.paragraphPropertyChange._date);
-
-      if (p.property.paragraphPropertyChange._property.numbering) {
-        change = change.numbering(
-          p.property.paragraphPropertyChange._property.numbering.id,
-          p.property.paragraphPropertyChange._property.numbering.level
-        );
-      }
-      // TODO: add style, indent, alignment
-      paragraph = paragraph.paragraph_property_change(change);
-    }
-
-    return paragraph;
-  }
-
-  buildTable(t: Table) {
-    let table = wasm.createTable();
-    t.rows.forEach((r) => {
-      let row = wasm.createTableRow();
-      r.cells.forEach((c) => {
-        const cell = this.buildCell(c);
-        row = row.add_cell(cell);
-      });
-
-      if (r.height) {
-        row = row.row_height(r.height);
-      }
-
-      if (r.del) {
-        row = row.delete(r.del.author, r.del.date);
-      }
-
-      if (r.ins) {
-        row = row.insert(r.ins.author, r.ins.date);
-      }
-
-      if (r.hRule) {
-        switch (r.hRule) {
-          case "auto": {
-            row = row.height_rule(wasm.HeightRule.Auto);
-            break;
-          }
-          case "atLeast": {
-            row = row.height_rule(wasm.HeightRule.AtLeast);
-            break;
-          }
-          case "exact": {
-            row = row.height_rule(wasm.HeightRule.Exact);
-            break;
-          }
-        }
-      }
-      table = table.add_row(row);
-    });
-
-    table = table.set_grid(new Uint32Array(t.grid));
-
-    if (t.property.styleId) {
-      table = table.style(t.property.styleId);
-    }
-
-    table = setTableProperty(table, t.property);
-
-    return table;
-  }
-
-  buildCell(c: TableCell) {
-    let cell = wasm.createTableCell();
-    c.children.forEach((c) => {
-      if (c instanceof Paragraph) {
-        const paragraph = this.buildParagraph(c);
-        cell = cell.add_paragraph(paragraph);
-      } else if (c instanceof Table) {
-        const table = this.buildTable(c);
-        cell = cell.add_table(table);
-      }
-    });
-
-    if (c.property.verticalMerge === "continue") {
-      cell = cell.vertical_merge(wasm.VMergeType.Continue);
-    } else if (c.property.verticalMerge === "restart") {
-      cell = cell.vertical_merge(wasm.VMergeType.Restart);
-    }
-
-    switch (c.property.verticalAlign) {
-      case "top": {
-        cell = cell.vertical_align(wasm.VAlignType.Top);
-        break;
-      }
-      case "center": {
-        cell = cell.vertical_align(wasm.VAlignType.Center);
-        break;
-      }
-      case "bottom": {
-        cell = cell.vertical_align(wasm.VAlignType.Bottom);
-        break;
-      }
-    }
-
-    if (typeof c.property.gridSpan !== "undefined") {
-      cell = cell.grid_span(c.property.gridSpan);
-    }
-
-    if (typeof c.property.width !== "undefined") {
-      cell = cell.width(c.property.width);
-    }
-
-    if (typeof c.property.textDirection !== "undefined") {
-      cell = cell.text_direction(
-        toTextDirectionWasmType(c.property.textDirection)
-      );
-    }
-
-    if (typeof c.property.borders !== "undefined") {
-      cell = this.buildCellBorders(c, cell);
-    }
-
-    if (typeof c.property.shading !== "undefined") {
-      cell = cell.shading(
-        c.property.shading._type,
-        c.property.shading._color,
-        c.property.shading._fill
-      );
-    }
-
-    return cell;
-  }
-
-  buildCellBorders(js: TableCell, cell: wasm.TableCell): wasm.TableCell {
-    if (js.property.borders.top) {
-      const border = wasm
-        .createTableCellBorder(wasm.TableCellBorderPosition.Top)
-        .size(js.property.borders.top._size)
-        .color(js.property.borders.top._color)
-        .border_type(convertBorderType(js.property.borders.top._border_type));
-      cell = cell.set_border(border);
-    }
-
-    if (js.property.borders.right) {
-      const border = wasm
-        .createTableCellBorder(wasm.TableCellBorderPosition.Right)
-        .size(js.property.borders.right._size)
-        .color(js.property.borders.right._color)
-        .border_type(convertBorderType(js.property.borders.right._border_type));
-      cell = cell.set_border(border);
-    }
-
-    if (js.property.borders.bottom) {
-      const border = wasm
-        .createTableCellBorder(wasm.TableCellBorderPosition.Bottom)
-        .size(js.property.borders.bottom._size)
-        .color(js.property.borders.bottom._color)
-        .border_type(
-          convertBorderType(js.property.borders.bottom._border_type)
-        );
-      cell = cell.set_border(border);
-    }
-
-    if (js.property.borders.left) {
-      const border = wasm
-        .createTableCellBorder(wasm.TableCellBorderPosition.Left)
-        .size(js.property.borders.left._size)
-        .color(js.property.borders.left._color)
-        .border_type(convertBorderType(js.property.borders.left._border_type));
-      cell = cell.set_border(border);
-    }
-
-    if (js.property.borders.insideH) {
-      const border = wasm
-        .createTableCellBorder(wasm.TableCellBorderPosition.InsideH)
-        .size(js.property.borders.insideH._size)
-        .color(js.property.borders.insideH._color)
-        .border_type(
-          convertBorderType(js.property.borders.insideH._border_type)
-        );
-      cell = cell.set_border(border);
-    }
-
-    if (js.property.borders.insideV) {
-      const border = wasm
-        .createTableCellBorder(wasm.TableCellBorderPosition.InsideV)
-        .size(js.property.borders.insideV._size)
-        .color(js.property.borders.insideV._color)
-        .border_type(
-          convertBorderType(js.property.borders.insideV._border_type)
-        );
-      cell = cell.set_border(border);
-    }
-
-    if (js.property.borders.tl2br) {
-      const border = wasm
-        .createTableCellBorder(wasm.TableCellBorderPosition.Tl2br)
-        .size(js.property.borders.tl2br._size)
-        .color(js.property.borders.tl2br._color)
-        .border_type(convertBorderType(js.property.borders.tl2br._border_type));
-      cell = cell.set_border(border);
-    }
-
-    if (js.property.borders.tr2bl) {
-      const border = wasm
-        .createTableCellBorder(wasm.TableCellBorderPosition.Tr2bl)
-        .size(js.property.borders.tr2bl._size)
-        .color(js.property.borders.tr2bl._color)
-        .border_type(convertBorderType(js.property.borders.tr2bl._border_type));
-      cell = cell.set_border(border);
-    }
-
-    return cell;
   }
 
   buildLevel(l: Level) {
@@ -716,10 +329,10 @@ export class Docx {
 
     this.children.forEach((child) => {
       if (child instanceof Paragraph) {
-        let p = this.buildParagraph(child);
+        let p = child.build();
         docx = docx.add_paragraph(p);
       } else if (child instanceof Table) {
-        let t = this.buildTable(child);
+        let t = child.build();
         docx = docx.add_table(t);
       } else if (child instanceof BookmarkStart) {
         docx = docx.add_bookmark_start(child.id, child.name);
@@ -779,9 +392,9 @@ export class Docx {
       let header = wasm.createHeader();
       this.sectionProperty._header.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          header = header.add_paragraph(this.buildParagraph(c));
+          header = header.add_paragraph(c.build());
         } else {
-          header = header.add_table(this.buildTable(c));
+          header = header.add_table(c.build());
         }
       });
       docx = docx.header(header);
@@ -791,9 +404,9 @@ export class Docx {
       let header = wasm.createHeader();
       this.sectionProperty._firstHeader.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          header = header.add_paragraph(this.buildParagraph(c));
+          header = header.add_paragraph(c.build());
         } else {
-          header = header.add_table(this.buildTable(c));
+          header = header.add_table(c.build());
         }
       });
       docx = docx.first_header(header);
@@ -803,9 +416,9 @@ export class Docx {
       let header = wasm.createHeader();
       this.sectionProperty._evenHeader.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          header = header.add_paragraph(this.buildParagraph(c));
+          header = header.add_paragraph(c.build());
         } else {
-          header = header.add_table(this.buildTable(c));
+          header = header.add_table(c.build());
         }
       });
       docx = docx.even_header(header);
@@ -815,9 +428,9 @@ export class Docx {
       let footer = wasm.createFooter();
       this.sectionProperty._footer.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          footer = footer.add_paragraph(this.buildParagraph(c));
+          footer = footer.add_paragraph(c.build());
         } else {
-          footer = footer.add_table(this.buildTable(c));
+          footer = footer.add_table(c.build());
         }
       });
       docx = docx.footer(footer);
@@ -827,9 +440,9 @@ export class Docx {
       let footer = wasm.createFooter();
       this.sectionProperty._firstFooter.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          footer = footer.add_paragraph(this.buildParagraph(c));
+          footer = footer.add_paragraph(c.build());
         } else {
-          footer = footer.add_table(this.buildTable(c));
+          footer = footer.add_table(c.build());
         }
       });
       docx = docx.first_footer(footer);
@@ -839,9 +452,9 @@ export class Docx {
       let footer = wasm.createFooter();
       this.sectionProperty._evenFooter.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          footer = footer.add_paragraph(this.buildParagraph(c));
+          footer = footer.add_paragraph(c.build());
         } else {
-          footer = footer.add_table(this.buildTable(c));
+          footer = footer.add_table(c.build());
         }
       });
       docx = docx.even_footer(footer);

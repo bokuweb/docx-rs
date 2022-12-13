@@ -11,6 +11,11 @@ pub fn create_table_of_contents() -> TableOfContents {
     TableOfContents(docx_rs::TableOfContents::new())
 }
 
+#[wasm_bindgen(js_name = createTableOfContentsWithInstrText)]
+pub fn create_table_of_contents_with_instr_text(s: &str) -> TableOfContents {
+    TableOfContents(docx_rs::TableOfContents::with_instr_text(s))
+}
+
 impl TableOfContents {
     pub fn take(self) -> docx_rs::TableOfContents {
         self.0
@@ -59,6 +64,26 @@ impl TableOfContents {
 
     pub fn dirty(mut self) -> Self {
         self.0.dirty = true;
+        self
+    }
+
+    pub fn add_before_paragraph(mut self, p: Paragraph) -> Self {
+        self.0 = self.0.add_before_paragraph(p.take());
+        self
+    }
+
+    pub fn add_after_paragraph(mut self, p: Paragraph) -> Self {
+        self.0 = self.0.add_after_paragraph(p.take());
+        self
+    }
+
+    pub fn add_before_table(mut self, t: Table) -> Self {
+        self.0 = self.0.add_before_table(t.take());
+        self
+    }
+
+    pub fn add_after_table(mut self, t: Table) -> Self {
+        self.0 = self.0.add_after_table(t.take());
         self
     }
 }

@@ -1,8 +1,11 @@
+import { Paragraph } from "./paragraph";
 import * as wasm from "./pkg";
+import { Table } from "./table";
 
 import { TableOfContentsItem } from "./table-of-contents-item";
 
 export class TableOfContents {
+  _instrText?: string;
   _headingStylesRange: [number, number] | null = null;
   _styleWithLevels: { styleId: string; level: number }[] = [];
   _hyperlink = false;
@@ -11,6 +14,32 @@ export class TableOfContents {
   _dirty = false;
   _items: TableOfContentsItem[] = [];
   _pageRefPlaceholder = "";
+  _beforeContents: (Paragraph | Table)[] = [];
+  _afterContents: (Paragraph | Table)[] = [];
+
+  constructor(instrText?: string) {
+    this._instrText = instrText;
+  }
+
+  addBeforeParagraph(p: Paragraph) {
+    this._beforeContents.push(p);
+    return this;
+  }
+
+  addBeforeTable(t: Table) {
+    this._beforeContents.push(t);
+    return this;
+  }
+
+  addAfterParagraph(p: Paragraph) {
+    this._afterContents.push(p);
+    return this;
+  }
+
+  addAfterTable(t: Table) {
+    this._afterContents.push(t);
+    return this;
+  }
 
   headingStylesRange = (r: [number, number]) => {
     this._headingStylesRange = r;
@@ -53,7 +82,9 @@ export class TableOfContents {
   };
 
   buildWasmObject = () => {
-    let toc = wasm.createTableOfContents();
+    let toc = this._instrText
+      ? wasm.createTableOfContentsWithInstrText(this._instrText)
+      : wasm.createTableOfContents();
     if (this._headingStylesRange) {
       toc = toc.heading_styles_range(
         this._headingStylesRange[0],
@@ -87,6 +118,22 @@ export class TableOfContents {
 
     for (const item of this._items) {
       toc = toc.add_item(item.buildWasmObject());
+    }
+
+    for (const c of this._beforeContents) {
+      if (c instanceof Paragraph) {
+        toc = toc.add_before_paragraph(c.build());
+      } else if (c instanceof Table) {
+        toc = toc.add_before_table(c.build());
+      }
+    }
+
+    for (const c of this._afterContents) {
+      if (c instanceof Paragraph) {
+        toc = toc.add_after_paragraph(c.build());
+      } else if (c instanceof Table) {
+        toc = toc.add_after_table(c.build());
+      }
     }
 
     return toc;

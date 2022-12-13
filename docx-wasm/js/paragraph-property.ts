@@ -68,6 +68,7 @@ export type ParagraphProperty = {
   pageBreakBefore: boolean;
   widowControl: boolean;
   paragraphPropertyChange?: ParagraphPropertyChange;
+  outlineLvl?: number | null;
 };
 
 export const createDefaultParagraphProperty = (): ParagraphProperty => {
@@ -278,6 +279,10 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
 
   if (property.widowControl) {
     target = target.widow_control(true) as T;
+  }
+
+  if (property.outlineLvl != null) {
+    target = target.outline_lvl(property.outlineLvl) as T;
   }
 
   return target;

@@ -131,6 +131,11 @@ impl Paragraph {
         self
     }
 
+    pub fn outline_lvl(mut self, level: usize) -> Paragraph {
+        self.0.property = self.0.property.outline_lvl(level);
+        self
+    }
+
     pub fn style(mut self, style_id: &str) -> Paragraph {
         self.0.property = self.0.property.style(style_id);
         self

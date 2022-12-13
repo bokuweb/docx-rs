@@ -207,6 +207,11 @@ export class Style {
     return this;
   }
 
+  outlineLevel(v: number) {
+    this._paragraphProperty = { ...this._paragraphProperty, outlineLvl: v };
+    return this;
+  }
+
   // tableProperty = (n: TableProperty) => {
   //   this._tableProperty = n;
   //   return this;

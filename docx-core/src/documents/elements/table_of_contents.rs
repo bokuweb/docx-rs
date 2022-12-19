@@ -45,6 +45,7 @@ pub struct TableOfContentsReviewData {
 pub struct TableOfContents {
     pub instr: InstrToC,
     pub items: Vec<TableOfContentsItem>,
+    // don't use
     pub auto: bool,
     pub dirty: bool,
     pub alias: Option<String>,
@@ -149,13 +150,6 @@ impl BuildXML for TableOfContents {
             p = p.alias(alias);
         }
         if self.items.is_empty() {
-            let p1 = Paragraph::new().add_run(
-                Run::new()
-                    .add_field_char(FieldCharType::Begin, true)
-                    .add_instr_text(InstrText::TOC(self.instr.clone()))
-                    .add_field_char(FieldCharType::Separate, false),
-            );
-
             let mut b = XMLBuilder::new()
                 .open_structured_tag()
                 .add_child(&p)
@@ -172,6 +166,23 @@ impl BuildXML for TableOfContents {
                 }
             }
 
+            let p1 = if let Some(ref del) = self.delete {
+                Paragraph::new().add_delete(
+                    Delete::new().author(&del.author).date(&del.date).add_run(
+                        Run::new()
+                            .add_field_char(FieldCharType::Begin, true)
+                            .add_delete_instr_text(DeleteInstrText::TOC(self.instr.clone()))
+                            .add_field_char(FieldCharType::Separate, false),
+                    ),
+                )
+            } else {
+                Paragraph::new().add_run(
+                    Run::new()
+                        .add_field_char(FieldCharType::Begin, true)
+                        .add_instr_text(InstrText::TOC(self.instr.clone()))
+                        .add_field_char(FieldCharType::Separate, false),
+                )
+            };
             b = b.add_child(&p1);
 
             let p2 = Paragraph::new().add_run(Run::new().add_field_char(FieldCharType::End, false));

@@ -67,6 +67,11 @@ impl TableOfContents {
         self
     }
 
+    pub fn delete(mut self, author: &str, date: &str) -> Self {
+        self.0 = self.0.delete(author, date);
+        self
+    }
+
     pub fn add_before_paragraph(mut self, p: Paragraph) -> Self {
         self.0 = self.0.add_before_paragraph(p.take());
         self

@@ -35,6 +35,7 @@ pub enum RunChild {
     CommentEnd(CommentRangeEnd),
     FieldChar(FieldChar),
     InstrText(Box<InstrText>),
+    DeleteInstrText(Box<DeleteInstrText>),
     // For reader
     InstrTextString(String),
 }
@@ -104,6 +105,12 @@ impl Serialize for RunChild {
                 t.serialize_field("data", i)?;
                 t.end()
             }
+            RunChild::DeleteInstrText(ref i) => {
+                let mut t = serializer.serialize_struct("DeleteInstrText", 2)?;
+                t.serialize_field("type", "deleteInstrText")?;
+                t.serialize_field("data", i)?;
+                t.end()
+            }
             RunChild::InstrTextString(ref i) => {
                 let mut t = serializer.serialize_struct("InstrTextString", 2)?;
                 t.serialize_field("type", "instrTextString")?;
@@ -160,6 +167,11 @@ impl Run {
 
     pub fn add_instr_text(mut self, i: InstrText) -> Run {
         self.children.push(RunChild::InstrText(Box::new(i)));
+        self
+    }
+
+    pub fn add_delete_instr_text(mut self, i: DeleteInstrText) -> Run {
+        self.children.push(RunChild::DeleteInstrText(Box::new(i)));
         self
     }
 
@@ -279,7 +291,8 @@ impl BuildXML for Run {
                 RunChild::CommentEnd(c) => b = b.add_child(c),
                 RunChild::FieldChar(c) => b = b.add_child(c),
                 RunChild::InstrText(c) => b = b.add_child(c),
-                _ => {}
+                RunChild::DeleteInstrText(c) => b = b.add_child(c),
+                RunChild::InstrTextString(c) => unreachable!(),
             }
         }
         b.close().build()

@@ -292,7 +292,7 @@ impl BuildXML for Run {
                 RunChild::FieldChar(c) => b = b.add_child(c),
                 RunChild::InstrText(c) => b = b.add_child(c),
                 RunChild::DeleteInstrText(c) => b = b.add_child(c),
-                RunChild::InstrTextString(c) => unreachable!(),
+                RunChild::InstrTextString(_) => unreachable!(),
             }
         }
         b.close().build()

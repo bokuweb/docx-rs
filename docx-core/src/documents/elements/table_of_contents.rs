@@ -33,6 +33,12 @@ impl Serialize for TocContent {
     }
 }
 
+#[derive(Serialize, Debug, Clone, PartialEq, Default)]
+pub struct TableOfContentsReviewData {
+    pub author: String,
+    pub date: String,
+}
+
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TOCTOC_topic_ID0ELZO1.html
 // This struct is only used by writers
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
@@ -49,6 +55,8 @@ pub struct TableOfContents {
     // it is inserted in after toc.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub after_contents: Vec<TocContent>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub delete: Option<TableOfContentsReviewData>,
 }
 
 impl TableOfContents {
@@ -81,6 +89,14 @@ impl TableOfContents {
 
     pub fn alias(mut self, a: impl Into<String>) -> Self {
         self.alias = Some(a.into());
+        self
+    }
+
+    pub fn delete(mut self, author: impl Into<String>, date: impl Into<String>) -> Self {
+        self.delete = Some(TableOfContentsReviewData {
+            author: author.into(),
+            date: date.into(),
+        });
         self
     }
 

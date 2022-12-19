@@ -139,7 +139,6 @@ impl BuildXML for TableOfContents {
                     .add_instr_text(InstrText::TOC(self.instr.clone()))
                     .add_field_char(FieldCharType::Separate, false),
             );
-            let p2 = Paragraph::new().add_run(Run::new().add_field_char(FieldCharType::End, false));
 
             let mut b = XMLBuilder::new()
                 .open_structured_tag()
@@ -157,15 +156,32 @@ impl BuildXML for TableOfContents {
                 }
             }
 
-            b = b.add_child(&p1).add_child(&p2);
+            b = b.add_child(&p1);
 
-            for c in self.after_contents.iter() {
-                match c {
-                    TocContent::Paragraph(p) => {
-                        b = b.add_child(p);
-                    }
-                    TocContent::Table(t) => {
-                        b = b.add_child(t);
+            let p2 = Paragraph::new().add_run(Run::new().add_field_char(FieldCharType::End, false));
+            if self.after_contents.is_empty() {
+                b = b.add_child(&p2);
+            } else {
+                for (i, c) in self.after_contents.iter().enumerate() {
+                    match c {
+                        TocContent::Paragraph(p) => {
+                            // Merge paragraph
+                            if i == 0 {
+                                let mut new_p = p.clone();
+                                new_p.children.insert(
+                                    0,
+                                    ParagraphChild::Run(Box::new(
+                                        Run::new().add_field_char(FieldCharType::End, false),
+                                    )),
+                                );
+                                b = b.add_child(&new_p)
+                            } else {
+                                b = b.add_child(p);
+                            }
+                        }
+                        TocContent::Table(t) => {
+                            b = b.add_child(t);
+                        }
                     }
                 }
             }

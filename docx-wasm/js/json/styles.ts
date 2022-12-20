@@ -13,6 +13,7 @@ export type StyleJSON = {
   tableProperty: TablePropertyJSON;
   tableCellProperty: TableCellPropertyJSON;
   basedOn: string | null;
+  link?: string | null | undefined;
 };
 
 export type StylesJSON = {

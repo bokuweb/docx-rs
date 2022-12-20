@@ -185,6 +185,8 @@ impl XMLBuilder {
     // i.e. <w:next ... >
     closed_with_str!(next, "w:next");
 
+    closed_with_str!(link, "w:link");
+
     // i.e. <w:color ... >
     closed_with_str!(color, "w:color");
 

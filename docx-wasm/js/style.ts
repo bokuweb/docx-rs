@@ -35,6 +35,7 @@ export class Style {
   _paragraphProperty: ParagraphProperty;
   _tableProperty: TableProperty;
   _basedOn: string | null;
+  _link: string | null;
 
   constructor(id: string, type: StyleType) {
     this._styleId = id;
@@ -47,6 +48,7 @@ export class Style {
     this._runProperty = createDefaultRunProperty();
     this._paragraphProperty = createDefaultParagraphProperty();
     this._basedOn = null;
+    this._link = null;
   }
 
   name = (n: string) => {
@@ -56,6 +58,11 @@ export class Style {
 
   basedOn = (n: string) => {
     this._basedOn = n;
+    return this;
+  };
+
+  link = (n: string) => {
+    this._link = n;
     return this;
   };
 
@@ -292,6 +299,10 @@ export class Style {
 
     if (this._basedOn) {
       s = s.based_on(this._basedOn);
+    }
+
+    if (this._link) {
+      s = s.link(this._link);
     }
 
     s = setRunProperty(s, this._runProperty);

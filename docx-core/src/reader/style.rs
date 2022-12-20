@@ -42,6 +42,12 @@ impl ElementReader for Style {
                             }
                             continue;
                         }
+                        XMLElement::Link => {
+                            if let Some(v) = read_val(&attributes) {
+                                style = style.link(v);
+                            }
+                            continue;
+                        }
                         // pPr
                         XMLElement::ParagraphProperty => {
                             if let Ok(pr) = ParagraphProperty::read(r, attrs) {

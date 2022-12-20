@@ -78,7 +78,8 @@ mod tests {
             Style::new("FootnoteTextChar", StyleType::Character)
                 .name("Footnote Text Char")
                 .size(20)
-                .based_on("DefaultParagraphFont"),
+                .based_on("DefaultParagraphFont")
+                .link("FootnoteText"),
         );
         assert_eq!(s, styles);
     }

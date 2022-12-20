@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## docx-wasm@0.0.277-rc1 (20. Dec, 2022)
+
+- Support `link` in style.
+
+## docx-wasm@0.0.277-rc0 (15. Dec, 2022)
+
+- fix after contents in toc.
+
 ## docx-wasm@0.0.276 (13. Dec, 2022)
 
 - Support outline_level in Paragraph and style.

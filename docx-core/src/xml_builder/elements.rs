@@ -159,6 +159,7 @@ impl XMLBuilder {
     closed!(field_character, "w:fldChar", "w:fldCharType", "w:dirty");
 
     open!(open_instr_text, "w:instrText");
+    open!(open_delete_instr_text, "w:delInstrText");
 
     closed!(text_direction, "w:textDirection", "w:val");
 

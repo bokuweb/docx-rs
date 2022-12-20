@@ -16,6 +16,7 @@ export class TableOfContents {
   _pageRefPlaceholder = "";
   _beforeContents: (Paragraph | Table)[] = [];
   _afterContents: (Paragraph | Table)[] = [];
+  _delete: { author: string; date: string } | null = null;
 
   constructor(instrText?: string) {
     this._instrText = instrText;
@@ -76,6 +77,11 @@ export class TableOfContents {
     return this;
   };
 
+  delete = (author: string, date: string) => {
+    this._delete = { author, date };
+    return this;
+  };
+
   addItem = (item: TableOfContentsItem) => {
     this._items.push(item);
     return this;
@@ -110,6 +116,10 @@ export class TableOfContents {
 
     if (this._pageRefPlaceholder) {
       toc = toc.page_ref_placeholder(this._pageRefPlaceholder);
+    }
+
+    if (this._delete) {
+      toc = toc.delete(this._delete.author, this._delete.date);
     }
 
     for (const sl of this._styleWithLevels) {

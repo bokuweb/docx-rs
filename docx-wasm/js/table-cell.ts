@@ -5,6 +5,7 @@ import { TableCellBorders, PositionKeys } from "./table-cell-borders";
 import { TableCellBorderPosition, TableCellBorder } from "./table-cell-border";
 import * as wasm from "./pkg";
 import { convertBorderType } from "./run";
+import { TableOfContents } from "./table-of-contents";
 
 export type VMergeType = "restart" | "continue";
 
@@ -62,7 +63,7 @@ export type CellProperty = {
 };
 
 export class TableCell {
-  children: (Paragraph | Table)[] = [];
+  children: (Paragraph | Table | TableOfContents)[] = [];
   hasNumberings = false;
   property: CellProperty = {
     borders: new TableCellBorders(),
@@ -73,6 +74,11 @@ export class TableCell {
       this.hasNumberings = true;
     }
     this.children.push(p);
+    return this;
+  }
+
+  addTableOfContents(t: TableOfContents) {
+    this.children.push(t);
     return this;
   }
 
@@ -229,6 +235,12 @@ export class TableCell {
       } else if (c instanceof Table) {
         const table = c.build();
         cell = cell.add_table(table);
+      } else if (c instanceof TableOfContents) {
+        cell = cell.add_table_of_contents(c.buildWasmObject());
+      } else {
+        // eslint-disable-next-line
+        const _: never = c;
+        console.error(_);
       }
     });
 

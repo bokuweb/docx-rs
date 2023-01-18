@@ -814,6 +814,41 @@ impl Docx {
                                             }
                                         }
                                     }
+                                    TableCellContent::TableOfContents(t) => {
+                                        for child in &mut t.before_contents {
+                                            if let TocContent::Paragraph(paragraph) = child {
+                                                collect_images_from_paragraph(
+                                                    paragraph,
+                                                    &mut images,
+                                                    &mut image_bufs,
+                                                );
+                                            }
+                                            if let TocContent::Table(table) = child {
+                                                collect_images_from_table(
+                                                    table,
+                                                    &mut images,
+                                                    &mut image_bufs,
+                                                );
+                                            }
+                                        }
+
+                                        for child in &mut t.after_contents {
+                                            if let TocContent::Paragraph(paragraph) = child {
+                                                collect_images_from_paragraph(
+                                                    paragraph,
+                                                    &mut images,
+                                                    &mut image_bufs,
+                                                );
+                                            }
+                                            if let TocContent::Table(table) = child {
+                                                collect_images_from_table(
+                                                    table,
+                                                    &mut images,
+                                                    &mut image_bufs,
+                                                );
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -899,6 +934,49 @@ fn collect_dependencies_in_table(
                             }
                         }
                     }
+                    TableCellContent::TableOfContents(t) => {
+                        for child in &t.before_contents {
+                            if let TocContent::Paragraph(paragraph) = child {
+                                collect_dependencies_in_paragraph(
+                                    paragraph,
+                                    comments,
+                                    comments_extended,
+                                    comment_map,
+                                    hyperlink_map,
+                                );
+                            }
+                            if let TocContent::Table(table) = child {
+                                collect_dependencies_in_table(
+                                    table,
+                                    comments,
+                                    comments_extended,
+                                    comment_map,
+                                    hyperlink_map,
+                                );
+                            }
+                        }
+
+                        for child in &t.after_contents {
+                            if let TocContent::Paragraph(paragraph) = child {
+                                collect_dependencies_in_paragraph(
+                                    paragraph,
+                                    comments,
+                                    comments_extended,
+                                    comment_map,
+                                    hyperlink_map,
+                                );
+                            }
+                            if let TocContent::Table(table) = child {
+                                collect_dependencies_in_table(
+                                    table,
+                                    comments,
+                                    comments_extended,
+                                    comment_map,
+                                    hyperlink_map,
+                                );
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -956,6 +1034,25 @@ fn store_comments_in_table(table: &mut Table, comments: &[Comment]) {
                                 store_comments_in_paragraph(paragraph, comments);
                             }
                             if let StructuredDataTagChild::Table(table) = child {
+                                store_comments_in_table(table, comments);
+                            }
+                        }
+                    }
+                    TableCellContent::TableOfContents(ref mut t) => {
+                        for child in &mut t.before_contents {
+                            if let TocContent::Paragraph(paragraph) = child {
+                                store_comments_in_paragraph(paragraph, comments);
+                            }
+                            if let TocContent::Table(table) = child {
+                                store_comments_in_table(table, comments);
+                            }
+                        }
+
+                        for child in &mut t.after_contents {
+                            if let TocContent::Paragraph(paragraph) = child {
+                                store_comments_in_paragraph(paragraph, comments);
+                            }
+                            if let TocContent::Table(table) = child {
                                 store_comments_in_table(table, comments);
                             }
                         }
@@ -1101,6 +1198,25 @@ fn collect_images_from_table(
                                 collect_images_from_paragraph(paragraph, images, image_bufs);
                             }
                             if let StructuredDataTagChild::Table(table) = child {
+                                collect_images_from_table(table, images, image_bufs);
+                            }
+                        }
+                    }
+                    TableCellContent::TableOfContents(t) => {
+                        for child in &mut t.before_contents {
+                            if let TocContent::Paragraph(paragraph) = child {
+                                collect_images_from_paragraph(paragraph, images, image_bufs);
+                            }
+                            if let TocContent::Table(table) = child {
+                                collect_images_from_table(table, images, image_bufs);
+                            }
+                        }
+
+                        for child in &mut t.after_contents {
+                            if let TocContent::Paragraph(paragraph) = child {
+                                collect_images_from_paragraph(paragraph, images, image_bufs);
+                            }
+                            if let TocContent::Table(table) = child {
                                 collect_images_from_table(table, images, image_bufs);
                             }
                         }

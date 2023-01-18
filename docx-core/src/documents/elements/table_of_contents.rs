@@ -141,10 +141,8 @@ impl TableOfContents {
         self.after_contents.push(TocContent::Table(Box::new(t)));
         self
     }
-}
 
-impl BuildXML for TableOfContents {
-    fn build(&self) -> Vec<u8> {
+    fn inner_build(&self) -> Vec<u8> {
         let mut p = StructuredDataTagProperty::new();
         if let Some(ref alias) = self.alias {
             p = p.alias(alias);
@@ -260,6 +258,18 @@ impl BuildXML for TableOfContents {
 
             b.close().close().build()
         }
+    }
+}
+
+impl BuildXML for TableOfContents {
+    fn build(&self) -> Vec<u8> {
+        self.inner_build()
+    }
+}
+
+impl BuildXML for Box<TableOfContents> {
+    fn build(&self) -> Vec<u8> {
+        self.inner_build()
     }
 }
 

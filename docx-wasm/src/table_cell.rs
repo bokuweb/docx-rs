@@ -35,6 +35,15 @@ impl TableCell {
         self
     }
 
+    pub fn add_table_of_contents(mut self, t: TableOfContents) -> TableCell {
+        self.0
+            .children
+            .push(docx_rs::TableCellContent::TableOfContents(Box::new(
+                t.take(),
+            )));
+        self
+    }
+
     pub fn vertical_merge(mut self, t: docx_rs::VMergeType) -> TableCell {
         self.0.property = self.0.property.vertical_merge(t);
         self

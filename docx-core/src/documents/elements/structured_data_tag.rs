@@ -147,10 +147,8 @@ impl StructuredDataTag {
         self.property = self.property.alias(v);
         self
     }
-}
 
-impl BuildXML for StructuredDataTag {
-    fn build(&self) -> Vec<u8> {
+    fn inner_build(&self) -> Vec<u8> {
         XMLBuilder::new()
             .open_structured_tag()
             .add_child(&self.property)
@@ -159,6 +157,18 @@ impl BuildXML for StructuredDataTag {
             .close()
             .close()
             .build()
+    }
+}
+
+impl BuildXML for StructuredDataTag {
+    fn build(&self) -> Vec<u8> {
+        self.inner_build()
+    }
+}
+
+impl BuildXML for Box<StructuredDataTag> {
+    fn build(&self) -> Vec<u8> {
+        self.inner_build()
     }
 }
 

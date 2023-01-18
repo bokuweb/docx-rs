@@ -5,8 +5,9 @@ import { TextDirectionType } from "../table-cell";
 import { ShadingJSON } from "./shading";
 import { TableLayoutType } from "../table";
 import { DeleteJSONData, InsertJSONData } from "..";
+import { StructuredTagJSON } from "./structured-data-tag";
 
-export type TableCellChildJSON = ParagraphJSON | TableJSON;
+export type TableCellChildJSON = ParagraphJSON | TableJSON | StructuredTagJSON;
 
 export type WidthType = "dxa" | "auto" | "pct" | "nil";
 

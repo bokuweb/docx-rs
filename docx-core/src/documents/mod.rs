@@ -794,6 +794,26 @@ impl Docx {
                                             &mut image_bufs,
                                         );
                                     }
+                                    TableCellContent::StructuredDataTag(tag) => {
+                                        for child in &mut tag.children {
+                                            if let StructuredDataTagChild::Paragraph(paragraph) =
+                                                child
+                                            {
+                                                collect_images_from_paragraph(
+                                                    paragraph,
+                                                    &mut images,
+                                                    &mut image_bufs,
+                                                );
+                                            }
+                                            if let StructuredDataTagChild::Table(table) = child {
+                                                collect_images_from_table(
+                                                    table,
+                                                    &mut images,
+                                                    &mut image_bufs,
+                                                );
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -803,6 +823,30 @@ impl Docx {
             }
         }
         (images, image_bufs)
+    }
+}
+
+fn collect_dependencies_in_paragraph(
+    paragraph: &Paragraph,
+    comments: &mut Vec<Comment>,
+    comments_extended: &mut Vec<CommentExtended>,
+    comment_map: &mut HashMap<usize, String>,
+    hyperlink_map: &mut HashMap<String, String>,
+) {
+    for child in &paragraph.children {
+        if let ParagraphChild::CommentStart(c) = child {
+            push_comment_and_comment_extended(comments, comments_extended, comment_map, c);
+        }
+        if let ParagraphChild::Hyperlink(h) = child {
+            if let HyperlinkData::External { rid, path } = h.link.clone() {
+                hyperlink_map.insert(rid, path);
+            };
+            for child in &h.children {
+                if let ParagraphChild::CommentStart(c) = child {
+                    push_comment_and_comment_extended(comments, comments_extended, comment_map, c);
+                }
+            }
+        }
     }
 }
 
@@ -818,31 +862,13 @@ fn collect_dependencies_in_table(
             for content in &cell.children {
                 match content {
                     TableCellContent::Paragraph(paragraph) => {
-                        for child in &paragraph.children {
-                            if let ParagraphChild::CommentStart(c) = child {
-                                push_comment_and_comment_extended(
-                                    comments,
-                                    comments_extended,
-                                    comment_map,
-                                    c,
-                                );
-                            }
-                            if let ParagraphChild::Hyperlink(h) = child {
-                                if let HyperlinkData::External { rid, path } = h.link.clone() {
-                                    hyperlink_map.insert(rid, path);
-                                };
-                                for child in &h.children {
-                                    if let ParagraphChild::CommentStart(c) = child {
-                                        push_comment_and_comment_extended(
-                                            comments,
-                                            comments_extended,
-                                            comment_map,
-                                            c,
-                                        );
-                                    }
-                                }
-                            }
-                        }
+                        collect_dependencies_in_paragraph(
+                            paragraph,
+                            comments,
+                            comments_extended,
+                            comment_map,
+                            hyperlink_map,
+                        );
                     }
                     TableCellContent::Table(table) => collect_dependencies_in_table(
                         table,
@@ -851,6 +877,62 @@ fn collect_dependencies_in_table(
                         comment_map,
                         hyperlink_map,
                     ),
+                    TableCellContent::StructuredDataTag(tag) => {
+                        for child in &tag.children {
+                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
+                                collect_dependencies_in_paragraph(
+                                    paragraph,
+                                    comments,
+                                    comments_extended,
+                                    comment_map,
+                                    hyperlink_map,
+                                );
+                            }
+                            if let StructuredDataTagChild::Table(table) = child {
+                                collect_dependencies_in_table(
+                                    table,
+                                    comments,
+                                    comments_extended,
+                                    comment_map,
+                                    hyperlink_map,
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+fn store_comments_in_paragraph(paragraph: &mut Paragraph, comments: &[Comment]) {
+    for child in &mut paragraph.children {
+        if let ParagraphChild::CommentStart(ref mut c) = child {
+            let comment_id = c.get_id();
+            if let Some(comment) = comments.iter().find(|c| c.id() == comment_id) {
+                let comment = comment.clone();
+                c.as_mut().comment(comment);
+            }
+        }
+        if let ParagraphChild::Insert(ref mut insert) = child {
+            for child in &mut insert.children {
+                if let InsertChild::CommentStart(ref mut c) = child {
+                    let comment_id = c.get_id();
+                    if let Some(comment) = comments.iter().find(|c| c.id() == comment_id) {
+                        let comment = comment.clone();
+                        c.as_mut().comment(comment);
+                    }
+                }
+            }
+        }
+        if let ParagraphChild::Delete(ref mut delete) = child {
+            for child in &mut delete.children {
+                if let DeleteChild::CommentStart(ref mut c) = child {
+                    let comment_id = c.get_id();
+                    if let Some(comment) = comments.iter().find(|c| c.id() == comment_id) {
+                        let comment = comment.clone();
+                        c.as_mut().comment(comment);
+                    }
                 }
             }
         }
@@ -863,46 +945,20 @@ fn store_comments_in_table(table: &mut Table, comments: &[Comment]) {
             for content in &mut cell.children {
                 match content {
                     TableCellContent::Paragraph(paragraph) => {
-                        for child in &mut paragraph.children {
-                            if let ParagraphChild::CommentStart(ref mut c) = child {
-                                let comment_id = c.get_id();
-                                if let Some(comment) =
-                                    comments.iter().find(|c| c.id() == comment_id)
-                                {
-                                    let comment = comment.clone();
-                                    c.as_mut().comment(comment);
-                                }
-                            }
-                            if let ParagraphChild::Insert(ref mut insert) = child {
-                                for child in &mut insert.children {
-                                    if let InsertChild::CommentStart(ref mut c) = child {
-                                        let comment_id = c.get_id();
-                                        if let Some(comment) =
-                                            comments.iter().find(|c| c.id() == comment_id)
-                                        {
-                                            let comment = comment.clone();
-                                            c.as_mut().comment(comment);
-                                        }
-                                    }
-                                }
-                            }
-                            if let ParagraphChild::Delete(ref mut delete) = child {
-                                for child in &mut delete.children {
-                                    if let DeleteChild::CommentStart(ref mut c) = child {
-                                        let comment_id = c.get_id();
-                                        if let Some(comment) =
-                                            comments.iter().find(|c| c.id() == comment_id)
-                                        {
-                                            let comment = comment.clone();
-                                            c.as_mut().comment(comment);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        store_comments_in_paragraph(paragraph, comments)
                     }
                     TableCellContent::Table(ref mut table) => {
                         store_comments_in_table(table, comments);
+                    }
+                    TableCellContent::StructuredDataTag(ref mut tag) => {
+                        for child in &mut tag.children {
+                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
+                                store_comments_in_paragraph(paragraph, comments);
+                            }
+                            if let StructuredDataTagChild::Table(table) = child {
+                                store_comments_in_table(table, comments);
+                            }
+                        }
                     }
                 }
             }
@@ -1038,6 +1094,16 @@ fn collect_images_from_table(
                     }
                     TableCellContent::Table(table) => {
                         collect_images_from_table(table, images, image_bufs)
+                    }
+                    TableCellContent::StructuredDataTag(tag) => {
+                        for child in &mut tag.children {
+                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
+                                collect_images_from_paragraph(paragraph, images, image_bufs);
+                            }
+                            if let StructuredDataTagChild::Table(table) = child {
+                                collect_images_from_table(table, images, image_bufs);
+                            }
+                        }
                     }
                 }
             }

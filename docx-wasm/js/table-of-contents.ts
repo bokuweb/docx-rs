@@ -11,6 +11,7 @@ export class TableOfContents {
   _hyperlink = false;
   _alias = "";
   _auto = false;
+  _withoutSdt = false;
   _dirty = false;
   _items: TableOfContentsItem[] = [];
   _pageRefPlaceholder = "";
@@ -77,6 +78,11 @@ export class TableOfContents {
     return this;
   };
 
+  withoutSdt = () => {
+    this._withoutSdt = true;
+    return this;
+  };
+
   delete = (author: string, date: string) => {
     this._delete = { author, date };
     return this;
@@ -112,6 +118,10 @@ export class TableOfContents {
 
     if (this._dirty) {
       toc = toc.dirty();
+    }
+
+    if (this._withoutSdt) {
+      toc = toc.without_sdt();
     }
 
     if (this._pageRefPlaceholder) {

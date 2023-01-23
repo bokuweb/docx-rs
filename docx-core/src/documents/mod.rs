@@ -692,6 +692,85 @@ impl Docx {
                         &mut hyperlink_map,
                     );
                 }
+                DocumentChild::TableOfContents(toc) => {
+                    // TODO:refine later
+                    for child in &toc.before_contents {
+                        if let TocContent::Paragraph(paragraph) = child {
+                            for child in &paragraph.children {
+                                if let ParagraphChild::CommentStart(c) = child {
+                                    push_comment_and_comment_extended(
+                                        &mut comments,
+                                        &mut comments_extended,
+                                        &comment_map,
+                                        c,
+                                    );
+                                }
+                                if let ParagraphChild::Hyperlink(h) = child {
+                                    if let HyperlinkData::External { rid, path } = h.link.clone() {
+                                        hyperlink_map.insert(rid, path);
+                                    };
+                                    for child in &h.children {
+                                        if let ParagraphChild::CommentStart(c) = child {
+                                            push_comment_and_comment_extended(
+                                                &mut comments,
+                                                &mut comments_extended,
+                                                &comment_map,
+                                                c,
+                                            );
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if let TocContent::Table(table) = child {
+                            collect_dependencies_in_table(
+                                table,
+                                &mut comments,
+                                &mut comments_extended,
+                                &mut comment_map,
+                                &mut hyperlink_map,
+                            );
+                        }
+                    }
+                    for child in &toc.after_contents {
+                        if let TocContent::Paragraph(paragraph) = child {
+                            for child in &paragraph.children {
+                                if let ParagraphChild::CommentStart(c) = child {
+                                    push_comment_and_comment_extended(
+                                        &mut comments,
+                                        &mut comments_extended,
+                                        &comment_map,
+                                        c,
+                                    );
+                                }
+                                if let ParagraphChild::Hyperlink(h) = child {
+                                    if let HyperlinkData::External { rid, path } = h.link.clone() {
+                                        hyperlink_map.insert(rid, path);
+                                    };
+                                    for child in &h.children {
+                                        if let ParagraphChild::CommentStart(c) = child {
+                                            push_comment_and_comment_extended(
+                                                &mut comments,
+                                                &mut comments_extended,
+                                                &comment_map,
+                                                c,
+                                            );
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if let TocContent::Table(table) = child {
+                            collect_dependencies_in_table(
+                                table,
+                                &mut comments,
+                                &mut comments_extended,
+                                &mut comment_map,
+                                &mut hyperlink_map,
+                            );
+                        }
+                    }
+                }
                 _ => {}
             }
         }

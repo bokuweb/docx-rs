@@ -217,6 +217,7 @@ impl TableOfContents {
                         }
                         TocContent::Table(t) => {
                             // insert empty line for table
+                            // because it causes docx error if table is added after TOC
                             if i == 0 {
                                 b = b.add_child(&Paragraph::new().add_run(Run::new().add_text("")));
                             }
@@ -275,6 +276,7 @@ impl TableOfContents {
                     }
                     TocContent::Table(t) => {
                         // insert empty line for table
+                        // because it causes docx error if table is added after TOC
                         if i == 0 {
                             b = b.add_child(&Paragraph::new().add_run(Run::new().add_text("")));
                         }

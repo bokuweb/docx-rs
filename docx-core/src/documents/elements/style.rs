@@ -1,6 +1,7 @@
 use serde::Serialize;
 
 use crate::documents::BuildXML;
+use crate::escape::*;
 use crate::types::*;
 use crate::xml_builder::*;
 use crate::StyleType;
@@ -54,7 +55,7 @@ impl Style {
     }
 
     pub fn name(mut self, name: impl Into<String>) -> Self {
-        self.name = Name::new(name);
+        self.name = Name::new(escape(&name.into()));
         self
     }
 

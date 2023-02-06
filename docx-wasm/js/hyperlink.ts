@@ -55,34 +55,6 @@ export class Hyperlink {
     this.children.push(end);
     return this;
   }
-
-  build() {
-    let hyperlink = wasm.createHyperlink(this.v, convertHyperlinkType(this));
-
-    this.children.forEach((child) => {
-      if (child instanceof Run) {
-        const run = child.build();
-        hyperlink = hyperlink.add_run(run);
-      } else if (child instanceof Insert) {
-        const insert = child.build();
-        hyperlink = hyperlink.add_insert(insert);
-      } else if (child instanceof Delete) {
-        const del = child.build();
-        hyperlink = hyperlink.add_delete(del);
-      } else if (child instanceof BookmarkStart) {
-        hyperlink = hyperlink.add_bookmark_start(child.id, child.name);
-      } else if (child instanceof BookmarkEnd) {
-        hyperlink = hyperlink.add_bookmark_end(child.id);
-      } else if (child instanceof Comment) {
-        const comment = child.build();
-        hyperlink = hyperlink.add_comment_start(comment);
-      } else if (child instanceof CommentEnd) {
-        hyperlink = hyperlink.add_comment_end(child.id);
-      }
-    });
-
-    return hyperlink;
-  }
 }
 
 export const convertHyperlinkType = (link: Hyperlink): wasm.HyperlinkType => {

@@ -1,8 +1,8 @@
 import { Paragraph } from "./paragraph";
 import * as wasm from "./pkg";
 import { Table } from "./table";
-
 import { TableOfContentsItem } from "./table-of-contents-item";
+import { build } from "./builder";
 
 export class TableOfContents {
   _instrText?: string;
@@ -132,7 +132,7 @@ export class TableOfContents {
 
     for (const c of this._beforeContents) {
       if (c instanceof Paragraph) {
-        toc = toc.add_before_paragraph(c.build());
+        toc = toc.add_before_paragraph(build(c));
       } else if (c instanceof Table) {
         toc = toc.add_before_table(c.build());
       }
@@ -140,7 +140,7 @@ export class TableOfContents {
 
     for (const c of this._afterContents) {
       if (c instanceof Paragraph) {
-        toc = toc.add_after_paragraph(c.build());
+        toc = toc.add_after_paragraph(build(c));
       } else if (c instanceof Table) {
         toc = toc.add_after_table(c.build());
       }

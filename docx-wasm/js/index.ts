@@ -14,6 +14,7 @@ import { Styles } from "./styles";
 import { WebExtension } from "./webextension";
 import { Footer } from "./footer";
 import { Header } from "./header";
+import { build } from "./builder";
 
 import {
   SectionProperty,
@@ -329,8 +330,7 @@ export class Docx {
 
     this.children.forEach((child) => {
       if (child instanceof Paragraph) {
-        let p = child.build();
-        docx = docx.add_paragraph(p);
+        docx = docx.add_paragraph(build(child));
       } else if (child instanceof Table) {
         let t = child.build();
         docx = docx.add_table(t);
@@ -392,7 +392,7 @@ export class Docx {
       let header = wasm.createHeader();
       this.sectionProperty._header.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          header = header.add_paragraph(c.build());
+          header = header.add_paragraph(build(c));
         } else {
           header = header.add_table(c.build());
         }
@@ -404,7 +404,7 @@ export class Docx {
       let header = wasm.createHeader();
       this.sectionProperty._firstHeader.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          header = header.add_paragraph(c.build());
+          header = header.add_paragraph(build(c));
         } else {
           header = header.add_table(c.build());
         }
@@ -416,7 +416,7 @@ export class Docx {
       let header = wasm.createHeader();
       this.sectionProperty._evenHeader.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          header = header.add_paragraph(c.build());
+          header = header.add_paragraph(build(c));
         } else {
           header = header.add_table(c.build());
         }
@@ -428,7 +428,7 @@ export class Docx {
       let footer = wasm.createFooter();
       this.sectionProperty._footer.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          footer = footer.add_paragraph(c.build());
+          footer = footer.add_paragraph(build(c));
         } else {
           footer = footer.add_table(c.build());
         }
@@ -440,7 +440,7 @@ export class Docx {
       let footer = wasm.createFooter();
       this.sectionProperty._firstFooter.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          footer = footer.add_paragraph(c.build());
+          footer = footer.add_paragraph(build(c));
         } else {
           footer = footer.add_table(c.build());
         }
@@ -452,7 +452,7 @@ export class Docx {
       let footer = wasm.createFooter();
       this.sectionProperty._evenFooter.children.forEach((c) => {
         if (c instanceof Paragraph) {
-          footer = footer.add_paragraph(c.build());
+          footer = footer.add_paragraph(build(c));
         } else {
           footer = footer.add_table(c.build());
         }

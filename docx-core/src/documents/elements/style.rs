@@ -228,10 +228,6 @@ impl BuildXML for Style {
                 .add_child(&self.table_property);
         }
 
-        if let Some(ref based_on) = self.based_on {
-            b = b.add_child(based_on)
-        }
-
         if let Some(ref next) = self.next {
             b = b.add_child(next)
         }

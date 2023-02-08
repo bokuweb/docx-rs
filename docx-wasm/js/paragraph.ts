@@ -6,7 +6,6 @@ import {
   AlignmentType,
   SpecialIndentKind,
   ParagraphPropertyChange,
-  setParagraphProperty,
 } from "./paragraph-property";
 import { Insert } from "./insert";
 import { Delete } from "./delete";
@@ -15,8 +14,6 @@ import { BookmarkEnd } from "./bookmark-end";
 import { Comment } from "./comment";
 import { CommentEnd } from "./comment-end";
 import { Hyperlink } from "./hyperlink";
-
-import * as wasm from "./pkg";
 
 export type ParagraphChild =
   | Run
@@ -162,71 +159,5 @@ export class Paragraph {
   paragraphPropertyChange(propertyChange: ParagraphPropertyChange) {
     this.property.paragraphPropertyChange = propertyChange;
     return this;
-  }
-
-  build() {
-    let paragraph = wasm.createParagraph();
-    this.children.forEach((child) => {
-      if (child instanceof Run) {
-        const run = child.build();
-        paragraph = paragraph.add_run(run);
-      } else if (child instanceof Insert) {
-        const insert = child.build();
-        paragraph = paragraph.add_insert(insert);
-      } else if (child instanceof Delete) {
-        const del = child.build();
-        paragraph = paragraph.add_delete(del);
-      } else if (child instanceof Hyperlink) {
-        const hyperlink = child.build();
-        paragraph = paragraph.add_hyperlink(hyperlink);
-      } else if (child instanceof BookmarkStart) {
-        paragraph = paragraph.add_bookmark_start(child.id, child.name);
-      } else if (child instanceof BookmarkEnd) {
-        paragraph = paragraph.add_bookmark_end(child.id);
-      } else if (child instanceof Comment) {
-        const comment = child.build();
-        paragraph = paragraph.add_comment_start(comment);
-      } else if (child instanceof CommentEnd) {
-        paragraph = paragraph.add_comment_end(child.id);
-      }
-    });
-
-    paragraph = setParagraphProperty(paragraph, this.property);
-
-    if (typeof this.property.styleId !== "undefined") {
-      paragraph = paragraph.style(this.property.styleId);
-    }
-
-    if (this.property.runProperty.del) {
-      paragraph = paragraph.delete(
-        this.property.runProperty.del.author,
-        this.property.runProperty.del.date
-      );
-    }
-
-    if (this.property.runProperty.ins) {
-      paragraph = paragraph.insert(
-        this.property.runProperty.ins.author,
-        this.property.runProperty.ins.date
-      );
-    }
-
-    if (this.property.paragraphPropertyChange) {
-      let change = wasm.createParagraphPropertyChange();
-      change = change
-        .author(this.property.paragraphPropertyChange._author)
-        .date(this.property.paragraphPropertyChange._date);
-
-      if (this.property.paragraphPropertyChange._property.numbering) {
-        change = change.numbering(
-          this.property.paragraphPropertyChange._property.numbering.id,
-          this.property.paragraphPropertyChange._property.numbering.level
-        );
-      }
-      // TODO: add style, indent, alignment
-      paragraph = paragraph.paragraph_property_change(change);
-    }
-
-    return paragraph;
   }
 }

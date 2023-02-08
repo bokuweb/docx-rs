@@ -6,6 +6,7 @@ import { TableCellBorderPosition, TableCellBorder } from "./table-cell-border";
 import * as wasm from "./pkg";
 import { convertBorderType } from "./run";
 import { TableOfContents } from "./table-of-contents";
+import { build } from "./builder";
 
 export type VMergeType = "restart" | "continue";
 
@@ -230,8 +231,7 @@ export class TableCell {
     let cell = wasm.createTableCell();
     this.children.forEach((c) => {
       if (c instanceof Paragraph) {
-        const paragraph = c.build();
-        cell = cell.add_paragraph(paragraph);
+        cell = cell.add_paragraph(build(c));
       } else if (c instanceof Table) {
         const table = c.build();
         cell = cell.add_table(table);

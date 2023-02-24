@@ -97,6 +97,8 @@ impl ParagraphProperty {
 
     pub fn outline_lvl(mut self, v: usize) -> Self {
         if v >= 10 {
+            // clamped
+            self.outline_lvl = Some(OutlineLvl::new(9));
             return self;
         }
         self.outline_lvl = Some(OutlineLvl::new(v));

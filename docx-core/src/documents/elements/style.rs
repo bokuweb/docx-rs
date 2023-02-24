@@ -19,6 +19,8 @@ pub struct Style {
     pub table_cell_property: TableCellProperty,
     pub based_on: Option<BasedOn>,
     pub next: Option<Next>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub link: Option<Link>,
 }
 
 impl Default for Style {
@@ -36,6 +38,7 @@ impl Default for Style {
             table_cell_property: TableCellProperty::new(),
             based_on: None,
             next: None,
+            link: None,
         }
     }
 }
@@ -62,6 +65,11 @@ impl Style {
 
     pub fn next(mut self, next: impl Into<String>) -> Self {
         self.next = Some(Next::new(next));
+        self
+    }
+
+    pub fn link(mut self, link: impl Into<String>) -> Self {
+        self.link = Some(Link::new(link));
         self
     }
 
@@ -219,13 +227,13 @@ impl BuildXML for Style {
                 .add_child(&self.table_cell_property)
                 .add_child(&self.table_property);
         }
-        
-        if let Some(ref based_on) = self.based_on {
-            b = b.add_child(based_on)
-        }
 
         if let Some(ref next) = self.next {
             b = b.add_child(next)
+        }
+
+        if let Some(ref link) = self.link {
+            b = b.add_child(link)
         }
 
         b.add_child(&QFormat::new())

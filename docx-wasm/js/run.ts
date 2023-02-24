@@ -280,6 +280,49 @@ export class Run {
     };
     return this;
   }
+
+  build() {
+    let run = wasm.createRun();
+    this.children.forEach((child) => {
+      if (child instanceof Text) {
+        run = run.add_text(child.text);
+      } else if (child instanceof DeleteText) {
+        run = run.add_delete_text(child.text);
+      } else if (child instanceof Tab) {
+        run = run.add_tab();
+      } else if (child instanceof Break) {
+        if (child.type === "column") {
+          run = run.add_break(wasm.BreakType.Column);
+        } else if (child.type === "page") {
+          run = run.add_break(wasm.BreakType.Page);
+        } else if (child.type === "textWrapping") {
+          run = run.add_break(wasm.BreakType.TextWrapping);
+        }
+      } else if (child instanceof Image) {
+        let pic = wasm.createPic(child.data);
+        if (child.w != null && child.h != null) {
+          pic = pic.size(child.w, child.h);
+        }
+        if (child._floating) {
+          pic = pic.floating();
+        }
+        if (child._offsetX != null) {
+          pic = pic.offset_x(child._offsetX);
+        }
+        if (child._offsetY != null) {
+          pic = pic.offset_x(child._offsetY);
+        }
+        if (child.rot != null) {
+          pic = pic.rotate(child.rot);
+        }
+        run = run.add_image(pic);
+      }
+    });
+
+    run = setRunProperty(run, this.property) as wasm.Run;
+
+    return run;
+  }
 }
 
 export const setRunProperty = <T extends wasm.Run | wasm.Style>(

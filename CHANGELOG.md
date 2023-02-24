@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## docx-wasm@0.0.277-rc1 (20. Dec, 2022)
+
+- Support `link` in style.
+
+## docx-wasm@0.0.277-rc0 (15. Dec, 2022)
+
+- fix after contents in toc.
+
+## docx-wasm@0.0.276 (13. Dec, 2022)
+
+- Support outline_level in Paragraph and style.
+
+## docx-wasm@0.0.276-rc39 (13. Dec, 2022)
+
+- Support before/after contents in ToC.
+- Support Toc from instrText.
+
+## docx-wasm@0.0.276-rc38 (7. Dec, 2022)
+
+- fix #584 Remove `%` from width.
+## docx-wasm@0.0.276-rc37 (28. Nov, 2022)
+
+- fixed a bug, `adjustLineHeightInTable` is not affected in js interface.
+
+## docx-wasm@0.0.276-rc36 (16. Nov, 2022)
+
+- fix lineRule ts type
+
 ## docx-wasm@0.0.276-rc34, docx-rs@0.4.6 (4. Nov, 2022)
 
 - Support Pic alignment

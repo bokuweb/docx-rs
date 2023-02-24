@@ -159,6 +159,7 @@ impl XMLBuilder {
     closed!(field_character, "w:fldChar", "w:fldCharType", "w:dirty");
 
     open!(open_instr_text, "w:instrText");
+    open!(open_delete_instr_text, "w:delInstrText");
 
     closed!(text_direction, "w:textDirection", "w:val");
 
@@ -184,6 +185,8 @@ impl XMLBuilder {
     }
     // i.e. <w:next ... >
     closed_with_str!(next, "w:next");
+
+    closed_with_str!(link, "w:link");
 
     // i.e. <w:color ... >
     closed_with_str!(color, "w:color");

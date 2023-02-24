@@ -58,6 +58,11 @@ impl Style {
         self
     }
 
+    pub fn link(mut self, link: &str) -> Self {
+        self.0 = self.0.link(link);
+        self
+    }
+
     pub fn vanish(mut self) -> Self {
         self.0.run_property = self.0.run_property.vanish();
         self

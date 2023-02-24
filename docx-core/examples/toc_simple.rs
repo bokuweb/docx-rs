@@ -4,7 +4,7 @@ pub fn main() -> Result<(), DocxError> {
     let path = std::path::Path::new("./output/toc_simple.docx");
     let file = std::fs::File::create(&path).unwrap();
     let p1 = Paragraph::new()
-        .add_run(Run::new().add_text("Hello"))
+        .add_run(Run::new().add_text("!!Hello"))
         .style("Heading1")
         .page_break_before(true);
     let style1 = Style::new("Heading1", StyleType::Paragraph).name("Heading 1");

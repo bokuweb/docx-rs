@@ -71,6 +71,10 @@ impl InstrToC {
         Self::default()
     }
 
+    pub fn with_instr_text(s: &str) -> Self {
+        Self::from_str(s).expect("should convert to InstrToC")
+    }
+
     pub fn heading_styles_range(mut self, start: usize, end: usize) -> Self {
         self.heading_styles_range = Some((start, end));
         self
@@ -427,6 +431,20 @@ mod tests {
                 .heading_styles_range(1, 3)
                 .add_style_with_level(StyleWithLevel::new("MySpectacularStyle", 1))
                 .add_style_with_level(StyleWithLevel::new("MySpectacularStyle2", 4))
+        );
+    }
+
+    #[test]
+    fn with_instr_text() {
+        let s = r#"TOC \o "1-3" \h \z \u"#;
+        let i = InstrToC::with_instr_text(s);
+        assert_eq!(
+            i,
+            InstrToC::new()
+                .heading_styles_range(1, 3)
+                .use_applied_paragraph_line_level()
+                .hide_tab_and_page_numbers_in_webview()
+                .hyperlink()
         );
     }
 }

@@ -67,6 +67,11 @@ impl TableOfContents {
         self
     }
 
+    pub fn without_sdt(mut self) -> Self {
+        self.0.without_sdt = true;
+        self
+    }
+
     pub fn delete(mut self, author: &str, date: &str) -> Self {
         self.0 = self.0.delete(author, date);
         self

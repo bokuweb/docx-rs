@@ -39,8 +39,8 @@ pub struct TableOfContentsReviewData {
     pub date: String,
 }
 
-// https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TOCTOC_topic_ID0ELZO1.html
-// This struct is only used by writers
+/// https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TOCTOC_topic_ID0ELZO1.html
+/// This struct is only used by writers
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
 pub struct TableOfContents {
     pub instr: InstrToC,
@@ -48,6 +48,8 @@ pub struct TableOfContents {
     // don't use
     pub auto: bool,
     pub dirty: bool,
+    /// Skip StructuredDataTag rendering
+    pub without_sdt: bool,
     pub alias: Option<String>,
     pub page_ref_placeholder: Option<String>,
     // it is inserted in before toc.
@@ -141,19 +143,26 @@ impl TableOfContents {
         self.after_contents.push(TocContent::Table(Box::new(t)));
         self
     }
-}
 
-impl BuildXML for TableOfContents {
-    fn build(&self) -> Vec<u8> {
+    pub fn without_sdt(mut self) -> Self {
+        self.without_sdt = true;
+        self
+    }
+
+    fn inner_build(&self) -> Vec<u8> {
         let mut p = StructuredDataTagProperty::new();
         if let Some(ref alias) = self.alias {
             p = p.alias(alias);
         }
         if self.items.is_empty() {
-            let mut b = XMLBuilder::new()
-                .open_structured_tag()
-                .add_child(&p)
-                .open_structured_tag_content();
+            let mut b = XMLBuilder::new();
+
+            if !self.without_sdt {
+                b = b
+                    .open_structured_tag()
+                    .add_child(&p)
+                    .open_structured_tag_content();
+            }
 
             for c in self.before_contents.iter() {
                 match c {
@@ -207,13 +216,22 @@ impl BuildXML for TableOfContents {
                             }
                         }
                         TocContent::Table(t) => {
+                            // insert empty line for table
+                            // because it causes docx error if table is added after TOC
+                            if i == 0 {
+                                b = b.add_child(&Paragraph::new().add_run(Run::new().add_text("")));
+                            }
                             b = b.add_child(t);
                         }
                     }
                 }
             }
 
-            b.close().close().build()
+            if !self.without_sdt {
+                b = b.close().close();
+            }
+
+            b.build()
         } else {
             let items: Vec<TableOfContentsItem> = self
                 .items
@@ -229,10 +247,14 @@ impl BuildXML for TableOfContents {
                 })
                 .collect();
 
-            let mut b = XMLBuilder::new()
-                .open_structured_tag()
-                .add_child(&p)
-                .open_structured_tag_content();
+            let mut b = XMLBuilder::new();
+
+            if !self.without_sdt {
+                b = b
+                    .open_structured_tag()
+                    .add_child(&p)
+                    .open_structured_tag_content();
+            }
 
             for c in self.before_contents.iter() {
                 match c {
@@ -247,19 +269,39 @@ impl BuildXML for TableOfContents {
 
             b = b.add_child(&items);
 
-            for c in self.after_contents.iter() {
+            for (i, c) in self.after_contents.iter().enumerate() {
                 match c {
                     TocContent::Paragraph(p) => {
                         b = b.add_child(p);
                     }
                     TocContent::Table(t) => {
+                        // insert empty line for table
+                        // because it causes docx error if table is added after TOC
+                        if i == 0 {
+                            b = b.add_child(&Paragraph::new().add_run(Run::new().add_text("")));
+                        }
                         b = b.add_child(t);
                     }
                 }
             }
 
-            b.close().close().build()
+            if !self.without_sdt {
+                b = b.close().close();
+            }
+            b.build()
         }
+    }
+}
+
+impl BuildXML for TableOfContents {
+    fn build(&self) -> Vec<u8> {
+        self.inner_build()
+    }
+}
+
+impl BuildXML for Box<TableOfContents> {
+    fn build(&self) -> Vec<u8> {
+        self.inner_build()
     }
 }
 
@@ -278,6 +320,18 @@ mod tests {
             str::from_utf8(&b).unwrap(),
             r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="true" /><w:instrText>TOC \o &quot;1-3&quot;</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /></w:r></w:p><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
 </w:sdt>"#
+        );
+    }
+
+    #[test]
+    fn test_toc_without_sdt() {
+        let b = TableOfContents::new()
+            .without_sdt()
+            .heading_styles_range(1, 3)
+            .build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="true" /><w:instrText>TOC \o &quot;1-3&quot;</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /></w:r></w:p><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p>"#
         );
     }
 

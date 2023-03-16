@@ -18,6 +18,8 @@ pub struct TableCell {
 pub enum TableCellContent {
     Paragraph(Paragraph),
     Table(Table),
+    StructuredDataTag(Box<StructuredDataTag>),
+    TableOfContents(Box<TableOfContents>),
 }
 
 impl Serialize for TableCellContent {
@@ -38,6 +40,18 @@ impl Serialize for TableCellContent {
                 t.serialize_field("data", s)?;
                 t.end()
             }
+            TableCellContent::StructuredDataTag(ref r) => {
+                let mut t = serializer.serialize_struct("StructuredDataTag", 2)?;
+                t.serialize_field("type", "structuredDataTag")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            TableCellContent::TableOfContents(ref r) => {
+                let mut t = serializer.serialize_struct("TableOfContents", 2)?;
+                t.serialize_field("type", "tableOfContents")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
         }
     }
 }
@@ -52,6 +66,18 @@ impl TableCell {
             self.has_numbering = true
         }
         self.children.push(TableCellContent::Paragraph(p));
+        self
+    }
+
+    pub fn add_table_of_contents(mut self, t: TableOfContents) -> Self {
+        self.children
+            .push(TableCellContent::TableOfContents(Box::new(t)));
+        self
+    }
+
+    pub fn add_structured_data_tag(mut self, t: StructuredDataTag) -> Self {
+        self.children
+            .push(TableCellContent::StructuredDataTag(Box::new(t)));
         self
     }
 
@@ -140,6 +166,8 @@ impl BuildXML for TableCell {
                         b = b.add_child(&Paragraph::new())
                     }
                 }
+                TableCellContent::StructuredDataTag(t) => b = b.add_child(t),
+                TableCellContent::TableOfContents(t) => b = b.add_child(t),
             }
         }
         // INFO: We need to add empty paragraph when parent cell includes only cell.

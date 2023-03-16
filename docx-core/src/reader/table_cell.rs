@@ -23,6 +23,12 @@ impl ElementReader for TableCell {
                             cell = cell.add_paragraph(p);
                             continue;
                         }
+                        XMLElement::StructuredDataTag => {
+                            if let Ok(tag) = StructuredDataTag::read(r, &attributes) {
+                                cell = cell.add_structured_data_tag(tag);
+                            }
+                            continue;
+                        }
                         XMLElement::TableCellProperty => {
                             if let Ok(p) = TableCellProperty::read(r, &attributes) {
                                 cell.property = p;

@@ -3,7 +3,7 @@ use serde::{Serialize, Serializer};
 use std::str::FromStr;
 
 use crate::documents::BuildXML;
-use crate::xml_builder::*;
+use crate::{escape, xml_builder::*};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Name {
@@ -12,7 +12,9 @@ pub struct Name {
 
 impl Name {
     pub fn new(name: impl Into<String>) -> Name {
-        Name { name: name.into() }
+        Name {
+            name: escape::escape(&name.into()),
+        }
     }
 
     pub fn starts_with(&self, s: &str) -> bool {

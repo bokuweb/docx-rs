@@ -26,6 +26,6 @@ impl Serialize for Link {
 impl BuildXML for Link {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.next(&self.val).build()
+        b.link(&self.val).build()
     }
 }

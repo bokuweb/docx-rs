@@ -48,6 +48,12 @@ impl PageSize {
     }
 
     pub fn orient(mut self, o: PageOrientationType) -> PageSize {
+        if let Some(orient) = self.orient {
+            if orient != o {
+                self.w, self.h = self.h, self.w;
+            }
+        }
+        
         self.orient = Some(o);
         self
     }

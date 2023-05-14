@@ -11,7 +11,7 @@ use std::str::FromStr;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[serde(rename_all = "camelCase")]
-#[ts(export)]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub enum HyperlinkType {
     Anchor,
     External,

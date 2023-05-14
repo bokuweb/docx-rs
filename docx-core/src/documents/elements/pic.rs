@@ -7,7 +7,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Serialize, PartialEq)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
-#[ts(export)]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub struct Pic {
     pub id: String,

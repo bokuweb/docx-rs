@@ -2,7 +2,7 @@ use serde::Serialize;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
-#[ts(export)]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub struct FontSchemeFont {
     pub script: String,
@@ -11,7 +11,7 @@ pub struct FontSchemeFont {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
-#[ts(export)]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub struct FontGroup {
     pub latin: String,
@@ -22,7 +22,7 @@ pub struct FontGroup {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
-#[ts(export)]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub struct FontScheme {
     pub major_font: FontGroup,

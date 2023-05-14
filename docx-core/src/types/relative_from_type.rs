@@ -11,7 +11,7 @@ use std::str::FromStr;
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Debug, Clone, Copy, PartialEq, Serialize)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
-#[ts(export)]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub enum RelativeFromHType {
     /// Specifies that the horizontal positioning shall be
@@ -85,7 +85,7 @@ impl FromStr for RelativeFromHType {
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Debug, Clone, Copy, PartialEq, Serialize)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
-#[ts(export)]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub enum RelativeFromVType {
     BottomMargin,

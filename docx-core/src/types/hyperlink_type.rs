@@ -8,7 +8,8 @@ use super::errors;
 use std::str::FromStr;
 
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
-#[derive(Debug, Clone, PartialEq, Serialize, ts_rs::TS)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[serde(rename_all = "camelCase")]
 #[ts(export)]
 pub enum HyperlinkType {

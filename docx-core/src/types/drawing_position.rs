@@ -5,7 +5,8 @@ use std::fmt;
 use wasm_bindgen::prelude::*;
 
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
-#[derive(Debug, Clone, Copy, Serialize, PartialEq, ts_rs::TS)]
+#[derive(Debug, Clone, Copy, Serialize, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub enum DrawingPositionType {
@@ -14,7 +15,8 @@ pub enum DrawingPositionType {
 }
 
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
-#[derive(Debug, Clone, Copy, Serialize, PartialEq, ts_rs::TS)]
+#[derive(Debug, Clone, Copy, Serialize, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub enum PicAlign {
@@ -37,7 +39,8 @@ impl fmt::Display for PicAlign {
     }
 }
 
-#[derive(Debug, Clone, Copy, Serialize, PartialEq, ts_rs::TS)]
+#[derive(Debug, Clone, Copy, Serialize, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub enum DrawingPosition {

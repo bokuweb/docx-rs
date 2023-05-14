@@ -2,7 +2,8 @@ use serde::Serialize;
 
 use crate::documents::*;
 
-#[derive(Serialize, Debug, Clone, PartialEq, Default, ts_rs::TS)]
+#[derive(Serialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[ts(export)]
 pub struct StyleWithLevel(pub (String, usize));
 
@@ -12,7 +13,8 @@ impl StyleWithLevel {
     }
 }
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TOCTOC_topic_ID0ELZO1.html
-#[derive(Serialize, Debug, Clone, PartialEq, Default, ts_rs::TS)]
+#[derive(Serialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub struct InstrToC {

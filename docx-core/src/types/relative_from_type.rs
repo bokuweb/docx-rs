@@ -9,7 +9,8 @@ use std::str::FromStr;
 
 // @See: 20.4.3.4 ST_RelFromH (Horizontal Relative Positioning)
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
-#[derive(Debug, Clone, Copy, PartialEq, Serialize, ts_rs::TS)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub enum RelativeFromHType {
@@ -82,7 +83,8 @@ impl FromStr for RelativeFromHType {
 }
 
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
-#[derive(Debug, Clone, Copy, PartialEq, Serialize, ts_rs::TS)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub enum RelativeFromVType {

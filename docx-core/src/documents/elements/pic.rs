@@ -5,7 +5,8 @@ use crate::documents::*;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Serialize, PartialEq, ts_rs::TS)]
+#[derive(Debug, Clone, Serialize, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub struct Pic {

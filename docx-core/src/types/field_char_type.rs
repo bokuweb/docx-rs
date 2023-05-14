@@ -11,7 +11,8 @@ use wasm_bindgen::prelude::*;
 use super::errors;
 
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
-#[derive(Copy, Clone, Debug, Deserialize, Serialize, PartialEq, ts_rs::TS)]
+#[derive(Copy, Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub enum FieldCharType {

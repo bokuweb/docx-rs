@@ -1,3 +1,4 @@
+#[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
 use serde::ser::{SerializeStruct, Serializer};
@@ -11,7 +12,7 @@ pub enum SpecialIndentType {
     Hanging(i32),
 }
 
-#[wasm_bindgen]
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Serialize, Copy, Clone, Debug)]
 pub enum SpecialIndentKind {
     FirstLine,

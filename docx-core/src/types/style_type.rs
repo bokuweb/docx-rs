@@ -1,11 +1,12 @@
 use std::fmt;
+#[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
 use super::errors;
 use serde::Serialize;
 use std::str::FromStr;
 
-#[wasm_bindgen]
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Debug, Clone, PartialEq, Serialize, Copy)]
 #[serde(rename_all = "camelCase")]
 pub enum StyleType {

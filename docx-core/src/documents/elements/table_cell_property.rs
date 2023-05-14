@@ -1,12 +1,13 @@
-use wasm_bindgen::prelude::*;
 use serde::Serialize;
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
 
 use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[wasm_bindgen]
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct TableCellProperty {

@@ -1,4 +1,5 @@
 use std::fmt;
+#[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
 use serde::Serialize;
@@ -8,7 +9,7 @@ use std::str::FromStr;
 
 // ST_TextDirection defines `lr`, `lrV`, `rl`, `rlV`, `tb`, `tbV`.
 // However Microsoft word use `tbRlV`, `tbRl`, `btLr`, `lrTbV`.
-#[wasm_bindgen]
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Debug, Clone, Copy, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum TextDirectionType {

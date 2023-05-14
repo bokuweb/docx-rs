@@ -5,11 +5,12 @@ use serde::{Deserialize, Serialize};
 //
 use std::fmt;
 use std::str::FromStr;
+#[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
 use super::errors;
 
-#[wasm_bindgen]
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Copy, Clone, Debug, Deserialize, Serialize, PartialEq, ts_rs::TS)]
 #[ts(export)]
 #[serde(rename_all = "camelCase")]

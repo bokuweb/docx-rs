@@ -2,9 +2,10 @@ use crate::types::errors;
 use crate::TypeError;
 use serde::*;
 use std::str::FromStr;
+#[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen]
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Copy, Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum LineSpacingType {

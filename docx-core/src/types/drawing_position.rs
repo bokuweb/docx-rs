@@ -1,20 +1,23 @@
 use serde::Serialize;
 use std::fmt;
 
+#[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen]
-#[derive(Debug, Clone, Copy, Serialize, PartialEq, ts_rs::TS)]
-#[ts(export)]
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
+#[derive(Debug, Clone, Copy, Serialize, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub enum DrawingPositionType {
     Anchor,
     Inline,
 }
 
-#[wasm_bindgen]
-#[derive(Debug, Clone, Copy, Serialize, PartialEq, ts_rs::TS)]
-#[ts(export)]
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
+#[derive(Debug, Clone, Copy, Serialize, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub enum PicAlign {
     Left,
@@ -36,8 +39,9 @@ impl fmt::Display for PicAlign {
     }
 }
 
-#[derive(Debug, Clone, Copy, Serialize, PartialEq, ts_rs::TS)]
-#[ts(export)]
+#[derive(Debug, Clone, Copy, Serialize, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub enum DrawingPosition {
     Offset(i32),

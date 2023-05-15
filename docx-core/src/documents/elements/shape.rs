@@ -1,7 +1,8 @@
 use serde::Serialize;
 
-#[derive(Serialize, Debug, Clone, PartialEq, Default, ts_rs::TS)]
-#[ts(export)]
+#[derive(Serialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub struct Shape {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -11,8 +12,9 @@ pub struct Shape {
 }
 // Experimental, For now reader only.
 
-#[derive(Serialize, Debug, Clone, PartialEq, Default, ts_rs::TS)]
-#[ts(export)]
+#[derive(Serialize, Debug, Clone, PartialEq, Default)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub struct ImageData {
     pub id: String,

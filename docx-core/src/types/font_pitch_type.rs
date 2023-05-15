@@ -1,7 +1,8 @@
 use std::fmt;
+#[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen]
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Copy, Clone, Debug)]
 pub enum FontPitchType {
     Default,

@@ -1,4 +1,5 @@
 use std::fmt;
+#[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
 use serde::Serialize;
@@ -6,10 +7,11 @@ use serde::Serialize;
 use super::errors;
 use std::str::FromStr;
 
-#[wasm_bindgen]
-#[derive(Debug, Clone, PartialEq, Serialize, ts_rs::TS)]
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[serde(rename_all = "camelCase")]
-#[ts(export)]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub enum HyperlinkType {
     Anchor,
     External,

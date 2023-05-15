@@ -1,4 +1,5 @@
 use std::fmt;
+#[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
 use serde::Serialize;
@@ -6,7 +7,7 @@ use serde::Serialize;
 use super::errors;
 use std::str::FromStr;
 
-#[wasm_bindgen]
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum LevelSuffixType {

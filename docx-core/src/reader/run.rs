@@ -71,6 +71,14 @@ impl ElementReader for Run {
                                 XMLElement::Tab => {
                                     run = run.add_tab();
                                 }
+                                XMLElement::Sym => {
+                                    if let Some(font) = read(&attributes, "font") {
+                                        if let Some(char) = read(&attributes, "char") {
+                                            let sym = Sym::new(font, char);
+                                            run = run.add_sym(sym);
+                                        }
+                                    }
+                                }
                                 XMLElement::RunProperty => {
                                     let p = RunProperty::read(r, &attributes)?;
                                     run = run.set_property(p);

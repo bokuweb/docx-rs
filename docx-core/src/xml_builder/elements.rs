@@ -438,6 +438,7 @@ impl XMLBuilder {
     closed!(ul_trail_space, "w:ulTrailSpace");
     closed!(do_not_expand_shift_return, "w:doNotExpandShiftReturn");
     closed!(adjust_line_height_table, "w:adjustLineHeightInTable");
+    closed!(character_spacing_control,"w:characterSpacingControl","w:val");
     closed!(use_fe_layout, "w:useFELayout");
     closed!(
         compat_setting,

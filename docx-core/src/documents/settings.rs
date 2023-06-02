@@ -1,6 +1,7 @@
 use super::*;
 
 use crate::documents::BuildXML;
+use crate::types::{CharacterSpacingValues};
 use crate::xml_builder::*;
 
 use serde::Serialize;
@@ -14,6 +15,7 @@ pub struct Settings {
     doc_vars: Vec<DocVar>,
     even_and_odd_headers: bool,
     adjust_line_height_in_table: bool,
+    character_spacing_control: Option<CharacterSpacingValues>,
 }
 
 impl Settings {
@@ -45,6 +47,11 @@ impl Settings {
         self.adjust_line_height_in_table = true;
         self
     }
+
+    pub fn character_spacing_control(mut self, val: CharacterSpacingValues) -> Self {
+        self.character_spacing_control = Some(val);
+        self
+    }
 }
 
 impl Default for Settings {
@@ -56,6 +63,7 @@ impl Default for Settings {
             doc_vars: vec![],
             even_and_odd_headers: false,
             adjust_line_height_in_table: false,
+            character_spacing_control: None,
         }
     }
 }
@@ -74,6 +82,10 @@ impl BuildXML for Settings {
             .do_not_leave_backslash_alone()
             .ul_trail_space()
             .do_not_expand_shift_return();
+
+        if let Some(v) = self.character_spacing_control {
+            b = b.character_spacing_control(&v.to_string());
+        }
 
         if self.adjust_line_height_in_table {
             b = b.adjust_line_height_table();
@@ -131,7 +143,6 @@ impl BuildXML for Settings {
 
 #[cfg(test)]
 mod tests {
-
     use super::*;
     #[cfg(test)]
     use pretty_assertions::assert_eq;

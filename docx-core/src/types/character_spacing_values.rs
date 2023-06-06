@@ -30,9 +30,9 @@ impl FromStr for CharacterSpacingValues {
     type Err = errors::TypeError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "do_not_compress" => Ok(CharacterSpacingValues::DoNotCompress),
-            "compress_punctuation" => Ok(CharacterSpacingValues::CompressPunctuation),
-            "compress_punctuation_and_japanese_kana" => Ok(CharacterSpacingValues::CompressPunctuationAndJapaneseKana),
+            "doNotCompress" => Ok(CharacterSpacingValues::DoNotCompress),
+            "compressPunctuation" => Ok(CharacterSpacingValues::CompressPunctuation),
+            "compressPunctuationAndJapaneseKana" => Ok(CharacterSpacingValues::CompressPunctuationAndJapaneseKana),
             _ => Err(errors::TypeError::Unsupported(s.to_string()))
         }
     }

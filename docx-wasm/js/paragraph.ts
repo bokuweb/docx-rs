@@ -83,9 +83,15 @@ export class Paragraph {
   indent(
     left: number,
     specialIndentKind?: SpecialIndentKind,
-    specialIndentSize?: number
+    specialIndentSize?: number,
+    right?: number
   ) {
-    this.property.indent = { left, specialIndentKind, specialIndentSize };
+    this.property.indent = {
+      left,
+      specialIndentKind,
+      specialIndentSize,
+      right,
+    };
     return this;
   }
 

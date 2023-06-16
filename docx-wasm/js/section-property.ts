@@ -14,10 +14,7 @@ export class SectionProperty {
     h: 16838,
   };
   _pageMargin: PageMargin | null = null;
-  _docGrid: DocGrid = {
-    gridType: "lines",
-    linePitch: 360,
-  };
+  _docGrid: DocGrid | null = null;
   _header: Header | null = null;
   _firstHeader: Header | null = null;
   _evenHeader: Header | null = null;

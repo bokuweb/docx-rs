@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## docx-wasm@0.0.278-rc3 (19. Jun, 2023)
 
 - [Breaking] make docGrid optional
+
 ## docx-wasm@0.0.278-rc2 (19. May, 2023)
 
 - Support `<sym />`

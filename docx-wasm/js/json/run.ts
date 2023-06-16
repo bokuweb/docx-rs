@@ -1,6 +1,11 @@
 import { DrawingJSON } from "./drawing";
 import { ShapeJSON } from "./shape";
-import { CommentRangeStartJSON, CommentRangeEndJSON, InsertJSONData, DeleteJSONData } from "..";
+import {
+  CommentRangeStartJSON,
+  CommentRangeEndJSON,
+  InsertJSONData,
+  DeleteJSONData,
+} from "..";
 import { BorderType } from "../border";
 import { VertAlignType } from "../run";
 import { FieldChar } from "./bindings/FieldChar";
@@ -50,6 +55,7 @@ export type RunPropertyJSON = {
 
 export type RunChildJSON =
   | TextJSON
+  | SymJSON
   | DeleteTextJSON
   | TabJSON
   | BreakJSON
@@ -65,6 +71,14 @@ export type TextJSON = {
   data: {
     preserveSpace: boolean;
     text: string;
+  };
+};
+
+export type SymJSON = {
+  type: "sym";
+  data: {
+    font: string;
+    char: string;
   };
 };
 
@@ -103,14 +117,14 @@ export type FieldCharJSON = {
 export type InstrTextJSON = {
   type: "instrText";
   data:
-  | {
-    type: "hyperlink";
-    data: InstrHyperlink;
-  }
-  | {
-    type: "toc";
-    data: InstrToC;
-  };
+    | {
+        type: "hyperlink";
+        data: InstrHyperlink;
+      }
+    | {
+        type: "toc";
+        data: InstrToC;
+      };
 };
 
 export type InstrTextStringJSON = {

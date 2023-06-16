@@ -56,6 +56,7 @@ export type ParagraphProperty = {
     left: number;
     specialIndentKind?: SpecialIndentKind;
     specialIndentSize?: number;
+    right?: number;
   };
   numbering?: {
     id: number;
@@ -221,7 +222,12 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
         break;
       }
     }
-    target = target.indent(indent.left, kind, indent.specialIndentSize) as T;
+    target = target.indent(
+      indent.left,
+      kind,
+      indent.specialIndentSize,
+      indent.right
+    ) as T;
   }
 
   if (typeof property.numbering !== "undefined") {

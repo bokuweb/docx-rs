@@ -146,12 +146,13 @@ impl Paragraph {
         left: i32,
         special_indent_kind: Option<docx_rs::SpecialIndentKind>,
         special_indent_size: Option<i32>,
+        right: Option<i32>,
     ) -> Paragraph {
         let special_indent = create_special_indent(special_indent_kind, special_indent_size);
         self.0.property = self
             .0
             .property
-            .indent(Some(left), special_indent, None, None);
+            .indent(Some(left), special_indent, right, None);
         self
     }
 

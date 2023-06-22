@@ -176,9 +176,7 @@ fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
     }
 
     if let Some(v) = p.widow_control {
-        if v {
-            b = b.widow_control()
-        }
+        b = b.widow_control(if v { "1" } else { "0" })
     }
 
     if !p.tabs.is_empty() {
@@ -206,7 +204,6 @@ impl BuildXML for Box<ParagraphProperty> {
 
 #[cfg(test)]
 mod tests {
-
     use super::*;
     use crate::types::LineSpacingType;
     #[cfg(test)]

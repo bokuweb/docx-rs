@@ -438,6 +438,7 @@ impl XMLBuilder {
     closed!(ul_trail_space, "w:ulTrailSpace");
     closed!(do_not_expand_shift_return, "w:doNotExpandShiftReturn");
     closed!(adjust_line_height_table, "w:adjustLineHeightInTable");
+    closed!(character_spacing_control,"w:characterSpacingControl","w:val");
     closed!(use_fe_layout, "w:useFELayout");
     closed!(
         compat_setting,
@@ -450,7 +451,7 @@ impl XMLBuilder {
     closed!(keep_next, "w:keepNext");
     closed!(keep_lines, "w:keepLines");
     closed!(page_break_before, "w:pageBreakBefore");
-    closed!(widow_control, "w:widowControl");
+    closed!(widow_control, "w:widowControl", "w:val");
 
     /*
     <w:lvlOverride w:ilvl="0">
@@ -593,7 +594,6 @@ impl XMLBuilder {
 
 #[cfg(test)]
 mod tests {
-
     use super::*;
     #[cfg(test)]
     use pretty_assertions::assert_eq;

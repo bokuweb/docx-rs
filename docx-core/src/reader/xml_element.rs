@@ -145,6 +145,7 @@ pub enum XMLElement {
     DefaultTabStop,
     RunPropertyDefault,
     AdjustLineHeightInTable,
+    CharacterSpacingControl,
     SectionProperty,
     PageSize,
     PageMargin,
@@ -211,6 +212,7 @@ pub enum WpsXMLElement {
     BodyPr,
     Unsupported,
 }
+
 #[derive(PartialEq, Debug)]
 pub enum VXMLElement {
     Rect,
@@ -363,6 +365,7 @@ impl FromStr for XMLElement {
             "docGrid" => Ok(XMLElement::DocGrid),
             "rPrDefault" => Ok(XMLElement::RunPropertyDefault),
             "adjustLineHeightInTable" => Ok(XMLElement::AdjustLineHeightInTable),
+            "characterSpacingControl" => Ok(XMLElement::CharacterSpacingControl),
             "defaultTabStop" => Ok(XMLElement::DefaultTabStop),
             "divId" => Ok(XMLElement::DivId),
             "div" => Ok(XMLElement::Div),
@@ -495,6 +498,6 @@ impl FromStr for PicXMLElement {
 
 pub trait ElementReader {
     fn read<R: Read>(r: &mut EventReader<R>, attrs: &[OwnedAttribute]) -> Result<Self, ReaderError>
-    where
-        Self: std::marker::Sized;
+        where
+            Self: std::marker::Sized;
 }

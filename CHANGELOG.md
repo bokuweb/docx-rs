@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## docx-rs@0.4.7 (23. Jun, 2023)
+
+- Support character space control
+- Fix widow_control behavior
+- Support indent right for js
+- [Breaking] make docGrid optional
+- Support `<sym />`
+- Fixed a bug, style.link is not output.
+- Fixed a bug, escape style name.
+- Support `link` in style.
+- fix after contents in toc.
+- Support outline_level in Paragraph and style.
+- Support before/after contents in ToC.
+- Support Toc from instrText.
+- fix #584 Remove `%` from width.
+- fixed a bug, `adjustLineHeightInTable` is not affected in js interface.
+- fix lineRule ts type
+
+
+## docx-wasm@0.0.278-rc8 (23. Jun, 2023)
+
+- Support character space control
+- Fix widow_control behavior
+
 ## docx-wasm@0.0.278-rc7 (19. Jun, 2023)
 
 - Support indent right for js

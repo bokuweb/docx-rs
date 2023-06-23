@@ -128,8 +128,8 @@ export class Style {
     return this;
   }
 
-  spacing(spacing: number) {
-    this._runProperty = { ...this._runProperty, spacing };
+  characterSpacing(characterSpacing: number) {
+    this._runProperty = { ...this._runProperty, characterSpacing };
     return this;
   }
 

@@ -89,8 +89,9 @@ impl ElementReader for RunProperty {
                         XMLElement::Size => rp = rp.size(usize::from_str(&attributes[0].value)?),
                         XMLElement::Spacing => {
                             if let Some(v) = read_val(&attributes) {
-                                let v = value_to_dax(&v)?;
-                                rp = rp.spacing(v)
+                                if let Ok(s) = i32::from_str(&v) {
+                                    rp = rp.spacing(s)
+                                }
                             }
                         }
                         XMLElement::RunFonts => {

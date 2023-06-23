@@ -46,7 +46,7 @@ export type RunPropertyJSON = {
   italicCs?: boolean | null;
   vanish?: boolean | null;
   specVanish?: boolean | null;
-  spacing?: number | null;
+  characterSpacing?: number | null;
   textBorder?: TextBorderJSON | null;
   ins?: InsertJSONData | null;
   del?: DeleteJSONData | null;

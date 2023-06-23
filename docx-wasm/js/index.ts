@@ -7,7 +7,7 @@ import { AbstractNumbering } from "./abstract-numbering";
 import { Numbering } from "./numbering";
 import { BookmarkStart } from "./bookmark-start";
 import { BookmarkEnd } from "./bookmark-end";
-import { Settings } from "./settings";
+import { CharacterSpacingValues, Settings } from "./settings";
 import { DocProps } from "./doc-props";
 import { Style } from "./style";
 import { Styles } from "./styles";
@@ -174,6 +174,11 @@ export class Docx {
 
   adjustLineHeightInTable() {
     this.settings.adjustLineHeightInTable();
+    return this;
+  }
+
+  characterSpacingControl(v: CharacterSpacingValues) {
+    this.settings._characterSpacingControl = v;
     return this;
   }
 

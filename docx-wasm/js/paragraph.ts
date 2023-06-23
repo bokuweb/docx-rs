@@ -107,7 +107,7 @@ export class Paragraph {
   }
 
   characterSpacing(spacing: number) {
-    this.property.runProperty.spacing = spacing;
+    this.property.runProperty.characterSpacing = spacing;
     return this;
   }
 

@@ -87,8 +87,10 @@ function buildParagraph(child: Paragraph) {
     );
   }
 
-  if (child.property.runProperty.spacing != null) {
-    paragraph = paragraph.character_spacing(child.property.runProperty.spacing);
+  if (child.property.runProperty.characterSpacing != null) {
+    paragraph = paragraph.character_spacing(
+      child.property.runProperty.characterSpacing
+    );
   }
 
   if (child.property.paragraphPropertyChange) {

@@ -192,8 +192,8 @@ export class Docx {
     return this;
   }
 
-  defaultSpacing(spacing: number) {
-    this.styles.defaultSpacing(spacing);
+  defaultCharacterSpacing(spacing: number) {
+    this.styles.defaultCharacterSpacing(spacing);
     return this;
   }
 
@@ -547,9 +547,9 @@ export class Docx {
         docx = docx.default_size(this.styles.docDefaults.runProperty.size);
       }
 
-      if (this.styles.docDefaults.runProperty?.spacing) {
+      if (this.styles.docDefaults.runProperty?.characterSpacing) {
         docx = docx.default_spacing(
-          this.styles.docDefaults.runProperty.spacing
+          this.styles.docDefaults.runProperty.characterSpacing
         );
       }
     }

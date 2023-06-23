@@ -96,7 +96,7 @@ impl Run {
         self
     }
 
-    pub fn spacing(mut self, spacing: i32) -> Run {
+    pub fn character_spacing(mut self, spacing: i32) -> Run {
         self.0.run_property = self.0.run_property.spacing(spacing);
         self
     }

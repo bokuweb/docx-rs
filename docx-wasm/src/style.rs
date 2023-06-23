@@ -73,7 +73,7 @@ impl Style {
         self
     }
 
-    pub fn spacing(mut self, spacing: i32) -> Self {
+    pub fn character_spacing(mut self, spacing: i32) -> Self {
         self.0.run_property = self.0.run_property.spacing(spacing);
         self
     }

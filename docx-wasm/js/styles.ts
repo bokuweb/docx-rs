@@ -16,8 +16,8 @@ export class Styles {
     return this;
   }
 
-  defaultSpacing(spacing: number) {
-    this.docDefaults.spacing(spacing);
+  defaultCharacterSpacing(spacing: number) {
+    this.docDefaults.characterSpacing(spacing);
     return this;
   }
 }

@@ -91,8 +91,8 @@ export class Level {
     return this;
   }
 
-  spacing(spacing: number) {
-    this.runProperty = { ...this.runProperty, spacing };
+  characterSpacing(characterSpacing: number) {
+    this.runProperty = { ...this.runProperty, characterSpacing };
     return this;
   }
 }

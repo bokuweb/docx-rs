@@ -1,4 +1,5 @@
 use super::*;
+use docx_rs::CharacterSpacingValues;
 use wasm_bindgen::prelude::*;
 
 extern crate console_error_panic_hook;
@@ -84,6 +85,11 @@ impl Docx {
 
     pub fn set_adjust_line_height_in_table(mut self) -> Self {
         self.0.settings = self.0.settings.adjust_line_height_in_table();
+        self
+    }
+
+    pub fn character_spacing_control(mut self, v: CharacterSpacingValues) -> Self {
+        self.0.settings = self.0.settings.character_spacing_control(v);
         self
     }
 

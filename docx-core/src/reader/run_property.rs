@@ -88,8 +88,11 @@ impl ElementReader for RunProperty {
                         XMLElement::Color => rp = rp.color(attributes[0].value.clone()),
                         XMLElement::Size => rp = rp.size(usize::from_str(&attributes[0].value)?),
                         XMLElement::Spacing => {
+                            dbg!("=-=====");
                             if let Some(v) = read_val(&attributes) {
+                                dbg!("=-=====8", &v);
                                 let v = value_to_dax(&v)?;
+                                dbg!("=-=====9", v);
                                 rp = rp.spacing(v)
                             }
                         }

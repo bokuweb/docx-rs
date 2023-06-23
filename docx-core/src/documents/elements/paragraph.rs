@@ -302,6 +302,11 @@ impl Paragraph {
         self
     }
 
+    pub fn character_spacing(mut self, spacing: i32) -> Self {
+        self.property = self.property.character_spacing(spacing);
+        self
+    }
+
     pub fn delete(mut self, author: impl Into<String>, date: impl Into<String>) -> Self {
         self.property.run_property.del = Some(Delete::new().author(author).date(date));
         self

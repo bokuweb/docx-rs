@@ -5,6 +5,7 @@ import { CommentJSON } from "./comment";
 import { WebSettingsJSON } from "./web-settings";
 
 import { Theme as ThemeJSON } from "./bindings/Theme";
+import { CharacterSpacingValues } from "../settings";
 
 export type DocxJSON = {
   contentType: {
@@ -57,10 +58,12 @@ export type SettingsJSON = {
   docId: string | null;
   defaultTabStop: number;
   adjustLineHeightInTable: boolean;
+  characterSpacingControl?: CharacterSpacingValues | null;
   zoom: number;
   docVars: { name: string; val: string }[];
 };
 
+export * from "../settings";
 export * from "./styles";
 export * from "./border";
 export * from "./document";

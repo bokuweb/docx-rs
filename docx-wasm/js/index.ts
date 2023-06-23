@@ -382,6 +382,25 @@ export class Docx {
       docx = docx.set_adjust_line_height_in_table();
     }
 
+    if (this.settings._characterSpacingControl) {
+      if (this.settings._characterSpacingControl === "compressPunctuation") {
+        docx = docx.character_spacing_control(
+          wasm.CharacterSpacingValues.CompressPunctuation
+        );
+      } else if (this.settings._characterSpacingControl === "doNotCompress") {
+        docx = docx.character_spacing_control(
+          wasm.CharacterSpacingValues.DoNotCompress
+        );
+      } else if (
+        this.settings._characterSpacingControl ===
+        "compressPunctuationAndJapaneseKana"
+      ) {
+        docx = docx.character_spacing_control(
+          wasm.CharacterSpacingValues.CompressPunctuationAndJapaneseKana
+        );
+      }
+    }
+
     docx = docx.default_tab_stop(this.settings._defaultTabStop);
 
     this.settings._docVars.forEach((v) => {

@@ -1,7 +1,7 @@
 use super::*;
 
 use crate::documents::BuildXML;
-use crate::types::{CharacterSpacingValues};
+use crate::types::CharacterSpacingValues;
 use crate::xml_builder::*;
 
 use serde::Serialize;
@@ -15,6 +15,7 @@ pub struct Settings {
     doc_vars: Vec<DocVar>,
     even_and_odd_headers: bool,
     adjust_line_height_in_table: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
     character_spacing_control: Option<CharacterSpacingValues>,
 }
 

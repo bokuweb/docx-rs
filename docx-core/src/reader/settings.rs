@@ -1,11 +1,10 @@
 use std::io::Read;
-use xml::reader::{EventReader, XmlEvent};
 use std::str::FromStr;
+use xml::reader::{EventReader, XmlEvent};
 
 use super::*;
 use crate::reader::{FromXML, ReaderError};
 use crate::types::CharacterSpacingValues;
-
 
 impl FromXML for Settings {
     fn from_xml<R: Read>(reader: R) -> Result<Self, ReaderError> {
@@ -16,8 +15,8 @@ impl FromXML for Settings {
             let e = parser.next();
             match e {
                 Ok(XmlEvent::StartElement {
-                       attributes, name, ..
-                   }) => {
+                    attributes, name, ..
+                }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::DocId => {
@@ -56,8 +55,9 @@ impl FromXML for Settings {
                         XMLElement::CharacterSpacingControl => {
                             let val = read_val(&attributes);
                             if let Some(val) = val {
-                                settings = settings.character_spacing_control(
-                                    CharacterSpacingValues::from_str(&val).unwrap());
+                                if let Ok(v) = CharacterSpacingValues::from_str(&val) {
+                                    settings = settings.character_spacing_control(v);
+                                }
                             }
                         }
                         _ => {}

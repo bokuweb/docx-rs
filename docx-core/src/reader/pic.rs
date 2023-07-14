@@ -31,13 +31,13 @@ impl ElementReader for Pic {
                                 let mut offset_x: i32 = 0;
                                 let mut offset_y: i32 = 0;
                                 if let Some(x) = read(&attributes, "x") {
-                                    if let Ok(x) = i32::from_str(&x) {
-                                        offset_x = x;
+                                    if let Ok(x) = f64::from_str(&x) {
+                                        offset_x = x as i32;
                                     }
                                 }
                                 if let Some(y) = read(&attributes, "y") {
-                                    if let Ok(y) = i32::from_str(&y) {
-                                        offset_y = y;
+                                    if let Ok(y) = f64::from_str(&y) {
+                                        offset_y = y as i32;
                                     }
                                 }
                                 pic = pic.offset_x(offset_x).offset_y(offset_y);

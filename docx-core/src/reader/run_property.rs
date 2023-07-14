@@ -86,11 +86,13 @@ impl ElementReader for RunProperty {
                             }
                         }
                         XMLElement::Color => rp = rp.color(attributes[0].value.clone()),
-                        XMLElement::Size => rp = rp.size(usize::from_str(&attributes[0].value)?),
+                        XMLElement::Size => {
+                            rp = rp.size(f64::from_str(&attributes[0].value)? as usize)
+                        }
                         XMLElement::Spacing => {
                             if let Some(v) = read_val(&attributes) {
-                                if let Ok(s) = i32::from_str(&v) {
-                                    rp = rp.spacing(s)
+                                if let Ok(s) = f64::from_str(&v) {
+                                    rp = rp.spacing(s as i32)
                                 }
                             }
                         }

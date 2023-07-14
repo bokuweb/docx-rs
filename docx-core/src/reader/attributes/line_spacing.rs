@@ -10,22 +10,22 @@ pub fn read_line_spacing(attributes: &[OwnedAttribute]) -> Result<LineSpacing, R
         let local_name = &a.name.local_name;
         match local_name.as_str() {
             "before" => {
-                spacing = spacing.before(u32::from_str(&a.value)?);
+                spacing = spacing.before(f64::from_str(&a.value)? as u32);
             }
             "after" => {
-                spacing = spacing.after(u32::from_str(&a.value)?);
+                spacing = spacing.after(f64::from_str(&a.value)? as u32);
             }
             "line" => {
-                spacing = spacing.line(u32::from_str(&a.value)?);
+                spacing = spacing.line(f64::from_str(&a.value)? as u32);
             }
             "lineRule" => {
                 spacing = spacing.line_rule(LineSpacingType::from_str(&a.value)?);
             }
             "beforeLines" => {
-                spacing = spacing.before_lines(u32::from_str(&a.value)?);
+                spacing = spacing.before_lines(f64::from_str(&a.value)? as u32);
             }
             "afterLines" => {
-                spacing = spacing.after_lines(u32::from_str(&a.value)?);
+                spacing = spacing.after_lines(f64::from_str(&a.value)? as u32);
             }
             _ => {}
         }

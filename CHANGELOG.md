@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## docx-wasm@0.0.278-rc16 (14. Jul, 2023)
+
+- Improve read numbering types.
+
 ## docx-wasm@0.0.278-rc15 (23. Jun, 2023)
 
 - Make docGrid Optional in sectionProperty

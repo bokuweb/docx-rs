@@ -27,8 +27,8 @@ fn read_position_h<R: Read>(
         let e = r.next();
         match e {
             Ok(XmlEvent::Characters(c)) => {
-                if let Ok(p) = i32::from_str(&c) {
-                    offset = p;
+                if let Ok(p) = f64::from_str(&c) {
+                    offset = p as i32;
                 }
             }
             Ok(XmlEvent::EndElement { name, .. }) => {
@@ -59,8 +59,8 @@ fn read_position_v<R: Read>(
         let e = r.next();
         match e {
             Ok(XmlEvent::Characters(c)) => {
-                if let Ok(p) = i32::from_str(&c) {
-                    offset = p;
+                if let Ok(p) = f64::from_str(&c) {
+                    offset = p as i32;
                 }
             }
             Ok(XmlEvent::EndElement { name, .. }) => {
@@ -153,23 +153,23 @@ impl ElementReader for Drawing {
                                     }
                                 }
                                 if let Some(d) = read(&attributes, "distT") {
-                                    if let Ok(d) = i32::from_str(&d) {
-                                        dist_t = d;
+                                    if let Ok(d) = f64::from_str(&d) {
+                                        dist_t = d as i32;
                                     }
                                 }
                                 if let Some(d) = read(&attributes, "distB") {
-                                    if let Ok(d) = i32::from_str(&d) {
-                                        dist_b = d;
+                                    if let Ok(d) = f64::from_str(&d) {
+                                        dist_b = d as i32;
                                     }
                                 }
                                 if let Some(d) = read(&attributes, "distL") {
-                                    if let Ok(d) = i32::from_str(&d) {
-                                        dist_l = d;
+                                    if let Ok(d) = f64::from_str(&d) {
+                                        dist_l = d as i32;
                                     }
                                 }
                                 if let Some(d) = read(&attributes, "distR") {
-                                    if let Ok(d) = i32::from_str(&d) {
-                                        dist_r = d;
+                                    if let Ok(d) = f64::from_str(&d) {
+                                        dist_r = d as i32;
                                     }
                                 }
                                 if let Some(d) = read(&attributes, "layoutInCell") {
@@ -178,8 +178,8 @@ impl ElementReader for Drawing {
                                     }
                                 }
                                 if let Some(d) = read(&attributes, "relativeHeight") {
-                                    if let Ok(d) = u32::from_str(&d) {
-                                        relative_height = d;
+                                    if let Ok(d) = f64::from_str(&d) {
+                                        relative_height = d as u32;
                                     }
                                 }
                                 if let Some(d) = read(&attributes, "allowOverlap") {
@@ -191,18 +191,18 @@ impl ElementReader for Drawing {
                             WpXMLElement::Inline => {
                                 drawing_position_type = DrawingPositionType::Inline;
                                 if let Some(d) = read(&attributes, "distT") {
-                                    if let Ok(d) = i32::from_str(&d) {
-                                        dist_t = d;
+                                    if let Ok(d) = f64::from_str(&d) {
+                                        dist_t = d as i32;
                                     }
                                 }
                                 if let Some(d) = read(&attributes, "distB") {
-                                    if let Ok(d) = i32::from_str(&d) {
-                                        dist_b = d;
+                                    if let Ok(d) = f64::from_str(&d) {
+                                        dist_b = d as i32;
                                     }
                                 }
                                 if let Some(d) = read(&attributes, "distL") {
-                                    if let Ok(d) = i32::from_str(&d) {
-                                        dist_l = d;
+                                    if let Ok(d) = f64::from_str(&d) {
+                                        dist_l = d as i32;
                                     }
                                 }
                                 if let Some(d) = read(&attributes, "distR") {
@@ -213,13 +213,13 @@ impl ElementReader for Drawing {
                             }
                             WpXMLElement::SimplePos => {
                                 if let Some(x) = read(&attributes, "x") {
-                                    if let Ok(x) = i32::from_str(&x) {
-                                        simple_pos_x = x;
+                                    if let Ok(x) = f64::from_str(&x) {
+                                        simple_pos_x = x as i32;
                                     }
                                 }
                                 if let Some(y) = read(&attributes, "y") {
-                                    if let Ok(y) = i32::from_str(&y) {
-                                        simple_pos_y = y;
+                                    if let Ok(y) = f64::from_str(&y) {
+                                        simple_pos_y = y as i32;
                                     }
                                 }
                             }

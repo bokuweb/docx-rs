@@ -23,9 +23,9 @@ pub fn read_border(attrs: &[OwnedAttribute]) -> Result<BorderAttrs, ReaderError>
         if local_name == "color" {
             color = a.value.to_owned();
         } else if local_name == "sz" {
-            size = Some(u32::from_str(&a.value)?);
+            size = Some(f64::from_str(&a.value)? as u32);
         } else if local_name == "space" {
-            space = Some(u32::from_str(&a.value)?);
+            space = Some(f64::from_str(&a.value)? as u32);
         } else if local_name == "val" {
             border_type = BorderType::from_str(&a.value)?;
         }

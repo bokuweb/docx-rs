@@ -21,5 +21,5 @@ export type SectionPropertyJSON = {
     gutter: number;
   };
   columns: number;
-  docGrid: DocGridJSON;
+  docGrid?: DocGridJSON;
 };

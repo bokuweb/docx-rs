@@ -12,10 +12,7 @@ import { setParagraphProperty } from "./paragraph-property";
 
 import * as wasm from "./pkg";
 
-type Child = | Paragraph
-  | Table
-  | Comment
-  | Hyperlink;
+type Child = Paragraph | Table | Comment | Hyperlink;
 
 function buildHyperlink(child: Hyperlink) {
   let hyperlink = wasm.createHyperlink(child.v, convertHyperlinkType(child));
@@ -87,6 +84,12 @@ function buildParagraph(child: Paragraph) {
     paragraph = paragraph.insert(
       child.property.runProperty.ins.author,
       child.property.runProperty.ins.date
+    );
+  }
+
+  if (child.property.runProperty.characterSpacing != null) {
+    paragraph = paragraph.character_spacing(
+      child.property.runProperty.characterSpacing
     );
   }
 

@@ -7,7 +7,7 @@ import { AbstractNumbering } from "./abstract-numbering";
 import { Numbering } from "./numbering";
 import { BookmarkStart } from "./bookmark-start";
 import { BookmarkEnd } from "./bookmark-end";
-import { Settings } from "./settings";
+import { CharacterSpacingValues, Settings } from "./settings";
 import { DocProps } from "./doc-props";
 import { Style } from "./style";
 import { Styles } from "./styles";
@@ -177,6 +177,11 @@ export class Docx {
     return this;
   }
 
+  characterSpacingControl(v: CharacterSpacingValues) {
+    this.settings._characterSpacingControl = v;
+    return this;
+  }
+
   defaultSize(size: number) {
     this.styles.defaultSize(size);
     return this;
@@ -187,8 +192,8 @@ export class Docx {
     return this;
   }
 
-  defaultSpacing(spacing: number) {
-    this.styles.defaultSpacing(spacing);
+  defaultCharacterSpacing(spacing: number) {
+    this.styles.defaultCharacterSpacing(spacing);
     return this;
   }
 
@@ -382,6 +387,25 @@ export class Docx {
       docx = docx.set_adjust_line_height_in_table();
     }
 
+    if (this.settings._characterSpacingControl) {
+      if (this.settings._characterSpacingControl === "compressPunctuation") {
+        docx = docx.character_spacing_control(
+          wasm.CharacterSpacingValues.CompressPunctuation
+        );
+      } else if (this.settings._characterSpacingControl === "doNotCompress") {
+        docx = docx.character_spacing_control(
+          wasm.CharacterSpacingValues.DoNotCompress
+        );
+      } else if (
+        this.settings._characterSpacingControl ===
+        "compressPunctuationAndJapaneseKana"
+      ) {
+        docx = docx.character_spacing_control(
+          wasm.CharacterSpacingValues.CompressPunctuationAndJapaneseKana
+        );
+      }
+    }
+
     docx = docx.default_tab_stop(this.settings._defaultTabStop);
 
     this.settings._docVars.forEach((v) => {
@@ -523,9 +547,9 @@ export class Docx {
         docx = docx.default_size(this.styles.docDefaults.runProperty.size);
       }
 
-      if (this.styles.docDefaults.runProperty?.spacing) {
+      if (this.styles.docDefaults.runProperty?.characterSpacing) {
         docx = docx.default_spacing(
-          this.styles.docDefaults.runProperty.spacing
+          this.styles.docDefaults.runProperty.characterSpacing
         );
       }
     }

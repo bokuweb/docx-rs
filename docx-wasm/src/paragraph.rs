@@ -188,6 +188,11 @@ impl Paragraph {
         self
     }
 
+    pub fn character_spacing(mut self, spacing: i32) -> Self {
+        self.0 = self.0.character_spacing(spacing);
+        self
+    }
+
     pub fn keep_next(mut self, v: bool) -> Self {
         self.0 = self.0.keep_next(v);
         self

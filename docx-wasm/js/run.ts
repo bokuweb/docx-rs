@@ -40,7 +40,7 @@ export type RunProperty = {
   underline?: string;
   vanish?: boolean;
   fonts?: RunFonts;
-  spacing?: number;
+  characterSpacing?: number;
   textBorder?: TextBorder;
   ins?: RunPropertyIns;
   del?: RunPropertyDel;
@@ -253,8 +253,8 @@ export class Run {
     return this;
   }
 
-  spacing(spacing: number) {
-    this.property = { ...this.property, spacing };
+  spacing(characterSpacing: number) {
+    this.property = { ...this.property, characterSpacing };
     return this;
   }
 
@@ -373,8 +373,8 @@ export const setRunProperty = <T extends wasm.Run | wasm.Style>(
     target = target.vanish() as T;
   }
 
-  if (property.spacing != null) {
-    target = target.spacing(property.spacing) as T;
+  if (property.characterSpacing != null) {
+    target = target.character_spacing(property.characterSpacing) as T;
   }
 
   if (property.textBorder) {

@@ -8,6 +8,7 @@ use super::errors;
 
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Copy, Clone, PartialEq, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub enum CharacterSpacingValues {
     DoNotCompress,
     CompressPunctuation,

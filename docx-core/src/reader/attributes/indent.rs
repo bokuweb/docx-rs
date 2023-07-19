@@ -31,7 +31,7 @@ pub fn read_indent(attrs: &[OwnedAttribute]) -> ReadIndentResult {
             let v = super::value_to_dax(&a.value)?;
             start = Some(v);
         } else if local_name == "leftChars" || local_name == "startChars" {
-            start_chars = Some(i32::from_str(&a.value)?);
+            start_chars = Some(f64::from_str(&a.value)? as i32);
         } else if local_name == "end" || local_name == "right" {
             let v = super::value_to_dax(&a.value)?;
             end = Some(v);
@@ -42,12 +42,12 @@ pub fn read_indent(attrs: &[OwnedAttribute]) -> ReadIndentResult {
             let v = super::value_to_dax(&a.value)?;
             special = Some(SpecialIndentType::FirstLine(v))
         } else if local_name == "firstLineChars" {
-            if let Ok(chars) = i32::from_str(&a.value) {
-                first_line_chars = Some(chars);
+            if let Ok(chars) = f64::from_str(&a.value) {
+                first_line_chars = Some(chars as i32);
             }
         } else if local_name == "hangingChars" {
-            if let Ok(chars) = i32::from_str(&a.value) {
-                hanging_chars = Some(chars);
+            if let Ok(chars) = f64::from_str(&a.value) {
+                hanging_chars = Some(chars as i32);
             }
         }
     }

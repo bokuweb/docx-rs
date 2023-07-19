@@ -85,6 +85,11 @@ impl ParagraphProperty {
         self
     }
 
+    pub fn character_spacing(mut self, spacing: i32) -> Self {
+        self.run_property.character_spacing = Some(CharacterSpacing::new(spacing));
+        self
+    }
+
     pub fn keep_next(mut self, v: bool) -> Self {
         self.keep_next = Some(v);
         self

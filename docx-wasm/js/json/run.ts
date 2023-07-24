@@ -42,6 +42,7 @@ export type RunPropertyJSON = {
   underline?: string | null;
   bold?: boolean | null;
   boldCs?: boolean | null;
+  caps?: boolean | null;
   italic?: boolean | null;
   italicCs?: boolean | null;
   vanish?: boolean | null;

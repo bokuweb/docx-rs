@@ -31,6 +31,7 @@ pub enum XMLElement {
     Highlight,
     VertAlign,
     Bold,
+    Caps,
     RunStyle,
     BoldCs,
     Break,
@@ -259,6 +260,7 @@ impl FromStr for XMLElement {
             "rStyle" => Ok(XMLElement::RunStyle),
             "b" => Ok(XMLElement::Bold),
             "bCs" => Ok(XMLElement::BoldCs),
+            "caps" => Ok(XMLElement::Caps),
             "i" => Ok(XMLElement::Italic),
             "iCs" => Ok(XMLElement::ItalicCs),
             "vanish" => Ok(XMLElement::Vanish),
@@ -498,6 +500,6 @@ impl FromStr for PicXMLElement {
 
 pub trait ElementReader {
     fn read<R: Read>(r: &mut EventReader<R>, attrs: &[OwnedAttribute]) -> Result<Self, ReaderError>
-        where
-            Self: std::marker::Sized;
+    where
+        Self: std::marker::Sized;
 }

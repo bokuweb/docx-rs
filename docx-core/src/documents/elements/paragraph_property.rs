@@ -38,6 +38,7 @@ pub struct ParagraphProperty {
     pub(crate) div_id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub paragraph_property_change: Option<ParagraphPropertyChange>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub borders: Option<ParagraphBorders>,
 }
 

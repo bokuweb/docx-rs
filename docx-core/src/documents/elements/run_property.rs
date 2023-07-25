@@ -27,6 +27,8 @@ pub struct RunProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub bold_cs: Option<BoldCs>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub caps: Option<Caps>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub italic: Option<Italic>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub italic_cs: Option<ItalicCs>,
@@ -93,6 +95,11 @@ impl RunProperty {
     pub fn disable_bold(mut self) -> RunProperty {
         self.bold = Some(Bold::new().disable());
         self.bold_cs = Some(BoldCs::new().disable());
+        self
+    }
+
+    pub fn caps(mut self) -> RunProperty {
+        self.caps = Some(Caps::new());
         self
     }
 

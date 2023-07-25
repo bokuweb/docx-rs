@@ -72,6 +72,12 @@ impl ElementReader for RunProperty {
                             }
                             rp = rp.bold();
                         }
+                        XMLElement::Caps => {
+                            if !read_bool(&attributes) {
+                                continue;
+                            }
+                            rp = rp.caps();
+                        }
                         XMLElement::Highlight => rp = rp.highlight(attributes[0].value.clone()),
                         XMLElement::Strike => {
                             if !read_bool(&attributes) {

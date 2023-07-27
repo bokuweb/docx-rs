@@ -27,3 +27,15 @@ pub enum TableCellBorderPosition {
     Tl2br,
     Tr2bl,
 }
+
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub enum ParagraphBorderPosition {
+    Left,
+    Right,
+    Top,
+    Bottom,
+    Between,
+    Bar,
+}

@@ -77,8 +77,8 @@ impl XMLBuilder {
     }
 
     pub(crate) fn add_child<T>(mut self, child: &T) -> Self
-    where
-        T: BuildXML,
+        where
+            T: BuildXML,
     {
         let buf = child.build();
         let text = str::from_utf8(&buf).unwrap();
@@ -93,8 +93,8 @@ impl XMLBuilder {
     }
 
     pub(crate) fn add_optional_child<T>(mut self, child: &Option<T>) -> Self
-    where
-        T: BuildXML,
+        where
+            T: BuildXML,
     {
         if let Some(c) = child {
             self = self.add_child(c)
@@ -103,8 +103,8 @@ impl XMLBuilder {
     }
 
     pub(crate) fn add_children<T>(mut self, children: &[T]) -> Self
-    where
-        T: BuildXML,
+        where
+            T: BuildXML,
     {
         for c in children {
             self = self.add_child(c);
@@ -134,7 +134,6 @@ impl XMLBuilder {
 
 #[cfg(test)]
 mod tests {
-
     use super::*;
 
     #[test]

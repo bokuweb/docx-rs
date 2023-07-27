@@ -2,6 +2,7 @@ use serde::Serialize;
 
 use super::*;
 use crate::documents::BuildXML;
+use crate::ParagraphBorderPosition;
 use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;
 
@@ -37,6 +38,8 @@ pub struct ParagraphProperty {
     pub(crate) div_id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub paragraph_property_change: Option<ParagraphPropertyChange>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub borders: Option<ParagraphBorders>,
 }
 
 // 17.3.1.26
@@ -148,6 +151,26 @@ impl ParagraphProperty {
         }
         self
     }
+
+    pub fn set_borders(mut self, borders: ParagraphBorders) -> Self {
+        self.borders = Some(borders);
+        self
+    }
+
+    pub fn set_border(mut self, border: ParagraphBorder) -> Self {
+        self.borders = Some(self.borders.unwrap_or_default().set(border));
+        self
+    }
+
+    pub fn clear_border(mut self, position: ParagraphBorderPosition) -> Self {
+        self.borders = Some(self.borders.unwrap_or_default().clear(position));
+        self
+    }
+
+    pub fn clear_all_borders(mut self) -> Self {
+        self.borders = Some(self.borders.unwrap_or_default().clear_all());
+        self
+    }
 }
 
 fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
@@ -160,7 +183,8 @@ fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
         .add_optional_child(&p.indent)
         .add_optional_child(&p.line_spacing)
         .add_optional_child(&p.outline_lvl)
-        .add_optional_child(&p.paragraph_property_change);
+        .add_optional_child(&p.paragraph_property_change)
+        .add_optional_child(&p.borders);
 
     if let Some(v) = p.keep_next {
         if v {

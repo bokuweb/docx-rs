@@ -74,6 +74,7 @@ impl ElementReader for RunProperty {
                         }
                         XMLElement::Caps => {
                             if !read_bool(&attributes) {
+                                rp.caps = Some(Caps::new().disable());
                                 continue;
                             }
                             rp = rp.caps();

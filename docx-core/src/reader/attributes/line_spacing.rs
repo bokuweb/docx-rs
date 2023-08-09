@@ -16,7 +16,7 @@ pub fn read_line_spacing(attributes: &[OwnedAttribute]) -> Result<LineSpacing, R
                 spacing = spacing.after(f64::from_str(&a.value)? as u32);
             }
             "line" => {
-                spacing = spacing.line(f64::from_str(&a.value)? as u32);
+                spacing = spacing.line(f64::from_str(&a.value)? as i32);
             }
             "lineRule" => {
                 spacing = spacing.line_rule(LineSpacingType::from_str(&a.value)?);

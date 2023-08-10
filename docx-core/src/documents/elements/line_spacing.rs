@@ -18,7 +18,7 @@ pub struct LineSpacing {
     #[serde(skip_serializing_if = "Option::is_none")]
     after_lines: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    line: Option<u32>,
+    line: Option<i32>,
 }
 
 impl LineSpacing {
@@ -51,8 +51,8 @@ impl LineSpacing {
         self
     }
 
-    pub fn line(mut self, line: u32) -> Self {
-        self.line = Some(line);
+    pub fn line(mut self, line: i32) -> Self {
+        self.line = Some(line as i32);
         self
     }
 }

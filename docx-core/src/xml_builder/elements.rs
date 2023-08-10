@@ -253,7 +253,7 @@ impl XMLBuilder {
         mut self,
         before: Option<u32>,
         after: Option<u32>,
-        line: Option<u32>,
+        line: Option<i32>,
         before_lines: Option<u32>,
         after_lines: Option<u32>,
         spacing: Option<LineSpacingType>,

@@ -1,8 +1,8 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
-use crate::documents::*;
 use crate::xml_builder::*;
+use crate::{documents::*, escape};
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct Delete {
@@ -84,7 +84,7 @@ impl Delete {
     }
 
     pub fn author(mut self, author: impl Into<String>) -> Delete {
-        self.author = author.into();
+        self.author = escape::escape(&author.into());
         self
     }
 

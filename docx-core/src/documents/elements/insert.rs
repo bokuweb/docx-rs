@@ -4,7 +4,7 @@ use serde::Serialize;
 use super::*;
 
 use crate::documents::{BuildXML, HistoryId, Run};
-use crate::xml_builder::*;
+use crate::{escape, xml_builder::*};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum InsertChild {
@@ -127,7 +127,7 @@ impl Insert {
     }
 
     pub fn author(mut self, author: impl Into<String>) -> Insert {
-        self.author = author.into();
+        self.author = escape::escape(&author.into());
         self
     }
 

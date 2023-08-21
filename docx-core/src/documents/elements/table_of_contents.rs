@@ -1,9 +1,9 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
-use crate::documents::*;
 use crate::types::*;
 use crate::xml_builder::*;
+use crate::{documents::*, escape};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum TocContent {
@@ -97,7 +97,7 @@ impl TableOfContents {
 
     pub fn delete(mut self, author: impl Into<String>, date: impl Into<String>) -> Self {
         self.delete = Some(TableOfContentsReviewData {
-            author: author.into(),
+            author: escape::escape(&author.into()),
             date: date.into(),
         });
         self

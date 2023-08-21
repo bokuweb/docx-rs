@@ -19,12 +19,12 @@ impl Insert {
 #[wasm_bindgen]
 impl Insert {
     pub fn author(mut self, author: String) -> Insert {
-        self.0.author = author;
+        self.0 = self.0.author(author);
         self
     }
 
     pub fn date(mut self, date: String) -> Insert {
-        self.0.date = date;
+        self.0 = self.0.date(date);
         self
     }
 }

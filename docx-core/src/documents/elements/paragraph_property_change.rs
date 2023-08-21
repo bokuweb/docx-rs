@@ -1,6 +1,7 @@
 use serde::Serialize;
 
 use crate::documents::*;
+use crate::escape;
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
@@ -34,7 +35,7 @@ impl ParagraphPropertyChange {
     }
 
     pub fn author(mut self, author: impl Into<String>) -> ParagraphPropertyChange {
-        self.author = author.into();
+        self.author = escape::escape(&author.into());
         self
     }
 

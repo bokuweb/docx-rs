@@ -7,8 +7,8 @@ use serde::Serialize;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Numbering {
-    id: usize,
-    abstract_num_id: usize,
+    pub id: usize,
+    pub abstract_num_id: usize,
     pub level_overrides: Vec<LevelOverride>,
 }
 

@@ -2,9 +2,9 @@ use serde::Serialize;
 
 use super::*;
 use crate::documents::BuildXML;
-use crate::ParagraphBorderPosition;
 use crate::types::{AlignmentType, SpecialIndentType};
 use crate::xml_builder::*;
+use crate::ParagraphBorderPosition;
 
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]

@@ -6,10 +6,10 @@ use serde::Serialize;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AbstractNumbering {
-    id: usize,
-    style_link: Option<String>,
-    num_style_link: Option<String>,
-    levels: Vec<Level>,
+    pub id: usize,
+    pub style_link: Option<String>,
+    pub num_style_link: Option<String>,
+    pub levels: Vec<Level>,
 }
 
 impl AbstractNumbering {

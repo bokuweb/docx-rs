@@ -8,8 +8,8 @@ use serde::Serialize;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Numberings {
-    abstract_nums: Vec<AbstractNumbering>,
-    numberings: Vec<Numbering>,
+    pub abstract_nums: Vec<AbstractNumbering>,
+    pub numberings: Vec<Numbering>,
 }
 
 impl Numberings {

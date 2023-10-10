@@ -37,7 +37,7 @@ export type CustomTabStopType =
   | "start"
   | "left";
 
-export type TabJSON = {
+export type CustomTabStopJSON = {
   val: CustomTabStopType | null;
   leader: string | null;
   pos: number | null;
@@ -75,7 +75,7 @@ export type ParagraphPropertyJSON = {
     property: ParagraphPropertyJSON;
   };
   sectionProperty?: SectionPropertyJSON;
-  tabs: TabJSON[];
+  tabs: CustomTabStopJSON[];
 };
 
 export type ParagraphJSON = {

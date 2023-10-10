@@ -26,6 +26,23 @@ export type HyperlinkChildJSON =
   | BookmarkStartJSON
   | BookmarkEndJSON;
 
+export type CustomTabStopType =
+  | "bar"
+  | "center"
+  | "clear"
+  | "decimal"
+  | "end"
+  | "right"
+  | "num"
+  | "start"
+  | "left";
+
+export type CustomTabStopJSON = {
+  val: CustomTabStopType | null;
+  leader: string | null;
+  pos: number | null;
+};
+
 export type NumberingPropertyJSON = {
   id: number | null;
   level: number | null;
@@ -58,6 +75,7 @@ export type ParagraphPropertyJSON = {
     property: ParagraphPropertyJSON;
   };
   sectionProperty?: SectionPropertyJSON;
+  tabs: CustomTabStopJSON[];
 };
 
 export type ParagraphJSON = {

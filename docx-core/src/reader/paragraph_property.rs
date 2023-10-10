@@ -110,6 +110,13 @@ impl ElementReader for ParagraphProperty {
                                 p.section_property = Some(sp);
                             }
                         }
+                        XMLElement::Tabs => {
+                            if let Ok(tabs) = Tabs::read(r, &attributes) {
+                                for t in tabs.tabs {
+                                    p = p.add_tab(t);
+                                }
+                            }
+                        }
                         _ => {}
                     }
                 }

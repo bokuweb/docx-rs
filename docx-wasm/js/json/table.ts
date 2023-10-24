@@ -78,7 +78,7 @@ export type TablePropertyJSON = {
     insideH?: BorderJSON | null;
     insideV?: BorderJSON | null;
   } | null;
-  margins: TableCellMarginsJSON | null;
+  margins?: TableCellMarginsJSON | null;
   indent?: {
     width: number;
     widthType: WidthType;

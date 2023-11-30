@@ -1,5 +1,12 @@
 export type DocGridType = "default" | "lines" | "linesAndChars" | "snapToChars";
 
+export type SectionType =
+  | "nextPage"
+  | "nextColumn"
+  | "continuous"
+  | "evenPage"
+  | "oddPage";
+
 export type DocGridJSON = {
   gridType: DocGridType;
   linePitch: number | null;
@@ -22,4 +29,5 @@ export type SectionPropertyJSON = {
   };
   columns: number;
   docGrid?: DocGridJSON;
+  sectionType?: SectionType;
 };

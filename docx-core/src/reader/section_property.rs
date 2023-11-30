@@ -4,6 +4,8 @@ use std::str::FromStr;
 use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
+use crate::SectionType;
+
 use super::*;
 
 fn read_page_size(attributes: &[OwnedAttribute]) -> Result<PageSize, ReaderError> {
@@ -143,6 +145,13 @@ impl ElementReader for SectionProperty {
                                             Some(FooterReference::new(footer_type, rid));
                                     }
                                     _ => {}
+                                }
+                            }
+                        }
+                        XMLElement::Type => {
+                            if let Some(val) = read_val(&attributes) {
+                                if let Ok(val) = SectionType::from_str(&val) {
+                                    sp.section_type = Some(val);
                                 }
                             }
                         }

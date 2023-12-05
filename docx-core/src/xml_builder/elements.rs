@@ -214,6 +214,8 @@ impl XMLBuilder {
         special_indent: Option<SpecialIndentType>,
         end: i32,
         start_chars: Option<i32>,
+        first_line_chars: Option<i32>,
+        hanging_chars: Option<i32>,
     ) -> Self {
         let start = &format!("{}", start.unwrap_or(0));
         let end = &format!("{}", end);
@@ -226,17 +228,32 @@ impl XMLBuilder {
             base = base.attr("w:leftChars", &start_chars_value);
         }
 
+        let mut value = String::new();
         match special_indent {
-            Some(SpecialIndentType::FirstLine(v)) => self
-                .writer
-                .write(base.attr("w:firstLine", &format!("{}", v)))
-                .expect(EXPECT_MESSAGE),
-            Some(SpecialIndentType::Hanging(v)) => self
-                .writer
-                .write(base.attr("w:hanging", &format!("{}", v)))
-                .expect(EXPECT_MESSAGE),
-            _ => self.writer.write(base).expect(EXPECT_MESSAGE),
+            Some(SpecialIndentType::FirstLine(v)) => {
+                value = format!("{}", v);
+                base = base.attr("w:firstLine", &value)
+            }
+            Some(SpecialIndentType::Hanging(v)) => {
+                value = format!("{}", v);
+                base = base.attr("w:hanging", &value)
+            }
+            _ => (),
         };
+
+        let mut value1 = String::new();
+        if first_line_chars.is_some() {
+            value1 = format!("{}", first_line_chars.unwrap());
+            base = base.attr("w:firstLineChars", &value1);
+        }
+
+        let mut value2 = String::new();
+        if hanging_chars.is_some() {
+            value2 = format!("{}", hanging_chars.unwrap());
+            base = base.attr("w:hangingChars", &value2);
+        }
+
+        self.writer.write(base).expect(EXPECT_MESSAGE);
         self.close()
     }
 
@@ -446,7 +463,11 @@ impl XMLBuilder {
     closed!(ul_trail_space, "w:ulTrailSpace");
     closed!(do_not_expand_shift_return, "w:doNotExpandShiftReturn");
     closed!(adjust_line_height_table, "w:adjustLineHeightInTable");
-    closed!(character_spacing_control,"w:characterSpacingControl","w:val");
+    closed!(
+        character_spacing_control,
+        "w:characterSpacingControl",
+        "w:val"
+    );
     closed!(use_fe_layout, "w:useFELayout");
     closed!(
         compat_setting,
@@ -655,6 +676,25 @@ mod tests {
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:basedOn w:val="Normal" />"#
+        );
+    }
+
+    #[test]
+    fn test_indent_first_line_chars() {
+        let b = XMLBuilder::new();
+        let r = b
+            .indent(
+                Some(20),
+                Some(SpecialIndentType::FirstLine(20)),
+                20,
+                Some(20),
+                Some(20),
+                Some(20),
+            )
+            .build();
+        assert_eq!(
+            str::from_utf8(&r).unwrap(),
+            r#"<w:ind w:left="20" w:right="20" w:leftChars="20" w:firstLine="20" w:firstLineChars="20" w:hangingChars="20" />"#
         );
     }
 }

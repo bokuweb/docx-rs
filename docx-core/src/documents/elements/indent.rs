@@ -58,6 +58,8 @@ impl BuildXML for Indent {
                 self.special_indent,
                 self.end.unwrap_or_default(),
                 self.start_chars,
+                self.first_line_chars,
+                self.hanging_chars,
             )
             .build()
     }

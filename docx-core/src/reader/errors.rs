@@ -2,6 +2,10 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum ReaderError {
+    /// IO errors
+    #[error("Failed to read file.")]
+    FileReadError(#[from] std::io::Error),
+    /// Zip errors
     #[error("Failed to read from zip.")]
     ZipError(#[from] zip::result::ZipError),
     #[error("Failed to parse int.")]

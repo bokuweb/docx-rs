@@ -98,6 +98,48 @@ impl Document {
         Default::default()
     }
 
+    pub fn to_plain_text(&self) -> String {
+        let mut text = String::new();
+        for child in &self.children {
+            match child {
+                DocumentChild::Paragraph(p) => {
+                    text.push_str(&p.to_plain_text());
+                }
+                DocumentChild::Table(t) => {
+                    text.push_str(&t.to_plain_text());
+                }
+                DocumentChild::BookmarkStart(_) => {}
+                DocumentChild::BookmarkEnd(_) => {}
+                DocumentChild::CommentStart(_) => {}
+                DocumentChild::CommentEnd(_) => {}
+                DocumentChild::StructuredDataTag(_) => {}
+                DocumentChild::TableOfContents(_) => {}
+            }
+        }
+        text
+    }
+
+    pub fn get_vars(&self) -> Vec<String> {
+        let mut vars = Vec::new();
+        for c in self.children.iter() {
+            if let DocumentChild::Paragraph(p) = c {
+                vars.extend(p.get_vars())
+            }
+        }
+        vars
+    }
+
+    pub fn render(&mut self, dictionary: &HashMap<String,String>) {
+        for c in self.children.iter_mut() {
+            if let DocumentChild::Paragraph(p) = c {
+                p.render(dictionary);
+            }
+            if let DocumentChild::Table(t) = c {
+                t.render(dictionary);
+            }
+        }
+    }
+
     pub fn add_paragraph(mut self, p: Paragraph) -> Self {
         if p.has_numbering {
             self.has_numbering = true

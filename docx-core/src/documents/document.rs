@@ -102,6 +102,7 @@ impl Document {
         if p.has_numbering {
             self.has_numbering = true
         }
+
         self.children.push(DocumentChild::Paragraph(Box::new(p)));
         self
     }

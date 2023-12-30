@@ -9,6 +9,7 @@ use super::{Paragraph, Table};
 impl FromXML for Document {
     fn from_xml<R: Read>(reader: R) -> Result<Self, ReaderError> {
         let mut parser = EventReader::new(reader);
+        let mut last_rendered_page_index = 0;
         let mut doc = Self::default();
         loop {
             let e = parser.next();
@@ -19,12 +20,14 @@ impl FromXML for Document {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::Paragraph => {
-                            let p = Paragraph::read(&mut parser, &attributes)?;
+                            let mut p = Paragraph::read(&mut parser, &attributes)?;
+                            p = p.last_rendered_page_break_index(last_rendered_page_index);
                             doc = doc.add_paragraph(p);
                             continue;
                         }
                         XMLElement::Table => {
-                            let t = Table::read(&mut parser, &attributes)?;
+                            let mut t = Table::read(&mut parser, &attributes)?;
+                            t = t.last_rendered_page_break_index(last_rendered_page_index);
                             doc = doc.add_table(t);
                             continue;
                         }
@@ -64,6 +67,11 @@ impl FromXML for Document {
                             if let Ok(tag) = StructuredDataTag::read(&mut parser, &attributes) {
                                 doc = doc.add_structured_data_tag(tag);
                             }
+                            continue;
+                        }
+                        XMLElement::LastRenderedPageBreak => {
+                            last_rendered_page_index += 1;
+
                             continue;
                         }
                         _ => {}

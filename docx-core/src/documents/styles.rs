@@ -32,6 +32,11 @@ impl Styles {
         self
     }
 
+    pub fn default_line_spacing(mut self, spacing: LineSpacing) -> Self {
+        self.doc_defaults = self.doc_defaults.line_spacing(spacing);
+        self
+    }
+
     pub fn default_fonts(mut self, font: RunFonts) -> Self {
         self.doc_defaults = self.doc_defaults.fonts(font);
         self
@@ -104,9 +109,18 @@ mod tests {
     }
 
     #[test]
-    fn test_table_style(){
-        let c =
-            Styles::new().add_style(Style::new("Table", StyleType::Table).name("Table Style").table_property(TableProperty::new().set_margins(TableCellMargins::new().margin_left(108, WidthType::Dxa).margin_right(108,WidthType::Dxa))));
+    fn test_table_style() {
+        let c = Styles::new().add_style(
+            Style::new("Table", StyleType::Table)
+                .name("Table Style")
+                .table_property(
+                    TableProperty::new().set_margins(
+                        TableCellMargins::new()
+                            .margin_left(108, WidthType::Dxa)
+                            .margin_right(108, WidthType::Dxa),
+                    ),
+                ),
+        );
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),

@@ -14,6 +14,7 @@
     "tsc:node": "tsc -p tsconfig.node.json --sourcemap",
     "tsc": "run-s tsc:*",
     "test": "npm run build && tsc && jest",
+    "jest": "tsc && jest",
     "build": "run-s tsrs copy:bindings wasm-pack tsc",
     "serve": "webpack-dev-server --open --config webpack.dev.js",
     "copy": "cpy 'dist/node/pkg/package.json'  'dist/web/pkg'",

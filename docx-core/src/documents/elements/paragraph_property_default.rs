@@ -36,7 +36,7 @@ impl Default for ParagraphPropertyDefault {
 impl BuildXML for ParagraphPropertyDefault {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.open_run_property_default()
+        b.open_paragraph_property_default()
             .add_child(&self.paragraph_property)
             .close()
             .build()
@@ -45,7 +45,9 @@ impl BuildXML for ParagraphPropertyDefault {
 
 mod tests {
 
+    #[allow(unused_imports)]
     use super::*;
+
     #[cfg(test)]
     use pretty_assertions::assert_eq;
 
@@ -55,7 +57,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             std::str::from_utf8(&b).unwrap(),
-            r#"<w:rPrDefault><w:pPr><w:rPr /></w:pPr></w:rPrDefault>"#
+            r#"<w:pPrDefault><w:pPr><w:rPr /></w:pPr></w:pPrDefault>"#
         );
     }
 }

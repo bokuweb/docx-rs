@@ -42,9 +42,7 @@ export class Style {
     this._styleType = type;
     this._name = "";
     this._runProperty = {};
-    this._tableProperty = {
-      cellMargins: createDefaultTableCellMargins(),
-    };
+    this._tableProperty = { cellMargins: createDefaultTableCellMargins() };
     this._runProperty = createDefaultRunProperty();
     this._paragraphProperty = createDefaultParagraphProperty();
     this._basedOn = null;
@@ -291,6 +289,7 @@ export class Style {
 
   buildWasmObject = () => {
     const styleType = this.buildStyleType();
+
     let s = wasm.createStyle(this._styleId, styleType);
 
     if (this._name) {

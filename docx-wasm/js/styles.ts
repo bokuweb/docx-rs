@@ -1,6 +1,7 @@
 import { Style } from "./style";
 import { DocDefaults } from "./doc-defaults";
 import { RunFonts } from "./run";
+import { LineSpacing } from "./paragraph-property";
 
 export class Styles {
   styles: Style[] = [];
@@ -18,6 +19,11 @@ export class Styles {
 
   defaultCharacterSpacing(spacing: number) {
     this.docDefaults.characterSpacing(spacing);
+    return this;
+  }
+
+  defaultLineSpacing(spacing: LineSpacing) {
+    this.docDefaults.lineSpacing(spacing);
     return this;
   }
 }

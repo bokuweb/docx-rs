@@ -1,5 +1,5 @@
 import { Paragraph } from "./paragraph";
-import { ParagraphProperty } from "./paragraph-property";
+import { LineSpacing, ParagraphProperty } from "./paragraph-property";
 import { Table } from "./table";
 import { TableOfContents } from "./table-of-contents";
 import { RunFonts } from "./run";
@@ -194,6 +194,11 @@ export class Docx {
 
   defaultCharacterSpacing(spacing: number) {
     this.styles.defaultCharacterSpacing(spacing);
+    return this;
+  }
+
+  defaultLineSpacing(spacing: LineSpacing) {
+    this.styles.defaultLineSpacing(spacing);
     return this;
   }
 

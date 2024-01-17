@@ -468,6 +468,11 @@ impl Docx {
         self
     }
 
+    pub fn default_line_spacing(mut self, spacing: LineSpacing) -> Self {
+        self.styles = self.styles.default_line_spacing(spacing);
+        self
+    }
+
     pub fn taskpanes(mut self) -> Self {
         self.taskpanes = Some(Taskpanes::new());
         self.rels = self.rels.add_taskpanes_rel();

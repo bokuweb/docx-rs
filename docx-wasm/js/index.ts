@@ -1,5 +1,5 @@
 import { Paragraph } from "./paragraph";
-import { ParagraphProperty } from "./paragraph-property";
+import { LineSpacing, ParagraphProperty } from "./paragraph-property";
 import { Table } from "./table";
 import { TableOfContents } from "./table-of-contents";
 import { RunFonts } from "./run";
@@ -194,6 +194,11 @@ export class Docx {
 
   defaultCharacterSpacing(spacing: number) {
     this.styles.defaultCharacterSpacing(spacing);
+    return this;
+  }
+
+  defaultLineSpacing(spacing: LineSpacing) {
+    this.styles.defaultLineSpacing(spacing);
     return this;
   }
 
@@ -536,21 +541,34 @@ export class Docx {
     }
 
     if (this.styles?.docDefaults) {
-      if (this.styles.docDefaults.runProperty?.fonts) {
-        const fonts = this.buildRunFonts(
-          this.styles.docDefaults.runProperty.fonts
-        );
-        docx = docx.default_fonts(fonts);
+      if (this.styles.docDefaults.runProperty) {
+        if (this.styles.docDefaults.runProperty.fonts) {
+          const fonts = this.buildRunFonts(
+            this.styles.docDefaults.runProperty.fonts
+          );
+          docx = docx.default_fonts(fonts);
+        }
+
+        if (this.styles.docDefaults.runProperty.size) {
+          docx = docx.default_size(this.styles.docDefaults.runProperty.size);
+        }
+
+        if (this.styles.docDefaults.runProperty.characterSpacing) {
+          docx = docx.default_spacing(
+            this.styles.docDefaults.runProperty.characterSpacing
+          );
+        }
       }
 
-      if (this.styles.docDefaults.runProperty?.size) {
-        docx = docx.default_size(this.styles.docDefaults.runProperty.size);
-      }
-
-      if (this.styles.docDefaults.runProperty?.characterSpacing) {
-        docx = docx.default_spacing(
-          this.styles.docDefaults.runProperty.characterSpacing
-        );
+      if (this.styles.docDefaults.paragraphProperty) {
+        if (this.styles.docDefaults.paragraphProperty.lineSpacing) {
+          const spacing = this.buildLineSpacing(
+            this.styles.docDefaults.paragraphProperty
+          );
+          if (spacing) {
+            docx = docx.default_line_spacing(spacing);
+          }
+        }
       }
     }
 

@@ -22,6 +22,9 @@ export type StylesJSON = {
     runPropertyDefault: {
       runProperty: RunPropertyJSON;
     };
+    paragraphPropertyDefault: {
+      paragraphProperty: ParagraphPropertyJSON;
+    };
   };
   styles: StyleJSON[];
 };

@@ -24,6 +24,11 @@ impl ElementReader for DocDefaults {
                         doc_defaults = doc_defaults.run_property(run_pr);
                         continue;
                     }
+                    if let XMLElement::ParagraphProperty = e {
+                        let paragraph_pr = ParagraphProperty::read(r, &attributes)?;
+                        doc_defaults = doc_defaults.paragraph_property(paragraph_pr);
+                        continue;
+                    }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();

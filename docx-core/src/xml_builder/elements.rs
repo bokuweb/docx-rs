@@ -127,6 +127,7 @@ impl XMLBuilder {
     open!(open_run_property, "w:rPr");
     open!(open_paragraph_borders, "w:pBdr");
     open!(open_run_property_default, "w:rPrDefault");
+    open!(open_paragraph_property_default, "w:pPrDefault");
     // i.e. <w:qFormat ... >
     closed!(q_format, "w:qFormat");
     // i.e. <w:p ... >

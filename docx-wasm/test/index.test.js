@@ -190,6 +190,12 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read default line spacing", () => {
+    const buffer = readFileSync("../fixtures/default_line_spacing/default_line_spacing.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {
@@ -974,5 +980,30 @@ describe("writer", () => {
       }
     }
     writeFileSync("../output/js/style.docx", buffer);
+  });
+
+  test("should write default line spacing", () => {
+    const spacing = new w.LineSpacing()
+      .before(100)
+      .after(0)
+      .line(100)
+      .afterLines(400);
+
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello "))
+      .lineSpacing(spacing);
+
+    const buffer = new w.Docx()
+      .defaultLineSpacing(spacing)
+      .addParagraph(p)
+      .build();
+
+    writeFileSync("../output/js/default_line_spacing.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
   });
 });

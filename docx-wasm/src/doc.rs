@@ -158,6 +158,11 @@ impl Docx {
         self
     }
 
+    pub fn default_line_spacing(mut self, spacing: LineSpacing) -> Self {
+        self.0.styles = self.0.styles.default_line_spacing(spacing.take());
+        self
+    }
+
     pub fn taskpanes(mut self) -> Self {
         self.0 = self.0.taskpanes();
         self

@@ -1,3 +1,6 @@
+import { FooterReference } from "./bindings/FooterReference";
+import { HeaderReference } from "./bindings/HeaderReference";
+
 export type DocGridType = "default" | "lines" | "linesAndChars" | "snapToChars";
 
 export type SectionType =
@@ -30,4 +33,6 @@ export type SectionPropertyJSON = {
   columns: number;
   docGrid?: DocGridJSON;
   sectionType?: SectionType;
+  headerReference?: HeaderReference;
+  footerReference?: FooterReference;
 };

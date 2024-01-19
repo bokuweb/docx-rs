@@ -5,6 +5,8 @@ use serde::Serialize;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub struct FooterReference {
     pub footer_type: String,
     pub id: String,

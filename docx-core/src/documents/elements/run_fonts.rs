@@ -13,6 +13,8 @@ use crate::xml_builder::*;
 */
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub struct RunFonts {
     #[serde(skip_serializing_if = "Option::is_none")]
     ascii: Option<String>,

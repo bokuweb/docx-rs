@@ -4,21 +4,20 @@ use crate::xml_builder::*;
 use serde::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
-#[serde(rename_all = "camelCase")]
-pub struct CharacterSpacing {
-    value: i32,
-}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct CharacterSpacing(pub i32);
 
 impl CharacterSpacing {
     pub fn new(s: i32) -> CharacterSpacing {
-        Self { value: s }
+        Self(s)
     }
 }
 
 impl BuildXML for CharacterSpacing {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.spacing(self.value).build()
+        b.spacing(self.0).build()
     }
 }
 
@@ -27,7 +26,7 @@ impl Serialize for CharacterSpacing {
     where
         S: Serializer,
     {
-        serializer.serialize_i32(self.value)
+        serializer.serialize_i32(self.0)
     }
 }
 
@@ -47,7 +46,7 @@ mod tests {
 
     #[test]
     fn test_spacing_json() {
-        let s = CharacterSpacing { value: 100 };
+        let s = CharacterSpacing(100);
         assert_eq!(serde_json::to_string(&s).unwrap(), r#"100"#);
     }
 }

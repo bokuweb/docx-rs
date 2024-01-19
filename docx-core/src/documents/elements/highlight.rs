@@ -4,19 +4,19 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
-pub struct Highlight {
-    val: String,
-}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct Highlight(pub String);
 
 impl Highlight {
     pub fn new(val: impl Into<String>) -> Highlight {
-        Highlight { val: val.into() }
+        Highlight(val.into())
     }
 }
 
 impl BuildXML for Highlight {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().highlight(&self.val).build()
+        XMLBuilder::new().highlight(&self.0).build()
     }
 }
 
@@ -25,7 +25,7 @@ impl Serialize for Highlight {
     where
         S: Serializer,
     {
-        serializer.serialize_str(&self.val)
+        serializer.serialize_str(&self.0)
     }
 }
 

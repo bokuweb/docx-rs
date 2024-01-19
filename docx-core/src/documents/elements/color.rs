@@ -4,19 +4,19 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Deserialize, Debug, Clone, PartialEq)]
-pub struct Color {
-    val: String,
-}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct Color(pub String);
 
 impl Color {
     pub fn new(val: impl Into<String>) -> Color {
-        Color { val: val.into() }
+        Self(val.into())
     }
 }
 
 impl BuildXML for Color {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().color(&self.val).build()
+        XMLBuilder::new().color(&self.0).build()
     }
 }
 
@@ -25,7 +25,7 @@ impl Serialize for Color {
     where
         S: Serializer,
     {
-        serializer.serialize_str(&self.val)
+        serializer.serialize_str(&self.0)
     }
 }
 

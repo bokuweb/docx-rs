@@ -3,19 +3,19 @@ use crate::xml_builder::*;
 use serde::{Deserialize, Serialize, Serializer};
 
 #[derive(Deserialize, Debug, Clone, PartialEq)]
-pub struct SzCs {
-    val: usize,
-}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct SzCs(pub usize);
 
 impl SzCs {
-    pub fn new(val: usize) -> SzCs {
-        SzCs { val }
+    pub fn new(val: usize) -> Self {
+        Self(val)
     }
 }
 
 impl BuildXML for SzCs {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().sz_cs(self.val).build()
+        XMLBuilder::new().sz_cs(self.0).build()
     }
 }
 
@@ -24,7 +24,7 @@ impl Serialize for SzCs {
     where
         S: Serializer,
     {
-        serializer.serialize_u32(self.val as u32)
+        serializer.serialize_u32(self.0 as u32)
     }
 }
 

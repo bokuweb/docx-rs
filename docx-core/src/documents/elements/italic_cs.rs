@@ -4,9 +4,9 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
-pub struct ItalicCs {
-    val: bool,
-}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct ItalicCs(pub bool);
 
 impl ItalicCs {
     pub fn new() -> ItalicCs {
@@ -14,14 +14,14 @@ impl ItalicCs {
     }
 
     pub fn disable(mut self) -> Self {
-        self.val = false;
+        self.0 = false;
         self
     }
 }
 
 impl Default for ItalicCs {
     fn default() -> Self {
-        Self { val: true }
+        Self(true)
     }
 }
 
@@ -30,7 +30,7 @@ impl Serialize for ItalicCs {
     where
         S: Serializer,
     {
-        serializer.serialize_bool(self.val)
+        serializer.serialize_bool(self.0)
     }
 }
 

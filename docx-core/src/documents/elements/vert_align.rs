@@ -5,13 +5,16 @@ use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct VertAlign {
-    val: VertAlignType,
-}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct VertAlign(
+    #[cfg_attr(feature = "wasm", ts(type = "string"))] // TODO:
+    VertAlignType,
+);
 
 impl VertAlign {
     pub fn new(val: VertAlignType) -> VertAlign {
-        Self { val }
+        Self(val)
     }
 }
 
@@ -20,13 +23,13 @@ impl Serialize for VertAlign {
     where
         S: Serializer,
     {
-        serializer.serialize_str(&format!("{}", &self.val))
+        serializer.serialize_str(&format!("{}", &self.0))
     }
 }
 
 impl BuildXML for VertAlign {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.vert_align(&self.val.to_string() ).build()
+        b.vert_align(&self.0.to_string()).build()
     }
 }

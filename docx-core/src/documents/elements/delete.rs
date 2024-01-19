@@ -5,6 +5,8 @@ use crate::xml_builder::*;
 use crate::{documents::*, escape};
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub struct Delete {
     pub author: String,
     pub date: String,
@@ -12,6 +14,8 @@ pub struct Delete {
 }
 
 #[derive(Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub enum DeleteChild {
     Run(Run),
     CommentStart(Box<CommentRangeStart>),

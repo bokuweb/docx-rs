@@ -5,6 +5,8 @@ use crate::documents::*;
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_PAGEREFPAGEREF_topic_ID0EHXK1.html
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub struct InstrPAGEREF {
     pub page_ref: String,
     pub hyperlink: bool,
@@ -78,9 +80,6 @@ mod tests {
     #[test]
     fn test_page_ref() {
         let b = InstrPAGEREF::new("_Toc00000000").hyperlink().build();
-        assert_eq!(
-            str::from_utf8(&b).unwrap(),
-            r#"PAGEREF _Toc00000000 \h"#
-        );
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"PAGEREF _Toc00000000 \h"#);
     }
 }

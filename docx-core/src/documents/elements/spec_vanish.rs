@@ -4,24 +4,26 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
-pub struct SpecVanish {}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct SpecVanish(pub bool);
 
 impl SpecVanish {
     pub fn new() -> SpecVanish {
-        SpecVanish {}
+        SpecVanish(true)
     }
 }
 
 impl Default for SpecVanish {
     fn default() -> Self {
-        SpecVanish {}
+        SpecVanish(true)
     }
 }
 
 impl BuildXML for SpecVanish {
     fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
-        b.spec_vanish().build()
+        b.vanish().build()
     }
 }
 

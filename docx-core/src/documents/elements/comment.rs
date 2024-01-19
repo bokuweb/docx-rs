@@ -6,10 +6,13 @@ use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub struct Comment {
     pub id: usize,
     pub author: String,
     pub date: String,
+    #[cfg_attr(feature = "wasm", ts(type = "any[]"))] // TODO:
     pub children: Vec<CommentChild>,
     pub parent_comment_id: Option<usize>,
 }

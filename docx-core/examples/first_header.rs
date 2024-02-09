@@ -2,7 +2,7 @@ use docx_rs::*;
 
 pub fn main() -> Result<(), DocxError> {
     let path = std::path::Path::new("./output/first_header.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     let header =
         Header::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")));
     let first_header =

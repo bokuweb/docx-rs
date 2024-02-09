@@ -2,7 +2,7 @@ use docx_rs::*;
 
 pub fn main() -> Result<(), DocxError> {
     let path = std::path::Path::new("./output/examples/toc_with_style_level.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
 
     let style1 = Style::new("Heading1", StyleType::Paragraph).name("Heading 1");
     let style2 = Style::new("StyleLevel1", StyleType::Paragraph)

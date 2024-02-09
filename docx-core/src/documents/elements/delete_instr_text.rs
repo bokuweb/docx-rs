@@ -13,9 +13,9 @@ pub enum DeleteInstrText {
     Unsupported(String),
 }
 
-impl BuildXML for Box<DeleteInstrText> {
+impl BuildXML for DeleteInstrText {
     fn build(&self) -> Vec<u8> {
-        let instr = match self.as_ref() {
+        let instr = match self {
             DeleteInstrText::TOC(toc) => toc.build(),
             DeleteInstrText::TC(tc) => tc.build(),
             DeleteInstrText::PAGEREF(page_ref) => page_ref.build(),
@@ -27,6 +27,12 @@ impl BuildXML for Box<DeleteInstrText> {
             .add_bytes(&instr)
             .close()
             .build()
+    }
+}
+
+impl BuildXML for Box<DeleteInstrText> {
+    fn build(&self) -> Vec<u8> {
+        self.as_ref().build()
     }
 }
 
@@ -80,10 +86,7 @@ mod tests {
 
     #[test]
     fn test_delete_toc_instr() {
-        let b = Box::new(DeleteInstrText::TOC(
-            InstrToC::new().heading_styles_range(1, 3),
-        ))
-        .build();
+        let b = DeleteInstrText::TOC(InstrToC::new().heading_styles_range(1, 3)).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:delInstrText>TOC \o &quot;1-3&quot;</w:delInstrText>"#

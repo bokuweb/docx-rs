@@ -2,7 +2,7 @@ use docx_rs::*;
 
 fn main() -> Result<(), DocxError> {
     let path = std::path::Path::new("./outlineLvl.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
 
     Docx::new()
         .add_paragraph(

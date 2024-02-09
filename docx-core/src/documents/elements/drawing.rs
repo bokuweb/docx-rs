@@ -57,6 +57,12 @@ impl Drawing {
 
 impl BuildXML for Box<Drawing> {
     fn build(&self) -> Vec<u8> {
+        self.as_ref().build()
+    }
+}
+
+impl BuildXML for Drawing {
+    fn build(&self) -> Vec<u8> {
         let b = XMLBuilder::new();
         let mut b = b.open_drawing();
 
@@ -161,7 +167,7 @@ mod tests {
         let mut img = std::fs::File::open("../images/cat_min.jpg").unwrap();
         let mut buf = Vec::new();
         let _ = img.read_to_end(&mut buf).unwrap();
-        let d = Box::new(Drawing::new().pic(Pic::new(&buf))).build();
+        let d = Drawing::new().pic(Pic::new(&buf)).build();
         assert_eq!(
             str::from_utf8(&d).unwrap(),
             r#"<w:drawing>
@@ -210,7 +216,7 @@ mod tests {
         let mut img = std::fs::File::open("../images/cat_min.jpg").unwrap();
         let mut buf = Vec::new();
         let _ = img.read_to_end(&mut buf).unwrap();
-        let d = Box::new(Drawing::new().pic(Pic::new(&buf).overlapping())).build();
+        let d = Drawing::new().pic(Pic::new(&buf).overlapping()).build();
         assert_eq!(
             str::from_utf8(&d).unwrap(),
             r#"<w:drawing>
@@ -264,7 +270,7 @@ mod tests {
         pic = pic.relative_from_h(RelativeFromHType::Column);
         pic = pic.relative_from_v(RelativeFromVType::Paragraph);
         pic = pic.position_h(DrawingPosition::Align(PicAlign::Right));
-        let d = Box::new(Drawing::new().pic(pic)).build();
+        let d = Drawing::new().pic(pic).build();
         assert_eq!(
             str::from_utf8(&d).unwrap(),
             r#"<w:drawing>

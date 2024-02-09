@@ -2,7 +2,7 @@ use docx_rs::*;
 
 pub fn main() -> Result<(), DocxError> {
     let path = std::path::Path::new("./table_border.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
 
     let table = Table::new(vec![
         TableRow::new(vec![

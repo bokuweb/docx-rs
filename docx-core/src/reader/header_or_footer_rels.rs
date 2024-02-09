@@ -3,8 +3,9 @@ use std::collections::HashSet;
 use std::io::Cursor;
 use std::path::*;
 
-use document_rels::rels::find_rels_filename;
-use document_rels::rels::read_rels_xml;
+use header_or_footer_rels::rels::find_rels_filename;
+
+use self::rels::read_rels_xml;
 
 use super::errors::*;
 use super::*;
@@ -12,11 +13,11 @@ use super::*;
 pub type RId = String;
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct ReadDocumentRels {
+pub struct ReadHeaderOrFooterRels {
     rels: BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>>,
 }
 
-impl ReadDocumentRels {
+impl ReadHeaderOrFooterRels {
     pub fn find_target_path(&self, target: &str) -> Option<Vec<(RId, PathBuf, Option<String>)>> {
         self.rels
             .get(target)
@@ -24,17 +25,19 @@ impl ReadDocumentRels {
     }
 }
 
-pub fn read_document_rels(
+pub fn read_header_or_footer_rels(
     archive: &mut zip::read::ZipArchive<Cursor<&[u8]>>,
-    main_path: impl AsRef<Path>,
-) -> Result<ReadDocumentRels, ReaderError> {
-    let dir = &main_path
+    header_or_footer_path: impl AsRef<Path>,
+) -> Result<ReadHeaderOrFooterRels, ReaderError> {
+    let dir = &header_or_footer_path
         .as_ref()
         .parent()
-        .ok_or(ReaderError::DocumentRelsNotFoundError)?;
-    let p = find_rels_filename(&main_path)?;
-    let p = p.to_str().ok_or(ReaderError::DocumentRelsNotFoundError)?;
+        .ok_or(ReaderError::HeaderOrFooterRelsNotFoundError)?;
+    let p = find_rels_filename(&header_or_footer_path)?;
+    let p = p
+        .to_str()
+        .ok_or(ReaderError::HeaderOrFooterRelsNotFoundError)?;
     let data = read_zip(archive, p)?;
     let rels = read_rels_xml(&data[..], dir)?;
-    Ok(ReadDocumentRels { rels })
+    Ok(ReadHeaderOrFooterRels { rels })
 }

@@ -9,7 +9,7 @@ pub const DUMMY: &str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit
 #[test]
 pub fn hello() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/hello.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
         .build()
@@ -20,7 +20,7 @@ pub fn hello() -> Result<(), DocxError> {
 #[test]
 pub fn indent() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/indent.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(Paragraph::new().add_run(Run::new().add_text(DUMMY)).indent(
             Some(840),
@@ -50,7 +50,7 @@ pub fn indent() -> Result<(), DocxError> {
 #[test]
 pub fn size() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/size.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello").size(60)))
         .add_paragraph(
@@ -66,7 +66,7 @@ pub fn size() -> Result<(), DocxError> {
 #[test]
 pub fn alignment() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/alignment.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
         .add_paragraph(
@@ -82,7 +82,7 @@ pub fn alignment() -> Result<(), DocxError> {
 #[test]
 pub fn table() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/table.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
 
     let table = Table::new(vec![
         TableRow::new(vec![
@@ -101,7 +101,7 @@ pub fn table() -> Result<(), DocxError> {
 #[test]
 pub fn table_with_grid() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/table_with_grid.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
 
     let table = Table::new(vec![
         TableRow::new(vec![
@@ -121,7 +121,7 @@ pub fn table_with_grid() -> Result<(), DocxError> {
 #[test]
 pub fn table_merged() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/table_merged.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
 
     let table = Table::new(vec![
         TableRow::new(vec![
@@ -159,7 +159,7 @@ pub fn table_merged() -> Result<(), DocxError> {
 #[test]
 pub fn decoration() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/decoration.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(
             Paragraph::new()
@@ -189,7 +189,7 @@ pub fn decoration() -> Result<(), DocxError> {
 #[test]
 pub fn tab_and_break() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/tab_and_break.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(
             Paragraph::new().add_run(
@@ -209,7 +209,7 @@ pub fn tab_and_break() -> Result<(), DocxError> {
 #[test]
 pub fn history() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/history.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(
             Paragraph::new()
@@ -228,7 +228,7 @@ pub fn history() -> Result<(), DocxError> {
 #[test]
 pub fn underline() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/underline.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello").underline("single")))
         .build()
@@ -239,7 +239,7 @@ pub fn underline() -> Result<(), DocxError> {
 #[test]
 pub fn highlight() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/highlight.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(
             Paragraph::new()
@@ -254,7 +254,7 @@ pub fn highlight() -> Result<(), DocxError> {
 #[test]
 pub fn comments() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/comments.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(
             Paragraph::new()
@@ -276,7 +276,7 @@ pub fn comments() -> Result<(), DocxError> {
 #[test]
 pub fn comments_to_table() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/comments_table.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     let table = Table::new(vec![TableRow::new(vec![
         TableCell::new().add_paragraph(
             Paragraph::new()
@@ -312,7 +312,7 @@ pub fn comments_to_table() -> Result<(), DocxError> {
 #[test]
 pub fn default_numbering() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/default_numbering.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(
             Paragraph::new()
@@ -342,7 +342,7 @@ pub fn default_numbering() -> Result<(), DocxError> {
 #[test]
 pub fn user_numbering() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/user_numbering.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(
             Paragraph::new()
@@ -375,7 +375,7 @@ pub fn user_numbering() -> Result<(), DocxError> {
 #[test]
 pub fn escape() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/escape.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(
             Paragraph::new()
@@ -390,7 +390,7 @@ pub fn escape() -> Result<(), DocxError> {
 #[test]
 pub fn vanish() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/vanish.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(
             Paragraph::new()
@@ -406,7 +406,7 @@ pub fn vanish() -> Result<(), DocxError> {
 #[test]
 pub fn date() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/date.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
     Docx::new()
         .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
         .created_at("2019-01-01T00:00:00Z")
@@ -419,7 +419,7 @@ pub fn date() -> Result<(), DocxError> {
 #[test]
 pub fn line_spacing() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/line_spacing.docx");
-    let file = std::fs::File::create(&path).unwrap();
+    let file = std::fs::File::create(path).unwrap();
 
     Docx::new()
         .add_paragraph(

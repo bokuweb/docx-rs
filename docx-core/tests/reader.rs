@@ -14,7 +14,7 @@ pub fn read_hello() {
     assert_json_snapshot!("read_hello", &json);
 
     let path = std::path::Path::new("./tests/output/hello.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -29,7 +29,7 @@ pub fn read_numbering() {
     assert_json_snapshot!("read_numbering", &json);
 
     let path = std::path::Path::new("./tests/output/numbering.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -44,7 +44,7 @@ pub fn read_decoration() {
     assert_json_snapshot!("read_decoration", &json);
 
     let path = std::path::Path::new("./tests/output/decoration.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -60,7 +60,7 @@ pub fn read_highlight_and_underline() {
     assert_json_snapshot!("read_highlight_and_underline", &json);
 
     let path = std::path::Path::new("./tests/output/highlight_and_underline.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -75,7 +75,7 @@ pub fn read_history() {
     assert_json_snapshot!("read_history", &json);
 
     let path = std::path::Path::new("./tests/output/history.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -90,7 +90,7 @@ pub fn read_indent_word_online() {
     assert_json_snapshot!("read_indent_word_online", &json);
 
     let path = std::path::Path::new("./tests/output/indent_word_online.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -105,7 +105,7 @@ pub fn read_tab_and_break() {
     assert_json_snapshot!("read_tab_and_break", &json);
 
     let path = std::path::Path::new("./tests/output/tab_and_break.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -120,7 +120,7 @@ pub fn read_table_docx() {
     assert_json_snapshot!("read_table_docx", &json);
 
     let path = std::path::Path::new("./tests/output/table_docx.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -135,7 +135,7 @@ pub fn read_table_merged_libre_office() {
     assert_json_snapshot!("read_table_merged_libre_office", &json);
 
     let path = std::path::Path::new("./tests/output/table_merged_libre_office.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -150,7 +150,7 @@ pub fn read_bom() {
     assert_json_snapshot!("read_bom", &json);
 
     let path = std::path::Path::new("./tests/output/bom.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -165,7 +165,7 @@ pub fn read_bookmark() {
     assert_json_snapshot!("read_bookmark", &json);
 
     let path = std::path::Path::new("./tests/output/bookmark.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -180,7 +180,7 @@ pub fn read_insert_table() {
     assert_json_snapshot!("read_insert_table", &json);
 
     let path = std::path::Path::new("./tests/output/insert_table.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -195,7 +195,7 @@ pub fn read_textbox() {
     assert_json_snapshot!("read_textbox", &json);
 
     let path = std::path::Path::new("./tests/output/textbox.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -210,7 +210,7 @@ pub fn read_from_doc() {
     assert_json_snapshot!("read_from_doc", &json);
 
     let path = std::path::Path::new("./tests/output/from_doc.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -225,7 +225,7 @@ pub fn read_lvl_override() {
     assert_json_snapshot!("read_lvl_override", &json);
 
     let path = std::path::Path::new("./tests/output/lvl_override.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -240,7 +240,7 @@ pub fn read_comment() {
     assert_json_snapshot!("read_comment", &json);
 
     let path = std::path::Path::new("./tests/output/comment.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -255,7 +255,7 @@ pub fn read_extended_comment() {
     assert_json_snapshot!("read_extended_comments", &json);
 
     let path = std::path::Path::new("./tests/output/extended_comments.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
@@ -270,7 +270,7 @@ pub fn read_line_spacing() {
     assert_json_snapshot!("line_spacing", &json);
 
     let path = std::path::Path::new("./tests/output/line_spacing.json");
-    let mut file = std::fs::File::create(&path).unwrap();
+    let mut file = std::fs::File::create(path).unwrap();
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }

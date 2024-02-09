@@ -1,3 +1,6 @@
+import { HeaderJSON, HeaderReferenceJSON } from "./header";
+import { FooterJSON, FooterReferenceJSON } from "./footer";
+
 export type DocGridType = "default" | "lines" | "linesAndChars" | "snapToChars";
 
 export type SectionType =
@@ -30,4 +33,19 @@ export type SectionPropertyJSON = {
   columns: number;
   docGrid?: DocGridJSON;
   sectionType?: SectionType;
+  titlePg?: boolean;
+  // header
+  headerReference?: HeaderReferenceJSON;
+  header?: HeaderJSON;
+  firstHeaderReference?: HeaderReferenceJSON;
+  firstHeader?: HeaderJSON;
+  eventHeaderReference?: HeaderReferenceJSON;
+  eventHeader?: HeaderJSON;
+  // footer
+  footerReference?: FooterReferenceJSON;
+  footer?: FooterJSON;
+  firstFooterReference?: FooterReferenceJSON;
+  firstFooter?: FooterJSON;
+  eventFooterReference?: FooterReferenceJSON;
+  eventFooter?: FooterJSON;
 };

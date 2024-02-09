@@ -59,6 +59,7 @@ export type SettingsJSON = {
   defaultTabStop: number;
   adjustLineHeightInTable: boolean;
   characterSpacingControl?: CharacterSpacingValues | null;
+  evenAndOddHeaders: boolean;
   zoom: number;
   docVars: { name: string; val: string }[];
 };

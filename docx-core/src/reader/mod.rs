@@ -118,10 +118,8 @@ fn read_headers(
         .filter_map(|(rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have header path."));
             if let Ok(d) = data {
-                if let (Ok(h), Ok(rels)) = (
-                    Header::from_xml(&d[..]),
-                    read_header_or_footer_rels(archive, path),
-                ) {
+                if let Ok(h) = Header::from_xml(&d[..]) {
+                    let rels = read_header_or_footer_rels(archive, path).unwrap_or_default();
                     return Some((rid, (h, rels)));
                 }
             }
@@ -142,10 +140,8 @@ fn read_footers(
         .filter_map(|(rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have footer path."));
             if let Ok(d) = data {
-                if let (Ok(h), Ok(rels)) = (
-                    Footer::from_xml(&d[..]),
-                    read_header_or_footer_rels(archive, path),
-                ) {
+                if let Ok(h) = Footer::from_xml(&d[..]) {
+                    let rels = read_header_or_footer_rels(archive, path).unwrap_or_default();
                     return Some((rid, (h, rels)));
                 }
             }

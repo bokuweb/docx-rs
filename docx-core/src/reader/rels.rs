@@ -8,6 +8,8 @@ use std::{
 };
 use xml::reader::{EventReader, XmlEvent};
 
+pub type ReadRels = BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>>;
+
 impl FromXML for Rels {
     fn from_xml<R: Read>(reader: R) -> Result<Self, ReaderError> {
         let parser = EventReader::new(reader);
@@ -56,10 +58,7 @@ pub fn find_rels_filename(main_path: impl AsRef<Path>) -> Result<PathBuf, Reader
         .with_extension("xml.rels"))
 }
 
-pub fn read_rels_xml<R: Read>(
-    reader: R,
-    dir: impl AsRef<Path>,
-) -> Result<BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>>, ReaderError> {
+pub fn read_rels_xml<R: Read>(reader: R, dir: impl AsRef<Path>) -> Result<ReadRels, ReaderError> {
     let mut parser = EventReader::new(reader);
     let mut rels: BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>> = BTreeMap::new();
 

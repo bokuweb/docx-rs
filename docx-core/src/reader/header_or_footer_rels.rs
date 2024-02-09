@@ -12,9 +12,9 @@ use super::*;
 
 pub type RId = String;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub struct ReadHeaderOrFooterRels {
-    rels: BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>>,
+    pub rels: BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>>,
 }
 
 impl ReadHeaderOrFooterRels {

@@ -253,7 +253,7 @@ impl BuildXML for InstrToC {
 }
 
 fn parse_level_range(i: &str) -> Option<(usize, usize)> {
-    let r = i.replace("&quot;", "").replace("\"", "");
+    let r = i.replace("&quot;", "").replace('\"', "");
     let r: Vec<&str> = r.split('-').collect();
     if let Some(s) = r.get(0) {
         if let Ok(s) = usize::from_str(s) {
@@ -278,31 +278,31 @@ impl std::str::FromStr for InstrToC {
                 match i {
                     "\\a" => {
                         if let Some(r) = s.next() {
-                            let r = r.replace("&quot;", "").replace("\"", "");
+                            let r = r.replace("&quot;", "").replace('\"', "");
                             toc = toc.caption_label(r);
                         }
                     }
                     "\\b" => {
                         if let Some(r) = s.next() {
-                            let r = r.replace("&quot;", "").replace("\"", "");
+                            let r = r.replace("&quot;", "").replace('\"', "");
                             toc = toc.entry_bookmark_name(r);
                         }
                     }
                     "\\c" => {
                         if let Some(r) = s.next() {
-                            let r = r.replace("&quot;", "").replace("\"", "");
+                            let r = r.replace("&quot;", "").replace('\"', "");
                             toc = toc.caption_label_including_numbers(r);
                         }
                     }
                     "\\d" => {
                         if let Some(r) = s.next() {
-                            let r = r.replace("&quot;", "").replace("\"", "");
+                            let r = r.replace("&quot;", "").replace('\"', "");
                             toc = toc.sequence_and_page_numbers_separator(r);
                         }
                     }
                     "\\f" => {
                         if let Some(r) = s.next() {
-                            let r = r.replace("&quot;", "").replace("\"", "");
+                            let r = r.replace("&quot;", "").replace('\"', "");
                             toc = toc.tc_field_identifier(r);
                         }
                     }
@@ -330,19 +330,19 @@ impl std::str::FromStr for InstrToC {
                     }
                     "\\p" => {
                         if let Some(r) = s.next() {
-                            let r = r.replace("&quot;", "").replace("\"", "");
+                            let r = r.replace("&quot;", "").replace('\"', "");
                             toc = toc.entry_and_page_number_separator(r);
                         }
                     }
                     "\\s" => {
                         if let Some(r) = s.next() {
-                            let r = r.replace("&quot;", "").replace("\"", "");
+                            let r = r.replace("&quot;", "").replace('\"', "");
                             toc = toc.seq_field_identifier_for_prefix(r);
                         }
                     }
                     "\\t" => {
                         if let Some(r) = s.next() {
-                            let r = r.replace("&quot;", "").replace("\"", "");
+                            let r = r.replace("&quot;", "").replace('\"', "");
                             let mut r = r.split(',');
                             loop {
                                 if let Some(style) = r.next() {

@@ -59,7 +59,7 @@ impl BuildXML for InstrTC {
 }
 
 fn parse_level(i: &str) -> Option<usize> {
-    let r = i.replace("&quot;", "").replace("\"", "");
+    let r = i.replace("&quot;", "").replace('\"', "");
     if let Ok(l) = usize::from_str(&r) {
         return Some(l);
     }
@@ -78,7 +78,7 @@ impl std::str::FromStr for InstrTC {
                 match i {
                     "\\f" => {
                         if let Some(r) = s.next() {
-                            let r = r.replace("&quot;", "").replace("\"", "");
+                            let r = r.replace("&quot;", "").replace('\"', "");
                             tc = tc.item_type_identifier(r);
                         }
                     }

@@ -134,16 +134,19 @@ fn read_headers(
 fn read_footers(
     rels: &ReadDocumentRels,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
-) -> HashMap<RId, Footer> {
+) -> HashMap<RId, (Footer, ReadHeaderOrFooterRels)> {
     let footer_paths = rels.find_target_path(FOOTER_TYPE);
-    let footers: HashMap<RId, Footer> = footer_paths
+    let footers: HashMap<RId, (Footer, ReadHeaderOrFooterRels)> = footer_paths
         .unwrap_or_default()
         .into_iter()
         .filter_map(|(rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have footer path."));
             if let Ok(d) = data {
-                if let Ok(h) = Footer::from_xml(&d[..]) {
-                    return Some((rid, h));
+                if let (Ok(h), Ok(rels)) = (
+                    Footer::from_xml(&d[..]),
+                    read_header_or_footer_rels(archive, path),
+                ) {
+                    return Some((rid, (h, rels)));
                 }
             }
             None
@@ -338,11 +341,15 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
     // assign footers
     if let Some(f) = docx.document.section_property.footer_reference.clone() {
-        if let Some(footer) = footers.get(&f.id) {
+        if let Some((footer, rels)) = footers.get(&f.id) {
             docx.document = docx.document.footer(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
+
+            // Read media
+            let media = rels.find_target_path(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive);
         }
     }
 
@@ -352,19 +359,27 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         .first_footer_reference
         .clone()
     {
-        if let Some(footer) = footers.get(&f.id) {
+        if let Some((footer, rels)) = footers.get(&f.id) {
             docx.document = docx.document.first_footer(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
+
+            // Read media
+            let media = rels.find_target_path(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive);
         }
     }
     if let Some(ref f) = docx.document.section_property.even_footer_reference.clone() {
-        if let Some(footer) = footers.get(&f.id) {
+        if let Some((footer, rels)) = footers.get(&f.id) {
             docx.document = docx.document.even_footer(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
+
+            // Read media
+            let media = rels.find_target_path(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive);
         }
     }
 

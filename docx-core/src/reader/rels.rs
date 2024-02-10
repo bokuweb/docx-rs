@@ -1,8 +1,14 @@
-use std::io::Read;
-use xml::reader::{EventReader, XmlEvent};
-
 use super::*;
 use crate::reader::{FromXML, ReaderError};
+use std::str::FromStr;
+use std::{
+    collections::{BTreeMap, HashSet},
+    io::Read,
+    path::{Path, PathBuf},
+};
+use xml::reader::{EventReader, XmlEvent};
+
+pub type ReadRels = BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>>;
 
 impl FromXML for Rels {
     fn from_xml<R: Read>(reader: R) -> Result<Self, ReaderError> {
@@ -36,6 +42,81 @@ impl FromXML for Rels {
         }
         Ok(s)
     }
+}
+
+pub fn find_rels_filename(main_path: impl AsRef<Path>) -> Result<PathBuf, ReaderError> {
+    let path = main_path.as_ref();
+    let dir = path
+        .parent()
+        .ok_or(ReaderError::DocumentRelsNotFoundError)?;
+    let base = path
+        .file_stem()
+        .ok_or(ReaderError::DocumentRelsNotFoundError)?;
+    Ok(Path::new(dir)
+        .join("_rels")
+        .join(base)
+        .with_extension("xml.rels"))
+}
+
+pub fn read_rels_xml<R: Read>(reader: R, dir: impl AsRef<Path>) -> Result<ReadRels, ReaderError> {
+    let mut parser = EventReader::new(reader);
+    let mut rels: BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>> = BTreeMap::new();
+
+    loop {
+        let e = parser.next();
+        match e {
+            Ok(XmlEvent::StartElement {
+                attributes, name, ..
+            }) => {
+                let e = XMLElement::from_str(&name.local_name).unwrap();
+                if let XMLElement::Relationship = e {
+                    let mut rel_type = "".to_owned();
+                    let mut rid = "".to_owned();
+                    let mut target_mode = None;
+                    let mut target_string = "".to_owned();
+                    for a in attributes {
+                        let local_name = &a.name.local_name;
+                        if local_name == "Type" {
+                            rel_type = a.value.to_owned();
+                        } else if local_name == "Target" {
+                            // target_str = Path::new(dir.as_ref()).join(a.value);
+                            target_string = a.value.to_owned();
+                        } else if local_name == "Id" {
+                            rid = a.value.to_owned();
+                        } else if local_name == "TargetMode" {
+                            target_mode = Some(a.value.to_owned());
+                        }
+                    }
+
+                    let target = if !rel_type.ends_with("hyperlink") {
+                        Path::new(dir.as_ref()).join(target_string)
+                    } else {
+                        Path::new("").join(target_string)
+                    };
+
+                    let current = rels.remove(&rel_type);
+                    if let Some(mut paths) = current {
+                        paths.insert((rid, target, target_mode));
+                        rels.insert(rel_type, paths);
+                    } else {
+                        let s: HashSet<(RId, PathBuf, Option<String>)> =
+                            vec![(rid, target, target_mode)].into_iter().collect();
+                        rels.insert(rel_type, s);
+                    }
+                    continue;
+                }
+            }
+            Ok(XmlEvent::EndElement { name, .. }) => {
+                let e = XMLElement::from_str(&name.local_name).unwrap();
+                if let XMLElement::Relationships = e {
+                    break;
+                }
+            }
+            Err(_) => return Err(ReaderError::XMLReadError),
+            _ => {}
+        }
+    }
+    Ok(rels)
 }
 
 #[cfg(test)]

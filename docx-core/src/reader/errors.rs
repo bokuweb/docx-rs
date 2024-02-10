@@ -20,6 +20,8 @@ pub enum ReaderError {
     DocumentStylesNotFoundError,
     #[error("Failed to find numberings.")]
     DocumentNumberingsNotFoundError,
+    #[error("Failed to find header or footer rels.")]
+    HeaderOrFooterRelsNotFoundError,
     #[error("Unknown error")]
     Unknown,
 }

@@ -21,6 +21,7 @@ mod font_scheme;
 mod footer;
 mod from_xml;
 mod header;
+mod header_or_footer_rels;
 mod hyperlink;
 mod ignore;
 mod insert;
@@ -62,7 +63,7 @@ mod wps_shape;
 mod wps_text_box;
 mod xml_element;
 
-use std::{collections::HashMap, io::Cursor};
+use std::{collections::HashMap, io::Cursor, path::PathBuf};
 
 use crate::documents::*;
 
@@ -74,6 +75,8 @@ pub use mc_fallback::*;
 pub use read_zip::*;
 pub use xml_element::*;
 use zip::ZipArchive;
+
+use self::header_or_footer_rels::{read_header_or_footer_rels, ReadHeaderOrFooterRels};
 
 // 2006
 const DOC_RELATIONSHIP_TYPE: &str =
@@ -107,16 +110,17 @@ const COMMENTS_EXTENDED_TYPE: &str =
 fn read_headers(
     rels: &ReadDocumentRels,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
-) -> HashMap<RId, Header> {
+) -> HashMap<RId, (Header, ReadHeaderOrFooterRels)> {
     let header_paths = rels.find_target_path(HEADER_TYPE);
-    let headers: HashMap<RId, Header> = header_paths
+    let headers: HashMap<RId, (Header, ReadHeaderOrFooterRels)> = header_paths
         .unwrap_or_default()
         .into_iter()
         .filter_map(|(rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have header path."));
             if let Ok(d) = data {
                 if let Ok(h) = Header::from_xml(&d[..]) {
-                    return Some((rid, h));
+                    let rels = read_header_or_footer_rels(archive, path).unwrap_or_default();
+                    return Some((rid, (h, rels)));
                 }
             }
             None
@@ -128,16 +132,17 @@ fn read_headers(
 fn read_footers(
     rels: &ReadDocumentRels,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
-) -> HashMap<RId, Footer> {
+) -> HashMap<RId, (Footer, ReadHeaderOrFooterRels)> {
     let footer_paths = rels.find_target_path(FOOTER_TYPE);
-    let footers: HashMap<RId, Footer> = footer_paths
+    let footers: HashMap<RId, (Footer, ReadHeaderOrFooterRels)> = footer_paths
         .unwrap_or_default()
         .into_iter()
         .filter_map(|(rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have footer path."));
             if let Ok(d) = data {
                 if let Ok(h) = Footer::from_xml(&d[..]) {
-                    return Some((rid, h));
+                    let rels = read_header_or_footer_rels(archive, path).unwrap_or_default();
+                    return Some((rid, (h, rels)));
                 }
             }
             None
@@ -291,11 +296,14 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
     // assign headers
     if let Some(h) = docx.document.section_property.header_reference.clone() {
-        if let Some(header) = headers.get(&h.id) {
+        if let Some((header, rels)) = headers.get(&h.id) {
             docx.document = docx.document.header(header.clone(), &h.id);
             let count = docx.document_rels.header_count + 1;
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
+            // Read media
+            let media = rels.find_target_path(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive);
         }
     }
     if let Some(ref h) = docx
@@ -304,29 +312,40 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         .first_header_reference
         .clone()
     {
-        if let Some(header) = headers.get(&h.id) {
+        if let Some((header, rels)) = headers.get(&h.id) {
             docx.document = docx.document.first_header(header.clone(), &h.id);
             let count = docx.document_rels.header_count + 1;
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
+            // Read media
+            let media = rels.find_target_path(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive);
         }
     }
     if let Some(ref h) = docx.document.section_property.even_header_reference.clone() {
-        if let Some(header) = headers.get(&h.id) {
+        if let Some((header, rels)) = headers.get(&h.id) {
             docx.document = docx.document.even_header(header.clone(), &h.id);
             let count = docx.document_rels.header_count + 1;
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
+
+            // Read media
+            let media = rels.find_target_path(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive);
         }
     }
 
     // assign footers
     if let Some(f) = docx.document.section_property.footer_reference.clone() {
-        if let Some(footer) = footers.get(&f.id) {
+        if let Some((footer, rels)) = footers.get(&f.id) {
             docx.document = docx.document.footer(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
+
+            // Read media
+            let media = rels.find_target_path(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive);
         }
     }
 
@@ -336,19 +355,27 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         .first_footer_reference
         .clone()
     {
-        if let Some(footer) = footers.get(&f.id) {
+        if let Some((footer, rels)) = footers.get(&f.id) {
             docx.document = docx.document.first_footer(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
+
+            // Read media
+            let media = rels.find_target_path(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive);
         }
     }
     if let Some(ref f) = docx.document.section_property.even_footer_reference.clone() {
-        if let Some(footer) = footers.get(&f.id) {
+        if let Some((footer, rels)) = footers.get(&f.id) {
             docx.document = docx.document.even_footer(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
+
+            // Read media
+            let media = rels.find_target_path(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive);
         }
     }
 
@@ -415,13 +442,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     }
     // Read media
     let media = rels.find_target_path(IMAGE_TYPE);
-    if let Some(paths) = media {
-        for (id, media, ..) in paths {
-            if let Ok(data) = read_zip(&mut archive, media.to_str().expect("should have media")) {
-                docx = docx.add_image(id, media.to_str().unwrap().to_string(), data);
-            }
-        }
-    }
+    docx = add_images(docx, media, &mut archive);
 
     // Read hyperlinks
     let links = rels.find_target_path(HYPERLINK_TYPE);
@@ -435,4 +456,20 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     }
 
     Ok(docx)
+}
+
+fn add_images(
+    mut docx: Docx,
+    media: Option<Vec<(RId, PathBuf, Option<String>)>>,
+    archive: &mut ZipArchive<Cursor<&[u8]>>,
+) -> Docx {
+    // Read media
+    if let Some(paths) = media {
+        for (id, media, ..) in paths {
+            if let Ok(data) = read_zip(archive, media.to_str().expect("should have media")) {
+                docx = docx.add_image(id, media.to_str().unwrap().to_string(), data);
+            }
+        }
+    }
+    docx
 }

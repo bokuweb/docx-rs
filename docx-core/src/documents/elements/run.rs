@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use super::*;
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
@@ -132,6 +134,26 @@ impl Run {
     pub fn new() -> Run {
         Run {
             ..Default::default()
+        }
+    }
+
+    pub fn get_vars(&self) -> Vec<String> {
+        let mut vars = Vec::new();
+
+        for c in self.children.iter() {
+            if let RunChild::Text(t) = c {
+                vars.extend(t.get_vars())
+            }
+        }
+
+        vars
+    }
+
+    pub fn render(&mut self, dictionary: &HashMap<String, String>) {
+        for c in self.children.iter_mut() {
+            if let RunChild::Text(t) = c {
+                t.render(dictionary)
+            }
         }
     }
 

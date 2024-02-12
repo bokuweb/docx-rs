@@ -18,6 +18,14 @@ pub enum TableRowChild {
     TableCell(TableCell),
 }
 
+impl TableRowChild {
+    pub fn to_plain_text(&self) -> String {
+        match self {
+            TableRowChild::TableCell(v) => v.to_plain_text(),
+        }
+    }
+}
+
 impl BuildXML for TableRowChild {
     fn build(&self) -> Vec<u8> {
         match self {
@@ -36,6 +44,14 @@ impl TableRow {
             property,
             has_numbering,
         }
+    }
+
+    pub fn to_plain_text(&self) -> String {
+        self.cells
+            .iter()
+            .map(|c| c.to_plain_text())
+            .collect::<Vec<_>>()
+            .join(" ")
     }
 
     pub fn grid_after(mut self, grid_after: u32) -> TableRow {

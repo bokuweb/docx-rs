@@ -73,6 +73,8 @@ pub use xml_docx::*;
 
 use serde::{ser, Serialize};
 
+use crate::{ReaderError, read_docx};
+
 #[derive(Debug, Clone)]
 pub struct Image(pub Vec<u8>);
 
@@ -178,6 +180,20 @@ impl Default for Docx {
 impl Docx {
     pub fn new() -> Docx {
         Default::default()
+    }
+
+    pub fn read_file<P: AsRef<std::path::Path>>(path: P) -> Result<Docx, ReaderError> {
+        let buf = std::fs::read(path)?;
+        let docx = read_docx(&buf)?;
+        Ok(docx)
+    }
+
+    pub fn to_plain_text(&self) -> String {
+        self.document.to_plain_text()
+    }
+
+    pub fn render(&mut self, dictionary: &HashMap<String, String>) {
+        self.document.render(dictionary);
     }
 
     pub fn document(mut self, d: Document) -> Docx {

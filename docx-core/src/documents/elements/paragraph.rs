@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
@@ -122,6 +124,64 @@ impl Serialize for ParagraphChild {
 impl Paragraph {
     pub fn new() -> Paragraph {
         Default::default()
+    }
+
+    pub fn to_plain_text(&self) -> String {
+        let mut s = "".to_string();
+        for c in self.children.iter() {
+            match c {
+                ParagraphChild::Run(run) => {
+                    for c in run.children.iter() {
+                        if let RunChild::Text(t) = c {
+                            s.push_str(&t.text);
+                        }
+                    }
+                }
+                ParagraphChild::Insert(i) => {
+                    for c in i.children.iter() {
+                        if let InsertChild::Run(r) = c {
+                            for c in r.children.iter() {
+                                if let RunChild::Text(t) = c {
+                                    s.push_str(&t.text);
+                                }
+                            }
+                        }
+                    }
+                }
+                ParagraphChild::Delete(d) => {
+                    for c in d.children.iter() {
+                        if let DeleteChild::Run(r) = c {
+                            for c in r.children.iter() {
+                                if let RunChild::Text(t) = c {
+                                    s.push_str(&t.text);
+                                }
+                            }
+                        }
+                    }
+                }
+                _ => {}
+            }
+        }
+        s.push('\n');
+        s
+    }
+
+    pub fn get_vars(&self) -> Vec<String> {
+        let mut vars = Vec::new();
+        for c in self.children.iter() {
+            if let ParagraphChild::Run(r) = c {
+                vars.extend(r.get_vars())
+            }
+        }
+        vars
+    }
+
+    pub fn render(&mut self, dictionary: &HashMap<String, String>) {
+        for c in self.children.iter_mut() {
+            if let ParagraphChild::Run(r) = c {
+                r.render(dictionary)
+            }
+        }
     }
 
     pub fn id(mut self, id: impl Into<String>) -> Self {

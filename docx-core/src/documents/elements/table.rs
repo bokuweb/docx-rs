@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 
@@ -20,6 +22,14 @@ pub enum TableChild {
     TableRow(TableRow),
 }
 
+impl TableChild {
+    pub fn to_plain_text(&self) -> String {
+        match self {
+            TableChild::TableRow(v) => v.to_plain_text(),
+        }
+    }
+}
+
 impl BuildXML for TableChild {
     fn build(&self) -> Vec<u8> {
         match self {
@@ -40,6 +50,31 @@ impl Table {
             grid,
             has_numbering,
         }
+    }
+
+    pub fn to_plain_text(&self) -> String {
+        self.rows
+            .iter()
+            .map(|c| c.to_plain_text())
+            .collect::<Vec<_>>()
+            .join("/n")
+    }
+
+    pub fn render(&mut self, dictionary: &HashMap<String, String>) {
+        self.rows.iter_mut().for_each(|c| {
+            let TableChild::TableRow(tr) = c;
+            for trc in tr.cells.iter_mut() {
+                let TableRowChild::TableCell(tc) = trc;
+                for tcc in tc.children.iter_mut() {
+                    match tcc {
+                        TableCellContent::Paragraph(p) => p.render(dictionary),
+                        TableCellContent::Table(t) => t.render(dictionary),
+                        TableCellContent::StructuredDataTag(_)
+                        | TableCellContent::TableOfContents(_) => (),
+                    }
+                }
+            }
+        });
     }
 
     pub fn without_borders(rows: Vec<TableRow>) -> Table {

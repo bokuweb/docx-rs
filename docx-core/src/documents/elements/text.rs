@@ -1,5 +1,6 @@
 use serde::ser::{Serialize, SerializeStruct, Serializer};
 use serde::Deserialize;
+use std::collections::HashMap;
 
 use crate::documents::BuildXML;
 use crate::escape::escape;
@@ -17,6 +18,45 @@ impl Text {
         Text {
             text: escape(&text.into()),
             preserve_space: true,
+        }
+    }
+
+    // VAR, e.g. ${VAR}
+    pub fn get_vars(&self) -> Vec<String> {
+        let mut vars = Vec::new();
+        let mut var = String::new();
+        let mut in_var = false;
+        let mut start = false;
+        for c in self.text.chars() {
+            if c == '$' {
+                in_var = true;
+            } else if c == '{' {
+                if in_var {
+                    start = true;
+                    var.clear();
+                }
+            } else if c == '}' {
+                if start {
+                    vars.push(var.clone());
+                    start = false;
+                    in_var = false;
+                }
+            } else if start {
+                var.push(c);
+            }
+        }
+        vars
+    }
+
+    pub fn render(&mut self, dictionary: &HashMap<String, String>) {
+        let vars = self.get_vars();
+        let vars_replace = vars
+            .iter()
+            .map(|s| dictionary.get(s).unwrap_or(&String::new()).clone())
+            .collect::<Vec<_>>();
+        for (var, replace) in vars.iter().zip(vars_replace.iter()) {
+            self.text = self.text.replace(&format!("${{{}}}", var), replace);
+            println!("{}", self.text);
         }
     }
 

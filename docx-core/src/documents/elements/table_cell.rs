@@ -22,6 +22,16 @@ pub enum TableCellContent {
     TableOfContents(Box<TableOfContents>),
 }
 
+impl TableCellContent {
+    pub fn to_plain_text(&self) -> String {
+        match self {
+            TableCellContent::Paragraph(v) => v.to_plain_text(),
+            TableCellContent::Table(v) => v.to_plain_text(),
+            _ => "".to_string(),
+        }
+    }
+}
+
 impl Serialize for TableCellContent {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -59,6 +69,14 @@ impl Serialize for TableCellContent {
 impl TableCell {
     pub fn new() -> TableCell {
         Default::default()
+    }
+
+    pub fn to_plain_text(&self) -> String {
+        self.children
+            .iter()
+            .map(|c| c.to_plain_text())
+            .collect::<Vec<_>>()
+            .join(" ")
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> TableCell {

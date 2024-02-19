@@ -17,6 +17,7 @@ mod footer;
 mod footer_id;
 mod header;
 mod header_id;
+mod header_rels;
 mod history_id;
 mod hyperlink_id;
 mod image_collector;
@@ -60,6 +61,7 @@ pub use footer::*;
 pub use footer_id::*;
 pub use header::*;
 pub use header_id::*;
+pub use header_rels::*;
 pub use numberings::*;
 pub use rels::*;
 pub use settings::*;
@@ -536,8 +538,16 @@ impl Docx {
             }
         }
 
-        let (images, images_bufs) = self.images_in_doc();
+        let (images, mut images_bufs) = self.images_in_doc();
         let (header_images, header_images_bufs) = self.images_in_header();
+        images_bufs.extend(header_images_bufs);
+
+        let mut header_rels = vec![HeaderRels::new(); 3];
+        for (i, images) in header_images.iter().enumerate() {
+            if let Some(h) = header_rels.get_mut(i) {
+                h.set_images(images.to_owned());
+            }
+        }
 
         let web_extensions = self.web_extensions.iter().map(|ext| ext.build()).collect();
         let custom_items = self.custom_items.iter().map(|xml| xml.build()).collect();
@@ -574,6 +584,7 @@ impl Docx {
             document: self.document.build(),
             comments: self.comments.build(),
             document_rels: self.document_rels.build(),
+            header_rels: header_rels.into_iter().map(|r| r.build()).collect(),
             settings: self.settings.build(),
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
@@ -873,12 +884,12 @@ impl Docx {
         (images, image_bufs)
     }
 
-    // Traverse and collect images from header.
-    fn images_in_header(&mut self) -> (Vec<ImageIdAndPath>, Vec<ImageIdAndBuf>) {
-        let mut images: Vec<(String, String)> = vec![];
+    fn images_in_header(&mut self) -> (Vec<Vec<ImageIdAndPath>>, Vec<ImageIdAndBuf>) {
+        let mut header_images: Vec<Vec<ImageIdAndPath>> = vec![vec![]; 3];
         let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
 
         if let Some(header) = &mut self.document.section_property.header.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
             for child in header.children.iter_mut() {
                 match child {
                     HeaderChild::Paragraph(paragraph) => {
@@ -889,9 +900,11 @@ impl Docx {
                     }
                 }
             }
+            header_images[0] = images;
         }
 
         if let Some(header) = &mut self.document.section_property.even_header.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
             for child in header.children.iter_mut() {
                 match child {
                     HeaderChild::Paragraph(paragraph) => {
@@ -902,9 +915,11 @@ impl Docx {
                     }
                 }
             }
+            header_images[1] = images;
         }
 
         if let Some(header) = &mut self.document.section_property.first_header.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
             for child in header.children.iter_mut() {
                 match child {
                     HeaderChild::Paragraph(paragraph) => {
@@ -915,8 +930,9 @@ impl Docx {
                     }
                 }
             }
+            header_images[2] = images;
         }
-        (images, image_bufs)
+        (header_images, image_bufs)
     }
 
     // Traverse and collect images from header.

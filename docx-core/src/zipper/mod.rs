@@ -51,6 +51,11 @@ where
         zip.write_all(h)?;
     }
 
+    for (i, h) in xml.header_rels.iter().enumerate() {
+        zip.start_file(format!("word/_rels/header{}.xml.rels", i + 1), options)?;
+        zip.write_all(h)?;
+    }
+
     for (i, h) in xml.footers.iter().enumerate() {
         zip.start_file(format!("word/footer{}.xml", i + 1), options)?;
         zip.write_all(h)?;

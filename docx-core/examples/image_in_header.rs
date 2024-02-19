@@ -10,6 +10,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .header(header)
         .add_paragraph(Paragraph::new().add_run(Run::new().add_image(cat)));
     docx.build().pack(Cursor::new(&mut out))?;
+
     std::fs::write("/tmp/out.docx", &out)?;
     Ok(())
 }

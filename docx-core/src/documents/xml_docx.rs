@@ -20,6 +20,7 @@ pub struct XMLDocx {
     pub headers: Vec<Vec<u8>>,
     pub header_rels: Vec<Vec<u8>>,
     pub footers: Vec<Vec<u8>>,
+    pub footer_rels: Vec<Vec<u8>>,
     pub comments_extended: Vec<u8>,
     pub taskpanes: Option<Vec<u8>>,
     pub taskpanes_rels: Vec<u8>,

@@ -15,6 +15,7 @@ mod elements;
 mod font_table;
 mod footer;
 mod footer_id;
+mod footer_rels;
 mod header;
 mod header_id;
 mod header_rels;
@@ -59,6 +60,7 @@ pub use elements::*;
 pub use font_table::*;
 pub use footer::*;
 pub use footer_id::*;
+pub use footer_rels::*;
 pub use header::*;
 pub use header_id::*;
 pub use header_rels::*;
@@ -540,12 +542,21 @@ impl Docx {
 
         let (images, mut images_bufs) = self.images_in_doc();
         let (header_images, header_images_bufs) = self.images_in_header();
+        let (footer_images, footer_images_bufs) = self.images_in_footer();
+
         images_bufs.extend(header_images_bufs);
+        images_bufs.extend(footer_images_bufs);
 
         let mut header_rels = vec![HeaderRels::new(); 3];
         for (i, images) in header_images.iter().enumerate() {
             if let Some(h) = header_rels.get_mut(i) {
                 h.set_images(images.to_owned());
+            }
+        }
+        let mut footer_rels = vec![FooterRels::new(); 3];
+        for (i, images) in footer_images.iter().enumerate() {
+            if let Some(f) = footer_rels.get_mut(i) {
+                f.set_images(images.to_owned());
             }
         }
 
@@ -585,6 +596,7 @@ impl Docx {
             comments: self.comments.build(),
             document_rels: self.document_rels.build(),
             header_rels: header_rels.into_iter().map(|r| r.build()).collect(),
+            footer_rels: footer_rels.into_iter().map(|r| r.build()).collect(),
             settings: self.settings.build(),
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
@@ -873,10 +885,10 @@ impl Docx {
         for child in &mut self.document.children {
             match child {
                 DocumentChild::Paragraph(paragraph) => {
-                    collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs);
+                    collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs, None);
                 }
                 DocumentChild::Table(table) => {
-                    collect_images_from_table(table, &mut images, &mut image_bufs);
+                    collect_images_from_table(table, &mut images, &mut image_bufs, None);
                 }
                 _ => {}
             }
@@ -893,10 +905,20 @@ impl Docx {
             for child in header.children.iter_mut() {
                 match child {
                     HeaderChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs);
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
                     }
                     HeaderChild::Table(table) => {
-                        collect_images_from_table(table, &mut images, &mut image_bufs);
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
                     }
                 }
             }
@@ -908,10 +930,20 @@ impl Docx {
             for child in header.children.iter_mut() {
                 match child {
                     HeaderChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs);
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
                     }
                     HeaderChild::Table(table) => {
-                        collect_images_from_table(table, &mut images, &mut image_bufs);
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
                     }
                 }
             }
@@ -923,10 +955,20 @@ impl Docx {
             for child in header.children.iter_mut() {
                 match child {
                     HeaderChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs);
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
                     }
                     HeaderChild::Table(table) => {
-                        collect_images_from_table(table, &mut images, &mut image_bufs);
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
                     }
                 }
             }
@@ -936,49 +978,85 @@ impl Docx {
     }
 
     // Traverse and collect images from header.
-    fn images_in_footer(&mut self) -> (Vec<ImageIdAndPath>, Vec<ImageIdAndBuf>) {
-        let mut images: Vec<(String, String)> = vec![];
+    fn images_in_footer(&mut self) -> (Vec<Vec<ImageIdAndPath>>, Vec<ImageIdAndBuf>) {
+        let mut footer_images: Vec<Vec<ImageIdAndPath>> = vec![vec![]; 3];
         let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
 
         if let Some(footer) = &mut self.document.section_property.footer.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
             for child in footer.children.iter_mut() {
                 match child {
                     FooterChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs);
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
                     }
                     FooterChild::Table(table) => {
-                        collect_images_from_table(table, &mut images, &mut image_bufs);
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
                     }
                 }
             }
+            footer_images[0] = images;
         }
 
         if let Some(footer) = &mut self.document.section_property.even_footer.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
             for child in footer.children.iter_mut() {
                 match child {
                     FooterChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs);
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
                     }
                     FooterChild::Table(table) => {
-                        collect_images_from_table(table, &mut images, &mut image_bufs);
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
                     }
                 }
             }
+            footer_images[1] = images;
         }
 
         if let Some(footer) = &mut self.document.section_property.first_footer.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
             for child in footer.children.iter_mut() {
                 match child {
                     FooterChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs);
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
                     }
                     FooterChild::Table(table) => {
-                        collect_images_from_table(table, &mut images, &mut image_bufs);
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
                     }
                 }
             }
+            footer_images[2] = images;
         }
-        (images, image_bufs)
+        (footer_images, image_bufs)
     }
 }
 

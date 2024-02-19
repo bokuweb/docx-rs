@@ -15,10 +15,13 @@ mod elements;
 mod font_table;
 mod footer;
 mod footer_id;
+mod footer_rels;
 mod header;
 mod header_id;
+mod header_rels;
 mod history_id;
 mod hyperlink_id;
+mod image_collector;
 mod numberings;
 mod paragraph_id;
 mod paragraph_property_change_id;
@@ -57,8 +60,10 @@ pub use elements::*;
 pub use font_table::*;
 pub use footer::*;
 pub use footer_id::*;
+pub use footer_rels::*;
 pub use header::*;
 pub use header_id::*;
+pub use header_rels::*;
 pub use numberings::*;
 pub use rels::*;
 pub use settings::*;
@@ -72,6 +77,8 @@ pub use webextension::*;
 pub use xml_docx::*;
 
 use serde::{ser, Serialize};
+
+use self::image_collector::{collect_images_from_paragraph, collect_images_from_table};
 
 #[derive(Debug, Clone)]
 pub struct Image(pub Vec<u8>);
@@ -533,7 +540,26 @@ impl Docx {
             }
         }
 
-        let (images, images_bufs) = self.create_images();
+        let (images, mut images_bufs) = self.images_in_doc();
+        let (header_images, header_images_bufs) = self.images_in_header();
+        let (footer_images, footer_images_bufs) = self.images_in_footer();
+
+        images_bufs.extend(header_images_bufs);
+        images_bufs.extend(footer_images_bufs);
+
+        let mut header_rels = vec![HeaderRels::new(); 3];
+        for (i, images) in header_images.iter().enumerate() {
+            if let Some(h) = header_rels.get_mut(i) {
+                h.set_images(images.to_owned());
+            }
+        }
+        let mut footer_rels = vec![FooterRels::new(); 3];
+        for (i, images) in footer_images.iter().enumerate() {
+            if let Some(f) = footer_rels.get_mut(i) {
+                f.set_images(images.to_owned());
+            }
+        }
+
         let web_extensions = self.web_extensions.iter().map(|ext| ext.build()).collect();
         let custom_items = self.custom_items.iter().map(|xml| xml.build()).collect();
         let custom_item_props = self.custom_item_props.iter().map(|p| p.build()).collect();
@@ -569,6 +595,8 @@ impl Docx {
             document: self.document.build(),
             comments: self.comments.build(),
             document_rels: self.document_rels.build(),
+            header_rels: header_rels.into_iter().map(|r| r.build()).collect(),
+            footer_rels: footer_rels.into_iter().map(|r| r.build()).collect(),
             settings: self.settings.build(),
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
@@ -850,98 +878,185 @@ impl Docx {
     }
 
     // Traverse and collect images from document.
-    fn create_images(&mut self) -> (Vec<ImageIdAndPath>, Vec<ImageIdAndBuf>) {
+    fn images_in_doc(&mut self) -> (Vec<ImageIdAndPath>, Vec<ImageIdAndBuf>) {
         let mut images: Vec<(String, String)> = vec![];
         let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
 
         for child in &mut self.document.children {
             match child {
                 DocumentChild::Paragraph(paragraph) => {
-                    collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs);
+                    collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs, None);
                 }
                 DocumentChild::Table(table) => {
-                    for TableChild::TableRow(row) in &mut table.rows {
-                        for TableRowChild::TableCell(cell) in &mut row.cells {
-                            for content in &mut cell.children {
-                                match content {
-                                    TableCellContent::Paragraph(paragraph) => {
-                                        collect_images_from_paragraph(
-                                            paragraph,
-                                            &mut images,
-                                            &mut image_bufs,
-                                        );
-                                    }
-                                    TableCellContent::Table(table) => {
-                                        collect_images_from_table(
-                                            table,
-                                            &mut images,
-                                            &mut image_bufs,
-                                        );
-                                    }
-                                    TableCellContent::StructuredDataTag(tag) => {
-                                        for child in &mut tag.children {
-                                            if let StructuredDataTagChild::Paragraph(paragraph) =
-                                                child
-                                            {
-                                                collect_images_from_paragraph(
-                                                    paragraph,
-                                                    &mut images,
-                                                    &mut image_bufs,
-                                                );
-                                            }
-                                            if let StructuredDataTagChild::Table(table) = child {
-                                                collect_images_from_table(
-                                                    table,
-                                                    &mut images,
-                                                    &mut image_bufs,
-                                                );
-                                            }
-                                        }
-                                    }
-                                    TableCellContent::TableOfContents(t) => {
-                                        for child in &mut t.before_contents {
-                                            if let TocContent::Paragraph(paragraph) = child {
-                                                collect_images_from_paragraph(
-                                                    paragraph,
-                                                    &mut images,
-                                                    &mut image_bufs,
-                                                );
-                                            }
-                                            if let TocContent::Table(table) = child {
-                                                collect_images_from_table(
-                                                    table,
-                                                    &mut images,
-                                                    &mut image_bufs,
-                                                );
-                                            }
-                                        }
-
-                                        for child in &mut t.after_contents {
-                                            if let TocContent::Paragraph(paragraph) = child {
-                                                collect_images_from_paragraph(
-                                                    paragraph,
-                                                    &mut images,
-                                                    &mut image_bufs,
-                                                );
-                                            }
-                                            if let TocContent::Table(table) = child {
-                                                collect_images_from_table(
-                                                    table,
-                                                    &mut images,
-                                                    &mut image_bufs,
-                                                );
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    collect_images_from_table(table, &mut images, &mut image_bufs, None);
                 }
                 _ => {}
             }
         }
         (images, image_bufs)
+    }
+
+    fn images_in_header(&mut self) -> (Vec<Vec<ImageIdAndPath>>, Vec<ImageIdAndBuf>) {
+        let mut header_images: Vec<Vec<ImageIdAndPath>> = vec![vec![]; 3];
+        let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
+
+        if let Some(header) = &mut self.document.section_property.header.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
+            for child in header.children.iter_mut() {
+                match child {
+                    HeaderChild::Paragraph(paragraph) => {
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
+                    }
+                    HeaderChild::Table(table) => {
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
+                    }
+                }
+            }
+            header_images[0] = images;
+        }
+
+        if let Some(header) = &mut self.document.section_property.even_header.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
+            for child in header.children.iter_mut() {
+                match child {
+                    HeaderChild::Paragraph(paragraph) => {
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
+                    }
+                    HeaderChild::Table(table) => {
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
+                    }
+                }
+            }
+            header_images[1] = images;
+        }
+
+        if let Some(header) = &mut self.document.section_property.first_header.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
+            for child in header.children.iter_mut() {
+                match child {
+                    HeaderChild::Paragraph(paragraph) => {
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
+                    }
+                    HeaderChild::Table(table) => {
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("header"),
+                        );
+                    }
+                }
+            }
+            header_images[2] = images;
+        }
+        (header_images, image_bufs)
+    }
+
+    // Traverse and collect images from header.
+    fn images_in_footer(&mut self) -> (Vec<Vec<ImageIdAndPath>>, Vec<ImageIdAndBuf>) {
+        let mut footer_images: Vec<Vec<ImageIdAndPath>> = vec![vec![]; 3];
+        let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
+
+        if let Some(footer) = &mut self.document.section_property.footer.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
+            for child in footer.children.iter_mut() {
+                match child {
+                    FooterChild::Paragraph(paragraph) => {
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
+                    }
+                    FooterChild::Table(table) => {
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
+                    }
+                }
+            }
+            footer_images[0] = images;
+        }
+
+        if let Some(footer) = &mut self.document.section_property.even_footer.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
+            for child in footer.children.iter_mut() {
+                match child {
+                    FooterChild::Paragraph(paragraph) => {
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
+                    }
+                    FooterChild::Table(table) => {
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
+                    }
+                }
+            }
+            footer_images[1] = images;
+        }
+
+        if let Some(footer) = &mut self.document.section_property.first_footer.as_mut() {
+            let mut images: Vec<ImageIdAndPath> = vec![];
+            for child in footer.children.iter_mut() {
+                match child {
+                    FooterChild::Paragraph(paragraph) => {
+                        collect_images_from_paragraph(
+                            paragraph,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
+                    }
+                    FooterChild::Table(table) => {
+                        collect_images_from_table(
+                            table,
+                            &mut images,
+                            &mut image_bufs,
+                            Some("footer"),
+                        );
+                    }
+                }
+            }
+            footer_images[2] = images;
+        }
+        (footer_images, image_bufs)
     }
 }
 
@@ -1147,95 +1262,6 @@ fn store_comments_in_table(table: &mut Table, comments: &[Comment]) {
     }
 }
 
-fn collect_images_from_paragraph(
-    paragraph: &mut Paragraph,
-    images: &mut Vec<(String, String)>,
-    image_bufs: &mut Vec<(String, Vec<u8>)>,
-) {
-    for child in &mut paragraph.children {
-        if let ParagraphChild::Run(run) = child {
-            for child in &mut run.children {
-                if let RunChild::Drawing(d) = child {
-                    if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                        let b = std::mem::take(&mut pic.image);
-                        let buf = image_bufs
-                            .iter()
-                            .find(|x| x.0 == pic.id.clone() || x.1 == b.clone());
-                        if buf.as_ref().is_none() {
-                            images.push((
-                                pic.id.clone(),
-                                // For now only png supported
-                                format!("media/{}.png", pic.id),
-                            ));
-                            image_bufs.push((pic.id.clone(), b));
-                        } else {
-                            pic.id = buf.unwrap().0.clone();
-                        }
-                    }
-                }
-            }
-        } else if let ParagraphChild::Insert(ins) = child {
-            for child in &mut ins.children {
-                match child {
-                    InsertChild::Run(run) => {
-                        for child in &mut run.children {
-                            if let RunChild::Drawing(d) = child {
-                                if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                                    images.push((
-                                        pic.id.clone(),
-                                        // For now only png supported
-                                        format!("media/{}.png", pic.id),
-                                    ));
-                                    let b = std::mem::take(&mut pic.image);
-                                    image_bufs.push((pic.id.clone(), b));
-                                }
-                            }
-                        }
-                    }
-                    InsertChild::Delete(del) => {
-                        for d in &mut del.children {
-                            if let DeleteChild::Run(run) = d {
-                                for child in &mut run.children {
-                                    if let RunChild::Drawing(d) = child {
-                                        if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                                            images.push((
-                                                pic.id.clone(),
-                                                // For now only png supported
-                                                format!("media/{}.png", pic.id),
-                                            ));
-                                            let b = std::mem::take(&mut pic.image);
-                                            image_bufs.push((pic.id.clone(), b));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    _ => {}
-                }
-            }
-        } else if let ParagraphChild::Delete(del) = child {
-            for d in &mut del.children {
-                if let DeleteChild::Run(run) = d {
-                    for child in &mut run.children {
-                        if let RunChild::Drawing(d) = child {
-                            if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                                images.push((
-                                    pic.id.clone(),
-                                    // For now only png supported
-                                    format!("media/{}.png", pic.id),
-                                ));
-                                let b = std::mem::take(&mut pic.image);
-                                image_bufs.push((pic.id.clone(), b));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 fn push_comment_and_comment_extended(
     comments: &mut Vec<Comment>,
     comments_extended: &mut Vec<CommentExtended>,
@@ -1258,56 +1284,6 @@ fn push_comment_and_comment_extended(
             }
         }
         // TODO: Support table in comment
-    }
-}
-
-fn collect_images_from_table(
-    table: &mut Table,
-    images: &mut Vec<(String, String)>,
-    image_bufs: &mut Vec<(String, Vec<u8>)>,
-) {
-    for TableChild::TableRow(row) in &mut table.rows {
-        for TableRowChild::TableCell(cell) in &mut row.cells {
-            for content in &mut cell.children {
-                match content {
-                    TableCellContent::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(paragraph, images, image_bufs);
-                    }
-                    TableCellContent::Table(table) => {
-                        collect_images_from_table(table, images, image_bufs)
-                    }
-                    TableCellContent::StructuredDataTag(tag) => {
-                        for child in &mut tag.children {
-                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(paragraph, images, image_bufs);
-                            }
-                            if let StructuredDataTagChild::Table(table) = child {
-                                collect_images_from_table(table, images, image_bufs);
-                            }
-                        }
-                    }
-                    TableCellContent::TableOfContents(t) => {
-                        for child in &mut t.before_contents {
-                            if let TocContent::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(paragraph, images, image_bufs);
-                            }
-                            if let TocContent::Table(table) = child {
-                                collect_images_from_table(table, images, image_bufs);
-                            }
-                        }
-
-                        for child in &mut t.after_contents {
-                            if let TocContent::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(paragraph, images, image_bufs);
-                            }
-                            if let TocContent::Table(table) = child {
-                                collect_images_from_table(table, images, image_bufs);
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 

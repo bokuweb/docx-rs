@@ -192,7 +192,9 @@ describe("reader", () => {
   });
 
   test("should read default line spacing", () => {
-    const buffer = readFileSync("../fixtures/default_line_spacing/default_line_spacing.docx");
+    const buffer = readFileSync(
+      "../fixtures/default_line_spacing/default_line_spacing.docx"
+    );
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
@@ -1002,6 +1004,25 @@ describe("writer", () => {
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write image in header", () => {
+    const buf = Buffer.from(encodedCat, "base64");
+    const image = new w.Image(buf).size(320 * 9525, 240 * 9525);
+    const p = new w.Paragraph().addRun(
+      new w.Run().addText("Hello world!!").addImage(image)
+    );
+    const header = new w.Header().addParagraph(p);
+    const buffer = new w.Docx().header(header).addParagraph(p).build();
+
+    writeFileSync("../output/js/header_in_image.docx", buffer);
+
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }

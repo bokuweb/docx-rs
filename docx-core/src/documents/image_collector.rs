@@ -17,7 +17,7 @@ pub(crate) fn collect_images_from_paragraph(
                         let b = std::mem::take(&mut pic.image);
                         let buf = image_bufs.iter().find(|x| x.0 == pic.id || x.1 == b);
                         let pic_id = if let Some(prefix) = id_prefix {
-                            format!("{}{}", pic.id, prefix)
+                            format!("{}{}", prefix, pic.id)
                         } else {
                             pic.id.clone()
                         };
@@ -25,7 +25,7 @@ pub(crate) fn collect_images_from_paragraph(
                             images.push((
                                 pic_id.clone(),
                                 // For now only png supported
-                                format!("media/{}.png", pic.id),
+                                format!("media/{}.png", pic_id),
                             ));
                             image_bufs.push((pic_id.clone(), b));
                             pic.id = pic_id;

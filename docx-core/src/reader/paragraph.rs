@@ -142,6 +142,7 @@ mod tests {
                     ..Default::default()
                 },
                 has_numbering: false,
+                last_rendered_page_break_index: 0,
             }
         );
     }
@@ -178,6 +179,7 @@ mod tests {
                     ..Default::default()
                 },
                 has_numbering: false,
+                last_rendered_page_break_index: 0,
             }
         );
     }
@@ -209,6 +211,7 @@ mod tests {
                     ..Default::default()
                 },
                 has_numbering: false,
+                last_rendered_page_break_index: 0,
             }
         );
     }
@@ -244,6 +247,7 @@ mod tests {
                     ..Default::default()
                 },
                 has_numbering: true,
+                last_rendered_page_break_index: 0,
             }
         );
     }
@@ -281,6 +285,7 @@ mod tests {
                     ..Default::default()
                 },
                 has_numbering: false,
+                last_rendered_page_break_index: 0,
             }
         );
     }
@@ -320,6 +325,7 @@ mod tests {
                     ..Default::default()
                 },
                 has_numbering: false,
+                last_rendered_page_break_index: 0,
             }
         );
     }
@@ -358,6 +364,7 @@ mod tests {
                     ..Default::default()
                 },
                 has_numbering: false,
+                last_rendered_page_break_index: 0,
             }
         );
     }
@@ -408,6 +415,7 @@ mod tests {
                     ..Default::default()
                 },
                 has_numbering: false,
+                last_rendered_page_break_index: 0,
             }
         );
     }
@@ -450,6 +458,7 @@ mod tests {
                     ..Default::default()
                 },
                 has_numbering: false,
+                last_rendered_page_break_index: 0,
             }
         );
     }

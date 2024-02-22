@@ -13,6 +13,7 @@ pub struct Table {
     pub grid: Vec<usize>,
     pub has_numbering: bool,
     pub property: TableProperty,
+    pub last_rendered_page_break_index: usize,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -39,6 +40,7 @@ impl Table {
             rows,
             grid,
             has_numbering,
+            last_rendered_page_break_index: 0,
         }
     }
 
@@ -52,6 +54,7 @@ impl Table {
             rows,
             grid,
             has_numbering,
+            last_rendered_page_break_index: 0,
         }
     }
 
@@ -112,6 +115,11 @@ impl Table {
 
     pub fn clear_all_border(mut self) -> Self {
         self.property = self.property.clear_all_border();
+        self
+    }
+
+    pub fn last_rendered_page_break_index(mut self, num: usize) -> Self {
+        self.last_rendered_page_break_index = num;
         self
     }
 }
@@ -186,7 +194,7 @@ mod tests {
         let t = Table::new(vec![]).set_grid(vec![100, 200, 300]);
         assert_eq!(
             serde_json::to_string(&t).unwrap(),
-            r#"{"rows":[],"grid":[100,200,300],"hasNumbering":false,"property":{"width":{"width":0,"widthType":"auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}}}}"#
+            r#"{"rows":[],"grid":[100,200,300],"hasNumbering":false,"property":{"width":{"width":0,"widthType":"auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}}},"lastRenderedPageBreakIndex":0}"#
         );
     }
 }

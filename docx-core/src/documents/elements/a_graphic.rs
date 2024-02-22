@@ -53,7 +53,7 @@ mod tests {
             );
         assert_eq!(
             serde_json::to_string(&graphic).unwrap(),
-            r#"{"children":[{"dataType":"wpShape","children":[{"type":"shape","data":{"children":[{"type":"textbox","data":{"children":[{"children":[{"type":"paragraph","data":{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"pattern1"}}]}}],"property":{"runProperty":{},"tabs":[]},"hasNumbering":false}}],"has_numbering":false}],"hasNumbering":false}}]}}]}]}"#,
+            r#"{"children":[{"dataType":"wpShape","children":[{"type":"shape","data":{"children":[{"type":"textbox","data":{"children":[{"children":[{"type":"paragraph","data":{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"pattern1"}}]}}],"property":{"runProperty":{},"tabs":[]},"hasNumbering":false,"lastRenderedPageBreakIndex":0}}],"has_numbering":false}],"hasNumbering":false}}]}}]}]}"#,
         );
     }
 }

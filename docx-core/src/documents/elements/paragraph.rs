@@ -13,6 +13,7 @@ pub struct Paragraph {
     pub children: Vec<ParagraphChild>,
     pub property: ParagraphProperty,
     pub has_numbering: bool,
+    pub last_rendered_page_break_index: usize,
 }
 
 impl Default for Paragraph {
@@ -22,6 +23,7 @@ impl Default for Paragraph {
             children: Vec::new(),
             property: ParagraphProperty::new(),
             has_numbering: false,
+            last_rendered_page_break_index: 0,
         }
     }
 }
@@ -272,6 +274,11 @@ impl Paragraph {
         self
     }
 
+    pub fn last_rendered_page_break_index(mut self, num: usize) -> Self {
+        self.last_rendered_page_break_index = num;
+        self
+    }
+
     pub fn size(mut self, size: usize) -> Self {
         self.property.run_property = self.property.run_property.size(size);
         self
@@ -455,7 +462,7 @@ mod tests {
         let p = Paragraph::new().add_run(run);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{},"tabs":[]},"hasNumbering":false}"#,
+            r#"{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{},"tabs":[]},"hasNumbering":false,"lastRenderedPageBreakIndex":0}"#,
         );
     }
 
@@ -466,7 +473,7 @@ mod tests {
         let p = Paragraph::new().add_insert(ins);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"id":"12345678","children":[{"type":"insert","data":{"children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{},"tabs":[]},"hasNumbering":false}"#
+            r#"{"id":"12345678","children":[{"type":"insert","data":{"children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{},"tabs":[]},"hasNumbering":false,"lastRenderedPageBreakIndex":0}"#
         );
     }
 

@@ -19,13 +19,15 @@ impl FromXML for Footer {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::Paragraph => {
-                            let p = Paragraph::read(&mut parser, &attributes)?;
-                            footer = footer.add_paragraph(p);
+                            if let Ok(p) = Paragraph::read(&mut parser, &attributes) {
+                                footer = footer.add_paragraph(p);
+                            }
                             continue;
                         }
                         XMLElement::Table => {
-                            let t = Table::read(&mut parser, &attributes)?;
-                            footer = footer.add_table(t);
+                            if let Ok(t) = Table::read(&mut parser, &attributes) {
+                                footer = footer.add_table(t);
+                            }
                             continue;
                         }
                         _ => {}

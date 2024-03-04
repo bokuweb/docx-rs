@@ -920,6 +920,26 @@ impl Docx {
                             Some("header"),
                         );
                     }
+                    HeaderChild::StructuredDataTag(tag) => {
+                        for child in tag.children.iter_mut() {
+                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
+                                collect_images_from_paragraph(
+                                    paragraph,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                            if let StructuredDataTagChild::Table(table) = child {
+                                collect_images_from_table(
+                                    table,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                        }
+                    }
                 }
             }
             header_images[0] = images;
@@ -945,6 +965,26 @@ impl Docx {
                             Some("header"),
                         );
                     }
+                    HeaderChild::StructuredDataTag(tag) => {
+                        for child in tag.children.iter_mut() {
+                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
+                                collect_images_from_paragraph(
+                                    paragraph,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                            if let StructuredDataTagChild::Table(table) = child {
+                                collect_images_from_table(
+                                    table,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                        }
+                    }
                 }
             }
             header_images[1] = images;
@@ -969,6 +1009,26 @@ impl Docx {
                             &mut image_bufs,
                             Some("header"),
                         );
+                    }
+                    HeaderChild::StructuredDataTag(tag) => {
+                        for child in tag.children.iter_mut() {
+                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
+                                collect_images_from_paragraph(
+                                    paragraph,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                            if let StructuredDataTagChild::Table(table) = child {
+                                collect_images_from_table(
+                                    table,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                        }
                     }
                 }
             }
@@ -1002,6 +1062,26 @@ impl Docx {
                             Some("footer"),
                         );
                     }
+                    FooterChild::StructuredDataTag(tag) => {
+                        for child in tag.children.iter_mut() {
+                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
+                                collect_images_from_paragraph(
+                                    paragraph,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                            if let StructuredDataTagChild::Table(table) = child {
+                                collect_images_from_table(
+                                    table,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                        }
+                    }
                 }
             }
             footer_images[0] = images;
@@ -1027,6 +1107,26 @@ impl Docx {
                             Some("footer"),
                         );
                     }
+                    FooterChild::StructuredDataTag(tag) => {
+                        for child in tag.children.iter_mut() {
+                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
+                                collect_images_from_paragraph(
+                                    paragraph,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                            if let StructuredDataTagChild::Table(table) = child {
+                                collect_images_from_table(
+                                    table,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                        }
+                    }
                 }
             }
             footer_images[1] = images;
@@ -1051,6 +1151,26 @@ impl Docx {
                             &mut image_bufs,
                             Some("footer"),
                         );
+                    }
+                    FooterChild::StructuredDataTag(tag) => {
+                        for child in tag.children.iter_mut() {
+                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
+                                collect_images_from_paragraph(
+                                    paragraph,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                            if let StructuredDataTagChild::Table(table) = child {
+                                collect_images_from_table(
+                                    table,
+                                    &mut images,
+                                    &mut image_bufs,
+                                    Some("header"),
+                                );
+                            }
+                        }
                     }
                 }
             }

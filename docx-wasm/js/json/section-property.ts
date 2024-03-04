@@ -1,5 +1,8 @@
 import { HeaderJSON, HeaderReferenceJSON } from "./header";
 import { FooterJSON, FooterReferenceJSON } from "./footer";
+import { PageNumType as PageNumTypeJSON } from "./bindings/PageNumType";
+
+export { PageNumType as PageNumTypeJSON } from "./bindings/PageNumType";
 
 export type DocGridType = "default" | "lines" | "linesAndChars" | "snapToChars";
 
@@ -48,4 +51,5 @@ export type SectionPropertyJSON = {
   firstFooter?: FooterJSON;
   evenFooterReference?: FooterReferenceJSON;
   evenFooter?: FooterJSON;
+  pageNumType?: PageNumTypeJSON;
 };

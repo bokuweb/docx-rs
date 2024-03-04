@@ -1,6 +1,7 @@
 import { DocGridType } from ".";
 import { Footer } from "./footer";
 import { Header } from "./header";
+import { PageNumType } from "./json/bindings/PageNumType";
 
 export type DocGrid = {
   gridType: DocGridType;
@@ -21,6 +22,7 @@ export class SectionProperty {
   _footer: Footer | null = null;
   _firstFooter: Footer | null = null;
   _evenFooter: Footer | null = null;
+  _pageTypeNum: PageNumType | null = null;
 
   pageSize(w: number, h: number) {
     this._pageSize.w = w;
@@ -70,6 +72,11 @@ export class SectionProperty {
 
   evenFooter(footer: Footer) {
     this._evenFooter = footer;
+    return this;
+  }
+
+  pageTypeNum({ start, chapStyle }: { start: number; chapStyle: string }) {
+    this._pageTypeNum = { start, chapStyle };
     return this;
   }
 }

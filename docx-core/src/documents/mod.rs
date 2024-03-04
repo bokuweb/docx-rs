@@ -505,6 +505,11 @@ impl Docx {
         self
     }
 
+    pub fn page_num_type(mut self, p: PageNumType) -> Self {
+        self.document = self.document.page_num_type(p);
+        self
+    }
+
     pub fn build(mut self) -> XMLDocx {
         self.reset();
 

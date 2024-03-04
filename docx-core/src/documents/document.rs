@@ -228,6 +228,11 @@ impl Document {
         self.section_property.text_direction = direction;
         self
     }
+
+    pub fn page_num_type(mut self, p: PageNumType) -> Self {
+        self.section_property = self.section_property.page_num_type(p);
+        self
+    }
 }
 
 impl BuildXML for DocumentChild {

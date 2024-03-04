@@ -3,9 +3,13 @@ use crate::xml_builder::*;
 use serde::Serialize;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Default)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub struct PageNumType {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub start: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub chap_style: Option<String>,
 }
 

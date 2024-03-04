@@ -313,7 +313,9 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         .clone()
     {
         if let Some((header, rels)) = headers.get(&h.id) {
-            docx.document = docx.document.first_header(header.clone(), &h.id);
+            docx.document = docx
+                .document
+                .first_header_without_title_pg(header.clone(), &h.id);
             let count = docx.document_rels.header_count + 1;
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
@@ -356,7 +358,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         .clone()
     {
         if let Some((footer, rels)) = footers.get(&f.id) {
-            docx.document = docx.document.first_footer(footer.clone(), &f.id);
+            docx.document = docx.document.first_footer_without_title_pg(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
@@ -467,6 +469,7 @@ fn add_images(
     if let Some(paths) = media {
         for (id, media, ..) in paths {
             if let Ok(data) = read_zip(archive, media.to_str().expect("should have media")) {
+                dbg!("--0-0", &media);
                 docx = docx.add_image(id, media.to_str().unwrap().to_string(), data);
             }
         }

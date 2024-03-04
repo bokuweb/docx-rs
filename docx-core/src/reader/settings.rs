@@ -49,6 +49,12 @@ impl FromXML for Settings {
                                 }
                             }
                         }
+                        XMLElement::EvenAndOddHeaders => {
+                            let val = attributes::read_bool(&attributes);
+                            if val {
+                                settings = settings.even_and_odd_headers();
+                            }
+                        }
                         XMLElement::AdjustLineHeightInTable => {
                             settings = settings.adjust_line_height_in_table();
                         }

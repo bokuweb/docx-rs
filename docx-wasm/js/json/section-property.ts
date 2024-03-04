@@ -39,13 +39,13 @@ export type SectionPropertyJSON = {
   header?: HeaderJSON;
   firstHeaderReference?: HeaderReferenceJSON;
   firstHeader?: HeaderJSON;
-  eventHeaderReference?: HeaderReferenceJSON;
-  eventHeader?: HeaderJSON;
+  evenHeaderReference?: HeaderReferenceJSON;
+  evenHeader?: HeaderJSON;
   // footer
   footerReference?: FooterReferenceJSON;
   footer?: FooterJSON;
   firstFooterReference?: FooterReferenceJSON;
   firstFooter?: FooterJSON;
-  eventFooterReference?: FooterReferenceJSON;
-  eventFooter?: FooterJSON;
+  evenFooterReference?: FooterReferenceJSON;
+  evenFooter?: FooterJSON;
 };

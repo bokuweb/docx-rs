@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## @0.4.11 (1. Mar, 2024)
+
+- Fixed a `title_pg` condition when read.
+- Parse `even_and_odd_headers`.
+
+## @0.4.9 (1. Mar, 2024)
+
+- Fixed a js header/footer types.
+
 ## @0.4.8 (19. Feb, 2024)
 
 - Fixed a bug, image in header/footer is not stored in media when read.

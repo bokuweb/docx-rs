@@ -198,6 +198,14 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read even header", () => {
+    const buffer = readFileSync(
+      "../fixtures/first_even_header/first_even_header.docx"
+    );
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {

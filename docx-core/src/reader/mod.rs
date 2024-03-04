@@ -469,6 +469,7 @@ fn add_images(
     if let Some(paths) = media {
         for (id, media, ..) in paths {
             if let Ok(data) = read_zip(archive, media.to_str().expect("should have media")) {
+                dbg!("--0-0", &media);
                 docx = docx.add_image(id, media.to_str().unwrap().to_string(), data);
             }
         }

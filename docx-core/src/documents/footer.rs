@@ -38,6 +38,7 @@ impl Footer {
 pub enum FooterChild {
     Paragraph(Box<Paragraph>),
     Table(Box<Table>),
+    StructuredDataTag(Box<StructuredDataTag>),
 }
 
 impl Serialize for FooterChild {
@@ -58,6 +59,12 @@ impl Serialize for FooterChild {
                 t.serialize_field("data", c)?;
                 t.end()
             }
+            FooterChild::StructuredDataTag(ref r) => {
+                let mut t = serializer.serialize_struct("StructuredDataTag", 2)?;
+                t.serialize_field("type", "structuredDataTag")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
         }
     }
 }
@@ -71,6 +78,7 @@ impl BuildXML for Footer {
             match c {
                 FooterChild::Paragraph(p) => b = b.add_child(p),
                 FooterChild::Table(t) => b = b.add_child(t),
+                FooterChild::StructuredDataTag(t) => b = b.add_child(t),
             }
         }
         b.close().build()

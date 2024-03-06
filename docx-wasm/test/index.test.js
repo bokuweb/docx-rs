@@ -206,6 +206,14 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read page num in header", () => {
+    const buffer = readFileSync(
+      "../fixtures/page_num_in_header/page_num_in_header.docx"
+    );
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {

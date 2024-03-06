@@ -1,6 +1,7 @@
 use super::XMLBuilder;
 use super::XmlEvent;
 use crate::types::*;
+use crate::FrameProperty;
 
 const EXPECT_MESSAGE: &str = "should write buf";
 
@@ -564,6 +565,65 @@ impl XMLBuilder {
         }
         self.writer.write(w).expect(EXPECT_MESSAGE);
 
+        self.close()
+    }
+
+    /**
+    pub h_space: Option<String>,
+    pub v_space: Option<String>,
+     */
+
+    pub(crate) fn frame_property(mut self, prop: &FrameProperty) -> Self {
+        let mut w = XmlEvent::start_element("w:framePr");
+        let wrap: String = prop.wrap.iter().cloned().collect();
+        if prop.wrap.is_some() {
+            w = w.attr("w:wrap", &wrap);
+        }
+        let h_rule: String = prop.h_rule.iter().cloned().collect();
+        if prop.h_rule.is_some() {
+            w = w.attr("w:hRule", &h_rule);
+        }
+        let h_anchor: String = prop.h_anchor.iter().cloned().collect();
+        if prop.h_anchor.is_some() {
+            w = w.attr("w:hAnchor", &h_anchor);
+        }
+        let v_anchor: String = prop.v_anchor.iter().cloned().collect();
+        if prop.v_anchor.is_some() {
+            w = w.attr("w:vAnchor", &v_anchor);
+        }
+        let x_align: String = prop.x_align.iter().cloned().collect();
+        if prop.x_align.is_some() {
+            w = w.attr("w:xAlign", &x_align);
+        }
+        let y_align: String = prop.y_align.iter().cloned().collect();
+        if prop.y_align.is_some() {
+            w = w.attr("w:yAlign", &y_align);
+        }
+        let x: String = format!("{}", prop.x.unwrap_or_default());
+        if prop.x.is_some() {
+            w = w.attr("w:x", &x);
+        }
+        let y: String = format!("{}", prop.y.unwrap_or_default());
+        if prop.y.is_some() {
+            w = w.attr("w:y", &y);
+        }
+        let h_space: String = format!("{}", prop.h_space.unwrap_or_default());
+        if prop.h_space.is_some() {
+            w = w.attr("w:h_space", &h_space);
+        }
+        let v_space: String = format!("{}", prop.v_space.unwrap_or_default());
+        if prop.v_space.is_some() {
+            w = w.attr("w:v_space", &v_space);
+        }
+        let width: String = format!("{}", prop.w.unwrap_or_default());
+        if prop.w.is_some() {
+            w = w.attr("w:w", &width);
+        }
+        let h: String = format!("{}", prop.h.unwrap_or_default());
+        if prop.h.is_some() {
+            w = w.attr("w:h", &h);
+        }
+        self.writer.write(w).expect(EXPECT_MESSAGE);
         self.close()
     }
 

@@ -30,6 +30,7 @@ mod level_override;
 mod mc_fallback;
 mod numbering_property;
 mod numberings;
+mod page_num_type;
 mod paragraph;
 mod paragraph_property;
 mod paragraph_property_change;
@@ -358,7 +359,9 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         .clone()
     {
         if let Some((footer, rels)) = footers.get(&f.id) {
-            docx.document = docx.document.first_footer_without_title_pg(footer.clone(), &f.id);
+            docx.document = docx
+                .document
+                .first_footer_without_title_pg(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();

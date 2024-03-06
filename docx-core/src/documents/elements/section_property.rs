@@ -43,6 +43,8 @@ pub struct SectionProperty {
     pub even_footer: Option<Footer>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub section_type: Option<SectionType>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub page_num_type: Option<PageNumType>,
 }
 
 impl SectionProperty {
@@ -157,6 +159,11 @@ impl SectionProperty {
         }
         footers
     }
+
+    pub fn page_num_type(mut self, h: PageNumType) -> Self {
+        self.page_num_type = Some(h);
+        self
+    }
 }
 
 impl Default for SectionProperty {
@@ -184,6 +191,7 @@ impl Default for SectionProperty {
             even_footer_reference: None,
             even_footer: None,
             section_type: None,
+            page_num_type: None,
         }
     }
 }
@@ -202,7 +210,9 @@ impl BuildXML for SectionProperty {
             .add_optional_child(&self.even_header_reference)
             .add_optional_child(&self.footer_reference)
             .add_optional_child(&self.first_footer_reference)
-            .add_optional_child(&self.even_footer_reference);
+            .add_optional_child(&self.even_footer_reference)
+            .add_optional_child(&self.page_num_type);
+
         if !self.text_direction.eq("lrTb") {
             b = b.text_direction(&self.text_direction);
         }

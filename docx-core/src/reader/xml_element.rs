@@ -158,6 +158,7 @@ pub enum XMLElement {
     EvenAndOddHeaders,
     StructuredDataTag,
     Type,
+    PageNumType,
     Unsupported,
 }
 
@@ -390,6 +391,7 @@ impl FromStr for XMLElement {
             "titlePg" => Ok(XMLElement::TitlePg),
             "evenAndOddHeaders" => Ok(XMLElement::EvenAndOddHeaders),
             "sdt" => Ok(XMLElement::StructuredDataTag),
+            "pgNumType" => Ok(XMLElement::PageNumType),
             "type" => Ok(XMLElement::Type),
             _ => Ok(XMLElement::Unsupported),
         }

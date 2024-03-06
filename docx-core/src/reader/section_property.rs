@@ -106,6 +106,11 @@ impl ElementReader for SectionProperty {
                                 sp = sp.doc_grid(doc_grid);
                             }
                         }
+                        XMLElement::PageNumType => {
+                            if let Ok(page_num_type) = PageNumType::read(r, &attributes) {
+                                sp = sp.page_num_type(page_num_type);
+                            }
+                        }
                         XMLElement::HeaderReference => {
                             if let Ok((rid, header_type)) =
                                 read_header_or_footer_reference(&attributes)

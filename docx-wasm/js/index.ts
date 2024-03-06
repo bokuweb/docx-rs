@@ -517,6 +517,12 @@ export class Docx {
       }
     }
 
+    if (this.sectionProperty._pageTypeNum) {
+      const { start, chapStyle } = this.sectionProperty._pageTypeNum;
+      const p = wasm.createPageNumType(start, chapStyle);
+      docx = docx.page_num_type(p);
+    }
+
     if (this.sectionProperty._docGrid) {
       const { gridType, charSpace, linePitch } = this.sectionProperty._docGrid;
       let type = wasm.DocGridType.Default;

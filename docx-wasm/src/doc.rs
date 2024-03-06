@@ -178,6 +178,11 @@ impl Docx {
         self
     }
 
+    pub fn page_num_type(mut self, p: PageNumType) -> Self {
+        self.0 = self.0.page_num_type(p.take());
+        self
+    }
+
     pub fn doc_grid(
         mut self,
         grid_type: docx_rs::DocGridType,

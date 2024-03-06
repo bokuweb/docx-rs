@@ -447,7 +447,11 @@ impl XMLBuilder {
     closed!(ul_trail_space, "w:ulTrailSpace");
     closed!(do_not_expand_shift_return, "w:doNotExpandShiftReturn");
     closed!(adjust_line_height_table, "w:adjustLineHeightInTable");
-    closed!(character_spacing_control,"w:characterSpacingControl","w:val");
+    closed!(
+        character_spacing_control,
+        "w:characterSpacingControl",
+        "w:val"
+    );
     closed!(use_fe_layout, "w:useFELayout");
     closed!(
         compat_setting,
@@ -560,6 +564,20 @@ impl XMLBuilder {
         }
         self.writer.write(w).expect(EXPECT_MESSAGE);
 
+        self.close()
+    }
+
+    pub(crate) fn page_num_type(mut self, start: Option<u32>, chap_style: Option<String>) -> Self {
+        let mut w = XmlEvent::start_element("w:pgNumType");
+        let start_string = format!("{}", start.unwrap_or_default());
+        let chap_style_string = chap_style.clone().unwrap_or_default();
+        if start.is_some() {
+            w = w.attr("w:start", &start_string);
+        }
+        if chap_style.is_some() {
+            w = w.attr("w:chapStyle", &chap_style_string);
+        }
+        self.writer.write(w).expect(EXPECT_MESSAGE);
         self.close()
     }
 

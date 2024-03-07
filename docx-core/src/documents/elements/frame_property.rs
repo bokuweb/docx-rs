@@ -73,6 +73,11 @@ impl FrameProperty {
         self
     }
 
+    pub fn h_rule(mut self, r: impl Into<String>) -> Self {
+        self.h_rule = Some(r.into());
+        self
+    }
+
     pub fn x_align(mut self, align: impl Into<String>) -> Self {
         self.x_align = Some(align.into());
         self
@@ -83,6 +88,16 @@ impl FrameProperty {
         self
     }
 
+    pub fn h_space(mut self, x: i32) -> Self {
+        self.h_space = Some(x);
+        self
+    }
+
+    pub fn v_space(mut self, x: i32) -> Self {
+        self.v_space = Some(x);
+        self
+    }
+
     pub fn x(mut self, x: i32) -> Self {
         self.x = Some(x);
         self
@@ -90,6 +105,16 @@ impl FrameProperty {
 
     pub fn y(mut self, y: i32) -> Self {
         self.y = Some(y);
+        self
+    }
+
+    pub fn width(mut self, n: u32) -> Self {
+        self.w = Some(n);
+        self
+    }
+
+    pub fn height(mut self, n: u32) -> Self {
+        self.h = Some(n);
         self
     }
 }
@@ -113,6 +138,9 @@ mod tests {
     fn test_q_format() {
         let c = FrameProperty::new().wrap("none");
         let b = c.build();
-        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:framePr w:wrap="none" />"#);
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:framePr w:wrap="none" />"#
+        );
     }
 }

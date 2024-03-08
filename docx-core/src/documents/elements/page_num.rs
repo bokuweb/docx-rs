@@ -14,7 +14,14 @@ impl Default for PageNum {
     fn default() -> Self {
         Self {
             instr: InstrPAGE {},
-            frame_property: None,
+            frame_property: Some(FrameProperty {
+                wrap: Some("none".to_owned()),
+                v_anchor: Some("text".to_owned()),
+                h_anchor: Some("margin".to_owned()),
+                x_align: Some("right".to_owned()),
+                y: Some(1),
+                ..Default::default()
+            }),
         }
     }
 }
@@ -98,7 +105,7 @@ impl PageNum {
 
     pub fn y(mut self, y: i32) -> Self {
         self.frame_property = Some(FrameProperty {
-            x: Some(y),
+            y: Some(y),
             ..self.frame_property.unwrap_or_default()
         });
         self
@@ -173,17 +180,17 @@ mod tests {
         let b = PageNum::new().build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>PAGE</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /><w:t xml:space="preserve">1</w:t><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
+            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:framePr w:wrap="none" w:hAnchor="margin" w:vAnchor="text" w:xAlign="right" w:y="1" /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>PAGE</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /><w:t xml:space="preserve">1</w:t><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
 </w:sdt>"#
         );
     }
 
     #[test]
     fn test_page_with_wrap() {
-        let b = PageNum::new().wrap("none").build();
+        let b = PageNum::new().wrap("none").x_align("left").build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:framePr w:wrap="none" /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>PAGE</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /><w:t xml:space="preserve">1</w:t><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
+            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:framePr w:wrap="none" w:hAnchor="margin" w:vAnchor="text" w:xAlign="left" w:y="1" /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>PAGE</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /><w:t xml:space="preserve">1</w:t><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
 </w:sdt>"#
         );
     }

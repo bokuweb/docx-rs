@@ -6,7 +6,7 @@ use wasm_bindgen::prelude::*;
 pub struct Header(docx_rs::Header);
 
 #[wasm_bindgen(js_name = createHeader)]
-pub fn create_footer() -> Header {
+pub fn create_header() -> Header {
     Header(docx_rs::Header::new())
 }
 
@@ -25,6 +25,11 @@ impl Header {
 
     pub fn add_table(mut self, t: Table) -> Self {
         self.0 = self.0.add_table(t.take());
+        self
+    }
+
+    pub fn add_page_num(mut self, t: PageNum) -> Self {
+        self.0 = self.0.add_page_num(t.take());
         self
     }
 }

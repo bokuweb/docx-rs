@@ -4,9 +4,9 @@ use serde::{Deserialize, Serialize, Serializer};
 // use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
-pub struct Caps {
-    val: bool,
-}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct Caps(pub bool);
 
 impl Caps {
     pub fn new() -> Caps {
@@ -14,14 +14,14 @@ impl Caps {
     }
 
     pub fn disable(mut self) -> Caps {
-        self.val = false;
+        self.0 = false;
         self
     }
 }
 
 impl Default for Caps {
     fn default() -> Self {
-        Self { val: true }
+        Self(true)
     }
 }
 
@@ -30,6 +30,6 @@ impl Serialize for Caps {
     where
         S: Serializer,
     {
-        serializer.serialize_bool(self.val)
+        serializer.serialize_bool(self.0)
     }
 }

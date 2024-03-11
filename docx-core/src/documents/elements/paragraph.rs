@@ -7,6 +7,7 @@ use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+
 #[serde(rename_all = "camelCase")]
 pub struct Paragraph {
     pub id: String,

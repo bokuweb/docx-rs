@@ -5,6 +5,7 @@ use crate::types::*;
 
 #[derive(Debug, Clone, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
+
 pub struct TextBox {
     // For writer only
     pub children: Vec<TextBoxContentChild>,

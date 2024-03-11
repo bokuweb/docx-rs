@@ -5,6 +5,8 @@ use crate::documents::*;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub enum InstrText {
     TOC(InstrToC),
     TC(InstrTC),

@@ -5,6 +5,8 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub struct CommentRangeStart {
     pub id: usize,
     pub comment: Comment,

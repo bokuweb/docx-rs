@@ -4,27 +4,25 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct RunStyle {
-    pub val: String,
-}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct RunStyle(pub String);
 
 impl Default for RunStyle {
     fn default() -> Self {
-        RunStyle {
-            val: "Normal".to_owned(),
-        }
+        RunStyle("Normal".to_owned())
     }
 }
 
 impl RunStyle {
     pub fn new(val: impl Into<String>) -> RunStyle {
-        RunStyle { val: val.into() }
+        RunStyle(val.into())
     }
 }
 
 impl BuildXML for RunStyle {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().run_style(&self.val).build()
+        XMLBuilder::new().run_style(&self.0).build()
     }
 }
 
@@ -33,7 +31,7 @@ impl Serialize for RunStyle {
     where
         S: Serializer,
     {
-        serializer.serialize_str(&self.val)
+        serializer.serialize_str(&self.0)
     }
 }
 

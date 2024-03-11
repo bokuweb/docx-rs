@@ -5,6 +5,8 @@ use crate::types::*;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Default)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub struct Tab {
     pub val: Option<TabValueType>,
     pub leader: Option<TabLeaderType>,

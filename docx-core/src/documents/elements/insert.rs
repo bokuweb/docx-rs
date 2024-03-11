@@ -7,6 +7,8 @@ use crate::documents::{BuildXML, HistoryId, Run};
 use crate::{escape, xml_builder::*};
 
 #[derive(Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub enum InsertChild {
     Run(Box<Run>),
     Delete(Delete),
@@ -60,7 +62,10 @@ impl Serialize for InsertChild {
 }
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub struct Insert {
+    #[cfg_attr(feature = "wasm", ts(type = "any[]"))] // TODO:
     pub children: Vec<InsertChild>,
     pub author: String,
     pub date: String,

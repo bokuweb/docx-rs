@@ -4,17 +4,19 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
-pub struct Vanish {}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct Vanish(pub bool);
 
 impl Vanish {
     pub fn new() -> Vanish {
-        Vanish {}
+        Vanish(true)
     }
 }
 
 impl Default for Vanish {
     fn default() -> Self {
-        Vanish {}
+        Vanish(true)
     }
 }
 

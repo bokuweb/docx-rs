@@ -4,23 +4,23 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
-pub struct BoldCs {
-    val: bool,
-}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct BoldCs(pub bool);
 
 impl BoldCs {
     pub fn new() -> BoldCs {
         Default::default()
     }
     pub fn disable(mut self) -> BoldCs {
-        self.val = false;
+        self.0 = false;
         self
     }
 }
 
 impl Default for BoldCs {
     fn default() -> Self {
-        Self { val: true }
+        Self(true)
     }
 }
 
@@ -29,7 +29,7 @@ impl Serialize for BoldCs {
     where
         S: Serializer,
     {
-        serializer.serialize_bool(self.val)
+        serializer.serialize_bool(self.0)
     }
 }
 

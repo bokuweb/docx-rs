@@ -4,19 +4,19 @@ use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
-pub struct Underline {
-    val: String,
-}
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct Underline(pub String);
 
 impl Underline {
     pub fn new(val: impl Into<String>) -> Underline {
-        Underline { val: val.into() }
+        Self(val.into())
     }
 }
 
 impl BuildXML for Underline {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().underline(&self.val).build()
+        XMLBuilder::new().underline(&self.0).build()
     }
 }
 
@@ -25,7 +25,7 @@ impl Serialize for Underline {
     where
         S: Serializer,
     {
-        serializer.serialize_str(&self.val)
+        serializer.serialize_str(&self.0)
     }
 }
 

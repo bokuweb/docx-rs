@@ -6,6 +6,8 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 pub struct TextBorder {
     pub border_type: BorderType,
     pub size: usize,

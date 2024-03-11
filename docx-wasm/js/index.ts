@@ -686,5 +686,6 @@ export * from "./tab";
 export * from "./json";
 export * from "./webextension";
 export * from "./header";
+export * from "./page-num";
 export * from "./footer";
 export * from "./image";

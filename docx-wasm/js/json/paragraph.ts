@@ -6,6 +6,9 @@ import {
   SectionPropertyJSON,
 } from "..";
 import { LineSpacingJSON } from "./line_spacing";
+import { FrameProperty as FramePropertyJSON } from "./bindings/FrameProperty";
+
+export { FrameProperty as FramePropertyJSON } from "./bindings/FrameProperty";
 
 export type ParagraphChildJSON =
   | RunJSON
@@ -76,6 +79,7 @@ export type ParagraphPropertyJSON = {
   };
   sectionProperty?: SectionPropertyJSON;
   tabs: CustomTabStopJSON[];
+  frameProperty?: FramePropertyJSON;
 };
 
 export type ParagraphJSON = {

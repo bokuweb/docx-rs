@@ -1062,6 +1062,7 @@ impl Docx {
                             Some("footer"),
                         );
                     }
+                    FooterChild::PageNum(_) => {}
                     FooterChild::Table(table) => {
                         collect_images_from_table(
                             table,
@@ -1107,6 +1108,7 @@ impl Docx {
                             Some("footer"),
                         );
                     }
+                    FooterChild::PageNum(_) => {}
                     FooterChild::Table(table) => {
                         collect_images_from_table(
                             table,
@@ -1152,6 +1154,7 @@ impl Docx {
                             Some("footer"),
                         );
                     }
+                    FooterChild::PageNum(_) => {}
                     FooterChild::Table(table) => {
                         collect_images_from_table(
                             table,

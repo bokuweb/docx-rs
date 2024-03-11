@@ -38,6 +38,7 @@ impl Header {
         self
     }
 
+    /// reader only
     pub(crate) fn add_structured_data_tag(mut self, t: StructuredDataTag) -> Self {
         if t.has_numbering {
             self.has_numbering = true

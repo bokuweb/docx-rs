@@ -17,6 +17,8 @@ use crate::xml_builder::*;
     tr2bl – diagonal border from top right corner to bottom left corner
 */
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub struct TableCellBorder {
     pub border_type: BorderType,

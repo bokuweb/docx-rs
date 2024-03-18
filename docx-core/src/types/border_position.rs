@@ -14,7 +14,7 @@ pub enum TableBorderPosition {
     InsideV,
 }
 
-#[cfg_attr(feature = "wasm", wasm_bindgen)]
+#[cfg_attr(feature = "wasm", wasm_bindgen, derive(ts_rs::TS), ts(export))]
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum TableCellBorderPosition {

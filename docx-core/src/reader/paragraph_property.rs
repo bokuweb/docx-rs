@@ -50,6 +50,12 @@ impl ElementReader for ParagraphProperty {
                             }
                             continue;
                         }
+                        XMLElement::TextAlignment => {
+                            if let Ok(v) = TextAlignmentType::from_str(&attributes[0].value) {
+                                p = p.text_alignment(v);
+                            }
+                            continue;
+                        }
                         XMLElement::ParagraphStyle => {
                             p = p.style(&attributes[0].value);
                             continue;

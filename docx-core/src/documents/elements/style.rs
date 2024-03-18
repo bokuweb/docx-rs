@@ -123,6 +123,11 @@ impl Style {
         self
     }
 
+    pub fn text_alignment(mut self, alignment_type: TextAlignmentType) -> Self {
+        self.paragraph_property = self.paragraph_property.text_alignment(alignment_type);
+        self
+    }
+
     pub fn indent(
         mut self,
         left: Option<i32>,

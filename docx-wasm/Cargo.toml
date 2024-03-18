@@ -15,5 +15,4 @@ console_error_panic_hook = "0.1.7"
 docx-rs= { path = "../docx-core", features = ["wasm"] }
 
 [profile.release]
-strip = "debuginfo"
 lto = true

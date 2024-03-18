@@ -16,16 +16,17 @@ export { TextDirectionType } from "../table-cell";
 export { HeightRule } from "../table-row";
 
 export type TableCellPropertyJSON = {
-  width: {
+  width?: {
     width: number;
     widthType: WidthType;
   } | null;
-  borders: any | null;
-  gridSpan: number | null;
-  verticalMerge: "restart" | "continue" | null;
-  verticalAlign: "top" | "center" | "bottom" | null;
-  textDirection: TextDirectionType | null;
-  shading: ShadingJSON | null;
+  borders?: any | null;
+  gridSpan?: number | null;
+  verticalMerge?: "restart" | "continue" | null;
+  verticalAlign?: "top" | "center" | "bottom" | null;
+  textDirection?: TextDirectionType | null;
+  shading?: ShadingJSON | null;
+  margins?: CellMarginsJSON;
 };
 
 export type TableRowPropertyJSON = {
@@ -58,6 +59,13 @@ export type TableRowJSON = {
 export type TableCellMarginJSON = { val: number; widthType: WidthType };
 
 export type TableCellMarginsJSON = {
+  top: TableCellMarginJSON;
+  left: TableCellMarginJSON;
+  bottom: TableCellMarginJSON;
+  right: TableCellMarginJSON;
+};
+
+export type CellMarginsJSON = {
   top: TableCellMarginJSON;
   left: TableCellMarginJSON;
   bottom: TableCellMarginJSON;

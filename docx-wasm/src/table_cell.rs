@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 use super::*;
-use docx_rs::Shading;
+use docx_rs::{Shading, WidthType};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -90,6 +90,26 @@ impl TableCell {
 
     pub fn clear_all_border(mut self) -> TableCell {
         self.0.property = self.0.property.clear_all_border();
+        self
+    }
+
+    pub fn margin_top(mut self, v: usize, t: WidthType) -> Self {
+        self.0.property = self.0.property.margin_top(v, t);
+        self
+    }
+
+    pub fn margin_right(mut self, v: usize, t: WidthType) -> Self {
+        self.0.property = self.0.property.margin_right(v, t);
+        self
+    }
+
+    pub fn margin_bottom(mut self, v: usize, t: WidthType) -> Self {
+        self.0.property = self.0.property.margin_bottom(v, t);
+        self
+    }
+
+    pub fn margin_left(mut self, v: usize, t: WidthType) -> Self {
+        self.0.property = self.0.property.margin_left(v, t);
         self
     }
 }

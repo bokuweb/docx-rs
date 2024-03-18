@@ -3,28 +3,7 @@ use serde::Serialize;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
-
-#[derive(Debug, Clone, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
-struct CellMargin {
-    pub val: usize,
-    pub width_type: WidthType,
-}
-
-impl CellMargin {
-    pub fn new(val: usize, t: WidthType) -> Self {
-        Self { val, width_type: t }
-    }
-}
-
-impl Default for CellMargin {
-    fn default() -> CellMargin {
-        CellMargin {
-            val: 55,
-            width_type: WidthType::Dxa,
-        }
-    }
-}
+use crate::CellMargin;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]

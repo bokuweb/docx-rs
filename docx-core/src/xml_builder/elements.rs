@@ -319,6 +319,7 @@ impl XMLBuilder {
     open!(open_table_cell_borders, "w:tcBorders");
     open!(open_table_borders, "w:tblBorders");
     open!(open_table_cell_margins, "w:tblCellMar");
+    open!(open_cell_margins, "w:tcMar");
 
     closed!(table_layout, "w:tblLayout", "w:type");
     closed_with_str!(table_style, "w:tblStyle");

@@ -33,7 +33,13 @@ impl Header {
         self
     }
 
-    pub fn add_structured_data_tag(mut self, t: StructuredDataTag) -> Self {
+    pub fn add_page_num(mut self, p: PageNum) -> Self {
+        self.children.push(HeaderChild::PageNum(Box::new(p)));
+        self
+    }
+
+    /// reader only
+    pub(crate) fn add_structured_data_tag(mut self, t: StructuredDataTag) -> Self {
         if t.has_numbering {
             self.has_numbering = true
         }
@@ -47,6 +53,7 @@ impl Header {
 pub enum HeaderChild {
     Paragraph(Box<Paragraph>),
     Table(Box<Table>),
+    PageNum(Box<PageNum>),
     StructuredDataTag(Box<StructuredDataTag>),
 }
 
@@ -68,6 +75,12 @@ impl Serialize for HeaderChild {
                 t.serialize_field("data", c)?;
                 t.end()
             }
+            HeaderChild::PageNum(ref r) => {
+                let mut t = serializer.serialize_struct("PageNum", 2)?;
+                t.serialize_field("type", "pageNum")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
             HeaderChild::StructuredDataTag(ref r) => {
                 let mut t = serializer.serialize_struct("StructuredDataTag", 2)?;
                 t.serialize_field("type", "structuredDataTag")?;
@@ -87,6 +100,7 @@ impl BuildXML for Header {
             match c {
                 HeaderChild::Paragraph(p) => b = b.add_child(p),
                 HeaderChild::Table(t) => b = b.add_child(t),
+                HeaderChild::PageNum(p) => b = b.add_child(p),
                 HeaderChild::StructuredDataTag(t) => b = b.add_child(t),
             }
         }

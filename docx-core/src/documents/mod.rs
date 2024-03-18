@@ -925,6 +925,7 @@ impl Docx {
                             Some("header"),
                         );
                     }
+                    HeaderChild::PageNum(_) => {}
                     HeaderChild::StructuredDataTag(tag) => {
                         for child in tag.children.iter_mut() {
                             if let StructuredDataTagChild::Paragraph(paragraph) = child {
@@ -970,6 +971,7 @@ impl Docx {
                             Some("header"),
                         );
                     }
+                    HeaderChild::PageNum(_) => {}
                     HeaderChild::StructuredDataTag(tag) => {
                         for child in tag.children.iter_mut() {
                             if let StructuredDataTagChild::Paragraph(paragraph) = child {
@@ -1015,6 +1017,7 @@ impl Docx {
                             Some("header"),
                         );
                     }
+                    HeaderChild::PageNum(_) => {}
                     HeaderChild::StructuredDataTag(tag) => {
                         for child in tag.children.iter_mut() {
                             if let StructuredDataTagChild::Paragraph(paragraph) = child {
@@ -1059,6 +1062,7 @@ impl Docx {
                             Some("footer"),
                         );
                     }
+                    FooterChild::PageNum(_) => {}
                     FooterChild::Table(table) => {
                         collect_images_from_table(
                             table,
@@ -1104,6 +1108,7 @@ impl Docx {
                             Some("footer"),
                         );
                     }
+                    FooterChild::PageNum(_) => {}
                     FooterChild::Table(table) => {
                         collect_images_from_table(
                             table,
@@ -1149,6 +1154,7 @@ impl Docx {
                             Some("footer"),
                         );
                     }
+                    FooterChild::PageNum(_) => {}
                     FooterChild::Table(table) => {
                         collect_images_from_table(
                             table,

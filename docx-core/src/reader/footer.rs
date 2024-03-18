@@ -30,6 +30,12 @@ impl FromXML for Footer {
                             }
                             continue;
                         }
+                        XMLElement::StructuredDataTag => {
+                            if let Ok(tag) = StructuredDataTag::read(&mut parser, &attributes) {
+                                footer = footer.add_structured_data_tag(tag);
+                            }
+                            continue;
+                        }
                         _ => {}
                     }
                 }

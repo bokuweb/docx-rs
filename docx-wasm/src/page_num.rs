@@ -1,0 +1,79 @@
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+#[derive(Debug)]
+pub struct PageNum(docx_rs::PageNum);
+
+#[wasm_bindgen(js_name = createPageNum)]
+pub fn create_page_num() -> PageNum {
+    PageNum(docx_rs::PageNum::new())
+}
+
+impl PageNum {
+    pub fn take(self) -> docx_rs::PageNum {
+        self.0
+    }
+}
+
+#[wasm_bindgen]
+impl PageNum {
+    pub fn wrap(mut self, wrap: &str) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().wrap(wrap));
+        self
+    }
+
+    pub fn v_anchor(mut self, anchor: &str) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().v_anchor(anchor));
+        self
+    }
+
+    pub fn h_anchor(mut self, anchor: &str) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().h_anchor(anchor));
+        self
+    }
+
+    pub fn h_rule(mut self, r: &str) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().h_rule(r));
+        self
+    }
+
+    pub fn x_align(mut self, align: &str) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().x_align(align));
+        self
+    }
+
+    pub fn y_align(mut self, align: &str) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().y_align(align));
+        self
+    }
+
+    pub fn h_space(mut self, x: i32) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().h_space(x));
+        self
+    }
+
+    pub fn v_space(mut self, x: i32) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().v_space(x));
+        self
+    }
+
+    pub fn x(mut self, x: i32) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().x(x));
+        self
+    }
+
+    pub fn y(mut self, y: i32) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().y(y));
+        self
+    }
+
+    pub fn width(mut self, n: u32) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().width(n));
+        self
+    }
+
+    pub fn height(mut self, n: u32) -> Self {
+        self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().height(n));
+        self
+    }
+}

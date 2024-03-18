@@ -422,8 +422,11 @@ export class Docx {
       this.sectionProperty._header.children.forEach((c) => {
         if (c instanceof Paragraph) {
           header = header.add_paragraph(build(c));
-        } else {
+        } else if (c instanceof Table) {
           header = header.add_table(c.build());
+        } else {
+          const p = c.build();
+          header = header.add_page_num(p);
         }
       });
       docx = docx.header(header);
@@ -434,8 +437,11 @@ export class Docx {
       this.sectionProperty._firstHeader.children.forEach((c) => {
         if (c instanceof Paragraph) {
           header = header.add_paragraph(build(c));
-        } else {
+        } else if (c instanceof Table) {
           header = header.add_table(c.build());
+        } else {
+          const p = c.build();
+          header = header.add_page_num(p);
         }
       });
       docx = docx.first_header(header);
@@ -446,8 +452,11 @@ export class Docx {
       this.sectionProperty._evenHeader.children.forEach((c) => {
         if (c instanceof Paragraph) {
           header = header.add_paragraph(build(c));
-        } else {
+        } else if (c instanceof Table) {
           header = header.add_table(c.build());
+        } else {
+          const p = c.build();
+          header = header.add_page_num(p);
         }
       });
       docx = docx.even_header(header);
@@ -458,8 +467,11 @@ export class Docx {
       this.sectionProperty._footer.children.forEach((c) => {
         if (c instanceof Paragraph) {
           footer = footer.add_paragraph(build(c));
-        } else {
+        } else if (c instanceof Table) {
           footer = footer.add_table(c.build());
+        } else {
+          const p = c.build();
+          footer = footer.add_page_num(p);
         }
       });
       docx = docx.footer(footer);
@@ -470,8 +482,11 @@ export class Docx {
       this.sectionProperty._firstFooter.children.forEach((c) => {
         if (c instanceof Paragraph) {
           footer = footer.add_paragraph(build(c));
-        } else {
+        } else if (c instanceof Table) {
           footer = footer.add_table(c.build());
+        } else {
+          const p = c.build();
+          footer = footer.add_page_num(p);
         }
       });
       docx = docx.first_footer(footer);
@@ -482,8 +497,11 @@ export class Docx {
       this.sectionProperty._evenFooter.children.forEach((c) => {
         if (c instanceof Paragraph) {
           footer = footer.add_paragraph(build(c));
-        } else {
+        } else if (c instanceof Table) {
           footer = footer.add_table(c.build());
+        } else {
+          const p = c.build();
+          footer = footer.add_page_num(p);
         }
       });
       docx = docx.even_footer(footer);
@@ -668,5 +686,6 @@ export * from "./tab";
 export * from "./json";
 export * from "./webextension";
 export * from "./header";
+export * from "./page-num";
 export * from "./footer";
 export * from "./image";

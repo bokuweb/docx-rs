@@ -19,6 +19,7 @@ mod errors;
 mod font_group;
 mod font_scheme;
 mod footer;
+mod frame_property;
 mod from_xml;
 mod header;
 mod header_or_footer_rels;

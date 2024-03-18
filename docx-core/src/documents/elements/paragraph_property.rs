@@ -40,6 +40,8 @@ pub struct ParagraphProperty {
     pub paragraph_property_change: Option<ParagraphPropertyChange>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub borders: Option<ParagraphBorders>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub frame_property: Option<FrameProperty>,
 }
 
 // 17.3.1.26
@@ -138,6 +140,11 @@ impl ParagraphProperty {
         self
     }
 
+    pub fn frame_property(mut self, s: FrameProperty) -> Self {
+        self.frame_property = Some(s);
+        self
+    }
+
     pub(crate) fn hanging_chars(mut self, chars: i32) -> Self {
         if let Some(indent) = self.indent {
             self.indent = Some(indent.hanging_chars(chars));
@@ -179,6 +186,7 @@ fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
         .add_child(&p.run_property)
         .add_optional_child(&p.style)
         .add_optional_child(&p.numbering_property)
+        .add_optional_child(&p.frame_property)
         .add_optional_child(&p.alignment)
         .add_optional_child(&p.indent)
         .add_optional_child(&p.line_spacing)

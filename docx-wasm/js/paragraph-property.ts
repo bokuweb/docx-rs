@@ -72,6 +72,7 @@ export type ParagraphProperty = {
   widowControl: boolean;
   paragraphPropertyChange?: ParagraphPropertyChange;
   outlineLvl?: number | null;
+  adjustRightInd?: number;
 };
 
 export const createDefaultParagraphProperty = (): ParagraphProperty => {
@@ -165,6 +166,11 @@ export class ParagraphPropertyChange {
     return this;
   }
 
+  adjustRightInd(v: number) {
+    this._property.adjustRightInd = v;
+    return this;
+  }
+
   style(id: string) {
     this._property.styleId = id;
     return this;
@@ -244,6 +250,10 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
   const textAlignment = createParagraphTextAlignment(property.textAlignment);
   if (textAlignment != null) {
     target = target.text_alignment(textAlignment) as T;
+  }
+
+  if (property.adjustRightInd != null) {
+    target = target.adjust_right_ind(property.adjustRightInd) as T;
   }
 
   if (typeof property.indent !== "undefined") {

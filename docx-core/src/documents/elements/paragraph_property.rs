@@ -33,9 +33,6 @@ pub struct ParagraphProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub section_property: Option<SectionProperty>,
     pub tabs: Vec<Tab>,
-    // read only
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) div_id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub paragraph_property_change: Option<ParagraphPropertyChange>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -44,6 +41,11 @@ pub struct ParagraphProperty {
     pub frame_property: Option<FrameProperty>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub text_alignment: Option<TextAlignment>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub adjust_right_ind: Option<AdjustRightInd>,
+    // read only
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) div_id: Option<String>,
 }
 
 // 17.3.1.26
@@ -152,6 +154,11 @@ impl ParagraphProperty {
         self
     }
 
+    pub fn adjust_right_ind(mut self, s: isize) -> Self {
+        self.adjust_right_ind = Some(AdjustRightInd::new(s));
+        self
+    }
+
     pub(crate) fn hanging_chars(mut self, chars: i32) -> Self {
         if let Some(indent) = self.indent {
             self.indent = Some(indent.hanging_chars(chars));
@@ -200,7 +207,8 @@ fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
         .add_optional_child(&p.outline_lvl)
         .add_optional_child(&p.paragraph_property_change)
         .add_optional_child(&p.borders)
-        .add_optional_child(&p.text_alignment);
+        .add_optional_child(&p.text_alignment)
+        .add_optional_child(&p.adjust_right_ind);
 
     if let Some(v) = p.keep_next {
         if v {

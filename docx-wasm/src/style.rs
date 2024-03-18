@@ -109,6 +109,11 @@ impl Style {
         self
     }
 
+    pub fn adjust_right_ind(mut self, v: isize) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.adjust_right_ind(v);
+        self
+    }
+
     pub fn indent(
         mut self,
         left: i32,

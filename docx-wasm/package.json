@@ -1,14 +1,14 @@
 {
   "name": "docx-wasm",
-  "version": "0.4.12-beta5",
+  "version": "0.4.12-beta9",
   "main": "dist/node/index.js",
   "browser": "dist/web/index.js",
   "author": "bokuweb <bokuweb12@gmail.com>",
   "license": "MIT",
   "scripts": {
     "wasm-pack:dev": "wasm-pack build --out-dir js/pkg",
-    "wasm-pack:web": "wasm-pack build --release --out-dir dist/web/pkg",
-    "wasm-pack:node": "wasm-pack build --release --out-dir dist/node/pkg --target nodejs",
+    "wasm-pack:web": "wasm-pack build --release --out-dir dist/web/pkg && rm dist/web/pkg/.gitignore",
+    "wasm-pack:node": "wasm-pack build --release --out-dir dist/node/pkg --target nodejs  && rm dist/node/pkg/.gitignore",
     "wasm-pack": "run-s wasm-pack:*",
     "tsc:web": "tsc -p tsconfig.web.json --sourcemap",
     "tsc:node": "tsc -p tsconfig.node.json --sourcemap",
@@ -44,8 +44,8 @@
   },
   "files": [
     "dist",
-    "dist/web/pkg/*",
-    "dist/node/pkg/*",
+    "dist/web/pkg",
+    "dist/node/pkg",
     "js/*"
   ],
   "module": "dist/web/index.js",

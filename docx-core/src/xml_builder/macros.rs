@@ -522,6 +522,17 @@ macro_rules! closed_with_usize {
     };
 }
 
+macro_rules! closed_with_isize {
+    ($name: ident, $el_name: expr) => {
+        pub(crate) fn $name(mut self, val: isize) -> Self {
+            self.writer
+                .write(XmlEvent::start_element($el_name).attr("w:val", &format!("{}", val)))
+                .expect("should write to buf");
+            self.close()
+        }
+    };
+}
+
 macro_rules! closed_w_with_type_el {
     ($name: ident, $el_name: expr) => {
         pub(crate) fn $name(mut self, w: i32, t: WidthType) -> Self {
@@ -562,20 +573,16 @@ macro_rules! closed_border_el {
 
 macro_rules! closed_paragraph_border_el {
     ($name: ident, $ el_name: expr) => {
-        pub(crate) fn $name<'a>(
-            mut self,
-            val: &str,
-            space: &str,
-            size: &str,
-            color: &str,
-        ) -> Self {
-            self.writer.write(
-                XmlEvent::start_element($el_name)
-                    .attr("w:val", val)
-                    .attr("w:space", space)
-                    .attr("w:sz", size)
-                    .attr("w:color", color)
-            ).expect(EXPECT_MESSAGE);
+        pub(crate) fn $name<'a>(mut self, val: &str, space: &str, size: &str, color: &str) -> Self {
+            self.writer
+                .write(
+                    XmlEvent::start_element($el_name)
+                        .attr("w:val", val)
+                        .attr("w:space", space)
+                        .attr("w:sz", size)
+                        .attr("w:color", color),
+                )
+                .expect(EXPECT_MESSAGE);
             self.close()
         }
     };

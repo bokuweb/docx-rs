@@ -136,6 +136,11 @@ impl Paragraph {
         self
     }
 
+    pub fn adjust_right_ind(mut self, v: isize) -> Paragraph {
+        self.0.property = self.0.property.adjust_right_ind(v);
+        self
+    }
+
     pub fn outline_lvl(mut self, level: usize) -> Paragraph {
         self.0.property = self.0.property.outline_lvl(level);
         self

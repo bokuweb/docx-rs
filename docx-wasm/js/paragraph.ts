@@ -14,6 +14,7 @@ import { BookmarkEnd } from "./bookmark-end";
 import { Comment } from "./comment";
 import { CommentEnd } from "./comment-end";
 import { Hyperlink } from "./hyperlink";
+import { TextAlignmentType } from "./json/bindings/TextAlignmentType";
 
 export type ParagraphChild =
   | Run
@@ -72,6 +73,16 @@ export class Paragraph {
 
   align(type: AlignmentType) {
     this.property.align = type;
+    return this;
+  }
+
+  textAlignment(type: TextAlignmentType) {
+    this.property.textAlignment = type;
+    return this;
+  }
+
+  adjustRightInd(v: number) {
+    this.property.adjustRightInd = v;
     return this;
   }
 

@@ -1,6 +1,7 @@
 mod a_graphic;
 mod a_graphic_data;
 mod abstract_numbering;
+mod adjust_right_ind;
 mod based_on;
 mod bold;
 mod bold_cs;
@@ -130,6 +131,7 @@ mod zoom;
 pub use a_graphic::*;
 pub use a_graphic_data::*;
 pub use abstract_numbering::*;
+pub use adjust_right_ind::*;
 pub use based_on::*;
 pub use bold::*;
 pub use bold_cs::*;

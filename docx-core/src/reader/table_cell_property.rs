@@ -67,6 +67,11 @@ impl ElementReader for TableCellProperty {
                             let borders = TableCellBorders::read(r, &attributes)?;
                             property = property.set_borders(borders);
                         }
+                        XMLElement::CellMargins => {
+                            if let Ok(margins) = CellMargins::read(r, &attributes) {
+                                property = property.margins(margins);
+                            }
+                        }
                         _ => {}
                     }
                 }

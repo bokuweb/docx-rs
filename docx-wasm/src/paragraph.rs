@@ -131,6 +131,11 @@ impl Paragraph {
         self
     }
 
+    pub fn text_alignment(mut self, alignment_type: docx_rs::TextAlignmentType) -> Paragraph {
+        self.0.property = self.0.property.text_alignment(alignment_type);
+        self
+    }
+
     pub fn outline_lvl(mut self, level: usize) -> Paragraph {
         self.0.property = self.0.property.outline_lvl(level);
         self

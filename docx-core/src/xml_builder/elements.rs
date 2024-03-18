@@ -166,6 +166,8 @@ impl XMLBuilder {
     // i.e. <w:szCs ... >
     closed_with_usize!(sz_cs, "w:szCs");
 
+    closed_with_str!(text_alignment, "w:textAlignment");
+
     closed!(field_character, "w:fldChar", "w:fldCharType", "w:dirty");
 
     open!(open_instr_text, "w:instrText");

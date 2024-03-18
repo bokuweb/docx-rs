@@ -3,8 +3,8 @@ use serde::Serialize;
 use super::*;
 use crate::documents::BuildXML;
 use crate::types::{AlignmentType, SpecialIndentType};
-use crate::xml_builder::*;
 use crate::ParagraphBorderPosition;
+use crate::{xml_builder::*, TextAlignmentType};
 
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
@@ -42,6 +42,8 @@ pub struct ParagraphProperty {
     pub borders: Option<ParagraphBorders>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub frame_property: Option<FrameProperty>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub text_alignment: Option<TextAlignment>,
 }
 
 // 17.3.1.26
@@ -145,6 +147,11 @@ impl ParagraphProperty {
         self
     }
 
+    pub fn text_alignment(mut self, s: TextAlignmentType) -> Self {
+        self.text_alignment = Some(TextAlignment::new(s));
+        self
+    }
+
     pub(crate) fn hanging_chars(mut self, chars: i32) -> Self {
         if let Some(indent) = self.indent {
             self.indent = Some(indent.hanging_chars(chars));
@@ -192,7 +199,8 @@ fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
         .add_optional_child(&p.line_spacing)
         .add_optional_child(&p.outline_lvl)
         .add_optional_child(&p.paragraph_property_change)
-        .add_optional_child(&p.borders);
+        .add_optional_child(&p.borders)
+        .add_optional_child(&p.text_alignment);
 
     if let Some(v) = p.keep_next {
         if v {

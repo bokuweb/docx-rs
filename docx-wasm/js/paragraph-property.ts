@@ -1,6 +1,7 @@
 import { RunProperty, createDefaultRunProperty } from "./run";
 
 import * as wasm from "./pkg";
+import { TextAlignmentType } from "./json/bindings/TextAlignmentType";
 
 export type AlignmentType =
   | "center"
@@ -51,6 +52,7 @@ export class LineSpacing {
 
 export type ParagraphProperty = {
   align?: AlignmentType;
+  textAlignment?: TextAlignmentType;
   styleId?: string;
   indent?: {
     left: number;
@@ -113,6 +115,31 @@ export const createParagraphAlignment = (
   }
 };
 
+export const createParagraphTextAlignment = (
+  align?: TextAlignmentType | undefined
+): wasm.TextAlignmentType | null => {
+  switch (align) {
+    case "auto": {
+      return wasm.TextAlignmentType.Auto;
+    }
+    case "baseline": {
+      return wasm.TextAlignmentType.Baseline;
+    }
+    case "bottom": {
+      return wasm.TextAlignmentType.Bottom;
+    }
+    case "center": {
+      return wasm.TextAlignmentType.Center;
+    }
+    case "top": {
+      return wasm.TextAlignmentType.Top;
+    }
+    default: {
+      return null;
+    }
+  }
+};
+
 export class ParagraphPropertyChange {
   _author: string = "";
   _date: string = "";
@@ -130,6 +157,11 @@ export class ParagraphPropertyChange {
 
   align(type: AlignmentType) {
     this._property.align = type;
+    return this;
+  }
+
+  textAlignment(type: TextAlignmentType) {
+    this._property.textAlignment = type;
     return this;
   }
 
@@ -207,6 +239,11 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
   const alignment = createParagraphAlignment(property.align);
   if (alignment != null) {
     target = target.align(alignment) as T;
+  }
+
+  const textAlignment = createParagraphTextAlignment(property.textAlignment);
+  if (textAlignment != null) {
+    target = target.text_alignment(textAlignment) as T;
   }
 
   if (typeof property.indent !== "undefined") {

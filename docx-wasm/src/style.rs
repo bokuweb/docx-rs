@@ -104,6 +104,11 @@ impl Style {
         self
     }
 
+    pub fn text_alignment(mut self, alignment_type: docx_rs::TextAlignmentType) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.text_alignment(alignment_type);
+        self
+    }
+
     pub fn indent(
         mut self,
         left: i32,

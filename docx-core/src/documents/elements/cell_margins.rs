@@ -74,15 +74,15 @@ impl BuildXML for CellMargins {
         }
 
         if let Some(ref left) = self.left {
-            b = b.margin_top(left.val as i32, left.width_type);
+            b = b.margin_left(left.val as i32, left.width_type);
         }
 
         if let Some(ref bottom) = self.bottom {
-            b = b.margin_top(bottom.val as i32, bottom.width_type);
+            b = b.margin_bottom(bottom.val as i32, bottom.width_type);
         }
 
         if let Some(ref right) = self.right {
-            b = b.margin_top(right.val as i32, right.width_type);
+            b = b.margin_right(right.val as i32, right.width_type);
         }
         b.close().build()
     }

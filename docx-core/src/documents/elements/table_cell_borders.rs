@@ -101,6 +101,8 @@ impl BuildXML for TableCellBorder {
 }
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
 pub struct TableCellBorders {
     top: Option<TableCellBorder>,

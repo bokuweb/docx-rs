@@ -4,8 +4,12 @@ import { HeightRule } from "../table-row";
 import { TextDirectionType } from "../table-cell";
 import { ShadingJSON } from "./shading";
 import { TableLayoutType } from "../table";
-import { DeleteJSONData, InsertJSONData } from "..";
+import { DeleteJSONData, InsertJSONData, TableCellBordersJSON } from "..";
 import { StructuredTagJSON } from "./structured-data-tag";
+
+export { TableCellBorder as TableCellBorderJSON } from "./bindings/TableCellBorder";
+
+export { TableCellBorders as TableCellBordersJSON } from "./bindings/TableCellBorders";
 
 export type TableCellChildJSON = ParagraphJSON | TableJSON | StructuredTagJSON;
 
@@ -16,16 +20,16 @@ export { TextDirectionType } from "../table-cell";
 export { HeightRule } from "../table-row";
 
 export type TableCellPropertyJSON = {
-  width?: {
+  width: {
     width: number;
     widthType: WidthType;
   } | null;
-  borders?: any | null;
-  gridSpan?: number | null;
-  verticalMerge?: "restart" | "continue" | null;
-  verticalAlign?: "top" | "center" | "bottom" | null;
-  textDirection?: TextDirectionType | null;
-  shading?: ShadingJSON | null;
+  borders: TableCellBordersJSON | null;
+  gridSpan: number | null;
+  verticalMerge: "restart" | "continue" | null;
+  verticalAlign: "top" | "center" | "bottom" | null;
+  textDirection: TextDirectionType | null;
+  shading: ShadingJSON | null;
   margins?: CellMarginsJSON;
 };
 

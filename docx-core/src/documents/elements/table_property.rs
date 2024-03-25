@@ -109,6 +109,7 @@ impl TableProperty {
         }
         self
     }
+    
 
     pub fn set_borders(mut self, borders: TableBorders) -> Self {
         self.borders = borders;

@@ -22,6 +22,8 @@ pub struct TableProperty {
     style: Option<TableStyle>,
     #[serde(skip_serializing_if = "Option::is_none")]
     layout: Option<TableLayout>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    position_property: Option<TablePositionProperty>,
 }
 
 impl Default for TableProperty {
@@ -34,6 +36,7 @@ impl Default for TableProperty {
             indent: None,
             style: None,
             layout: None,
+            position_property: None,
         }
     }
 }
@@ -109,7 +112,6 @@ impl TableProperty {
         }
         self
     }
-    
 
     pub fn set_borders(mut self, borders: TableBorders) -> Self {
         self.borders = borders;
@@ -153,6 +155,7 @@ impl BuildXML for TableProperty {
             .add_optional_child(&self.indent)
             .add_optional_child(&self.style)
             .add_optional_child(&self.layout)
+            .add_optional_child(&self.position_property)
             .close()
             .build()
     }

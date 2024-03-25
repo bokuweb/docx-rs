@@ -653,23 +653,23 @@ impl XMLBuilder {
             w = w.attr("w:horzAnchor", &v);
         }
 
-        let v: String = prop.table_position_x_alignment.iter().cloned().collect();
-        if prop.table_position_x_alignment.is_some() {
+        let v: String = prop.position_x_alignment.iter().cloned().collect();
+        if prop.position_x_alignment.is_some() {
             w = w.attr("w:tblpXSpec", &v);
         }
 
-        let v: String = prop.table_position_y_alignment.iter().cloned().collect();
-        if prop.table_position_y_alignment.is_some() {
+        let v: String = prop.position_y_alignment.iter().cloned().collect();
+        if prop.position_y_alignment.is_some() {
             w = w.attr("w:tblpYSpec", &v);
         }
 
-        let v: String = format!("{}", prop.table_position_x.unwrap_or_default());
-        if prop.table_position_x.is_some() {
+        let v: String = format!("{}", prop.position_x.unwrap_or_default());
+        if prop.position_x.is_some() {
             w = w.attr("w:tblpX", &v);
         }
 
-        let v: String = format!("{}", prop.table_position_y.unwrap_or_default());
-        if prop.table_position_y.is_some() {
+        let v: String = format!("{}", prop.position_y.unwrap_or_default());
+        if prop.position_y.is_some() {
             w = w.attr("w:tblpY", &v);
         }
 

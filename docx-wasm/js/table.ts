@@ -183,6 +183,11 @@ export class Table {
     return this;
   }
 
+  position(p: TablePosition) {
+    this.property.position = p;
+    return this;
+  }
+
   build() {
     let table = wasm.createTable();
     this.rows.forEach((r) => {

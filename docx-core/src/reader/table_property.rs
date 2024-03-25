@@ -58,7 +58,7 @@ impl ElementReader for TableProperty {
                         }
                         XMLElement::TablePositionProperty => {
                             if let Ok(p) = TablePositionProperty::read(r, &attributes) {
-                                tp = tp.position_property(p);
+                                tp = tp.position(p);
                             }
                         }
                         _ => {}

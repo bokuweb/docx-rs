@@ -86,7 +86,7 @@ impl Table {
     }
 
     pub fn position(mut self, p: TablePositionProperty) -> Self {
-        self.property = self.property.position_property(p);
+        self.property = self.property.position(p);
         self
     }
 

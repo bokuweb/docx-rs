@@ -7,6 +7,10 @@ import { TableLayoutType } from "../table";
 import { DeleteJSONData, InsertJSONData } from "..";
 import { StructuredTagJSON } from "./structured-data-tag";
 
+import { TablePositionProperty as TablePositionPropertyJSON } from "./bindings/TablePositionProperty";
+
+export { TablePositionProperty as TablePositionPropertyJSON } from "./bindings/TablePositionProperty";
+
 export type TableCellChildJSON = ParagraphJSON | TableJSON | StructuredTagJSON;
 
 export type WidthType = "dxa" | "auto" | "pct" | "nil";
@@ -85,7 +89,7 @@ export type TablePropertyJSON = {
   } | null;
   style?: string | null;
   layout?: TableLayoutType | null;
-  // position?: TablePro
+  position?: TablePositionPropertyJSON;
 };
 
 export type TableJSON = {

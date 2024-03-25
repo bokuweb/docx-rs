@@ -4,8 +4,11 @@ use std::str::FromStr;
 use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
+use crate::TableAlignmentType;
+
 use super::*;
 
+// TODO: layout: Option<TableLayout>,
 impl ElementReader for TableProperty {
     fn read<R: Read>(
         r: &mut EventReader<R>,
@@ -29,6 +32,31 @@ impl ElementReader for TableProperty {
                         XMLElement::TableCellMargin => {
                             if let Ok(margins) = TableCellMargins::read(r, &attributes) {
                                 tp = tp.set_margins(margins);
+                            }
+                        }
+                        XMLElement::TableWidth => {
+                            if let Ok((w, width_type)) = read_width(&attributes) {
+                                tp = tp.width(w as usize, width_type);
+                            }
+                        }
+                        XMLElement::Justification => {
+                            if let Ok(v) = TableAlignmentType::from_str(&attributes[0].value) {
+                                tp = tp.align(v);
+                            }
+                        }
+                        XMLElement::TableIndent => {
+                            if let Ok((w, _)) = read_width(&attributes) {
+                                tp = tp.indent(w as i32);
+                            }
+                        }
+                        XMLElement::TableStyle => {
+                            if let Some(s) = read_val(&attributes) {
+                                tp = tp.style(s);
+                            }
+                        }
+                        XMLElement::TablePositionProperty => {
+                            if let Ok(p) = TablePositionProperty::read(r, &attributes) {
+                                tp = tp.position_property(p);
                             }
                         }
                         _ => {}

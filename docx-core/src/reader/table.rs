@@ -32,6 +32,11 @@ impl ElementReader for Table {
                             t = t.width(w as usize, width_type);
                             continue;
                         }
+                        XMLElement::TableProperty => {
+                            if let Ok(p) = TableProperty::read(r, &attributes) {
+                                t.property = p;
+                            }
+                        }
                         XMLElement::Justification => {
                             t = t.align(TableAlignmentType::from_str(&attributes[0].value)?);
                         }

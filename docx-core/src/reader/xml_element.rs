@@ -2,7 +2,7 @@ use std::io::Read;
 use std::str::FromStr;
 
 use xml::attribute::OwnedAttribute;
-use xml::reader::EventReader;
+use xml::reader::{EventReader, XmlEvent};
 
 use crate::reader::ReaderError;
 
@@ -93,6 +93,7 @@ pub enum XMLElement {
     TableIndent,
     TableBorders,
     TableCellMargin,
+    TablePositionProperty,
     TableStyle,
     // Change
     TableGridChange,
@@ -326,6 +327,7 @@ impl FromStr for XMLElement {
             "tblBorders" => Ok(XMLElement::TableBorders),
             "tblCellMar" => Ok(XMLElement::TableCellMargin),
             "tblStyle" => Ok(XMLElement::TableStyle),
+            "tblpPr" => Ok(XMLElement::TablePositionProperty),
             "top" => Ok(XMLElement::Top),
             "right" => Ok(XMLElement::Right),
             "start" => Ok(XMLElement::Start),
@@ -337,6 +339,7 @@ impl FromStr for XMLElement {
             "tl2br" => Ok(XMLElement::Tl2br),
             "tr2bl" => Ok(XMLElement::Tr2bl),
             "tblGrid" => Ok(XMLElement::TableGrid),
+            "tblPrChange" => Ok(XMLElement::TablePropertyChange),
             "tblPrChange" => Ok(XMLElement::TablePropertyChange),
             "trPrChange" => Ok(XMLElement::TableRowPropertyChange),
             "tcPrChange" => Ok(XMLElement::TableCellPropertyChange),

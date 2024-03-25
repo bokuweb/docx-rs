@@ -1,5 +1,5 @@
 import { Paragraph } from "./paragraph";
-import { Table } from "./table";
+import { Table, convertWidthType } from "./table";
 import { Shading } from "./shading";
 import { TableCellBorders, PositionKeys } from "./table-cell-borders";
 import { TableCellBorderPosition, TableCellBorder } from "./table-cell-border";
@@ -7,6 +7,7 @@ import * as wasm from "./pkg";
 import { convertBorderType } from "./run";
 import { TableOfContents } from "./table-of-contents";
 import { build } from "./builder";
+import { WidthType } from ".";
 
 export type VMergeType = "restart" | "continue";
 
@@ -61,6 +62,12 @@ export type CellProperty = {
   width?: number;
   textDirection?: TextDirectionType;
   shading?: Shading;
+  margins?: {
+    top?: { val: number; type: WidthType };
+    left?: { val: number; type: WidthType };
+    bottom?: { val: number; type: WidthType };
+    right?: { val: number; type: WidthType };
+  };
 };
 
 export class TableCell {
@@ -134,6 +141,38 @@ export class TableCell {
   clearBorder(position: TableCellBorderPosition) {
     this.property.borders[position.toLowerCase() as PositionKeys] =
       new TableCellBorder(position).border_type("nil");
+    return this;
+  }
+
+  marginTop(v: number, t: WidthType) {
+    this.property.margins = {
+      ...this.property.margins,
+      top: { val: v, type: t },
+    };
+    return this;
+  }
+
+  marginLeft(v: number, t: WidthType) {
+    this.property.margins = {
+      ...this.property.margins,
+      left: { val: v, type: t },
+    };
+    return this;
+  }
+
+  marginRight(v: number, t: WidthType) {
+    this.property.margins = {
+      ...this.property.margins,
+      right: { val: v, type: t },
+    };
+    return this;
+  }
+
+  marginBottom(v: number, t: WidthType) {
+    this.property.margins = {
+      ...this.property.margins,
+      bottom: { val: v, type: t },
+    };
     return this;
   }
 
@@ -222,6 +261,34 @@ export class TableCell {
           convertBorderType(this.property.borders.tr2bl._border_type)
         );
       cell = cell.set_border(border);
+    }
+
+    if (this.property.margins?.top) {
+      cell = cell.margin_top(
+        this.property.margins?.top.val,
+        convertWidthType(this.property.margins?.top.type)
+      );
+    }
+
+    if (this.property.margins?.right) {
+      cell = cell.margin_right(
+        this.property.margins?.right.val,
+        convertWidthType(this.property.margins?.right.type)
+      );
+    }
+
+    if (this.property.margins?.bottom) {
+      cell = cell.margin_bottom(
+        this.property.margins?.bottom.val,
+        convertWidthType(this.property.margins?.bottom.type)
+      );
+    }
+
+    if (this.property.margins?.left) {
+      cell = cell.margin_left(
+        this.property.margins?.left.val,
+        convertWidthType(this.property.margins?.left.type)
+      );
     }
 
     return cell;

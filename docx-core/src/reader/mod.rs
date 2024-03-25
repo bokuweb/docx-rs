@@ -3,6 +3,7 @@ mod a_graphic_data;
 mod attributes;
 mod bookmark_end;
 mod bookmark_start;
+mod cell_margins;
 mod comment;
 mod comment_extended;
 mod comments;

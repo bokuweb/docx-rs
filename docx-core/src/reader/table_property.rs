@@ -46,7 +46,9 @@ impl ElementReader for TableProperty {
                         }
                         XMLElement::TableIndent => {
                             if let Ok((w, _)) = read_width(&attributes) {
-                                tp = tp.indent(w as i32);
+                                if w != 0 {
+                                    tp = tp.indent(w as i32);
+                                }
                             }
                         }
                         XMLElement::TableStyle => {

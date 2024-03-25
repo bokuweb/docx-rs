@@ -2,7 +2,7 @@ use std::io::Read;
 use std::str::FromStr;
 
 use xml::attribute::OwnedAttribute;
-use xml::reader::{EventReader, XmlEvent};
+use xml::reader::EventReader;
 
 use crate::reader::ReaderError;
 

@@ -341,7 +341,6 @@ impl FromStr for XMLElement {
             "tr2bl" => Ok(XMLElement::Tr2bl),
             "tblGrid" => Ok(XMLElement::TableGrid),
             "tblPrChange" => Ok(XMLElement::TablePropertyChange),
-            "tblPrChange" => Ok(XMLElement::TablePropertyChange),
             "trPrChange" => Ok(XMLElement::TableRowPropertyChange),
             "tcPrChange" => Ok(XMLElement::TableCellPropertyChange),
             "tcMar" => Ok(XMLElement::CellMargins),

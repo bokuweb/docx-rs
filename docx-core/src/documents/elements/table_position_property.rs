@@ -102,6 +102,9 @@ mod tests {
             .position_x_alignment("right")
             .position_y(511)
             .build();
-        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:tblpPr w:leftFromText="142" w:rightFromText="142" w:vertAnchor="text" w:horzAnchor="margin" w:tblpXSpec="right" w:tblpY="511" />"#);
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:tblpPr w:leftFromText="142" w:rightFromText="142" w:vertAnchor="text" w:horzAnchor="margin" w:tblpXSpec="right" w:tblpY="511" />"#
+        );
     }
 }

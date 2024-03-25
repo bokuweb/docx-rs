@@ -85,6 +85,7 @@ export type TablePropertyJSON = {
   } | null;
   style?: string | null;
   layout?: TableLayoutType | null;
+  // position?: TablePro
 };
 
 export type TableJSON = {

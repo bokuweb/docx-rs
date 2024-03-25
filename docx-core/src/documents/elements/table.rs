@@ -85,6 +85,11 @@ impl Table {
         self
     }
 
+    pub fn position(mut self, p: TablePositionProperty) -> Self {
+        self.property = self.property.position_property(p);
+        self
+    }
+
     pub fn width(mut self, w: usize, t: WidthType) -> Table {
         self.property = self.property.width(w, t);
         self

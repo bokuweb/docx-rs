@@ -142,6 +142,11 @@ impl TableProperty {
         self.layout = Some(TableLayout::new(t));
         self
     }
+
+    pub fn position_property(mut self, p: TablePositionProperty) -> Self {
+        self.position_property = Some(p);
+        self
+    }
 }
 
 impl BuildXML for TableProperty {

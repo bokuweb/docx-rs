@@ -1,0 +1,2 @@
+
+export interface TablePositionProperty { leftFromText?: number, rightFromText?: number, verticalAnchor?: string, horizontalAnchor?: string, positionXAlignment?: string, positionYAlignment?: string, positionX?: number, positionY?: number, }

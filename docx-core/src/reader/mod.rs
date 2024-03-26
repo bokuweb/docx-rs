@@ -56,6 +56,7 @@ mod table_cell_borders;
 mod table_cell_margins;
 mod table_cell_property;
 mod table_property;
+mod table_position_property;
 mod table_row;
 mod tabs;
 mod text_box_content;

@@ -3,8 +3,85 @@ import * as wasm from "./pkg";
 import { WidthType } from ".";
 import { TableRow } from "./table-row";
 
+import { TablePositionProperty } from "./json/bindings/TablePositionProperty";
+
+export { TablePositionProperty } from "./json/bindings/TablePositionProperty";
+
 export type TableAlignmentType = "center" | "left" | "right";
 export type TableLayoutType = "fixed" | "autofit";
+
+export class TablePosition {
+  property: TablePositionProperty;
+
+  leftFromText(n: number) {
+    this.property.leftFromText = n;
+    return this;
+  }
+
+  rightFromText(n: number) {
+    this.property.rightFromText = n;
+    return this;
+  }
+
+  verticalAnchor(n: string) {
+    this.property.verticalAnchor = n;
+    return this;
+  }
+
+  horizontalAnchor(n: string) {
+    this.property.horizontalAnchor = n;
+    return this;
+  }
+
+  positionXAlignment(n: string) {
+    this.property.positionXAlignment = n;
+    return this;
+  }
+
+  positionYAlignment(n: string) {
+    this.property.positionYAlignment = n;
+    return this;
+  }
+
+  positionX(n: number) {
+    this.property.positionX = n;
+    return this;
+  }
+
+  positionY(n: number) {
+    this.property.positionY = n;
+    return this;
+  }
+
+  build() {
+    let p = wasm.createTablePosition();
+    if (this.property.leftFromText != null) {
+      p = p.left_from_text(this.property.leftFromText);
+    }
+    if (this.property.rightFromText != null) {
+      p = p.left_from_text(this.property.rightFromText);
+    }
+    if (this.property.verticalAnchor != null) {
+      p = p.vertical_anchor(this.property.verticalAnchor);
+    }
+    if (this.property.horizontalAnchor != null) {
+      p = p.horizontal_anchor(this.property.horizontalAnchor);
+    }
+    if (this.property.positionXAlignment != null) {
+      p = p.position_x_alignment(this.property.positionXAlignment);
+    }
+    if (this.property.positionYAlignment != null) {
+      p = p.position_y_alignment(this.property.positionYAlignment);
+    }
+    if (this.property.positionX != null) {
+      p = p.position_x(this.property.positionX);
+    }
+    if (this.property.positionY != null) {
+      p = p.position_y(this.property.positionY);
+    }
+    return p;
+  }
+}
 
 export type TableProperty = {
   indent?: number;
@@ -18,6 +95,7 @@ export type TableProperty = {
     right: { val: number; type: WidthType };
   };
   layout?: TableLayoutType;
+  position?: TablePosition;
 };
 
 export const createDefaultTableCellMargins = () => {
@@ -105,6 +183,11 @@ export class Table {
     return this;
   }
 
+  position(p: TablePosition) {
+    this.property.position = p;
+    return this;
+  }
+
   build() {
     let table = wasm.createTable();
     this.rows.forEach((r) => {
@@ -149,6 +232,10 @@ export class Table {
 
     if (this.property.styleId) {
       table = table.style(this.property.styleId);
+    }
+
+    if (this.property.position) {
+      table = table.position(this.property.position.build());
     }
 
     table = setTableProperty(table, this.property);

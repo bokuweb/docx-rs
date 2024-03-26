@@ -54,6 +54,11 @@ impl Table {
         self
     }
 
+    pub fn position(mut self, p: TablePositionProperty) -> Table {
+        self.0 = self.0.position(p.take());
+        self
+    }
+
     pub fn set_cell_margins(
         mut self,
         top: usize,

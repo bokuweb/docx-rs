@@ -2,6 +2,7 @@ use super::XMLBuilder;
 use super::XmlEvent;
 use crate::types::*;
 use crate::FrameProperty;
+use crate::TablePositionProperty;
 
 const EXPECT_MESSAGE: &str = "should write buf";
 
@@ -626,6 +627,53 @@ impl XMLBuilder {
         if prop.h.is_some() {
             w = w.attr("w:h", &h);
         }
+        self.writer.write(w).expect(EXPECT_MESSAGE);
+        self.close()
+    }
+
+    pub(crate) fn table_position_property(mut self, prop: &TablePositionProperty) -> Self {
+        let mut w = XmlEvent::start_element("w:tblpPr");
+
+        let v: String = format!("{}", prop.left_from_text.unwrap_or_default());
+        if prop.left_from_text.is_some() {
+            w = w.attr("w:leftFromText", &v);
+        }
+
+        let v: String = format!("{}", prop.right_from_text.unwrap_or_default());
+        if prop.right_from_text.is_some() {
+            w = w.attr("w:rightFromText", &v);
+        }
+
+        let v: String = prop.vertical_anchor.iter().cloned().collect();
+        if prop.vertical_anchor.is_some() {
+            w = w.attr("w:vertAnchor", &v);
+        }
+
+        let v: String = prop.horizontal_anchor.iter().cloned().collect();
+        if prop.horizontal_anchor.is_some() {
+            w = w.attr("w:horzAnchor", &v);
+        }
+
+        let v: String = prop.position_x_alignment.iter().cloned().collect();
+        if prop.position_x_alignment.is_some() {
+            w = w.attr("w:tblpXSpec", &v);
+        }
+
+        let v: String = prop.position_y_alignment.iter().cloned().collect();
+        if prop.position_y_alignment.is_some() {
+            w = w.attr("w:tblpYSpec", &v);
+        }
+
+        let v: String = format!("{}", prop.position_x.unwrap_or_default());
+        if prop.position_x.is_some() {
+            w = w.attr("w:tblpX", &v);
+        }
+
+        let v: String = format!("{}", prop.position_y.unwrap_or_default());
+        if prop.position_y.is_some() {
+            w = w.attr("w:tblpY", &v);
+        }
+
         self.writer.write(w).expect(EXPECT_MESSAGE);
         self.close()
     }

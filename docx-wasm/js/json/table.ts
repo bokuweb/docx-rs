@@ -7,6 +7,9 @@ import { TableLayoutType } from "../table";
 import { DeleteJSONData, InsertJSONData, TableCellBordersJSON } from "..";
 import { StructuredTagJSON } from "./structured-data-tag";
 
+import { TablePositionProperty as TablePositionPropertyJSON } from "./bindings/TablePositionProperty";
+
+export { TablePositionProperty as TablePositionPropertyJSON } from "./bindings/TablePositionProperty";
 export { TableCellBorder as TableCellBorderJSON } from "./bindings/TableCellBorder";
 
 export { TableCellBorders as TableCellBordersJSON } from "./bindings/TableCellBorders";
@@ -97,6 +100,7 @@ export type TablePropertyJSON = {
   } | null;
   style?: string | null;
   layout?: TableLayoutType | null;
+  position?: TablePositionPropertyJSON;
 };
 
 export type TableJSON = {

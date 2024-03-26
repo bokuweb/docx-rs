@@ -951,7 +951,7 @@ impl Docx {
             header_images[0] = images;
         }
 
-        if let Some(header) = &mut self.document.section_property.even_header.as_mut() {
+        if let Some(header) = &mut self.document.section_property.first_header.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
             for child in header.children.iter_mut() {
                 match child {
@@ -997,7 +997,7 @@ impl Docx {
             header_images[1] = images;
         }
 
-        if let Some(header) = &mut self.document.section_property.first_header.as_mut() {
+        if let Some(header) = &mut self.document.section_property.even_header.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
             for child in header.children.iter_mut() {
                 match child {
@@ -1096,7 +1096,7 @@ impl Docx {
             footer_images[0] = images;
         }
 
-        if let Some(footer) = &mut self.document.section_property.even_footer.as_mut() {
+        if let Some(footer) = &mut self.document.section_property.first_footer.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
             for child in footer.children.iter_mut() {
                 match child {
@@ -1142,7 +1142,7 @@ impl Docx {
             footer_images[1] = images;
         }
 
-        if let Some(footer) = &mut self.document.section_property.first_footer.as_mut() {
+        if let Some(footer) = &mut self.document.section_property.even_footer.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
             for child in footer.children.iter_mut() {
                 match child {

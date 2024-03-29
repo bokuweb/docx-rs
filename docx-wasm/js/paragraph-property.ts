@@ -342,7 +342,8 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
 
   if (property.tabs) {
     for (const tab of property.tabs) {
-      let val: wasm.TabValueType | null = null;
+      let val: wasm.TabValueType | undefined;
+      let leader: wasm.TabLeaderType | undefined;
       switch (tab.val) {
         case "bar":
           val = wasm.TabValueType.Bar;
@@ -375,7 +376,28 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
           val = wasm.TabValueType.Left;
           break;
       }
-      target = target.add_tab(val, null, null) as T;
+
+      switch (tab.leader) {
+        case "dot":
+          leader = wasm.TabLeaderType.Dot;
+          break;
+        case "heavy":
+          leader = wasm.TabLeaderType.Heavy;
+          break;
+        case "hyphen":
+          leader = wasm.TabLeaderType.Hyphen;
+          break;
+        case "middleDot":
+          leader = wasm.TabLeaderType.MiddleDot;
+          break;
+        case "none":
+          leader = wasm.TabLeaderType.None;
+          break;
+        case "underscore":
+          leader = wasm.TabLeaderType.None;
+          break;
+      }
+      target = target.add_tab(val, leader, tab.pos ?? undefined) as T;
     }
   }
 

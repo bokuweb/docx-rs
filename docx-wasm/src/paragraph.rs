@@ -233,6 +233,16 @@ impl Paragraph {
         self
     }
 
+    pub fn add_tab(
+        mut self,
+        val: Option<docx_rs::TabValueType>,
+        leader: Option<docx_rs::TabLeaderType>,
+        pos: Option<usize>,
+    ) -> Self {
+        self.0 = self.0.add_tab(docx_rs::Tab { val, leader, pos });
+        self
+    }
+
     pub fn paragraph_property_change(mut self, p: ParagraphPropertyChange) -> Self {
         self.0.property = self.0.property.paragraph_property_change(p.take());
         self

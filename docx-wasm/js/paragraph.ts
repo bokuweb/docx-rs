@@ -15,6 +15,8 @@ import { Comment } from "./comment";
 import { CommentEnd } from "./comment-end";
 import { Hyperlink } from "./hyperlink";
 import { TextAlignmentType } from "./json/bindings/TextAlignmentType";
+import { TabValueType } from "./json/bindings/TabValueType";
+import { TabLeaderType } from "./json/bindings/TabLeaderType";
 
 export type ParagraphChild =
   | Run
@@ -68,6 +70,16 @@ export class Paragraph {
 
   addCommentEnd(end: CommentEnd) {
     this.children.push(end);
+    return this;
+  }
+
+  addTab(
+    val: TabValueType | null,
+    leader: TabLeaderType | null,
+    pos: number | null
+  ) {
+    if (!this.property.tabs) this.property.tabs = [];
+    this.property.tabs.push({ val, leader, pos });
     return this;
   }
 

@@ -2,6 +2,7 @@ import { RunProperty, createDefaultRunProperty } from "./run";
 
 import * as wasm from "./pkg";
 import { TextAlignmentType } from "./json/bindings/TextAlignmentType";
+import { Tab } from "./json/bindings/Tab";
 
 export type AlignmentType =
   | "center"
@@ -73,6 +74,7 @@ export type ParagraphProperty = {
   paragraphPropertyChange?: ParagraphPropertyChange;
   outlineLvl?: number | null;
   adjustRightInd?: number;
+  tabs?: Tab[];
 };
 
 export const createDefaultParagraphProperty = (): ParagraphProperty => {
@@ -336,6 +338,45 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
 
   if (property.outlineLvl != null) {
     target = target.outline_lvl(property.outlineLvl) as T;
+  }
+
+  if (property.tabs) {
+    for (const tab of property.tabs) {
+      let val: wasm.TabValueType | null = null;
+      switch (tab.val) {
+        case "bar":
+          val = wasm.TabValueType.Bar;
+          break;
+        case "bar":
+          val = wasm.TabValueType.Bar;
+          break;
+        case "center":
+          val = wasm.TabValueType.Center;
+          break;
+        case "clear":
+          val = wasm.TabValueType.Clear;
+          break;
+        case "decimal":
+          val = wasm.TabValueType.Decimal;
+          break;
+        case "end":
+          val = wasm.TabValueType.End;
+          break;
+        case "right":
+          val = wasm.TabValueType.Right;
+          break;
+        case "num":
+          val = wasm.TabValueType.Num;
+          break;
+        case "start":
+          val = wasm.TabValueType.Start;
+          break;
+        case "left":
+          val = wasm.TabValueType.Left;
+          break;
+      }
+      target = target.add_tab(val, null, null) as T;
+    }
   }
 
   return target;

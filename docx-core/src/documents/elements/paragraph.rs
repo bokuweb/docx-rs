@@ -245,6 +245,13 @@ impl Paragraph {
         self
     }
 
+    pub fn tabs(mut self, tabs: &[Tab]) -> Self {
+        for tab in tabs {
+            self.property = self.property.add_tab(tab.clone());
+        }
+        self
+    }
+
     pub fn indent(
         mut self,
         left: Option<i32>,

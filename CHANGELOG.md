@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## @0.4.13 (29. Mar, 2024)
+
+- Support `tblppr`
+- Support `tcMar`
+- Support `textAlignment`
+- Support `adjustRightInd`
+- Support `framePr`
+- Support `pageNumType`
+
 ## @0.4.11 (1. Mar, 2024)
 
 - Fixed a `title_pg` condition when read.
@@ -73,7 +82,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed a bug, `adjustLineHeightInTable` is not affected in js interface.
 - fix lineRule ts type
 
-
 ## docx-wasm@0.0.278-rc8 (23. Jun, 2023)
 
 - Support character space control
@@ -119,6 +127,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## docx-wasm@0.0.276-rc38 (7. Dec, 2022)
 
 - fix #584 Remove `%` from width.
+
 ## docx-wasm@0.0.276-rc37 (28. Nov, 2022)
 
 - fixed a bug, `adjustLineHeightInTable` is not affected in js interface.
@@ -296,6 +305,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## docx-wasm@0.0.231 (19. January, 2022)
 
 - Fixed a pPr reader.
+
 ## docx-wasm@0.0.229 (19. January, 2022)
 
 - Fixed a del/ins type in runProperty

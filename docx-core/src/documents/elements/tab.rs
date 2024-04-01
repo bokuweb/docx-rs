@@ -4,11 +4,7 @@ use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[cfg(feature = "wasm")]
-use wasm_bindgen::prelude::*;
-
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Default)]
-#[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[cfg_attr(feature = "wasm", ts(export))]
 pub struct Tab {

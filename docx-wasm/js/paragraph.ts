@@ -73,13 +73,14 @@ export class Paragraph {
     return this;
   }
 
-  addTab(
-    val: TabValueType | null,
-    leader: TabLeaderType | null,
-    pos: number | null
+  addTabs(
+    tabs: {
+      val: TabValueType | null;
+      leader: TabLeaderType | null;
+      pos: number | null;
+    }[]
   ) {
-    if (!this.property.tabs) this.property.tabs = [];
-    this.property.tabs.push({ val, leader, pos });
+    this.property.tabs = tabs;
     return this;
   }
 

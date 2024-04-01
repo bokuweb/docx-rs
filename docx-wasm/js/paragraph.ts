@@ -73,7 +73,7 @@ export class Paragraph {
     return this;
   }
 
-  addTabs(
+  tabs(
     tabs: {
       val: TabValueType | null;
       leader: TabLeaderType | null;

@@ -114,6 +114,19 @@ impl Style {
         self
     }
 
+    pub fn add_tab(
+        mut self,
+        val: Option<docx_rs::TabValueType>,
+        leader: Option<docx_rs::TabLeaderType>,
+        pos: Option<usize>,
+    ) -> Self {
+        self.0.paragraph_property =
+            self.0
+                .paragraph_property
+                .add_tab(docx_rs::Tab { val, leader, pos });
+        self
+    }
+
     pub fn indent(
         mut self,
         left: i32,

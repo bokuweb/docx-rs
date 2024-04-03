@@ -7,6 +7,7 @@ use crate::xml_builder::*;
 #[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct PageNum {
     pub instr: InstrPAGE,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub frame_property: Option<FrameProperty>,
 }
 
@@ -14,14 +15,7 @@ impl Default for PageNum {
     fn default() -> Self {
         Self {
             instr: InstrPAGE {},
-            frame_property: Some(FrameProperty {
-                wrap: Some("none".to_owned()),
-                v_anchor: Some("text".to_owned()),
-                h_anchor: Some("margin".to_owned()),
-                x_align: Some("right".to_owned()),
-                y: Some(1),
-                ..Default::default()
-            }),
+            frame_property: None,
         }
     }
 }
@@ -180,7 +174,7 @@ mod tests {
         let b = PageNum::new().build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:framePr w:wrap="none" w:hAnchor="margin" w:vAnchor="text" w:xAlign="right" w:y="1" /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>PAGE</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /><w:t xml:space="preserve">1</w:t><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
+            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>PAGE</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /><w:t xml:space="preserve">1</w:t><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
 </w:sdt>"#
         );
     }

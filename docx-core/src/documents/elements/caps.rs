@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize, Serializer};
 
+use crate::{xml_builder::XMLBuilder, BuildXML};
+
 // use crate::documents::BuildXML;
 // use crate::xml_builder::*;
 
@@ -31,5 +33,12 @@ impl Serialize for Caps {
         S: Serializer,
     {
         serializer.serialize_bool(self.val)
+    }
+}
+
+impl BuildXML for Caps {
+    fn build(&self) -> Vec<u8> {
+        let b = XMLBuilder::new();
+        b.caps().build()
     }
 }

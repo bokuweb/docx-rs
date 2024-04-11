@@ -242,6 +242,10 @@ impl BuildXML for Style {
                 .add_child(&self.table_property);
         }
 
+        if let Some(ref ui_priority) = self.ui_priority {
+            b = b.add_child(ui_priority);
+        }
+
         if let Some(ref next) = self.next {
             b = b.add_child(next)
         }

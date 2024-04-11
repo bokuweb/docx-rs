@@ -179,6 +179,8 @@ impl XMLBuilder {
     closed!(b, "w:b");
     closed!(b_cs, "w:bCs");
 
+    closed_with_str!(caps, "w:caps");
+
     closed!(i, "w:i");
     closed!(i_cs, "w:iCs");
 

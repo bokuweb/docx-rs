@@ -165,6 +165,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.color)
             .add_optional_child(&self.bold)
             .add_optional_child(&self.bold_cs)
+            .add_optional_child(&self.caps)
             .add_optional_child(&self.italic)
             .add_optional_child(&self.italic_cs)
             .add_optional_child(&self.strike)

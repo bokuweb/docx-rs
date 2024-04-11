@@ -5,6 +5,8 @@ use crate::types::*;
 use crate::xml_builder::*;
 use crate::StyleType;
 
+use self::ui_priority::UiPriority;
+
 use super::*;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
@@ -17,6 +19,7 @@ pub struct Style {
     pub paragraph_property: ParagraphProperty,
     pub table_property: TableProperty,
     pub table_cell_property: TableCellProperty,
+    pub ui_priority: Option<UiPriority>,
     pub based_on: Option<BasedOn>,
     pub next: Option<Next>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -36,6 +39,7 @@ impl Default for Style {
             paragraph_property: ppr,
             table_property: TableProperty::new(),
             table_cell_property: TableCellProperty::new(),
+            ui_priority: None,
             based_on: None,
             next: None,
             link: None,
@@ -95,6 +99,11 @@ impl Style {
 
     pub fn italic(mut self) -> Self {
         self.run_property = self.run_property.italic();
+        self
+    }
+
+    pub fn ui_priority(mut self, priority: i32) -> Self {
+        self.ui_priority = Some(UiPriority::new(priority));
         self
     }
 

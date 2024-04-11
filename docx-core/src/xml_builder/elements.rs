@@ -255,6 +255,14 @@ impl XMLBuilder {
         self.close()
     }
 
+    // i.e. <w:uiPriority ... >
+    pub(crate) fn ui_priority(mut self, prio: i32) -> Self {
+        self.writer
+            .write(XmlEvent::start_element("w:uiPriority").attr("w:val", &format!("{}", prio)))
+            .expect(EXPECT_MESSAGE);
+        self.close()
+    }
+
     // i.e. <w:spacing ... >
     pub(crate) fn line_spacing(
         mut self,

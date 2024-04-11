@@ -120,6 +120,7 @@ mod text_border;
 mod text_box;
 mod text_box_content;
 mod text_direction;
+mod ui_priority;
 mod underline;
 mod v_align;
 mod vanish;

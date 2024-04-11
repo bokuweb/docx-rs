@@ -2,9 +2,6 @@ use serde::{Deserialize, Serialize, Serializer};
 
 use crate::{xml_builder::XMLBuilder, BuildXML};
 
-// use crate::documents::BuildXML;
-// use crate::xml_builder::*;
-
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct Caps {
     val: bool,

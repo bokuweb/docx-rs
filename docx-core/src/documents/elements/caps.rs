@@ -42,3 +42,22 @@ impl BuildXML for Caps {
         b.caps(&self.val.to_string()).build()
     }
 }
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+    #[cfg(test)]
+    use pretty_assertions::assert_eq;
+    use std::str;
+
+    #[test]
+    fn test_build() {
+        let c = Caps::new();
+        let b = c.clone().build();
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:caps w:val="true" />"#);
+
+        let b = c.disable().build();
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:caps w:val="false" />"#);
+    }
+}

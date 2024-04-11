@@ -8,6 +8,7 @@ import {
 import { LineSpacingJSON } from "./line_spacing";
 import { FrameProperty as FramePropertyJSON } from "./bindings/FrameProperty";
 import { TextAlignmentType } from "./bindings/TextAlignmentType";
+import { AlignmentType } from "./bindings/AlignmentType";
 
 export { FrameProperty as FramePropertyJSON } from "./bindings/FrameProperty";
 
@@ -56,15 +57,7 @@ export type ParagraphPropertyJSON = {
   runProperty: RunPropertyJSON;
   style?: string | null;
   numberingProperty?: NumberingPropertyJSON | null;
-  alignment?:
-    | "left"
-    | "center"
-    | "right"
-    | "justified"
-    | "both"
-    | "start"
-    | "end"
-    | "unsupported";
+  alignment?: AlignmentType;
   textAlignment?: TextAlignmentType;
   adjustRightInd?: number;
   indent?: IndentJSON | null;

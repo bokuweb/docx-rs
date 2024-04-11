@@ -1,3 +1,4 @@
+use serde::Serialize;
 use std::fmt;
 use std::str::FromStr;
 #[cfg(feature = "wasm")]
@@ -6,7 +7,10 @@ use wasm_bindgen::prelude::*;
 use super::errors;
 
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
-#[derive(Copy, Clone, Debug)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+#[derive(Copy, Clone, Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum AlignmentType {
     Both,
     Center,
@@ -16,7 +20,6 @@ pub enum AlignmentType {
     Left,
     Right,
     Justified,
-    Unsupported,
 }
 
 impl fmt::Display for AlignmentType {
@@ -30,7 +33,6 @@ impl fmt::Display for AlignmentType {
             AlignmentType::End => write!(f, "end"),
             AlignmentType::Both => write!(f, "both"),
             AlignmentType::Justified => write!(f, "justified"),
-            _ => write!(f, "unsupported"),
         }
     }
 }
@@ -47,7 +49,7 @@ impl FromStr for AlignmentType {
             "start" => Ok(AlignmentType::Start),
             "end" => Ok(AlignmentType::End),
             "justified" => Ok(AlignmentType::Justified),
-            _ => Ok(AlignmentType::Unsupported),
+            _ => Ok(AlignmentType::Left),
         }
     }
 }

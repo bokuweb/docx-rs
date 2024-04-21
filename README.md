@@ -9,6 +9,8 @@
 [![GitHub Actions Status](https://github.com/bokuweb/docx-rs/workflows/Continuous%20Integration/badge.svg)](https://github.com/bokuweb/docx-rs/actions)
 [![docx-rs at crates.io](https://img.shields.io/crates/v/docx-rs.svg)](https://crates.io/crates/docx-rs)
 [![](https://img.shields.io/npm/v/docx-wasm.svg)](https://www.npmjs.com/package/docx-wasm)
+<a href="https://www.npmjs.com/package/docx-wasm">
+<img src="https://img.shields.io/npm/dm/docx-wasm.svg" /></a>
 
 ## Installation
 
@@ -16,7 +18,7 @@
 
 ```
 [dependencies]
-docx-rs = "0.2"
+docx-rs = "0.4"
 ```
 
 ### Browser/Node.js

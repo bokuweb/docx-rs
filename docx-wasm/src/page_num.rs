@@ -76,4 +76,15 @@ impl PageNum {
         self.0.frame_property = Some(self.0.frame_property.unwrap_or_default().height(n));
         self
     }
+
+    // TODO: add other pPr fields
+    pub fn align(mut self, alignment_type: docx_rs::AlignmentType) -> Self {
+        self.0.paragraph_property = Some(
+            self.0
+                .paragraph_property
+                .unwrap_or_default()
+                .align(alignment_type),
+        );
+        self
+    }
 }

@@ -9,6 +9,8 @@ pub struct PageNum {
     pub instr: InstrPAGE,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub frame_property: Option<FrameProperty>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub paragraph_property: Option<ParagraphProperty>,
 }
 
 impl Default for PageNum {
@@ -16,6 +18,7 @@ impl Default for PageNum {
         Self {
             instr: InstrPAGE {},
             frame_property: None,
+            paragraph_property: None,
         }
     }
 }
@@ -121,6 +124,15 @@ impl PageNum {
         self
     }
 
+    pub fn align(mut self, alignment_type: AlignmentType) -> Self {
+        self.paragraph_property = Some(
+            self.paragraph_property
+                .unwrap_or_default()
+                .align(alignment_type),
+        );
+        self
+    }
+
     fn inner_build(&self) -> Vec<u8> {
         let p = StructuredDataTagProperty::new();
         let mut b = XMLBuilder::new();
@@ -138,6 +150,10 @@ impl PageNum {
                 .add_text("1")
                 .add_field_char(FieldCharType::End, false),
         );
+
+        if let Some(ref pr) = self.paragraph_property {
+            p.property = pr.clone();
+        }
 
         if let Some(ref f) = self.frame_property {
             p.property.frame_property = Some(f.clone());

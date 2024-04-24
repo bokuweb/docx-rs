@@ -3,15 +3,9 @@ import { RunProperty, createDefaultRunProperty } from "./run";
 import * as wasm from "./pkg";
 import { TextAlignmentType } from "./json/bindings/TextAlignmentType";
 import { Tab } from "./json/bindings/Tab";
+import { AlignmentType } from "./json/bindings/AlignmentType";
 
-export type AlignmentType =
-  | "center"
-  | "left"
-  | "right"
-  | "both"
-  | "justified"
-  | "distribute"
-  | "end";
+export { AlignmentType } from "./json/bindings/AlignmentType";
 
 export type SpecialIndentKind = "firstLine" | "hanging";
 

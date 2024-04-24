@@ -1046,7 +1046,7 @@ describe("writer", () => {
 
   test("should write pageNum in header", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello world!!"));
-    const page = new w.PageNum();
+    const page = new w.PageNum().align('center');
     const header = new w.Header().addParagraph(p).addPageNum(page);
     const buffer = new w.Docx().header(header).addParagraph(p).build();
 

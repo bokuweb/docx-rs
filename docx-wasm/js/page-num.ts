@@ -1,3 +1,9 @@
+import {
+  AlignmentType,
+  ParagraphProperty,
+  createDefaultParagraphProperty,
+  createParagraphAlignment,
+} from "./paragraph-property";
 import * as wasm from "./pkg/docx_wasm";
 
 export type FrameProperty = {
@@ -17,6 +23,7 @@ export type FrameProperty = {
 
 export class PageNum {
   frameProperty: FrameProperty | null = null;
+  paragraphProperty: ParagraphProperty | null = null;
 
   height(h: number) {
     this.frameProperty = { ...this.frameProperty };
@@ -89,6 +96,14 @@ export class PageNum {
     return this;
   }
 
+  align(align: AlignmentType) {
+    this.paragraphProperty = {
+      ...createDefaultParagraphProperty(),
+      align,
+    };
+    return this;
+  }
+
   build() {
     let pageNum = wasm.createPageNum();
     if (this.frameProperty?.h != null) {
@@ -126,6 +141,12 @@ export class PageNum {
     }
     if (this.frameProperty?.yAlign != null) {
       pageNum = pageNum.y_align(this.frameProperty.yAlign);
+    }
+    if (this.paragraphProperty?.align != null) {
+      const align = createParagraphAlignment(this.paragraphProperty.align);
+      if (align) {
+        pageNum = pageNum.align(align);
+      }
     }
     return pageNum;
   }

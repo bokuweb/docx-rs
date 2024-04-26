@@ -10,8 +10,7 @@
     "noEmitOnError": true,
     "strictNullChecks": true,
     "target": "es6",
-    "lib": ["ES2017"],
-    "sourceMap": true,
+    "lib": ["ES2017", "DOM"],
     "esModuleInterop": true,
     "outDir": "dist/web",
     "declaration": true

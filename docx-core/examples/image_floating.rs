@@ -15,6 +15,7 @@ pub fn main() -> Result<(), DocxError> {
         .floating()
         .offset_x(300 * 9525)
         .offset_y(400 * 9525);
+
     Docx::new()
         .add_paragraph(Paragraph::new().add_run(Run::new().add_image(pic)))
         .build()

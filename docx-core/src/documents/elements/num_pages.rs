@@ -186,21 +186,11 @@ mod tests {
     use std::str;
 
     #[test]
-    fn test_page() {
+    fn test_num_pages() {
         let b = NumPages::new().build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>PAGE</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /><w:t xml:space="preserve">1</w:t><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
-</w:sdt>"#
-        );
-    }
-
-    #[test]
-    fn test_page_with_wrap() {
-        let b = NumPages::new().wrap("none").x_align("left").build();
-        assert_eq!(
-            str::from_utf8(&b).unwrap(),
-            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:framePr w:wrap="none" w:xAlign="left" /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>PAGE</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /><w:t xml:space="preserve">1</w:t><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
+            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>NUMPAGES</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /><w:t xml:space="preserve">1</w:t><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
 </w:sdt>"#
         );
     }

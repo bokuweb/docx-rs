@@ -66,7 +66,7 @@ impl Serialize for InstrText {
             }
             InstrText::NUMPAGES(ref s) => {
                 let mut t = serializer.serialize_struct("NUMPAGES", 2)?;
-                t.serialize_field("type", "numpages")?;
+                t.serialize_field("type", "numPages")?;
                 t.serialize_field("data", s)?;
                 t.end()
             }

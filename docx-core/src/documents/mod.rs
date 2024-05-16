@@ -926,6 +926,7 @@ impl Docx {
                         );
                     }
                     HeaderChild::PageNum(_) => {}
+                    HeaderChild::NumPages(_) => {}
                     HeaderChild::StructuredDataTag(tag) => {
                         for child in tag.children.iter_mut() {
                             if let StructuredDataTagChild::Paragraph(paragraph) = child {
@@ -972,6 +973,7 @@ impl Docx {
                         );
                     }
                     HeaderChild::PageNum(_) => {}
+                    HeaderChild::NumPages(_) => {}
                     HeaderChild::StructuredDataTag(tag) => {
                         for child in tag.children.iter_mut() {
                             if let StructuredDataTagChild::Paragraph(paragraph) = child {
@@ -1018,6 +1020,7 @@ impl Docx {
                         );
                     }
                     HeaderChild::PageNum(_) => {}
+                    HeaderChild::NumPages(_) => {}
                     HeaderChild::StructuredDataTag(tag) => {
                         for child in tag.children.iter_mut() {
                             if let StructuredDataTagChild::Paragraph(paragraph) = child {
@@ -1063,6 +1066,7 @@ impl Docx {
                         );
                     }
                     FooterChild::PageNum(_) => {}
+                    FooterChild::NumPages(_) => {}
                     FooterChild::Table(table) => {
                         collect_images_from_table(
                             table,
@@ -1109,6 +1113,7 @@ impl Docx {
                         );
                     }
                     FooterChild::PageNum(_) => {}
+                    FooterChild::NumPages(_) => {}
                     FooterChild::Table(table) => {
                         collect_images_from_table(
                             table,
@@ -1155,6 +1160,7 @@ impl Docx {
                         );
                     }
                     FooterChild::PageNum(_) => {}
+                    FooterChild::NumPages(_) => {}
                     FooterChild::Table(table) => {
                         collect_images_from_table(
                             table,

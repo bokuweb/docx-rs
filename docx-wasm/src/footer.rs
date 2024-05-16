@@ -32,4 +32,9 @@ impl Footer {
         self.0 = self.0.add_page_num(t.take());
         self
     }
+
+    pub fn add_num_pages(mut self, t: NumPages) -> Self {
+        self.0 = self.0.add_num_pages(t.take());
+        self
+    }
 }

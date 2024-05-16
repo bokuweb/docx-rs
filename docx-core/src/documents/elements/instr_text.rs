@@ -9,6 +9,7 @@ pub enum InstrText {
     TOC(InstrToC),
     TC(InstrTC),
     PAGE(InstrPAGE),
+    NUMPAGES(InstrNUMPAGES),
     PAGEREF(InstrPAGEREF),
     HYPERLINK(InstrHyperlink),
     Unsupported(String),
@@ -21,6 +22,7 @@ impl BuildXML for Box<InstrText> {
             InstrText::TC(tc) => tc.build(),
             InstrText::PAGEREF(page_ref) => page_ref.build(),
             InstrText::PAGE(page) => page.build(),
+            InstrText::NUMPAGES(page) => page.build(),
             InstrText::HYPERLINK(_link) => todo!(),
             InstrText::Unsupported(s) => s.as_bytes().to_vec(),
         };
@@ -59,6 +61,12 @@ impl Serialize for InstrText {
             InstrText::PAGE(ref s) => {
                 let mut t = serializer.serialize_struct("PAGE", 2)?;
                 t.serialize_field("type", "page")?;
+                t.serialize_field("data", s)?;
+                t.end()
+            }
+            InstrText::NUMPAGES(ref s) => {
+                let mut t = serializer.serialize_struct("NUMPAGES", 2)?;
+                t.serialize_field("type", "numpages")?;
                 t.serialize_field("data", s)?;
                 t.end()
             }

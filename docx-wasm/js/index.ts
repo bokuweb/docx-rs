@@ -707,5 +707,6 @@ export * from "./json";
 export * from "./webextension";
 export * from "./header";
 export * from "./page-num";
+export * from "./num-pages";
 export * from "./footer";
 export * from "./image";

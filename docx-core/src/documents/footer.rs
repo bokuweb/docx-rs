@@ -33,16 +33,6 @@ impl Footer {
         self
     }
 
-    pub fn add_page_num(mut self, p: PageNum) -> Self {
-        self.children.push(FooterChild::PageNum(Box::new(p)));
-        self
-    }
-
-    pub fn add_num_pages(mut self, p: NumPages) -> Self {
-        self.children.push(FooterChild::NumPages(Box::new(p)));
-        self
-    }
-
     /// reader only
     pub(crate) fn add_structured_data_tag(mut self, t: StructuredDataTag) -> Self {
         if t.has_numbering {
@@ -58,8 +48,6 @@ impl Footer {
 pub enum FooterChild {
     Paragraph(Box<Paragraph>),
     Table(Box<Table>),
-    PageNum(Box<PageNum>),
-    NumPages(Box<NumPages>),
     StructuredDataTag(Box<StructuredDataTag>),
 }
 
@@ -81,18 +69,6 @@ impl Serialize for FooterChild {
                 t.serialize_field("data", c)?;
                 t.end()
             }
-            FooterChild::PageNum(ref r) => {
-                let mut t = serializer.serialize_struct("PageNum", 2)?;
-                t.serialize_field("type", "pageNum")?;
-                t.serialize_field("data", r)?;
-                t.end()
-            }
-            FooterChild::NumPages(ref r) => {
-                let mut t = serializer.serialize_struct("NumPages", 2)?;
-                t.serialize_field("type", "numPages")?;
-                t.serialize_field("data", r)?;
-                t.end()
-            }
             FooterChild::StructuredDataTag(ref r) => {
                 let mut t = serializer.serialize_struct("StructuredDataTag", 2)?;
                 t.serialize_field("type", "structuredDataTag")?;
@@ -112,8 +88,6 @@ impl BuildXML for Footer {
             match c {
                 FooterChild::Paragraph(p) => b = b.add_child(p),
                 FooterChild::Table(t) => b = b.add_child(t),
-                FooterChild::PageNum(p) => b = b.add_child(p),
-                FooterChild::NumPages(p) => b = b.add_child(p),
                 FooterChild::StructuredDataTag(t) => b = b.add_child(t),
             }
         }

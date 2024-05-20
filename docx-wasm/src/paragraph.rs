@@ -247,6 +247,77 @@ impl Paragraph {
         self.0.property = self.0.property.paragraph_property_change(p.take());
         self
     }
+
+    pub fn add_page_num(mut self, p: PageNum) -> Self {
+        self.0 = self.0.add_page_num(p.take());
+        self
+    }
+
+    pub fn add_num_pages(mut self, p: NumPages) -> Self {
+        self.0 = self.0.add_num_pages(p.take());
+        self
+    }
+
+    // frame property
+    pub fn wrap(mut self, wrap: &str) -> Self {
+        self.0 = self.0.wrap(wrap);
+        self
+    }
+
+    pub fn v_anchor(mut self, anchor: &str) -> Self {
+        self.0 = self.0.v_anchor(anchor);
+        self
+    }
+
+    pub fn h_anchor(mut self, anchor: &str) -> Self {
+        self.0 = self.0.h_anchor(anchor);
+        self
+    }
+
+    pub fn h_rule(mut self, r: &str) -> Self {
+        self.0 = self.0.h_rule(r);
+        self
+    }
+
+    pub fn x_align(mut self, align: &str) -> Self {
+        self.0 = self.0.x_align(align);
+        self
+    }
+
+    pub fn y_align(mut self, align: &str) -> Self {
+        self.0 = self.0.y_align(align);
+        self
+    }
+
+    pub fn h_space(mut self, x: i32) -> Self {
+        self.0 = self.0.h_space(x);
+        self
+    }
+
+    pub fn v_space(mut self, x: i32) -> Self {
+        self.0 = self.0.v_space(x);
+        self
+    }
+
+    pub fn frame_x(mut self, x: i32) -> Self {
+        self.0 = self.0.frame_x(x);
+        self
+    }
+
+    pub fn frame_y(mut self, y: i32) -> Self {
+        self.0 = self.0.frame_y(y);
+        self
+    }
+
+    pub fn frame_width(mut self, n: u32) -> Self {
+        self.0 = self.0.frame_width(n);
+        self
+    }
+
+    pub fn frame_height(mut self, n: u32) -> Self {
+        self.0 = self.0.frame_height(n);
+        self
+    }
 }
 
 impl Paragraph {

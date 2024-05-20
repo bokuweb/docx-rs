@@ -449,7 +449,7 @@ impl Paragraph {
         self
     }
 
-    pub fn x(mut self, x: i32) -> Self {
+    pub fn frame_x(mut self, x: i32) -> Self {
         self.property.frame_property = Some(FrameProperty {
             x: Some(x),
             ..self.property.frame_property.unwrap_or_default()
@@ -457,7 +457,7 @@ impl Paragraph {
         self
     }
 
-    pub fn y(mut self, y: i32) -> Self {
+    pub fn frame_y(mut self, y: i32) -> Self {
         self.property.frame_property = Some(FrameProperty {
             y: Some(y),
             ..self.property.frame_property.unwrap_or_default()
@@ -465,7 +465,7 @@ impl Paragraph {
         self
     }
 
-    pub fn width(mut self, n: u32) -> Self {
+    pub fn frame_width(mut self, n: u32) -> Self {
         self.property.frame_property = Some(FrameProperty {
             w: Some(n),
             ..self.property.frame_property.unwrap_or_default()
@@ -473,7 +473,7 @@ impl Paragraph {
         self
     }
 
-    pub fn height(mut self, n: u32) -> Self {
+    pub fn frame_height(mut self, n: u32) -> Self {
         self.property.frame_property = Some(FrameProperty {
             h: Some(n),
             ..self.property.frame_property.unwrap_or_default()

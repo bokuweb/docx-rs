@@ -11,6 +11,21 @@ export type SpecialIndentKind = "firstLine" | "hanging";
 
 export type LineSpacingType = "atLeast" | "auto" | "exact";
 
+export type FrameProperty = {
+  h?: number;
+  hRule?: string;
+  hAnchor?: string;
+  hSpace?: number;
+  vAnchor?: string;
+  vSpace?: number;
+  w?: number;
+  wrap?: string;
+  x?: number;
+  xAlign?: string;
+  y?: number;
+  yAlign?: string;
+};
+
 export class LineSpacing {
   _before?: number;
   _after?: number;
@@ -69,6 +84,7 @@ export type ParagraphProperty = {
   outlineLvl?: number | null;
   adjustRightInd?: number;
   tabs?: Tab[];
+  frameProperty?: FrameProperty;
 };
 
 export const createDefaultParagraphProperty = (): ParagraphProperty => {
@@ -392,6 +408,45 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
           break;
       }
       target = target.add_tab(val, leader, tab.pos ?? undefined) as T;
+    }
+  }
+
+  if (property.frameProperty) {
+    if (property.frameProperty?.h != null) {
+      target = target.frame_height(property.frameProperty.h) as T;
+    }
+    if (property.frameProperty?.hRule != null) {
+      target = target.h_rule(property.frameProperty.hRule) as T;
+    }
+    if (property.frameProperty?.hAnchor != null) {
+      target = target.h_anchor(property.frameProperty.hAnchor) as T;
+    }
+    if (property.frameProperty?.hSpace != null) {
+      target = target.h_space(property.frameProperty.hSpace) as T;
+    }
+    if (property.frameProperty?.vAnchor != null) {
+      target = target.v_anchor(property.frameProperty.vAnchor) as T;
+    }
+    if (property.frameProperty?.vSpace != null) {
+      target = target.v_space(property.frameProperty.vSpace) as T;
+    }
+    if (property.frameProperty?.w != null) {
+      target = target.frame_width(property.frameProperty.w) as T;
+    }
+    if (property.frameProperty?.wrap != null) {
+      target = target.wrap(property.frameProperty.wrap) as T;
+    }
+    if (property.frameProperty?.x != null) {
+      target = target.frame_x(property.frameProperty.x) as T;
+    }
+    if (property.frameProperty?.xAlign != null) {
+      target = target.x_align(property.frameProperty.xAlign) as T;
+    }
+    if (property.frameProperty?.y != null) {
+      target = target.frame_y(property.frameProperty.y) as T;
+    }
+    if (property.frameProperty?.yAlign != null) {
+      target = target.y_align(property.frameProperty.yAlign) as T;
     }
   }
 

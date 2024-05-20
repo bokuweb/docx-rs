@@ -25,8 +25,6 @@ import { DocGridType, DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
 import { Level } from "./level";
-import { PageNum } from "./page-num";
-import { NumPages } from "./num-pages";
 
 export class Docx {
   children: (
@@ -426,12 +424,6 @@ export class Docx {
           header = header.add_paragraph(build(c));
         } else if (c instanceof Table) {
           header = header.add_table(c.build());
-        } else if (c instanceof PageNum) {
-          const p = c.build();
-          header = header.add_page_num(p);
-        } else if (c instanceof NumPages) {
-          const p = c.build();
-          header = header.add_num_pages(p);
         }
       });
       docx = docx.header(header);
@@ -444,12 +436,6 @@ export class Docx {
           header = header.add_paragraph(build(c));
         } else if (c instanceof Table) {
           header = header.add_table(c.build());
-        } else if (c instanceof PageNum) {
-          const p = c.build();
-          header = header.add_page_num(p);
-        } else if (c instanceof NumPages) {
-          const p = c.build();
-          header = header.add_num_pages(p);
         }
       });
       docx = docx.first_header(header);
@@ -462,12 +448,6 @@ export class Docx {
           header = header.add_paragraph(build(c));
         } else if (c instanceof Table) {
           header = header.add_table(c.build());
-        } else if (c instanceof PageNum) {
-          const p = c.build();
-          header = header.add_page_num(p);
-        } else if (c instanceof NumPages) {
-          const p = c.build();
-          header = header.add_num_pages(p);
         }
       });
       docx = docx.even_header(header);
@@ -480,12 +460,6 @@ export class Docx {
           footer = footer.add_paragraph(build(c));
         } else if (c instanceof Table) {
           footer = footer.add_table(c.build());
-        } else if (c instanceof PageNum) {
-          const p = c.build();
-          footer = footer.add_page_num(p);
-        } else if (c instanceof NumPages) {
-          const p = c.build();
-          footer = footer.add_num_pages(p);
         }
       });
       docx = docx.footer(footer);
@@ -498,12 +472,6 @@ export class Docx {
           footer = footer.add_paragraph(build(c));
         } else if (c instanceof Table) {
           footer = footer.add_table(c.build());
-        } else if (c instanceof PageNum) {
-          const p = c.build();
-          footer = footer.add_page_num(p);
-        } else if (c instanceof NumPages) {
-          const p = c.build();
-          footer = footer.add_num_pages(p);
         }
       });
       docx = docx.first_footer(footer);
@@ -516,12 +484,6 @@ export class Docx {
           footer = footer.add_paragraph(build(c));
         } else if (c instanceof Table) {
           footer = footer.add_table(c.build());
-        } else if (c instanceof PageNum) {
-          const p = c.build();
-          footer = footer.add_page_num(p);
-        } else if (c instanceof NumPages) {
-          const p = c.build();
-          footer = footer.add_num_pages(p);
         }
       });
       docx = docx.even_footer(footer);

@@ -39,6 +39,7 @@ pub enum RunChild {
     DeleteInstrText(Box<DeleteInstrText>),
     // For reader
     InstrTextString(String),
+    FootnoteReference(FootnoteReference),
 }
 
 impl Serialize for RunChild {
@@ -122,6 +123,12 @@ impl Serialize for RunChild {
                 let mut t = serializer.serialize_struct("InstrTextString", 2)?;
                 t.serialize_field("type", "instrTextString")?;
                 t.serialize_field("data", i)?;
+                t.end()
+            }
+            RunChild::FootnoteReference(ref f) => {
+                let mut t = serializer.serialize_struct("FootnoteReference", 2)?;
+                t.serialize_field("type", "footnoteReference")?;
+                t.serialize_field("data", f)?;
                 t.end()
             }
         }
@@ -283,6 +290,13 @@ impl Run {
         self.run_property = p;
         self
     }
+
+    pub fn add_footnote_reference(mut self, footnote: Footnote) -> Run {
+        self.run_property = RunProperty::new().style("FootnoteReference");
+        self.children
+            .push(RunChild::FootnoteReference(footnote.into()));
+        self
+    }
 }
 
 impl BuildXML for Run {
@@ -306,6 +320,7 @@ impl BuildXML for Run {
                 RunChild::InstrText(c) => b = b.add_child(c),
                 RunChild::DeleteInstrText(c) => b = b.add_child(c),
                 RunChild::InstrTextString(_) => unreachable!(),
+                RunChild::FootnoteReference(c) => b = b.add_child(c),
             }
         }
         b.close().build()
@@ -374,6 +389,15 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&run).unwrap(),
             r#"{"runProperty":{"sz":30,"szCs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true,"characterSpacing":100},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#,
+        );
+    }
+
+    #[test]
+    fn test_run_footnote_reference() {
+        let c = RunChild::FootnoteReference(FootnoteReference::new(1));
+        assert_eq!(
+            serde_json::to_string(&c).unwrap(),
+            r#"{"type":"footnoteReference","data":{"id":1}}"#
         );
     }
 }

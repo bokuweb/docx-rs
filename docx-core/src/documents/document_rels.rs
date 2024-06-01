@@ -9,6 +9,7 @@ use crate::{escape::*, xml_builder::*};
 pub struct DocumentRels {
     pub has_comments: bool,
     pub has_numberings: bool,
+    pub has_footnotes: bool,
     pub images: Vec<(String, String)>,
     pub hyperlinks: Vec<(String, String, String)>,
     pub custom_xml_count: usize,
@@ -83,6 +84,14 @@ impl BuildXML for DocumentRels {
                 "rId7",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering",
                 "numbering.xml",
+            )
+        }
+
+        if self.has_footnotes {
+            b = b.relationship(
+                "rId8",
+                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes",
+                "footnotes.xml",
             )
         }
 

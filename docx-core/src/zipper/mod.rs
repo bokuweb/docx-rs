@@ -45,6 +45,8 @@ where
     zip.write_all(&xml.numberings)?;
     zip.start_file("word/commentsExtended.xml", options)?;
     zip.write_all(&xml.comments_extended)?;
+    zip.start_file("word/footnotes.xml", options)?;
+    zip.write_all(&xml.footnotes)?;
 
     for (i, h) in xml.headers.iter().enumerate() {
         zip.start_file(format!("word/header{}.xml", i + 1), options)?;

@@ -730,6 +730,18 @@ impl XMLBuilder {
 
         self.close()
     }
+
+    // FootnoteReference
+    // w:footnoteReference w:id="1"
+    pub(crate) fn footnote_reference(mut self, id: usize) -> Self {
+        self.writer
+            .write(XmlEvent::start_element("w:footnoteReference").attr("w:id", &id.to_string()))
+            .expect(EXPECT_MESSAGE);
+        self.close()
+    }
+
+    // Footnotes
+    open!(open_footnote, "w:footnote", "w:id");
 }
 
 #[cfg(test)]
@@ -787,6 +799,16 @@ mod tests {
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:basedOn w:val="Normal" />"#
+        );
+    }
+
+    #[test]
+    fn test_footnote_reference() {
+        let b = XMLBuilder::new();
+        let r = b.footnote_reference(1).build();
+        assert_eq!(
+            str::from_utf8(&r).unwrap(),
+            r#"<w:footnoteReference w:id="1" />"#
         );
     }
 }

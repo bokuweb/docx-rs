@@ -100,14 +100,14 @@ writeFileSync("hello.docx", buffer);
 You can run example with following code.
 Please see `examples` directory.
 
-``` sh
+```sh
 $ cargo run --example [EXAMPLE_NAME]
 ```
 
 For Example if you want to run `hello` example.
 Please run following command.
 
-``` sh
+```sh
 $ cargo run --example hello
 ```
 
@@ -165,6 +165,7 @@ $ yarn test -- --updateSnapshot
   - [x] vanish
   - [x] Italic
   - [x] TextBorder
+  - [x] Footnote
 - [x] Break
 - [x] Header
 - [x] Footer
@@ -176,4 +177,3 @@ $ yarn test -- --updateSnapshot
 - [x] Table of contents
 - [ ] Section
 - [ ] Textbox
-

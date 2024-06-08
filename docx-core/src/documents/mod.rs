@@ -16,6 +16,7 @@ mod font_table;
 mod footer;
 mod footer_id;
 mod footer_rels;
+mod footnotes;
 mod header;
 mod header_id;
 mod header_rels;
@@ -61,6 +62,7 @@ pub use font_table::*;
 pub use footer::*;
 pub use footer_id::*;
 pub use footer_rels::*;
+pub use footnotes::*;
 pub use header::*;
 pub use header_id::*;
 pub use header_rels::*;
@@ -137,6 +139,7 @@ pub struct Docx {
     pub images: Vec<(String, String, Image, Png)>,
     // reader only
     pub hyperlinks: Vec<(String, String, String)>,
+    pub footnotes: Footnotes,
 }
 
 impl Default for Docx {
@@ -154,6 +157,7 @@ impl Default for Docx {
         let media = vec![];
         let comments_extended = CommentsExtended::new();
         let web_settings = WebSettings::new();
+        let footnotes = Footnotes::default();
 
         Docx {
             content_type,
@@ -178,6 +182,7 @@ impl Default for Docx {
             themes: vec![],
             images: vec![],
             hyperlinks: vec![],
+            footnotes,
         }
     }
 }
@@ -592,6 +597,13 @@ impl Docx {
             .map(|h| h.build())
             .collect();
 
+        // Collect footnotes
+        if self.collect_footnotes() {
+            // Relationship entry for footnotes
+            self.content_type = self.content_type.add_footnotes();
+            self.document_rels.has_footnotes = true;
+        }
+
         XMLDocx {
             content_type: self.content_type.build(),
             rels: self.rels.build(),
@@ -615,6 +627,7 @@ impl Docx {
             custom_items,
             custom_item_rels,
             custom_item_props,
+            footnotes: self.footnotes.build(),
         }
     }
 
@@ -1188,6 +1201,33 @@ impl Docx {
             footer_images[2] = images;
         }
         (footer_images, image_bufs)
+    }
+
+    /// Collect footnotes from all Runs to the docx footnotes node.
+    pub fn collect_footnotes(&mut self) -> bool {
+        let footnotes: Vec<Footnote> = self
+            .document
+            .children
+            .iter()
+            .filter_map(|child| match child {
+                DocumentChild::Paragraph(paragraph) => Some(&paragraph.children),
+                _ => None,
+            })
+            .flat_map(|children| children.iter())
+            .filter_map(|para_child| match para_child {
+                ParagraphChild::Run(run) => Some(&run.children),
+                _ => None,
+            })
+            .flat_map(|children| children.iter())
+            .filter_map(|run_child| match run_child {
+                RunChild::FootnoteReference(footnote_ref) => Some(footnote_ref),
+                _ => None,
+            })
+            .map(Into::<Footnote>::into)
+            .collect();
+        let is_footnotes = !footnotes.is_empty();
+        self.footnotes.add(footnotes);
+        is_footnotes
     }
 }
 

@@ -37,6 +37,8 @@ pub enum ParagraphChild {
     CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
     StructuredDataTag(Box<StructuredDataTag>),
+    PageNum(Box<PageNum>),
+    NumPages(Box<NumPages>),
 }
 
 impl BuildXML for ParagraphChild {
@@ -51,6 +53,8 @@ impl BuildXML for ParagraphChild {
             ParagraphChild::CommentStart(v) => v.build(),
             ParagraphChild::CommentEnd(v) => v.build(),
             ParagraphChild::StructuredDataTag(v) => v.build(),
+            ParagraphChild::PageNum(v) => v.build(),
+            ParagraphChild::NumPages(v) => v.build(),
         }
     }
 }
@@ -112,6 +116,18 @@ impl Serialize for ParagraphChild {
             ParagraphChild::StructuredDataTag(ref r) => {
                 let mut t = serializer.serialize_struct("StructuredDataTag", 2)?;
                 t.serialize_field("type", "structuredDataTag")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            ParagraphChild::PageNum(ref r) => {
+                let mut t = serializer.serialize_struct("PageNum", 2)?;
+                t.serialize_field("type", "pageNum")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            ParagraphChild::NumPages(ref r) => {
+                let mut t = serializer.serialize_struct("NumPages", 2)?;
+                t.serialize_field("type", "numPages")?;
                 t.serialize_field("data", r)?;
                 t.end()
             }
@@ -356,6 +372,113 @@ impl Paragraph {
             }
         }
         s
+    }
+
+    pub fn add_page_num(mut self, p: PageNum) -> Self {
+        self.children.push(ParagraphChild::PageNum(Box::new(p)));
+        self
+    }
+
+    pub fn add_num_pages(mut self, p: NumPages) -> Self {
+        self.children.push(ParagraphChild::NumPages(Box::new(p)));
+        self
+    }
+
+    // frameProperty
+    pub fn wrap(mut self, wrap: impl Into<String>) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            wrap: Some(wrap.into()),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn v_anchor(mut self, anchor: impl Into<String>) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            v_anchor: Some(anchor.into()),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn h_anchor(mut self, anchor: impl Into<String>) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            h_anchor: Some(anchor.into()),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn h_rule(mut self, r: impl Into<String>) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            h_rule: Some(r.into()),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn x_align(mut self, align: impl Into<String>) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            x_align: Some(align.into()),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn y_align(mut self, align: impl Into<String>) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            y_align: Some(align.into()),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn h_space(mut self, x: i32) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            h_space: Some(x),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn v_space(mut self, x: i32) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            v_space: Some(x),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn frame_x(mut self, x: i32) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            x: Some(x),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn frame_y(mut self, y: i32) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            y: Some(y),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn frame_width(mut self, n: u32) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            w: Some(n),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn frame_height(mut self, n: u32) -> Self {
+        self.property.frame_property = Some(FrameProperty {
+            h: Some(n),
+            ..self.property.frame_property.unwrap_or_default()
+        });
+        self
     }
 }
 

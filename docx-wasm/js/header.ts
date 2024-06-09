@@ -1,10 +1,9 @@
-import { PageNum } from "./page-num";
 import { Paragraph } from "./paragraph";
 import { Table } from "./table";
 
 export class Header {
   hasNumberings = false;
-  children: (Paragraph | Table | PageNum)[] = [];
+  children: (Paragraph | Table)[] = [];
 
   addParagraph(p: Paragraph) {
     if (p.hasNumberings) {
@@ -19,11 +18,6 @@ export class Header {
       this.hasNumberings = true;
     }
     this.children.push(t);
-    return this;
-  }
-
-  addPageNum(p: PageNum) {
-    this.children.push(p);
     return this;
   }
 }

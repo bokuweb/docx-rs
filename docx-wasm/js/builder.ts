@@ -11,6 +11,8 @@ import { Hyperlink, convertHyperlinkType } from "./hyperlink";
 import { setParagraphProperty } from "./paragraph-property";
 
 import * as wasm from "./pkg";
+import { PageNum } from "./page-num";
+import { NumPages } from "./num-pages";
 
 type Child = Paragraph | Table | Comment | Hyperlink;
 
@@ -64,6 +66,10 @@ function buildParagraph(child: Paragraph) {
       paragraph = paragraph.add_comment_start(comment as wasm.Comment);
     } else if (child instanceof CommentEnd) {
       paragraph = paragraph.add_comment_end(child.id);
+    } else if (child instanceof PageNum) {
+      paragraph = paragraph.add_page_num(wasm.createPageNum());
+    } else if (child instanceof NumPages) {
+      paragraph = paragraph.add_num_pages(wasm.createNumPages());
     }
   });
 

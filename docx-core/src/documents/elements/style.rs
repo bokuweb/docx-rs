@@ -215,6 +215,103 @@ impl Style {
         self.table_cell_property = p;
         self
     }
+
+    // frameProperty
+    pub fn wrap(mut self, wrap: impl Into<String>) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            wrap: Some(wrap.into()),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn v_anchor(mut self, anchor: impl Into<String>) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            v_anchor: Some(anchor.into()),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn h_anchor(mut self, anchor: impl Into<String>) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            h_anchor: Some(anchor.into()),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn h_rule(mut self, r: impl Into<String>) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            h_rule: Some(r.into()),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn x_align(mut self, align: impl Into<String>) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            x_align: Some(align.into()),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn y_align(mut self, align: impl Into<String>) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            y_align: Some(align.into()),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn h_space(mut self, x: i32) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            h_space: Some(x),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn v_space(mut self, x: i32) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            v_space: Some(x),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn frame_x(mut self, x: i32) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            x: Some(x),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn frame_y(mut self, y: i32) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            y: Some(y),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn frame_width(mut self, n: u32) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            w: Some(n),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
+
+    pub fn frame_height(mut self, n: u32) -> Self {
+        self.paragraph_property.frame_property = Some(FrameProperty {
+            h: Some(n),
+            ..self.paragraph_property.frame_property.unwrap_or_default()
+        });
+        self
+    }
 }
 
 impl BuildXML for Style {

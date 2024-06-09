@@ -29,7 +29,7 @@ impl From<Footnote> for FootnoteReference {
         FootnoteReference {
             id: footnote.id,
             style: "FootnoteReference".to_string(),
-            content: footnote.content.clone(),
+            content: footnote.content,
         }
     }
 }

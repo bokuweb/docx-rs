@@ -20,7 +20,7 @@ impl TableWidth {
 impl BuildXML for TableWidth {
     fn build(&self) -> Vec<u8> {
         XMLBuilder::new()
-            .table_width(self.width as i32, WidthType::Dxa)
+            .table_width(self.width as i32, self.width_type)
             .build()
     }
 }

@@ -16,6 +16,7 @@ mod font_table;
 mod footer;
 mod footer_id;
 mod footer_rels;
+mod footnote_id;
 mod footnotes;
 mod header;
 mod header_id;

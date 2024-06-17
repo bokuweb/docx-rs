@@ -9,7 +9,7 @@ pub fn main() -> Result<(), DocxError> {
                 .add_run(Run::new().add_text("Hello"))
                 .add_run(
                     Run::new().add_footnote_reference(
-                        Footnote::new(1)
+                        Footnote::new()
                             .add_content(Paragraph::new().add_run(Run::new().add_text("World"))),
                     ),
                 ),

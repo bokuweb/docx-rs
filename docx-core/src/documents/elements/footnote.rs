@@ -2,6 +2,7 @@ use serde::Serialize;
 
 use crate::documents::*;
 use crate::xml_builder::*;
+use footnote_id::generate_footnote_id;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
@@ -20,9 +21,9 @@ impl Default for Footnote {
 }
 
 impl Footnote {
-    pub fn new(id: usize) -> Self {
+    pub fn new() -> Self {
         Self {
-            id,
+            id: generate_footnote_id(),
             ..Default::default()
         }
     }
@@ -72,7 +73,7 @@ mod tests {
 
     #[test]
     fn test_footnote_build_default() {
-        let b = Footnote::new(1).build();
+        let b = Footnote::new().build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:footnote w:id="1"><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:footnote>"#
@@ -81,7 +82,7 @@ mod tests {
 
     #[test]
     fn test_footnote_build_with_paragraph() {
-        let b = Footnote::new(1)
+        let b = Footnote::new()
             .add_content(Paragraph::new().add_run(Run::new().add_text("hello")))
             .build();
         assert_eq!(

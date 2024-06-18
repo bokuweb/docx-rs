@@ -40,6 +40,7 @@ pub enum RunChild {
     // For reader
     InstrTextString(String),
     Shading(Shading),
+    FootnoteReference(FootnoteReference),
 }
 
 impl Serialize for RunChild {
@@ -125,9 +126,17 @@ impl Serialize for RunChild {
                 t.serialize_field("data", i)?;
                 t.end()
             }
+
             RunChild::Shading(ref f) => {
                 let mut t = serializer.serialize_struct("Shading", 2)?;
                 t.serialize_field("type", "shading")?;
+                t.serialize_field("data", f)?;
+                t.end()
+            }
+
+            RunChild::FootnoteReference(ref f) => {
+                let mut t = serializer.serialize_struct("FootnoteReference", 2)?;
+                t.serialize_field("type", "footnoteReference")?;
                 t.serialize_field("data", f)?;
                 t.end()
             }
@@ -295,6 +304,13 @@ impl Run {
         self.run_property = self.run_property.shading(shading);
         self
     }
+  
+    pub fn add_footnote_reference(mut self, footnote: Footnote) -> Run {
+        self.run_property = RunProperty::new().style("FootnoteReference");
+        self.children
+            .push(RunChild::FootnoteReference(footnote.into()));
+        self
+    }
 }
 
 impl BuildXML for Run {
@@ -319,6 +335,7 @@ impl BuildXML for Run {
                 RunChild::DeleteInstrText(c) => b = b.add_child(c),
                 RunChild::InstrTextString(_) => unreachable!(),
                 RunChild::Shading(s) => b = b.add_child(s),
+                RunChild::FootnoteReference(c) => b = b.add_child(c),
             }
         }
         b.close().build()
@@ -396,6 +413,15 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
             r#"{"type":"shading","data":{"shdType":"clear","color":"auto","fill":"FFFFFF"}}"#
+        );
+    }
+  
+    #[test]
+    fn test_run_footnote_reference() {
+        let c = RunChild::FootnoteReference(FootnoteReference::new(1));
+        assert_eq!(
+            serde_json::to_string(&c).unwrap(),
+            r#"{"type":"footnoteReference","data":{"id":1}}"#
         );
     }
 }

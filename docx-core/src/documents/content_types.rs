@@ -130,6 +130,14 @@ impl ContentTypes {
         );
         self
     }
+    pub fn add_footnotes(mut self) -> Self {
+        self.types.insert(
+            "/word/footnotes.xml".to_owned(),
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.footnotes+xml"
+                .to_owned(),
+        );
+        self
+    }
 }
 
 impl Default for ContentTypes {

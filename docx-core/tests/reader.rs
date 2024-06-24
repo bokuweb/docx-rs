@@ -274,3 +274,18 @@ pub fn read_line_spacing() {
     file.write_all(json.as_bytes()).unwrap();
     file.flush().unwrap();
 }
+
+#[test]
+pub fn read_footnotes() {
+    let mut file = File::open("../fixtures/footnotes/footnotes.docx").unwrap();
+    let mut buf = vec![];
+    file.read_to_end(&mut buf).unwrap();
+    let json = read_docx(&buf).unwrap().json();
+
+    assert_json_snapshot!("read_footnotes", &json);
+
+    let path = std::path::Path::new("./tests/output/footnotes.json");
+    let mut file = std::fs::File::create(path).unwrap();
+    file.write_all(json.as_bytes()).unwrap();
+    file.flush().unwrap();
+}

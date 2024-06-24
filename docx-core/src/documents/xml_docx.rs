@@ -28,6 +28,7 @@ pub struct XMLDocx {
     pub custom_items: Vec<Vec<u8>>,
     pub custom_item_rels: Vec<Vec<u8>>,
     pub custom_item_props: Vec<Vec<u8>>,
+    pub footnotes: Vec<u8>,
 }
 
 impl XMLDocx {

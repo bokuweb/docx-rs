@@ -77,6 +77,11 @@ impl TableRow {
         self.property = self.property.insert(i);
         self
     }
+
+    pub fn cant_split(mut self) -> TableRow {
+        self.property = self.property.cant_split();
+        self
+    }
 }
 
 impl BuildXML for TableRow {
@@ -128,6 +133,15 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&r).unwrap(),
             r#"{"cells":[{"type":"tableCell","data":{"children":[],"property":{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":null,"textDirection":null,"shading":null},"hasNumbering":false}}],"hasNumbering":false,"property":{"gridAfter":null,"widthAfter":null,"gridBefore":null,"widthBefore":null}}"#
+        );
+    }
+
+    #[test]
+    fn test_row_cant_split() {
+        let b = TableRow::new(vec![TableCell::new()]).cant_split().build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:tr><w:trPr><w:cantSplit /></w:trPr><w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:tc></w:tr>"#
         );
     }
 }

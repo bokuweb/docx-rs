@@ -19,6 +19,8 @@ pub struct TableRowProperty {
     pub del: Option<Delete>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub ins: Option<Insert>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cant_split: Option<CantSplit>,
 }
 
 impl TableRowProperty {
@@ -65,15 +67,20 @@ impl TableRowProperty {
         self.ins = Some(i);
         self
     }
-}
 
+    pub fn cant_split(mut self) -> Self {
+        self.cant_split = Some(CantSplit::default());
+        self
+    }
+}
 
 impl BuildXML for TableRowProperty {
     fn build(&self) -> Vec<u8> {
         let mut b = XMLBuilder::new()
             .open_table_row_property()
             .add_optional_child(&self.del)
-            .add_optional_child(&self.ins);
+            .add_optional_child(&self.ins)
+            .add_optional_child(&self.cant_split);
         if let Some(h) = self.row_height {
             b = b.table_row_height(
                 &format!("{}", h),
@@ -96,5 +103,14 @@ mod tests {
     fn test_default() {
         let b = TableRowProperty::new().build();
         assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:trPr />"#);
+    }
+
+    #[test]
+    fn test_cant_split() {
+        let b = TableRowProperty::new().cant_split().build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:trPr><w:cantSplit /></w:trPr>"#
+        );
     }
 }

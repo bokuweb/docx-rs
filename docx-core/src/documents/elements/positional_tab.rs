@@ -4,31 +4,35 @@ use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[cfg_attr(feature = "wasm", ts(export))]
 pub struct PositionalTab {
     pub alignment: PositionalTabAlignmentType,
-    pub relative_to: Option<PositionalTabRelativeTo>,
-    pub leader: Option<TabLeaderType>,
+    pub relative_to: PositionalTabRelativeTo,
+    pub leader: TabLeaderType,
 }
 
 impl PositionalTab {
-    pub fn new(alignment: PositionalTabAlignmentType) -> Self {
+    pub fn new(
+        alignment: PositionalTabAlignmentType,
+        relative_to: PositionalTabRelativeTo,
+        leader: TabLeaderType,
+    ) -> Self {
         Self {
             alignment,
-            relative_to: None,
-            leader: None,
+            relative_to,
+            leader,
         }
     }
 
     pub fn relative_to(mut self, relative_to: PositionalTabRelativeTo) -> Self {
-        self.relative_to = Some(relative_to);
+        self.relative_to = relative_to;
         self
     }
 
-    pub fn leader(mut self, v: TabLeaderType) -> Self {
-        self.leader = Some(v);
+    pub fn leader(mut self, leader: TabLeaderType) -> Self {
+        self.leader = leader;
         self
     }
 

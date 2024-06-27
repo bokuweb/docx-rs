@@ -731,6 +731,39 @@ impl XMLBuilder {
         self.close()
     }
 
+    pub(crate) fn ptab(
+        mut self,
+        alignment: PositionalTabAlignmentType,
+        relative_to: Option<PositionalTabRelativeTo>,
+        leader: Option<TabLeaderType>,
+    ) -> Self {
+        let relative_to_string = if let Some(relative_to) = relative_to {
+            relative_to.to_string()
+        } else {
+            "".to_string()
+        };
+        let leader_string = if let Some(leader) = leader {
+            leader.to_string()
+        } else {
+            "".to_string()
+        };
+        let alignment_string = alignment.to_string();
+
+        let mut t = XmlEvent::start_element("w:ptab");
+
+        if relative_to.is_some() {
+            t = t.attr("w:relativeTo", &relative_to_string);
+        }
+        if leader.is_some() {
+            t = t.attr("w:leader", &leader_string);
+        }
+        t = t.attr("w:alignment", &alignment_string);
+
+        self.writer.write(t).expect(EXPECT_MESSAGE);
+
+        self.close()
+    }
+
     // FootnoteReference
     // w:footnoteReference w:id="1"
     pub(crate) fn footnote_reference(mut self, id: usize) -> Self {
@@ -799,6 +832,28 @@ mod tests {
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:basedOn w:val="Normal" />"#
+        );
+    }
+
+    #[test]
+    fn test_ptab() {
+        let b = XMLBuilder::new();
+        let r = b.ptab(PositionalTabAlignmentType::Left, None, None).build();
+        assert_eq!(
+            str::from_utf8(&r).unwrap(),
+            r#"<w:ptab w:alignment="left" />"#
+        );
+        let b = XMLBuilder::new();
+        let r = b
+            .ptab(
+                PositionalTabAlignmentType::Left,
+                Some(PositionalTabRelativeTo::Indent),
+                Some(TabLeaderType::None),
+            )
+            .build();
+        assert_eq!(
+            str::from_utf8(&r).unwrap(),
+            r#"<w:ptab w:relativeTo="indent" w:leader="none" w:alignment="left" />"#
         );
     }
 

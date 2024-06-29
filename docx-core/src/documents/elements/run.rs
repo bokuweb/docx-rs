@@ -268,6 +268,11 @@ impl Run {
         self
     }
 
+    pub fn strike(mut self) -> Run {
+        self.run_property = self.run_property.strike();
+        self
+    }
+
     pub fn text_border(mut self, b: TextBorder) -> Run {
         self.run_property = self.run_property.text_border(b);
         self
@@ -363,6 +368,15 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:r><w:rPr><w:u w:val="single" /></w:rPr><w:t xml:space="preserve">Hello</w:t></w:r>"#
+        );
+    }
+
+    #[test]
+    fn test_strike() {
+        let b = Run::new().add_text("Hello").strike().build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:r><w:rPr><w:strike /></w:rPr><w:t xml:space="preserve">Hello</w:t></w:r>"#
         );
     }
 

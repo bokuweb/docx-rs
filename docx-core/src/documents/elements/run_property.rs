@@ -50,6 +50,8 @@ pub struct RunProperty {
     pub strike: Option<Strike>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub positional_tab: Option<PositionalTab>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub shading: Option<Shading>,
 }
 
 impl RunProperty {
@@ -161,6 +163,11 @@ impl RunProperty {
         self.positional_tab = Some(ptab);
         self
     }
+
+    pub fn shading(mut self, s: Shading) -> Self {
+        self.shading = Some(s);
+        self
+    }
 }
 
 impl BuildXML for RunProperty {
@@ -188,6 +195,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.character_spacing)
             .add_optional_child(&self.style)
             .add_optional_child(&self.positional_tab)
+            .add_optional_child(&self.shading)
             .close()
             .build()
     }
@@ -292,6 +300,21 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:rPr><w:ptab w:alignment="left" w:relativeTo="margin" w:leader="none" /></w:rPr>"#
+        );
+    }
+
+    #[test]
+    fn test_character_shading() {
+        let c = RunProperty::new().shading(
+            Shading::new()
+                .shd_type(ShdType::Clear)
+                .fill("FFFFFF")
+                .color("auto"),
+        );
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rPr><w:shd w:val="clear" w:color="auto" w:fill="FFFFFF" /></w:rPr>"#
         );
     }
 }

@@ -400,6 +400,8 @@ impl XMLBuilder {
         "w:author",
         "w:date"
     );
+    // cantSplit for table row
+    closed!(cant_split, "w:cantSplit");
 
     closed!(bookmark_start, "w:bookmarkStart", "w:id", "w:name");
     closed!(bookmark_end, "w:bookmarkEnd", "w:id");

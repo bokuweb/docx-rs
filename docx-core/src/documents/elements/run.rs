@@ -40,6 +40,7 @@ pub enum RunChild {
     // For reader
     InstrTextString(String),
     FootnoteReference(FootnoteReference),
+    Shading(Shading),
 }
 
 impl Serialize for RunChild {
@@ -128,6 +129,12 @@ impl Serialize for RunChild {
             RunChild::FootnoteReference(ref f) => {
                 let mut t = serializer.serialize_struct("FootnoteReference", 2)?;
                 t.serialize_field("type", "footnoteReference")?;
+                t.serialize_field("data", f)?;
+                t.end()
+            }
+            RunChild::Shading(ref f) => {
+                let mut t = serializer.serialize_struct("Shading", 2)?;
+                t.serialize_field("type", "shading")?;
                 t.serialize_field("data", f)?;
                 t.end()
             }
@@ -261,6 +268,11 @@ impl Run {
         self
     }
 
+    pub fn strike(mut self) -> Run {
+        self.run_property = self.run_property.strike();
+        self
+    }
+
     pub fn text_border(mut self, b: TextBorder) -> Run {
         self.run_property = self.run_property.text_border(b);
         self
@@ -297,6 +309,11 @@ impl Run {
             .push(RunChild::FootnoteReference(footnote.into()));
         self
     }
+
+    pub fn shading(mut self, shading: Shading) -> Run {
+        self.run_property = self.run_property.shading(shading);
+        self
+    }
 }
 
 impl BuildXML for Run {
@@ -321,6 +338,7 @@ impl BuildXML for Run {
                 RunChild::DeleteInstrText(c) => b = b.add_child(c),
                 RunChild::InstrTextString(_) => unreachable!(),
                 RunChild::FootnoteReference(c) => b = b.add_child(c),
+                RunChild::Shading(s) => b = b.add_child(s),
             }
         }
         b.close().build()
@@ -350,6 +368,15 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:r><w:rPr><w:u w:val="single" /></w:rPr><w:t xml:space="preserve">Hello</w:t></w:r>"#
+        );
+    }
+
+    #[test]
+    fn test_strike() {
+        let b = Run::new().add_text("Hello").strike().build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:r><w:rPr><w:strike /></w:rPr><w:t xml:space="preserve">Hello</w:t></w:r>"#
         );
     }
 
@@ -398,6 +425,15 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
             r#"{"type":"footnoteReference","data":{"id":1}}"#
+        );
+    }
+
+    #[test]
+    fn test_run_shading() {
+        let c = RunChild::Shading(Shading::new());
+        assert_eq!(
+            serde_json::to_string(&c).unwrap(),
+            r#"{"type":"shading","data":{"shdType":"clear","color":"auto","fill":"FFFFFF"}}"#
         );
     }
 }

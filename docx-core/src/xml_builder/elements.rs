@@ -733,6 +733,27 @@ impl XMLBuilder {
         self.close()
     }
 
+    pub(crate) fn ptab(
+        mut self,
+        alignment: PositionalTabAlignmentType,
+        relative_to: PositionalTabRelativeTo,
+        leader: TabLeaderType,
+    ) -> Self {
+        let alignment_string = alignment.to_string();
+        let relative_to_string = relative_to.to_string();
+        let leader_string = leader.to_string();
+
+        let mut t = XmlEvent::start_element("w:ptab");
+
+        t = t.attr("w:alignment", &alignment_string);
+        t = t.attr("w:relativeTo", &relative_to_string);
+        t = t.attr("w:leader", &leader_string);
+
+        self.writer.write(t).expect(EXPECT_MESSAGE);
+
+        self.close()
+    }
+
     // FootnoteReference
     // w:footnoteReference w:id="1"
     pub(crate) fn footnote_reference(mut self, id: usize) -> Self {
@@ -801,6 +822,22 @@ mod tests {
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:basedOn w:val="Normal" />"#
+        );
+    }
+
+    #[test]
+    fn test_ptab() {
+        let b = XMLBuilder::new();
+        let r = b
+            .ptab(
+                PositionalTabAlignmentType::Left,
+                PositionalTabRelativeTo::Indent,
+                TabLeaderType::None,
+            )
+            .build();
+        assert_eq!(
+            str::from_utf8(&r).unwrap(),
+            r#"<w:ptab w:alignment="left" w:relativeTo="indent" w:leader="none" />"#
         );
     }
 

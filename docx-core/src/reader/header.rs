@@ -64,7 +64,6 @@ fn test_header_from_xml() {
     xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" mc:Ignorable="w14 wp14">
     <w:p w14:paraId="12345678">
         <w:pPr>
-            <w:rPr />
         </w:pPr>
         <w:r>
             <w:rPr />

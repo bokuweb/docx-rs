@@ -9,14 +9,22 @@ use serde::Serialize;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Settings {
-    default_tab_stop: DefaultTabStop,
+    // Sequential child elements
+    // 3. w:zoom
     zoom: Zoom,
-    doc_id: Option<DocId>,
-    doc_vars: Vec<DocVar>,
+    // 39. w:defaultTabStop
+    default_tab_stop: DefaultTabStop,
+    // 48. w:evenAndOddHeaders
     even_and_odd_headers: bool,
-    adjust_line_height_in_table: bool,
+    // 61. w:characterSpacingControl
     #[serde(skip_serializing_if = "Option::is_none")]
     character_spacing_control: Option<CharacterSpacingValues>,
+    // 81. child element of w:compat
+    adjust_line_height_in_table: bool,
+    // 82. w:docVars
+    doc_vars: Vec<DocVar>,
+
+    doc_id: Option<DocId>,
 }
 
 impl Settings {
@@ -75,14 +83,12 @@ impl BuildXML for Settings {
         let mut b = b
             .declaration(Some(true))
             .open_settings()
-            .add_child(&self.default_tab_stop)
             .add_child(&self.zoom)
-            .open_compat()
-            .space_for_ul()
-            .balance_single_byte_double_byte_width()
-            .do_not_leave_backslash_alone()
-            .ul_trail_space()
-            .do_not_expand_shift_return();
+            .add_child(&self.default_tab_stop);
+
+        if self.even_and_odd_headers {
+            b = b.even_and_odd_headers();
+        }
 
         if let Some(v) = self.character_spacing_control {
             b = b.character_spacing_control(&v.to_string());
@@ -91,6 +97,14 @@ impl BuildXML for Settings {
         if self.adjust_line_height_in_table {
             b = b.adjust_line_height_table();
         }
+
+        b = b
+            .open_compat()
+            .space_for_ul()
+            .balance_single_byte_double_byte_width()
+            .do_not_leave_backslash_alone()
+            .ul_trail_space()
+            .do_not_expand_shift_return();
 
         b = b
             .use_fe_layout()
@@ -135,9 +149,6 @@ impl BuildXML for Settings {
             b = b.close();
         }
 
-        if self.even_and_odd_headers {
-            b = b.even_and_odd_headers();
-        }
         b.close().build()
     }
 }
@@ -156,7 +167,7 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"><w:defaultTabStop w:val="840" /><w:zoom w:percent="100" /><w:compat>
+<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"><w:zoom w:percent="100" /><w:defaultTabStop w:val="840" /><w:compat>
     <w:spaceForUL />
     <w:balanceSingleByteDoubleByteWidth />
     <w:doNotLeaveBackslashAlone />

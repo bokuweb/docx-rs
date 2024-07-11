@@ -15,7 +15,7 @@ pub struct Level {
     pub paragraph_property: ParagraphProperty,
     pub run_property: RunProperty,
     pub suffix: LevelSuffixType,
-    pub pstyle: Option<String>,
+    pub pstyle: Option<ParagraphStyle>,
     pub level_restart: Option<LevelRestart>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_lgl: Option<IsLgl>,
@@ -58,7 +58,7 @@ impl Level {
     }
 
     pub fn paragraph_style(mut self, style_id: impl Into<String>) -> Self {
-        self.pstyle = Some(style_id.into());
+        self.pstyle = Some(ParagraphStyle::new(Some(style_id.into())));
         self
     }
 
@@ -134,6 +134,7 @@ impl BuildXML for Level {
             .add_child(&self.jc)
             .add_child(&self.paragraph_property)
             .add_child(&self.run_property)
+            .add_optional_child(&self.pstyle)
             .add_optional_child(&self.level_restart)
             .add_optional_child(&self.is_lgl);
 
@@ -200,6 +201,22 @@ mod tests {
             str::from_utf8(&b).unwrap(),
             r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /><w:suff w:val="space" />
 </w:lvl>"#
+        );
+    }
+    #[test]
+    fn test_level_with_pstyle() {
+        let b = Level::new(
+            1,
+            Start::new(1),
+            NumberFormat::new("decimal"),
+            LevelText::new("%4."),
+            LevelJc::new("left"),
+        )
+        .paragraph_style("a-style")
+        .build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /><w:pStyle w:val="a-style" /></w:lvl>"#
         );
     }
 }

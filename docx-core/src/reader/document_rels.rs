@@ -1,5 +1,5 @@
 use std::collections::BTreeMap;
-use std::collections::HashSet;
+use std::collections::BTreeSet;
 use std::io::Cursor;
 use std::path::*;
 
@@ -13,7 +13,7 @@ pub type RId = String;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ReadDocumentRels {
-    rels: BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>>,
+    rels: BTreeMap<String, BTreeSet<(RId, PathBuf, Option<String>)>>,
 }
 
 impl ReadDocumentRels {

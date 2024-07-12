@@ -277,8 +277,8 @@ mod tests {
                 run_property: RunProperty {
                     bold: Some(Bold::new()),
                     bold_cs: Some(BoldCs::new()),
-                    italic: Some(Italic::new().disable()),
-                    italic_cs: Some(ItalicCs::new().disable()),
+                    italic: None,
+                    italic_cs: None,
                     ..RunProperty::default()
                 },
             }
@@ -302,8 +302,8 @@ mod tests {
                 run_property: RunProperty {
                     bold: Some(Bold::new()),
                     bold_cs: Some(BoldCs::new()),
-                    italic: Some(Italic::new().disable()),
-                    italic_cs: Some(ItalicCs::new().disable()),
+                    italic: None,
+                    italic_cs: None,
                     ..RunProperty::default()
                 },
             }

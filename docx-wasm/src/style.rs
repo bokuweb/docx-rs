@@ -159,6 +159,11 @@ impl Style {
         self
     }
 
+    pub fn snap_to_grid(mut self, v: bool) -> Self {
+        self.0.paragraph_property = self.0.paragraph_property.snap_to_grid(v);
+        self
+    }
+
     pub fn keep_next(mut self, v: bool) -> Self {
         self.0.paragraph_property = self.0.paragraph_property.keep_next(v);
         self

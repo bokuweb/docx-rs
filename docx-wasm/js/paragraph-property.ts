@@ -82,6 +82,7 @@ export type ParagraphProperty = {
   widowControl: boolean;
   paragraphPropertyChange?: ParagraphPropertyChange;
   outlineLvl?: number | null;
+  snapToGrid?: boolean;
   adjustRightInd?: number;
   tabs?: Tab[];
   frameProperty?: FrameProperty;
@@ -332,6 +333,10 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
 
   if (property.keepLines) {
     target = target.keep_lines(true) as T;
+  }
+
+  if (property.snapToGrid != null) {
+    target = target.snap_to_grid(!!property.snapToGrid) as T;
   }
 
   if (property.keepNext) {

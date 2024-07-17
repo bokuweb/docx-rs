@@ -208,6 +208,11 @@ impl Paragraph {
         self
     }
 
+    pub fn snap_to_grid(mut self, v: bool) -> Self {
+        self.0 = self.0.snap_to_grid(v);
+        self
+    }
+
     pub fn keep_lines(mut self, v: bool) -> Self {
         self.0 = self.0.keep_lines(v);
         self

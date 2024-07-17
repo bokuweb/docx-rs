@@ -149,6 +149,11 @@ export class Paragraph {
     return this;
   }
 
+  snapToGrid(v: boolean) {
+    this.property = { ...this.property, snapToGrid: v };
+    return this;
+  }
+
   keepNext(v: boolean) {
     this.property = { ...this.property, keepNext: v };
     return this;

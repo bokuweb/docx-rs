@@ -226,6 +226,11 @@ impl Paragraph {
         self
     }
 
+    pub fn snap_to_grid(mut self, v: bool) -> Self {
+        self.property = self.property.snap_to_grid(v);
+        self
+    }
+
     pub fn keep_next(mut self, v: bool) -> Self {
         self.property = self.property.keep_next(v);
         self

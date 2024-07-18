@@ -71,7 +71,7 @@ const { buffer } = new w.Docx()
   .addParagraph(new w.Paragraph().addRun(new w.Run().addText("Hello world!!")))
   .build();
 
-writeFileSync("hello.docx", buffer);
+writeFileSync("hello.docx", Buffer.from(buffer));
 ```
 
 ### More examples

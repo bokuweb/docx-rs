@@ -92,6 +92,11 @@ impl ElementReader for ParagraphProperty {
                             }
                             continue;
                         }
+                        XMLElement::SnapToGrid => {
+                            if read_bool(&attributes) {
+                                p.snap_to_grid = Some(true);
+                            }
+                        }
                         XMLElement::KeepNext => {
                             if read_bool(&attributes) {
                                 p.keep_next = Some(true);

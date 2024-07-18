@@ -2,13 +2,13 @@ use super::*;
 use crate::reader::{FromXML, ReaderError};
 use std::str::FromStr;
 use std::{
-    collections::{BTreeMap, HashSet},
+    collections::{BTreeMap, BTreeSet},
     io::Read,
     path::{Path, PathBuf},
 };
 use xml::reader::{EventReader, XmlEvent};
 
-pub type ReadRels = BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>>;
+pub type ReadRels = BTreeMap<String, BTreeSet<(RId, PathBuf, Option<String>)>>;
 
 impl FromXML for Rels {
     fn from_xml<R: Read>(reader: R) -> Result<Self, ReaderError> {
@@ -60,7 +60,7 @@ pub fn find_rels_filename(main_path: impl AsRef<Path>) -> Result<PathBuf, Reader
 
 pub fn read_rels_xml<R: Read>(reader: R, dir: impl AsRef<Path>) -> Result<ReadRels, ReaderError> {
     let mut parser = EventReader::new(reader);
-    let mut rels: BTreeMap<String, HashSet<(RId, PathBuf, Option<String>)>> = BTreeMap::new();
+    let mut rels: BTreeMap<String, BTreeSet<(RId, PathBuf, Option<String>)>> = BTreeMap::new();
 
     loop {
         let e = parser.next();
@@ -99,7 +99,7 @@ pub fn read_rels_xml<R: Read>(reader: R, dir: impl AsRef<Path>) -> Result<ReadRe
                         paths.insert((rid, target, target_mode));
                         rels.insert(rel_type, paths);
                     } else {
-                        let s: HashSet<(RId, PathBuf, Option<String>)> =
+                        let s: BTreeSet<(RId, PathBuf, Option<String>)> =
                             vec![(rid, target, target_mode)].into_iter().collect();
                         rels.insert(rel_type, s);
                     }

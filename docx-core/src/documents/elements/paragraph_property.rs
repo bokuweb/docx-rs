@@ -50,6 +50,8 @@ pub struct ParagraphProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub adjust_right_ind: Option<AdjustRightInd>,
     //21. w:snapToGrid
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub snap_to_grid: Option<bool>,
     //22. w:spacing
     #[serde(skip_serializing_if = "Option::is_none")]
     pub line_spacing: Option<LineSpacing>,
@@ -135,6 +137,11 @@ impl ParagraphProperty {
     pub fn character_spacing(mut self, spacing: i32) -> Self {
         let run_property = self.run_property.get_or_insert_with(RunProperty::new);
         run_property.character_spacing = Some(CharacterSpacing::new(spacing));
+        self
+    }
+
+    pub fn snap_to_grid(mut self, v: bool) -> Self {
+        self.snap_to_grid = Some(v);
         self
     }
 
@@ -274,8 +281,15 @@ fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
         b = b.close();
     }
 
+    b = b.add_optional_child(&p.adjust_right_ind);
+
+    if let Some(v) = p.snap_to_grid {
+        if v {
+            b = b.snap_to_grid()
+        }
+    }
+
     b = b
-        .add_optional_child(&p.adjust_right_ind)
         .add_optional_child(&p.line_spacing)
         .add_optional_child(&p.indent)
         .add_optional_child(&p.alignment)

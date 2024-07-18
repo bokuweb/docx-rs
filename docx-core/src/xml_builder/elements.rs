@@ -25,6 +25,18 @@ impl XMLBuilder {
         self.close()
     }
 
+    pub(crate) fn snap_to_grid(mut self, v: bool) -> Self {
+        let v = if v {
+            "true".to_string()
+        } else {
+            "false".to_string()
+        };
+        self.writer
+            .write(XmlEvent::start_element("w:snapToGrid").attr("w:val", &v))
+            .expect(EXPECT_MESSAGE);
+        self.close()
+    }
+
     #[allow(clippy::too_many_arguments)]
     pub(crate) fn run_fonts(
         mut self,
@@ -167,7 +179,6 @@ impl XMLBuilder {
     // i.e. <w:szCs ... >
     closed_with_usize!(sz_cs, "w:szCs");
     closed_with_isize!(adjust_right_ind, "w:adjustRightInd");
-    closed!(snap_to_grid, "w:snapToGrid");
     closed_with_str!(text_alignment, "w:textAlignment");
 
     closed!(field_character, "w:fldChar", "w:fldCharType", "w:dirty");

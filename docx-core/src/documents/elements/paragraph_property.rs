@@ -218,9 +218,7 @@ fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
         .add_optional_child(&p.adjust_right_ind);
 
     if let Some(v) = p.snap_to_grid {
-        if v {
-            b = b.snap_to_grid()
-        }
+        b = b.snap_to_grid(v)
     }
 
     if let Some(v) = p.keep_next {

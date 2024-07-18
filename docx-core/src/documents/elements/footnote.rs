@@ -76,7 +76,7 @@ mod tests {
         let b = Footnote::new().build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:footnote w:id="1"><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:footnote>"#
+            r#"<w:footnote w:id="1"><w:p w14:paraId="12345678"><w:pPr /></w:p></w:footnote>"#
         );
     }
 
@@ -87,7 +87,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:footnote w:id="1"><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">hello</w:t></w:r></w:p></w:footnote>"#
+            r#"<w:footnote w:id="1"><w:p w14:paraId="12345678"><w:pPr /><w:r><w:rPr /><w:t xml:space="preserve">hello</w:t></w:r></w:p></w:footnote>"#
         );
     }
 }

@@ -191,7 +191,7 @@ mod tests {
         let b = TableCell::new().build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:tc>"#
+            r#"<w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr /></w:p></w:tc>"#
         );
     }
 
@@ -202,7 +202,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p></w:tc>"#
+            r#"<w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p></w:tc>"#
         );
     }
 
@@ -213,7 +213,7 @@ mod tests {
             .grid_span(2);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"children":[{"type":"paragraph","data":{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{},"tabs":[]},"hasNumbering":false}}],"property":{"width":null,"borders":null,"gridSpan":2,"verticalMerge":null,"verticalAlign":null,"textDirection":null,"shading":null},"hasNumbering":false}"#,
+            r#"{"children":[{"type":"paragraph","data":{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"tabs":[]},"hasNumbering":false}}],"property":{"width":null,"gridSpan":2,"verticalMerge":null,"borders":null,"shading":null,"textDirection":null,"verticalAlign":null},"hasNumbering":false}"#,
         );
     }
 }

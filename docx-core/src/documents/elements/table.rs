@@ -9,10 +9,14 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Table {
-    pub rows: Vec<TableChild>,
-    pub grid: Vec<usize>,
-    pub has_numbering: bool,
+    // Sequential elements
+    // 2. w:tblPr
     pub property: TableProperty,
+    // 3. w:tblGrid
+    pub grid: Vec<usize>,
+    // 4. Other elements
+    pub rows: Vec<TableChild>,
+    pub has_numbering: bool,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -191,7 +195,7 @@ mod tests {
         let t = Table::new(vec![]).set_grid(vec![100, 200, 300]);
         assert_eq!(
             serde_json::to_string(&t).unwrap(),
-            r#"{"rows":[],"grid":[100,200,300],"hasNumbering":false,"property":{"width":{"width":0,"widthType":"auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}}}}"#
+            r#"{"property":{"width":{"width":0,"widthType":"auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}}},"grid":[100,200,300],"rows":[],"hasNumbering":false}"#
         );
     }
 }

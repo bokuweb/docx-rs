@@ -11,15 +11,41 @@ use crate::xml_builder::*;
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct TableCellProperty {
+    // 1. w:cnfStyle
+    // TODO: Add CnfStyle type
+    // 2. w:tcW
     width: Option<TableCellWidth>,
-    borders: Option<TableCellBorders>,
+    // 3. w:gridSpan
     grid_span: Option<GridSpan>,
+    // 4. w:hMerge
+    // TODO: Add HMerge type
+    // 5. w:vMerge
     vertical_merge: Option<VMerge>,
-    vertical_align: Option<VAlign>,
-    text_direction: Option<TextDirection>,
+    // 6. w:tcBorders
+    borders: Option<TableCellBorders>,
+    // 7. w:shd
     shading: Option<Shading>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    // 8. w:noWrap
+    // TODO: Add NoWrap type
+    // 9. w:tcMar
     margins: Option<CellMargins>,
+    // 10. w:textDirection
+    text_direction: Option<TextDirection>,
+    // 11. w:tcFitText
+    // TODO: Add TcFitText type
+    // 12. w:vAlign
+    vertical_align: Option<VAlign>,
+    // 13. w:hideMark
+    // TODO: Add HideMark type
+    // 14. w:cellIns
+    // TODO: Add CellIns type
+    // 15. w:cellDel
+    // TODO: Add CellDel type
+    // 16. w:cellMerge
+    // TODO: Add CellMerge type
+    // 17. w:tcPrChange
+    // TODO: Add TcPrChange type
 }
 
 impl TableCellProperty {
@@ -128,13 +154,13 @@ impl BuildXML for TableCellProperty {
         XMLBuilder::new()
             .open_table_cell_property()
             .add_optional_child(&self.width)
-            .add_optional_child(&self.borders)
             .add_optional_child(&self.grid_span)
             .add_optional_child(&self.vertical_merge)
-            .add_optional_child(&self.vertical_align)
-            .add_optional_child(&self.text_direction)
+            .add_optional_child(&self.borders)
             .add_optional_child(&self.shading)
             .add_optional_child(&self.margins)
+            .add_optional_child(&self.text_direction)
+            .add_optional_child(&self.vertical_align)
             .close()
             .build()
     }
@@ -204,7 +230,7 @@ mod tests {
             .width(200, WidthType::Dxa);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"width":{"width":200,"widthType":"dxa"},"borders":null,"gridSpan":3,"verticalMerge":"continue","verticalAlign":null,"textDirection":null,"shading":null}"#
+            r#"{"width":{"width":200,"widthType":"dxa"},"gridSpan":3,"verticalMerge":"continue","borders":null,"shading":null,"textDirection":null,"verticalAlign":null}"#
         );
     }
 
@@ -213,7 +239,7 @@ mod tests {
         let c = TableCellProperty::new().vertical_align(VAlignType::Center);
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"width":null,"borders":null,"gridSpan":null,"verticalMerge":null,"verticalAlign":"center","textDirection":null,"shading":null}"#
+            r#"{"width":null,"gridSpan":null,"verticalMerge":null,"borders":null,"shading":null,"textDirection":null,"verticalAlign":"center"}"#
         );
     }
 }

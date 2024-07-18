@@ -89,7 +89,6 @@ mod tests {
                     <w:txbxContent>
                         <w:p>
                             <w:pPr>
-                                <w:rPr></w:rPr>
                             </w:pPr>
                             <w:r>
                                 <w:rPr></w:rPr>

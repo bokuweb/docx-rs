@@ -7,20 +7,42 @@ use crate::{documents::BuildXML, HeightRule};
 #[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct TableRowProperty {
-    grid_after: Option<u32>,
-    width_after: Option<f32>,
+    // 1. w:cnfStyle
+    // TODO: Add CnfStyle type
+    // 2. w:divId
+    // TODO: Add DivId type
+    // 3. w:gridBefore
     grid_before: Option<u32>,
+    // 4. w:gridAfter
+    grid_after: Option<u32>,
+    // 5. w:wBefore
     width_before: Option<f32>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    row_height: Option<f32>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    height_rule: Option<HeightRule>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub del: Option<Delete>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub ins: Option<Insert>,
+    // 6. w:wAfter
+    width_after: Option<f32>,
+    // 7. w:cantSplit
     #[serde(skip_serializing_if = "Option::is_none")]
     pub cant_split: Option<CantSplit>,
+    // 8. w:trHeight
+    #[serde(skip_serializing_if = "Option::is_none")]
+    row_height: Option<f32>,
+    // 9. w:tblHeader
+    // TODO: Add TblHeader type
+    // 10. w:tblCellSpacing
+    // TODO: Add TblCellSpacing type
+    // 11. w:jc
+    // TODO: Add Jc type
+    // 12. w:hidden
+    // TODO: Add Hidden type
+    // 13. w:ins
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub ins: Option<Insert>,
+    // 14. w:del
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub del: Option<Delete>,
+    // 15. w:trPrChange
+    // TODO: Add TrPrChange type
+    #[serde(skip_serializing_if = "Option::is_none")]
+    height_rule: Option<HeightRule>,
 }
 
 impl TableRowProperty {
@@ -76,17 +98,22 @@ impl TableRowProperty {
 
 impl BuildXML for TableRowProperty {
     fn build(&self) -> Vec<u8> {
+        // TODO remaining elements to be added in XML
         let mut b = XMLBuilder::new()
             .open_table_row_property()
-            .add_optional_child(&self.del)
-            .add_optional_child(&self.ins)
             .add_optional_child(&self.cant_split);
+
         if let Some(h) = self.row_height {
             b = b.table_row_height(
                 &format!("{}", h),
                 &self.height_rule.unwrap_or_default().to_string(),
             )
         }
+
+        b = b
+            .add_optional_child(&self.del)
+            .add_optional_child(&self.ins);
+
         b.close().build()
     }
 }

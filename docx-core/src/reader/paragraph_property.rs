@@ -69,9 +69,7 @@ impl ElementReader for ParagraphProperty {
                             continue;
                         }
                         XMLElement::RunProperty => {
-                            if let Ok(run_pr) = RunProperty::read(r, attrs) {
-                                p.run_property = run_pr;
-                            }
+                            p.run_property = RunProperty::read(r, attrs).ok();
                             continue;
                         }
                         XMLElement::DivId => {

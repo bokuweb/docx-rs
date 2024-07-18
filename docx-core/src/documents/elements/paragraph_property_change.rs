@@ -74,7 +74,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPrChange w:id="123" w:author="unnamed" w:date="1970-01-01T00:00:00Z"><w:pPr><w:rPr /></w:pPr></w:pPrChange>"#
+            r#"<w:pPrChange w:id="123" w:author="unnamed" w:date="1970-01-01T00:00:00Z"><w:pPr /></w:pPrChange>"#
         );
     }
 }

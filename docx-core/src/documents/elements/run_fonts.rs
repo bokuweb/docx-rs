@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::documents::BuildXML;
+use crate::escape::escape;
 use crate::xml_builder::*;
 
 /*
@@ -40,47 +41,56 @@ impl RunFonts {
     }
 
     pub fn ascii(mut self, f: impl Into<String>) -> Self {
-        self.ascii = Some(f.into());
+        let s = f.into();
+        self.ascii = Some(escape(&s));
         self
     }
 
     pub fn hi_ansi(mut self, f: impl Into<String>) -> Self {
-        self.hi_ansi = Some(f.into());
+        let s = f.into();
+        self.hi_ansi = Some(escape(&s));
         self
     }
 
     pub fn east_asia(mut self, f: impl Into<String>) -> Self {
-        self.east_asia = Some(f.into());
+        let s = f.into();
+        self.east_asia = Some(escape(&s));
         self
     }
 
     pub fn cs(mut self, f: impl Into<String>) -> Self {
-        self.cs = Some(f.into());
+        let s = f.into();
+        self.cs = Some(escape(&s));
         self
     }
 
     pub fn ascii_theme(mut self, f: impl Into<String>) -> Self {
-        self.ascii_theme = Some(f.into());
+        let s = f.into();
+        self.ascii_theme = Some(escape(&s));
         self
     }
 
     pub fn hi_ansi_theme(mut self, f: impl Into<String>) -> Self {
-        self.hi_ansi_theme = Some(f.into());
+        let s = f.into();
+        self.hi_ansi_theme = Some(escape(&s));
         self
     }
 
     pub fn east_asia_theme(mut self, f: impl Into<String>) -> Self {
-        self.east_asia_theme = Some(f.into());
+        let s = f.into();
+        self.east_asia_theme = Some(escape(&s));
         self
     }
 
     pub fn cs_theme(mut self, f: impl Into<String>) -> Self {
-        self.cs_theme = Some(f.into());
+        let s = f.into();
+        self.cs_theme = Some(escape(&s));
         self
     }
 
     pub fn hint(mut self, f: impl Into<String>) -> Self {
-        self.hint = Some(f.into());
+        let s = f.into();
+        self.hint = Some(escape(&s));
         self
     }
 }
@@ -146,5 +156,15 @@ mod tests {
         let c = RunFonts::new().cs("Arial");
         let b = c.build();
         assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:rFonts w:cs="Arial" />"#);
+    }
+
+    #[test]
+    fn test_run_fonts_with_escape() {
+        let c = RunFonts::new().east_asia(r#""Calibri",sans-serif"#);
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rFonts w:eastAsia="&quot;Calibri&quot;,sans-serif" />"#,
+        );
     }
 }

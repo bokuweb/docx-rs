@@ -59,7 +59,7 @@ mod tests {
         let b = WpsTextBox::new().add_content(c).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<wps:txbx><w:txbxContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:txbxContent></wps:txbx>"#
+            r#"<wps:txbx><w:txbxContent><w:p w14:paraId="12345678"><w:pPr /></w:p></w:txbxContent></wps:txbx>"#
         );
     }
 }

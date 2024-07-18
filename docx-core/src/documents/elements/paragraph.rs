@@ -301,27 +301,48 @@ impl Paragraph {
     }
 
     pub fn size(mut self, size: usize) -> Self {
-        self.property.run_property = self.property.run_property.size(size);
+        self.property.run_property = Some(
+            self.property
+                .run_property
+                .take()
+                .unwrap_or_default()
+                .size(size),
+        );
+
         self
     }
 
     pub fn bold(mut self) -> Self {
-        self.property.run_property = self.property.run_property.bold();
+        self.property.run_property =
+            Some(self.property.run_property.take().unwrap_or_default().bold());
         self
     }
 
     pub fn italic(mut self) -> Self {
-        self.property.run_property = self.property.run_property.italic();
+        self.property.run_property = Some(
+            self.property
+                .run_property
+                .take()
+                .unwrap_or_default()
+                .italic(),
+        );
         self
     }
 
     pub fn fonts(mut self, f: RunFonts) -> Self {
-        self.property.run_property = self.property.run_property.fonts(f);
+        self.property.run_property = Some(
+            self.property
+                .run_property
+                .take()
+                .unwrap_or_default()
+                .fonts(f),
+        );
+
         self
     }
 
     pub fn run_property(mut self, p: RunProperty) -> Self {
-        self.property.run_property = p;
+        self.property.run_property = Some(p);
         self
     }
 
@@ -336,12 +357,20 @@ impl Paragraph {
     }
 
     pub fn delete(mut self, author: impl Into<String>, date: impl Into<String>) -> Self {
-        self.property.run_property.del = Some(Delete::new().author(author).date(date));
+        let run_property = self
+            .property
+            .run_property
+            .get_or_insert_with(RunProperty::new);
+        run_property.del = Some(Delete::new().author(author).date(date));
         self
     }
 
     pub fn insert(mut self, author: impl Into<String>, date: impl Into<String>) -> Self {
-        self.property.run_property.ins = Some(Insert::new_with_empty().author(author).date(date));
+        let run_property = self
+            .property
+            .run_property
+            .get_or_insert_with(RunProperty::new);
+        run_property.ins = Some(Insert::new_with_empty().author(author).date(date));
         self
     }
 
@@ -519,7 +548,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
+            r#"<w:p w14:paraId="12345678"><w:pPr /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );
     }
 
@@ -532,7 +561,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:bookmarkStart w:id="0" w:name="article" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:bookmarkEnd w:id="0" /></w:p>"#
+            r#"<w:p w14:paraId="12345678"><w:pPr /><w:bookmarkStart w:id="0" w:name="article" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:bookmarkEnd w:id="0" /></w:p>"#
         );
     }
 
@@ -545,7 +574,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:commentRangeStart w:id="1" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:r>
+            r#"<w:p w14:paraId="12345678"><w:pPr /><w:commentRangeStart w:id="1" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:r>
   <w:rPr />
 </w:r>
 <w:commentRangeEnd w:id="1" />
@@ -563,7 +592,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:numPr><w:numId w:val="0" /><w:ilvl w:val="1" /></w:numPr></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:numPr><w:numId w:val="0" /><w:ilvl w:val="1" /></w:numPr></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );
     }
 
@@ -580,7 +609,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:spacing w:before="20" w:after="30" w:line="200" w:lineRule="auto" /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:spacing w:before="20" w:after="30" w:line="200" w:lineRule="auto" /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );
     }
 
@@ -590,7 +619,7 @@ mod tests {
         let p = Paragraph::new().add_run(run);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{},"tabs":[]},"hasNumbering":false}"#,
+            r#"{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"tabs":[]},"hasNumbering":false}"#,
         );
     }
 
@@ -601,7 +630,7 @@ mod tests {
         let p = Paragraph::new().add_insert(ins);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"id":"12345678","children":[{"type":"insert","data":{"children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"runProperty":{},"tabs":[]},"hasNumbering":false}"#
+            r#"{"id":"12345678","children":[{"type":"insert","data":{"children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"author":"unnamed","date":"1970-01-01T00:00:00Z"}}],"property":{"tabs":[]},"hasNumbering":false}"#
         );
     }
 

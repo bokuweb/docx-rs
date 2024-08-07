@@ -1063,4 +1063,20 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write ptab", () => {
+    const p = new w.Paragraph().addRun(
+      new w.Run()
+        .addPositionalTab(new w.PositionalTab().alignment("right"))
+        .addText("Hello world!!")
+    );
+    const buffer = new w.Docx().addParagraph(p).build();
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+    writeFileSync("../output/js/ptab.docx", buffer);
+  });
 });

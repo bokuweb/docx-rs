@@ -9,10 +9,25 @@ import {
 } from "./pkg/docx_wasm";
 import { convertTabLeader } from "./tab-leader";
 
-export class PTab {
+export class PositionalTab {
   _alignment: PositionalTabAlignmentType = "left";
   _relativeTo: PositionalTabRelativeTo = "margin";
   _leader: TabLeaderType = "none";
+
+  alignment(t: PositionalTabAlignmentType) {
+    this._alignment = t;
+    return this;
+  }
+
+  relativeTo(t: PositionalTabRelativeTo) {
+    this._relativeTo = t;
+    return this;
+  }
+
+  leader(l: TabLeaderType) {
+    this._leader = l;
+    return this;
+  }
 
   buildWasmObject() {
     const alignment = (() => {

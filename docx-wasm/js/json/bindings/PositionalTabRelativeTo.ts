@@ -1,2 +1,2 @@
 
-export type PositionalTabRelativeTo = "Indent" | "Margin";
+export type PositionalTabRelativeTo = "indent" | "margin";

@@ -39,6 +39,11 @@ impl Run {
         self
     }
 
+    pub fn add_ptab(mut self, ptab: PositionalTab) -> Run {
+        self.0 = self.0.add_ptab(ptab.take());
+        self
+    }
+
     pub fn add_break(mut self, break_type: docx_rs::BreakType) -> Run {
         self.0
             .children

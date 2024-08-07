@@ -4,7 +4,7 @@ use std::str::FromStr;
 use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
-use crate::{PositionalTabAlignmentType, PositionalTabRelativeTo};
+use crate::{PositionalTabAlignmentType, PositionalTabRelativeTo, TabLeaderType};
 
 use super::*;
 

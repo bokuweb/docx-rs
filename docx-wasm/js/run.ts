@@ -6,8 +6,9 @@ import { Tab } from "./tab";
 import { Break, BreakType } from "./break";
 import { BorderType } from "./border";
 import { Image } from "./image";
+import { PTab } from "./positional-tab";
 
-export type RunChild = Text | DeleteText | Tab | Break | Image;
+export type RunChild = Text | DeleteText | Tab | Break | Image | PTab;
 
 export type TextBorder = {
   borderType: BorderType;
@@ -193,6 +194,11 @@ export class Run {
     return this;
   }
 
+  addPTab(ptab: PTab) {
+    this.children.push(ptab);
+    return this;
+  }
+
   addBreak(type: BreakType) {
     this.children.push(new Break(type));
     return this;
@@ -290,6 +296,8 @@ export class Run {
         run = run.add_delete_text(child.text);
       } else if (child instanceof Tab) {
         run = run.add_tab();
+      } else if (child instanceof PTab) {
+        run = run.add_ptab(child.buildWasmObject());
       } else if (child instanceof Break) {
         if (child.type === "column") {
           run = run.add_break(wasm.BreakType.Column);

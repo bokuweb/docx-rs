@@ -79,6 +79,11 @@ impl ElementReader for RunProperty {
                             }
                             rp = rp.caps();
                         }
+                        XMLElement::PTab => {
+                            if let Ok(v) = PositionalTab::read(r, &attributes) {
+                                rp = rp.ptab(v)
+                            }
+                        }
                         XMLElement::Highlight => rp = rp.highlight(attributes[0].value.clone()),
                         XMLElement::Strike => {
                             if !read_bool(&attributes) {

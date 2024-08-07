@@ -13,6 +13,16 @@ pub struct PositionalTab {
     pub leader: TabLeaderType,
 }
 
+impl Default for PositionalTab {
+    fn default() -> Self {
+        Self {
+            alignment: PositionalTabAlignmentType::Left,
+            relative_to: PositionalTabRelativeTo::Margin,
+            leader: TabLeaderType::None,
+        }
+    }
+}
+
 impl PositionalTab {
     pub fn new(
         alignment: PositionalTabAlignmentType,

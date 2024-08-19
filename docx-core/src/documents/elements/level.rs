@@ -166,7 +166,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /></w:lvl>"#
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr /><w:rPr /></w:lvl>"#
         );
     }
 
@@ -183,7 +183,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr><w:rPr /></w:lvl>"#
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr><w:rPr /></w:lvl>"#
         );
     }
     #[test]
@@ -199,7 +199,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /><w:suff w:val="space" />
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr /><w:rPr /><w:suff w:val="space" />
 </w:lvl>"#
         );
     }
@@ -216,7 +216,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /><w:pStyle w:val="a-style" /></w:lvl>"#
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr /><w:rPr /><w:pStyle w:val="a-style" /></w:lvl>"#
         );
     }
 }

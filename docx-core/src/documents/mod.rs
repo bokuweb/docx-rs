@@ -868,6 +868,18 @@ impl Docx {
                                         let comment = comment.clone();
                                         c.as_mut().comment(comment);
                                     }
+                                } else if let InsertChild::Delete(ref mut d) = child {
+                                    for child in &mut d.children {
+                                        if let DeleteChild::CommentStart(ref mut c) = child {
+                                            let comment_id = c.get_id();
+                                            if let Some(comment) =
+                                                comments.iter().find(|c| c.id() == comment_id)
+                                            {
+                                                let comment = comment.clone();
+                                                c.as_mut().comment(comment);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

@@ -261,6 +261,23 @@ pub fn read_extended_comment() {
 }
 
 #[test]
+pub fn read_comment_in_delete_in_insert() {
+    let mut file =
+        File::open("../fixtures/comment_in_delete_in_insert/comment_in_delete_in_insert.docx")
+            .unwrap();
+    let mut buf = vec![];
+    file.read_to_end(&mut buf).unwrap();
+    let json = read_docx(&buf).unwrap().json();
+
+    assert_json_snapshot!("read_comment_in_delete_in_insert", &json);
+
+    let path = std::path::Path::new("./tests/output/comment_in_delete_in_insert.json");
+    let mut file = std::fs::File::create(path).unwrap();
+    file.write_all(json.as_bytes()).unwrap();
+    file.flush().unwrap();
+}
+
+#[test]
 pub fn read_line_spacing() {
     let mut file = File::open("../fixtures/line_spacing/line_spacing.docx").unwrap();
     let mut buf = vec![];

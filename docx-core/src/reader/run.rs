@@ -71,6 +71,11 @@ impl ElementReader for Run {
                                 XMLElement::Tab => {
                                     run = run.add_tab();
                                 }
+                                XMLElement::PTab => {
+                                    if let Ok(v) = PositionalTab::read(r, &attributes) {
+                                        run = run.add_ptab(v);
+                                    }
+                                }
                                 XMLElement::Sym => {
                                     if let Some(font) = read(&attributes, "font") {
                                         if let Some(char) = read(&attributes, "char") {

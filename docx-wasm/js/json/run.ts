@@ -11,6 +11,9 @@ import { VertAlignType } from "../run";
 import { FieldChar } from "./bindings/FieldChar";
 import { InstrHyperlink } from "./bindings/InstrHyperlink";
 import { InstrToC } from "./bindings/InstrToC";
+import { PositionalTabAlignmentType } from "./bindings/PositionalTabAlignmentType";
+import { PositionalTabRelativeTo } from "./bindings/PositionalTabRelativeTo";
+import { TabLeaderType } from "./bindings/TabLeaderType";
 
 export type TextBorderJSON = {
   borderType: BorderType;
@@ -61,6 +64,7 @@ export type RunChildJSON =
   | TabJSON
   | BreakJSON
   | DrawingJSON
+  | PtabJSON
   | ShapeJSON
   | CommentRangeStartJSON
   | CommentRangeEndJSON
@@ -72,6 +76,15 @@ export type TextJSON = {
   data: {
     preserveSpace: boolean;
     text: string;
+  };
+};
+
+export type PtabJSON = {
+  type: "ptab";
+  data: {
+    alignment: PositionalTabAlignmentType;
+    relativeTo: PositionalTabRelativeTo;
+    leader: TabLeaderType;
   };
 };
 

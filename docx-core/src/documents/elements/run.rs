@@ -29,6 +29,7 @@ pub enum RunChild {
     Sym(Sym),
     DeleteText(DeleteText),
     Tab(Tab),
+    PTab(PositionalTab),
     Break(Break),
     Drawing(Box<Drawing>),
     Shape(Box<Shape>),
@@ -70,6 +71,12 @@ impl Serialize for RunChild {
             RunChild::Tab(_) => {
                 let mut t = serializer.serialize_struct("Tab", 1)?;
                 t.serialize_field("type", "tab")?;
+                t.end()
+            }
+            RunChild::PTab(ref s) => {
+                let mut t = serializer.serialize_struct("PTab", 1)?;
+                t.serialize_field("type", "ptab")?;
+                t.serialize_field("data", s)?;
                 t.end()
             }
             RunChild::Break(ref s) => {
@@ -201,6 +208,11 @@ impl Run {
         self
     }
 
+    pub fn add_ptab(mut self, ptab: PositionalTab) -> Run {
+        self.children.push(RunChild::PTab(ptab));
+        self
+    }
+
     pub fn add_image(mut self, pic: Pic) -> Run {
         self.children
             .push(RunChild::Drawing(Box::new(Drawing::new().pic(pic))));
@@ -326,6 +338,7 @@ impl BuildXML for Run {
                 RunChild::Sym(t) => b = b.add_child(t),
                 RunChild::DeleteText(t) => b = b.add_child(t),
                 RunChild::Tab(t) => b = b.add_child(t),
+                RunChild::PTab(t) => b = b.add_child(t),
                 RunChild::Break(t) => b = b.add_child(t),
                 RunChild::Drawing(t) => b = b.add_child(t),
                 RunChild::Shape(_t) => {

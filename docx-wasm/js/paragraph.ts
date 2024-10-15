@@ -180,6 +180,11 @@ export class Paragraph {
     return this;
   }
 
+  color(color: string) {
+    this.property.runProperty = { ...this.property.runProperty, color };
+    return this;
+  }
+
   bold() {
     this.property.runProperty = { ...this.property.runProperty, bold: true };
     return this;

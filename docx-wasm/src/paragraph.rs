@@ -178,6 +178,11 @@ impl Paragraph {
         self
     }
 
+    pub fn color(mut self, c: &str) -> Self {
+        self.0 = self.0.color(c);
+        self
+    }
+
     pub fn bold(mut self) -> Self {
         self.0 = self.0.bold();
         self

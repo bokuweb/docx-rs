@@ -299,6 +299,10 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
     target = target.bold() as T;
   }
 
+  if (property.runProperty.color) {
+    target = target.color(property.runProperty.color) as T;
+  }
+
   if (typeof property.lineSpacing !== "undefined") {
     const spacing = buildLineSpacing(property);
     if (spacing) {

@@ -305,6 +305,11 @@ impl Paragraph {
         self
     }
 
+    pub fn color(mut self, c: impl Into<String>) -> Self {
+        self.property.run_property = self.property.run_property.color(c);
+        self
+    }
+
     pub fn bold(mut self) -> Self {
         self.property.run_property = self.property.run_property.bold();
         self

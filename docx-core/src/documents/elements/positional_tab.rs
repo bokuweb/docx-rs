@@ -7,10 +7,21 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[cfg_attr(feature = "wasm", ts(export))]
+#[serde(rename_all = "camelCase")]
 pub struct PositionalTab {
     pub alignment: PositionalTabAlignmentType,
     pub relative_to: PositionalTabRelativeTo,
     pub leader: TabLeaderType,
+}
+
+impl Default for PositionalTab {
+    fn default() -> Self {
+        Self {
+            alignment: PositionalTabAlignmentType::Left,
+            relative_to: PositionalTabRelativeTo::Margin,
+            leader: TabLeaderType::None,
+        }
+    }
 }
 
 impl PositionalTab {

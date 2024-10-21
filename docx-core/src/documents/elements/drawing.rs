@@ -163,12 +163,8 @@ mod tests {
 
     #[test]
     fn test_drawing_build_with_pic() {
-        use std::io::Read;
-
-        let mut img = std::fs::File::open("../images/cat_min.jpg").unwrap();
-        let mut buf = Vec::new();
-        let _ = img.read_to_end(&mut buf).unwrap();
-        let d = Drawing::new().pic(Pic::new(&buf)).build();
+        let pic = Pic::new_with_dimensions(Vec::new(), 320, 240);
+        let d = Drawing::new().pic(pic).build();
         assert_eq!(
             str::from_utf8(&d).unwrap(),
             r#"<w:drawing>
@@ -212,12 +208,8 @@ mod tests {
 
     #[test]
     fn test_drawing_build_with_pic_overlap() {
-        use std::io::Read;
-
-        let mut img = std::fs::File::open("../images/cat_min.jpg").unwrap();
-        let mut buf = Vec::new();
-        let _ = img.read_to_end(&mut buf).unwrap();
-        let d = Drawing::new().pic(Pic::new(&buf).overlapping()).build();
+        let pic = Pic::new_with_dimensions(Vec::new(), 320, 240).overlapping();
+        let d = Drawing::new().pic(pic).build();
         assert_eq!(
             str::from_utf8(&d).unwrap(),
             r#"<w:drawing>
@@ -262,12 +254,7 @@ mod tests {
 
     #[test]
     fn test_drawing_build_with_pic_align_right() {
-        use std::io::Read;
-
-        let mut img = std::fs::File::open("../images/cat_min.jpg").unwrap();
-        let mut buf = Vec::new();
-        let _ = img.read_to_end(&mut buf).unwrap();
-        let mut pic = Pic::new(&buf).floating();
+        let mut pic = Pic::new_with_dimensions(Vec::new(), 320, 240).floating();
         pic = pic.relative_from_h(RelativeFromHType::Column);
         pic = pic.relative_from_v(RelativeFromVType::Paragraph);
         pic = pic.position_h(DrawingPosition::Align(PicAlign::Right));
@@ -323,12 +310,7 @@ mod tests {
 
     #[test]
     fn test_issue686() {
-        use std::io::Read;
-
-        let mut img = std::fs::File::open("../images/cat_min.jpg").unwrap();
-        let mut buf = Vec::new();
-        let _ = img.read_to_end(&mut buf).unwrap();
-        let pic = Pic::new(&buf)
+        let pic = Pic::new_with_dimensions(Vec::new(), 320, 240)
             .size(320 * 9525, 240 * 9525)
             .floating()
             .offset_x(300 * 9525)

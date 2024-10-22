@@ -1,7 +1,9 @@
 use super::XMLBuilder;
 use super::XmlEvent;
 
-impl XMLBuilder {
+use std::io::Write;
+
+impl<W: Write> XMLBuilder<W> {
     pub(crate) fn open_footer(mut self) -> Self {
         self.writer
             .write(

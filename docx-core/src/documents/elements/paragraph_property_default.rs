@@ -35,11 +35,11 @@ impl Default for ParagraphPropertyDefault {
 
 impl BuildXML for ParagraphPropertyDefault {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.open_paragraph_property_default()
             .add_child(&self.paragraph_property)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

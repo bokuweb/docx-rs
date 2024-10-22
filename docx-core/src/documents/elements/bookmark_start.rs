@@ -20,9 +20,9 @@ impl BookmarkStart {
 
 impl BuildXML for BookmarkStart {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.bookmark_start(&format!("{}", self.id), &self.name)
-            .build()
+            .into_inner()
     }
 }
 

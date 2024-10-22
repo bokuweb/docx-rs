@@ -17,10 +17,10 @@ impl OutlineLvl {
 
 impl BuildXML for OutlineLvl {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .outline_lvl(self.v)
             // .close()
-            .build()
+            .into_inner()
     }
 }
 

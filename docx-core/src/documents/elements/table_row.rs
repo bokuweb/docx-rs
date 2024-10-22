@@ -86,11 +86,11 @@ impl TableRow {
 
 impl BuildXML for TableRow {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new()
+        let b = XMLBuilder::new(Vec::new())
             .open_table_row()
             .add_child(&self.property)
             .add_children(&self.cells);
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

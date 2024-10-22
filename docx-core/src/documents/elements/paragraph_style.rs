@@ -37,7 +37,9 @@ impl ParagraphStyle {
 
 impl BuildXML for ParagraphStyle {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().paragraph_style(&self.val).build()
+        XMLBuilder::new(Vec::new())
+            .paragraph_style(&self.val)
+            .into_inner()
     }
 }
 

@@ -15,12 +15,12 @@ impl AppProps {
 
 impl BuildXML for AppProps {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let base = b.declaration(Some(true)).open_properties(
             "http://schemas.openxmlformats.org/officeDocument/2006/extended-properties",
             "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes",
         );
-        base.close().build()
+        base.close().into_inner()
     }
 }
 

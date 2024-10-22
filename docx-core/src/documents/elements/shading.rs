@@ -46,8 +46,8 @@ impl Shading {
 
 impl BuildXML for Shading {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .shd(&self.shd_type.to_string(), &self.color, &self.fill)
-            .build()
+            .into_inner()
     }
 }

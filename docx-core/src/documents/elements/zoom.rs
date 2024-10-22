@@ -16,8 +16,8 @@ impl Zoom {
 
 impl BuildXML for Zoom {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.zoom(&format!("{}", self.val)).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.zoom(&format!("{}", self.val)).into_inner()
     }
 }
 

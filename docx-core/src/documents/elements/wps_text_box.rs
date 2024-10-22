@@ -27,12 +27,12 @@ impl WpsTextBox {
 
 impl BuildXML for WpsTextBox {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b.open_wp_text_box();
         for c in &self.children {
             b = b.add_child(c);
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

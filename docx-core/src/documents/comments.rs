@@ -30,11 +30,13 @@ impl Comments {
 
 impl BuildXML for Comments {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new().declaration(Some(true)).open_comments();
+        let mut b = XMLBuilder::new(Vec::new())
+            .declaration(Some(true))
+            .open_comments();
         for c in &self.comments {
             b = b.add_child(c)
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

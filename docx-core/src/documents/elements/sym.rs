@@ -21,8 +21,8 @@ impl Sym {
 }
 impl BuildXML for Sym {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.sym(&self.font, &self.char).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.sym(&self.font, &self.char).into_inner()
     }
 }
 

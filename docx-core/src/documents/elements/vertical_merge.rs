@@ -17,9 +17,9 @@ impl VMerge {
 
 impl BuildXML for VMerge {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .vertical_merge(&self.val.to_string())
-            .build()
+            .into_inner()
     }
 }
 

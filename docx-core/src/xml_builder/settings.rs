@@ -1,7 +1,8 @@
 use super::XMLBuilder;
 use super::XmlEvent;
+use std::io::Write;
 
-impl XMLBuilder {
+impl<W: Write> XMLBuilder<W> {
     pub(crate) fn open_settings(mut self) -> Self {
         self.writer
             .write(

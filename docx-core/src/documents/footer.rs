@@ -81,7 +81,7 @@ impl Serialize for FooterChild {
 
 impl BuildXML for Footer {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         b = b.declaration(Some(true)).open_footer();
 
         for c in &self.children {
@@ -91,7 +91,7 @@ impl BuildXML for Footer {
                 FooterChild::StructuredDataTag(t) => b = b.add_child(t),
             }
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

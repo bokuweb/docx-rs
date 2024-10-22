@@ -64,7 +64,7 @@ impl TextBoxContent {
 
 impl BuildXML for TextBoxContent {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b.open_text_box_content();
         for c in &self.children {
             match c {
@@ -72,7 +72,7 @@ impl BuildXML for TextBoxContent {
                 TextBoxContentChild::Table(t) => b = b.add_child(t),
             }
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

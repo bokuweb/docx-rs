@@ -16,7 +16,9 @@ impl Underline {
 
 impl BuildXML for Underline {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().underline(&self.val).build()
+        XMLBuilder::new(Vec::new())
+            .underline(&self.val)
+            .into_inner()
     }
 }
 

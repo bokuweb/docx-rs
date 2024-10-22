@@ -16,8 +16,8 @@ impl NumberFormat {
 
 impl BuildXML for NumberFormat {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.number_format(&self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.number_format(&self.val).into_inner()
     }
 }
 

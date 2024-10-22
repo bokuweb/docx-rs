@@ -35,7 +35,7 @@ impl Serialize for BoldCs {
 
 impl BuildXML for BoldCs {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.b_cs().build()
+        let b = XMLBuilder::new(Vec::new());
+        b.b_cs().into_inner()
     }
 }

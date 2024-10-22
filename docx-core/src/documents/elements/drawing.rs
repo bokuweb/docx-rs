@@ -63,7 +63,7 @@ impl BuildXML for Box<Drawing> {
 
 impl BuildXML for Drawing {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b.open_drawing();
 
         match &self.data {
@@ -149,7 +149,7 @@ impl BuildXML for Drawing {
                 unimplemented!()
             }
         }
-        b.close().close().build()
+        b.close().close().into_inner()
     }
 }
 

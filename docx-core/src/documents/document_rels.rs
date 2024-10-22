@@ -46,7 +46,7 @@ impl DocumentRels {
 
 impl BuildXML for DocumentRels {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         b = b
             .declaration(None)
             .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships")
@@ -136,6 +136,6 @@ impl BuildXML for DocumentRels {
             )
         }
 
-        b.close().build()
+        b.close().into_inner()
     }
 }

@@ -76,7 +76,7 @@ impl TableRowProperty {
 
 impl BuildXML for TableRowProperty {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new()
+        let mut b = XMLBuilder::new(Vec::new())
             .open_table_row_property()
             .add_optional_child(&self.del)
             .add_optional_child(&self.ins)
@@ -87,7 +87,7 @@ impl BuildXML for TableRowProperty {
                 &self.height_rule.unwrap_or_default().to_string(),
             )
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

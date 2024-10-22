@@ -24,8 +24,8 @@ impl Justification {
 
 impl BuildXML for Justification {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.justification(&self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.justification(&self.val).into_inner()
     }
 }
 

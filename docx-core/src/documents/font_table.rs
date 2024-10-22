@@ -17,7 +17,7 @@ impl FontTable {
 
 impl BuildXML for FontTable {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let times = Font::new("Times New Roman", "00", "roman", FontPitchType::Variable);
         let symbol = Font::new("Symbol", "02", "roman", FontPitchType::Variable);
         let arial = Font::new("Arial", "00", "swiss", FontPitchType::Variable);
@@ -27,7 +27,7 @@ impl BuildXML for FontTable {
             .add_child(&symbol)
             .add_child(&arial)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

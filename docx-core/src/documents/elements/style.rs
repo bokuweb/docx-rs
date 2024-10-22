@@ -317,7 +317,7 @@ impl Style {
 
 impl BuildXML for Style {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         // Set "Normal" as default if you need change these values please fix it
         let mut b = b
             .open_style(self.style_type, &self.style_id)
@@ -342,7 +342,7 @@ impl BuildXML for Style {
         b.add_child(&QFormat::new())
             .add_optional_child(&self.based_on)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

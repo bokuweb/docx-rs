@@ -14,7 +14,7 @@ impl Taskpanes {
 
 impl BuildXML for Taskpanes {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let b = b
             .declaration(Some(true))
             .open_taskpanes("http://schemas.microsoft.com/office/webextensions/taskpanes/2010/11")
@@ -25,7 +25,7 @@ impl BuildXML for Taskpanes {
             )
             .close()
             .close();
-        b.build()
+        b.into_inner()
     }
 }
 

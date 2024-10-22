@@ -16,7 +16,7 @@ impl Color {
 
 impl BuildXML for Color {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().color(&self.val).build()
+        XMLBuilder::new(Vec::new()).color(&self.val).into_inner()
     }
 }
 

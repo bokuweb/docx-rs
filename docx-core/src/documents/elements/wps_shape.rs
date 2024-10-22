@@ -45,13 +45,13 @@ impl WpsShape {
 
 impl BuildXML for WpsShape {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b.open_wp_text_box();
         for c in &self.children {
             match c {
                 WpsShapeChild::WpsTextBox(t) => b = b.add_child(t),
             }
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }

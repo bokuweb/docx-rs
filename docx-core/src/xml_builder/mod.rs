@@ -23,22 +23,24 @@ mod styles;
 
 use crate::BuildXML;
 
+use std::io::Write;
 use std::str;
 use xml::common::XmlVersion;
 use xml::writer::{EmitterConfig, EventWriter, XmlEvent};
 
-pub struct XMLBuilder {
-    writer: EventWriter<Vec<u8>>,
+pub use elements::*;
+
+pub struct XMLBuilder<W> {
+    writer: EventWriter<W>,
 }
 
-impl XMLBuilder {
-    pub(crate) fn new() -> XMLBuilder {
-        let buf = Vec::new();
+impl<W: Write> XMLBuilder<W> {
+    pub(crate) fn new(writer: W) -> Self {
         let mut config = EmitterConfig::new()
             .write_document_declaration(false)
             .perform_indent(true);
         config.perform_escaping = false;
-        let writer = config.create_writer(buf);
+        let writer = config.create_writer(writer);
         XMLBuilder { writer }
     }
 
@@ -126,7 +128,11 @@ impl XMLBuilder {
         self
     }
 
-    pub(crate) fn build(self) -> Vec<u8> {
+    pub(crate) fn inner_mut(&mut self) -> &mut W {
+        self.writer.inner_mut()
+    }
+
+    pub(crate) fn into_inner(self) -> W {
         self.writer.into_inner()
     }
 }
@@ -137,12 +143,12 @@ mod tests {
 
     #[test]
     fn test_open_types() {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let r = b
             .open_types("http://example")
             .plain_text("child")
             .close()
-            .build();
+            .into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<Types xmlns="http://example">child</Types>"#

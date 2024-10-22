@@ -52,8 +52,8 @@ impl Default for TextBorder {
 
 impl BuildXML for TextBorder {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.text_border(self.border_type, self.size, self.space, &self.color)
-            .build()
+            .into_inner()
     }
 }

@@ -37,8 +37,8 @@ impl Name {
 
 impl BuildXML for Name {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.name(&self.name).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.name(&self.name).into_inner()
     }
 }
 

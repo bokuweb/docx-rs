@@ -25,8 +25,8 @@ impl Serialize for Next {
 
 impl BuildXML for Next {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.next(&self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.next(&self.val).into_inner()
     }
 }
 

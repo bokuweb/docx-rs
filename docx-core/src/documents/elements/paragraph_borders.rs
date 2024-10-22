@@ -82,21 +82,33 @@ impl ParagraphBorder {
 
 impl BuildXML for ParagraphBorder {
     fn build(&self) -> Vec<u8> {
-        let base = XMLBuilder::new();
+        let base = XMLBuilder::new(Vec::new());
         let base = {
             let val = self.val.to_string();
             let space = self.space.to_string();
             let size = self.size.to_string();
             match self.position {
-                ParagraphBorderPosition::Top => base.paragraph_border_top(&val, &space, &size, &self.color),
-                ParagraphBorderPosition::Left => base.paragraph_border_left(&val, &space, &size, &self.color),
-                ParagraphBorderPosition::Bottom => base.paragraph_border_bottom(&val, &space, &size, &self.color),
-                ParagraphBorderPosition::Right => base.paragraph_border_right(&val, &space, &size, &self.color),
-                ParagraphBorderPosition::Between => base.paragraph_border_between(&val, &space, &size, &self.color),
-                ParagraphBorderPosition::Bar => base.paragraph_border_bar(&val, &space, &size, &self.color),
+                ParagraphBorderPosition::Top => {
+                    base.paragraph_border_top(&val, &space, &size, &self.color)
+                }
+                ParagraphBorderPosition::Left => {
+                    base.paragraph_border_left(&val, &space, &size, &self.color)
+                }
+                ParagraphBorderPosition::Bottom => {
+                    base.paragraph_border_bottom(&val, &space, &size, &self.color)
+                }
+                ParagraphBorderPosition::Right => {
+                    base.paragraph_border_right(&val, &space, &size, &self.color)
+                }
+                ParagraphBorderPosition::Between => {
+                    base.paragraph_border_between(&val, &space, &size, &self.color)
+                }
+                ParagraphBorderPosition::Bar => {
+                    base.paragraph_border_bar(&val, &space, &size, &self.color)
+                }
             }
         };
-        base.build()
+        base.into_inner()
     }
 }
 
@@ -110,7 +122,6 @@ pub struct ParagraphBorders {
     between: Option<ParagraphBorder>,
     bar: Option<ParagraphBorder>,
 }
-
 
 impl Default for ParagraphBorders {
     fn default() -> Self {
@@ -168,10 +179,13 @@ impl ParagraphBorders {
 
     pub fn clear_all(mut self) -> Self {
         self.left = Some(ParagraphBorder::new(ParagraphBorderPosition::Left).val(BorderType::Nil));
-        self.right = Some(ParagraphBorder::new(ParagraphBorderPosition::Right).val(BorderType::Nil));
+        self.right =
+            Some(ParagraphBorder::new(ParagraphBorderPosition::Right).val(BorderType::Nil));
         self.top = Some(ParagraphBorder::new(ParagraphBorderPosition::Top).val(BorderType::Nil));
-        self.bottom = Some(ParagraphBorder::new(ParagraphBorderPosition::Bottom).val(BorderType::Nil));
-        self.between = Some(ParagraphBorder::new(ParagraphBorderPosition::Between).val(BorderType::Nil));
+        self.bottom =
+            Some(ParagraphBorder::new(ParagraphBorderPosition::Bottom).val(BorderType::Nil));
+        self.between =
+            Some(ParagraphBorder::new(ParagraphBorderPosition::Between).val(BorderType::Nil));
         self.bar = Some(ParagraphBorder::new(ParagraphBorderPosition::Bar).val(BorderType::Nil));
         self
     }
@@ -179,7 +193,7 @@ impl ParagraphBorders {
 
 impl BuildXML for ParagraphBorders {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_paragraph_borders()
             .add_optional_child(&self.left)
             .add_optional_child(&self.right)
@@ -188,6 +202,6 @@ impl BuildXML for ParagraphBorders {
             .add_optional_child(&self.between)
             .add_optional_child(&self.bar)
             .close()
-            .build()
+            .into_inner()
     }
 }

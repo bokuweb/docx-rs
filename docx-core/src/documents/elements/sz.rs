@@ -16,8 +16,8 @@ impl Sz {
 
 impl BuildXML for Sz {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.sz(self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.sz(self.val).into_inner()
     }
 }
 

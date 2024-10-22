@@ -26,11 +26,11 @@ impl BuildXML for Box<InstrText> {
             InstrText::HYPERLINK(_link) => todo!(),
             InstrText::Unsupported(s) => s.as_bytes().to_vec(),
         };
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_instr_text()
             .add_bytes(&instr)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

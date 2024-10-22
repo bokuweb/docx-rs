@@ -155,7 +155,7 @@ impl TableOfContents {
             p = p.alias(alias);
         }
         if self.items.is_empty() {
-            let mut b = XMLBuilder::new();
+            let mut b = XMLBuilder::new(Vec::new());
 
             if !self.without_sdt {
                 b = b
@@ -231,7 +231,7 @@ impl TableOfContents {
                 b = b.close().close();
             }
 
-            b.build()
+            b.into_inner()
         } else {
             let items: Vec<TableOfContentsItem> = self
                 .items
@@ -247,7 +247,7 @@ impl TableOfContents {
                 })
                 .collect();
 
-            let mut b = XMLBuilder::new();
+            let mut b = XMLBuilder::new(Vec::new());
 
             if !self.without_sdt {
                 b = b
@@ -288,7 +288,7 @@ impl TableOfContents {
             if !self.without_sdt {
                 b = b.close().close();
             }
-            b.build()
+            b.into_inner()
         }
     }
 }

@@ -51,11 +51,11 @@ impl BuildXML for ParagraphPropertyChange {
     #[allow(clippy::needless_borrow)]
     fn build(&self) -> Vec<u8> {
         let id = self.generate();
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_paragraph_property_change(&id, &self.author, &self.date)
             .add_child(&self.property)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

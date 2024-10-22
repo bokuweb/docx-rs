@@ -53,8 +53,8 @@ impl Default for DocGrid {
 
 impl BuildXML for DocGrid {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.doc_grid(&self.grid_type, self.line_pitch, self.char_space)
-            .build()
+            .into_inner()
     }
 }

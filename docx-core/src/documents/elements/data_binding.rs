@@ -33,13 +33,13 @@ impl DataBinding {
 
 impl BuildXML for DataBinding {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .data_binding(
                 self.xpath.as_ref(),
                 self.prefix_mappings.as_ref(),
                 self.store_item_id.as_ref(),
             )
-            .build()
+            .into_inner()
     }
 }
 

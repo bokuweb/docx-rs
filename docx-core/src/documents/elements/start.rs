@@ -16,8 +16,8 @@ impl Start {
 
 impl BuildXML for Start {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.start(self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.start(self.val).into_inner()
     }
 }
 

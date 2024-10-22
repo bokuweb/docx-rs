@@ -33,15 +33,15 @@ impl CommentRangeStart {
 
 impl BuildXML for CommentRangeStart {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.comment_range_start(&format!("{}", self.id)).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.comment_range_start(&format!("{}", self.id)).into_inner()
     }
 }
 
 impl BuildXML for Box<CommentRangeStart> {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.comment_range_start(&format!("{}", self.id)).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.comment_range_start(&format!("{}", self.id)).into_inner()
     }
 }
 

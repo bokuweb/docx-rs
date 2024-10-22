@@ -16,8 +16,8 @@ impl DefaultTabStop {
 
 impl BuildXML for DefaultTabStop {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.default_tab_stop(self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.default_tab_stop(self.val).into_inner()
     }
 }
 

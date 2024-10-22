@@ -14,9 +14,9 @@ impl TextAlignment {
 
 impl BuildXML for TextAlignment {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let v = format!("{}", self.0);
-        b.text_alignment(&v).build()
+        b.text_alignment(&v).into_inner()
     }
 }
 

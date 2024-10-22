@@ -6,8 +6,8 @@ use crate::{xml_builder::XMLBuilder, BuildXML};
 pub struct CantSplit {}
 impl BuildXML for CantSplit {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.cant_split().build()
+        let b = XMLBuilder::new(Vec::new());
+        b.cant_split().into_inner()
     }
 }
 

@@ -16,8 +16,8 @@ impl NumberingId {
 
 impl BuildXML for NumberingId {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.num_id(self.id).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.num_id(self.id).into_inner()
     }
 }
 

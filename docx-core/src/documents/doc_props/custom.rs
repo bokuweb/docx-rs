@@ -22,7 +22,7 @@ impl CustomProps {
 
 impl BuildXML for CustomProps {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut base = b.declaration(Some(true)).open_custom_properties(
             "http://schemas.openxmlformats.org/officeDocument/2006/custom-properties",
             "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes",
@@ -41,6 +41,6 @@ impl BuildXML for CustomProps {
                 .close()
         }
 
-        base.close().build()
+        base.close().into_inner()
     }
 }

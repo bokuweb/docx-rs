@@ -125,7 +125,7 @@ impl TableCellProperty {
 
 impl BuildXML for TableCellProperty {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_table_cell_property()
             .add_optional_child(&self.width)
             .add_optional_child(&self.borders)
@@ -136,7 +136,7 @@ impl BuildXML for TableCellProperty {
             .add_optional_child(&self.shading)
             .add_optional_child(&self.margins)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

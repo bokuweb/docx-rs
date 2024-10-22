@@ -1,7 +1,9 @@
 use super::XMLBuilder;
 use super::XmlEvent;
 
-impl XMLBuilder {
+use std::io::Write;
+
+impl<W: Write> XMLBuilder<W> {
     open!(
         open_wp_inline,
         "wp:inline",

@@ -36,7 +36,7 @@ impl Serialize for Strike {
 
 impl BuildXML for Strike {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.strike().build()
+        let b = XMLBuilder::new(Vec::new());
+        b.strike().into_inner()
     }
 }

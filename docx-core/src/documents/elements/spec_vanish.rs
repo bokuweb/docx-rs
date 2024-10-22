@@ -14,8 +14,8 @@ impl SpecVanish {
 
 impl BuildXML for SpecVanish {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.spec_vanish().build()
+        let b = XMLBuilder::new(Vec::new());
+        b.spec_vanish().into_inner()
     }
 }
 

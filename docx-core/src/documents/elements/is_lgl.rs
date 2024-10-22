@@ -14,8 +14,8 @@ impl IsLgl {
 
 impl BuildXML for IsLgl {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.is_lgl().build()
+        let b = XMLBuilder::new(Vec::new());
+        b.is_lgl().into_inner()
     }
 }
 

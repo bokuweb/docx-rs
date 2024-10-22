@@ -26,7 +26,7 @@ impl Serialize for VertAlign {
 
 impl BuildXML for VertAlign {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.vert_align(&self.val.to_string() ).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.vert_align(&self.val.to_string()).into_inner()
     }
 }

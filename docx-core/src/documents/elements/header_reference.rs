@@ -30,8 +30,8 @@ impl HeaderReference {
 
 impl BuildXML for HeaderReference {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .header_reference(&self.header_type, &self.id)
-            .build()
+            .into_inner()
     }
 }

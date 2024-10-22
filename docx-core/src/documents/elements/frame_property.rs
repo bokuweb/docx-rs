@@ -121,8 +121,8 @@ impl FrameProperty {
 
 impl BuildXML for FrameProperty {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.frame_property(self).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.frame_property(self).into_inner()
     }
 }
 

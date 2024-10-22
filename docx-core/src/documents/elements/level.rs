@@ -126,7 +126,7 @@ impl Level {
 
 impl BuildXML for Level {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new()
+        let mut b = XMLBuilder::new(Vec::new())
             .open_level(&format!("{}", self.level))
             .add_child(&self.start)
             .add_child(&self.format)
@@ -142,7 +142,7 @@ impl BuildXML for Level {
             b = b.suffix(&self.suffix.to_string());
         }
 
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

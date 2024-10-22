@@ -16,7 +16,9 @@ impl Highlight {
 
 impl BuildXML for Highlight {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().highlight(&self.val).build()
+        XMLBuilder::new(Vec::new())
+            .highlight(&self.val)
+            .into_inner()
     }
 }
 

@@ -1,7 +1,8 @@
 use super::XMLBuilder;
 use super::XmlEvent;
+use std::io::Write;
 
-impl XMLBuilder {
+impl<W: Write> XMLBuilder<W> {
     // i.e. <cp:properties xmlns:vt="http://schemas.openxmlformats.org/package/2006/relationships">
     open!(
         open_core_properties,

@@ -27,7 +27,9 @@ impl RunStyle {
 
 impl BuildXML for RunStyle {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().run_style(&self.val).build()
+        XMLBuilder::new(Vec::new())
+            .run_style(&self.val)
+            .into_inner()
     }
 }
 

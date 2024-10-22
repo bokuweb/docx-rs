@@ -30,7 +30,9 @@ impl Numberings {
 
 impl BuildXML for Numberings {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new().declaration(Some(true)).open_numbering();
+        let mut b = XMLBuilder::new(Vec::new())
+            .declaration(Some(true))
+            .open_numbering();
         b = b.add_child(&create_default_numbering());
         for n in &self.abstract_nums {
             b = b.add_child(n);
@@ -39,7 +41,7 @@ impl BuildXML for Numberings {
         for n in &self.numberings {
             b = b.add_child(n);
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

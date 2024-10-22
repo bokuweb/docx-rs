@@ -50,7 +50,7 @@ impl TableOfContentsItem {
 
 impl BuildXML for Vec<TableOfContentsItem> {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new()
+        let mut b = XMLBuilder::new(Vec::new())
             .open_structured_tag()
             .open_structured_tag_property()
             .close()
@@ -139,6 +139,6 @@ impl BuildXML for Vec<TableOfContentsItem> {
                 b = b.add_child(&p);
             }
         }
-        b.close().close().build()
+        b.close().close().into_inner()
     }
 }

@@ -67,7 +67,7 @@ impl CellMargins {
 
 impl BuildXML for CellMargins {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new().open_cell_margins();
+        let mut b = XMLBuilder::new(Vec::new()).open_cell_margins();
 
         if let Some(ref top) = self.top {
             b = b.margin_top(top.val as i32, top.width_type);
@@ -84,7 +84,7 @@ impl BuildXML for CellMargins {
         if let Some(ref right) = self.right {
             b = b.margin_right(right.val as i32, right.width_type);
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

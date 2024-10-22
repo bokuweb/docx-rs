@@ -29,12 +29,12 @@ impl FieldChar {
 
 impl BuildXML for FieldChar {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .field_character(
                 &format!("{}", self.field_char_type),
                 &format!("{}", &self.dirty),
             )
-            .build()
+            .into_inner()
     }
 }
 

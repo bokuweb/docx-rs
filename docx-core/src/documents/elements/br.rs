@@ -18,8 +18,8 @@ impl Break {
 
 impl BuildXML for Break {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.br(&self.break_type.to_string()).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.br(&self.break_type.to_string()).into_inner()
     }
 }
 

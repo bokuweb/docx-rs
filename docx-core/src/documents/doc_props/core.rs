@@ -57,7 +57,7 @@ impl CorePropsConfig {
 
 impl BuildXML for CoreProps {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let base = b.declaration(Some(true)).open_core_properties(
             "http://schemas.openxmlformats.org/package/2006/metadata/core-properties",
             "http://purl.org/dc/elements/1.1/",
@@ -107,7 +107,7 @@ impl BuildXML for CoreProps {
         if let Some(v) = self.config.title.as_ref() {
             base = base.dc_title(v);
         }
-        base.close().build()
+        base.close().into_inner()
     }
 }
 

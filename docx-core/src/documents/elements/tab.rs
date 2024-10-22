@@ -36,7 +36,7 @@ impl Tab {
 
 impl BuildXML for Tab {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.tab(self.val, self.leader, self.pos).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.tab(self.val, self.leader, self.pos).into_inner()
     }
 }

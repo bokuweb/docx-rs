@@ -100,7 +100,7 @@ impl BuildXML for Delete {
     #[allow(clippy::needless_borrow)]
     fn build(&self) -> Vec<u8> {
         let id = self.generate();
-        let mut b = XMLBuilder::new().open_delete(&id, &self.author, &self.date);
+        let mut b = XMLBuilder::new(Vec::new()).open_delete(&id, &self.author, &self.date);
         for c in &self.children {
             match c {
                 DeleteChild::Run(t) => b = b.add_child(t),
@@ -108,7 +108,7 @@ impl BuildXML for Delete {
                 DeleteChild::CommentEnd(c) => b = b.add_child(c),
             }
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

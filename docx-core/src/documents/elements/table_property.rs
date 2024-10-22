@@ -151,7 +151,7 @@ impl TableProperty {
 
 impl BuildXML for TableProperty {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_table_property()
             .add_child(&self.width)
             .add_child(&self.justification)
@@ -162,7 +162,7 @@ impl BuildXML for TableProperty {
             .add_optional_child(&self.layout)
             .add_optional_child(&self.position)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

@@ -202,7 +202,7 @@ impl ParagraphProperty {
 }
 
 fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
-    let mut b = XMLBuilder::new()
+    let mut b = XMLBuilder::new(Vec::new())
         .open_paragraph_property()
         .add_child(&p.run_property)
         .add_optional_child(&p.style)
@@ -251,7 +251,7 @@ fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
         b = b.close();
     }
 
-    b.close().build()
+    b.close().into_inner()
 }
 
 impl BuildXML for ParagraphProperty {

@@ -19,9 +19,9 @@ impl TableCellWidth {
 
 impl BuildXML for TableCellWidth {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .table_cell_width(self.width as i32, WidthType::Dxa)
-            .build()
+            .into_inner()
     }
 }
 

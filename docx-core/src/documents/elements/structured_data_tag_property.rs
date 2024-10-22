@@ -41,7 +41,7 @@ impl StructuredDataTagProperty {
 
 impl BuildXML for StructuredDataTagProperty {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new()
+        let mut b = XMLBuilder::new(Vec::new())
             .open_structured_tag_property()
             .add_child(&self.run_property)
             .add_optional_child(&self.data_binding);
@@ -50,7 +50,7 @@ impl BuildXML for StructuredDataTagProperty {
             b = b.alias(alias);
         }
 
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

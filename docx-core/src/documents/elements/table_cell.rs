@@ -154,7 +154,7 @@ impl Default for TableCell {
 
 impl BuildXML for TableCell {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b.open_table_cell().add_child(&self.property);
         for c in &self.children {
             match c {
@@ -174,7 +174,7 @@ impl BuildXML for TableCell {
         if self.children.is_empty() {
             b = b.add_child(&Paragraph::new())
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

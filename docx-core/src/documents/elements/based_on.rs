@@ -28,8 +28,8 @@ impl Serialize for BasedOn {
 
 impl BuildXML for BasedOn {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.based_on(&self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.based_on(&self.val).into_inner()
     }
 }
 

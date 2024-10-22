@@ -30,12 +30,12 @@ impl NumberingProperty {
 
 impl BuildXML for NumberingProperty {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.open_numbering_property()
             .add_optional_child(&self.id)
             .add_optional_child(&self.level)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

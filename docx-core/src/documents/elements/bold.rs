@@ -36,7 +36,7 @@ impl Serialize for Bold {
 
 impl BuildXML for Bold {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.b().build()
+        let b = XMLBuilder::new(Vec::new());
+        b.b().into_inner()
     }
 }

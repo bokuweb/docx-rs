@@ -17,9 +17,9 @@ impl TextDirection {
 
 impl BuildXML for TextDirection {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .text_direction(&self.val.to_string())
-            .build()
+            .into_inner()
     }
 }
 

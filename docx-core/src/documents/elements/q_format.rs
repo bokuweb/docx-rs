@@ -19,8 +19,8 @@ impl QFormat {
 
 impl BuildXML for QFormat {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.q_format().build()
+        let b = XMLBuilder::new(Vec::new());
+        b.q_format().into_inner()
     }
 }
 

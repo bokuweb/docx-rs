@@ -8,7 +8,7 @@
 // Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
 // use serde::Serialize;
 use serde::Serialize;
-use std::fmt;
+use std::fmt::{Display, Formatter, Write};
 use std::io::prelude::*;
 use std::io::Cursor;
 use std::str::FromStr;
@@ -24,16 +24,12 @@ pub struct XmlDocument {
     pub data: Vec<XmlData>,
 }
 
-// Print as JSON
-impl fmt::Display for XmlDocument {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let mut s = String::new();
-
-        for d in self.data.iter() {
-            s = format!("{}{}", s, d);
+impl Display for XmlDocument {
+    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
+        for item in self.data.iter() {
+            item.fmt(f)?;
         }
-
-        s.fmt(f)
+        Ok(())
     }
 }
 
@@ -59,57 +55,37 @@ pub struct XmlData {
     pub children: Vec<XmlData>,
 }
 
-// Generate indentation
-// fn indent(size: usize) -> String {
-//     const INDENT: &str = "    ";
-//     (0..size)
-//         .map(|_| INDENT)
-//         .fold(String::with_capacity(size * INDENT.len()), |r, s| r + s)
-// }
+impl XmlData {
+    /// Format the XML data as a string
+    fn format(self: &XmlData, f: &mut Formatter, depth: usize) -> std::fmt::Result {
+        write!(f, "<{}", self.name)?;
 
-// Get the attributes as a string
-fn attributes_to_string(attributes: &[(String, String)]) -> String {
-    attributes.iter().fold(String::new(), |acc, (k, v)| {
-        format!("{} {}=\"{}\"", acc, k, v)
-    })
-}
-
-// Format the XML data as a string
-#[allow(clippy::only_used_in_recursion)]
-fn format(data: &XmlData, depth: usize) -> String {
-    let sub = if data.children.is_empty() {
-        String::new()
-    } else {
-        let mut sub = "\n".to_string();
-        for elmt in data.children.iter() {
-            sub = format!("{}{}", sub, format(elmt, depth + 1));
+        for (key, val) in self.attributes.iter() {
+            write!(f, r#" {}="{}""#, key, val)?;
         }
-        sub
-    };
 
-    let fmt_data = if let Some(ref d) = data.data {
-        format!("\n{}", d)
-    } else {
-        "".to_string()
-    };
+        f.write_char('>')?;
 
-    format!(
-        "<{}{}>{}{}</{}>",
-        data.name,
-        attributes_to_string(&data.attributes),
-        fmt_data,
-        sub,
-        data.name
-    )
-}
+        if let Some(ref data) = self.data {
+            write!(f, "\n{}", data)?
+        }
 
-impl fmt::Display for XmlData {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", format(self, 0))
+        for child in self.children.iter() {
+            f.write_char('\n')?;
+            child.format(f, depth + 1)?;
+        }
+
+        write!(f, "</{}>", self.name)
     }
 }
 
-// Get the XML atributes as a string
+impl Display for XmlData {
+    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
+        self.format(f, 0)
+    }
+}
+
+/// Get the XML attributes as a string
 fn map_owned_attributes(attrs: Vec<xml::attribute::OwnedAttribute>) -> Vec<(String, String)> {
     attrs
         .into_iter()
@@ -128,7 +104,6 @@ fn map_owned_attributes(attrs: Vec<xml::attribute::OwnedAttribute>) -> Vec<(Stri
         .collect()
 }
 
-// Parse the data
 fn parse(
     mut data: Vec<XmlEvent>,
     current: Option<XmlData>,
@@ -259,8 +234,8 @@ impl XmlDocument {
 #[derive(Debug, Clone, PartialEq)]
 pub struct ParseXmlError(String);
 
-impl fmt::Display for ParseXmlError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+impl Display for ParseXmlError {
+    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
         write!(f, "Coult not parse string to XML: {}", self.0)
     }
 }

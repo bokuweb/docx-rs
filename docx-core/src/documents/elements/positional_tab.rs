@@ -55,8 +55,8 @@ impl PositionalTab {
 
 impl BuildXML for PositionalTab {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.ptab(self.alignment, self.relative_to, self.leader)
-            .build()
+            .into_inner()
     }
 }

@@ -45,11 +45,11 @@ impl Default for RunPropertyDefault {
 
 impl BuildXML for RunPropertyDefault {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.open_run_property_default()
             .add_child(&self.run_property)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

@@ -6,7 +6,9 @@ use crate::TablePositionProperty;
 
 const EXPECT_MESSAGE: &str = "should write buf";
 
-impl XMLBuilder {
+use std::io::Write;
+
+impl<W: Write> XMLBuilder<W> {
     // i.e. <w:body... >
     open!(open_body, "w:body");
     // i.e. <w:basedOn ... >
@@ -788,18 +790,18 @@ mod tests {
 
     #[test]
     fn test_sz() {
-        let b = XMLBuilder::new();
-        let r = b.sz(20).build();
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.sz(20).into_inner();
         assert_eq!(str::from_utf8(&r).unwrap(), r#"<w:sz w:val="20" />"#);
     }
 
     #[test]
     fn test_declaration() {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let r = b
             .open_style(StyleType::Paragraph, "Heading")
             .close()
-            .build();
+            .into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:style w:type="paragraph" w:styleId="Heading" />"#
@@ -808,29 +810,29 @@ mod tests {
 
     #[test]
     fn test_next() {
-        let b = XMLBuilder::new();
-        let r = b.next("Normal").build();
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.next("Normal").into_inner();
         assert_eq!(str::from_utf8(&r).unwrap(), r#"<w:next w:val="Normal" />"#);
     }
 
     #[test]
     fn test_name() {
-        let b = XMLBuilder::new();
-        let r = b.name("Heading").build();
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.name("Heading").into_inner();
         assert_eq!(str::from_utf8(&r).unwrap(), r#"<w:name w:val="Heading" />"#);
     }
 
     #[test]
     fn test_color() {
-        let b = XMLBuilder::new();
-        let r = b.color("2E74B5").build();
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.color("2E74B5").into_inner();
         assert_eq!(str::from_utf8(&r).unwrap(), r#"<w:color w:val="2E74B5" />"#);
     }
 
     #[test]
     fn test_based_on() {
-        let b = XMLBuilder::new();
-        let r = b.based_on("Normal").build();
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.based_on("Normal").into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:basedOn w:val="Normal" />"#
@@ -839,14 +841,14 @@ mod tests {
 
     #[test]
     fn test_ptab() {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let r = b
             .ptab(
                 PositionalTabAlignmentType::Left,
                 PositionalTabRelativeTo::Indent,
                 TabLeaderType::None,
             )
-            .build();
+            .into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:ptab w:alignment="left" w:relativeTo="indent" w:leader="none" />"#
@@ -855,8 +857,8 @@ mod tests {
 
     #[test]
     fn test_footnote_reference() {
-        let b = XMLBuilder::new();
-        let r = b.footnote_reference(1).build();
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.footnote_reference(1).into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:footnoteReference w:id="1" />"#

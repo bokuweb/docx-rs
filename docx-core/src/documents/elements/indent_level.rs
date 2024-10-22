@@ -14,8 +14,8 @@ impl IndentLevel {
 
 impl BuildXML for IndentLevel {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.indent_level(self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.indent_level(self.val).into_inner()
     }
 }
 

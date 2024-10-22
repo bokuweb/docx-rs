@@ -16,7 +16,7 @@ impl CustomItemProperty {
 
 impl BuildXML for CustomItemProperty {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         b = b.declaration(Some(false));
         b = b
             .open_data_store_item(
@@ -25,6 +25,6 @@ impl BuildXML for CustomItemProperty {
             )
             .open_data_store_schema_refs()
             .close();
-        b.close().build()
+        b.close().into_inner()
     }
 }

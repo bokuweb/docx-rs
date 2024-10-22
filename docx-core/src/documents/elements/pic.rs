@@ -204,7 +204,7 @@ impl Pic {
 
 impl BuildXML for Pic {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let w = format!("{}", self.size.0);
         let h = format!("{}", self.size.1);
         b.open_pic("http://schemas.openxmlformats.org/drawingml/2006/picture")
@@ -231,7 +231,7 @@ impl BuildXML for Pic {
             .close()
             .close()
             .close()
-            .build()
+            .into_inner()
     }
 }
 

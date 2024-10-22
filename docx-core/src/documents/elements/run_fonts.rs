@@ -97,7 +97,7 @@ impl RunFonts {
 
 impl BuildXML for RunFonts {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.run_fonts(
             self.ascii.as_ref(),
             self.hi_ansi.as_ref(),
@@ -109,7 +109,7 @@ impl BuildXML for RunFonts {
             self.east_asia_theme.as_ref(),
             self.hint.as_ref(),
         )
-        .build()
+        .into_inner()
     }
 }
 

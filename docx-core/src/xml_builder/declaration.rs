@@ -1,6 +1,8 @@
 use super::XMLBuilder;
 
-impl XMLBuilder {
+use std::io::Write;
+
+impl<W: Write> XMLBuilder<W> {
     // Build XML declaration
     // i.e. <?xml version="1.0" encoding="UTF-8"?>
     pub(crate) fn declaration(mut self, standalone: Option<bool>) -> Self {
@@ -23,8 +25,8 @@ mod tests {
 
     #[test]
     fn test_declaration() {
-        let b = XMLBuilder::new();
-        let r = b.declaration(None).build();
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.declaration(None).into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<?xml version="1.0" encoding="UTF-8"?>"#

@@ -494,12 +494,12 @@ impl Paragraph {
 
 impl BuildXML for Paragraph {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_paragraph(&self.id)
             .add_child(&self.property)
             .add_children(&self.children)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

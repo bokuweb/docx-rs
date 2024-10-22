@@ -124,12 +124,12 @@ impl Table {
 impl BuildXML for Table {
     fn build(&self) -> Vec<u8> {
         let grid = TableGrid::new(self.grid.clone());
-        let b = XMLBuilder::new()
+        let b = XMLBuilder::new(Vec::new())
             .open_table()
             .add_child(&self.property)
             .add_child(&grid)
             .add_children(&self.rows);
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

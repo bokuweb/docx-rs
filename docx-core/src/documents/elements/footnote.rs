@@ -55,11 +55,11 @@ impl BuildXML for Footnote {
             footnote.add_content(Paragraph::new());
         }
 
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_footnote(&format!("{}", self.id))
             .add_children(&footnote.content)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

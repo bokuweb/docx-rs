@@ -17,9 +17,9 @@ impl VAlign {
 
 impl BuildXML for VAlign {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .vertical_align(&self.val.to_string())
-            .build()
+            .into_inner()
     }
 }
 

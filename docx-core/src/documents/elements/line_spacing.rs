@@ -59,7 +59,7 @@ impl LineSpacing {
 
 impl BuildXML for LineSpacing {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.line_spacing(
             self.before,
             self.after,
@@ -68,7 +68,7 @@ impl BuildXML for LineSpacing {
             self.after_lines,
             self.line_rule,
         )
-        .build()
+        .into_inner()
     }
 }
 

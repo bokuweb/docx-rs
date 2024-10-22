@@ -252,7 +252,7 @@ impl BuildXML for DocumentChild {
 
 impl BuildXML for Document {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .declaration(Some(true))
             .open_document()
             .open_body()
@@ -260,7 +260,7 @@ impl BuildXML for Document {
             .add_child(&self.section_property)
             .close()
             .close()
-            .build()
+            .into_inner()
     }
 }
 

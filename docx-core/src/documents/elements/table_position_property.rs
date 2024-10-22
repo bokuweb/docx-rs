@@ -74,7 +74,9 @@ impl TablePositionProperty {
 
 impl BuildXML for TablePositionProperty {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().table_position_property(self).build()
+        XMLBuilder::new(Vec::new())
+            .table_position_property(self)
+            .into_inner()
     }
 }
 

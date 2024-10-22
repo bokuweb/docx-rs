@@ -15,7 +15,7 @@ impl SzCs {
 
 impl BuildXML for SzCs {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().sz_cs(self.val).build()
+        XMLBuilder::new(Vec::new()).sz_cs(self.val).into_inner()
     }
 }
 

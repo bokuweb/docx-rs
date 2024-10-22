@@ -20,8 +20,8 @@ impl Default for Vanish {
 
 impl BuildXML for Vanish {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.vanish().build()
+        let b = XMLBuilder::new(Vec::new());
+        b.vanish().into_inner()
     }
 }
 

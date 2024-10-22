@@ -81,7 +81,7 @@ impl Serialize for HeaderChild {
 
 impl BuildXML for Header {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         b = b.declaration(Some(true)).open_header();
 
         for c in &self.children {
@@ -91,7 +91,7 @@ impl BuildXML for Header {
                 HeaderChild::StructuredDataTag(t) => b = b.add_child(t),
             }
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

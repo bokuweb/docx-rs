@@ -23,13 +23,13 @@ impl<'a> Font<'a> {
 
 impl<'a> BuildXML for Font<'a> {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.open_font(self.name)
             .charset(self.charset)
             .family(self.family)
             .pitch(&self.pitch.to_string())
             .close()
-            .build()
+            .into_inner()
     }
 }
 

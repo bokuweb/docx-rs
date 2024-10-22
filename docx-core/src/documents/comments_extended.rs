@@ -29,13 +29,13 @@ impl Default for CommentsExtended {
 
 impl BuildXML for CommentsExtended {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         b = b.open_comments_extended();
 
         for c in &self.children {
             b = b.add_child(c)
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

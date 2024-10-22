@@ -16,8 +16,8 @@ impl LevelJc {
 
 impl BuildXML for LevelJc {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.level_justification(&self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.level_justification(&self.val).into_inner()
     }
 }
 

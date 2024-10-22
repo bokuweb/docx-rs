@@ -22,11 +22,11 @@ impl BuildXML for DeleteInstrText {
             DeleteInstrText::HYPERLINK(_link) => todo!(),
             DeleteInstrText::Unsupported(s) => s.as_bytes().to_vec(),
         };
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_delete_instr_text()
             .add_bytes(&instr)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

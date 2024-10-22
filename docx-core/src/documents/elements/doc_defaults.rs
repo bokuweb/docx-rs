@@ -62,12 +62,12 @@ impl Default for DocDefaults {
 
 impl BuildXML for DocDefaults {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.open_doc_defaults()
             .add_child(&self.run_property_default)
             .add_child(&self.paragraph_property_default)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

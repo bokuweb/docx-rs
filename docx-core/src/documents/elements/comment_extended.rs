@@ -33,9 +33,9 @@ impl CommentExtended {
 
 impl BuildXML for CommentExtended {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .comment_extended(&self.paragraph_id, self.done, &self.parent_paragraph_id)
-            .build()
+            .into_inner()
     }
 }
 

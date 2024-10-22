@@ -103,11 +103,11 @@ impl BuildXML for CommentChild {
 
 impl BuildXML for Comment {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_comment(&format!("{}", self.id), &self.author, &self.date, "")
             .add_children(&self.children)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

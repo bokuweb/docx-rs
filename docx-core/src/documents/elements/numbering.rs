@@ -34,14 +34,14 @@ impl Numbering {
 
 impl BuildXML for Numbering {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let id = format!("{}", self.id);
         let abs_id = format!("{}", self.abstract_num_id);
         b.open_num(&id)
             .abstract_num_id(&abs_id)
             .add_children(&self.level_overrides)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

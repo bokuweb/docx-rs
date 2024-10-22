@@ -16,7 +16,7 @@ impl GridSpan {
 
 impl BuildXML for GridSpan {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().grid_span(self.val).build()
+        XMLBuilder::new(Vec::new()).grid_span(self.val).into_inner()
     }
 }
 

@@ -28,13 +28,13 @@ impl BuildXML for Section {
     fn build(&self) -> Vec<u8> {
         let id = crate::generate_para_id();
 
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_paragraph(&id)
             .open_paragraph_property()
             .add_child(&self.property)
             .close()
             .close()
-            .build()
+            .into_inner()
     }
 }
 

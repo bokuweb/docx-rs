@@ -36,7 +36,7 @@ impl Serialize for ItalicCs {
 
 impl BuildXML for ItalicCs {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.i_cs().build()
+        let b = XMLBuilder::new(Vec::new());
+        b.i_cs().into_inner()
     }
 }

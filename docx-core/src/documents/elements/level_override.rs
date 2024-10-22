@@ -39,7 +39,7 @@ impl LevelOverride {
 
 impl BuildXML for LevelOverride {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         b = b.open_level_override(&format!("{}", self.level));
 
         b = b.add_optional_child(&self.override_level);
@@ -48,7 +48,7 @@ impl BuildXML for LevelOverride {
             b = b.start_override(&format!("{}", start));
         }
 
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

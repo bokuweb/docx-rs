@@ -41,12 +41,12 @@ impl AbstractNumbering {
 impl BuildXML for AbstractNumbering {
     fn build(&self) -> Vec<u8> {
         let id = format!("{}", self.id);
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         b = b.open_abstract_num(&id);
         for l in &self.levels {
             b = b.add_child(l);
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

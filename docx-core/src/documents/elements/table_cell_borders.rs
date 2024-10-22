@@ -69,7 +69,7 @@ impl TableCellBorder {
 
 impl BuildXML for TableCellBorder {
     fn build(&self) -> Vec<u8> {
-        let base = XMLBuilder::new();
+        let base = XMLBuilder::new(Vec::new());
         let base = match self.position {
             TableCellBorderPosition::Top => {
                 base.border_top(self.border_type, self.size, self.space, &self.color)
@@ -96,7 +96,7 @@ impl BuildXML for TableCellBorder {
                 base.border_tl2br(self.border_type, self.size, self.space, &self.color)
             }
         };
-        base.build()
+        base.into_inner()
     }
 }
 
@@ -203,7 +203,7 @@ impl TableCellBorders {
 
 impl BuildXML for TableCellBorders {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_table_cell_borders()
             .add_optional_child(&self.top)
             .add_optional_child(&self.left)
@@ -214,6 +214,6 @@ impl BuildXML for TableCellBorders {
             .add_optional_child(&self.tl2br)
             .add_optional_child(&self.tr2bl)
             .close()
-            .build()
+            .into_inner()
     }
 }

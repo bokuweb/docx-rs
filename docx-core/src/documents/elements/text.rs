@@ -30,7 +30,9 @@ impl Text {
 
 impl BuildXML for Text {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().text(&self.text, true).build()
+        XMLBuilder::new(Vec::new())
+            .text(&self.text, true)
+            .into_inner()
     }
 }
 

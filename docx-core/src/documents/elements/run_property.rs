@@ -172,7 +172,7 @@ impl RunProperty {
 
 impl BuildXML for RunProperty {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.open_run_property()
             .add_optional_child(&self.sz)
             .add_optional_child(&self.sz_cs)
@@ -197,7 +197,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.positional_tab)
             .add_optional_child(&self.shading)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

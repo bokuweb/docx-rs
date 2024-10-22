@@ -21,8 +21,8 @@ impl FooterReference {
 
 impl BuildXML for FooterReference {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .footer_reference(&self.footer_type, &self.id)
-            .build()
+            .into_inner()
     }
 }

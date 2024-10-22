@@ -54,7 +54,7 @@ impl PageMargin {
 
 impl BuildXML for PageMargin {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .page_margin(
                 &format!("{}", self.top),
                 &format!("{}", self.right),
@@ -64,7 +64,7 @@ impl BuildXML for PageMargin {
                 &format!("{}", self.footer),
                 &format!("{}", self.gutter),
             )
-            .build()
+            .into_inner()
     }
 }
 

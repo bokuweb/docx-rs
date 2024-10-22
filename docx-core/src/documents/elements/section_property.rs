@@ -198,7 +198,7 @@ impl Default for SectionProperty {
 
 impl BuildXML for SectionProperty {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         b = b
             .open_section_property()
             .add_child(&self.page_size)
@@ -224,7 +224,7 @@ impl BuildXML for SectionProperty {
             b = b.title_pg();
         }
 
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

@@ -40,12 +40,12 @@ impl Default for WpAnchor {
 
 impl BuildXML for WpAnchor {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b.open_anchor();
         for c in &self.children {
             b = b.add_child(c)
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

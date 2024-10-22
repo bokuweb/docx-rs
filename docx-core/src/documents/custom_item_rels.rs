@@ -22,7 +22,7 @@ impl CustomItemRels {
 
 impl BuildXML for CustomItemRels {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         b = b
             .declaration(Some(true))
             .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships");
@@ -36,6 +36,6 @@ impl BuildXML for CustomItemRels {
             )
         }
 
-        b.close().build()
+        b.close().into_inner()
     }
 }

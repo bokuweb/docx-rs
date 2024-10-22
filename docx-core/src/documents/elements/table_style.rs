@@ -16,8 +16,8 @@ impl TableStyle {
 
 impl BuildXML for TableStyle {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.table_style(&self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.table_style(&self.val).into_inner()
     }
 }
 

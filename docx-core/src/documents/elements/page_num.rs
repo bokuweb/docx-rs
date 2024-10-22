@@ -23,7 +23,7 @@ impl PageNum {
     }
 
     fn inner_build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let r = Run::new()
             .add_field_char(FieldCharType::Begin, false)
             .add_instr_text(InstrText::PAGE(self.instr.clone()))
@@ -31,7 +31,7 @@ impl PageNum {
             .add_text("1")
             .add_field_char(FieldCharType::End, false);
 
-        b.add_child(&r).build()
+        b.add_child(&r).into_inner()
     }
 }
 

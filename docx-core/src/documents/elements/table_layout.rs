@@ -11,16 +11,14 @@ pub struct TableLayout {
 
 impl TableLayout {
     pub fn new(t: TableLayoutType) -> TableLayout {
-        TableLayout {
-            layout_type: t,
-        }
+        TableLayout { layout_type: t }
     }
 }
 
 impl BuildXML for TableLayout {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.table_layout(&self.layout_type.to_string()).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.table_layout(&self.layout_type.to_string()).into_inner()
     }
 }
 

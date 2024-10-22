@@ -22,11 +22,13 @@ impl Footnotes {
 
 impl BuildXML for Footnotes {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new().declaration(Some(true)).open_footnotes();
+        let mut b = XMLBuilder::new(Vec::new())
+            .declaration(Some(true))
+            .open_footnotes();
         for c in &self.footnotes {
             b = b.add_child(c)
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

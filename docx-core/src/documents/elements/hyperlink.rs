@@ -99,7 +99,7 @@ impl Hyperlink {
 
 impl BuildXML for Hyperlink {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         match self.link {
             HyperlinkData::Anchor { ref anchor } => {
                 b = b.open_hyperlink(
@@ -116,7 +116,7 @@ impl BuildXML for Hyperlink {
                 )
             }
         };
-        b.add_children(&self.children).close().build()
+        b.add_children(&self.children).close().into_inner()
     }
 }
 

@@ -25,8 +25,8 @@ impl Serialize for DocId {
 
 impl BuildXML for DocId {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let id = format!("{{{}}}", self.id);
-        b.doc_id(&id).build()
+        b.doc_id(&id).into_inner()
     }
 }

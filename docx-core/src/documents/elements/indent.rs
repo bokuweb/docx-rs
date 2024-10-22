@@ -52,14 +52,14 @@ impl Indent {
 
 impl BuildXML for Indent {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .indent(
                 self.start,
                 self.special_indent,
                 self.end.unwrap_or_default(),
                 self.start_chars,
             )
-            .build()
+            .into_inner()
     }
 }
 

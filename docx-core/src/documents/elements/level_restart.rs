@@ -16,9 +16,9 @@ impl LevelRestart {
 
 impl BuildXML for LevelRestart {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let v = format!("{}", &self.val);
-        b.level_restart(&v).build()
+        b.level_restart(&v).into_inner()
     }
 }
 

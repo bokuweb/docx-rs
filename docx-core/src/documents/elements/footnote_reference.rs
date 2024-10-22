@@ -36,7 +36,9 @@ impl From<Footnote> for FootnoteReference {
 
 impl BuildXML for FootnoteReference {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().footnote_reference(self.id).build()
+        XMLBuilder::new(Vec::new())
+            .footnote_reference(self.id)
+            .into_inner()
     }
 }
 

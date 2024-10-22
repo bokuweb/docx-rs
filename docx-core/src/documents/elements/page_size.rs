@@ -56,17 +56,17 @@ impl PageSize {
 impl BuildXML for PageSize {
     fn build(&self) -> Vec<u8> {
         if let Some(orient) = self.orient {
-            XMLBuilder::new()
+            XMLBuilder::new(Vec::new())
                 .page_size_with_orient(
                     &format!("{}", self.w),
                     &format!("{}", self.h),
                     &orient.to_string(),
                 )
-                .build()
+                .into_inner()
         } else {
-            XMLBuilder::new()
+            XMLBuilder::new(Vec::new())
                 .page_size(&format!("{}", self.w), &format!("{}", self.h))
-                .build()
+                .into_inner()
         }
     }
 }

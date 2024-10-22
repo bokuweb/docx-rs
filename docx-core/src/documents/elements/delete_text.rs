@@ -29,7 +29,9 @@ impl DeleteText {
 
 impl BuildXML for DeleteText {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().delete_text(&self.text, true).build()
+        XMLBuilder::new(Vec::new())
+            .delete_text(&self.text, true)
+            .into_inner()
     }
 }
 

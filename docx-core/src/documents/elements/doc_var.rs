@@ -20,7 +20,7 @@ impl DocVar {
 
 impl BuildXML for DocVar {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.doc_var(&self.name, &self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.doc_var(&self.name, &self.val).into_inner()
     }
 }

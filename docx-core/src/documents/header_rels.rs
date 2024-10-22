@@ -25,7 +25,7 @@ impl HeaderRels {
 
 impl BuildXML for HeaderRels {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         b = b
             .declaration(None)
             .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships");
@@ -38,6 +38,6 @@ impl BuildXML for HeaderRels {
             )
         }
 
-        b.close().build()
+        b.close().into_inner()
     }
 }

@@ -38,7 +38,7 @@ impl Serialize for Caps {
 
 impl BuildXML for Caps {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.caps(&self.val.to_string()).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.caps(&self.val.to_string()).into_inner()
     }
 }

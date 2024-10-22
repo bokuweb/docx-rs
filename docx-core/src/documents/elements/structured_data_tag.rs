@@ -149,14 +149,14 @@ impl StructuredDataTag {
     }
 
     fn inner_build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_structured_tag()
             .add_child(&self.property)
             .open_structured_tag_content()
             .add_children(&self.children)
             .close()
             .close()
-            .build()
+            .into_inner()
     }
 }
 

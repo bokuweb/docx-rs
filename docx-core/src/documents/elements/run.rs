@@ -330,7 +330,7 @@ impl Run {
 
 impl BuildXML for Run {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b.open_run().add_child(&self.run_property);
         for c in &self.children {
             match c {
@@ -354,7 +354,7 @@ impl BuildXML for Run {
                 RunChild::Shading(s) => b = b.add_child(s),
             }
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

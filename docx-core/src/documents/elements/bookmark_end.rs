@@ -16,8 +16,8 @@ impl BookmarkEnd {
 
 impl BuildXML for BookmarkEnd {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.bookmark_end(&format!("{}", self.id)).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.bookmark_end(&format!("{}", self.id)).into_inner()
     }
 }
 

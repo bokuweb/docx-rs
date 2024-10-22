@@ -71,7 +71,7 @@ impl Default for Settings {
 
 impl BuildXML for Settings {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b
             .declaration(Some(true))
             .open_settings()
@@ -138,7 +138,7 @@ impl BuildXML for Settings {
         if self.even_and_odd_headers {
             b = b.even_and_odd_headers();
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

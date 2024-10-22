@@ -57,7 +57,7 @@ impl WebExtension {
 
 impl BuildXML for WebExtension {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b
             .declaration(Some(true))
             .open_webextension(
@@ -83,7 +83,7 @@ impl BuildXML for WebExtension {
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
             )
             .close()
-            .build()
+            .into_inner()
     }
 }
 

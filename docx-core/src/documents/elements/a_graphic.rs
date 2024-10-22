@@ -23,12 +23,12 @@ impl AGraphic {
 
 impl BuildXML for AGraphic {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b.open_graphic("http://schemas.openxmlformats.org/drawingml/2006/main");
         for child in &self.children {
             b = b.add_child(child);
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

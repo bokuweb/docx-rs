@@ -16,8 +16,8 @@ impl LevelText {
 
 impl BuildXML for LevelText {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.level_text(&self.val).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.level_text(&self.val).into_inner()
     }
 }
 

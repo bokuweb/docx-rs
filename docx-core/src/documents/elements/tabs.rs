@@ -22,10 +22,10 @@ impl Tabs {
 
 impl BuildXML for Tabs {
     fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
+        let mut b = XMLBuilder::new(Vec::new());
         for t in self.tabs.iter() {
             b = b.tab(t.val, t.leader, t.pos);
         }
-        b.build()
+        b.into_inner()
     }
 }

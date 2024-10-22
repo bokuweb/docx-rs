@@ -154,7 +154,7 @@ impl Default for ContentTypes {
 
 impl BuildXML for ContentTypes {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b
             .declaration(None)
             .open_types("http://schemas.openxmlformats.org/package/2006/content-types");
@@ -174,7 +174,7 @@ impl BuildXML for ContentTypes {
         for (k, v) in self.types.iter() {
             b = b.add_override(k, v);
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }
 

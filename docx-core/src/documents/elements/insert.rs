@@ -142,11 +142,11 @@ impl HistoryId for Insert {}
 impl BuildXML for Insert {
     #[allow(clippy::needless_borrow)]
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_insert(&self.generate(), &self.author, &self.date)
             .add_children(&self.children)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

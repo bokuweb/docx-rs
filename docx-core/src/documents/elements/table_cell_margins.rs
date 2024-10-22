@@ -68,14 +68,14 @@ impl TableCellMargins {
 
 impl BuildXML for TableCellMargins {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .open_table_cell_margins()
             .margin_top(self.top.val as i32, self.top.width_type)
             .margin_left(self.left.val as i32, self.left.width_type)
             .margin_bottom(self.bottom.val as i32, self.bottom.width_type)
             .margin_right(self.right.val as i32, self.right.width_type)
             .close()
-            .build()
+            .into_inner()
     }
 }
 

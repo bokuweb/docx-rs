@@ -14,8 +14,8 @@ impl AdjustRightInd {
 
 impl BuildXML for AdjustRightInd {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.adjust_right_ind(self.0).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.adjust_right_ind(self.0).into_inner()
     }
 }
 

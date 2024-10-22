@@ -16,7 +16,7 @@ impl CommentRangeEnd {
 
 impl BuildXML for CommentRangeEnd {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         b.open_run()
             .open_run_property()
             .close()
@@ -25,7 +25,7 @@ impl BuildXML for CommentRangeEnd {
             .open_run()
             .comment_reference(&format!("{}", self.id))
             .close()
-            .build()
+            .into_inner()
     }
 }
 

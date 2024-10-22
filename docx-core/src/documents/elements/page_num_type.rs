@@ -35,8 +35,8 @@ impl PageNumType {
 
 impl BuildXML for PageNumType {
     fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+        XMLBuilder::new(Vec::new())
             .page_num_type(self.start, self.chap_style.clone())
-            .build()
+            .into_inner()
     }
 }

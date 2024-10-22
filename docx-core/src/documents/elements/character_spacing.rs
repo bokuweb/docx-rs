@@ -17,8 +17,8 @@ impl CharacterSpacing {
 
 impl BuildXML for CharacterSpacing {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.spacing(self.value).build()
+        let b = XMLBuilder::new(Vec::new());
+        b.spacing(self.value).into_inner()
     }
 }
 

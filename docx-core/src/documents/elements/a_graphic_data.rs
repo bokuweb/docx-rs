@@ -96,7 +96,7 @@ impl AGraphicData {
 
 impl BuildXML for AGraphicData {
     fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+        let b = XMLBuilder::new(Vec::new());
         let mut b = b.open_graphic_data(self.data_type.to_uri());
         for c in &self.children {
             match c {
@@ -104,6 +104,6 @@ impl BuildXML for AGraphicData {
                 GraphicDataChild::Pic(t) => b = b.add_child(t),
             }
         }
-        b.close().build()
+        b.close().into_inner()
     }
 }

@@ -2,6 +2,7 @@ use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
+use std::io::Write;
 
 use serde::Serialize;
 
@@ -29,19 +30,19 @@ impl Numberings {
 }
 
 impl BuildXML for Numberings {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new(Vec::new())
-            .declaration(Some(true))
-            .open_numbering();
-        b = b.add_child(&create_default_numbering());
-        for n in &self.abstract_nums {
-            b = b.add_child(n);
-        }
-        b = b.add_child(&Numbering::new(1, 1));
-        for n in &self.numberings {
-            b = b.add_child(n);
-        }
-        b.close().into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(true))?
+            .open_numbering()?
+            .add_child(&create_default_numbering())?
+            .add_children(&self.abstract_nums)?
+            .add_child(&Numbering::new(1, 1))?
+            .add_children(&self.numberings)?
+            .close()?
+            .into_inner()
     }
 }
 

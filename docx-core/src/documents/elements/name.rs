@@ -1,4 +1,5 @@
 use serde::{Serialize, Serializer};
+use std::io::Write;
 
 use std::str::FromStr;
 
@@ -36,9 +37,11 @@ impl Name {
 }
 
 impl BuildXML for Name {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        b.name(&self.name).into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).name(&self.name)?.into_inner()
     }
 }
 

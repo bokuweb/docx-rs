@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -13,19 +14,21 @@ impl Taskpanes {
 }
 
 impl BuildXML for Taskpanes {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        let b = b
-            .declaration(Some(true))
-            .open_taskpanes("http://schemas.microsoft.com/office/webextensions/taskpanes/2010/11")
-            .open_taskpane("", "1", "350", "1")
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(true))?
+            .open_taskpanes("http://schemas.microsoft.com/office/webextensions/taskpanes/2010/11")?
+            .open_taskpane("", "1", "350", "1")?
             .webextensionref(
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
                 "rId1",
-            )
-            .close()
-            .close();
-        b.into_inner()
+            )?
+            .close()?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -43,12 +46,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<wetp:taskpanes xmlns:wetp="http://schemas.microsoft.com/office/webextensions/taskpanes/2010/11">
-  <wetp:taskpane dockstate="" visibility="1" width="350" row="1">
-    <wetp:webextensionref xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:id="rId1" />
-  </wetp:taskpane>
-</wetp:taskpanes>"#
+            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><wetp:taskpanes xmlns:wetp="http://schemas.microsoft.com/office/webextensions/taskpanes/2010/11"><wetp:taskpane dockstate="" visibility="1" width="350" row="1"><wetp:webextensionref xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:id="rId1" /></wetp:taskpane></wetp:taskpanes>"#
         );
     }
 }

@@ -1,4 +1,5 @@
 use serde::{Serialize, Serializer};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -13,9 +14,13 @@ impl AdjustRightInd {
 }
 
 impl BuildXML for AdjustRightInd {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        b.adjust_right_ind(self.0).into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .adjust_right_ind(self.0)?
+            .into_inner()
     }
 }
 

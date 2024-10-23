@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 #[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
@@ -124,18 +125,21 @@ impl TableCellProperty {
 }
 
 impl BuildXML for TableCellProperty {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new(Vec::new())
-            .open_table_cell_property()
-            .add_optional_child(&self.width)
-            .add_optional_child(&self.borders)
-            .add_optional_child(&self.grid_span)
-            .add_optional_child(&self.vertical_merge)
-            .add_optional_child(&self.vertical_align)
-            .add_optional_child(&self.text_direction)
-            .add_optional_child(&self.shading)
-            .add_optional_child(&self.margins)
-            .close()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_table_cell_property()?
+            .add_optional_child(&self.width)?
+            .add_optional_child(&self.borders)?
+            .add_optional_child(&self.grid_span)?
+            .add_optional_child(&self.vertical_merge)?
+            .add_optional_child(&self.vertical_align)?
+            .add_optional_child(&self.text_direction)?
+            .add_optional_child(&self.shading)?
+            .add_optional_child(&self.margins)?
+            .close()?
             .into_inner()
     }
 }

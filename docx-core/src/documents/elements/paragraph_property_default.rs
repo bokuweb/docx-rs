@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -34,11 +35,14 @@ impl Default for ParagraphPropertyDefault {
 }
 
 impl BuildXML for ParagraphPropertyDefault {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        b.open_paragraph_property_default()
-            .add_child(&self.paragraph_property)
-            .close()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_paragraph_property_default()?
+            .add_child(&self.paragraph_property)?
+            .close()?
             .into_inner()
     }
 }

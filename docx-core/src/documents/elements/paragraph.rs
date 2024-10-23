@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -42,19 +43,22 @@ pub enum ParagraphChild {
 }
 
 impl BuildXML for ParagraphChild {
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         match self {
-            ParagraphChild::Run(v) => v.build(),
-            ParagraphChild::Insert(v) => v.build(),
-            ParagraphChild::Delete(v) => v.build(),
-            ParagraphChild::Hyperlink(v) => v.build(),
-            ParagraphChild::BookmarkStart(v) => v.build(),
-            ParagraphChild::BookmarkEnd(v) => v.build(),
-            ParagraphChild::CommentStart(v) => v.build(),
-            ParagraphChild::CommentEnd(v) => v.build(),
-            ParagraphChild::StructuredDataTag(v) => v.build(),
-            ParagraphChild::PageNum(v) => v.build(),
-            ParagraphChild::NumPages(v) => v.build(),
+            ParagraphChild::Run(v) => v.build_to(stream),
+            ParagraphChild::Insert(v) => v.build_to(stream),
+            ParagraphChild::Delete(v) => v.build_to(stream),
+            ParagraphChild::Hyperlink(v) => v.build_to(stream),
+            ParagraphChild::BookmarkStart(v) => v.build_to(stream),
+            ParagraphChild::BookmarkEnd(v) => v.build_to(stream),
+            ParagraphChild::CommentStart(v) => v.build_to(stream),
+            ParagraphChild::CommentEnd(v) => v.build_to(stream),
+            ParagraphChild::StructuredDataTag(v) => v.build_to(stream),
+            ParagraphChild::PageNum(v) => v.build_to(stream),
+            ParagraphChild::NumPages(v) => v.build_to(stream),
         }
     }
 }
@@ -493,19 +497,16 @@ impl Paragraph {
 }
 
 impl BuildXML for Paragraph {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new(Vec::new())
-            .open_paragraph(&self.id)
-            .add_child(&self.property)
-            .add_children(&self.children)
-            .close()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_paragraph(&self.id)?
+            .add_child(&self.property)?
+            .add_children(&self.children)?
+            .close()?
             .into_inner()
-    }
-}
-
-impl BuildXML for Box<Paragraph> {
-    fn build(&self) -> Vec<u8> {
-        Paragraph::build(self)
     }
 }
 
@@ -550,13 +551,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:commentRangeStart w:id="1" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:r>
-  <w:rPr />
-</w:r>
-<w:commentRangeEnd w:id="1" />
-<w:r>
-  <w:commentReference w:id="1" />
-</w:r></w:p>"#
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:commentRangeStart w:id="1" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:r><w:rPr /></w:r><w:commentRangeEnd w:id="1" /><w:r><w:commentReference w:id="1" /></w:r></w:p>"#
         );
     }
 

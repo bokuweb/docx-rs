@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -98,25 +99,26 @@ impl Hyperlink {
 }
 
 impl BuildXML for Hyperlink {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new(Vec::new());
-        match self.link {
-            HyperlinkData::Anchor { ref anchor } => {
-                b = b.open_hyperlink(
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .apply(|b| match self.link {
+                HyperlinkData::Anchor { ref anchor } => b.open_hyperlink(
                     None,
                     Some(anchor.clone()).as_ref(),
                     Some(self.history.unwrap_or(1)),
-                )
-            }
-            HyperlinkData::External { ref rid, .. } => {
-                b = b.open_hyperlink(
+                ),
+                HyperlinkData::External { ref rid, .. } => b.open_hyperlink(
                     Some(rid.clone()).as_ref(),
                     None,
                     Some(self.history.unwrap_or(1)),
-                )
-            }
-        };
-        b.add_children(&self.children).close().into_inner()
+                ),
+            })?
+            .add_children(&self.children)?
+            .close()?
+            .into_inner()
     }
 }
 

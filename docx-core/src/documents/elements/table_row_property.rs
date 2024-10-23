@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::xml_builder::*;
@@ -75,19 +76,23 @@ impl TableRowProperty {
 }
 
 impl BuildXML for TableRowProperty {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new(Vec::new())
-            .open_table_row_property()
-            .add_optional_child(&self.del)
-            .add_optional_child(&self.ins)
-            .add_optional_child(&self.cant_split);
-        if let Some(h) = self.row_height {
-            b = b.table_row_height(
-                &format!("{}", h),
-                &self.height_rule.unwrap_or_default().to_string(),
-            )
-        }
-        b.close().into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_table_row_property()?
+            .add_optional_child(&self.del)?
+            .add_optional_child(&self.ins)?
+            .add_optional_child(&self.cant_split)?
+            .apply_opt(self.row_height, |h, b| {
+                b.table_row_height(
+                    &format!("{}", h),
+                    &self.height_rule.unwrap_or_default().to_string(),
+                )
+            })?
+            .close()?
+            .into_inner()
     }
 }
 

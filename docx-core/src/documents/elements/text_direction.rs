@@ -1,4 +1,5 @@
 use serde::{Serialize, Serializer};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -16,9 +17,12 @@ impl TextDirection {
 }
 
 impl BuildXML for TextDirection {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new(Vec::new())
-            .text_direction(&self.val.to_string())
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .text_direction(&self.val.to_string())?
             .into_inner()
     }
 }

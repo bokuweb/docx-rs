@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -54,9 +55,12 @@ impl PositionalTab {
 }
 
 impl BuildXML for PositionalTab {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        b.ptab(self.alignment, self.relative_to, self.leader)
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .ptab(self.alignment, self.relative_to, self.leader)?
             .into_inner()
     }
 }

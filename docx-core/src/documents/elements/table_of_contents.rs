@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use crate::types::*;
 use crate::xml_builder::*;
@@ -148,29 +149,35 @@ impl TableOfContents {
         self.without_sdt = true;
         self
     }
+}
 
-    fn inner_build(&self) -> Vec<u8> {
+impl BuildXML for TableOfContents {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         let mut p = StructuredDataTagProperty::new();
         if let Some(ref alias) = self.alias {
             p = p.alias(alias);
         }
+
         if self.items.is_empty() {
-            let mut b = XMLBuilder::new(Vec::new());
+            let mut b = XMLBuilder::from(stream);
 
             if !self.without_sdt {
                 b = b
-                    .open_structured_tag()
-                    .add_child(&p)
-                    .open_structured_tag_content();
+                    .open_structured_tag()?
+                    .add_child(&p)?
+                    .open_structured_tag_content()?;
             }
 
             for c in self.before_contents.iter() {
                 match c {
                     TocContent::Paragraph(p) => {
-                        b = b.add_child(p);
+                        b = b.add_child(&p)?;
                     }
                     TocContent::Table(t) => {
-                        b = b.add_child(t);
+                        b = b.add_child(&t)?;
                     }
                 }
             }
@@ -192,11 +199,11 @@ impl TableOfContents {
                         .add_field_char(FieldCharType::Separate, false),
                 )
             };
-            b = b.add_child(&p1);
+            b = b.add_child(&p1)?;
 
             let p2 = Paragraph::new().add_run(Run::new().add_field_char(FieldCharType::End, false));
             if self.after_contents.is_empty() {
-                b = b.add_child(&p2);
+                b = b.add_child(&p2)?;
             } else {
                 for (i, c) in self.after_contents.iter().enumerate() {
                     match c {
@@ -210,25 +217,27 @@ impl TableOfContents {
                                         Run::new().add_field_char(FieldCharType::End, false),
                                     )),
                                 );
-                                b = b.add_child(&new_p)
+                                b = b.add_child(&new_p)?
                             } else {
-                                b = b.add_child(p);
+                                b = b.add_child(&p)?;
                             }
                         }
                         TocContent::Table(t) => {
                             // insert empty line for table
                             // because it causes docx error if table is added after TOC
                             if i == 0 {
-                                b = b.add_child(&Paragraph::new().add_run(Run::new().add_text("")));
+                                b = b.add_child(
+                                    &Paragraph::new().add_run(Run::new().add_text("")),
+                                )?;
                             }
-                            b = b.add_child(t);
+                            b = b.add_child(&t)?;
                         }
                     }
                 }
             }
 
             if !self.without_sdt {
-                b = b.close().close();
+                b = b.close()?.close()?;
             }
 
             b.into_inner()
@@ -247,61 +256,49 @@ impl TableOfContents {
                 })
                 .collect();
 
-            let mut b = XMLBuilder::new(Vec::new());
+            let mut b = XMLBuilder::from(stream);
 
             if !self.without_sdt {
                 b = b
-                    .open_structured_tag()
-                    .add_child(&p)
-                    .open_structured_tag_content();
+                    .open_structured_tag()?
+                    .add_child(&p)?
+                    .open_structured_tag_content()?;
             }
 
             for c in self.before_contents.iter() {
                 match c {
                     TocContent::Paragraph(p) => {
-                        b = b.add_child(p);
+                        b = b.add_child(&p)?;
                     }
                     TocContent::Table(t) => {
-                        b = b.add_child(t);
+                        b = b.add_child(&t)?;
                     }
                 }
             }
 
-            b = b.add_child(&items);
+            b = b.add_child(&items)?;
 
             for (i, c) in self.after_contents.iter().enumerate() {
                 match c {
                     TocContent::Paragraph(p) => {
-                        b = b.add_child(p);
+                        b = b.add_child(&p)?;
                     }
                     TocContent::Table(t) => {
                         // insert empty line for table
                         // because it causes docx error if table is added after TOC
                         if i == 0 {
-                            b = b.add_child(&Paragraph::new().add_run(Run::new().add_text("")));
+                            b = b.add_child(&Paragraph::new().add_run(Run::new().add_text("")))?;
                         }
-                        b = b.add_child(t);
+                        b = b.add_child(&t)?;
                     }
                 }
             }
 
             if !self.without_sdt {
-                b = b.close().close();
+                b = b.close()?.close()?;
             }
             b.into_inner()
         }
-    }
-}
-
-impl BuildXML for TableOfContents {
-    fn build(&self) -> Vec<u8> {
-        self.inner_build()
-    }
-}
-
-impl BuildXML for Box<TableOfContents> {
-    fn build(&self) -> Vec<u8> {
-        self.inner_build()
     }
 }
 
@@ -318,8 +315,7 @@ mod tests {
         let b = TableOfContents::new().heading_styles_range(1, 3).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="true" /><w:instrText>TOC \o &quot;1-3&quot;</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /></w:r></w:p><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
-</w:sdt>"#
+            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="true" /><w:instrText>TOC \o &quot;1-3&quot;</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /></w:r></w:p><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent></w:sdt>"#
         );
     }
 
@@ -336,19 +332,16 @@ mod tests {
     }
 
     /*
-        #[test]
-        fn test_toc_with_items() {
-            let b = TableOfContents::new()
-                .heading_styles_range(1, 3)
-                .add_items(Paragraph::new().add_run(Run::new().add_text("Hello")))
-                .build();
-            assert_eq!(
-                str::from_utf8(&b).unwrap(),
-                r#"<w:sdt>
-      <w:sdtPr />
-      <w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>TOC \o &quot;1-3&quot;</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /></w:r><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:r><w:rPr /><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent>
-    </w:sdt>"#
-            );
-        }
-        */
+    #[test]
+    fn test_toc_with_items() {
+        let b = TableOfContents::new()
+            .heading_styles_range(1, 3)
+            .add_items(Paragraph::new().add_run(Run::new().add_text("Hello")))
+            .build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:sdt><w:sdtPr /><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>TOC \o &quot;1-3&quot;</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /></w:r><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:r><w:rPr /><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent></w:sdt>"#
+        );
+    }
+    */
 }

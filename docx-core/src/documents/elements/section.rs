@@ -1,6 +1,7 @@
 use super::*;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use std::io::Write;
 
 use serde::Serialize;
 
@@ -25,15 +26,17 @@ impl Default for Section {
 }
 
 impl BuildXML for Section {
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         let id = crate::generate_para_id();
-
-        XMLBuilder::new(Vec::new())
-            .open_paragraph(&id)
-            .open_paragraph_property()
-            .add_child(&self.property)
-            .close()
-            .close()
+        XMLBuilder::from(stream)
+            .open_paragraph(&id)?
+            .open_paragraph_property()?
+            .add_child(&self.property)?
+            .close()?
+            .close()?
             .into_inner()
     }
 }
@@ -52,10 +55,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p w14:paraId="12345678">
-  <w:pPr><w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" />
-</w:sectPr></w:pPr>
-</w:p>"#
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" /></w:sectPr></w:pPr></w:p>"#
         );
     }
 }

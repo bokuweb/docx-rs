@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -21,9 +22,12 @@ pub enum TableChild {
 }
 
 impl BuildXML for TableChild {
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         match self {
-            TableChild::TableRow(v) => v.build(),
+            TableChild::TableRow(v) => v.build_to(stream),
         }
     }
 }
@@ -122,20 +126,18 @@ impl Table {
 }
 
 impl BuildXML for Table {
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         let grid = TableGrid::new(self.grid.clone());
-        let b = XMLBuilder::new(Vec::new())
-            .open_table()
-            .add_child(&self.property)
-            .add_child(&grid)
-            .add_children(&self.rows);
-        b.close().into_inner()
-    }
-}
-
-impl BuildXML for Box<Table> {
-    fn build(&self) -> Vec<u8> {
-        Table::build(self)
+        XMLBuilder::from(stream)
+            .open_table()?
+            .add_child(&self.property)?
+            .add_child(&grid)?
+            .add_children(&self.rows)?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -179,10 +181,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tbl><w:tblPr><w:tblW w:w="0" w:type="auto" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders></w:tblPr><w:tblGrid>
-  <w:gridCol w:w="100" w:type="dxa" />
-  <w:gridCol w:w="200" w:type="dxa" />
-</w:tblGrid><w:tr><w:trPr /></w:tr></w:tbl>"#
+            r#"<w:tbl><w:tblPr><w:tblW w:w="0" w:type="auto" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders></w:tblPr><w:tblGrid><w:gridCol w:w="100" w:type="dxa" /><w:gridCol w:w="200" w:type="dxa" /></w:tblGrid><w:tr><w:trPr /></w:tr></w:tbl>"#
         );
     }
 

@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -37,16 +38,19 @@ pub enum StructuredDataTagChild {
 }
 
 impl BuildXML for StructuredDataTagChild {
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         match self {
-            StructuredDataTagChild::Run(v) => v.build(),
-            StructuredDataTagChild::Paragraph(v) => v.build(),
-            StructuredDataTagChild::Table(v) => v.build(),
-            StructuredDataTagChild::BookmarkStart(v) => v.build(),
-            StructuredDataTagChild::BookmarkEnd(v) => v.build(),
-            StructuredDataTagChild::CommentStart(v) => v.build(),
-            StructuredDataTagChild::CommentEnd(v) => v.build(),
-            StructuredDataTagChild::StructuredDataTag(v) => v.build(),
+            StructuredDataTagChild::Run(v) => v.build_to(stream),
+            StructuredDataTagChild::Paragraph(v) => v.build_to(stream),
+            StructuredDataTagChild::Table(v) => v.build_to(stream),
+            StructuredDataTagChild::BookmarkStart(v) => v.build_to(stream),
+            StructuredDataTagChild::BookmarkEnd(v) => v.build_to(stream),
+            StructuredDataTagChild::CommentStart(v) => v.build_to(stream),
+            StructuredDataTagChild::CommentEnd(v) => v.build_to(stream),
+            StructuredDataTagChild::StructuredDataTag(v) => v.build_to(stream),
         }
     }
 }
@@ -147,28 +151,21 @@ impl StructuredDataTag {
         self.property = self.property.alias(v);
         self
     }
-
-    fn inner_build(&self) -> Vec<u8> {
-        XMLBuilder::new(Vec::new())
-            .open_structured_tag()
-            .add_child(&self.property)
-            .open_structured_tag_content()
-            .add_children(&self.children)
-            .close()
-            .close()
-            .into_inner()
-    }
 }
 
 impl BuildXML for StructuredDataTag {
-    fn build(&self) -> Vec<u8> {
-        self.inner_build()
-    }
-}
-
-impl BuildXML for Box<StructuredDataTag> {
-    fn build(&self) -> Vec<u8> {
-        self.inner_build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_structured_tag()?
+            .add_child(&self.property)?
+            .open_structured_tag_content()?
+            .add_children(&self.children)?
+            .close()?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -188,8 +185,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sdt><w:sdtPr><w:rPr /><w:dataBinding w:xpath="root/hello" /></w:sdtPr><w:sdtContent><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:sdtContent>
-</w:sdt>"#
+            r#"<w:sdt><w:sdtPr><w:rPr /><w:dataBinding w:xpath="root/hello" /></w:sdtPr><w:sdtContent><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:sdtContent></w:sdt>"#
         );
     }
 }

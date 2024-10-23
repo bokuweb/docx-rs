@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -22,14 +23,15 @@ impl CommentsExtended {
 }
 
 impl BuildXML for CommentsExtended {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new(Vec::new());
-        b = b.open_comments_extended();
-
-        for c in &self.children {
-            b = b.add_child(c)
-        }
-        b.close().into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_comments_extended()?
+            .add_children(&self.children)?
+            .close()?
+            .into_inner()
     }
 }
 

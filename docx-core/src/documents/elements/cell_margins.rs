@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -66,25 +67,26 @@ impl CellMargins {
 }
 
 impl BuildXML for CellMargins {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new(Vec::new()).open_cell_margins();
-
-        if let Some(ref top) = self.top {
-            b = b.margin_top(top.val as i32, top.width_type);
-        }
-
-        if let Some(ref left) = self.left {
-            b = b.margin_left(left.val as i32, left.width_type);
-        }
-
-        if let Some(ref bottom) = self.bottom {
-            b = b.margin_bottom(bottom.val as i32, bottom.width_type);
-        }
-
-        if let Some(ref right) = self.right {
-            b = b.margin_right(right.val as i32, right.width_type);
-        }
-        b.close().into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_cell_margins()?
+            .apply_opt(self.top.as_ref(), |top, b| {
+                b.margin_top(top.val as i32, top.width_type)
+            })?
+            .apply_opt(self.left.as_ref(), |left, b| {
+                b.margin_left(left.val as i32, left.width_type)
+            })?
+            .apply_opt(self.bottom.as_ref(), |bottom, b| {
+                b.margin_bottom(bottom.val as i32, bottom.width_type)
+            })?
+            .apply_opt(self.right.as_ref(), |right, b| {
+                b.margin_right(right.val as i32, right.width_type)
+            })?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -101,9 +103,7 @@ mod tests {
         let b = CellMargins::new().margin_top(10, WidthType::Dxa).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tcMar>
-  <w:top w:w="10" w:type="dxa" />
-</w:tcMar>"#
+            r#"<w:tcMar><w:top w:w="10" w:type="dxa" /></w:tcMar>"#
         );
     }
 }

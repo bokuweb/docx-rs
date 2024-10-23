@@ -3,6 +3,7 @@ use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 use crate::{Footer, Header};
+use std::io::Write;
 
 use serde::Serialize;
 
@@ -197,34 +198,30 @@ impl Default for SectionProperty {
 }
 
 impl BuildXML for SectionProperty {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new(Vec::new());
-        b = b
-            .open_section_property()
-            .add_child(&self.page_size)
-            .add_child(&self.page_margin)
-            .columns(&format!("{}", &self.space), &format!("{}", &self.columns))
-            .add_optional_child(&self.doc_grid)
-            .add_optional_child(&self.header_reference)
-            .add_optional_child(&self.first_header_reference)
-            .add_optional_child(&self.even_header_reference)
-            .add_optional_child(&self.footer_reference)
-            .add_optional_child(&self.first_footer_reference)
-            .add_optional_child(&self.even_footer_reference)
-            .add_optional_child(&self.page_num_type);
-
-        if !self.text_direction.eq("lrTb") {
-            b = b.text_direction(&self.text_direction);
-        }
-        if let Some(t) = self.section_type {
-            b = b.type_tag(&t.to_string());
-        }
-
-        if self.title_pg {
-            b = b.title_pg();
-        }
-
-        b.close().into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_section_property()?
+            .add_child(&self.page_size)?
+            .add_child(&self.page_margin)?
+            .columns(&format!("{}", &self.space), &format!("{}", &self.columns))?
+            .add_optional_child(&self.doc_grid)?
+            .add_optional_child(&self.header_reference)?
+            .add_optional_child(&self.first_header_reference)?
+            .add_optional_child(&self.even_header_reference)?
+            .add_optional_child(&self.footer_reference)?
+            .add_optional_child(&self.first_footer_reference)?
+            .add_optional_child(&self.even_footer_reference)?
+            .add_optional_child(&self.page_num_type)?
+            .apply_if(self.text_direction != "lrTb", |b| {
+                b.text_direction(&self.text_direction)
+            })?
+            .apply_opt(self.section_type, |t, b| b.type_tag(&t.to_string()))?
+            .apply_if(self.title_pg, |b| b.title_pg())?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -243,9 +240,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" />
-  <w:textDirection w:val="tbRl" />
-</w:sectPr>"#
+            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" /><w:textDirection w:val="tbRl" /></w:sectPr>"#
         )
     }
 
@@ -255,8 +250,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" />
-</w:sectPr>"#
+            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" /></w:sectPr>"#
         );
     }
 
@@ -276,9 +270,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" />
-  <w:titlePg />
-</w:sectPr>"#
+            r#"<w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" /><w:titlePg /></w:sectPr>"#
         );
     }
 }

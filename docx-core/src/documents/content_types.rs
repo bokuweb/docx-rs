@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
-use std::io::Read;
+use std::io::{Read, Write};
 use xml::reader::{EventReader, XmlEvent};
 
 use crate::documents::BuildXML;
@@ -153,28 +153,26 @@ impl Default for ContentTypes {
 }
 
 impl BuildXML for ContentTypes {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        let mut b = b
-            .declaration(None)
-            .open_types("http://schemas.openxmlformats.org/package/2006/content-types");
-
-        b = b
-            .add_default("png", "image/png")
-            .add_default("jpeg", "image/jpeg")
-            .add_default("jpg", "image/jpg")
-            .add_default("bmp", "image/bmp")
-            .add_default("gif", "image/gif")
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(None)?
+            .open_types("http://schemas.openxmlformats.org/package/2006/content-types")?
+            .add_default("png", "image/png")?
+            .add_default("jpeg", "image/jpeg")?
+            .add_default("jpg", "image/jpg")?
+            .add_default("bmp", "image/bmp")?
+            .add_default("gif", "image/gif")?
             .add_default(
                 "rels",
                 "application/vnd.openxmlformats-package.relationships+xml",
-            )
-            .add_default("xml", "application/xml");
-
-        for (k, v) in self.types.iter() {
-            b = b.add_override(k, v);
-        }
-        b.close().into_inner()
+            )?
+            .add_default("xml", "application/xml")?
+            .apply_each(self.types.iter(), |(k, v), b| b.add_override(k, v))?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -213,8 +211,7 @@ mod tests {
 
     #[test]
     fn test_from_xml() {
-        let xml = r#"<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
-        <Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml" PartName="/word/document.xml"></Override></Types>"#;
+        let xml = r#"<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Override ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml" PartName="/word/document.xml"></Override></Types>"#;
         let c = ContentTypes::from_xml(xml.as_bytes()).unwrap();
         let mut types = BTreeMap::new();
         types.insert(

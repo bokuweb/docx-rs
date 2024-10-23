@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::escape::escape;
@@ -316,32 +317,25 @@ impl Style {
 }
 
 impl BuildXML for Style {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         // Set "Normal" as default if you need change these values please fix it
-        let mut b = b
-            .open_style(self.style_type, &self.style_id)
-            .add_child(&self.name)
-            .add_child(&self.run_property)
-            .add_child(&self.paragraph_property);
-
-        if self.style_type == StyleType::Table {
-            b = b
-                .add_child(&self.table_cell_property)
-                .add_child(&self.table_property);
-        }
-
-        if let Some(ref next) = self.next {
-            b = b.add_child(next)
-        }
-
-        if let Some(ref link) = self.link {
-            b = b.add_child(link)
-        }
-
-        b.add_child(&QFormat::new())
-            .add_optional_child(&self.based_on)
-            .close()
+        XMLBuilder::from(stream)
+            .open_style(self.style_type, &self.style_id)?
+            .add_child(&self.name)?
+            .add_child(&self.run_property)?
+            .add_child(&self.paragraph_property)?
+            .apply_if(self.style_type == StyleType::Table, |b| {
+                b.add_child(&self.table_cell_property)?
+                    .add_child(&self.table_property)
+            })?
+            .add_optional_child(&self.next)?
+            .add_optional_child(&self.link)?
+            .add_child(&QFormat::new())?
+            .add_optional_child(&self.based_on)?
+            .close()?
             .into_inner()
     }
 }

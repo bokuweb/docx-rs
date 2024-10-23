@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -56,58 +57,42 @@ impl CorePropsConfig {
 }
 
 impl BuildXML for CoreProps {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        let base = b.declaration(Some(true)).open_core_properties(
-            "http://schemas.openxmlformats.org/package/2006/metadata/core-properties",
-            "http://purl.org/dc/elements/1.1/",
-            "http://purl.org/dc/terms/",
-            "http://purl.org/dc/dcmitype/",
-            "http://www.w3.org/2001/XMLSchema-instance",
-        );
-
-        let convert = |v: usize| format!("{}", v);
-        let mut base = base
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(true))?
+            .open_core_properties(
+                "http://schemas.openxmlformats.org/package/2006/metadata/core-properties",
+                "http://purl.org/dc/elements/1.1/",
+                "http://purl.org/dc/terms/",
+                "http://purl.org/dc/dcmitype/",
+                "http://www.w3.org/2001/XMLSchema-instance",
+            )?
             .dcterms_created(
                 "dcterms:W3CDTF",
                 self.config
                     .created
-                    .as_ref()
-                    .map_or_else(|| "1970-01-01T00:00:00Z", |v| v),
-            )
-            .dc_creator(
-                self.config
-                    .creator
-                    .as_ref()
-                    .map_or_else(|| "unknown", |v| v),
-            )
-            .cp_last_modified_by(
-                self.config
-                    .last_modified_by
-                    .as_ref()
-                    .map_or_else(|| "unknown", |v| v),
-            )
+                    .as_deref()
+                    .unwrap_or("1970-01-01T00:00:00Z"),
+            )?
+            .dc_creator(self.config.creator.as_deref().unwrap_or("unknown"))?
+            .cp_last_modified_by(self.config.last_modified_by.as_deref().unwrap_or("unknown"))?
             .dcterms_modified(
                 "dcterms:W3CDTF",
                 self.config
                     .modified
-                    .as_ref()
-                    .map_or_else(|| "1970-01-01T00:00:00Z", |v| v),
-            )
-            .cp_revision(&self.config.revision.map_or_else(|| "1".to_owned(), convert));
-        if let Some(v) = self.config.description.as_ref() {
-            base = base.dc_description(v);
-        }
-        if let Some(v) = self.config.language.as_ref() {
-            base = base.dc_language(v);
-        }
-        if let Some(v) = self.config.subject.as_ref() {
-            base = base.dc_subject(v);
-        }
-        if let Some(v) = self.config.title.as_ref() {
-            base = base.dc_title(v);
-        }
-        base.close().into_inner()
+                    .as_deref()
+                    .unwrap_or("1970-01-01T00:00:00Z"),
+            )?
+            .cp_revision(&self.config.revision.unwrap_or(1).to_string())?
+            .apply_opt(self.config.description.as_ref(), |v, b| b.dc_description(v))?
+            .apply_opt(self.config.language.as_ref(), |v, b| b.dc_language(v))?
+            .apply_opt(self.config.subject.as_ref(), |v, b| b.dc_subject(v))?
+            .apply_opt(self.config.title.as_ref(), |v, b| b.dc_title(v))?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -135,14 +120,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <dcterms:created xsi:type="dcterms:W3CDTF">1970-01-01T00:00:00Z</dcterms:created>
-  <dc:creator>unknown</dc:creator>
-  <cp:lastModifiedBy>unknown</cp:lastModifiedBy>
-  <dcterms:modified xsi:type="dcterms:W3CDTF">1970-01-01T00:00:00Z</dcterms:modified>
-  <cp:revision>1</cp:revision>
-</cp:coreProperties>"#
+            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dcterms:created xsi:type="dcterms:W3CDTF">1970-01-01T00:00:00Z</dcterms:created><dc:creator>unknown</dc:creator><cp:lastModifiedBy>unknown</cp:lastModifiedBy><dcterms:modified xsi:type="dcterms:W3CDTF">1970-01-01T00:00:00Z</dcterms:modified><cp:revision>1</cp:revision></cp:coreProperties>"#
         );
     }
 
@@ -162,18 +140,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <dcterms:created xsi:type="dcterms:W3CDTF">2019-01-01</dcterms:created>
-  <dc:creator>foo</dc:creator>
-  <cp:lastModifiedBy>go</cp:lastModifiedBy>
-  <dcterms:modified xsi:type="dcterms:W3CDTF">2019-01-01</dcterms:modified>
-  <cp:revision>1</cp:revision>
-  <dc:description>bar</dc:description>
-  <dc:language>en</dc:language>
-  <dc:subject>subject</dc:subject>
-  <dc:title>title</dc:title>
-</cp:coreProperties>"#
+            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dcterms:created xsi:type="dcterms:W3CDTF">2019-01-01</dcterms:created><dc:creator>foo</dc:creator><cp:lastModifiedBy>go</cp:lastModifiedBy><dcterms:modified xsi:type="dcterms:W3CDTF">2019-01-01</dcterms:modified><cp:revision>1</cp:revision><dc:description>bar</dc:description><dc:language>en</dc:language><dc:subject>subject</dc:subject><dc:title>title</dc:title></cp:coreProperties>"#
         );
     }
 }

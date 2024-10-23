@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::escape::escape;
@@ -28,9 +29,12 @@ impl DeleteText {
 }
 
 impl BuildXML for DeleteText {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new(Vec::new())
-            .delete_text(&self.text, true)
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .delete_text(&self.text, true)?
             .into_inner()
     }
 }

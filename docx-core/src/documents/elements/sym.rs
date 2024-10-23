@@ -1,5 +1,6 @@
 use serde::ser::{Serialize, SerializeStruct, Serializer};
 use serde::Deserialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -20,9 +21,13 @@ impl Sym {
     }
 }
 impl BuildXML for Sym {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        b.sym(&self.font, &self.char).into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .sym(&self.font, &self.char)?
+            .into_inner()
     }
 }
 

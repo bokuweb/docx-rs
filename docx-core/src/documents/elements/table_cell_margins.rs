@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -67,14 +68,17 @@ impl TableCellMargins {
 }
 
 impl BuildXML for TableCellMargins {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new(Vec::new())
-            .open_table_cell_margins()
-            .margin_top(self.top.val as i32, self.top.width_type)
-            .margin_left(self.left.val as i32, self.left.width_type)
-            .margin_bottom(self.bottom.val as i32, self.bottom.width_type)
-            .margin_right(self.right.val as i32, self.right.width_type)
-            .close()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_table_cell_margins()?
+            .margin_top(self.top.val as i32, self.top.width_type)?
+            .margin_left(self.left.val as i32, self.left.width_type)?
+            .margin_bottom(self.bottom.val as i32, self.bottom.width_type)?
+            .margin_right(self.right.val as i32, self.right.width_type)?
+            .close()?
             .into_inner()
     }
 }
@@ -92,12 +96,7 @@ mod tests {
         let b = TableCellMargins::new().build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tblCellMar>
-  <w:top w:w="0" w:type="dxa" />
-  <w:left w:w="55" w:type="dxa" />
-  <w:bottom w:w="0" w:type="dxa" />
-  <w:right w:w="55" w:type="dxa" />
-</w:tblCellMar>"#
+            r#"<w:tblCellMar><w:top w:w="0" w:type="dxa" /><w:left w:w="55" w:type="dxa" /><w:bottom w:w="0" w:type="dxa" /><w:right w:w="55" w:type="dxa" /></w:tblCellMar>"#
         );
     }
 
@@ -106,12 +105,7 @@ mod tests {
         let b = TableCellMargins::new().margin(10, 20, 30, 40).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tblCellMar>
-  <w:top w:w="10" w:type="dxa" />
-  <w:left w:w="40" w:type="dxa" />
-  <w:bottom w:w="30" w:type="dxa" />
-  <w:right w:w="20" w:type="dxa" />
-</w:tblCellMar>"#
+            r#"<w:tblCellMar><w:top w:w="10" w:type="dxa" /><w:left w:w="40" w:type="dxa" /><w:bottom w:w="30" w:type="dxa" /><w:right w:w="20" w:type="dxa" /></w:tblCellMar>"#
         );
     }
 }

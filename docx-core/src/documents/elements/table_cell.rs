@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -153,28 +154,29 @@ impl Default for TableCell {
 }
 
 impl BuildXML for TableCell {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        let mut b = b.open_table_cell().add_child(&self.property);
-        for c in &self.children {
-            match c {
-                TableCellContent::Paragraph(p) => b = b.add_child(p),
-                TableCellContent::Table(t) => {
-                    b = b.add_child(t);
-                    // INFO: We need to add empty paragraph when parent cell includes only cell.
-                    if self.children.len() == 1 {
-                        b = b.add_child(&Paragraph::new())
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_table_cell()?
+            .add_child(&self.property)?
+            .apply_each(&self.children, |ch, b| {
+                match ch {
+                    TableCellContent::Paragraph(p) => b.add_child(p),
+                    TableCellContent::Table(t) => {
+                        b.add_child(t)?
+                            // INFO: We need to add empty paragraph when parent cell includes only cell.
+                            .apply_if(self.children.len() == 1, |b| b.add_child(&Paragraph::new()))
                     }
+                    TableCellContent::StructuredDataTag(t) => b.add_child(&t),
+                    TableCellContent::TableOfContents(t) => b.add_child(&t),
                 }
-                TableCellContent::StructuredDataTag(t) => b = b.add_child(t),
-                TableCellContent::TableOfContents(t) => b = b.add_child(t),
-            }
-        }
-        // INFO: We need to add empty paragraph when parent cell includes only cell.
-        if self.children.is_empty() {
-            b = b.add_child(&Paragraph::new())
-        }
-        b.close().into_inner()
+            })?
+            // INFO: We need to add empty paragraph when parent cell includes only cell.
+            .apply_if(self.children.is_empty(), |b| b.add_child(&Paragraph::new()))?
+            .close()?
+            .into_inner()
     }
 }
 

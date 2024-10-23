@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -54,29 +55,22 @@ impl TableBorder {
 }
 
 impl BuildXML for TableBorder {
-    fn build(&self) -> Vec<u8> {
-        let base = XMLBuilder::new(Vec::new());
-        let base = match self.position {
-            TableBorderPosition::Top => {
-                base.border_top(self.border_type, self.size, self.space, &self.color)
-            }
-            TableBorderPosition::Left => {
-                base.border_left(self.border_type, self.size, self.space, &self.color)
-            }
-            TableBorderPosition::Bottom => {
-                base.border_bottom(self.border_type, self.size, self.space, &self.color)
-            }
-            TableBorderPosition::Right => {
-                base.border_right(self.border_type, self.size, self.space, &self.color)
-            }
-            TableBorderPosition::InsideH => {
-                base.border_inside_h(self.border_type, self.size, self.space, &self.color)
-            }
-            TableBorderPosition::InsideV => {
-                base.border_inside_v(self.border_type, self.size, self.space, &self.color)
-            }
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        let func = match self.position {
+            TableBorderPosition::Top => XMLBuilder::border_top,
+            TableBorderPosition::Left => XMLBuilder::border_left,
+            TableBorderPosition::Bottom => XMLBuilder::border_bottom,
+            TableBorderPosition::Right => XMLBuilder::border_right,
+            TableBorderPosition::InsideH => XMLBuilder::border_inside_h,
+            TableBorderPosition::InsideV => XMLBuilder::border_inside_v,
         };
-        base.into_inner()
+
+        XMLBuilder::from(stream)
+            .apply(|b| func(b, self.border_type, self.size, self.space, &self.color))?
+            .into_inner()
     }
 }
 
@@ -161,16 +155,19 @@ impl TableBorders {
 }
 
 impl BuildXML for TableBorders {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new(Vec::new())
-            .open_table_borders()
-            .add_optional_child(&self.top)
-            .add_optional_child(&self.left)
-            .add_optional_child(&self.bottom)
-            .add_optional_child(&self.right)
-            .add_optional_child(&self.inside_h)
-            .add_optional_child(&self.inside_v)
-            .close()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_table_borders()?
+            .add_optional_child(&self.top)?
+            .add_optional_child(&self.left)?
+            .add_optional_child(&self.bottom)?
+            .add_optional_child(&self.right)?
+            .add_optional_child(&self.inside_h)?
+            .add_optional_child(&self.inside_v)?
+            .close()?
             .into_inner()
     }
 }

@@ -57,7 +57,7 @@ pub struct XmlData {
 
 impl XmlData {
     /// Format the XML data as a string
-    fn format(self: &XmlData, f: &mut Formatter, depth: usize) -> std::fmt::Result {
+    fn format(self: &XmlData, f: &mut Formatter, _depth: usize) -> std::fmt::Result {
         write!(f, "<{}", self.name)?;
 
         for (key, val) in self.attributes.iter() {
@@ -67,12 +67,11 @@ impl XmlData {
         f.write_char('>')?;
 
         if let Some(ref data) = self.data {
-            write!(f, "\n{}", data)?
+            write!(f, "{}", data)?
         }
 
         for child in self.children.iter() {
-            f.write_char('\n')?;
-            child.format(f, depth + 1)?;
+            child.format(f, _depth + 1)?;
         }
 
         write!(f, "</{}>", self.name)

@@ -1,5 +1,6 @@
 use crate::documents::{BuildXML, Level};
 use crate::xml_builder::*;
+use std::io::Write;
 
 use serde::Serialize;
 
@@ -39,14 +40,15 @@ impl AbstractNumbering {
 }
 
 impl BuildXML for AbstractNumbering {
-    fn build(&self) -> Vec<u8> {
-        let id = format!("{}", self.id);
-        let mut b = XMLBuilder::new(Vec::new());
-        b = b.open_abstract_num(&id);
-        for l in &self.levels {
-            b = b.add_child(l);
-        }
-        b.close().into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_abstract_num(&self.id.to_string())?
+            .add_children(&self.levels)?
+            .close()?
+            .into_inner()
     }
 }
 

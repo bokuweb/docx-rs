@@ -1,4 +1,5 @@
 use serde::{Serialize, Serializer};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -15,8 +16,11 @@ impl GridSpan {
 }
 
 impl BuildXML for GridSpan {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new(Vec::new()).grid_span(self.val).into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).grid_span(self.val)?.into_inner()
     }
 }
 

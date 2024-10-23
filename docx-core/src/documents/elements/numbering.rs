@@ -1,5 +1,6 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use std::io::Write;
 
 use super::*;
 use serde::Serialize;
@@ -33,14 +34,17 @@ impl Numbering {
 }
 
 impl BuildXML for Numbering {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         let id = format!("{}", self.id);
         let abs_id = format!("{}", self.abstract_num_id);
-        b.open_num(&id)
-            .abstract_num_id(&abs_id)
-            .add_children(&self.level_overrides)
-            .close()
+        XMLBuilder::from(stream)
+            .open_num(&id)?
+            .abstract_num_id(&abs_id)?
+            .add_children(&self.level_overrides)?
+            .close()?
             .into_inner()
     }
 }
@@ -59,9 +63,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:num w:numId="0">
-  <w:abstractNumId w:val="2" />
-</w:num>"#
+            r#"<w:num w:numId="0"><w:abstractNumId w:val="2" /></w:num>"#
         );
     }
     #[test]
@@ -74,12 +76,7 @@ mod tests {
         let b = c.overrides(overrides).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:num w:numId="0">
-  <w:abstractNumId w:val="2" /><w:lvlOverride w:ilvl="0">
-  <w:startOverride w:val="1" />
-</w:lvlOverride><w:lvlOverride w:ilvl="1">
-  <w:startOverride w:val="1" />
-</w:lvlOverride></w:num>"#
+            r#"<w:num w:numId="0"><w:abstractNumId w:val="2" /><w:lvlOverride w:ilvl="0"><w:startOverride w:val="1" /></w:lvlOverride><w:lvlOverride w:ilvl="1"><w:startOverride w:val="1" /></w:lvlOverride></w:num>"#
         );
     }
 

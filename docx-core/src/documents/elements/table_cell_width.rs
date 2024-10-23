@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -18,9 +19,12 @@ impl TableCellWidth {
 }
 
 impl BuildXML for TableCellWidth {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new(Vec::new())
-            .table_cell_width(self.width as i32, WidthType::Dxa)
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .table_cell_width(self.width as i32, WidthType::Dxa)?
             .into_inner()
     }
 }

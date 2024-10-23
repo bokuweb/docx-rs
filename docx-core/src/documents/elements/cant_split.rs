@@ -1,13 +1,16 @@
 use serde::{Serialize, Serializer};
+use std::io::Write;
 
 use crate::{xml_builder::XMLBuilder, BuildXML};
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct CantSplit {}
 impl BuildXML for CantSplit {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        b.cant_split().into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).cant_split()?.into_inner()
     }
 }
 

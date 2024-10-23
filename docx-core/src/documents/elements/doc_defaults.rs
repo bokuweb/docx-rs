@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::{documents::BuildXML, RunProperty};
 use crate::{xml_builder::*, LineSpacing, ParagraphProperty, ParagraphPropertyDefault};
@@ -61,12 +62,15 @@ impl Default for DocDefaults {
 }
 
 impl BuildXML for DocDefaults {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        b.open_doc_defaults()
-            .add_child(&self.run_property_default)
-            .add_child(&self.paragraph_property_default)
-            .close()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_doc_defaults()?
+            .add_child(&self.run_property_default)?
+            .add_child(&self.paragraph_property_default)?
+            .close()?
             .into_inner()
     }
 }

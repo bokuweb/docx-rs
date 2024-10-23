@@ -1,6 +1,8 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
+use crate::xml_builder::XMLBuilder;
 
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_PAGEREFPAGEREF_topic_ID0EHXK1.html
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
@@ -31,18 +33,16 @@ impl InstrPAGEREF {
 }
 
 impl BuildXML for InstrPAGEREF {
-    fn build(&self) -> Vec<u8> {
-        let mut instr = format!("PAGEREF {}", self.page_ref);
-
-        if self.relative_position {
-            instr = format!("{} \\p", instr);
-        }
-
-        if self.hyperlink {
-            instr = format!("{} \\h", instr);
-        }
-
-        instr.into()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .plain_text("PAGEREF ")?
+            .plain_text(&self.page_ref)?
+            .apply_if(self.relative_position, |b| b.plain_text(" \\p"))?
+            .apply_if(self.hyperlink, |b| b.plain_text(" \\h"))?
+            .into_inner()
     }
 }
 
@@ -78,9 +78,6 @@ mod tests {
     #[test]
     fn test_page_ref() {
         let b = InstrPAGEREF::new("_Toc00000000").hyperlink().build();
-        assert_eq!(
-            str::from_utf8(&b).unwrap(),
-            r#"PAGEREF _Toc00000000 \h"#
-        );
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"PAGEREF _Toc00000000 \h"#);
     }
 }

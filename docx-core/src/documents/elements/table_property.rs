@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 #[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
@@ -150,19 +151,22 @@ impl TableProperty {
 }
 
 impl BuildXML for TableProperty {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .open_table_property()
-            .add_child(&self.width)
-            .add_child(&self.justification)
-            .add_child(&self.borders)
-            .add_optional_child(&self.margins)
-            .add_optional_child(&self.indent)
-            .add_optional_child(&self.style)
-            .add_optional_child(&self.layout)
-            .add_optional_child(&self.position)
-            .close()
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_table_property()?
+            .add_child(&self.width)?
+            .add_child(&self.justification)?
+            .add_child(&self.borders)?
+            .add_optional_child(&self.margins)?
+            .add_optional_child(&self.indent)?
+            .add_optional_child(&self.style)?
+            .add_optional_child(&self.layout)?
+            .add_optional_child(&self.position)?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -180,7 +184,18 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tblPr><w:tblW w:w="0" w:type="auto" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders></w:tblPr>"#
+            r#"<w:tblPr>
+  <w:tblW w:w="0" w:type="auto" />
+  <w:jc w:val="left" />
+  <w:tblBorders>
+    <w:top w:val="single" w:sz="2" w:space="0" w:color="000000" />
+    <w:left w:val="single" w:sz="2" w:space="0" w:color="000000" />
+    <w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" />
+    <w:right w:val="single" w:sz="2" w:space="0" w:color="000000" />
+    <w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" />
+    <w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" />
+  </w:tblBorders>
+</w:tblPr>"#
         );
     }
 

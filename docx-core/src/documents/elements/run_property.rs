@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -171,33 +172,36 @@ impl RunProperty {
 }
 
 impl BuildXML for RunProperty {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.open_run_property()
-            .add_optional_child(&self.sz)
-            .add_optional_child(&self.sz_cs)
-            .add_optional_child(&self.color)
-            .add_optional_child(&self.bold)
-            .add_optional_child(&self.bold_cs)
-            .add_optional_child(&self.caps)
-            .add_optional_child(&self.italic)
-            .add_optional_child(&self.italic_cs)
-            .add_optional_child(&self.strike)
-            .add_optional_child(&self.highlight)
-            .add_optional_child(&self.underline)
-            .add_optional_child(&self.vanish)
-            .add_optional_child(&self.spec_vanish)
-            .add_optional_child(&self.fonts)
-            .add_optional_child(&self.text_border)
-            .add_optional_child(&self.ins)
-            .add_optional_child(&self.del)
-            .add_optional_child(&self.vert_align)
-            .add_optional_child(&self.character_spacing)
-            .add_optional_child(&self.style)
-            .add_optional_child(&self.positional_tab)
-            .add_optional_child(&self.shading)
-            .close()
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_run_property()?
+            .add_optional_child(&self.sz)?
+            .add_optional_child(&self.sz_cs)?
+            .add_optional_child(&self.color)?
+            .add_optional_child(&self.bold)?
+            .add_optional_child(&self.bold_cs)?
+            .add_optional_child(&self.caps)?
+            .add_optional_child(&self.italic)?
+            .add_optional_child(&self.italic_cs)?
+            .add_optional_child(&self.strike)?
+            .add_optional_child(&self.highlight)?
+            .add_optional_child(&self.underline)?
+            .add_optional_child(&self.vanish)?
+            .add_optional_child(&self.spec_vanish)?
+            .add_optional_child(&self.fonts)?
+            .add_optional_child(&self.text_border)?
+            .add_optional_child(&self.ins)?
+            .add_optional_child(&self.del)?
+            .add_optional_child(&self.vert_align)?
+            .add_optional_child(&self.character_spacing)?
+            .add_optional_child(&self.style)?
+            .add_optional_child(&self.positional_tab)?
+            .add_optional_child(&self.shading)?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -215,7 +219,11 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:rPr><w:sz w:val="10" /><w:szCs w:val="10" /><w:color w:val="FFFFFF" /></w:rPr>"#
+            r#"<w:rPr>
+  <w:sz w:val="10" />
+  <w:szCs w:val="10" />
+  <w:color w:val="FFFFFF" />
+</w:rPr>"#
         );
     }
 
@@ -225,7 +233,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:rPr><w:highlight w:val="FFFFFF" /></w:rPr>"#
+            r#"<w:rPr>
+  <w:highlight w:val="FFFFFF" />
+</w:rPr>"#
         );
     }
 
@@ -235,7 +245,10 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:rPr><w:b /><w:bCs /></w:rPr>"#
+            r#"<w:rPr>
+  <w:b />
+  <w:bCs />
+</w:rPr>"#
         );
     }
 
@@ -245,7 +258,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:rPr><w:strike /></w:rPr>"#
+            r#"<w:rPr>
+  <w:strike />
+</w:rPr>"#
         );
     }
 
@@ -255,7 +270,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:rPr><w:u w:val="single" /></w:rPr>"#
+            r#"<w:rPr>
+  <w:u w:val="single" />
+</w:rPr>"#
         );
     }
 
@@ -265,7 +282,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:rPr><w:vanish /></w:rPr>"#
+            r#"<w:rPr>
+  <w:vanish />
+</w:rPr>"#
         );
     }
 
@@ -275,7 +294,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:rPr><w:rFonts w:eastAsia="Hiragino" /></w:rPr>"#
+            r#"<w:rPr>
+  <w:rFonts w:eastAsia="Hiragino" />
+</w:rPr>"#
         );
     }
 
@@ -285,7 +306,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:rPr><w:spacing w:val="20" /></w:rPr>"#
+            r#"<w:rPr>
+  <w:spacing w:val="20" />
+</w:rPr>"#
         );
     }
 
@@ -299,7 +322,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:rPr><w:ptab w:alignment="left" w:relativeTo="margin" w:leader="none" /></w:rPr>"#
+            r#"<w:rPr>
+  <w:ptab w:alignment="left" w:relativeTo="margin" w:leader="none" />
+</w:rPr>"#
         );
     }
 
@@ -314,7 +339,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:rPr><w:shd w:val="clear" w:color="auto" w:fill="FFFFFF" /></w:rPr>"#
+            r#"<w:rPr>
+  <w:shd w:val="clear" w:color="auto" w:fill="FFFFFF" />
+</w:rPr>"#
         );
     }
 }

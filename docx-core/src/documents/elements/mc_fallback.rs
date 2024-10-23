@@ -1,3 +1,4 @@
+use std::io::Write;
 // use super::*;
 use serde::Serialize;
 
@@ -20,8 +21,11 @@ impl Default for McFallback {
 }
 
 impl BuildXML for McFallback {
-    fn build(&self) -> Vec<u8> {
-        //  Ignore for now
-        vec![]
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        // Ignore for now
+        Ok(stream)
     }
 }

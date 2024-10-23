@@ -4,8 +4,8 @@ use std::str::FromStr;
 use xml::attribute::OwnedAttribute;
 use xml::reader::{EventReader, XmlEvent};
 
-use crate::escape;
 use super::*;
+use crate::escape;
 
 impl ElementReader for Comment {
     fn read<R: Read>(

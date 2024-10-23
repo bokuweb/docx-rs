@@ -1,6 +1,7 @@
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
+use std::io::Write;
 
 #[derive(Debug, Clone)]
 pub struct TableGrid {
@@ -14,12 +15,15 @@ impl TableGrid {
 }
 
 impl BuildXML for TableGrid {
-    fn build(&self) -> Vec<u8> {
-        let mut base = XMLBuilder::new().open_table_grid();
-        for g in &self.grid {
-            base = base.grid_column(*g as i32, WidthType::Dxa);
-        }
-        base.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_table_grid()?
+            .apply_each(&self.grid, |g, b| b.grid_column(*g as i32, WidthType::Dxa))?
+            .close()?
+            .into_inner()
     }
 }
 

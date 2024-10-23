@@ -1,5 +1,6 @@
 use serde::ser::{Serialize, SerializeStruct, Serializer};
 use serde::Deserialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -17,9 +18,13 @@ impl Break {
 }
 
 impl BuildXML for Break {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.br(&self.break_type.to_string()).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .br(&self.break_type.to_string())?
+            .into_inner()
     }
 }
 

@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 #[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
@@ -124,19 +125,22 @@ impl TableCellProperty {
 }
 
 impl BuildXML for TableCellProperty {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .open_table_cell_property()
-            .add_optional_child(&self.width)
-            .add_optional_child(&self.borders)
-            .add_optional_child(&self.grid_span)
-            .add_optional_child(&self.vertical_merge)
-            .add_optional_child(&self.vertical_align)
-            .add_optional_child(&self.text_direction)
-            .add_optional_child(&self.shading)
-            .add_optional_child(&self.margins)
-            .close()
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_table_cell_property()?
+            .add_optional_child(&self.width)?
+            .add_optional_child(&self.borders)?
+            .add_optional_child(&self.grid_span)?
+            .add_optional_child(&self.vertical_merge)?
+            .add_optional_child(&self.vertical_align)?
+            .add_optional_child(&self.text_direction)?
+            .add_optional_child(&self.shading)?
+            .add_optional_child(&self.margins)?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -161,7 +165,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tcPr><w:gridSpan w:val="3" /></w:tcPr>"#
+            r#"<w:tcPr>
+  <w:gridSpan w:val="3" />
+</w:tcPr>"#
         );
     }
 
@@ -171,7 +177,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tcPr><w:vMerge w:val="continue" /></w:tcPr>"#
+            r#"<w:tcPr>
+  <w:vMerge w:val="continue" />
+</w:tcPr>"#
         );
     }
 
@@ -181,7 +189,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tcPr><w:vAlign w:val="center" /></w:tcPr>"#
+            r#"<w:tcPr>
+  <w:vAlign w:val="center" />
+</w:tcPr>"#
         );
     }
 
@@ -192,7 +202,9 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:tcPr><w:shd w:val="clear" w:color="auto" w:fill="FF0000" /></w:tcPr>"#
+            r#"<w:tcPr>
+  <w:shd w:val="clear" w:color="auto" w:fill="FF0000" />
+</w:tcPr>"#
         );
     }
 

@@ -1,5 +1,6 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use std::io::Write;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct IndentLevel {
@@ -13,9 +14,13 @@ impl IndentLevel {
 }
 
 impl BuildXML for IndentLevel {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.indent_level(self.val).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .indent_level(self.val)?
+            .into_inner()
     }
 }
 

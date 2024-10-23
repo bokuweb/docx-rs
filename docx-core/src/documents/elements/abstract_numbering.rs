@@ -1,5 +1,6 @@
 use crate::documents::{BuildXML, Level};
 use crate::xml_builder::*;
+use std::io::Write;
 
 use serde::Serialize;
 
@@ -39,14 +40,15 @@ impl AbstractNumbering {
 }
 
 impl BuildXML for AbstractNumbering {
-    fn build(&self) -> Vec<u8> {
-        let id = format!("{}", self.id);
-        let mut b = XMLBuilder::new();
-        b = b.open_abstract_num(&id);
-        for l in &self.levels {
-            b = b.add_child(l);
-        }
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_abstract_num(&self.id.to_string())?
+            .add_children(&self.levels)?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -72,7 +74,18 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:abstractNum w:abstractNumId="0"><w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /></w:lvl></w:abstractNum>"#
+            r#"<w:abstractNum w:abstractNumId="0">
+  <w:lvl w:ilvl="1">
+    <w:start w:val="1" />
+    <w:numFmt w:val="decimal" />
+    <w:lvlText w:val="%4." />
+    <w:lvlJc w:val="left" />
+    <w:pPr>
+      <w:rPr />
+    </w:pPr>
+    <w:rPr />
+  </w:lvl>
+</w:abstractNum>"#
         );
     }
 

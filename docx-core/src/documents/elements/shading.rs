@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -45,9 +46,12 @@ impl Shading {
 }
 
 impl BuildXML for Shading {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .shd(&self.shd_type.to_string(), &self.color, &self.fill)
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .shd(&self.shd_type.to_string(), &self.color, &self.fill)?
+            .into_inner()
     }
 }

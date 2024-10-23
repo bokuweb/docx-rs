@@ -1,4 +1,5 @@
 use serde::{Serialize, Serializer};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -33,8 +34,13 @@ impl ParagraphStyle {
 }
 
 impl BuildXML for ParagraphStyle {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().paragraph_style(&self.val).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .paragraph_style(&self.val)?
+            .into_inner()
     }
 }
 

@@ -1,4 +1,5 @@
 use serde::{Serialize, Serializer};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -16,10 +17,13 @@ impl VAlign {
 }
 
 impl BuildXML for VAlign {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .vertical_align(&self.val.to_string())
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .vertical_align(&self.val.to_string())?
+            .into_inner()
     }
 }
 

@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -19,19 +20,21 @@ impl Default for Taskpanes {
 }
 
 impl BuildXML for Taskpanes {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let b = b
-            .declaration(Some(true))
-            .open_taskpanes("http://schemas.microsoft.com/office/webextensions/taskpanes/2010/11")
-            .open_taskpane("", "1", "350", "1")
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(true))?
+            .open_taskpanes("http://schemas.microsoft.com/office/webextensions/taskpanes/2010/11")?
+            .open_taskpane("", "1", "350", "1")?
             .webextensionref(
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
                 "rId1",
-            )
-            .close()
-            .close();
-        b.build()
+            )?
+            .close()?
+            .close()?
+            .into_inner()
     }
 }
 

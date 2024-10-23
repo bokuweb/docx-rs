@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -120,9 +121,11 @@ impl FrameProperty {
 }
 
 impl BuildXML for FrameProperty {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.frame_property(self).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).frame_property(self)?.into_inner()
     }
 }
 

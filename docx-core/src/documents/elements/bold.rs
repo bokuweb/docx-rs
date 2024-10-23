@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize, Serializer};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -35,8 +36,10 @@ impl Serialize for Bold {
 }
 
 impl BuildXML for Bold {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.b().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).b()?.into_inner()
     }
 }

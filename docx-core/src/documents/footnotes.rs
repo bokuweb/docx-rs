@@ -1,6 +1,7 @@
 use super::Footnote;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use std::io::Write;
 
 use serde::Serialize;
 
@@ -21,12 +22,16 @@ impl Footnotes {
 }
 
 impl BuildXML for Footnotes {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new().declaration(Some(true)).open_footnotes();
-        for c in &self.footnotes {
-            b = b.add_child(c)
-        }
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(true))?
+            .open_footnotes()?
+            .add_children(&self.footnotes)?
+            .close()?
+            .into_inner()
     }
 }
 

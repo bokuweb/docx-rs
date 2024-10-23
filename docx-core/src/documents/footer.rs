@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -80,18 +81,20 @@ impl Serialize for FooterChild {
 }
 
 impl BuildXML for Footer {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
-        b = b.declaration(Some(true)).open_footer();
-
-        for c in &self.children {
-            match c {
-                FooterChild::Paragraph(p) => b = b.add_child(p),
-                FooterChild::Table(t) => b = b.add_child(t),
-                FooterChild::StructuredDataTag(t) => b = b.add_child(t),
-            }
-        }
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(true))?
+            .open_footer()?
+            .apply_each(&self.children, |c, b| match c {
+                FooterChild::Paragraph(p) => b.add_child(&p),
+                FooterChild::Table(t) => b.add_child(&t),
+                FooterChild::StructuredDataTag(t) => b.add_child(&t),
+            })?
+            .close()?
+            .into_inner()
     }
 }
 

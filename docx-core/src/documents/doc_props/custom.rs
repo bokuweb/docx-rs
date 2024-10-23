@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -21,26 +22,28 @@ impl CustomProps {
 }
 
 impl BuildXML for CustomProps {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let mut base = b.declaration(Some(true)).open_custom_properties(
-            "http://schemas.openxmlformats.org/officeDocument/2006/custom-properties",
-            "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes",
-        );
-
-        for (i, (key, item)) in self.properties.iter().enumerate() {
-            base = base
-                .open_property(
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(true))?
+            .open_custom_properties(
+                "http://schemas.openxmlformats.org/officeDocument/2006/custom-properties",
+                "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes",
+            )?
+            .apply_each(self.properties.iter().enumerate(), |(i, (key, item)), b| {
+                b.open_property(
                     "{D5CDD505-2E9C-101B-9397-08002B2CF9AE}",
-                    // I can not found spec about this id.
-                    // It is invalid if pid started by 1....
+                    // I can not find spec about this id.
+                    // It is invalid if pid starts from 1...
                     &format!("{}", i + 2),
                     key,
-                )
-                .lpwstr(item)
+                )?
+                .lpwstr(item)?
                 .close()
-        }
-
-        base.close().build()
+            })?
+            .close()?
+            .into_inner()
     }
 }

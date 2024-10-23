@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -51,15 +52,18 @@ impl Indent {
 }
 
 impl BuildXML for Indent {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
             .indent(
                 self.start,
                 self.special_indent,
                 self.end.unwrap_or_default(),
                 self.start_chars,
-            )
-            .build()
+            )?
+            .into_inner()
     }
 }
 

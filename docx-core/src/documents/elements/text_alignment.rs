@@ -1,4 +1,5 @@
 use serde::{Serialize, Serializer};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::{xml_builder::*, TextAlignmentType};
@@ -13,10 +14,13 @@ impl TextAlignment {
 }
 
 impl BuildXML for TextAlignment {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let v = format!("{}", self.0);
-        b.text_alignment(&v).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .text_alignment(&format!("{}", self.0))?
+            .into_inner()
     }
 }
 

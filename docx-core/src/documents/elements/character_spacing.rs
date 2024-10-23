@@ -1,5 +1,6 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use std::io::Write;
 
 use serde::*;
 
@@ -16,9 +17,11 @@ impl CharacterSpacing {
 }
 
 impl BuildXML for CharacterSpacing {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.spacing(self.value).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).spacing(self.value)?.into_inner()
     }
 }
 

@@ -1,6 +1,7 @@
 use super::*;
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -71,17 +72,28 @@ impl Default for TextBoxContent {
     }
 }
 
-impl BuildXML for TextBoxContent {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let mut b = b.open_text_box_content();
-        for c in &self.children {
-            match c {
-                TextBoxContentChild::Paragraph(p) => b = b.add_child(p),
-                TextBoxContentChild::Table(t) => b = b.add_child(t),
-            }
+impl BuildXML for TextBoxContentChild {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        match self {
+            TextBoxContentChild::Paragraph(p) => p.build_to(stream),
+            TextBoxContentChild::Table(t) => t.build_to(stream),
         }
-        b.close().build()
+    }
+}
+
+impl BuildXML for TextBoxContent {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_text_box_content()?
+            .add_children(&self.children)?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -100,7 +112,13 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:txbxContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:txbxContent>"#
+            r#"<w:txbxContent>
+  <w:p w14:paraId="12345678">
+    <w:pPr>
+      <w:rPr />
+    </w:pPr>
+  </w:p>
+</w:txbxContent>"#
         );
     }
 }

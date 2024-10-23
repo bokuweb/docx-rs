@@ -1,5 +1,6 @@
 use super::*;
 use serde::{ser::*, Serialize};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -55,16 +56,13 @@ impl Drawing {
     }
 }
 
-impl BuildXML for Box<Drawing> {
-    fn build(&self) -> Vec<u8> {
-        self.as_ref().build()
-    }
-}
-
 impl BuildXML for Drawing {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let mut b = b.open_drawing();
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        let b = XMLBuilder::from(stream);
+        let mut b = b.open_drawing()?;
 
         match &self.data {
             Some(DrawingData::Pic(p)) => {
@@ -74,7 +72,7 @@ impl BuildXML for Drawing {
                         &format!("{}", p.dist_b),
                         &format!("{}", p.dist_l),
                         &format!("{}", p.dist_r),
-                    )
+                    )?
                 } else {
                     b = b
                         .open_wp_anchor(
@@ -88,32 +86,32 @@ impl BuildXML for Drawing {
                             "0",
                             if p.layout_in_cell { "1" } else { "0" },
                             &format!("{}", p.relative_height),
-                        )
+                        )?
                         .simple_pos(
                             &format!("{}", p.simple_pos_x),
                             &format!("{}", p.simple_pos_y),
-                        )
-                        .open_position_h(&format!("{}", p.relative_from_h));
+                        )?
+                        .open_position_h(&format!("{}", p.relative_from_h))?;
 
                     match p.position_h {
                         DrawingPosition::Offset(x) => {
                             let x = format!("{}", x as u32);
-                            b = b.pos_offset(&x).close();
+                            b = b.pos_offset(&x)?.close()?;
                         }
                         DrawingPosition::Align(x) => {
-                            b = b.align(&x.to_string()).close();
+                            b = b.align(&x.to_string())?.close()?;
                         }
                     }
 
-                    b = b.open_position_v(&format!("{}", p.relative_from_v));
+                    b = b.open_position_v(&format!("{}", p.relative_from_v))?;
 
                     match p.position_v {
                         DrawingPosition::Offset(y) => {
                             let y = format!("{}", y as u32);
-                            b = b.pos_offset(&y).close();
+                            b = b.pos_offset(&y)?.close()?;
                         }
                         DrawingPosition::Align(a) => {
-                            b = b.align(&a.to_string()).close();
+                            b = b.align(&a.to_string())?.close()?;
                         }
                     }
                 }
@@ -123,33 +121,35 @@ impl BuildXML for Drawing {
                 b = b
                     // Please see 20.4.2.7 extent (Drawing Object Size)
                     // One inch equates to 914400 EMUs and a centimeter is 360000
-                    .wp_extent(&w, &h)
-                    .wp_effect_extent("0", "0", "0", "0");
+                    .wp_extent(&w, &h)?
+                    .wp_effect_extent("0", "0", "0", "0")?;
                 if p.allow_overlap {
-                    b = b.wrap_none();
+                    b = b.wrap_none()?;
                 } else if p.position_type == DrawingPositionType::Anchor {
-                    b = b.wrap_square("bothSides");
+                    b = b.wrap_square("bothSides")?;
                 }
                 b = b
-                    .wp_doc_pr("1", "Figure")
-                    .open_wp_c_nv_graphic_frame_pr()
+                    .wp_doc_pr("1", "Figure")?
+                    .open_wp_c_nv_graphic_frame_pr()?
                     .a_graphic_frame_locks(
                         "http://schemas.openxmlformats.org/drawingml/2006/main",
                         "1",
-                    )
-                    .close()
-                    .open_a_graphic("http://schemas.openxmlformats.org/drawingml/2006/main")
-                    .open_a_graphic_data("http://schemas.openxmlformats.org/drawingml/2006/picture")
-                    .add_child(&p.clone())
-                    .close()
-                    .close();
+                    )?
+                    .close()?
+                    .open_a_graphic("http://schemas.openxmlformats.org/drawingml/2006/main")?
+                    .open_a_graphic_data(
+                        "http://schemas.openxmlformats.org/drawingml/2006/picture",
+                    )?
+                    .add_child(&p.clone())?
+                    .close()?
+                    .close()?;
             }
             Some(DrawingData::TextBox(_t)) => unimplemented!("TODO: Support textBox writer"),
             None => {
                 unimplemented!()
             }
         }
-        b.close().close().build()
+        b.close()?.close()?.into_inner()
     }
 }
 
@@ -176,30 +176,32 @@ mod tests {
       <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1" />
     </wp:cNvGraphicFramePr>
     <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
-      <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
-  <pic:nvPicPr>
-    <pic:cNvPr id="0" name="" />
-    <pic:cNvPicPr>
-      <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
-    </pic:cNvPicPr>
-  </pic:nvPicPr>
-  <pic:blipFill>
-    <a:blip r:embed="rIdImage123" />
-    <a:srcRect />
-    <a:stretch>
-      <a:fillRect />
-    </a:stretch>
-  </pic:blipFill>
-  <pic:spPr bwMode="auto">
-    <a:xfrm rot="0">
-      <a:off x="0" y="0" />
-      <a:ext cx="3048000" cy="2286000" />
-    </a:xfrm>
-    <a:prstGeom prst="rect">
-      <a:avLst />
-    </a:prstGeom>
-  </pic:spPr>
-</pic:pic></a:graphicData>
+      <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+        <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+          <pic:nvPicPr>
+            <pic:cNvPr id="0" name="" />
+            <pic:cNvPicPr>
+              <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
+            </pic:cNvPicPr>
+          </pic:nvPicPr>
+          <pic:blipFill>
+            <a:blip r:embed="rIdImage123" />
+            <a:srcRect />
+            <a:stretch>
+              <a:fillRect />
+            </a:stretch>
+          </pic:blipFill>
+          <pic:spPr bwMode="auto">
+            <a:xfrm rot="0">
+              <a:off x="0" y="0" />
+              <a:ext cx="3048000" cy="2286000" />
+            </a:xfrm>
+            <a:prstGeom prst="rect">
+              <a:avLst />
+            </a:prstGeom>
+          </pic:spPr>
+        </pic:pic>
+      </a:graphicData>
     </a:graphic>
   </wp:inline>
 </w:drawing>"#
@@ -222,30 +224,32 @@ mod tests {
       <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1" />
     </wp:cNvGraphicFramePr>
     <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
-      <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
-  <pic:nvPicPr>
-    <pic:cNvPr id="0" name="" />
-    <pic:cNvPicPr>
-      <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
-    </pic:cNvPicPr>
-  </pic:nvPicPr>
-  <pic:blipFill>
-    <a:blip r:embed="rIdImage123" />
-    <a:srcRect />
-    <a:stretch>
-      <a:fillRect />
-    </a:stretch>
-  </pic:blipFill>
-  <pic:spPr bwMode="auto">
-    <a:xfrm rot="0">
-      <a:off x="0" y="0" />
-      <a:ext cx="3048000" cy="2286000" />
-    </a:xfrm>
-    <a:prstGeom prst="rect">
-      <a:avLst />
-    </a:prstGeom>
-  </pic:spPr>
-</pic:pic></a:graphicData>
+      <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+        <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+          <pic:nvPicPr>
+            <pic:cNvPr id="0" name="" />
+            <pic:cNvPicPr>
+              <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
+            </pic:cNvPicPr>
+          </pic:nvPicPr>
+          <pic:blipFill>
+            <a:blip r:embed="rIdImage123" />
+            <a:srcRect />
+            <a:stretch>
+              <a:fillRect />
+            </a:stretch>
+          </pic:blipFill>
+          <pic:spPr bwMode="auto">
+            <a:xfrm rot="0">
+              <a:off x="0" y="0" />
+              <a:ext cx="3048000" cy="2286000" />
+            </a:xfrm>
+            <a:prstGeom prst="rect">
+              <a:avLst />
+            </a:prstGeom>
+          </pic:spPr>
+        </pic:pic>
+      </a:graphicData>
     </a:graphic>
   </wp:inline>
 </w:drawing>"#
@@ -278,30 +282,32 @@ mod tests {
       <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1" />
     </wp:cNvGraphicFramePr>
     <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
-      <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
-  <pic:nvPicPr>
-    <pic:cNvPr id="0" name="" />
-    <pic:cNvPicPr>
-      <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
-    </pic:cNvPicPr>
-  </pic:nvPicPr>
-  <pic:blipFill>
-    <a:blip r:embed="rIdImage123" />
-    <a:srcRect />
-    <a:stretch>
-      <a:fillRect />
-    </a:stretch>
-  </pic:blipFill>
-  <pic:spPr bwMode="auto">
-    <a:xfrm rot="0">
-      <a:off x="0" y="0" />
-      <a:ext cx="3048000" cy="2286000" />
-    </a:xfrm>
-    <a:prstGeom prst="rect">
-      <a:avLst />
-    </a:prstGeom>
-  </pic:spPr>
-</pic:pic></a:graphicData>
+      <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+        <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+          <pic:nvPicPr>
+            <pic:cNvPr id="0" name="" />
+            <pic:cNvPicPr>
+              <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
+            </pic:cNvPicPr>
+          </pic:nvPicPr>
+          <pic:blipFill>
+            <a:blip r:embed="rIdImage123" />
+            <a:srcRect />
+            <a:stretch>
+              <a:fillRect />
+            </a:stretch>
+          </pic:blipFill>
+          <pic:spPr bwMode="auto">
+            <a:xfrm rot="0">
+              <a:off x="0" y="0" />
+              <a:ext cx="3048000" cy="2286000" />
+            </a:xfrm>
+            <a:prstGeom prst="rect">
+              <a:avLst />
+            </a:prstGeom>
+          </pic:spPr>
+        </pic:pic>
+      </a:graphicData>
     </a:graphic>
   </wp:anchor>
 </w:drawing>"#
@@ -336,30 +342,32 @@ mod tests {
       <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1" />
     </wp:cNvGraphicFramePr>
     <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
-      <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
-  <pic:nvPicPr>
-    <pic:cNvPr id="0" name="" />
-    <pic:cNvPicPr>
-      <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
-    </pic:cNvPicPr>
-  </pic:nvPicPr>
-  <pic:blipFill>
-    <a:blip r:embed="rIdImage123" />
-    <a:srcRect />
-    <a:stretch>
-      <a:fillRect />
-    </a:stretch>
-  </pic:blipFill>
-  <pic:spPr bwMode="auto">
-    <a:xfrm rot="0">
-      <a:off x="0" y="0" />
-      <a:ext cx="3048000" cy="2286000" />
-    </a:xfrm>
-    <a:prstGeom prst="rect">
-      <a:avLst />
-    </a:prstGeom>
-  </pic:spPr>
-</pic:pic></a:graphicData>
+      <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+        <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+          <pic:nvPicPr>
+            <pic:cNvPr id="0" name="" />
+            <pic:cNvPicPr>
+              <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
+            </pic:cNvPicPr>
+          </pic:nvPicPr>
+          <pic:blipFill>
+            <a:blip r:embed="rIdImage123" />
+            <a:srcRect />
+            <a:stretch>
+              <a:fillRect />
+            </a:stretch>
+          </pic:blipFill>
+          <pic:spPr bwMode="auto">
+            <a:xfrm rot="0">
+              <a:off x="0" y="0" />
+              <a:ext cx="3048000" cy="2286000" />
+            </a:xfrm>
+            <a:prstGeom prst="rect">
+              <a:avLst />
+            </a:prstGeom>
+          </pic:spPr>
+        </pic:pic>
+      </a:graphicData>
     </a:graphic>
   </wp:anchor>
 </w:drawing>"#

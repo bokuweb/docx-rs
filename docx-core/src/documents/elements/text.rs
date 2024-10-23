@@ -1,5 +1,6 @@
 use serde::ser::{Serialize, SerializeStruct, Serializer};
 use serde::Deserialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::escape::escape;
@@ -29,8 +30,13 @@ impl Text {
 }
 
 impl BuildXML for Text {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().text(&self.text, true).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .text(&self.text, true)?
+            .into_inner()
     }
 }
 

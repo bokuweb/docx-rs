@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
 use crate::escape;
@@ -48,14 +49,16 @@ impl ParagraphPropertyChange {
 impl ParagraphPropertyChangeId for ParagraphPropertyChange {}
 
 impl BuildXML for ParagraphPropertyChange {
-    #[allow(clippy::needless_borrow)]
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         let id = self.generate();
-        XMLBuilder::new()
-            .open_paragraph_property_change(&id, &self.author, &self.date)
-            .add_child(&self.property)
-            .close()
-            .build()
+        XMLBuilder::from(stream)
+            .open_paragraph_property_change(&id, &self.author, &self.date)?
+            .add_child(&self.property)?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -74,7 +77,11 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPrChange w:id="123" w:author="unnamed" w:date="1970-01-01T00:00:00Z"><w:pPr><w:rPr /></w:pPr></w:pPrChange>"#
+            r#"<w:pPrChange w:id="123" w:author="unnamed" w:date="1970-01-01T00:00:00Z">
+  <w:pPr>
+    <w:rPr />
+  </w:pPr>
+</w:pPrChange>"#
         );
     }
 }

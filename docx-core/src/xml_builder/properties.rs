@@ -20,38 +20,42 @@ impl<W: Write> XMLBuilder<W> {
 
 #[cfg(test)]
 mod tests {
-
-    use super::XMLBuilder;
+    use super::*;
     use std::str;
+    use xml::writer::Result;
 
     #[test]
-    fn test_properties() {
+    fn test_properties() -> Result<()> {
         let b = XMLBuilder::new(Vec::new());
         let r = b
-            .open_properties("http://example", "http://example2")
-            .plain_text("child")
-            .close()
+            .open_properties("http://example", "http://example2")?
+            .plain_text("child")?
+            .close()?
+            .into_inner()?
             .into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<Properties xmlns="http://example" xmlns:vt="http://example2">child</Properties>"#
         );
+        Ok(())
     }
 
     #[test]
-    fn test_template() {
+    fn test_template() -> Result<()> {
         let b = XMLBuilder::new(Vec::new());
-        let r = b.template("0").into_inner();
+        let r = b.template("0")?.into_inner()?.into_inner();
         assert_eq!(str::from_utf8(&r).unwrap(), r#"<Template>0</Template>"#);
+        Ok(())
     }
 
     #[test]
-    fn test_application() {
+    fn test_application() -> Result<()> {
         let b = XMLBuilder::new(Vec::new());
-        let r = b.application("Lawgue").into_inner();
+        let r = b.application("Lawgue")?.into_inner()?.into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<Application>Lawgue</Application>"#
         );
+        Ok(())
     }
 }

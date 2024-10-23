@@ -1,6 +1,7 @@
 use crate::documents::BuildXML;
 use crate::{xml_builder::*, ImageIdAndPath};
 use serde::Serialize;
+use std::io::Write;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
@@ -24,20 +25,21 @@ impl HeaderRels {
 }
 
 impl BuildXML for HeaderRels {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new(Vec::new());
-        b = b
-            .declaration(None)
-            .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships");
-
-        for (id, path) in self.images.iter() {
-            b = b.relationship(
-                id,
-                "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",
-                path,
-            )
-        }
-
-        b.close().into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(None)?
+            .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships")?
+            .apply_each(&self.images, |(id, path), b| {
+                b.relationship(
+                    id,
+                    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",
+                    path,
+                )
+            })?
+            .close()?
+            .into_inner()
     }
 }

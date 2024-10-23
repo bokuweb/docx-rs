@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -20,13 +21,18 @@ impl Default for AppProps {
 }
 
 impl BuildXML for AppProps {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        let base = b.declaration(Some(true)).open_properties(
-            "http://schemas.openxmlformats.org/officeDocument/2006/extended-properties",
-            "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes",
-        );
-        base.close().into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(true))?
+            .open_properties(
+                "http://schemas.openxmlformats.org/officeDocument/2006/extended-properties",
+                "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes",
+            )?
+            .close()?
+            .into_inner()
     }
 }
 

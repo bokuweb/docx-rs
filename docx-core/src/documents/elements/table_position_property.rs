@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -73,9 +74,12 @@ impl TablePositionProperty {
 }
 
 impl BuildXML for TablePositionProperty {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new(Vec::new())
-            .table_position_property(self)
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .table_position_property(self)?
             .into_inner()
     }
 }

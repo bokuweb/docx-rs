@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -80,18 +81,20 @@ impl Serialize for HeaderChild {
 }
 
 impl BuildXML for Header {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new(Vec::new());
-        b = b.declaration(Some(true)).open_header();
-
-        for c in &self.children {
-            match c {
-                HeaderChild::Paragraph(p) => b = b.add_child(p),
-                HeaderChild::Table(t) => b = b.add_child(t),
-                HeaderChild::StructuredDataTag(t) => b = b.add_child(t),
-            }
-        }
-        b.close().into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(true))?
+            .open_header()?
+            .apply_each(&self.children, |c, b| match c {
+                HeaderChild::Paragraph(p) => b.add_child(&p),
+                HeaderChild::Table(t) => b.add_child(&t),
+                HeaderChild::StructuredDataTag(t) => b.add_child(&t),
+            })?
+            .close()?
+            .into_inner()
     }
 }
 

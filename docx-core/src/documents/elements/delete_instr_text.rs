@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
 use crate::xml_builder::*;
@@ -14,25 +15,21 @@ pub enum DeleteInstrText {
 }
 
 impl BuildXML for DeleteInstrText {
-    fn build(&self) -> Vec<u8> {
-        let instr = match self {
-            DeleteInstrText::TOC(toc) => toc.build(),
-            DeleteInstrText::TC(tc) => tc.build(),
-            DeleteInstrText::PAGEREF(page_ref) => page_ref.build(),
-            DeleteInstrText::HYPERLINK(_link) => todo!(),
-            DeleteInstrText::Unsupported(s) => s.as_bytes().to_vec(),
-        };
-        XMLBuilder::new(Vec::new())
-            .open_delete_instr_text()
-            .add_bytes(&instr)
-            .close()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_delete_instr_text()?
+            .apply(|b| match self {
+                DeleteInstrText::TOC(toc) => b.add_child(toc),
+                DeleteInstrText::TC(tc) => b.add_child(tc),
+                DeleteInstrText::PAGEREF(page_ref) => b.add_child(page_ref),
+                DeleteInstrText::HYPERLINK(_link) => todo!(),
+                DeleteInstrText::Unsupported(s) => b.plain_text(s),
+            })?
+            .close()?
             .into_inner()
-    }
-}
-
-impl BuildXML for Box<DeleteInstrText> {
-    fn build(&self) -> Vec<u8> {
-        self.as_ref().build()
     }
 }
 

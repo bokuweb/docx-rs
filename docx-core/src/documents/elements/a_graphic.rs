@@ -1,5 +1,6 @@
 use super::*;
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -22,13 +23,15 @@ impl AGraphic {
 }
 
 impl BuildXML for AGraphic {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        let mut b = b.open_graphic("http://schemas.openxmlformats.org/drawingml/2006/main");
-        for child in &self.children {
-            b = b.add_child(child);
-        }
-        b.close().into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_graphic("http://schemas.openxmlformats.org/drawingml/2006/main")?
+            .add_children(&self.children)?
+            .close()?
+            .into_inner()
     }
 }
 

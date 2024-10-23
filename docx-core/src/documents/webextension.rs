@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::escape::escape;
@@ -56,33 +57,33 @@ impl WebExtension {
 }
 
 impl BuildXML for WebExtension {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        let mut b = b
-            .declaration(Some(true))
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(true))?
             .open_webextension(
                 "http://schemas.microsoft.com/office/webextensions/webextension/2010/11",
                 &format!("{{{}}}", &self.id),
-            )
+            )?
             .webextension_reference(
                 &self.reference_id,
                 &self.version,
                 &self.store,
                 &self.store_type,
-            )
-            .webextension_alternate_references()
-            .open_webextension_properties();
-
-        for p in self.properties.iter() {
-            b = b.webextension_property(&p.name, &p.value);
-        }
-
-        b.close()
-            .webextension_bindings()
+            )?
+            .webextension_alternate_references()?
+            .open_webextension_properties()?
+            .apply_each(&self.properties, |p, b| {
+                b.webextension_property(&p.name, &p.value)
+            })?
+            .close()?
+            .webextension_bindings()?
             .webextension_snapshot(
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
-            )
-            .close()
+            )?
+            .close()?
             .into_inner()
     }
 }

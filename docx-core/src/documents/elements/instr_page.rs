@@ -1,6 +1,8 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
+use crate::xml_builder::XMLBuilder;
 
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
@@ -13,8 +15,10 @@ impl InstrPAGE {
 }
 
 impl BuildXML for InstrPAGE {
-    fn build(&self) -> Vec<u8> {
-        let instr = "PAGE".to_owned();
-        instr.into()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).plain_text("PAGE")?.into_inner()
     }
 }

@@ -259,7 +259,7 @@ impl Docx {
         // without 'image' crate we can only test for PNG file signature
         if buf.starts_with(&[137, 80, 78, 71, 13, 10, 26, 10]) {
             self.images
-              .push((id.into(), path.into(), Image(buf.clone()), Png(buf)));
+                .push((id.into(), path.into(), Image(buf.clone()), Png(buf)));
         }
         self
     }

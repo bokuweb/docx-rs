@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use crate::xml_builder::*;
 use crate::{documents::*, escape};
@@ -97,18 +98,20 @@ impl Delete {
 impl HistoryId for Delete {}
 
 impl BuildXML for Delete {
-    #[allow(clippy::needless_borrow)]
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         let id = self.generate();
-        let mut b = XMLBuilder::new(Vec::new()).open_delete(&id, &self.author, &self.date);
-        for c in &self.children {
-            match c {
-                DeleteChild::Run(t) => b = b.add_child(t),
-                DeleteChild::CommentStart(c) => b = b.add_child(c),
-                DeleteChild::CommentEnd(c) => b = b.add_child(c),
-            }
-        }
-        b.close().into_inner()
+        XMLBuilder::from(stream)
+            .open_delete(&id, &self.author, &self.date)?
+            .apply_each(&self.children, |ch, b| match ch {
+                DeleteChild::Run(t) => b.add_child(t),
+                DeleteChild::CommentStart(c) => b.add_child(&c),
+                DeleteChild::CommentEnd(c) => b.add_child(c),
+            })?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -125,7 +128,11 @@ mod tests {
         let b = Delete::new().add_run(Run::new()).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:del w:id="123" w:author="unnamed" w:date="1970-01-01T00:00:00Z"><w:r><w:rPr /></w:r></w:del>"#
+            r#"<w:del w:id="123" w:author="unnamed" w:date="1970-01-01T00:00:00Z">
+  <w:r>
+    <w:rPr />
+  </w:r>
+</w:del>"#
         );
     }
 }

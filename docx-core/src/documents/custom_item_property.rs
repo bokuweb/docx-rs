@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -15,16 +16,19 @@ impl CustomItemProperty {
 }
 
 impl BuildXML for CustomItemProperty {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new(Vec::new());
-        b = b.declaration(Some(false));
-        b = b
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(false))?
             .open_data_store_item(
                 "http://schemas.openxmlformats.org/officeDocument/2006/customXml",
                 &format!("{{{}}}", self.id),
-            )
-            .open_data_store_schema_refs()
-            .close();
-        b.close().into_inner()
+            )?
+            .open_data_store_schema_refs()?
+            .close()?
+            .close()?
+            .into_inner()
     }
 }

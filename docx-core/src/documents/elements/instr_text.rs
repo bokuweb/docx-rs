@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
 use crate::xml_builder::*;
@@ -16,20 +17,22 @@ pub enum InstrText {
 }
 
 impl BuildXML for Box<InstrText> {
-    fn build(&self) -> Vec<u8> {
-        let instr = match self.as_ref() {
-            InstrText::TOC(toc) => toc.build(),
-            InstrText::TC(tc) => tc.build(),
-            InstrText::PAGEREF(page_ref) => page_ref.build(),
-            InstrText::PAGE(page) => page.build(),
-            InstrText::NUMPAGES(page) => page.build(),
-            InstrText::HYPERLINK(_link) => todo!(),
-            InstrText::Unsupported(s) => s.as_bytes().to_vec(),
-        };
-        XMLBuilder::new(Vec::new())
-            .open_instr_text()
-            .add_bytes(&instr)
-            .close()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_instr_text()?
+            .apply(|b| match self.as_ref() {
+                InstrText::TOC(toc) => b.add_child(toc),
+                InstrText::TC(tc) => b.add_child(tc),
+                InstrText::PAGEREF(page_ref) => b.add_child(page_ref),
+                InstrText::PAGE(page) => b.add_child(page),
+                InstrText::NUMPAGES(page) => b.add_child(page),
+                InstrText::HYPERLINK(_link) => todo!(),
+                InstrText::Unsupported(s) => b.plain_text(s),
+            })?
+            .close()?
             .into_inner()
     }
 }
@@ -86,6 +89,7 @@ impl Serialize for InstrText {
     }
 }
 
+#[allow(unused_allocation)]
 #[cfg(test)]
 mod tests {
 

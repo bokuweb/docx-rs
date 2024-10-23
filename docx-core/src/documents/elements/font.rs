@@ -1,6 +1,7 @@
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
+use std::io::Write;
 
 #[derive(Debug)]
 pub struct Font<'a> {
@@ -22,13 +23,16 @@ impl<'a> Font<'a> {
 }
 
 impl<'a> BuildXML for Font<'a> {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        b.open_font(self.name)
-            .charset(self.charset)
-            .family(self.family)
-            .pitch(&self.pitch.to_string())
-            .close()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_font(self.name)?
+            .charset(self.charset)?
+            .family(self.family)?
+            .pitch(&self.pitch.to_string())?
+            .close()?
             .into_inner()
     }
 }

@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::escape::escape;
@@ -96,20 +97,23 @@ impl RunFonts {
 }
 
 impl BuildXML for RunFonts {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        b.run_fonts(
-            self.ascii.as_ref(),
-            self.hi_ansi.as_ref(),
-            self.cs.as_ref(),
-            self.east_asia.as_ref(),
-            self.ascii_theme.as_ref(),
-            self.hi_ansi_theme.as_ref(),
-            self.cs_theme.as_ref(),
-            self.east_asia_theme.as_ref(),
-            self.hint.as_ref(),
-        )
-        .into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .run_fonts(
+                self.ascii.as_ref(),
+                self.hi_ansi.as_ref(),
+                self.cs.as_ref(),
+                self.east_asia.as_ref(),
+                self.ascii_theme.as_ref(),
+                self.hi_ansi_theme.as_ref(),
+                self.cs_theme.as_ref(),
+                self.east_asia_theme.as_ref(),
+                self.hint.as_ref(),
+            )?
+            .into_inner()
     }
 }
 

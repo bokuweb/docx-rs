@@ -1,4 +1,5 @@
 use serde::{Serialize, Serializer};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -16,9 +17,13 @@ impl TableLayout {
 }
 
 impl BuildXML for TableLayout {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        b.table_layout(&self.layout_type.to_string()).into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .table_layout(&self.layout_type.to_string())?
+            .into_inner()
     }
 }
 

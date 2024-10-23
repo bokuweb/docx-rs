@@ -143,36 +143,36 @@ impl TextBox {
 }
 
 /*
-impl BuildXML for Textbox {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+impl BuildXML for TextBox {
+    fn build_to<W: Write>(&self, stream: xml::writer::EventWriter<W>) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         let w = format!("{}", self.size.0);
         let h = format!("{}", self.size.1);
-        b.open_pic("http://schemas.openxmlformats.org/drawingml/2006/picture")
-            .open_pic_nv_pic_pr()
-            .pic_c_nv_pr("0", "")
-            .open_pic_c_nv_pic_pr()
-            .a_pic_locks("1", "1")
-            .close()
-            .close()
-            .open_blip_fill()
-            .a_blip(&self.id)
-            .a_src_rect()
-            .open_a_stretch()
-            .a_fill_rect()
-            .close()
-            .close()
-            .open_pic_sp_pr("auto")
-            .open_a_xfrm()
-            .a_off("0", "0")
-            .a_ext(&w, &h)
-            .close()
-            .open_a_prst_geom("rect")
-            .a_av_lst()
-            .close()
-            .close()
-            .close()
-            .build()
+        XMLBuilder::from(stream)
+            .open_pic("http://schemas.openxmlformats.org/drawingml/2006/picture")?
+            .open_pic_nv_pic_pr()?
+            .pic_c_nv_pr("0", "")?
+            .open_pic_c_nv_pic_pr()?
+            .a_pic_locks("1", "1")?
+            .close()?
+            .close()?
+            .open_blip_fill()?
+            .a_blip(&self.id)?
+            .a_src_rect()?
+            .open_a_stretch()?
+            .a_fill_rect()?
+            .close()?
+            .close()?
+            .open_pic_sp_pr("auto")?
+            .open_a_xfrm()?
+            .a_off("0", "0")?
+            .a_ext(&w, &h)?
+            .close()?
+            .open_a_prst_geom("rect")?
+            .a_av_lst()?
+            .close()?
+            .close()?
+            .close()?
+            .into_inner()
     }
 }
 */

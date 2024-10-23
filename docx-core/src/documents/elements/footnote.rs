@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
 use crate::xml_builder::*;
@@ -47,7 +48,10 @@ impl From<&FootnoteReference> for Footnote {
 }
 
 impl BuildXML for Footnote {
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         // To ensure docx compatible XML serialization for footnotes, we default to an empty paragraph.
         let mut footnote = self.clone();
         if self.content == vec![] {
@@ -55,10 +59,10 @@ impl BuildXML for Footnote {
             footnote.add_content(Paragraph::new());
         }
 
-        XMLBuilder::new(Vec::new())
-            .open_footnote(&format!("{}", self.id))
-            .add_children(&footnote.content)
-            .close()
+        XMLBuilder::from(stream)
+            .open_footnote(&format!("{}", self.id))?
+            .add_children(&footnote.content)?
+            .close()?
             .into_inner()
     }
 }
@@ -76,7 +80,13 @@ mod tests {
         let b = Footnote::new().build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:footnote w:id="1"><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:footnote>"#
+            r#"<w:footnote w:id="1">
+  <w:p w14:paraId="12345678">
+    <w:pPr>
+      <w:rPr />
+    </w:pPr>
+  </w:p>
+</w:footnote>"#
         );
     }
 
@@ -87,7 +97,17 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:footnote w:id="1"><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">hello</w:t></w:r></w:p></w:footnote>"#
+            r#"<w:footnote w:id="1">
+  <w:p w14:paraId="12345678">
+    <w:pPr>
+      <w:rPr />
+    </w:pPr>
+    <w:r>
+      <w:rPr />
+      <w:t xml:space="preserve">hello</w:t>
+    </w:r>
+  </w:p>
+</w:footnote>"#
         );
     }
 }

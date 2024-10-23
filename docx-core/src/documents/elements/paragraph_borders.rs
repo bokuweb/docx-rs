@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -81,34 +82,24 @@ impl ParagraphBorder {
 }
 
 impl BuildXML for ParagraphBorder {
-    fn build(&self) -> Vec<u8> {
-        let base = XMLBuilder::new(Vec::new());
-        let base = {
-            let val = self.val.to_string();
-            let space = self.space.to_string();
-            let size = self.size.to_string();
-            match self.position {
-                ParagraphBorderPosition::Top => {
-                    base.paragraph_border_top(&val, &space, &size, &self.color)
-                }
-                ParagraphBorderPosition::Left => {
-                    base.paragraph_border_left(&val, &space, &size, &self.color)
-                }
-                ParagraphBorderPosition::Bottom => {
-                    base.paragraph_border_bottom(&val, &space, &size, &self.color)
-                }
-                ParagraphBorderPosition::Right => {
-                    base.paragraph_border_right(&val, &space, &size, &self.color)
-                }
-                ParagraphBorderPosition::Between => {
-                    base.paragraph_border_between(&val, &space, &size, &self.color)
-                }
-                ParagraphBorderPosition::Bar => {
-                    base.paragraph_border_bar(&val, &space, &size, &self.color)
-                }
-            }
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        let val = self.val.to_string();
+        let space = self.space.to_string();
+        let size = self.size.to_string();
+        let func = match self.position {
+            ParagraphBorderPosition::Top => XMLBuilder::paragraph_border_top,
+            ParagraphBorderPosition::Left => XMLBuilder::paragraph_border_left,
+            ParagraphBorderPosition::Bottom => XMLBuilder::paragraph_border_bottom,
+            ParagraphBorderPosition::Right => XMLBuilder::paragraph_border_right,
+            ParagraphBorderPosition::Between => XMLBuilder::paragraph_border_between,
+            ParagraphBorderPosition::Bar => XMLBuilder::paragraph_border_bar,
         };
-        base.into_inner()
+        XMLBuilder::from(stream)
+            .apply(|b| func(b, &val, &space, &size, &self.color))?
+            .into_inner()
     }
 }
 
@@ -192,16 +183,19 @@ impl ParagraphBorders {
 }
 
 impl BuildXML for ParagraphBorders {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new(Vec::new())
-            .open_paragraph_borders()
-            .add_optional_child(&self.left)
-            .add_optional_child(&self.right)
-            .add_optional_child(&self.top)
-            .add_optional_child(&self.bottom)
-            .add_optional_child(&self.between)
-            .add_optional_child(&self.bar)
-            .close()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_paragraph_borders()?
+            .add_optional_child(&self.left)?
+            .add_optional_child(&self.right)?
+            .add_optional_child(&self.top)?
+            .add_optional_child(&self.bottom)?
+            .add_optional_child(&self.between)?
+            .add_optional_child(&self.bar)?
+            .close()?
             .into_inner()
     }
 }

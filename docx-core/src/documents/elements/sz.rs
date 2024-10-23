@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize, Serializer};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -15,9 +16,11 @@ impl Sz {
 }
 
 impl BuildXML for Sz {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new(Vec::new());
-        b.sz(self.val).into_inner()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).sz(self.val)?.into_inner()
     }
 }
 

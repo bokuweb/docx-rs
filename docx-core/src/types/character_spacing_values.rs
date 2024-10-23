@@ -3,8 +3,8 @@ use std::str::FromStr;
 #[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
-use serde::{Serialize, Deserialize};
 use super::errors;
+use serde::{Deserialize, Serialize};
 
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
 #[derive(Copy, Clone, PartialEq, Debug, Serialize, Deserialize)]
@@ -21,7 +21,9 @@ impl fmt::Display for CharacterSpacingValues {
         match *self {
             CharacterSpacingValues::DoNotCompress => write!(f, "doNotCompress"),
             CharacterSpacingValues::CompressPunctuation => write!(f, "compressPunctuation"),
-            CharacterSpacingValues::CompressPunctuationAndJapaneseKana => write!(f, "compressPunctuationAndJapaneseKana"),
+            CharacterSpacingValues::CompressPunctuationAndJapaneseKana => {
+                write!(f, "compressPunctuationAndJapaneseKana")
+            }
             _ => write!(f, "unsupported"),
         }
     }
@@ -33,8 +35,10 @@ impl FromStr for CharacterSpacingValues {
         match s {
             "doNotCompress" => Ok(CharacterSpacingValues::DoNotCompress),
             "compressPunctuation" => Ok(CharacterSpacingValues::CompressPunctuation),
-            "compressPunctuationAndJapaneseKana" => Ok(CharacterSpacingValues::CompressPunctuationAndJapaneseKana),
-            _ => Err(errors::TypeError::Unsupported(s.to_string()))
+            "compressPunctuationAndJapaneseKana" => {
+                Ok(CharacterSpacingValues::CompressPunctuationAndJapaneseKana)
+            }
+            _ => Err(errors::TypeError::Unsupported(s.to_string())),
         }
     }
 }

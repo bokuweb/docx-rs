@@ -6,9 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@master
+      - uses: actions/setup-node@v4
         with:
-          node-version: 14
+          node-version: 20
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -68,9 +68,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@master
+      - uses: actions/setup-node@v4
         with:
-          node-version: 14
+          node-version: 20
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal

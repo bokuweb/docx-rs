@@ -5,7 +5,7 @@ use serde::Serialize;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct WpsShape {
     children: Vec<WpsShapeChild>,
@@ -40,12 +40,6 @@ impl WpsShape {
     pub fn add_text_box(mut self, text_box: WpsTextBox) -> Self {
         self.children.push(WpsShapeChild::WpsTextBox(text_box));
         self
-    }
-}
-
-impl Default for WpsShape {
-    fn default() -> Self {
-        WpsShape { children: vec![] }
     }
 }
 

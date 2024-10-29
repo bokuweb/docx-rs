@@ -4,7 +4,7 @@ use serde::Serialize;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct WpAnchor {
     pub children: Vec<AGraphic>,
@@ -29,12 +29,6 @@ impl WpAnchor {
     pub fn add_graphic(mut self, g: AGraphic) -> WpAnchor {
         self.children.push(g);
         self
-    }
-}
-
-impl Default for WpAnchor {
-    fn default() -> Self {
-        WpAnchor { children: vec![] }
     }
 }
 

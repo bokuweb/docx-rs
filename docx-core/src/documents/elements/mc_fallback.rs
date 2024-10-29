@@ -1,21 +1,12 @@
-// use super::*;
+use crate::documents::BuildXML;
 use serde::Serialize;
 
-use crate::documents::BuildXML;
-// use crate::xml_builder::*;
-
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, Default)]
 pub struct McFallback {}
 
 impl McFallback {
     pub fn new() -> McFallback {
         Default::default()
-    }
-}
-
-impl Default for McFallback {
-    fn default() -> Self {
-        McFallback {}
     }
 }
 

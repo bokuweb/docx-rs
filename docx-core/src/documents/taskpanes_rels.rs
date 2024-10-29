@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Default)]
 pub struct TaskpanesRels {
     pub rels: Vec<(String, String, String)>,
 }
@@ -25,12 +25,6 @@ impl TaskpanesRels {
 
     pub fn find_target(&self, rel_type: &str) -> Option<&(String, String, String)> {
         self.rels.iter().find(|rel| rel.0 == rel_type)
-    }
-}
-
-impl Default for TaskpanesRels {
-    fn default() -> Self {
-        TaskpanesRels { rels: Vec::new() }
     }
 }
 

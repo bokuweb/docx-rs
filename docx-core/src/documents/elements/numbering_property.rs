@@ -5,19 +5,10 @@ use super::{IndentLevel, NumberingId};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub struct NumberingProperty {
     pub id: Option<NumberingId>,
     pub level: Option<IndentLevel>,
-}
-
-impl Default for NumberingProperty {
-    fn default() -> Self {
-        NumberingProperty {
-            id: None,
-            level: None,
-        }
-    }
 }
 
 impl NumberingProperty {

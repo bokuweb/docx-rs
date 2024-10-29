@@ -3,7 +3,7 @@ use serde::{Serialize, Serializer};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub struct Start {
     val: usize,
 }
@@ -11,12 +11,6 @@ pub struct Start {
 impl Start {
     pub fn new(val: usize) -> Start {
         Start { val }
-    }
-}
-
-impl Default for Start {
-    fn default() -> Self {
-        Start { val: 0 }
     }
 }
 

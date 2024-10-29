@@ -3,19 +3,13 @@ use serde::Serialize;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct AppProps {}
 
 impl AppProps {
     pub fn new() -> AppProps {
         Default::default()
-    }
-}
-
-impl Default for AppProps {
-    fn default() -> Self {
-        Self {}
     }
 }
 

@@ -5,19 +5,13 @@ use crate::xml_builder::*;
 
 use serde::Serialize;
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct FontTable {}
 
 impl FontTable {
     pub fn new() -> FontTable {
         Default::default()
-    }
-}
-
-impl Default for FontTable {
-    fn default() -> Self {
-        Self {}
     }
 }
 

@@ -3,13 +3,13 @@ use serde::Serialize;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct CoreProps {
     config: CorePropsConfig,
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct CorePropsConfig {
     created: Option<String>,
@@ -21,30 +21,6 @@ pub struct CorePropsConfig {
     revision: Option<usize>,
     subject: Option<String>,
     title: Option<String>,
-}
-
-impl Default for CorePropsConfig {
-    fn default() -> Self {
-        Self {
-            created: None,
-            creator: None,
-            description: None,
-            language: None,
-            last_modified_by: None,
-            modified: None,
-            revision: None,
-            subject: None,
-            title: None,
-        }
-    }
-}
-
-impl Default for CoreProps {
-    fn default() -> Self {
-        Self {
-            config: CorePropsConfig::default(),
-        }
-    }
 }
 
 impl CoreProps {

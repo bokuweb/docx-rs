@@ -3,18 +3,12 @@ use serde::{Deserialize, Serialize};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Copy, Default)]
 pub struct Taskpanes {}
 
 impl Taskpanes {
     pub fn new() -> Self {
         Default::default()
-    }
-}
-
-impl Default for Taskpanes {
-    fn default() -> Self {
-        Self {}
     }
 }
 

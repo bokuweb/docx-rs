@@ -4,7 +4,7 @@ use serde::Serialize;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct WpsTextBox {
     pub children: Vec<TextBoxContent>,
@@ -22,15 +22,6 @@ impl WpsTextBox {
         }
         self.children.push(c);
         self
-    }
-}
-
-impl Default for WpsTextBox {
-    fn default() -> Self {
-        WpsTextBox {
-            children: vec![],
-            has_numbering: false,
-        }
     }
 }
 

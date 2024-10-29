@@ -34,7 +34,7 @@ jobs:
           sudo add-apt-repository ppa:libreoffice/ppa
           sudo apt-get update
           sudo apt-get install libreoffice
-          npm i -g reg-cli
+          npm i -g reg-cli pnpm
           cd vrt && pnpm i --frozen-lockfile && cd ../
       - name: test
         run: make test -B # && make vrt -B

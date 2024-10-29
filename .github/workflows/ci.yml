@@ -35,7 +35,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install libreoffice
           npm i -g reg-cli
-          cd vrt && pnpm --frozen-lockfile && cd ../
+          cd vrt && pnpm i --frozen-lockfile && cd ../
       - name: test
         run: make test -B # && make vrt -B
       - uses: actions/upload-artifact@master

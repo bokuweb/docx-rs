@@ -255,7 +255,7 @@ impl BuildXML for InstrToC {
 fn parse_level_range(i: &str) -> Option<(usize, usize)> {
     let r = i.replace("&quot;", "").replace('\"', "");
     let r: Vec<&str> = r.split('-').collect();
-    if let Some(s) = r.get(0) {
+    if let Some(s) = r.first() {
         if let Ok(s) = usize::from_str(s) {
             if let Some(e) = r.get(1) {
                 if let Ok(e) = usize::from_str(e) {

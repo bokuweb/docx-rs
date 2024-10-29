@@ -52,7 +52,7 @@ impl LineSpacing {
     }
 
     pub fn line(mut self, line: i32) -> Self {
-        self.line = Some(line as i32);
+        self.line = Some(line);
         self
     }
 }

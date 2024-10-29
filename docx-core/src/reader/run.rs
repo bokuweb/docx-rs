@@ -91,7 +91,7 @@ impl ElementReader for Run {
                                 XMLElement::Text => text_state = TextState::Text,
                                 XMLElement::DeleteText => text_state = TextState::Delete,
                                 XMLElement::Break => {
-                                    if let Some(a) = &attributes.get(0) {
+                                    if let Some(a) = attributes.first() {
                                         run = run.add_break(BreakType::from_str(&a.value)?)
                                     } else {
                                         run = run.add_break(BreakType::TextWrapping)

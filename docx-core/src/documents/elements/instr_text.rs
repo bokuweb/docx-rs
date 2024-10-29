@@ -96,6 +96,7 @@ mod tests {
 
     #[test]
     fn test_toc_instr() {
+        #[allow(unused_allocation)]
         let b = Box::new(InstrText::TOC(InstrToC::new().heading_styles_range(1, 3))).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
@@ -105,6 +106,7 @@ mod tests {
 
     #[test]
     fn test_pageref_instr() {
+        #[allow(unused_allocation)]
         let b = Box::new(InstrText::PAGEREF(
             InstrPAGEREF::new("_Toc90425847").hyperlink(),
         ))

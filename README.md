@@ -91,7 +91,7 @@ writeFileSync("hello.docx", Buffer.from(buffer));
 ### Requirements
 
 - Node.js 16+
-- pnpm 1+
+- pnpm 9+
 - wasm-pack0.10.1 (https://rustwasm.github.io/wasm-pack/)
 - insta (https://github.com/mitsuhiko/insta)
 

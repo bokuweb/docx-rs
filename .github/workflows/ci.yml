@@ -34,8 +34,8 @@ jobs:
           sudo add-apt-repository ppa:libreoffice/ppa
           sudo apt-get update
           sudo apt-get install libreoffice
-          npm i -g reg-cli
-          cd vrt && yarn --frozen-lockfile && cd ../
+          npm i -g reg-cli pnpm
+          cd vrt && pnpm i --frozen-lockfile && cd ../
       - name: test
         run: make test -B # && make vrt -B
       - uses: actions/upload-artifact@master
@@ -76,7 +76,8 @@ jobs:
           inherit-toolchain: true
       - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - run: rustup target add wasm32-unknown-unknown
-      - run: cd docx-wasm && yarn install && yarn wasm-pack:node && yarn wasm-pack:dev && tsc -p tsconfig.node.json && yarn test
+      - run: npm install -g pnpm
+      - run: cd docx-wasm && pnpm install && pnpm wasm-pack:node && pnpm wasm-pack:dev && tsc -p tsconfig.node.json && pnpm test
 
   lint:
     name: Clippy

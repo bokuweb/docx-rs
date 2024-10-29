@@ -20,9 +20,9 @@
     "copy": "cpy 'dist/node/pkg/package.json'  'dist/web/pkg'",
     "tsrs": "cd ../ && make test",
     "copy:bindings": "cpy '../docx-core/bindings' './js/json'",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build"
   },
-  "resolutions": {
+  "overrides": {
     "**/serialize-javascript": "6.0.2"
   },
   "devDependencies": {

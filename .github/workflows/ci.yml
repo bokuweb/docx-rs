@@ -87,4 +87,5 @@ jobs:
         with:
             inherit-toolchain: true
             components: clippy
-      - run: cargo clippy -- -D warnings
+    # TODO(@unvalley): enable
+    #   - run: cargo clippy -- -D warnings

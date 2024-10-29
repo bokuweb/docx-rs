@@ -13,8 +13,8 @@ Pull requests are always welcome.
 2. Create branch: `git checkout -b my-new-feature`
 3. Test `docx-core`: `make test && make lint`
 4. Update snapshot test result (If needed): `cargo-insta review`
-5. Test `docx-wasm`: `cd docx-wasm && yarn install && yarn test`
-6. Update snapshot test result (If needed): `cd docx-wasm & yarn test -- --updateSnapshot`
+5. Test `docx-wasm`: `cd docx-wasm && pnpm install && pnpm test`
+6. Update snapshot test result (If needed): `cd docx-wasm & pnpm test -- --updateSnapshot`
 7. Push: `git push origin my-new-feature`
 8. Send PR :)
 

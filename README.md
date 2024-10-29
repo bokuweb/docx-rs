@@ -24,7 +24,7 @@ docx-rs = "0.4"
 ### Browser/Node.js
 
 ```
-$ yarn add docx-wasm
+$ pnpm add docx-wasm
 ```
 
 ## Example
@@ -91,7 +91,7 @@ writeFileSync("hello.docx", Buffer.from(buffer));
 ### Requirements
 
 - Node.js 16+
-- yarn 1+
+- pnpm 9+
 - wasm-pack0.10.1 (https://rustwasm.github.io/wasm-pack/)
 - insta (https://github.com/mitsuhiko/insta)
 
@@ -140,13 +140,13 @@ $ make test
 Please run following command.
 
 ```
-$ cd docx-wasm && yarn install && yarn test
+$ cd docx-wasm && pnpm install && pnpm test
 ```
 
 If snapshot testing is failed, fix code or update snapshot files. (See https://jestjs.io/docs/snapshot-testing).
 
 ```
-$ yarn test -- --updateSnapshot
+$ pnpm test -- --updateSnapshot
 ```
 
 ## Features

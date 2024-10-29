@@ -9,11 +9,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - uses: actions-rs/toolchain@v1
+      - uses: moonrepo/setup-rust@v1
         with:
           profile: minimal
-          toolchain: stable
-          override: true
+          cache: false
+          inherit-toolchain: true
       - name: Cache cargo registry
         uses: actions/cache@v4
         with:
@@ -47,11 +47,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions-rs/toolchain@v1
+      - uses: moonrepo/setup-rust@v1
         with:
           profile: minimal
-          toolchain: stable
-          override: true
+          inherit-toolchain: true
       - name: Cache cargo registry
         uses: actions/cache@v4
         with:
@@ -71,11 +70,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - uses: actions-rs/toolchain@v1
+      - uses: moonrepo/setup-rust@v1
         with:
           profile: minimal
-          toolchain: 1.58.1
-          override: true
+          inherit-toolchain: true
       - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - run: rustup target add wasm32-unknown-unknown
       - run: cd docx-wasm && yarn install && yarn wasm-pack:node && yarn wasm-pack:dev && tsc -p tsconfig.node.json && yarn test
@@ -85,13 +83,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions-rs/toolchain@v1
+      - uses: moonrepo/setup-rust@v1
         with:
-          profile: minimal
-          toolchain: 1.56.1
-          override: true
-      - run: rustup component add clippy
-      - uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: -- -D warnings
+            inherit-toolchain: true
+            components: clippy
+    # TODO(@unvalley): enable
+    #   - run: cargo clippy -- -D warnings

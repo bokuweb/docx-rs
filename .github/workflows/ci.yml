@@ -87,4 +87,4 @@ jobs:
         with:
             inherit-toolchain: true
             components: clippy
-      - run: cargo clipy -- -D warnings
+      - run: cargo clippy -- -D warnings

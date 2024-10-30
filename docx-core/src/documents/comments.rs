@@ -4,7 +4,7 @@ use crate::xml_builder::*;
 
 use serde::Serialize;
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Comments {
     pub(crate) comments: Vec<Comment>,
@@ -25,12 +25,6 @@ impl Comments {
 
     pub(crate) fn add_comments(&mut self, comments: Vec<Comment>) {
         self.comments = comments;
-    }
-}
-
-impl Default for Comments {
-    fn default() -> Self {
-        Self { comments: vec![] }
     }
 }
 

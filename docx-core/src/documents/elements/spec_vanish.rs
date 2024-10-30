@@ -3,17 +3,11 @@ use serde::{Deserialize, Serialize, Serializer};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, PartialEq, Default)]
 pub struct SpecVanish {}
 
 impl SpecVanish {
     pub fn new() -> SpecVanish {
-        SpecVanish {}
-    }
-}
-
-impl Default for SpecVanish {
-    fn default() -> Self {
         SpecVanish {}
     }
 }

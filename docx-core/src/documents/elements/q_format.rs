@@ -7,6 +7,7 @@ use crate::xml_builder::*;
 // application. If this element is set, then this style has been designated as being particularly important for the
 // current document, and this information can be used by an application in any means desired. [Note: This setting
 // 637ECMA-376 Part 1 does not imply any behavior for the style, only that the style is of particular significance for this document. end note]
+#[derive(Default)]
 pub struct QFormat {}
 
 impl QFormat {
@@ -15,11 +16,6 @@ impl QFormat {
     }
 }
 
-impl Default for QFormat {
-    fn default() -> Self {
-        Self {}
-    }
-}
 
 impl BuildXML for QFormat {
     fn build(&self) -> Vec<u8> {

@@ -3,17 +3,11 @@ use serde::{Deserialize, Serialize, Serializer};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Deserialize, PartialEq, Default)]
 pub struct IsLgl {}
 
 impl IsLgl {
     pub fn new() -> IsLgl {
-        IsLgl {}
-    }
-}
-
-impl Default for IsLgl {
-    fn default() -> Self {
         IsLgl {}
     }
 }

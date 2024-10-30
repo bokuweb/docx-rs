@@ -5,7 +5,7 @@ use serde::Serialize;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, Default)]
 pub struct TextBoxContent {
     pub children: Vec<TextBoxContentChild>,
     pub has_numbering: bool,
@@ -59,15 +59,6 @@ impl TextBoxContent {
         }
         self.children.push(TextBoxContentChild::Table(Box::new(t)));
         self
-    }
-}
-
-impl Default for TextBoxContent {
-    fn default() -> Self {
-        TextBoxContent {
-            children: vec![],
-            has_numbering: false,
-        }
     }
 }
 

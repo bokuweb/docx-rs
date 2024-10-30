@@ -69,14 +69,13 @@ pub struct XmlData {
 
 // Get the attributes as a string
 fn attributes_to_string(attributes: &[(String, String)]) -> String {
-    attributes
-        .iter()
-        .fold(String::new(), |acc, &(ref k, ref v)| {
-            format!("{} {}=\"{}\"", acc, k, v)
-        })
+    attributes.iter().fold(String::new(), |acc, (k, v)| {
+        format!("{} {}=\"{}\"", acc, k, v)
+    })
 }
 
 // Format the XML data as a string
+#[allow(clippy::only_used_in_recursion)]
 fn format(data: &XmlData, depth: usize) -> String {
     let sub = if data.children.is_empty() {
         String::new()
@@ -87,8 +86,6 @@ fn format(data: &XmlData, depth: usize) -> String {
         }
         sub
     };
-
-    // let indt = indent(depth);
 
     let fmt_data = if let Some(ref d) = data.data {
         format!("\n{}", d)

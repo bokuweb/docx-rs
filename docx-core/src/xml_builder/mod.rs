@@ -27,8 +27,6 @@ use std::str;
 use xml::common::XmlVersion;
 use xml::writer::{EmitterConfig, EventWriter, XmlEvent};
 
-pub use elements::*;
-
 pub struct XMLBuilder {
     writer: EventWriter<Vec<u8>>,
 }

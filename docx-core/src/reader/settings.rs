@@ -26,7 +26,7 @@ impl FromXML for Settings {
                                     // Ignore w14:val
                                     if local_name == "val" && prefix == "w15" {
                                         settings = settings.doc_id(
-                                            &a.value.to_owned().replace("{", "").replace("}", ""),
+                                            a.value.to_owned().replace("{", "").replace("}", ""),
                                         );
                                     }
                                 }

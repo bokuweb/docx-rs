@@ -5,7 +5,7 @@ pub fn is_false(v: &str) -> bool {
 }
 
 pub fn read_bool(attrs: &[OwnedAttribute]) -> bool {
-    if let Some(v) = attrs.get(0) {
+    if let Some(v) = attrs.first() {
         if is_false(&v.value) {
             return false;
         }

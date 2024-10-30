@@ -5,7 +5,7 @@ use crate::xml_builder::*;
 
 use serde::Serialize;
 
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Numberings {
     pub abstract_nums: Vec<AbstractNumbering>,
@@ -25,15 +25,6 @@ impl Numberings {
     pub fn add_numbering(mut self, n: Numbering) -> Self {
         self.numberings.push(n);
         self
-    }
-}
-
-impl Default for Numberings {
-    fn default() -> Self {
-        Self {
-            abstract_nums: vec![],
-            numberings: vec![],
-        }
     }
 }
 

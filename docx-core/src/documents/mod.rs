@@ -656,7 +656,7 @@ impl Docx {
     pub fn comments_json(&mut self) -> String {
         self.reset();
         self.update_dependencies();
-        serde_json::to_string_pretty(&self.comments.comments).unwrap()
+        serde_json::to_string_pretty(&self.comments).unwrap()
     }
 
     fn reset(&self) {

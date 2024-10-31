@@ -630,7 +630,7 @@ export class Docx {
     const docx = this.createDocx();
     const json = docx.comments_json();
     docx.free();
-    return JSON.parse(json) as CommentJSON[];
+    return JSON.parse(json) as { comments: CommentJSON[] };
   }
 
   build() {

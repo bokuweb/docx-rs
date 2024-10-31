@@ -216,4 +216,8 @@ impl Docx {
     pub fn json_with_update_comments(&mut self) -> String {
         self.0.json_with_update_comments()
     }
+
+    pub fn comments_json(&mut self) -> String {
+        self.0.comments_json()
+    }
 }

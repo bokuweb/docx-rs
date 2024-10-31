@@ -1085,4 +1085,17 @@ describe("writer", () => {
     }
     writeFileSync("../output/js/ptab.docx", buffer);
   });
+
+  test("pase error repro", () => {
+    const buf = Buffer.from(encodedCat, "base64");
+    const image = new w.Image(buf).size(320 * 9525, 240 * 9525);
+    const p = new w.Paragraph().addRun(
+      new w.Run().addText("Hello world!!").addImage(image)
+    );
+    const docx = new w.Docx();
+    for (let i = 0; i < 200; i++) {
+      docx.addParagraph(p);
+    }
+    const buffer = docx.json();
+  });
 });

@@ -1,6 +1,7 @@
 use serde::{Serialize, Serializer};
 
 use crate::documents::BuildXML;
+use crate::escape::escape;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -10,7 +11,9 @@ pub struct BasedOn {
 
 impl BasedOn {
     pub fn new(val: impl Into<String>) -> BasedOn {
-        BasedOn { val: val.into() }
+        BasedOn {
+            val: escape(&val.into()),
+        }
     }
 }
 

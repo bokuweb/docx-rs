@@ -1,6 +1,7 @@
 use serde::{Serialize, Serializer};
 
 use crate::documents::BuildXML;
+use crate::escape::escape;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -10,7 +11,9 @@ pub struct Link {
 
 impl Link {
     pub fn new(val: impl Into<String>) -> Link {
-        Link { val: val.into() }
+        Link {
+            val: escape(&val.into()),
+        }
     }
 }
 

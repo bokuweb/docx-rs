@@ -1,6 +1,7 @@
 use serde::Serialize;
 
 use crate::documents::BuildXML;
+use crate::escape::escape;
 use crate::types::*;
 use crate::xml_builder::*;
 use crate::StyleType;
@@ -47,7 +48,7 @@ impl Style {
     pub fn new(style_id: impl Into<String>, style_type: StyleType) -> Self {
         let default = Default::default();
         Style {
-            style_id: style_id.into(),
+            style_id: escape(&style_id.into()),
             style_type,
             ..default
         }

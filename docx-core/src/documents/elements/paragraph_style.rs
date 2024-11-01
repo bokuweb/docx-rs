@@ -1,6 +1,7 @@
 use serde::{Serialize, Serializer};
 
 use crate::documents::BuildXML;
+use crate::escape::escape;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -25,7 +26,9 @@ impl Default for ParagraphStyle {
 impl ParagraphStyle {
     pub fn new(val: Option<impl Into<String>>) -> ParagraphStyle {
         if let Some(v) = val {
-            ParagraphStyle { val: v.into() }
+            ParagraphStyle {
+                val: escape(&v.into()),
+            }
         } else {
             Default::default()
         }

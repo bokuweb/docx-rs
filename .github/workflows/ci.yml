@@ -29,19 +29,8 @@ jobs:
         with:
           path: target
           key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
-      - name: install deps
-        run: |
-          sudo add-apt-repository ppa:libreoffice/ppa
-          sudo apt-get update
-          sudo apt-get install libreoffice
-          npm i -g reg-cli pnpm
-          cd vrt && pnpm i --frozen-lockfile && cd ../
       - name: test
         run: make test -B # && make vrt -B
-      - uses: actions/upload-artifact@master
-        with:
-          name: vrt
-          path: vrt/screenshot
 
   build:
     runs-on: ubuntu-latest
@@ -90,6 +79,7 @@ jobs:
           threshold-rate: 0.06
           enable-antialias: true
           matching-threshold: 0.5
+          artifact-name: wasm
 
   lint:
     name: Clippy

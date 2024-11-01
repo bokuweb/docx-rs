@@ -86,7 +86,7 @@ jobs:
       - uses: reg-viz/reg-actions@v2
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
-          image-directory-path: 'export-png/png'
+          image-directory-path: 'docx-wasm/export-png/png'
           threshold-rate: 0.06
           enable-antialias: true
           matching-threshold: 0.5

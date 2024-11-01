@@ -1,6 +1,7 @@
 use serde::{Serialize, Serializer};
 
 use crate::documents::BuildXML;
+use crate::escape::escape;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -18,7 +19,9 @@ impl Default for RunStyle {
 
 impl RunStyle {
     pub fn new(val: impl Into<String>) -> RunStyle {
-        RunStyle { val: val.into() }
+        RunStyle {
+            val: escape(&val.into()),
+        }
     }
 }
 

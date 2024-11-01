@@ -21,7 +21,7 @@ start:
 
 convert-all: 
 	make start
-	OUTPUT_DIR=${OUTPUT_DIR} npx ts-node ./
+	OUTPUT_DIR=${OUTPUT_DIR} node index.mjs
 	make stop
 
 stop:

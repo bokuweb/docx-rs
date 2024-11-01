@@ -65,6 +65,9 @@ jobs:
 
   build-wasm:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docx-wasm    
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -77,7 +80,16 @@ jobs:
       - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - run: rustup target add wasm32-unknown-unknown
       - run: npm install -g pnpm
-      - run: cd docx-wasm && pnpm install && pnpm wasm-pack:node && pnpm wasm-pack:dev && tsc -p tsconfig.node.json && pnpm test
+      - run: pnpm install && pnpm wasm-pack:node && pnpm wasm-pack:dev && tsc -p tsconfig.node.json && pnpm test
+      - name: screenshot
+        run: pnpm screenshot
+      - uses: reg-viz/reg-actions@v2
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+          image-directory-path: 'docx-wasm/export-png/png'
+          threshold-rate: 0.06
+          enable-antialias: true
+          matching-threshold: 0.5
 
   lint:
     name: Clippy

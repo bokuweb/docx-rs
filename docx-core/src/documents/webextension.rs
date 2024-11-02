@@ -51,7 +51,7 @@ impl WebExtension {
     pub fn property(mut self, name: impl Into<String>, value: impl Into<String>) -> Self {
         let v = value.into();
         let v = format!("&quot;{}&quot;", escape(&v).replace("&quot;", "\\&quot;"));
-        self.properties.push(WebExtensionProperty::new(name, &v));
+        self.properties.push(WebExtensionProperty::new(name, v));
         self
     }
 }

@@ -1,5 +1,6 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use std::io::Write;
 
 //17.7.4.14
 // qFormat (Primary Style)
@@ -16,11 +17,12 @@ impl QFormat {
     }
 }
 
-
 impl BuildXML for QFormat {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.q_format().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).q_format()?.into_inner()
     }
 }
 

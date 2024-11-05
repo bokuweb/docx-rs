@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 #[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
@@ -150,19 +151,22 @@ impl TableProperty {
 }
 
 impl BuildXML for TableProperty {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .open_table_property()
-            .add_child(&self.width)
-            .add_child(&self.justification)
-            .add_child(&self.borders)
-            .add_optional_child(&self.margins)
-            .add_optional_child(&self.indent)
-            .add_optional_child(&self.style)
-            .add_optional_child(&self.layout)
-            .add_optional_child(&self.position)
-            .close()
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_table_property()?
+            .add_child(&self.width)?
+            .add_child(&self.justification)?
+            .add_child(&self.borders)?
+            .add_optional_child(&self.margins)?
+            .add_optional_child(&self.indent)?
+            .add_optional_child(&self.style)?
+            .add_optional_child(&self.layout)?
+            .add_optional_child(&self.position)?
+            .close()?
+            .into_inner()
     }
 }
 

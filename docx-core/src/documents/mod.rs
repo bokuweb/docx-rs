@@ -40,7 +40,7 @@ mod web_settings;
 mod webextension;
 mod xml_docx;
 
-pub(crate) use build_xml::BuildXML;
+pub use build_xml::BuildXML;
 pub(crate) use history_id::HistoryId;
 pub(crate) use hyperlink_id::*;
 pub(crate) use paragraph_id::*;

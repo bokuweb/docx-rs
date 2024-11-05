@@ -1,4 +1,5 @@
 use super::*;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -38,17 +39,18 @@ impl LevelOverride {
 }
 
 impl BuildXML for LevelOverride {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new();
-        b = b.open_level_override(&format!("{}", self.level));
-
-        b = b.add_optional_child(&self.override_level);
-
-        if let Some(start) = self.override_start {
-            b = b.start_override(&format!("{}", start));
-        }
-
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_level_override(&format!("{}", self.level))?
+            .add_optional_child(&self.override_level)?
+            .apply_opt(self.override_start, |start, b| {
+                b.start_override(&format!("{}", start))
+            })?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -66,9 +68,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvlOverride w:ilvl="1">
-  <w:startOverride w:val="2" />
-</w:lvlOverride>"#
+            r#"<w:lvlOverride w:ilvl="1"><w:startOverride w:val="2" /></w:lvlOverride>"#
         );
     }
 

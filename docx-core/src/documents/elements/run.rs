@@ -1,6 +1,7 @@
 use super::*;
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -328,33 +329,45 @@ impl Run {
     }
 }
 
-impl BuildXML for Run {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let mut b = b.open_run().add_child(&self.run_property);
-        for c in &self.children {
-            match c {
-                RunChild::Text(t) => b = b.add_child(t),
-                RunChild::Sym(t) => b = b.add_child(t),
-                RunChild::DeleteText(t) => b = b.add_child(t),
-                RunChild::Tab(t) => b = b.add_child(t),
-                RunChild::PTab(t) => b = b.add_child(t),
-                RunChild::Break(t) => b = b.add_child(t),
-                RunChild::Drawing(t) => b = b.add_child(t),
-                RunChild::Shape(_t) => {
-                    todo!("Support shape writer.")
-                }
-                RunChild::CommentStart(c) => b = b.add_child(c),
-                RunChild::CommentEnd(c) => b = b.add_child(c),
-                RunChild::FieldChar(c) => b = b.add_child(c),
-                RunChild::InstrText(c) => b = b.add_child(c),
-                RunChild::DeleteInstrText(c) => b = b.add_child(c),
-                RunChild::InstrTextString(_) => unreachable!(),
-                RunChild::FootnoteReference(c) => b = b.add_child(c),
-                RunChild::Shading(s) => b = b.add_child(s),
+impl BuildXML for RunChild {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        match self {
+            RunChild::Text(t) => t.build_to(stream),
+            RunChild::Sym(t) => t.build_to(stream),
+            RunChild::DeleteText(t) => t.build_to(stream),
+            RunChild::Tab(t) => t.build_to(stream),
+            RunChild::PTab(t) => t.build_to(stream),
+            RunChild::Break(t) => t.build_to(stream),
+            RunChild::Drawing(t) => t.build_to(stream),
+            RunChild::Shape(_t) => {
+                todo!("Support shape writer.")
             }
+            RunChild::CommentStart(c) => c.build_to(stream),
+            RunChild::CommentEnd(c) => c.build_to(stream),
+            RunChild::FieldChar(c) => c.build_to(stream),
+            RunChild::InstrText(c) => c.build_to(stream),
+            RunChild::DeleteInstrText(c) => c.build_to(stream),
+            RunChild::InstrTextString(_) => unreachable!(),
+            RunChild::FootnoteReference(c) => c.build_to(stream),
+            RunChild::Shading(s) => s.build_to(stream),
         }
-        b.close().build()
+    }
+}
+
+impl BuildXML for Run {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_run()?
+            .add_child(&self.run_property)?
+            .add_children(&self.children)?
+            .close()?
+            .into_inner()
     }
 }
 

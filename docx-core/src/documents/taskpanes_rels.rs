@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -29,15 +30,16 @@ impl TaskpanesRels {
 }
 
 impl BuildXML for TaskpanesRels {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let mut b = b
-            .declaration(Some(true))
-            .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships");
-        for (k, id, v) in self.rels.iter() {
-            b = b.relationship(id, k, v);
-        }
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .declaration(Some(true))?
+            .open_relationships("http://schemas.openxmlformats.org/package/2006/relationships")?
+            .apply_each(&self.rels, |(k, id, v), b| b.relationship(id, k, v))?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -55,10 +57,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.microsoft.com/office/2011/relationships/webextension" Target="webextension1.xml" />
-</Relationships>"#
+            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.microsoft.com/office/2011/relationships/webextension" Target="webextension1.xml" /></Relationships>"#
         );
     }
 }

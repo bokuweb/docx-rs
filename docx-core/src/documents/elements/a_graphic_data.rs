@@ -1,6 +1,7 @@
 use super::*;
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 use std::str::FromStr;
 
 use crate::documents::BuildXML;
@@ -95,15 +96,17 @@ impl AGraphicData {
 }
 
 impl BuildXML for AGraphicData {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let mut b = b.open_graphic_data(self.data_type.to_uri());
-        for c in &self.children {
-            match c {
-                GraphicDataChild::Shape(t) => b = b.add_child(t),
-                GraphicDataChild::Pic(t) => b = b.add_child(t),
-            }
-        }
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_graphic_data(self.data_type.to_uri())?
+            .apply_each(&self.children, |ch, b| match ch {
+                GraphicDataChild::Shape(t) => b.add_child(t),
+                GraphicDataChild::Pic(t) => b.add_child(t),
+            })?
+            .close()?
+            .into_inner()
     }
 }

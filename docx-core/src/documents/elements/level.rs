@@ -1,6 +1,7 @@
 use crate::documents::*;
 use crate::types::*;
 use crate::xml_builder::*;
+use std::io::Write;
 
 use serde::Serialize;
 
@@ -125,24 +126,26 @@ impl Level {
 }
 
 impl BuildXML for Level {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new()
-            .open_level(&format!("{}", self.level))
-            .add_child(&self.start)
-            .add_child(&self.format)
-            .add_child(&self.text)
-            .add_child(&self.jc)
-            .add_child(&self.paragraph_property)
-            .add_child(&self.run_property)
-            .add_optional_child(&self.pstyle)
-            .add_optional_child(&self.level_restart)
-            .add_optional_child(&self.is_lgl);
-
-        if self.suffix != LevelSuffixType::Tab {
-            b = b.suffix(&self.suffix.to_string());
-        }
-
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_level(&format!("{}", self.level))?
+            .add_child(&self.start)?
+            .add_child(&self.format)?
+            .add_child(&self.text)?
+            .add_child(&self.jc)?
+            .add_child(&self.paragraph_property)?
+            .add_child(&self.run_property)?
+            .add_optional_child(&self.pstyle)?
+            .add_optional_child(&self.level_restart)?
+            .add_optional_child(&self.is_lgl)?
+            .apply_if(self.suffix != LevelSuffixType::Tab, |b| {
+                b.suffix(&self.suffix.to_string())
+            })?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -199,8 +202,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /><w:suff w:val="space" />
-</w:lvl>"#
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /><w:suff w:val="space" /></w:lvl>"#
         );
     }
     #[test]

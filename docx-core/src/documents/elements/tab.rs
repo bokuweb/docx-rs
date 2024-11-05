@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -35,8 +36,12 @@ impl Tab {
 }
 
 impl BuildXML for Tab {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.tab(self.val, self.leader, self.pos).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .tab(self.val, self.leader, self.pos)?
+            .into_inner()
     }
 }

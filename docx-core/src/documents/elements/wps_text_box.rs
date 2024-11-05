@@ -1,5 +1,6 @@
 use super::*;
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -26,13 +27,15 @@ impl WpsTextBox {
 }
 
 impl BuildXML for WpsTextBox {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let mut b = b.open_wp_text_box();
-        for c in &self.children {
-            b = b.add_child(c);
-        }
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_wp_text_box()?
+            .add_children(&self.children)?
+            .close()?
+            .into_inner()
     }
 }
 

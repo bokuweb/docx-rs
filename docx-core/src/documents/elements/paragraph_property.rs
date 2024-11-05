@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -201,68 +202,39 @@ impl ParagraphProperty {
     }
 }
 
-fn inner_build(p: &ParagraphProperty) -> Vec<u8> {
-    let mut b = XMLBuilder::new()
-        .open_paragraph_property()
-        .add_child(&p.run_property)
-        .add_optional_child(&p.style)
-        .add_optional_child(&p.numbering_property)
-        .add_optional_child(&p.frame_property)
-        .add_optional_child(&p.alignment)
-        .add_optional_child(&p.indent)
-        .add_optional_child(&p.line_spacing)
-        .add_optional_child(&p.outline_lvl)
-        .add_optional_child(&p.paragraph_property_change)
-        .add_optional_child(&p.borders)
-        .add_optional_child(&p.text_alignment)
-        .add_optional_child(&p.adjust_right_ind);
-
-    if let Some(v) = p.snap_to_grid {
-        b = b.snap_to_grid(v)
-    }
-
-    if let Some(v) = p.keep_next {
-        if v {
-            b = b.keep_next()
-        }
-    }
-
-    if let Some(v) = p.keep_lines {
-        if v {
-            b = b.keep_lines()
-        }
-    }
-
-    if let Some(v) = p.page_break_before {
-        if v {
-            b = b.page_break_before()
-        }
-    }
-
-    if let Some(v) = p.widow_control {
-        b = b.widow_control(if v { "1" } else { "0" })
-    }
-
-    if !p.tabs.is_empty() {
-        b = b.open_tabs();
-        for t in p.tabs.iter() {
-            b = b.tab(t.val, t.leader, t.pos);
-        }
-        b = b.close();
-    }
-
-    b.close().build()
-}
-
 impl BuildXML for ParagraphProperty {
-    fn build(&self) -> Vec<u8> {
-        inner_build(self)
-    }
-}
-
-impl BuildXML for Box<ParagraphProperty> {
-    fn build(&self) -> Vec<u8> {
-        inner_build(self)
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_paragraph_property()?
+            .add_child(&self.run_property)?
+            .add_optional_child(&self.style)?
+            .add_optional_child(&self.numbering_property)?
+            .add_optional_child(&self.frame_property)?
+            .add_optional_child(&self.alignment)?
+            .add_optional_child(&self.indent)?
+            .add_optional_child(&self.line_spacing)?
+            .add_optional_child(&self.outline_lvl)?
+            .add_optional_child(&self.paragraph_property_change)?
+            .add_optional_child(&self.borders)?
+            .add_optional_child(&self.text_alignment)?
+            .add_optional_child(&self.adjust_right_ind)?
+            .apply_opt(self.snap_to_grid, |v, b| b.snap_to_grid(v))?
+            .apply_if(self.keep_next, |b| b.keep_next())?
+            .apply_if(self.keep_lines, |b| b.keep_lines())?
+            .apply_if(self.page_break_before, |b| b.page_break_before())?
+            .apply_opt(self.widow_control, |flag, b| {
+                b.widow_control(if flag { "1" } else { "0" })
+            })?
+            .apply_if(!self.tabs.is_empty(), |b| {
+                b.open_tabs()?
+                    .apply_each(&self.tabs, |tab, b| b.tab(tab.val, tab.leader, tab.pos))?
+                    .close()
+            })?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -307,8 +279,7 @@ mod tests {
         let b = c.keep_next(true).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPr><w:rPr /><w:keepNext />
-</w:pPr>"#
+            r#"<w:pPr><w:rPr /><w:keepNext /></w:pPr>"#
         );
     }
 

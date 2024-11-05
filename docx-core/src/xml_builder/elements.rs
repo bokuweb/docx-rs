@@ -4,42 +4,39 @@ use crate::types::*;
 use crate::FrameProperty;
 use crate::TablePositionProperty;
 
-const EXPECT_MESSAGE: &str = "should write buf";
+use std::io::Write;
+use xml::writer::Result;
 
-impl XMLBuilder {
+impl<W: Write> XMLBuilder<W> {
     // i.e. <w:body... >
     open!(open_body, "w:body");
     // i.e. <w:basedOn ... >
     closed_with_str!(based_on, "w:basedOn");
     // i.e. <w:t ... >
-    pub(crate) fn text(mut self, text: &str, preserve_space: bool) -> Self {
+    pub(crate) fn text(self, text: &str, preserve_space: bool) -> Result<Self> {
         let space = if preserve_space {
             "preserve"
         } else {
             "default"
         };
-        self.writer
-            .write(XmlEvent::start_element("w:t").attr("xml:space", space))
-            .expect(EXPECT_MESSAGE);
-        self.writer.write(text).expect(EXPECT_MESSAGE);
-        self.close()
+        self.write(XmlEvent::start_element("w:t").attr("xml:space", space))?
+            .write(text)?
+            .close()
     }
 
-    pub(crate) fn snap_to_grid(mut self, v: bool) -> Self {
+    pub(crate) fn snap_to_grid(self, v: bool) -> Result<Self> {
         let v = if v {
             "true".to_string()
         } else {
             "false".to_string()
         };
-        self.writer
-            .write(XmlEvent::start_element("w:snapToGrid").attr("w:val", &v))
-            .expect(EXPECT_MESSAGE);
-        self.close()
+        self.write(XmlEvent::start_element("w:snapToGrid").attr("w:val", &v))?
+            .close()
     }
 
     #[allow(clippy::too_many_arguments)]
     pub(crate) fn run_fonts(
-        mut self,
+        self,
         ascii: Option<&String>,
         hi_ansi: Option<&String>,
         cs: Option<&String>,
@@ -49,7 +46,7 @@ impl XMLBuilder {
         cs_theme: Option<&String>,
         east_asia_theme: Option<&String>,
         hint: Option<&String>,
-    ) -> Self {
+    ) -> Result<Self> {
         let mut w = XmlEvent::start_element("w:rFonts");
         if let Some(ascii) = ascii {
             w = w.attr("w:ascii", ascii);
@@ -78,30 +75,27 @@ impl XMLBuilder {
         if let Some(hint) = hint {
             w = w.attr("w:hint", hint);
         }
-        self.writer.write(w).expect(EXPECT_MESSAGE);
-        self.close()
+        self.write(w)?.close()
     }
 
     // i.e. <w:delText ... >
-    pub(crate) fn delete_text(mut self, text: &str, preserve_space: bool) -> Self {
+    pub(crate) fn delete_text(self, text: &str, preserve_space: bool) -> Result<Self> {
         let space = if preserve_space {
             "preserve"
         } else {
             "default"
         };
-        self.writer
-            .write(XmlEvent::start_element("w:delText").attr("xml:space", space))
-            .expect(EXPECT_MESSAGE);
-        self.writer.write(text).expect(EXPECT_MESSAGE);
-        self.close()
+        self.write(XmlEvent::start_element("w:delText").attr("xml:space", space))?
+            .write(text)?
+            .close()
     }
 
     pub(crate) fn data_binding(
-        mut self,
+        self,
         xpath: Option<&String>,
         prefix_mappings: Option<&String>,
         store_item_id: Option<&String>,
-    ) -> Self {
+    ) -> Result<Self> {
         let mut e = XmlEvent::start_element("w:dataBinding");
         if let Some(xpath) = xpath {
             e = e.attr("w:xpath", xpath);
@@ -112,16 +106,15 @@ impl XMLBuilder {
         if let Some(store_item_id) = store_item_id {
             e = e.attr("w:storeItemID", store_item_id);
         }
-        self.writer.write(e).expect(EXPECT_MESSAGE);
-        self.close()
+        self.write(e)?.close()
     }
 
     pub(crate) fn open_hyperlink(
-        mut self,
+        self,
         rid: Option<&String>,
         anchor: Option<&String>,
         history: Option<usize>,
-    ) -> Self {
+    ) -> Result<Self> {
         let mut e = XmlEvent::start_element("w:hyperlink");
         let history = history.unwrap_or(1);
         if let Some(rid) = rid {
@@ -132,8 +125,7 @@ impl XMLBuilder {
         }
         let s = format!("{}", history);
         e = e.attr("w:history", s.as_str());
-        self.writer.write(e).expect(EXPECT_MESSAGE);
-        self
+        self.write(e)
     }
 
     // i.e. <w:r ... >
@@ -200,15 +192,12 @@ impl XMLBuilder {
 
     // Build w:style element
     // i.e. <w:style ... >
-    pub(crate) fn open_style(mut self, style_type: StyleType, id: &str) -> Self {
-        self.writer
-            .write(
-                XmlEvent::start_element("w:style")
-                    .attr("w:type", &style_type.to_string())
-                    .attr("w:styleId", id),
-            )
-            .expect(EXPECT_MESSAGE);
-        self
+    pub(crate) fn open_style(self, style_type: StyleType, id: &str) -> Result<Self> {
+        self.write(
+            XmlEvent::start_element("w:style")
+                .attr("w:type", &style_type.to_string())
+                .attr("w:styleId", id),
+        )
     }
     // i.e. <w:next ... >
     closed_with_str!(next, "w:next");
@@ -228,12 +217,12 @@ impl XMLBuilder {
 
     // i.e. <w:ind ... >
     pub(crate) fn indent(
-        mut self,
+        self,
         start: Option<i32>,
         special_indent: Option<SpecialIndentType>,
         end: i32,
         start_chars: Option<i32>,
-    ) -> Self {
+    ) -> Result<Self> {
         let start = &format!("{}", start.unwrap_or(0));
         let end = &format!("{}", end);
         let start_chars_value = format!("{}", start_chars.unwrap_or(0));
@@ -246,37 +235,33 @@ impl XMLBuilder {
         }
 
         match special_indent {
-            Some(SpecialIndentType::FirstLine(v)) => self
-                .writer
-                .write(base.attr("w:firstLine", &format!("{}", v)))
-                .expect(EXPECT_MESSAGE),
-            Some(SpecialIndentType::Hanging(v)) => self
-                .writer
-                .write(base.attr("w:hanging", &format!("{}", v)))
-                .expect(EXPECT_MESSAGE),
-            _ => self.writer.write(base).expect(EXPECT_MESSAGE),
-        };
-        self.close()
+            Some(SpecialIndentType::FirstLine(v)) => {
+                self.write(base.attr("w:firstLine", &format!("{}", v)))
+            }
+            Some(SpecialIndentType::Hanging(v)) => {
+                self.write(base.attr("w:hanging", &format!("{}", v)))
+            }
+            None => self.write(base),
+        }?
+        .close()
     }
 
     // i.e. <w:spacing ... >
-    pub(crate) fn spacing(mut self, s: i32) -> Self {
-        self.writer
-            .write(XmlEvent::start_element("w:spacing").attr("w:val", &format!("{}", s)))
-            .expect(EXPECT_MESSAGE);
-        self.close()
+    pub(crate) fn spacing(self, s: i32) -> Result<Self> {
+        self.write(XmlEvent::start_element("w:spacing").attr("w:val", &format!("{}", s)))?
+            .close()
     }
 
     // i.e. <w:spacing ... >
     pub(crate) fn line_spacing(
-        mut self,
+        self,
         before: Option<u32>,
         after: Option<u32>,
         line: Option<i32>,
         before_lines: Option<u32>,
         after_lines: Option<u32>,
         spacing: Option<LineSpacingType>,
-    ) -> Self {
+    ) -> Result<Self> {
         let mut xml_event = XmlEvent::start_element("w:spacing");
         let before_val: String;
         let after_val: String;
@@ -317,8 +302,7 @@ impl XMLBuilder {
                 }
             }
         }
-        self.writer.write(xml_event).expect(EXPECT_MESSAGE);
-        self.close()
+        self.write(xml_event)?.close()
     }
 
     //
@@ -540,39 +524,31 @@ impl XMLBuilder {
     // CommentExtended
     // w15:commentEx w15:paraId="00000001" w15:paraIdParent="57D1BD7C" w15:done="0"
     pub(crate) fn comment_extended(
-        mut self,
+        self,
         paragraph_id: &str,
         done: bool,
         parent_paragraph_id: &Option<String>,
-    ) -> Self {
-        if let Some(parent_paragraph_id) = parent_paragraph_id {
-            self.writer
-                .write(
-                    XmlEvent::start_element("w15:commentEx")
-                        .attr("w15:paraId", paragraph_id)
-                        .attr("w15:paraIdParent", parent_paragraph_id)
-                        .attr("w15:done", &format!("{}", done as usize)),
-                )
-                .expect(EXPECT_MESSAGE);
-            return self.close();
-        }
-        self.writer
-            .write(
-                XmlEvent::start_element("w15:commentEx")
-                    .attr("w15:paraId", paragraph_id)
-                    .attr("w15:done", &format!("{}", done as usize)),
-            )
-            .expect(EXPECT_MESSAGE);
-        self.close()
+    ) -> Result<Self> {
+        let done = format!("{}", done as usize);
+        let el = match parent_paragraph_id {
+            Some(parent_paragraph_id) => XmlEvent::start_element("w15:commentEx")
+                .attr("w15:paraId", paragraph_id)
+                .attr("w15:paraIdParent", parent_paragraph_id)
+                .attr("w15:done", &done),
+            None => XmlEvent::start_element("w15:commentEx")
+                .attr("w15:paraId", paragraph_id)
+                .attr("w15:done", &done),
+        };
+        self.write(el)?.close()
     }
 
     // docGrid
     pub(crate) fn doc_grid(
-        mut self,
+        self,
         t: &DocGridType,
         line_pitch: Option<usize>,
         char_space: Option<isize>,
-    ) -> Self {
+    ) -> Result<Self> {
         let t = t.to_string();
         let line_pitch_string = format!("{}", line_pitch.unwrap_or_default());
         let char_space_string = format!("{}", char_space.unwrap_or_default());
@@ -583,9 +559,7 @@ impl XMLBuilder {
         if char_space.is_some() {
             w = w.attr("w:charSpace", &char_space_string);
         }
-        self.writer.write(w).expect(EXPECT_MESSAGE);
-
-        self.close()
+        self.write(w)?.close()
     }
 
     /**
@@ -593,7 +567,7 @@ impl XMLBuilder {
     pub v_space: Option<String>,
      */
 
-    pub(crate) fn frame_property(mut self, prop: &FrameProperty) -> Self {
+    pub(crate) fn frame_property(self, prop: &FrameProperty) -> Result<Self> {
         let mut w = XmlEvent::start_element("w:framePr");
         let wrap: String = prop.wrap.iter().cloned().collect();
         if prop.wrap.is_some() {
@@ -643,11 +617,10 @@ impl XMLBuilder {
         if prop.h.is_some() {
             w = w.attr("w:h", &h);
         }
-        self.writer.write(w).expect(EXPECT_MESSAGE);
-        self.close()
+        self.write(w)?.close()
     }
 
-    pub(crate) fn table_position_property(mut self, prop: &TablePositionProperty) -> Self {
+    pub(crate) fn table_position_property(self, prop: &TablePositionProperty) -> Result<Self> {
         let mut w = XmlEvent::start_element("w:tblpPr");
 
         let v: String = format!("{}", prop.left_from_text.unwrap_or_default());
@@ -690,11 +663,14 @@ impl XMLBuilder {
             w = w.attr("w:tblpY", &v);
         }
 
-        self.writer.write(w).expect(EXPECT_MESSAGE);
-        self.close()
+        self.write(w)?.close()
     }
 
-    pub(crate) fn page_num_type(mut self, start: Option<u32>, chap_style: Option<String>) -> Self {
+    pub(crate) fn page_num_type(
+        self,
+        start: Option<u32>,
+        chap_style: Option<String>,
+    ) -> Result<Self> {
         let mut w = XmlEvent::start_element("w:pgNumType");
         let start_string = format!("{}", start.unwrap_or_default());
         let chap_style_string = chap_style.clone().unwrap_or_default();
@@ -704,16 +680,15 @@ impl XMLBuilder {
         if chap_style.is_some() {
             w = w.attr("w:chapStyle", &chap_style_string);
         }
-        self.writer.write(w).expect(EXPECT_MESSAGE);
-        self.close()
+        self.write(w)?.close()
     }
 
     pub(crate) fn tab(
-        mut self,
+        self,
         v: Option<TabValueType>,
         leader: Option<TabLeaderType>,
         pos: Option<usize>,
-    ) -> Self {
+    ) -> Result<Self> {
         let v_string = if let Some(v) = v {
             v.to_string()
         } else {
@@ -740,17 +715,15 @@ impl XMLBuilder {
         if pos.is_some() {
             t = t.attr("w:pos", &pos_string);
         }
-        self.writer.write(t).expect(EXPECT_MESSAGE);
-
-        self.close()
+        self.write(t)?.close()
     }
 
     pub(crate) fn ptab(
-        mut self,
+        self,
         alignment: PositionalTabAlignmentType,
         relative_to: PositionalTabRelativeTo,
         leader: TabLeaderType,
-    ) -> Self {
+    ) -> Result<Self> {
         let alignment_string = alignment.to_string();
         let relative_to_string = relative_to.to_string();
         let leader_string = leader.to_string();
@@ -761,18 +734,14 @@ impl XMLBuilder {
         t = t.attr("w:relativeTo", &relative_to_string);
         t = t.attr("w:leader", &leader_string);
 
-        self.writer.write(t).expect(EXPECT_MESSAGE);
-
-        self.close()
+        self.write(t)?.close()
     }
 
     // FootnoteReference
     // w:footnoteReference w:id="1"
-    pub(crate) fn footnote_reference(mut self, id: usize) -> Self {
-        self.writer
-            .write(XmlEvent::start_element("w:footnoteReference").attr("w:id", &id.to_string()))
-            .expect(EXPECT_MESSAGE);
-        self.close()
+    pub(crate) fn footnote_reference(self, id: usize) -> Result<Self> {
+        self.write(XmlEvent::start_element("w:footnoteReference").attr("w:id", &id.to_string()))?
+            .close()
     }
 
     // Footnotes
@@ -787,79 +756,89 @@ mod tests {
     use std::str;
 
     #[test]
-    fn test_sz() {
-        let b = XMLBuilder::new();
-        let r = b.sz(20).build();
+    fn test_sz() -> Result<()> {
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.sz(20)?.into_inner()?.into_inner();
         assert_eq!(str::from_utf8(&r).unwrap(), r#"<w:sz w:val="20" />"#);
+        Ok(())
     }
 
     #[test]
-    fn test_declaration() {
-        let b = XMLBuilder::new();
+    fn test_declaration() -> Result<()> {
+        let b = XMLBuilder::new(Vec::new());
         let r = b
-            .open_style(StyleType::Paragraph, "Heading")
-            .close()
-            .build();
+            .open_style(StyleType::Paragraph, "Heading")?
+            .close()?
+            .into_inner()?
+            .into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:style w:type="paragraph" w:styleId="Heading" />"#
         );
+        Ok(())
     }
 
     #[test]
-    fn test_next() {
-        let b = XMLBuilder::new();
-        let r = b.next("Normal").build();
+    fn test_next() -> Result<()> {
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.next("Normal")?.into_inner()?.into_inner();
         assert_eq!(str::from_utf8(&r).unwrap(), r#"<w:next w:val="Normal" />"#);
+        Ok(())
     }
 
     #[test]
-    fn test_name() {
-        let b = XMLBuilder::new();
-        let r = b.name("Heading").build();
+    fn test_name() -> Result<()> {
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.name("Heading")?.into_inner()?.into_inner();
         assert_eq!(str::from_utf8(&r).unwrap(), r#"<w:name w:val="Heading" />"#);
+        Ok(())
     }
 
     #[test]
-    fn test_color() {
-        let b = XMLBuilder::new();
-        let r = b.color("2E74B5").build();
+    fn test_color() -> Result<()> {
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.color("2E74B5")?.into_inner()?.into_inner();
         assert_eq!(str::from_utf8(&r).unwrap(), r#"<w:color w:val="2E74B5" />"#);
+        Ok(())
     }
 
     #[test]
-    fn test_based_on() {
-        let b = XMLBuilder::new();
-        let r = b.based_on("Normal").build();
+    fn test_based_on() -> Result<()> {
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.based_on("Normal")?.into_inner()?.into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:basedOn w:val="Normal" />"#
         );
+        Ok(())
     }
 
     #[test]
-    fn test_ptab() {
-        let b = XMLBuilder::new();
+    fn test_ptab() -> Result<()> {
+        let b = XMLBuilder::new(Vec::new());
         let r = b
             .ptab(
                 PositionalTabAlignmentType::Left,
                 PositionalTabRelativeTo::Indent,
                 TabLeaderType::None,
-            )
-            .build();
+            )?
+            .into_inner()?
+            .into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:ptab w:alignment="left" w:relativeTo="indent" w:leader="none" />"#
         );
+        Ok(())
     }
 
     #[test]
-    fn test_footnote_reference() {
-        let b = XMLBuilder::new();
-        let r = b.footnote_reference(1).build();
+    fn test_footnote_reference() -> Result<()> {
+        let b = XMLBuilder::new(Vec::new());
+        let r = b.footnote_reference(1)?.into_inner()?.into_inner();
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:footnoteReference w:id="1" />"#
         );
+        Ok(())
     }
 }

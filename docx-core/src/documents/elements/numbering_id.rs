@@ -1,5 +1,6 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use std::io::Write;
 
 use serde::Serialize;
 
@@ -15,9 +16,11 @@ impl NumberingId {
 }
 
 impl BuildXML for NumberingId {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.num_id(self.id).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).num_id(self.id)?.into_inner()
     }
 }
 

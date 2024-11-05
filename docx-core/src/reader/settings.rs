@@ -25,9 +25,8 @@ impl FromXML for Settings {
                                     let local_name = &a.name.local_name;
                                     // Ignore w14:val
                                     if local_name == "val" && prefix == "w15" {
-                                        settings = settings.doc_id(
-                                            a.value.to_owned().replace("{", "").replace("}", ""),
-                                        );
+                                        settings = settings
+                                            .doc_id(a.value.to_owned().replace(['{', '}'], ""));
                                     }
                                 }
                             }

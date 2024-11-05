@@ -1,6 +1,7 @@
 use super::*;
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
@@ -43,15 +44,26 @@ impl WpsShape {
     }
 }
 
-impl BuildXML for WpsShape {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let mut b = b.open_wp_text_box();
-        for c in &self.children {
-            match c {
-                WpsShapeChild::WpsTextBox(t) => b = b.add_child(t),
-            }
+impl BuildXML for WpsShapeChild {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        match self {
+            WpsShapeChild::WpsTextBox(t) => t.build_to(stream),
         }
-        b.close().build()
+    }
+}
+
+impl BuildXML for WpsShape {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_wp_text_box()?
+            .add_children(&self.children)?
+            .close()?
+            .into_inner()
     }
 }

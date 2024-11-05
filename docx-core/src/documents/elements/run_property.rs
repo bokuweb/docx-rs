@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -171,33 +172,36 @@ impl RunProperty {
 }
 
 impl BuildXML for RunProperty {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.open_run_property()
-            .add_optional_child(&self.sz)
-            .add_optional_child(&self.sz_cs)
-            .add_optional_child(&self.color)
-            .add_optional_child(&self.bold)
-            .add_optional_child(&self.bold_cs)
-            .add_optional_child(&self.caps)
-            .add_optional_child(&self.italic)
-            .add_optional_child(&self.italic_cs)
-            .add_optional_child(&self.strike)
-            .add_optional_child(&self.highlight)
-            .add_optional_child(&self.underline)
-            .add_optional_child(&self.vanish)
-            .add_optional_child(&self.spec_vanish)
-            .add_optional_child(&self.fonts)
-            .add_optional_child(&self.text_border)
-            .add_optional_child(&self.ins)
-            .add_optional_child(&self.del)
-            .add_optional_child(&self.vert_align)
-            .add_optional_child(&self.character_spacing)
-            .add_optional_child(&self.style)
-            .add_optional_child(&self.positional_tab)
-            .add_optional_child(&self.shading)
-            .close()
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_run_property()?
+            .add_optional_child(&self.sz)?
+            .add_optional_child(&self.sz_cs)?
+            .add_optional_child(&self.color)?
+            .add_optional_child(&self.bold)?
+            .add_optional_child(&self.bold_cs)?
+            .add_optional_child(&self.caps)?
+            .add_optional_child(&self.italic)?
+            .add_optional_child(&self.italic_cs)?
+            .add_optional_child(&self.strike)?
+            .add_optional_child(&self.highlight)?
+            .add_optional_child(&self.underline)?
+            .add_optional_child(&self.vanish)?
+            .add_optional_child(&self.spec_vanish)?
+            .add_optional_child(&self.fonts)?
+            .add_optional_child(&self.text_border)?
+            .add_optional_child(&self.ins)?
+            .add_optional_child(&self.del)?
+            .add_optional_child(&self.vert_align)?
+            .add_optional_child(&self.character_spacing)?
+            .add_optional_child(&self.style)?
+            .add_optional_child(&self.positional_tab)?
+            .add_optional_child(&self.shading)?
+            .close()?
+            .into_inner()
     }
 }
 

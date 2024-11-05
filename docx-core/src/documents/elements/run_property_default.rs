@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -44,12 +45,15 @@ impl Default for RunPropertyDefault {
 }
 
 impl BuildXML for RunPropertyDefault {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.open_run_property_default()
-            .add_child(&self.run_property)
-            .close()
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_run_property_default()?
+            .add_child(&self.run_property)?
+            .close()?
+            .into_inner()
     }
 }
 

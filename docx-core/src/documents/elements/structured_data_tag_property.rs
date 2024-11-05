@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -40,17 +41,17 @@ impl StructuredDataTagProperty {
 }
 
 impl BuildXML for StructuredDataTagProperty {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new()
-            .open_structured_tag_property()
-            .add_child(&self.run_property)
-            .add_optional_child(&self.data_binding);
-
-        if let Some(ref alias) = self.alias {
-            b = b.alias(alias);
-        }
-
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_structured_tag_property()?
+            .add_child(&self.run_property)?
+            .add_optional_child(&self.data_binding)?
+            .apply_opt(self.alias.as_ref(), |alias, b| b.alias(alias))?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -78,8 +79,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sdtPr><w:rPr /><w:alias w:val="summary" />
-</w:sdtPr>"#
+            r#"<w:sdtPr><w:rPr /><w:alias w:val="summary" /></w:sdtPr>"#
         );
     }
 }

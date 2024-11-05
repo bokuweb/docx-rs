@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
 use crate::xml_builder::*;
@@ -47,7 +48,10 @@ impl From<&FootnoteReference> for Footnote {
 }
 
 impl BuildXML for Footnote {
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         // To ensure docx compatible XML serialization for footnotes, we default to an empty paragraph.
         let mut footnote = self.clone();
         if self.content == vec![] {
@@ -55,11 +59,11 @@ impl BuildXML for Footnote {
             footnote.add_content(Paragraph::new());
         }
 
-        XMLBuilder::new()
-            .open_footnote(&format!("{}", self.id))
-            .add_children(&footnote.content)
-            .close()
-            .build()
+        XMLBuilder::from(stream)
+            .open_footnote(&format!("{}", self.id))?
+            .add_children(&footnote.content)?
+            .close()?
+            .into_inner()
     }
 }
 

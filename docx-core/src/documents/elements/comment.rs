@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
 use crate::xml_builder::*;
@@ -93,21 +94,27 @@ impl Comment {
 }
 
 impl BuildXML for CommentChild {
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         match self {
-            CommentChild::Paragraph(v) => v.build(),
-            CommentChild::Table(v) => v.build(),
+            CommentChild::Paragraph(v) => v.build_to(stream),
+            CommentChild::Table(v) => v.build_to(stream),
         }
     }
 }
 
 impl BuildXML for Comment {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .open_comment(&format!("{}", self.id), &self.author, &self.date, "")
-            .add_children(&self.children)
-            .close()
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_comment(&self.id.to_string(), &self.author, &self.date, "")?
+            .add_children(&self.children)?
+            .close()?
+            .into_inner()
     }
 }
 

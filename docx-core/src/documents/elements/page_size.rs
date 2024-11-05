@@ -1,6 +1,7 @@
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
+use std::io::Write;
 
 use serde::Serialize;
 
@@ -54,20 +55,19 @@ impl PageSize {
 }
 
 impl BuildXML for PageSize {
-    fn build(&self) -> Vec<u8> {
-        if let Some(orient) = self.orient {
-            XMLBuilder::new()
-                .page_size_with_orient(
-                    &format!("{}", self.w),
-                    &format!("{}", self.h),
-                    &orient.to_string(),
-                )
-                .build()
-        } else {
-            XMLBuilder::new()
-                .page_size(&format!("{}", self.w), &format!("{}", self.h))
-                .build()
-        }
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        let w = format!("{}", self.w);
+        let h = format!("{}", self.h);
+
+        XMLBuilder::from(stream)
+            .apply(|b| match self.orient {
+                None => b.page_size(&w, &h),
+                Some(orient) => b.page_size_with_orient(&w, &h, &orient.to_string()),
+            })?
+            .into_inner()
     }
 }
 

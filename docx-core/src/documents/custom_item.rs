@@ -1,7 +1,9 @@
 use crate::documents::BuildXML;
+use crate::xml_builder::XMLBuilder;
 use crate::{ParseXmlError, XmlDocument};
 use serde::ser::SerializeSeq;
 use serde::Serialize;
+use std::io::Write;
 use std::str::FromStr;
 
 #[derive(Debug, Clone)]
@@ -29,8 +31,13 @@ impl Serialize for CustomItem {
 }
 
 impl BuildXML for CustomItem {
-    fn build(&self) -> Vec<u8> {
-        self.0.to_string().as_bytes().to_vec()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        let mut b = XMLBuilder::from(stream);
+        write!(b.inner_mut()?, "{}", self.0)?;
+        b.into_inner()
     }
 }
 
@@ -44,17 +51,13 @@ mod tests {
     #[test]
     fn test_custom_xml() {
         let c = CustomItem::from_str(
-            r#"<ds:datastoreItem ds:itemID="{06AC5857-5C65-A94A-BCEC-37356A209BC3}" xmlns:ds="http://schemas.openxmlformats.org/officeDocument/2006/customXml">
-<ds:schemaRefs>
-<ds:schemaRef ds:uri="https://hoge.com"></ds:schemaRef></ds:schemaRefs></ds:datastoreItem>"#,
+            r#"<ds:datastoreItem ds:itemID="{06AC5857-5C65-A94A-BCEC-37356A209BC3}" xmlns:ds="http://schemas.openxmlformats.org/officeDocument/2006/customXml"><ds:schemaRefs><ds:schemaRef ds:uri="https://hoge.com"></ds:schemaRef></ds:schemaRefs></ds:datastoreItem>"#,
         )
         .unwrap();
 
         assert_eq!(
             c.0.to_string(),
-            r#"<ds:datastoreItem ds:itemID="{06AC5857-5C65-A94A-BCEC-37356A209BC3}" xmlns:ds="http://schemas.openxmlformats.org/officeDocument/2006/customXml">
-<ds:schemaRefs>
-<ds:schemaRef ds:uri="https://hoge.com"></ds:schemaRef></ds:schemaRefs></ds:datastoreItem>"#
+            r#"<ds:datastoreItem ds:itemID="{06AC5857-5C65-A94A-BCEC-37356A209BC3}" xmlns:ds="http://schemas.openxmlformats.org/officeDocument/2006/customXml"><ds:schemaRefs><ds:schemaRef ds:uri="https://hoge.com"></ds:schemaRef></ds:schemaRefs></ds:datastoreItem>"#
         );
         assert_eq!(
             serde_json::to_string(&c).unwrap(),

@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
 use crate::types::*;
@@ -13,7 +14,7 @@ pub struct Pic {
     // For writer only
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub image: Vec<u8>,
-    // unit is emu
+    // (width, height). unit is emu
     pub size: (u32, u32),
     pub position_type: DrawingPositionType,
     /// Specifies that this object shall be positioned using the positioning information in the
@@ -203,35 +204,36 @@ impl Pic {
 }
 
 impl BuildXML for Pic {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let w = format!("{}", self.size.0);
-        let h = format!("{}", self.size.1);
-        b.open_pic("http://schemas.openxmlformats.org/drawingml/2006/picture")
-            .open_pic_nv_pic_pr()
-            .pic_c_nv_pr("0", "")
-            .open_pic_c_nv_pic_pr()
-            .a_pic_locks("1", "1")
-            .close()
-            .close()
-            .open_blip_fill()
-            .a_blip(&self.id)
-            .a_src_rect()
-            .open_a_stretch()
-            .a_fill_rect()
-            .close()
-            .close()
-            .open_pic_sp_pr("auto")
-            .open_a_xfrm_with_rot(&format!("{}", (self.rot as u32) * 60 * 1000))
-            .a_off("0", "0")
-            .a_ext(&w, &h)
-            .close()
-            .open_a_prst_geom("rect")
-            .a_av_lst()
-            .close()
-            .close()
-            .close()
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_pic("http://schemas.openxmlformats.org/drawingml/2006/picture")?
+            .open_pic_nv_pic_pr()?
+            .pic_c_nv_pr("0", "")?
+            .open_pic_c_nv_pic_pr()?
+            .a_pic_locks("1", "1")?
+            .close()?
+            .close()?
+            .open_blip_fill()?
+            .a_blip(&self.id)?
+            .a_src_rect()?
+            .open_a_stretch()?
+            .a_fill_rect()?
+            .close()?
+            .close()?
+            .open_pic_sp_pr("auto")?
+            .open_a_xfrm_with_rot(&format!("{}", (self.rot as u32) * 60 * 1000))?
+            .a_off("0", "0")?
+            .a_ext(&format!("{}", self.size.0), &format!("{}", self.size.1))?
+            .close()?
+            .open_a_prst_geom("rect")?
+            .a_av_lst()?
+            .close()?
+            .close()?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -248,30 +250,7 @@ mod tests {
         let b = Pic::new_with_dimensions(Vec::new(), 320, 240).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
-  <pic:nvPicPr>
-    <pic:cNvPr id="0" name="" />
-    <pic:cNvPicPr>
-      <a:picLocks noChangeAspect="1" noChangeArrowheads="1" />
-    </pic:cNvPicPr>
-  </pic:nvPicPr>
-  <pic:blipFill>
-    <a:blip r:embed="rIdImage123" />
-    <a:srcRect />
-    <a:stretch>
-      <a:fillRect />
-    </a:stretch>
-  </pic:blipFill>
-  <pic:spPr bwMode="auto">
-    <a:xfrm rot="0">
-      <a:off x="0" y="0" />
-      <a:ext cx="3048000" cy="2286000" />
-    </a:xfrm>
-    <a:prstGeom prst="rect">
-      <a:avLst />
-    </a:prstGeom>
-  </pic:spPr>
-</pic:pic>"#
+            r#"<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="0" name="" /><pic:cNvPicPr><a:picLocks noChangeAspect="1" noChangeArrowheads="1" /></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed="rIdImage123" /><a:srcRect /><a:stretch><a:fillRect /></a:stretch></pic:blipFill><pic:spPr bwMode="auto"><a:xfrm rot="0"><a:off x="0" y="0" /><a:ext cx="3048000" cy="2286000" /></a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom></pic:spPr></pic:pic>"#
         );
     }
 }

@@ -1,5 +1,7 @@
 name: Continuous Integration
 on: [push, pull_request]
+permissions:
+  pull-requests: write
 
 jobs:
   test:

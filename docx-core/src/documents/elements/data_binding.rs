@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
 use crate::xml_builder::*;
@@ -32,14 +33,17 @@ impl DataBinding {
 }
 
 impl BuildXML for DataBinding {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
             .data_binding(
                 self.xpath.as_ref(),
                 self.prefix_mappings.as_ref(),
                 self.store_item_id.as_ref(),
-            )
-            .build()
+            )?
+            .into_inner()
     }
 }
 

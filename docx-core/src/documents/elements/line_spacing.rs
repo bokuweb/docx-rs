@@ -1,5 +1,6 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use std::io::Write;
 
 use crate::line_spacing_type::LineSpacingType;
 use serde::*;
@@ -52,23 +53,26 @@ impl LineSpacing {
     }
 
     pub fn line(mut self, line: i32) -> Self {
-        self.line = Some(line as i32);
+        self.line = Some(line);
         self
     }
 }
 
 impl BuildXML for LineSpacing {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.line_spacing(
-            self.before,
-            self.after,
-            self.line,
-            self.before_lines,
-            self.after_lines,
-            self.line_rule,
-        )
-        .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .line_spacing(
+                self.before,
+                self.after,
+                self.line,
+                self.before_lines,
+                self.after_lines,
+                self.line_rule,
+            )?
+            .into_inner()
     }
 }
 

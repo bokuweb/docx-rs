@@ -1,6 +1,7 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 use serde::{Deserialize, Serialize, Serializer};
+use std::io::Write;
 
 #[derive(Deserialize, Debug, Clone, PartialEq)]
 pub struct SzCs {
@@ -14,8 +15,11 @@ impl SzCs {
 }
 
 impl BuildXML for SzCs {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new().sz_cs(self.val).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).sz_cs(self.val)?.into_inner()
     }
 }
 

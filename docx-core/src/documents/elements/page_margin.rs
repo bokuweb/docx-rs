@@ -1,6 +1,7 @@
 use crate::documents::BuildXML;
 use crate::types::PageMargin;
 use crate::xml_builder::*;
+use std::io::Write;
 
 // These values were based on microsoft office word2019 windows edition.
 // <w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0"/>
@@ -53,8 +54,11 @@ impl PageMargin {
 }
 
 impl BuildXML for PageMargin {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
             .page_margin(
                 &format!("{}", self.top),
                 &format!("{}", self.right),
@@ -63,8 +67,8 @@ impl BuildXML for PageMargin {
                 &format!("{}", self.header),
                 &format!("{}", self.footer),
                 &format!("{}", self.gutter),
-            )
-            .build()
+            )?
+            .into_inner()
     }
 }
 

@@ -1,5 +1,6 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use std::io::Write;
 
 use serde::Serialize;
 
@@ -29,9 +30,12 @@ impl HeaderReference {
 }
 
 impl BuildXML for HeaderReference {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .header_reference(&self.header_type, &self.id)
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .header_reference(&self.header_type, &self.id)?
+            .into_inner()
     }
 }

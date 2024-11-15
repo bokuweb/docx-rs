@@ -149,6 +149,11 @@ export class Paragraph {
     return this;
   }
 
+  snapToGrid(v: boolean) {
+    this.property = { ...this.property, snapToGrid: v };
+    return this;
+  }
+
   keepNext(v: boolean) {
     this.property = { ...this.property, keepNext: v };
     return this;
@@ -172,6 +177,11 @@ export class Paragraph {
   // run property
   size(size: number) {
     this.property.runProperty = { ...this.property.runProperty, size };
+    return this;
+  }
+
+  color(color: string) {
+    this.property.runProperty = { ...this.property.runProperty, color };
     return this;
   }
 

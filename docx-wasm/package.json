@@ -1,6 +1,6 @@
 {
   "name": "docx-wasm",
-  "version": "0.4.18-rc4",
+  "version": "0.4.18-rc19",
   "main": "dist/node/index.js",
   "browser": "dist/web/index.js",
   "author": "bokuweb <bokuweb12@gmail.com>",
@@ -10,6 +10,7 @@
     "wasm-pack:web": "wasm-pack build --release --out-dir dist/web/pkg && rm dist/web/pkg/.gitignore",
     "wasm-pack:node": "wasm-pack build --release --out-dir dist/node/pkg --target nodejs  && rm dist/node/pkg/.gitignore",
     "wasm-pack": "run-s wasm-pack:*",
+    "screenshot": "cd export-png && make convert-all",
     "tsc:web": "tsc -p tsconfig.web.json --sourcemap",
     "tsc:node": "tsc -p tsconfig.node.json --sourcemap",
     "tsc": "run-s tsc:*",
@@ -20,10 +21,12 @@
     "copy": "cpy 'dist/node/pkg/package.json'  'dist/web/pkg'",
     "tsrs": "cd ../ && make test",
     "copy:bindings": "cpy '../docx-core/bindings' './js/json'",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build"
   },
-  "resolutions": {
-    "**/serialize-javascript": "6.0.2"
+  "pnpm": {
+    "overrides": {
+      "serialize-javascript": "6.0.2"
+    }
   },
   "devDependencies": {
     "@types/file-saver": "2.0.7",

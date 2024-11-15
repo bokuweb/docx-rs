@@ -1,23 +1,15 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use super::{IndentLevel, NumberingId};
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub struct NumberingProperty {
     pub id: Option<NumberingId>,
     pub level: Option<IndentLevel>,
-}
-
-impl Default for NumberingProperty {
-    fn default() -> Self {
-        NumberingProperty {
-            id: None,
-            level: None,
-        }
-    }
 }
 
 impl NumberingProperty {
@@ -38,13 +30,16 @@ impl NumberingProperty {
 }
 
 impl BuildXML for NumberingProperty {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.open_numbering_property()
-            .add_optional_child(&self.id)
-            .add_optional_child(&self.level)
-            .close()
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_numbering_property()?
+            .add_optional_child(&self.id)?
+            .add_optional_child(&self.level)?
+            .close()?
+            .into_inner()
     }
 }
 

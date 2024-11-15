@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
@@ -76,15 +77,18 @@ impl Default for Styles {
 }
 
 impl BuildXML for Styles {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         let normal = Style::new("Normal", StyleType::Paragraph).name("Normal");
-        b.open_styles()
-            .add_child(&self.doc_defaults)
-            .add_child(&normal)
-            .add_children(&self.styles)
-            .close()
-            .build()
+        XMLBuilder::from(stream)
+            .open_styles()?
+            .add_child(&self.doc_defaults)?
+            .add_child(&normal)?
+            .add_children(&self.styles)?
+            .close()?
+            .into_inner()
     }
 }
 
@@ -124,12 +128,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:styles xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" mc:Ignorable="w14 w15"><w:docDefaults><w:rPrDefault><w:rPr /></w:rPrDefault><w:pPrDefault><w:pPr /></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:styleId="Normal"><w:name w:val="Normal" /><w:qFormat /><w:pPr /><w:rPr /></w:style><w:style w:type="table" w:styleId="Table"><w:name w:val="Table Style" /><w:qFormat /><w:pPr /><w:rPr /><w:tblPr><w:tblW w:w="0" w:type="auto" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders><w:tblCellMar>
-  <w:top w:w="0" w:type="dxa" />
-  <w:left w:w="108" w:type="dxa" />
-  <w:bottom w:w="0" w:type="dxa" />
-  <w:right w:w="108" w:type="dxa" />
-</w:tblCellMar></w:tblPr><w:tcPr /></w:style></w:styles>"#
+            r#"<w:styles xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" mc:Ignorable="w14 w15"><w:docDefaults><w:rPrDefault><w:rPr /></w:rPrDefault><w:pPrDefault><w:pPr /></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:styleId="Normal"><w:name w:val="Normal" /><w:qFormat /><w:pPr /><w:rPr /></w:style><w:style w:type="table" w:styleId="Table"><w:name w:val="Table Style" /><w:qFormat /><w:pPr /><w:rPr /><w:tcPr /><w:tblPr><w:tblW w:w="0" w:type="auto" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders><w:tblCellMar><w:top w:w="0" w:type="dxa" /><w:left w:w="108" w:type="dxa" /><w:bottom w:w="0" w:type="dxa" /><w:right w:w="108" w:type="dxa" /></w:tblCellMar></w:tblPr></w:style></w:styles>"#
         );
     }
 

@@ -4,61 +4,50 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@master
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 14
-      - uses: actions-rs/toolchain@v1
+          node-version: 20
+      - uses: moonrepo/setup-rust@v1
         with:
           profile: minimal
-          toolchain: stable
-          override: true
+          cache: false
+          inherit-toolchain: true
       - name: Cache cargo registry
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache cargo index
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache cargo build
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: target
           key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
-      - name: install deps
-        run: |
-          sudo add-apt-repository ppa:libreoffice/ppa
-          sudo apt-get update
-          sudo apt-get install libreoffice
-          npm i -g reg-cli
-          cd vrt && yarn --frozen-lockfile && cd ../
       - name: test
         run: make test -B # && make vrt -B
-      - uses: actions/upload-artifact@master
-        with:
-          name: vrt
-          path: vrt/screenshot
 
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v4
+      - uses: moonrepo/setup-rust@v1
         with:
           profile: minimal
-          toolchain: stable
-          override: true
+          inherit-toolchain: true
       - name: Cache cargo registry
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache cargo index
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
@@ -66,32 +55,43 @@ jobs:
 
   build-wasm:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write    
+    defaults:
+      run:
+        working-directory: ./docx-wasm    
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@master
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 14
-      - uses: actions-rs/toolchain@v1
+          node-version: 20
+      - uses: moonrepo/setup-rust@v1
         with:
           profile: minimal
-          toolchain: 1.58.1
-          override: true
+          inherit-toolchain: true
       - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - run: rustup target add wasm32-unknown-unknown
-      - run: cd docx-wasm && yarn install && yarn wasm-pack:node && yarn wasm-pack:dev && tsc -p tsconfig.node.json && yarn test
+      - run: npm install -g pnpm
+      - run: pnpm install && pnpm wasm-pack:node && pnpm wasm-pack:dev && tsc -p tsconfig.node.json && pnpm test
+      - name: screenshot
+        run: pnpm screenshot
+      - uses: reg-viz/reg-actions@v2
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+          image-directory-path: 'docx-wasm/export-png/png'
+          threshold-rate: 0.06
+          enable-antialias: true
+          matching-threshold: 0.5
+          artifact-name: wasm
 
   lint:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v4
+      - uses: moonrepo/setup-rust@v1
         with:
-          profile: minimal
-          toolchain: 1.56.1
-          override: true
-      - run: rustup component add clippy
-      - uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: -- -D warnings
+            inherit-toolchain: true
+            components: clippy
+    # TODO(@unvalley): enable
+    #   - run: cargo clippy -- -D warnings

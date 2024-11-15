@@ -207,7 +207,6 @@ pub use numbering::*;
 pub use numbering_id::*;
 pub use numbering_property::*;
 pub use outline_lvl::*;
-pub use page_margin::*;
 pub use page_num::*;
 pub use page_num_type::*;
 pub use page_size::*;

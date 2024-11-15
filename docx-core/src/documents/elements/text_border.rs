@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::types::*;
@@ -51,9 +52,12 @@ impl Default for TextBorder {
 }
 
 impl BuildXML for TextBorder {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.text_border(self.border_type, self.size, self.space, &self.color)
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .text_border(self.border_type, self.size, self.space, &self.color)?
+            .into_inner()
     }
 }

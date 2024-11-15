@@ -1,7 +1,9 @@
 use super::XMLBuilder;
 use super::XmlEvent;
 
-impl XMLBuilder {
+use std::io::Write;
+
+impl<W: Write> XMLBuilder<W> {
     open!(open_pic, "pic:pic", "xmlns:pic");
     open!(open_blip_fill, "pic:blipFill");
     closed!(a_blip, "a:blip", "r:embed");

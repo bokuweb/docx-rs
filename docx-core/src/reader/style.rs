@@ -33,7 +33,7 @@ impl ElementReader for Style {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::Name => {
-                            style = style.name(&attributes[0].value.clone());
+                            style = style.name(attributes[0].value.clone());
                             continue;
                         }
                         XMLElement::BasedOn => {

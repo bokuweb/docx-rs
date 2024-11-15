@@ -1,6 +1,8 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
+use crate::xml_builder::XMLBuilder;
 
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
@@ -159,57 +161,63 @@ impl InstrToC {
 }
 
 impl BuildXML for InstrToC {
-    fn build(&self) -> Vec<u8> {
-        let mut instr = "TOC".to_string();
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        let mut b = XMLBuilder::from(stream);
+        let raw = b.inner_mut()?;
+
+        write!(raw, "TOC")?;
 
         // \a
         if let Some(ref t) = self.caption_label {
-            instr = format!("{} \\a &quot;{}&quot;", instr, t);
+            write!(raw, " \\a &quot;{}&quot;", t)?;
         }
 
         // \b
         if let Some(ref t) = self.entry_bookmark_name {
-            instr = format!("{} \\b &quot;{}&quot;", instr, t);
+            write!(raw, " \\b &quot;{}&quot;", t)?;
         }
 
         // \c
         if let Some(ref t) = self.caption_label_including_numbers {
-            instr = format!("{} \\c &quot;{}&quot;", instr, t);
+            write!(raw, " \\c &quot;{}&quot;", t)?;
         }
 
         // \d
         if let Some(ref t) = self.sequence_and_page_numbers_separator {
-            instr = format!("{} \\d &quot;{}&quot;", instr, t);
+            write!(raw, " \\d &quot;{}&quot;", t)?;
         }
 
         // \f
         if let Some(ref t) = self.tc_field_identifier {
-            instr = format!("{} \\f &quot;{}&quot;", instr, t);
+            write!(raw, " \\f &quot;{}&quot;", t)?;
         }
 
         // \l
         if let Some(range) = self.tc_field_level_range {
-            instr = format!("{} \\l &quot;{}-{}&quot;", instr, range.0, range.1);
+            write!(raw, " \\l &quot;{}-{}&quot;", range.0, range.1)?;
         }
 
         // \n
         if let Some(range) = self.omit_page_numbers_level_range {
-            instr = format!("{} \\n &quot;{}-{}&quot;", instr, range.0, range.1);
+            write!(raw, " \\n &quot;{}-{}&quot;", range.0, range.1)?;
         }
 
         // \o
         if let Some(range) = self.heading_styles_range {
-            instr = format!("{} \\o &quot;{}-{}&quot;", instr, range.0, range.1);
+            write!(raw, " \\o &quot;{}-{}&quot;", range.0, range.1)?;
         }
 
         // \p
         if let Some(ref t) = self.entry_and_page_number_separator {
-            instr = format!("{} \\p &quot;{}&quot;", instr, t);
+            write!(raw, " \\p &quot;{}&quot;", t)?;
         }
 
         // \s
         if let Some(ref t) = self.seq_field_identifier_for_prefix {
-            instr = format!("{} \\s &quot;{}&quot;", instr, t);
+            write!(raw, " \\s &quot;{}&quot;", t)?;
         }
 
         // \t
@@ -220,42 +228,42 @@ impl BuildXML for InstrToC {
                 .map(|s| format!("{},{}", (s.0).0, (s.0).1))
                 .collect::<Vec<String>>()
                 .join(",");
-            instr = format!("{} \\t &quot;{}&quot;", instr, s);
+            write!(raw, " \\t &quot;{}&quot;", s)?;
         }
 
         // \h
         if self.hyperlink {
-            instr = format!("{} \\h", instr);
+            write!(raw, " \\h")?;
         }
 
         // \u
         if self.use_applied_paragraph_line_level {
-            instr = format!("{} \\u", instr);
+            write!(raw, " \\u")?;
         }
 
         // \w
         if self.preserve_tab {
-            instr = format!("{} \\w", instr);
+            write!(raw, " \\w")?;
         }
 
         // \x
         if self.preserve_new_line {
-            instr = format!("{} \\x", instr);
+            write!(raw, " \\x")?;
         }
 
         // \z
         if self.hide_tab_and_page_numbers_in_webview {
-            instr = format!("{} \\z", instr);
+            write!(raw, " \\z")?;
         }
 
-        instr.into()
+        b.into_inner()
     }
 }
 
 fn parse_level_range(i: &str) -> Option<(usize, usize)> {
     let r = i.replace("&quot;", "").replace('\"', "");
     let r: Vec<&str> = r.split('-').collect();
-    if let Some(s) = r.get(0) {
+    if let Some(s) = r.first() {
         if let Ok(s) = usize::from_str(s) {
             if let Some(e) = r.get(1) {
                 if let Ok(e) = usize::from_str(e) {

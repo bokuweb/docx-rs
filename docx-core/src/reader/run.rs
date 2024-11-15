@@ -71,6 +71,11 @@ impl ElementReader for Run {
                                 XMLElement::Tab => {
                                     run = run.add_tab();
                                 }
+                                XMLElement::PTab => {
+                                    if let Ok(v) = PositionalTab::read(r, &attributes) {
+                                        run = run.add_ptab(v);
+                                    }
+                                }
                                 XMLElement::Sym => {
                                     if let Some(font) = read(&attributes, "font") {
                                         if let Some(char) = read(&attributes, "char") {
@@ -86,7 +91,7 @@ impl ElementReader for Run {
                                 XMLElement::Text => text_state = TextState::Text,
                                 XMLElement::DeleteText => text_state = TextState::Delete,
                                 XMLElement::Break => {
-                                    if let Some(a) = &attributes.get(0) {
+                                    if let Some(a) = attributes.first() {
                                         run = run.add_break(BreakType::from_str(&a.value)?)
                                     } else {
                                         run = run.add_break(BreakType::TextWrapping)

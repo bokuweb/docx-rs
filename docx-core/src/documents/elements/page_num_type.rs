@@ -1,6 +1,7 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 use serde::Serialize;
+use std::io::Write;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
@@ -34,9 +35,12 @@ impl PageNumType {
 }
 
 impl BuildXML for PageNumType {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .page_num_type(self.start, self.chap_style.clone())
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .page_num_type(self.start, self.chap_style.clone())?
+            .into_inner()
     }
 }

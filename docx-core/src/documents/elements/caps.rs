@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize, Serializer};
+use std::io::Write;
 
 use crate::{xml_builder::XMLBuilder, BuildXML};
 
@@ -37,8 +38,12 @@ impl Serialize for Caps {
 }
 
 impl BuildXML for Caps {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.caps(&self.val.to_string()).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .caps(&self.val.to_string())?
+            .into_inner()
     }
 }

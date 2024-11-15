@@ -40,10 +40,9 @@ mod web_settings;
 mod webextension;
 mod xml_docx;
 
-pub(crate) use build_xml::BuildXML;
+pub use build_xml::BuildXML;
 pub(crate) use history_id::HistoryId;
 pub(crate) use hyperlink_id::*;
-use image::ImageFormat;
 pub(crate) use paragraph_id::*;
 pub(crate) use paragraph_property_change_id::ParagraphPropertyChangeId;
 pub(crate) use pic_id::*;
@@ -97,7 +96,7 @@ impl ser::Serialize for Image {
     where
         S: ser::Serializer,
     {
-        let base64 = base64::display::Base64Display::with_config(&*self.0, base64::STANDARD);
+        let base64 = base64::display::Base64Display::with_config(&self.0, base64::STANDARD);
         serializer.collect_str(&base64)
     }
 }
@@ -107,7 +106,7 @@ impl ser::Serialize for Png {
     where
         S: ser::Serializer,
     {
-        let base64 = base64::display::Base64Display::with_config(&*self.0, base64::STANDARD);
+        let base64 = base64::display::Base64Display::with_config(&self.0, base64::STANDARD);
         serializer.collect_str(&base64)
     }
 }
@@ -246,14 +245,21 @@ impl Docx {
         path: impl Into<String>,
         buf: Vec<u8>,
     ) -> Self {
+        #[cfg(feature = "image")]
         if let Ok(dimg) = image::load_from_memory(&buf) {
             let mut png = std::io::Cursor::new(vec![]);
             // For now only png supported
-            dimg.write_to(&mut png, ImageFormat::Png)
+            dimg.write_to(&mut png, image::ImageFormat::Png)
                 .expect("Unable to write dynamic image");
 
             self.images
                 .push((id.into(), path.into(), Image(buf), Png(png.into_inner())));
+        }
+        #[cfg(not(feature = "image"))]
+        // without 'image' crate we can only test for PNG file signature
+        if buf.starts_with(&[137, 80, 78, 71, 13, 10, 26, 10]) {
+            self.images
+                .push((id.into(), path.into(), Image(buf.clone()), Png(buf)));
         }
         self
     }
@@ -646,6 +652,13 @@ impl Docx {
         serde_json::to_string_pretty(&self).unwrap()
     }
 
+    // Internal: for docx-wasm
+    pub fn comments_json(&mut self) -> String {
+        self.reset();
+        self.update_dependencies();
+        serde_json::to_string_pretty(&self.comments).unwrap()
+    }
+
     fn reset(&self) {
         crate::reset_para_id();
     }
@@ -867,6 +880,18 @@ impl Docx {
                                     {
                                         let comment = comment.clone();
                                         c.as_mut().comment(comment);
+                                    }
+                                } else if let InsertChild::Delete(ref mut d) = child {
+                                    for child in &mut d.children {
+                                        if let DeleteChild::CommentStart(ref mut c) = child {
+                                            let comment_id = c.get_id();
+                                            if let Some(comment) =
+                                                comments.iter().find(|c| c.id() == comment_id)
+                                            {
+                                                let comment = comment.clone();
+                                                c.as_mut().comment(comment);
+                                            }
+                                        }
                                     }
                                 }
                             }

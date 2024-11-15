@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
 use crate::types::*;
@@ -49,15 +50,19 @@ impl TableOfContentsItem {
 }
 
 impl BuildXML for Vec<TableOfContentsItem> {
-    fn build(&self) -> Vec<u8> {
-        let mut b = XMLBuilder::new()
-            .open_structured_tag()
-            .open_structured_tag_property()
-            .close()
-            .open_structured_tag_content();
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        let mut b = XMLBuilder::from(stream)
+            .open_structured_tag()?
+            .open_structured_tag_property()?
+            .close()?
+            .open_structured_tag_content()?;
 
         for (i, t) in self.iter().enumerate() {
             let mut p = Paragraph::new().style(&format!("ToC{}", t.level));
+
             if i == 0 {
                 p = p.unshift_run(
                     Run::new()
@@ -65,40 +70,9 @@ impl BuildXML for Vec<TableOfContentsItem> {
                         .add_instr_text(InstrText::TOC(t.instr.clone()))
                         .add_field_char(FieldCharType::Separate, false),
                 );
-                p = p.add_tab(
-                    Tab::new()
-                        .val(TabValueType::Right)
-                        .leader(TabLeaderType::Dot)
-                        // TODO: for now set 80000
-                        .pos(80000),
-                );
+            }
 
-                let run = Run::new().add_text(&t.text);
-                let page_ref = Run::new()
-                    .add_field_char(FieldCharType::Begin, false)
-                    .add_instr_text(InstrText::PAGEREF(
-                        InstrPAGEREF::new(&t.toc_key).hyperlink(),
-                    ))
-                    .add_field_char(FieldCharType::Separate, false)
-                    .add_text(t.page_ref.to_owned().unwrap_or_else(|| "1".to_string()))
-                    .add_field_char(FieldCharType::End, false);
-
-                if t.instr.hyperlink {
-                    p = p.add_hyperlink(
-                        Hyperlink::new(&t.toc_key, crate::types::HyperlinkType::Anchor)
-                            .add_run(run)
-                            .add_run(Run::new().add_tab())
-                            .add_run(page_ref),
-                    );
-                } else {
-                    p = p
-                        .add_run(run)
-                        .add_run(Run::new().add_tab())
-                        .add_run(page_ref);
-                }
-                b = b.add_child(&p);
-            } else {
-                let mut p = Paragraph::new().style(&format!("ToC{}", t.level));
+            {
                 p = p.add_tab(
                     Tab::new()
                         .val(TabValueType::Right)
@@ -123,22 +97,23 @@ impl BuildXML for Vec<TableOfContentsItem> {
                             .add_run(run)
                             .add_run(Run::new().add_tab())
                             .add_run(page_ref),
-                    )
+                    );
                 } else {
                     p = p
                         .add_run(run)
                         .add_run(Run::new().add_tab())
                         .add_run(page_ref);
                 }
-                b = b.add_child(&p);
+                b = b.add_child(&p)?;
             }
 
             if i == self.len() - 1 {
                 let mut p = Paragraph::new().style(&format!("ToC{}", t.level));
                 p = p.add_run(Run::new().add_field_char(FieldCharType::End, false));
-                b = b.add_child(&p);
+                b = b.add_child(&p)?;
             }
         }
-        b.close().close().build()
+
+        b.close()?.close()?.into_inner()
     }
 }

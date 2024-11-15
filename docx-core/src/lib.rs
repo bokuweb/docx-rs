@@ -1,4 +1,5 @@
 mod documents;
+#[allow(hidden_glob_reexports)] // should rename?
 mod errors;
 mod escape;
 mod reader;

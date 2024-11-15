@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
+use std::io::Write;
 
 use crate::documents::BuildXML;
+use crate::escape::escape;
 use crate::xml_builder::*;
 
 /*
@@ -40,66 +42,78 @@ impl RunFonts {
     }
 
     pub fn ascii(mut self, f: impl Into<String>) -> Self {
-        self.ascii = Some(f.into());
+        let s = f.into();
+        self.ascii = Some(escape(&s));
         self
     }
 
     pub fn hi_ansi(mut self, f: impl Into<String>) -> Self {
-        self.hi_ansi = Some(f.into());
+        let s = f.into();
+        self.hi_ansi = Some(escape(&s));
         self
     }
 
     pub fn east_asia(mut self, f: impl Into<String>) -> Self {
-        self.east_asia = Some(f.into());
+        let s = f.into();
+        self.east_asia = Some(escape(&s));
         self
     }
 
     pub fn cs(mut self, f: impl Into<String>) -> Self {
-        self.cs = Some(f.into());
+        let s = f.into();
+        self.cs = Some(escape(&s));
         self
     }
 
     pub fn ascii_theme(mut self, f: impl Into<String>) -> Self {
-        self.ascii_theme = Some(f.into());
+        let s = f.into();
+        self.ascii_theme = Some(escape(&s));
         self
     }
 
     pub fn hi_ansi_theme(mut self, f: impl Into<String>) -> Self {
-        self.hi_ansi_theme = Some(f.into());
+        let s = f.into();
+        self.hi_ansi_theme = Some(escape(&s));
         self
     }
 
     pub fn east_asia_theme(mut self, f: impl Into<String>) -> Self {
-        self.east_asia_theme = Some(f.into());
+        let s = f.into();
+        self.east_asia_theme = Some(escape(&s));
         self
     }
 
     pub fn cs_theme(mut self, f: impl Into<String>) -> Self {
-        self.cs_theme = Some(f.into());
+        let s = f.into();
+        self.cs_theme = Some(escape(&s));
         self
     }
 
     pub fn hint(mut self, f: impl Into<String>) -> Self {
-        self.hint = Some(f.into());
+        let s = f.into();
+        self.hint = Some(escape(&s));
         self
     }
 }
 
 impl BuildXML for RunFonts {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.run_fonts(
-            self.ascii.as_ref(),
-            self.hi_ansi.as_ref(),
-            self.cs.as_ref(),
-            self.east_asia.as_ref(),
-            self.ascii_theme.as_ref(),
-            self.hi_ansi_theme.as_ref(),
-            self.cs_theme.as_ref(),
-            self.east_asia_theme.as_ref(),
-            self.hint.as_ref(),
-        )
-        .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .run_fonts(
+                self.ascii.as_ref(),
+                self.hi_ansi.as_ref(),
+                self.cs.as_ref(),
+                self.east_asia.as_ref(),
+                self.ascii_theme.as_ref(),
+                self.hi_ansi_theme.as_ref(),
+                self.cs_theme.as_ref(),
+                self.east_asia_theme.as_ref(),
+                self.hint.as_ref(),
+            )?
+            .into_inner()
     }
 }
 
@@ -146,5 +160,15 @@ mod tests {
         let c = RunFonts::new().cs("Arial");
         let b = c.build();
         assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:rFonts w:cs="Arial" />"#);
+    }
+
+    #[test]
+    fn test_run_fonts_with_escape() {
+        let c = RunFonts::new().east_asia(r#""Calibri",sans-serif"#);
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rFonts w:eastAsia="&quot;Calibri&quot;,sans-serif" />"#,
+        );
     }
 }

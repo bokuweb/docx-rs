@@ -1,5 +1,6 @@
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
+use std::io::Write;
 
 use serde::Serialize;
 
@@ -20,9 +21,12 @@ impl FooterReference {
 }
 
 impl BuildXML for FooterReference {
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .footer_reference(&self.footer_type, &self.id)
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .footer_reference(&self.footer_type, &self.id)?
+            .into_inner()
     }
 }

@@ -1,6 +1,8 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
+use crate::xml_builder::XMLBuilder;
 
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TCTC_topic_ID0EU2N1.html
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
@@ -39,22 +41,28 @@ impl InstrTC {
 }
 
 impl BuildXML for InstrTC {
-    fn build(&self) -> Vec<u8> {
-        let mut instr = format!("TC {}", self.text);
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        let mut b = XMLBuilder::from(stream);
+        let raw = b.inner_mut()?;
+
+        write!(raw, "TC {}", self.text)?;
 
         if let Some(ref t) = self.item_type_identifier {
-            instr = format!("{} \\f {}", instr, t);
+            write!(raw, " \\f {}", t)?;
         }
 
         if let Some(level) = self.level {
-            instr = format!("{} \\l {}", instr, level);
+            write!(raw, " \\l {}", level)?;
         }
 
         if self.omits_page_number {
-            instr = format!("{} \\n", instr);
+            write!(raw, " \\n")?;
         }
 
-        instr.into()
+        b.into_inner()
     }
 }
 

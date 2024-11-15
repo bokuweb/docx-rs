@@ -21,7 +21,7 @@ import {
   PageMargin,
   PageOrientationType,
 } from "./section-property";
-import { DocGridType, DocxJSON } from "./json";
+import { CommentJSON, DocGridType, DocxJSON } from "./json";
 
 import * as wasm from "./pkg";
 import { Level } from "./level";
@@ -626,6 +626,13 @@ export class Docx {
     return JSON.parse(json) as DocxJSON;
   }
 
+  commentsJson() {
+    const docx = this.createDocx();
+    const json = docx.comments_json();
+    docx.free();
+    return JSON.parse(json) as { comments: CommentJSON[] };
+  }
+
   build() {
     const docx = this.createDocx();
     const buf = docx.build(this.hasNumberings);
@@ -672,3 +679,4 @@ export * from "./page-num";
 export * from "./num-pages";
 export * from "./footer";
 export * from "./image";
+export * from "./positional-tab";

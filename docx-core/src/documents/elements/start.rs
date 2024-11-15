@@ -1,9 +1,10 @@
 use serde::{Serialize, Serializer};
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub struct Start {
     val: usize,
 }
@@ -14,16 +15,12 @@ impl Start {
     }
 }
 
-impl Default for Start {
-    fn default() -> Self {
-        Start { val: 0 }
-    }
-}
-
 impl BuildXML for Start {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        b.start(self.val).build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream).start(self.val)?.into_inner()
     }
 }
 

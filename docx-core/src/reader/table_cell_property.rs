@@ -34,12 +34,12 @@ impl ElementReader for TableCellProperty {
                             property = property.width(w, width_type);
                         }
                         XMLElement::TableGridSpan => {
-                            if let Some(a) = &attributes.get(0) {
+                            if let Some(a) = attributes.first() {
                                 property = property.grid_span(usize::from_str(&a.value)?)
                             }
                         }
                         XMLElement::TableVMerge => {
-                            if let Some(a) = &attributes.get(0) {
+                            if let Some(a) = attributes.first() {
                                 property = property.vertical_merge(VMergeType::from_str(&a.value)?);
                             } else {
                                 // Treat as a continue without attribute
@@ -47,7 +47,7 @@ impl ElementReader for TableCellProperty {
                             }
                         }
                         XMLElement::VAlign => {
-                            if let Some(a) = &attributes.get(0) {
+                            if let Some(a) = attributes.first() {
                                 property = property.vertical_align(VAlignType::from_str(&a.value)?);
                             }
                         }
@@ -57,7 +57,7 @@ impl ElementReader for TableCellProperty {
                             }
                         }
                         XMLElement::TextDirection => {
-                            if let Some(a) = &attributes.get(0) {
+                            if let Some(a) = attributes.first() {
                                 if let Ok(v) = TextDirectionType::from_str(&a.value) {
                                     property = property.text_direction(v);
                                 }

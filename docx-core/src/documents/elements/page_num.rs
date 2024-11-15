@@ -1,8 +1,8 @@
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::*;
 use crate::types::*;
-use crate::xml_builder::*;
 
 #[derive(Serialize, Debug, Clone, PartialEq)]
 pub struct PageNum {
@@ -21,29 +21,20 @@ impl PageNum {
     pub fn new() -> Self {
         Self::default()
     }
+}
 
-    fn inner_build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let r = Run::new()
+impl BuildXML for PageNum {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        Run::new()
             .add_field_char(FieldCharType::Begin, false)
             .add_instr_text(InstrText::PAGE(self.instr.clone()))
             .add_field_char(FieldCharType::Separate, false)
             .add_text("1")
-            .add_field_char(FieldCharType::End, false);
-
-        b.add_child(&r).build()
-    }
-}
-
-impl BuildXML for PageNum {
-    fn build(&self) -> Vec<u8> {
-        self.inner_build()
-    }
-}
-
-impl BuildXML for Box<PageNum> {
-    fn build(&self) -> Vec<u8> {
-        self.inner_build()
+            .add_field_char(FieldCharType::End, false)
+            .build_to(stream)
     }
 }
 

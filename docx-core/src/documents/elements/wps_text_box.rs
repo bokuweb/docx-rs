@@ -1,10 +1,11 @@
 use super::*;
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct WpsTextBox {
     pub children: Vec<TextBoxContent>,
@@ -25,23 +26,16 @@ impl WpsTextBox {
     }
 }
 
-impl Default for WpsTextBox {
-    fn default() -> Self {
-        WpsTextBox {
-            children: vec![],
-            has_numbering: false,
-        }
-    }
-}
-
 impl BuildXML for WpsTextBox {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let mut b = b.open_wp_text_box();
-        for c in &self.children {
-            b = b.add_child(c);
-        }
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_wp_text_box()?
+            .add_children(&self.children)?
+            .close()?
+            .into_inner()
     }
 }
 

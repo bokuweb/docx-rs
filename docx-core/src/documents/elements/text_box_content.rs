@@ -1,11 +1,12 @@
 use super::*;
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, Default)]
 pub struct TextBoxContent {
     pub children: Vec<TextBoxContentChild>,
     pub has_numbering: bool,
@@ -62,26 +63,28 @@ impl TextBoxContent {
     }
 }
 
-impl Default for TextBoxContent {
-    fn default() -> Self {
-        TextBoxContent {
-            children: vec![],
-            has_numbering: false,
+impl BuildXML for TextBoxContentChild {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        match self {
+            TextBoxContentChild::Paragraph(p) => p.build_to(stream),
+            TextBoxContentChild::Table(t) => t.build_to(stream),
         }
     }
 }
 
 impl BuildXML for TextBoxContent {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new();
-        let mut b = b.open_text_box_content();
-        for c in &self.children {
-            match c {
-                TextBoxContentChild::Paragraph(p) => b = b.add_child(p),
-                TextBoxContentChild::Table(t) => b = b.add_child(t),
-            }
-        }
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_text_box_content()?
+            .add_children(&self.children)?
+            .close()?
+            .into_inner()
     }
 }
 

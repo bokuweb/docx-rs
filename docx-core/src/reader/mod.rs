@@ -37,6 +37,7 @@ mod paragraph;
 mod paragraph_property;
 mod paragraph_property_change;
 mod pic;
+mod positional_tab;
 mod read_zip;
 mod rels;
 mod run;
@@ -55,8 +56,8 @@ mod table_cell;
 mod table_cell_borders;
 mod table_cell_margins;
 mod table_cell_property;
-mod table_property;
 mod table_position_property;
+mod table_property;
 mod table_row;
 mod tabs;
 mod text_box_content;
@@ -75,7 +76,6 @@ pub use attributes::*;
 pub use document_rels::*;
 pub use errors::ReaderError;
 pub use from_xml::*;
-pub use mc_fallback::*;
 pub use read_zip::*;
 pub use xml_element::*;
 use zip::ZipArchive;
@@ -221,7 +221,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read commentsExtended
     let comments_extended_path = rels.find_target_path(COMMENTS_EXTENDED_TYPE);
     let comments_extended = if let Some(comments_extended_path) = comments_extended_path {
-        if let Some((_, comments_extended_path, ..)) = comments_extended_path.get(0) {
+        if let Some((_, comments_extended_path, ..)) = comments_extended_path.first() {
             let data = read_zip(
                 &mut archive,
                 comments_extended_path
@@ -243,7 +243,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read comments
     let comments_path = rels.find_target_path(COMMENTS_TYPE);
     let comments = if let Some(paths) = comments_path {
-        if let Some((_, comments_path, ..)) = paths.get(0) {
+        if let Some((_, comments_path, ..)) = paths.first() {
             let data = read_zip(
                 &mut archive,
                 comments_path.to_str().expect("should have comments."),
@@ -398,7 +398,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read styles
     let style_path = rels.find_target_path(STYLE_RELATIONSHIP_TYPE);
     if let Some(paths) = style_path {
-        if let Some((_, style_path, ..)) = paths.get(0) {
+        if let Some((_, style_path, ..)) = paths.first() {
             let data = read_zip(
                 &mut archive,
                 style_path.to_str().expect("should have styles"),
@@ -411,7 +411,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read numberings
     let num_path = rels.find_target_path(NUMBERING_RELATIONSHIP_TYPE);
     if let Some(paths) = num_path {
-        if let Some((_, num_path, ..)) = paths.get(0) {
+        if let Some((_, num_path, ..)) = paths.first() {
             let data = read_zip(
                 &mut archive,
                 num_path.to_str().expect("should have numberings"),
@@ -424,7 +424,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read settings
     let settings_path = rels.find_target_path(SETTINGS_TYPE);
     if let Some(paths) = settings_path {
-        if let Some((_, settings_path, ..)) = paths.get(0) {
+        if let Some((_, settings_path, ..)) = paths.first() {
             let data = read_zip(
                 &mut archive,
                 settings_path.to_str().expect("should have settings"),
@@ -437,7 +437,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     // Read web settings
     let web_settings_path = rels.find_target_path(WEB_SETTINGS_TYPE);
     if let Some(paths) = web_settings_path {
-        if let Some((_, web_settings_path, ..)) = paths.get(0) {
+        if let Some((_, web_settings_path, ..)) = paths.first() {
             let data = read_zip(
                 &mut archive,
                 web_settings_path

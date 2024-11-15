@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use super::{Delete, Insert, TableCell, TableRowProperty};
 use crate::xml_builder::*;
@@ -21,9 +22,12 @@ pub enum TableRowChild {
 }
 
 impl BuildXML for TableRowChild {
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         match self {
-            TableRowChild::TableCell(v) => v.build(),
+            TableRowChild::TableCell(v) => v.build_to(stream),
         }
     }
 }
@@ -87,12 +91,16 @@ impl TableRow {
 }
 
 impl BuildXML for TableRow {
-    fn build(&self) -> Vec<u8> {
-        let b = XMLBuilder::new()
-            .open_table_row()
-            .add_child(&self.property)
-            .add_children(&self.cells);
-        b.close().build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_table_row()?
+            .add_child(&self.property)?
+            .add_children(&self.cells)?
+            .close()?
+            .into_inner()
     }
 }
 

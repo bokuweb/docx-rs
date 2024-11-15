@@ -1,5 +1,6 @@
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
+use std::io::Write;
 
 use super::*;
 
@@ -15,12 +16,15 @@ pub enum InsertChild {
 }
 
 impl BuildXML for InsertChild {
-    fn build(&self) -> Vec<u8> {
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         match self {
-            InsertChild::Run(v) => v.build(),
-            InsertChild::Delete(v) => v.build(),
-            InsertChild::CommentStart(v) => v.build(),
-            InsertChild::CommentEnd(v) => v.build(),
+            InsertChild::Run(v) => v.build_to(stream),
+            InsertChild::Delete(v) => v.build_to(stream),
+            InsertChild::CommentStart(v) => v.build_to(stream),
+            InsertChild::CommentEnd(v) => v.build_to(stream),
         }
     }
 }
@@ -140,13 +144,15 @@ impl Insert {
 impl HistoryId for Insert {}
 
 impl BuildXML for Insert {
-    #[allow(clippy::needless_borrow)]
-    fn build(&self) -> Vec<u8> {
-        XMLBuilder::new()
-            .open_insert(&self.generate(), &self.author, &self.date)
-            .add_children(&self.children)
-            .close()
-            .build()
+    fn build_to<W: Write>(
+        &self,
+        stream: xml::writer::EventWriter<W>,
+    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        XMLBuilder::from(stream)
+            .open_insert(&self.generate(), &self.author, &self.date)?
+            .add_children(&self.children)?
+            .close()?
+            .into_inner()
     }
 }
 

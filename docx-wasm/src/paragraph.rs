@@ -268,6 +268,11 @@ impl Paragraph {
         self.0 = self.0.frame_height(n);
         self
     }
+
+    pub fn paragraph_property(mut self, p: ParagraphProperty) -> Self {
+        self.0.property = p.take();
+        self
+    }
 }
 
 impl Paragraph {

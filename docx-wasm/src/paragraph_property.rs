@@ -113,6 +113,11 @@ impl ParagraphProperty {
         self
     }
 
+    pub fn frame_property(mut self, p: FrameProperty) -> Self {
+        self.0 = self.0.frame_property(p.take());
+        self
+    }
+
     // TODO: add frameProperty
     // TODO: add runProperty
 }

@@ -251,6 +251,7 @@ export const buildLineSpacing = (
   return spacing;
 };
 
+// @deprecated
 export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
   target: T,
   property: ParagraphProperty
@@ -460,4 +461,213 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
   }
 
   return target;
+};
+
+export const createParagraphProperty = (
+  property: ParagraphProperty
+): wasm.ParagraphProperty => {
+  let p = new wasm.ParagraphProperty();
+  const alignment = createParagraphAlignment(property.align);
+  if (alignment != null) {
+    p = p.align(alignment);
+  }
+
+  const textAlignment = createParagraphTextAlignment(property.textAlignment);
+  if (textAlignment != null) {
+    p = p.text_alignment(textAlignment);
+  }
+
+  if (property.adjustRightInd != null) {
+    p = p.adjust_right_ind(property.adjustRightInd);
+  }
+
+  if (typeof property.indent !== "undefined") {
+    const { indent } = property;
+    let kind;
+    switch (property.indent.specialIndentKind) {
+      case "firstLine": {
+        kind = wasm.SpecialIndentKind.FirstLine;
+        break;
+      }
+      case "hanging": {
+        kind = wasm.SpecialIndentKind.Hanging;
+        break;
+      }
+    }
+    p = p.indent(indent.left, kind, indent.specialIndentSize, indent.right);
+  }
+
+  if (typeof property.numbering !== "undefined") {
+    const { numbering } = property;
+    p = p.numbering(numbering.id, numbering.level);
+  }
+
+  // if (property.runProperty.bold) {
+  //   p = p.bold();
+  // }
+  //
+  // if (property.runProperty.color) {
+  //   p = p.color(property.runProperty.color);
+  // }
+
+  if (typeof property.lineSpacing !== "undefined") {
+    const spacing = buildLineSpacing(property);
+    if (spacing) {
+      p = p.line_spacing(spacing);
+    }
+  }
+
+  // if (property.runProperty.italic) {
+  //   p = p.italic();
+  // }
+  //
+  // if (property.runProperty.size) {
+  //   p = p.size(property.runProperty.size);
+  // }
+
+  if (property.runProperty.fonts) {
+    let f = wasm.createRunFonts();
+    if (property.runProperty.fonts._ascii) {
+      f = f.ascii(property.runProperty.fonts._ascii);
+    }
+    if (property.runProperty.fonts._hiAnsi) {
+      f = f.hi_ansi(property.runProperty.fonts._hiAnsi);
+    }
+    if (property.runProperty.fonts._cs) {
+      f = f.cs(property.runProperty.fonts._cs);
+    }
+    if (property.runProperty.fonts._eastAsia) {
+      f = f.east_asia(property.runProperty.fonts._eastAsia);
+    }
+    // p = p.fonts(f);
+  }
+
+  if (property.keepLines) {
+    p = p.keep_lines(true);
+  }
+
+  if (property.snapToGrid != null) {
+    p = p.snap_to_grid(!!property.snapToGrid);
+  }
+
+  if (property.keepNext) {
+    p = p.keep_next(true);
+  }
+
+  if (property.pageBreakBefore) {
+    p = p.page_break_before(true);
+  }
+
+  if (property.widowControl) {
+    p = p.widow_control(true);
+  }
+
+  if (property.outlineLvl != null) {
+    p = p.outline_lvl(property.outlineLvl);
+  }
+
+  if (property.tabs) {
+    for (const tab of property.tabs) {
+      let val: wasm.TabValueType | undefined;
+      let leader: wasm.TabLeaderType | undefined;
+      switch (tab.val) {
+        case "bar":
+          val = wasm.TabValueType.Bar;
+          break;
+        case "bar":
+          val = wasm.TabValueType.Bar;
+          break;
+        case "center":
+          val = wasm.TabValueType.Center;
+          break;
+        case "clear":
+          val = wasm.TabValueType.Clear;
+          break;
+        case "decimal":
+          val = wasm.TabValueType.Decimal;
+          break;
+        case "end":
+          val = wasm.TabValueType.End;
+          break;
+        case "right":
+          val = wasm.TabValueType.Right;
+          break;
+        case "num":
+          val = wasm.TabValueType.Num;
+          break;
+        case "start":
+          val = wasm.TabValueType.Start;
+          break;
+        case "left":
+          val = wasm.TabValueType.Left;
+          break;
+      }
+
+      switch (tab.leader) {
+        case "dot":
+          leader = wasm.TabLeaderType.Dot;
+          break;
+        case "heavy":
+          leader = wasm.TabLeaderType.Heavy;
+          break;
+        case "hyphen":
+          leader = wasm.TabLeaderType.Hyphen;
+          break;
+        case "middleDot":
+          leader = wasm.TabLeaderType.MiddleDot;
+          break;
+        case "none":
+          leader = wasm.TabLeaderType.None;
+          break;
+        case "underscore":
+          leader = wasm.TabLeaderType.None;
+          break;
+      }
+      p = p.add_tab(val, leader, tab.pos ?? undefined);
+    }
+  }
+
+  // TODO:
+  /*
+  if (property.frameProperty) {
+    if (property.frameProperty?.h != null) {
+      p = p.frame_height(property.frameProperty.h);
+    }
+    if (property.frameProperty?.hRule != null) {
+      p = p.h_rule(property.frameProperty.hRule);
+    }
+    if (property.frameProperty?.hAnchor != null) {
+      p = p.h_anchor(property.frameProperty.hAnchor);
+    }
+    if (property.frameProperty?.hSpace != null) {
+      p = p.h_space(property.frameProperty.hSpace);
+    }
+    if (property.frameProperty?.vAnchor != null) {
+      p = p.v_anchor(property.frameProperty.vAnchor);
+    }
+    if (property.frameProperty?.vSpace != null) {
+      p = p.v_space(property.frameProperty.vSpace);
+    }
+    if (property.frameProperty?.w != null) {
+      p = p.frame_width(property.frameProperty.w);
+    }
+    if (property.frameProperty?.wrap != null) {
+      p = p.wrap(property.frameProperty.wrap);
+    }
+    if (property.frameProperty?.x != null) {
+      p = p.frame_x(property.frameProperty.x);
+    }
+    if (property.frameProperty?.xAlign != null) {
+      p = p.x_align(property.frameProperty.xAlign);
+    }
+    if (property.frameProperty?.y != null) {
+      p = p.frame_y(property.frameProperty.y);
+    }
+    if (property.frameProperty?.yAlign != null) {
+      p = p.y_align(property.frameProperty.yAlign);
+    }
+  }
+    */
+
+  return p;
 };

@@ -61,6 +61,8 @@ pub struct TableOfContents {
     pub after_contents: Vec<TocContent>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub delete: Option<TableOfContentsReviewData>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub paragraph_property: Option<ParagraphProperty>,
 }
 
 impl TableOfContents {
@@ -149,6 +151,11 @@ impl TableOfContents {
         self.without_sdt = true;
         self
     }
+
+    pub fn paragraph_property(mut self, p: ParagraphProperty) -> Self {
+        self.paragraph_property = Some(p);
+        self
+    }
 }
 
 impl BuildXML for TableOfContents {
@@ -182,7 +189,7 @@ impl BuildXML for TableOfContents {
                 }
             }
 
-            let p1 = if let Some(ref del) = self.delete {
+            let mut p1 = if let Some(ref del) = self.delete {
                 Paragraph::new().add_delete(
                     Delete::new().author(&del.author).date(&del.date).add_run(
                         Run::new()
@@ -199,6 +206,11 @@ impl BuildXML for TableOfContents {
                         .add_field_char(FieldCharType::Separate, false),
                 )
             };
+
+            if let Some(paragraph_property) = self.paragraph_property.clone() {
+                p1.property = paragraph_property;
+            }
+
             b = b.add_child(&p1)?;
 
             let p2 = Paragraph::new().add_run(Run::new().add_field_char(FieldCharType::End, false));

@@ -2,66 +2,6 @@ use super::*;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-pub struct ParagraphPropertyChange(docx_rs::ParagraphPropertyChange);
-
-#[wasm_bindgen(js_name = createParagraphPropertyChange)]
-pub fn create_paragraph_property_change() -> ParagraphPropertyChange {
-    ParagraphPropertyChange(docx_rs::ParagraphPropertyChange::new())
-}
-
-#[wasm_bindgen]
-impl ParagraphPropertyChange {
-    pub fn author(mut self, author: &str) -> Self {
-        self.0 = self.0.author(author);
-        self
-    }
-
-    pub fn date(mut self, date: &str) -> Self {
-        self.0 = self.0.date(date);
-        self
-    }
-
-    // TODO: For now only numbering supported.
-    pub fn numbering(mut self, id: usize, level: usize) -> Self {
-        let id = docx_rs::NumberingId::new(id);
-        let level = docx_rs::IndentLevel::new(level);
-        self.0.property = Box::new(self.0.property.numbering(id, level));
-        self
-    }
-
-    pub fn align(mut self, alignment_type: docx_rs::AlignmentType) -> Self {
-        self.0.property = Box::new(self.0.property.align(alignment_type));
-        self
-    }
-
-    pub fn style(mut self, style_id: &str) -> Self {
-        self.0.property = Box::new(self.0.property.style(style_id));
-        self
-    }
-
-    pub fn indent(
-        mut self,
-        left: i32,
-        special_indent_kind: Option<docx_rs::SpecialIndentKind>,
-        special_indent_size: Option<i32>,
-    ) -> Self {
-        let special_indent = create_special_indent(special_indent_kind, special_indent_size);
-        self.0.property = Box::new(
-            self.0
-                .property
-                .indent(Some(left), special_indent, None, None),
-        );
-        self
-    }
-}
-
-impl ParagraphPropertyChange {
-    pub fn take(self) -> docx_rs::ParagraphPropertyChange {
-        self.0
-    }
-}
-
-#[wasm_bindgen]
 #[derive(Debug)]
 pub struct Paragraph(docx_rs::Paragraph);
 

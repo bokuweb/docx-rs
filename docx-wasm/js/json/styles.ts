@@ -8,7 +8,7 @@ export type StyleJSON = {
   styleId: string;
   name: string;
   styleType: StyleType;
-  runProperty: RunPropertyJSON;
+  runProperty?: RunPropertyJSON;
   paragraphProperty: ParagraphPropertyJSON;
   tableProperty: TablePropertyJSON;
   tableCellProperty: TableCellPropertyJSON;
@@ -20,7 +20,7 @@ export type StyleJSON = {
 export type StylesJSON = {
   docDefaults: {
     runPropertyDefault: {
-      runProperty: RunPropertyJSON;
+      runProperty?: RunPropertyJSON;
     };
     paragraphPropertyDefault: {
       paragraphProperty: ParagraphPropertyJSON;

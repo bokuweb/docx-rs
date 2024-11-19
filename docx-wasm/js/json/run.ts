@@ -118,7 +118,7 @@ export type BreakJSON = {
 export type RunJSON = {
   type: "run";
   data: {
-    runProperty: RunPropertyJSON;
+    runProperty?: RunPropertyJSON;
     children: RunChildJSON[];
   };
 };

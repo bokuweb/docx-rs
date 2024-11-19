@@ -9,7 +9,7 @@ export type LevelJSON = {
   jc: string;
   suffix: "tab" | "nothing" | "space";
   paragraphProperty: ParagraphPropertyJSON;
-  runProperty: RunPropertyJSON;
+  runProperty?: RunPropertyJSON;
   pstyle: string | null;
   levelRestart: number | null;
   isLgl?: boolean | null; 

@@ -497,19 +497,6 @@ export const createParagraphProperty = (
     p = p.indent(indent.left, kind, indent.specialIndentSize, indent.right);
   }
 
-  if (typeof property.numbering !== "undefined") {
-    const { numbering } = property;
-    p = p.numbering(numbering.id, numbering.level);
-  }
-
-  // if (property.runProperty.bold) {
-  //   p = p.bold();
-  // }
-  //
-  // if (property.runProperty.color) {
-  //   p = p.color(property.runProperty.color);
-  // }
-
   if (typeof property.lineSpacing !== "undefined") {
     const spacing = buildLineSpacing(property);
     if (spacing) {
@@ -517,13 +504,27 @@ export const createParagraphProperty = (
     }
   }
 
-  // if (property.runProperty.italic) {
-  //   p = p.italic();
-  // }
-  //
-  // if (property.runProperty.size) {
-  //   p = p.size(property.runProperty.size);
-  // }
+  if (typeof property.numbering !== "undefined") {
+    const { numbering } = property;
+    p = p.numbering(numbering.id, numbering.level);
+  }
+
+  let runProperty = wasm.createRunProperty();
+  if (property.runProperty.bold) {
+    runProperty = runProperty.bold();
+  }
+
+  if (property.runProperty.color) {
+    runProperty = runProperty.color(property.runProperty.color);
+  }
+
+  if (property.runProperty.italic) {
+    runProperty = runProperty.italic();
+  }
+
+  if (property.runProperty.size) {
+    runProperty = runProperty.size(property.runProperty.size);
+  }
 
   if (property.runProperty.fonts) {
     let f = wasm.createRunFonts();
@@ -539,8 +540,9 @@ export const createParagraphProperty = (
     if (property.runProperty.fonts._eastAsia) {
       f = f.east_asia(property.runProperty.fonts._eastAsia);
     }
-    // p = p.fonts(f);
+    runProperty = runProperty.fonts(f);
   }
+  p = p.run_property(runProperty);
 
   if (property.keepLines) {
     p = p.keep_lines(true);
@@ -627,47 +629,46 @@ export const createParagraphProperty = (
     }
   }
 
-  // TODO:
-  /*
   if (property.frameProperty) {
+    let frameProperty = wasm.createFrameProperty();
     if (property.frameProperty?.h != null) {
-      p = p.frame_height(property.frameProperty.h);
+      frameProperty = frameProperty.height(property.frameProperty.h);
     }
     if (property.frameProperty?.hRule != null) {
-      p = p.h_rule(property.frameProperty.hRule);
+      frameProperty = frameProperty.h_rule(property.frameProperty.hRule);
     }
     if (property.frameProperty?.hAnchor != null) {
-      p = p.h_anchor(property.frameProperty.hAnchor);
+      frameProperty = frameProperty.h_anchor(property.frameProperty.hAnchor);
     }
     if (property.frameProperty?.hSpace != null) {
-      p = p.h_space(property.frameProperty.hSpace);
+      frameProperty = frameProperty.h_space(property.frameProperty.hSpace);
     }
     if (property.frameProperty?.vAnchor != null) {
-      p = p.v_anchor(property.frameProperty.vAnchor);
+      frameProperty = frameProperty.v_anchor(property.frameProperty.vAnchor);
     }
     if (property.frameProperty?.vSpace != null) {
-      p = p.v_space(property.frameProperty.vSpace);
+      frameProperty = frameProperty.v_space(property.frameProperty.vSpace);
     }
     if (property.frameProperty?.w != null) {
-      p = p.frame_width(property.frameProperty.w);
+      frameProperty = frameProperty.width(property.frameProperty.w);
     }
     if (property.frameProperty?.wrap != null) {
-      p = p.wrap(property.frameProperty.wrap);
+      frameProperty = frameProperty.wrap(property.frameProperty.wrap);
     }
     if (property.frameProperty?.x != null) {
-      p = p.frame_x(property.frameProperty.x);
+      frameProperty = frameProperty.x(property.frameProperty.x);
     }
     if (property.frameProperty?.xAlign != null) {
-      p = p.x_align(property.frameProperty.xAlign);
+      frameProperty = frameProperty.x_align(property.frameProperty.xAlign);
     }
     if (property.frameProperty?.y != null) {
-      p = p.frame_y(property.frameProperty.y);
+      frameProperty = frameProperty.y(property.frameProperty.y);
     }
     if (property.frameProperty?.yAlign != null) {
-      p = p.y_align(property.frameProperty.yAlign);
+      frameProperty = frameProperty.y_align(property.frameProperty.yAlign);
     }
+    p = p.frame_property(frameProperty);
   }
-    */
 
   return p;
 };

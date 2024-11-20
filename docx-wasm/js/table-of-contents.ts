@@ -3,6 +3,10 @@ import * as wasm from "./pkg";
 import { Table } from "./table";
 import { TableOfContentsItem } from "./table-of-contents-item";
 import { build } from "./builder";
+import {
+  createParagraphProperty,
+  ParagraphProperty,
+} from "./paragraph-property";
 
 export class TableOfContents {
   _instrText?: string;
@@ -18,6 +22,7 @@ export class TableOfContents {
   _beforeContents: (Paragraph | Table)[] = [];
   _afterContents: (Paragraph | Table)[] = [];
   _delete: { author: string; date: string } | null = null;
+  _paragraphProperty: ParagraphProperty | null = null;
 
   constructor(instrText?: string) {
     this._instrText = instrText;
@@ -154,6 +159,12 @@ export class TableOfContents {
       } else if (c instanceof Table) {
         toc = toc.add_after_table(c.build());
       }
+    }
+
+    if (this._paragraphProperty) {
+      toc = toc.paragraph_property(
+        createParagraphProperty(this._paragraphProperty)
+      );
     }
 
     return toc;

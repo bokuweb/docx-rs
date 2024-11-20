@@ -1,4 +1,4 @@
-import { RunProperty, createDefaultRunProperty } from "./run";
+import { RunProperty, createDefaultRunProperty } from "./run-property";
 
 import * as wasm from "./pkg";
 import { TextAlignmentType } from "./json/bindings/TextAlignmentType";
@@ -331,12 +331,12 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
     target = target.numbering(numbering.id, numbering.level) as T;
   }
 
-  if (property.runProperty.bold) {
+  if (property.runProperty._bold) {
     target = target.bold() as T;
   }
 
-  if (property.runProperty.color) {
-    target = target.color(property.runProperty.color) as T;
+  if (property.runProperty._color) {
+    target = target.color(property.runProperty._color) as T;
   }
 
   if (typeof property.lineSpacing !== "undefined") {
@@ -346,27 +346,27 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
     }
   }
 
-  if (property.runProperty.italic) {
+  if (property.runProperty._italic) {
     target = target.italic() as T;
   }
 
-  if (property.runProperty.size) {
-    target = target.size(property.runProperty.size) as T;
+  if (property.runProperty._size) {
+    target = target.size(property.runProperty._size) as T;
   }
 
-  if (property.runProperty.fonts) {
+  if (property.runProperty._fonts) {
     let f = wasm.createRunFonts();
-    if (property.runProperty.fonts._ascii) {
-      f = f.ascii(property.runProperty.fonts._ascii);
+    if (property.runProperty._fonts._ascii) {
+      f = f.ascii(property.runProperty._fonts._ascii);
     }
-    if (property.runProperty.fonts._hiAnsi) {
-      f = f.hi_ansi(property.runProperty.fonts._hiAnsi);
+    if (property.runProperty._fonts._hiAnsi) {
+      f = f.hi_ansi(property.runProperty._fonts._hiAnsi);
     }
-    if (property.runProperty.fonts._cs) {
-      f = f.cs(property.runProperty.fonts._cs);
+    if (property.runProperty._fonts._cs) {
+      f = f.cs(property.runProperty._fonts._cs);
     }
-    if (property.runProperty.fonts._eastAsia) {
-      f = f.east_asia(property.runProperty.fonts._eastAsia);
+    if (property.runProperty._fonts._eastAsia) {
+      f = f.east_asia(property.runProperty._fonts._eastAsia);
     }
     target = target.fonts(f) as T;
   }
@@ -545,39 +545,42 @@ export const createParagraphProperty = (
   }
 
   let runProperty = wasm.createRunProperty();
-  if (property.runProperty.bold) {
+  if (property.runProperty._bold) {
     runProperty = runProperty.bold();
   }
 
-  if (property.runProperty.color) {
-    runProperty = runProperty.color(property.runProperty.color);
+  if (property.runProperty._color) {
+    runProperty = runProperty.color(property.runProperty._color);
   }
 
-  if (property.runProperty.italic) {
+  if (property.runProperty._italic) {
     runProperty = runProperty.italic();
   }
 
-  if (property.runProperty.size) {
-    runProperty = runProperty.size(property.runProperty.size);
+  if (property.runProperty._size) {
+    runProperty = runProperty.size(property.runProperty._size);
   }
 
-  if (property.runProperty.fonts) {
+  if (property.runProperty._fonts) {
     let f = wasm.createRunFonts();
-    if (property.runProperty.fonts._ascii) {
-      f = f.ascii(property.runProperty.fonts._ascii);
+    if (property.runProperty._fonts._ascii) {
+      f = f.ascii(property.runProperty._fonts._ascii);
     }
-    if (property.runProperty.fonts._hiAnsi) {
-      f = f.hi_ansi(property.runProperty.fonts._hiAnsi);
+    if (property.runProperty._fonts._hiAnsi) {
+      f = f.hi_ansi(property.runProperty._fonts._hiAnsi);
     }
-    if (property.runProperty.fonts._cs) {
-      f = f.cs(property.runProperty.fonts._cs);
+    if (property.runProperty._fonts._cs) {
+      f = f.cs(property.runProperty._fonts._cs);
     }
-    if (property.runProperty.fonts._eastAsia) {
-      f = f.east_asia(property.runProperty.fonts._eastAsia);
+    if (property.runProperty._fonts._eastAsia) {
+      f = f.east_asia(property.runProperty._fonts._eastAsia);
     }
     runProperty = runProperty.fonts(f);
   }
-  // p = p.run_property(runProperty);
+
+  if (property.runProperty) {
+    p = p.run_property(runProperty);
+  }
 
   if (property.keepLines) {
     p = p.keep_lines(true);

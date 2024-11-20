@@ -79,23 +79,23 @@ function buildParagraph(child: Paragraph) {
     paragraph = paragraph.style(child.property.styleId);
   }
 
-  if (child.property.runProperty.del) {
+  if (child.property.runProperty._del) {
     paragraph = paragraph.delete(
-      child.property.runProperty.del.author,
-      child.property.runProperty.del.date
+      child.property.runProperty._del.author,
+      child.property.runProperty._del.date
     );
   }
 
-  if (child.property.runProperty.ins) {
+  if (child.property.runProperty._ins) {
     paragraph = paragraph.insert(
-      child.property.runProperty.ins.author,
-      child.property.runProperty.ins.date
+      child.property.runProperty._ins.author,
+      child.property.runProperty._ins.date
     );
   }
 
-  if (child.property.runProperty.characterSpacing != null) {
+  if (child.property.runProperty._characterSpacing != null) {
     paragraph = paragraph.character_spacing(
-      child.property.runProperty.characterSpacing
+      child.property.runProperty._characterSpacing
     );
   }
 

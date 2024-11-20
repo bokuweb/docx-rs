@@ -2,7 +2,7 @@ import { Paragraph } from "./paragraph";
 import { LineSpacing, ParagraphProperty } from "./paragraph-property";
 import { Table } from "./table";
 import { TableOfContents } from "./table-of-contents";
-import { RunFonts } from "./run";
+import { RunFonts } from "./run-property";
 import { AbstractNumbering } from "./abstract-numbering";
 import { Numbering } from "./numbering";
 import { BookmarkStart } from "./bookmark-start";
@@ -290,31 +290,31 @@ export class Docx {
       level = level.suffix(wasm.LevelSuffixType.Tab);
     }
 
-    if (l.runProperty.bold) {
+    if (l.runProperty._bold) {
       level = level.bold();
     }
 
-    if (l.runProperty.italic) {
+    if (l.runProperty._italic) {
       level = level.italic();
     }
 
-    if (l.runProperty.size) {
-      level = level.size(l.runProperty.size);
+    if (l.runProperty._size) {
+      level = level.size(l.runProperty._size);
     }
 
-    if (l.runProperty.fonts) {
+    if (l.runProperty._fonts) {
       let f = wasm.createRunFonts();
-      if (l.runProperty.fonts._ascii) {
-        f = f.ascii(l.runProperty.fonts._ascii);
+      if (l.runProperty._fonts._ascii) {
+        f = f.ascii(l.runProperty._fonts._ascii);
       }
-      if (l.runProperty.fonts._hiAnsi) {
-        f = f.hi_ansi(l.runProperty.fonts._hiAnsi);
+      if (l.runProperty._fonts._hiAnsi) {
+        f = f.hi_ansi(l.runProperty._fonts._hiAnsi);
       }
-      if (l.runProperty.fonts._cs) {
-        f = f.cs(l.runProperty.fonts._cs);
+      if (l.runProperty._fonts._cs) {
+        f = f.cs(l.runProperty._fonts._cs);
       }
-      if (l.runProperty.fonts._eastAsia) {
-        f = f.east_asia(l.runProperty.fonts._eastAsia);
+      if (l.runProperty._fonts._eastAsia) {
+        f = f.east_asia(l.runProperty._fonts._eastAsia);
       }
       level = level.fonts(f);
     }
@@ -548,20 +548,20 @@ export class Docx {
 
     if (this.styles?.docDefaults) {
       if (this.styles.docDefaults.runProperty) {
-        if (this.styles.docDefaults.runProperty.fonts) {
+        if (this.styles.docDefaults.runProperty._fonts) {
           const fonts = this.buildRunFonts(
-            this.styles.docDefaults.runProperty.fonts
+            this.styles.docDefaults.runProperty._fonts
           );
           docx = docx.default_fonts(fonts);
         }
 
-        if (this.styles.docDefaults.runProperty.size) {
-          docx = docx.default_size(this.styles.docDefaults.runProperty.size);
+        if (this.styles.docDefaults.runProperty._size) {
+          docx = docx.default_size(this.styles.docDefaults.runProperty._size);
         }
 
-        if (this.styles.docDefaults.runProperty.characterSpacing) {
+        if (this.styles.docDefaults.runProperty._characterSpacing) {
           docx = docx.default_spacing(
-            this.styles.docDefaults.runProperty.characterSpacing
+            this.styles.docDefaults.runProperty._characterSpacing
           );
         }
       }
@@ -658,6 +658,7 @@ export * from "./table-of-contents";
 export * from "./table-of-contents-item";
 export * from "./table-row";
 export * from "./run";
+export * from "./run-property";
 export * from "./text";
 export * from "./style";
 export * from "./styles";

@@ -4,7 +4,7 @@ import { Shading } from "./shading";
 import { TableCellBorders, PositionKeys } from "./table-cell-borders";
 import { TableCellBorderPosition, TableCellBorder } from "./table-cell-border";
 import * as wasm from "./pkg";
-import { convertBorderType } from "./run";
+import { convertBorderType } from "./run-property";
 import { TableOfContents } from "./table-of-contents";
 import { build } from "./builder";
 import { WidthType } from ".";

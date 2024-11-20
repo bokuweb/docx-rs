@@ -1,6 +1,6 @@
 import { Style } from "./style";
 import { DocDefaults } from "./doc-defaults";
-import { RunFonts } from "./run";
+import { RunFonts } from "./run-property";
 import { LineSpacing } from "./paragraph-property";
 
 export class Styles {

@@ -1,4 +1,5 @@
-import { Run, RunFonts } from "./run";
+import { Run } from "./run";
+import { RunFonts } from "./run-property";
 import {
   createDefaultParagraphProperty,
   ParagraphProperty,
@@ -145,7 +146,7 @@ export class Paragraph {
   }
 
   characterSpacing(spacing: number) {
-    this.property.runProperty.characterSpacing = spacing;
+    this.property.runProperty.spacing(spacing);
     return this;
   }
 
@@ -176,37 +177,37 @@ export class Paragraph {
 
   // run property
   size(size: number) {
-    this.property.runProperty = { ...this.property.runProperty, size };
+    this.property.runProperty.size(size);
     return this;
   }
 
   color(color: string) {
-    this.property.runProperty = { ...this.property.runProperty, color };
+    this.property.runProperty.color(color);
     return this;
   }
 
   bold() {
-    this.property.runProperty = { ...this.property.runProperty, bold: true };
+    this.property.runProperty.bold();
     return this;
   }
 
   italic() {
-    this.property.runProperty = { ...this.property.runProperty, italic: true };
+    this.property.runProperty.italic();
     return this;
   }
 
   fonts(fonts: RunFonts) {
-    this.property.runProperty = { ...this.property.runProperty, fonts };
+    this.property.runProperty.fonts(fonts);
     return this;
   }
 
   delete(author: string, date: string) {
-    this.property.runProperty.del = { author, date };
+    this.property.runProperty.delete(author, date);
     return this;
   }
 
   insert(author: string, date: string) {
-    this.property.runProperty.ins = { author, date };
+    this.property.runProperty.insert(author, date);
     return this;
   }
 

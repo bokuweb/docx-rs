@@ -145,6 +145,11 @@ impl RunProperty {
         self
     }
 
+    pub fn character_spacing(mut self, v: i32) -> RunProperty {
+        self.character_spacing = Some(CharacterSpacing::new(v));
+        self
+    }
+
     pub fn text_border(mut self, b: TextBorder) -> Self {
         self.text_border = Some(b);
         self

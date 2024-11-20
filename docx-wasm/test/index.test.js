@@ -1096,7 +1096,10 @@ describe("writer", () => {
       .addRun(new w.Run().addText("World"))
       .pageBreakBefore(true)
       .style("Heading2");
-    const style2 = new w.Style("Heading2", "paragraph").name("Heading 2");
+    const runProperty = new w.RunProperty().bold().color("red");
+    const style2 = new w.Style("Heading2", "paragraph")
+      .name("Heading 2")
+      .runProperty(runProperty);
     const buffer = new w.Docx()
       .addTableOfContents(
         new w.TableOfContents()

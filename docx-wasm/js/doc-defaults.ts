@@ -3,7 +3,7 @@ import { RunProperty, RunFonts } from "./run";
 
 export class DocDefaults {
   runProperty: RunProperty;
-  paragraphProperty: ParagraphProperty;
+  paragraphProperty: ParagraphProperty = new ParagraphProperty();
 
   size(size: number) {
     this.runProperty = { ...this.runProperty, size };
@@ -21,7 +21,7 @@ export class DocDefaults {
   }
 
   lineSpacing(lineSpacing: LineSpacing) {
-    this.paragraphProperty = { ...this.paragraphProperty, lineSpacing };
+    this.paragraphProperty.lineSpacing = lineSpacing;
     return this;
   }
 }

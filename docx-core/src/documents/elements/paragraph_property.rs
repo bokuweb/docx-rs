@@ -157,6 +157,11 @@ impl ParagraphProperty {
         self
     }
 
+    pub fn run_property(mut self, s: RunProperty) -> Self {
+        self.run_property = s;
+        self
+    }
+
     pub fn text_alignment(mut self, s: TextAlignmentType) -> Self {
         self.text_alignment = Some(TextAlignment::new(s));
         self

@@ -98,6 +98,11 @@ export class TableOfContents {
     return this;
   };
 
+  paragraphProperty(p: ParagraphProperty) {
+    this._paragraphProperty = p;
+    return this;
+  }
+
   buildWasmObject = () => {
     let toc = this._instrText
       ? wasm.createTableOfContentsWithInstrText(this._instrText)

@@ -119,7 +119,7 @@ impl ParagraphProperty {
     }
 
     pub fn run_property(mut self, p: RunProperty) -> Self {
-        self.0.run_property = p.take();
+        self.0 = self.0.run_property(p.take());
         self
     }
 }

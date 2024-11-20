@@ -4,6 +4,8 @@ import * as wasm from "./pkg";
 import { TextAlignmentType } from "./json/bindings/TextAlignmentType";
 import { Tab } from "./json/bindings/Tab";
 import { AlignmentType } from "./json/bindings/AlignmentType";
+import { TabValueType } from "./json/bindings/TabValueType";
+import { TabLeaderType } from "./json/bindings/TabLeaderType";
 
 export { AlignmentType } from "./json/bindings/AlignmentType";
 
@@ -60,9 +62,9 @@ export class LineSpacing {
   }
 }
 
-export type ParagraphProperty = {
-  align?: AlignmentType;
-  textAlignment?: TextAlignmentType;
+export class ParagraphProperty {
+  _align?: AlignmentType;
+  _textAlignment?: TextAlignmentType;
   styleId?: string;
   indent?: {
     left: number;
@@ -75,7 +77,7 @@ export type ParagraphProperty = {
     level: number;
   };
   lineSpacing?: LineSpacing;
-  runProperty: RunProperty;
+  runProperty: RunProperty = createDefaultRunProperty();
   keepNext: boolean;
   keepLines: boolean;
   pageBreakBefore: boolean;
@@ -83,19 +85,52 @@ export type ParagraphProperty = {
   paragraphPropertyChange?: ParagraphPropertyChange;
   outlineLvl?: number | null;
   snapToGrid?: boolean;
-  adjustRightInd?: number;
-  tabs?: Tab[];
+  _adjustRightInd?: number;
+  _tabs?: Tab[];
   frameProperty?: FrameProperty;
-};
+
+  constructor() {}
+
+  tabs(
+    tabs: {
+      val: TabValueType | null;
+      leader: TabLeaderType | null;
+      pos: number | null;
+    }[]
+  ) {
+    this._tabs = tabs;
+    return this;
+  }
+
+  align(type: AlignmentType) {
+    this._align = type;
+    return this;
+  }
+
+  textAlignment(type: TextAlignmentType) {
+    this._textAlignment = type;
+    return this;
+  }
+
+  adjustRightInd(v: number) {
+    this._adjustRightInd = v;
+    return this;
+  }
+
+  style(id: string) {
+    this.styleId = id;
+    return this;
+  }
+}
 
 export const createDefaultParagraphProperty = (): ParagraphProperty => {
-  return {
-    runProperty: createDefaultRunProperty(),
-    keepNext: false,
-    keepLines: false,
-    pageBreakBefore: false,
-    widowControl: false,
-  };
+  let p = new ParagraphProperty();
+  p.runProperty = createDefaultRunProperty();
+  p.keepNext = false;
+  p.keepLines = false;
+  p.pageBreakBefore = false;
+  p.widowControl = false;
+  return p;
 };
 
 export const createParagraphAlignment = (
@@ -170,17 +205,17 @@ export class ParagraphPropertyChange {
   }
 
   align(type: AlignmentType) {
-    this._property.align = type;
+    this._property._align = type;
     return this;
   }
 
   textAlignment(type: TextAlignmentType) {
-    this._property.textAlignment = type;
+    this._property._textAlignment = type;
     return this;
   }
 
   adjustRightInd(v: number) {
-    this._property.adjustRightInd = v;
+    this._property._adjustRightInd = v;
     return this;
   }
 
@@ -256,18 +291,18 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
   target: T,
   property: ParagraphProperty
 ): T => {
-  const alignment = createParagraphAlignment(property.align);
+  const alignment = createParagraphAlignment(property._align);
   if (alignment != null) {
     target = target.align(alignment) as T;
   }
 
-  const textAlignment = createParagraphTextAlignment(property.textAlignment);
+  const textAlignment = createParagraphTextAlignment(property._textAlignment);
   if (textAlignment != null) {
     target = target.text_alignment(textAlignment) as T;
   }
 
-  if (property.adjustRightInd != null) {
-    target = target.adjust_right_ind(property.adjustRightInd) as T;
+  if (property._adjustRightInd != null) {
+    target = target.adjust_right_ind(property._adjustRightInd) as T;
   }
 
   if (typeof property.indent !== "undefined") {
@@ -360,8 +395,8 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
     target = target.outline_lvl(property.outlineLvl) as T;
   }
 
-  if (property.tabs) {
-    for (const tab of property.tabs) {
+  if (property._tabs) {
+    for (const tab of property._tabs) {
       let val: wasm.TabValueType | undefined;
       let leader: wasm.TabLeaderType | undefined;
       switch (tab.val) {
@@ -466,19 +501,19 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
 export const createParagraphProperty = (
   property: ParagraphProperty
 ): wasm.ParagraphProperty => {
-  let p = new wasm.ParagraphProperty();
-  const alignment = createParagraphAlignment(property.align);
+  let p = wasm.createParagraphProperty();
+  const alignment = createParagraphAlignment(property._align);
   if (alignment != null) {
     p = p.align(alignment);
   }
 
-  const textAlignment = createParagraphTextAlignment(property.textAlignment);
+  const textAlignment = createParagraphTextAlignment(property._textAlignment);
   if (textAlignment != null) {
     p = p.text_alignment(textAlignment);
   }
 
-  if (property.adjustRightInd != null) {
-    p = p.adjust_right_ind(property.adjustRightInd);
+  if (property._adjustRightInd != null) {
+    p = p.adjust_right_ind(property._adjustRightInd);
   }
 
   if (typeof property.indent !== "undefined") {
@@ -542,7 +577,7 @@ export const createParagraphProperty = (
     }
     runProperty = runProperty.fonts(f);
   }
-  p = p.run_property(runProperty);
+  // p = p.run_property(runProperty);
 
   if (property.keepLines) {
     p = p.keep_lines(true);
@@ -568,8 +603,12 @@ export const createParagraphProperty = (
     p = p.outline_lvl(property.outlineLvl);
   }
 
-  if (property.tabs) {
-    for (const tab of property.tabs) {
+  if (property.styleId) {
+    p = p.style(property.styleId);
+  }
+
+  if (property._tabs) {
+    for (const tab of property._tabs) {
       let val: wasm.TabValueType | undefined;
       let leader: wasm.TabLeaderType | undefined;
       switch (tab.val) {

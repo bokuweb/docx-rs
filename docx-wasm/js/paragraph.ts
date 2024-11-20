@@ -94,22 +94,22 @@ export class Paragraph {
       pos: number | null;
     }[]
   ) {
-    this.property.tabs = tabs;
+    this.property._tabs = tabs;
     return this;
   }
 
   align(type: AlignmentType) {
-    this.property.align = type;
+    this.property._align = type;
     return this;
   }
 
   textAlignment(type: TextAlignmentType) {
-    this.property.textAlignment = type;
+    this.property._textAlignment = type;
     return this;
   }
 
   adjustRightInd(v: number) {
-    this.property.adjustRightInd = v;
+    this.property._adjustRightInd = v;
     return this;
   }
 
@@ -150,27 +150,27 @@ export class Paragraph {
   }
 
   snapToGrid(v: boolean) {
-    this.property = { ...this.property, snapToGrid: v };
+    this.property.snapToGrid = v;
     return this;
   }
 
   keepNext(v: boolean) {
-    this.property = { ...this.property, keepNext: v };
+    this.property.keepNext = v;
     return this;
   }
 
   keepLines(v: boolean) {
-    this.property = { ...this.property, keepLines: v };
+    this.property.keepLines = v;
     return this;
   }
 
   pageBreakBefore(v: boolean) {
-    this.property = { ...this.property, pageBreakBefore: v };
+    this.property.pageBreakBefore = v;
     return this;
   }
 
   widowControl(v: boolean) {
-    this.property = { ...this.property, widowControl: v };
+    this.property.widowControl = v;
     return this;
   }
 
@@ -211,7 +211,7 @@ export class Paragraph {
   }
 
   outlineLevel(v: number) {
-    this.property = { ...this.property, outlineLvl: v };
+    this.property.outlineLvl = v;
     return this;
   }
 

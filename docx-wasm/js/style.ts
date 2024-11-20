@@ -162,7 +162,7 @@ export class Style {
 
   // paragraph property
   align(type: AlignmentType) {
-    this._paragraphProperty.align = type;
+    this._paragraphProperty._align = type;
     return this;
   }
 
@@ -190,30 +190,27 @@ export class Style {
   }
 
   keepNext(v: boolean) {
-    this._paragraphProperty = { ...this._paragraphProperty, keepNext: v };
+    this._paragraphProperty.keepNext = v;
     return this;
   }
 
   keepLines(v: boolean) {
-    this._paragraphProperty = { ...this._paragraphProperty, keepLines: v };
+    this._paragraphProperty.keepLines = v;
     return this;
   }
 
   pageBreakBefore(v: boolean) {
-    this._paragraphProperty = {
-      ...this._paragraphProperty,
-      pageBreakBefore: v,
-    };
+    this._paragraphProperty.pageBreakBefore = v;
     return this;
   }
 
   widowControl(v: boolean) {
-    this._paragraphProperty = { ...this._paragraphProperty, widowControl: v };
+    this._paragraphProperty.widowControl = v;
     return this;
   }
 
   outlineLevel(v: number) {
-    this._paragraphProperty = { ...this._paragraphProperty, outlineLvl: v };
+    this._paragraphProperty.outlineLvl = v;
     return this;
   }
 

@@ -541,13 +541,7 @@ impl Docx {
             })
             .collect();
 
-        if !tocs.is_empty() {
-            for i in 1..=9 {
-                self.styles = self
-                    .styles
-                    .add_style(crate::documents::preset_styles::toc(i));
-            }
-        }
+        let has_toc = !tocs.is_empty();
 
         for (i, toc) in tocs {
             if toc.items.is_empty() && toc.auto {
@@ -609,6 +603,21 @@ impl Docx {
             // Relationship entry for footnotes
             self.content_type = self.content_type.add_footnotes();
             self.document_rels.has_footnotes = true;
+        }
+
+        if has_toc {
+            for i in 1..=9 {
+                if !self
+                    .styles
+                    .styles
+                    .iter()
+                    .any(|s| s.name == Name::new(format!("toc {}", i)))
+                {
+                    self.styles = self
+                        .styles
+                        .add_style(crate::documents::preset_styles::toc(i));
+                }
+            }
         }
 
         XMLDocx {

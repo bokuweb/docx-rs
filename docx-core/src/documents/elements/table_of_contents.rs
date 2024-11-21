@@ -191,53 +191,40 @@ impl BuildXML for TableOfContents {
 
             let mut p1 = if let Some(ref del) = self.delete {
                 Paragraph::new().add_delete(
-                    Delete::new().author(&del.author).date(&del.date).add_run(
-                        Run::new()
-                            .add_field_char(FieldCharType::Begin, true)
-                            .add_delete_instr_text(DeleteInstrText::TOC(self.instr.clone()))
-                            .add_field_char(FieldCharType::Separate, false),
-                    ),
+                    Delete::new()
+                        .author(&del.author)
+                        .date(&del.date)
+                        .add_run(
+                            Run::new()
+                                .add_field_char(FieldCharType::Begin, true)
+                                .add_delete_instr_text(DeleteInstrText::TOC(self.instr.clone()))
+                                .add_field_char(FieldCharType::Separate, false),
+                        )
+                        .add_run(Run::new().add_field_char(FieldCharType::End, false)),
                 )
             } else {
-                Paragraph::new().add_run(
-                    Run::new()
-                        .add_field_char(FieldCharType::Begin, true)
-                        .add_instr_text(InstrText::TOC(self.instr.clone()))
-                        .add_field_char(FieldCharType::Separate, false),
-                )
+                Paragraph::new()
+                    .add_run(
+                        Run::new()
+                            .add_field_char(FieldCharType::Begin, true)
+                            .add_instr_text(InstrText::TOC(self.instr.clone()))
+                            .add_field_char(FieldCharType::Separate, false),
+                    )
+                    .add_run(Run::new().add_field_char(FieldCharType::End, false))
             };
 
-            if let Some(paragraph_property) = self.paragraph_property.clone() {
-                p1.property = paragraph_property;
+            if let Some(ref paragraph_property) = self.paragraph_property {
+                p1.property = paragraph_property.clone();
             }
 
             b = b.add_child(&p1)?;
 
-            let mut p2 =
-                Paragraph::new().add_run(Run::new().add_field_char(FieldCharType::End, false));
-            if let Some(paragraph_property) = self.paragraph_property.clone() {
-                p2.property = paragraph_property;
-            }
-
-            if self.after_contents.is_empty() {
-                b = b.add_child(&p2)?;
-            } else {
+            if !self.after_contents.is_empty() {
                 for (i, c) in self.after_contents.iter().enumerate() {
                     match c {
                         TocContent::Paragraph(p) => {
                             // Merge paragraph
-                            if i == 0 {
-                                let mut new_p = p.clone();
-                                new_p.children.insert(
-                                    0,
-                                    ParagraphChild::Run(Box::new(
-                                        Run::new().add_field_char(FieldCharType::End, false),
-                                    )),
-                                );
-                                b = b.add_child(&new_p)?
-                            } else {
-                                b = b.add_child(&p)?;
-                            }
+                            b = b.add_child(&p)?;
                         }
                         TocContent::Table(t) => {
                             // insert empty line for table
@@ -332,7 +319,7 @@ mod tests {
         let b = TableOfContents::new().heading_styles_range(1, 3).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="true" /><w:instrText>TOC \o &quot;1-3&quot;</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /></w:r></w:p><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent></w:sdt>"#
+            r#"<w:sdt><w:sdtPr><w:rPr /></w:sdtPr><w:sdtContent><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="true" /><w:instrText>TOC \o &quot;1-3&quot;</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /></w:r><w:r><w:rPr /><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p></w:sdtContent></w:sdt>"#
         );
     }
 
@@ -344,7 +331,7 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="true" /><w:instrText>TOC \o &quot;1-3&quot;</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /></w:r></w:p><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p>"#
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="true" /><w:instrText>TOC \o &quot;1-3&quot;</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /></w:r><w:r><w:rPr /><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r></w:p>"#
         );
     }
 

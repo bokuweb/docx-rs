@@ -213,8 +213,12 @@ impl BuildXML for TableOfContents {
 
             b = b.add_child(&p1)?;
 
-            let p2 = Paragraph::new().add_run(Run::new().add_field_char(FieldCharType::End, false));
+            let mut p2 =
+                Paragraph::new().add_run(Run::new().add_field_char(FieldCharType::End, false));
             if self.after_contents.is_empty() {
+                if let Some(paragraph_property) = self.paragraph_property.clone() {
+                    p2.property = paragraph_property;
+                }
                 b = b.add_child(&p2)?;
             } else {
                 for (i, c) in self.after_contents.iter().enumerate() {

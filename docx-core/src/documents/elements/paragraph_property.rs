@@ -197,7 +197,7 @@ impl ParagraphProperty {
     }
 
     pub fn run_property(mut self, s: RunProperty) -> Self {
-        self.run_property = s;
+        self.run_property = Some(s);
         self
     }
 

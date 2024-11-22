@@ -6,7 +6,7 @@ import {
 } from "./run-property";
 
 export class DocDefaults {
-  runProperty: RunProperty;
+  runProperty?: RunProperty;
   paragraphProperty: ParagraphProperty = new ParagraphProperty();
 
   size(size: number) {

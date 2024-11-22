@@ -13,13 +13,13 @@ import {
   VertAlignType,
   RunFonts,
   setRunProperty,
-} from "./run";
+} from "./run-property";
 import {
   AlignmentType,
   createDefaultParagraphProperty,
+  createParagraphProperty,
   LineSpacing,
   ParagraphProperty,
-  setParagraphProperty,
   SpecialIndentKind,
 } from "./paragraph-property";
 import { BorderType } from "./border";
@@ -41,7 +41,7 @@ export class Style {
     this._styleId = id;
     this._styleType = type;
     this._name = "";
-    this._runProperty = {};
+    this._runProperty;
     this._tableProperty = { cellMargins: createDefaultTableCellMargins() };
     this._runProperty = createDefaultRunProperty();
     this._paragraphProperty = createDefaultParagraphProperty();
@@ -64,105 +64,95 @@ export class Style {
     return this;
   };
 
-  // TODO:
-  // runProperty = (n: RunProperty) => {
-  //   this._runProperty = n;
-  //   return this;
-  // };
-
   // run property
   style(style: string) {
-    this._runProperty = { ...this._runProperty, style };
+    this._runProperty.style(style);
     return this;
   }
 
   size(size: number) {
-    this._runProperty = { ...this._runProperty, size };
+    this._runProperty.size(size);
     return this;
   }
 
   color(color: string) {
-    this._runProperty = { ...this._runProperty, color };
+    this._runProperty.color(color);
     return this;
   }
 
   highlight(color: string) {
-    this._runProperty = { ...this._runProperty, highlight: color };
+    this._runProperty.highlight(color);
     return this;
   }
 
   vertAlign(vertAlign: VertAlignType) {
-    this._runProperty = { ...this._runProperty, vertAlign };
+    this._runProperty.vertAlign(vertAlign);
     return this;
   }
 
   bold() {
-    this._runProperty = { ...this._runProperty, bold: true };
+    this._runProperty.bold();
     return this;
   }
 
   strike() {
-    this._runProperty = { ...this._runProperty, strike: true };
+    this._runProperty.strike();
     return this;
   }
 
   italic() {
-    this._runProperty = { ...this._runProperty, italic: true };
+    this._runProperty.italic();
     return this;
   }
 
   underline(type: string) {
-    this._runProperty = { ...this._runProperty, underline: type };
+    this._runProperty.underline(type);
     return this;
   }
 
   vanish() {
-    this._runProperty = { ...this._runProperty, vanish: true };
+    this._runProperty.vanish();
     return this;
   }
 
   fonts(fonts: RunFonts) {
-    this._runProperty = { ...this._runProperty, fonts };
+    this._runProperty.fonts(fonts);
     return this;
   }
 
   characterSpacing(characterSpacing: number) {
-    this._runProperty = { ...this._runProperty, characterSpacing };
+    this._runProperty.spacing(characterSpacing);
     return this;
   }
 
   delete(author: string, date: string) {
-    this._runProperty = { ...this._runProperty, del: { author, date } };
+    this._runProperty.delete(author, date);
     return this;
   }
 
   insert(author: string, date: string) {
-    this._runProperty = { ...this._runProperty, ins: { author, date } };
+    this._runProperty.insert(author, date);
     return this;
   }
 
   textBorder(type: BorderType, size: number, space: number, color: string) {
-    this._runProperty = {
-      ...this._runProperty,
-      textBorder: {
-        borderType: type,
-        size,
-        space,
-        color,
-      },
-    };
+    this._runProperty.textBorder(type, size, space, color);
     return this;
   }
 
-  // TODO:
-  // paragraphProperty = (n: ParagraphProperty) => {
-  //   this._paragraphProperty = n;
-  //   return this;
-  // };
+  paragraphProperty = (p: ParagraphProperty) => {
+    this._paragraphProperty = p;
+    return this;
+  };
+
+  runProperty = (p: RunProperty) => {
+    this._runProperty = p;
+    return this;
+  };
 
   // paragraph property
   align(type: AlignmentType) {
-    this._paragraphProperty.align = type;
+    this._paragraphProperty._align = type;
     return this;
   }
 
@@ -190,33 +180,31 @@ export class Style {
   }
 
   keepNext(v: boolean) {
-    this._paragraphProperty = { ...this._paragraphProperty, keepNext: v };
+    this._paragraphProperty.keepNext = v;
     return this;
   }
 
   keepLines(v: boolean) {
-    this._paragraphProperty = { ...this._paragraphProperty, keepLines: v };
+    this._paragraphProperty.keepLines = v;
     return this;
   }
 
   pageBreakBefore(v: boolean) {
-    this._paragraphProperty = {
-      ...this._paragraphProperty,
-      pageBreakBefore: v,
-    };
+    this._paragraphProperty.pageBreakBefore = v;
     return this;
   }
 
   widowControl(v: boolean) {
-    this._paragraphProperty = { ...this._paragraphProperty, widowControl: v };
+    this._paragraphProperty.widowControl = v;
     return this;
   }
 
   outlineLevel(v: number) {
-    this._paragraphProperty = { ...this._paragraphProperty, outlineLvl: v };
+    this._paragraphProperty.outlineLvl = v;
     return this;
   }
 
+  // TODO:
   // tableProperty = (n: TableProperty) => {
   //   this._tableProperty = n;
   //   return this;
@@ -304,11 +292,19 @@ export class Style {
       s = s.link(this._link);
     }
 
-    s = setRunProperty(s, this._runProperty);
+    if (this._runProperty) {
+      s = setRunProperty(s, this._runProperty);
+    }
 
-    s = setParagraphProperty(s, this._paragraphProperty);
+    if (this._paragraphProperty) {
+      s = s.paragraph_property(
+        createParagraphProperty(this._paragraphProperty)
+      );
+    }
 
-    s = setTableProperty(s, this._tableProperty);
+    if (this._tableProperty) {
+      s = setTableProperty(s, this._tableProperty);
+    }
 
     return s;
   };

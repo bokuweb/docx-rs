@@ -9,8 +9,8 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Styles {
-    doc_defaults: DocDefaults,
-    styles: Vec<Style>,
+    pub doc_defaults: DocDefaults,
+    pub styles: Vec<Style>,
 }
 
 impl Styles {

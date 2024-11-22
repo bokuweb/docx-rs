@@ -96,4 +96,9 @@ impl TableOfContents {
         self.0 = self.0.add_after_table(t.take());
         self
     }
+
+    pub fn paragraph_property(mut self, p: ParagraphProperty) -> Self {
+        self.0.paragraph_property = Some(p.take());
+        self
+    }
 }

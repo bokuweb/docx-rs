@@ -1,4 +1,5 @@
-import { Run, RunFonts } from "./run";
+import { Run } from "./run";
+import { RunFonts } from "./run-property";
 import {
   createDefaultParagraphProperty,
   ParagraphProperty,
@@ -94,22 +95,22 @@ export class Paragraph {
       pos: number | null;
     }[]
   ) {
-    this.property.tabs = tabs;
+    this.property._tabs = tabs;
     return this;
   }
 
   align(type: AlignmentType) {
-    this.property.align = type;
+    this.property._align = type;
     return this;
   }
 
   textAlignment(type: TextAlignmentType) {
-    this.property.textAlignment = type;
+    this.property._textAlignment = type;
     return this;
   }
 
   adjustRightInd(v: number) {
-    this.property.adjustRightInd = v;
+    this.property._adjustRightInd = v;
     return this;
   }
 
@@ -145,73 +146,73 @@ export class Paragraph {
   }
 
   characterSpacing(spacing: number) {
-    this.property.runProperty.characterSpacing = spacing;
+    this.property.runProperty.spacing(spacing);
     return this;
   }
 
   snapToGrid(v: boolean) {
-    this.property = { ...this.property, snapToGrid: v };
+    this.property.snapToGrid = v;
     return this;
   }
 
   keepNext(v: boolean) {
-    this.property = { ...this.property, keepNext: v };
+    this.property.keepNext = v;
     return this;
   }
 
   keepLines(v: boolean) {
-    this.property = { ...this.property, keepLines: v };
+    this.property.keepLines = v;
     return this;
   }
 
   pageBreakBefore(v: boolean) {
-    this.property = { ...this.property, pageBreakBefore: v };
+    this.property.pageBreakBefore = v;
     return this;
   }
 
   widowControl(v: boolean) {
-    this.property = { ...this.property, widowControl: v };
+    this.property.widowControl = v;
     return this;
   }
 
   // run property
   size(size: number) {
-    this.property.runProperty = { ...this.property.runProperty, size };
+    this.property.runProperty.size(size);
     return this;
   }
 
   color(color: string) {
-    this.property.runProperty = { ...this.property.runProperty, color };
+    this.property.runProperty.color(color);
     return this;
   }
 
   bold() {
-    this.property.runProperty = { ...this.property.runProperty, bold: true };
+    this.property.runProperty.bold();
     return this;
   }
 
   italic() {
-    this.property.runProperty = { ...this.property.runProperty, italic: true };
+    this.property.runProperty.italic();
     return this;
   }
 
   fonts(fonts: RunFonts) {
-    this.property.runProperty = { ...this.property.runProperty, fonts };
+    this.property.runProperty.fonts(fonts);
     return this;
   }
 
   delete(author: string, date: string) {
-    this.property.runProperty.del = { author, date };
+    this.property.runProperty.delete(author, date);
     return this;
   }
 
   insert(author: string, date: string) {
-    this.property.runProperty.ins = { author, date };
+    this.property.runProperty.insert(author, date);
     return this;
   }
 
   outlineLevel(v: number) {
-    this.property = { ...this.property, outlineLvl: v };
+    this.property.outlineLvl = v;
     return this;
   }
 

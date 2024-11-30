@@ -54,7 +54,7 @@ export type NumberingPropertyJSON = {
 };
 
 export type ParagraphPropertyJSON = {
-  runProperty: RunPropertyJSON;
+  runProperty?: RunPropertyJSON;
   style?: string | null;
   numberingProperty?: NumberingPropertyJSON | null;
   alignment?: AlignmentType;

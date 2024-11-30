@@ -61,7 +61,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             std::str::from_utf8(&b).unwrap(),
-            r#"<w:pPrDefault><w:pPr><w:rPr /></w:pPr></w:pPrDefault>"#
+            r#"<w:pPrDefault><w:pPr /></w:pPrDefault>"#
         );
     }
 }

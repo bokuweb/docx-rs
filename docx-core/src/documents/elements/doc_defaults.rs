@@ -89,7 +89,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:docDefaults><w:rPrDefault><w:rPr /></w:rPrDefault><w:pPrDefault><w:pPr><w:rPr /></w:pPr></w:pPrDefault></w:docDefaults>"#
+            r#"<w:docDefaults><w:rPrDefault><w:rPr /></w:rPrDefault><w:pPrDefault><w:pPr /></w:pPrDefault></w:docDefaults>"#
         );
     }
 }

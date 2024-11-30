@@ -10,45 +10,83 @@ use crate::{xml_builder::*, TextAlignmentType};
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct ParagraphProperty {
-    pub run_property: RunProperty,
+    // Child elements: Sequence [1..1]
+    //1. w:pStyle
     #[serde(skip_serializing_if = "Option::is_none")]
     pub style: Option<ParagraphStyle>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub numbering_property: Option<NumberingProperty>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub alignment: Option<Justification>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub indent: Option<Indent>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub line_spacing: Option<LineSpacing>,
+    //2. w:keepNext
     #[serde(skip_serializing_if = "Option::is_none")]
     pub keep_next: Option<bool>,
+    //3. w:keepLines
     #[serde(skip_serializing_if = "Option::is_none")]
     pub keep_lines: Option<bool>,
+    //4. w:pageBreakBefore
     #[serde(skip_serializing_if = "Option::is_none")]
     pub page_break_before: Option<bool>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub widow_control: Option<bool>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub outline_lvl: Option<OutlineLvl>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub section_property: Option<SectionProperty>,
-    pub tabs: Vec<Tab>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub paragraph_property_change: Option<ParagraphPropertyChange>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub borders: Option<ParagraphBorders>,
+    //5. w:framePr
     #[serde(skip_serializing_if = "Option::is_none")]
     pub frame_property: Option<FrameProperty>,
+    //6. w:widowControl
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub text_alignment: Option<TextAlignment>,
+    pub widow_control: Option<bool>,
+    //7. w:numPr
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub numbering_property: Option<NumberingProperty>,
+    //8. w:suppressLineNumbers
+    //9. w:pBdr
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub borders: Option<ParagraphBorders>,
+    //10. w:shd
+    //11. w:tabs
+    pub tabs: Vec<Tab>,
+    //12. w:suppressAutoHyphens
+    //13. w:kinsoku
+    //14. w:wordWrap
+    //15. w:overflowPunct
+    //16. w:topLinePunct
+    //17. w:autoSpaceDE
+    //18. w:autoSpaceDN
+    //19. w:bidi
+    //20. w:adjustRightInd
     #[serde(skip_serializing_if = "Option::is_none")]
     pub adjust_right_ind: Option<AdjustRightInd>,
+    //21. w:snapToGrid
     #[serde(skip_serializing_if = "Option::is_none")]
     pub snap_to_grid: Option<bool>,
+    //22. w:spacing
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub line_spacing: Option<LineSpacing>,
+    //23. w:ind
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub indent: Option<Indent>,
+    //24. w:contextualSpacing
+    //25. w:mirrorIndents
+    //26. w:suppressOverlap
+    //27. w:jc
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub alignment: Option<Justification>,
+    //28. w:textDirection
+    //29. w:textAlignment
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub text_alignment: Option<TextAlignment>,
+    //30. w:textboxTightWrap
+    //31. w:outlineLvl
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub outline_lvl: Option<OutlineLvl>,
+    //32. w:divId
     // read only
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) div_id: Option<String>,
+    //33. w:cnfStyle
+    //34. w:rPr
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub run_property: Option<RunProperty>,
+    //35. w:sectPr
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub section_property: Option<SectionProperty>,
+    //36. w:pPrChange
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub paragraph_property_change: Option<ParagraphPropertyChange>,
 }
 
 // 17.3.1.26
@@ -98,7 +136,8 @@ impl ParagraphProperty {
     }
 
     pub fn character_spacing(mut self, spacing: i32) -> Self {
-        self.run_property.character_spacing = Some(CharacterSpacing::new(spacing));
+        let run_property = self.run_property.get_or_insert_with(RunProperty::new);
+        run_property.character_spacing = Some(CharacterSpacing::new(spacing));
         self
     }
 
@@ -158,7 +197,7 @@ impl ParagraphProperty {
     }
 
     pub fn run_property(mut self, s: RunProperty) -> Self {
-        self.run_property = s;
+        self.run_property = Some(s);
         self
     }
 
@@ -214,30 +253,31 @@ impl BuildXML for ParagraphProperty {
     ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_paragraph_property()?
-            .add_child(&self.run_property)?
             .add_optional_child(&self.style)?
-            .add_optional_child(&self.numbering_property)?
-            .add_optional_child(&self.frame_property)?
-            .add_optional_child(&self.alignment)?
-            .add_optional_child(&self.indent)?
-            .add_optional_child(&self.line_spacing)?
-            .add_optional_child(&self.outline_lvl)?
-            .add_optional_child(&self.paragraph_property_change)?
-            .add_optional_child(&self.borders)?
-            .add_optional_child(&self.text_alignment)?
-            .add_optional_child(&self.adjust_right_ind)?
-            .apply_opt(self.snap_to_grid, |v, b| b.snap_to_grid(v))?
             .apply_if(self.keep_next, |b| b.keep_next())?
             .apply_if(self.keep_lines, |b| b.keep_lines())?
             .apply_if(self.page_break_before, |b| b.page_break_before())?
+            .add_optional_child(&self.frame_property)?
             .apply_opt(self.widow_control, |flag, b| {
                 b.widow_control(if flag { "1" } else { "0" })
             })?
+            .add_optional_child(&self.numbering_property)?
+            .add_optional_child(&self.borders)?
             .apply_if(!self.tabs.is_empty(), |b| {
                 b.open_tabs()?
                     .apply_each(&self.tabs, |tab, b| b.tab(tab.val, tab.leader, tab.pos))?
                     .close()
             })?
+            .add_optional_child(&self.adjust_right_ind)?
+            .apply_opt(self.snap_to_grid, |v, b| b.snap_to_grid(v))?
+            .add_optional_child(&self.line_spacing)?
+            .add_optional_child(&self.indent)?
+            .add_optional_child(&self.alignment)?
+            .add_optional_child(&self.text_alignment)?
+            .add_optional_child(&self.outline_lvl)?
+            .add_optional_child(&self.run_property)?
+            .add_optional_child(&self.section_property)?
+            .add_optional_child(&self.paragraph_property_change)?
             .close()?
             .into_inner()
     }
@@ -255,7 +295,7 @@ mod tests {
     fn test_default() {
         let c = ParagraphProperty::new();
         let b = c.build();
-        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:pPr><w:rPr /></w:pPr>"#);
+        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:pPr />"#);
     }
 
     #[test]
@@ -264,7 +304,7 @@ mod tests {
         let b = c.align(AlignmentType::Right).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPr><w:rPr /><w:jc w:val="right" /></w:pPr>"#
+            r#"<w:pPr><w:jc w:val="right" /></w:pPr>"#
         );
     }
 
@@ -274,7 +314,7 @@ mod tests {
         let b = c.indent(Some(20), None, None, None).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPr><w:rPr /><w:ind w:left="20" w:right="0" /></w:pPr>"#
+            r#"<w:pPr><w:ind w:left="20" w:right="0" /></w:pPr>"#
         );
     }
 
@@ -284,7 +324,7 @@ mod tests {
         let b = c.keep_next(true).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:pPr><w:rPr /><w:keepNext /></w:pPr>"#
+            r#"<w:pPr><w:keepNext /></w:pPr>"#
         );
     }
 
@@ -294,7 +334,7 @@ mod tests {
         let bytes = props.outline_lvl(1).build();
         assert_eq!(
             str::from_utf8(&bytes).unwrap(),
-            r#"<w:pPr><w:rPr /><w:outlineLvl w:val="1" /></w:pPr>"#
+            r#"<w:pPr><w:outlineLvl w:val="1" /></w:pPr>"#
         )
     }
 
@@ -304,7 +344,7 @@ mod tests {
         let b = c.indent(Some(20), Some(SpecialIndentType::FirstLine(10)), None, None);
         assert_eq!(
             serde_json::to_string(&b).unwrap(),
-            r#"{"runProperty":{},"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10},"hangingChars":null,"firstLineChars":null},"tabs":[]}"#
+            r#"{"tabs":[],"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10},"hangingChars":null,"firstLineChars":null}}"#
         );
     }
 
@@ -317,7 +357,7 @@ mod tests {
         let bytes = props.line_spacing(spacing).build();
         assert_eq!(
             str::from_utf8(&bytes).unwrap(),
-            r#"<w:pPr><w:rPr /><w:spacing w:line="100" w:lineRule="atLeast" /></w:pPr>"#
+            r#"<w:pPr><w:spacing w:line="100" w:lineRule="atLeast" /></w:pPr>"#
         )
     }
 }

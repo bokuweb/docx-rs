@@ -12,19 +12,46 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TableProperty {
-    width: TableWidth,
-    justification: Justification,
-    borders: TableBorders,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    margins: Option<TableCellMargins>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    indent: Option<TableIndent>,
+    // sequential elements
+
+    // 1. w:tblStyle
     #[serde(skip_serializing_if = "Option::is_none")]
     style: Option<TableStyle>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    layout: Option<TableLayout>,
+    // 2. w:tblpPr
     #[serde(skip_serializing_if = "Option::is_none")]
     position: Option<TablePositionProperty>,
+    // TODO: Add TblpPr type
+    // 3. w:tblOverlap
+    // TODO: Add TblOverlap type
+    // 4. w:bidiVisual
+    // TODO: Add BidiVisual type
+    // 5. w:tblStyleRowBandSize
+    // TODO: Add TblStyleRowBandSize type
+    // 6. w:tblStyleColBandSize
+    // TODO: Add TblStyleColBandSize type
+    // 7. w:tblW
+    width: TableWidth,
+    // 8. w:jc
+    justification: Justification,
+    // 9. w:tblCellSpacing
+    // TODO: Add TblCellSpacing type
+    // 10. w:tblInd
+    #[serde(skip_serializing_if = "Option::is_none")]
+    indent: Option<TableIndent>,
+    // 11. w:tblBorders
+    borders: TableBorders,
+    // 12. w:shd
+    // TODO: Add Shd type
+    // 13. w:tblLayout
+    #[serde(skip_serializing_if = "Option::is_none")]
+    layout: Option<TableLayout>,
+    // 14. w:tblCellMar
+    #[serde(skip_serializing_if = "Option::is_none")]
+    margins: Option<TableCellMargins>,
+    // 15. w:tblLook
+    // TODO: Add TblLook type
+    // 16. w:tblPrChange
+    // TODO: Add TblPrChange type
 }
 
 impl Default for TableProperty {
@@ -151,20 +178,33 @@ impl TableProperty {
 }
 
 impl BuildXML for TableProperty {
+    // fn build(&self) -> Vec<u8> {
+    //     XMLBuilder::new()
+    //         .open_table_property()
+    //         .add_optional_child(&self.style)
+    //         .add_optional_child(&self.position)
+    //         .add_child(&self.width)
+    //         .add_child(&self.justification)
+    //         .add_optional_child(&self.indent)
+    //         .add_child(&self.borders)
+    //         .add_optional_child(&self.layout)
+    //         .add_optional_child(&self.margins)
+    //         .close()
+    //         .build()
     fn build_to<W: Write>(
         &self,
         stream: xml::writer::EventWriter<W>,
     ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_table_property()?
+            .add_optional_child(&self.style)?
+            .add_optional_child(&self.position)?
             .add_child(&self.width)?
             .add_child(&self.justification)?
-            .add_child(&self.borders)?
-            .add_optional_child(&self.margins)?
             .add_optional_child(&self.indent)?
-            .add_optional_child(&self.style)?
+            .add_child(&self.borders)?
             .add_optional_child(&self.layout)?
-            .add_optional_child(&self.position)?
+            .add_optional_child(&self.margins)?
             .close()?
             .into_inner()
     }
@@ -193,7 +233,7 @@ mod tests {
         let p = TableProperty::new().indent(100);
         assert_eq!(
             serde_json::to_string(&p).unwrap(),
-            r#"{"width":{"width":0,"widthType":"auto"},"justification":"left","borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}},"indent":{"width":100,"widthType":"dxa"}}"#
+            r#"{"width":{"width":0,"widthType":"auto"},"justification":"left","indent":{"width":100,"widthType":"dxa"},"borders":{"top":{"borderType":"single","size":2,"color":"000000","position":"top","space":0},"left":{"borderType":"single","size":2,"color":"000000","position":"left","space":0},"bottom":{"borderType":"single","size":2,"color":"000000","position":"bottom","space":0},"right":{"borderType":"single","size":2,"color":"000000","position":"right","space":0},"insideH":{"borderType":"single","size":2,"color":"000000","position":"insideH","space":0},"insideV":{"borderType":"single","size":2,"color":"000000","position":"insideV","space":0}}}"#
         );
     }
 }

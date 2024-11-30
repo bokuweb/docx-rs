@@ -12,17 +12,21 @@ use super::*;
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Style {
+    // Attributes
     pub style_id: String,
-    pub name: Name,
     pub style_type: StyleType,
-    pub run_property: RunProperty,
-    pub paragraph_property: ParagraphProperty,
-    pub table_property: TableProperty,
-    pub table_cell_property: TableCellProperty,
+
+    // Child elements: Sequence [1..1]
+    pub name: Name,
     pub based_on: Option<BasedOn>,
     pub next: Option<Next>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub link: Option<Link>,
+    //qFormat element
+    pub paragraph_property: ParagraphProperty,
+    pub run_property: RunProperty,
+    pub table_property: TableProperty,
+    pub table_cell_property: TableCellProperty,
 }
 
 impl Default for Style {
@@ -325,16 +329,16 @@ impl BuildXML for Style {
         XMLBuilder::from(stream)
             .open_style(self.style_type, &self.style_id)?
             .add_child(&self.name)?
-            .add_child(&self.run_property)?
+            .add_optional_child(&self.based_on)?
+            .add_optional_child(&self.next)?
+            .add_optional_child(&self.link)?
+            .add_child(&QFormat::new())?
             .add_child(&self.paragraph_property)?
+            .add_child(&self.run_property)?
             .apply_if(self.style_type == StyleType::Table, |b| {
                 b.add_child(&self.table_cell_property)?
                     .add_child(&self.table_property)
             })?
-            .add_optional_child(&self.next)?
-            .add_optional_child(&self.link)?
-            .add_child(&QFormat::new())?
-            .add_optional_child(&self.based_on)?
             .close()?
             .into_inner()
     }
@@ -354,7 +358,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:style w:type="paragraph" w:styleId="Heading"><w:name w:val="Heading1" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:qFormat /></w:style>"#
+            r#"<w:style w:type="paragraph" w:styleId="Heading"><w:name w:val="Heading1" /><w:qFormat /><w:pPr /><w:rPr /></w:style>"#
         );
     }
 }

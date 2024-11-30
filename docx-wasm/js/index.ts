@@ -290,33 +290,35 @@ export class Docx {
       level = level.suffix(wasm.LevelSuffixType.Tab);
     }
 
-    if (l.runProperty._bold) {
-      level = level.bold();
-    }
+    if (l.runProperty) {
+      if (l.runProperty._bold) {
+        level = level.bold();
+      }
 
-    if (l.runProperty._italic) {
-      level = level.italic();
-    }
+      if (l.runProperty._italic) {
+        level = level.italic();
+      }
 
-    if (l.runProperty._size) {
-      level = level.size(l.runProperty._size);
-    }
+      if (l.runProperty._size) {
+        level = level.size(l.runProperty._size);
+      }
 
-    if (l.runProperty._fonts) {
-      let f = wasm.createRunFonts();
-      if (l.runProperty._fonts._ascii) {
-        f = f.ascii(l.runProperty._fonts._ascii);
+      if (l.runProperty._fonts) {
+        let f = wasm.createRunFonts();
+        if (l.runProperty._fonts._ascii) {
+          f = f.ascii(l.runProperty._fonts._ascii);
+        }
+        if (l.runProperty._fonts._hiAnsi) {
+          f = f.hi_ansi(l.runProperty._fonts._hiAnsi);
+        }
+        if (l.runProperty._fonts._cs) {
+          f = f.cs(l.runProperty._fonts._cs);
+        }
+        if (l.runProperty._fonts._eastAsia) {
+          f = f.east_asia(l.runProperty._fonts._eastAsia);
+        }
+        level = level.fonts(f);
       }
-      if (l.runProperty._fonts._hiAnsi) {
-        f = f.hi_ansi(l.runProperty._fonts._hiAnsi);
-      }
-      if (l.runProperty._fonts._cs) {
-        f = f.cs(l.runProperty._fonts._cs);
-      }
-      if (l.runProperty._fonts._eastAsia) {
-        f = f.east_asia(l.runProperty._fonts._eastAsia);
-      }
-      level = level.fonts(f);
     }
 
     if (l.paragraphProperty.indent) {

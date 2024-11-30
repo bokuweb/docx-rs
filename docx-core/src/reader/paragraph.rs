@@ -111,7 +111,6 @@ mod tests {
     <w:p>
         <w:pPr>
             <w:ind w:left="1470" w:right="1270" w:hanging="0"/>
-            <w:rPr></w:rPr>
         </w:pPr>
         <w:r>
             <w:rPr></w:rPr>
@@ -128,7 +127,7 @@ mod tests {
                 id: "12345678".to_owned(),
                 children: vec![ParagraphChild::Run(Box::new(Run::new().add_text("a")))],
                 property: ParagraphProperty {
-                    run_property: RunProperty::new(),
+                    run_property: None,
                     style: None,
                     numbering_property: None,
                     alignment: None,
@@ -152,7 +151,6 @@ mod tests {
     <w:p>
         <w:pPr>
             <w:ind w:startChars="100" />
-            <w:rPr></w:rPr>
         </w:pPr>
         <w:r>
             <w:rPr></w:rPr>
@@ -169,7 +167,7 @@ mod tests {
                 id: "12345678".to_owned(),
                 children: vec![ParagraphChild::Run(Box::new(Run::new().add_text("a")))],
                 property: ParagraphProperty {
-                    run_property: RunProperty::new(),
+                    run_property: None,
                     style: None,
                     numbering_property: None,
                     alignment: None,
@@ -200,7 +198,7 @@ mod tests {
                 id: "12345678".to_owned(),
                 children: vec![],
                 property: ParagraphProperty {
-                    run_property: RunProperty::new(),
+                    run_property: None,
                     style: None,
                     numbering_property: None,
                     alignment: Some(Justification::new(AlignmentType::Left.to_string())),
@@ -233,7 +231,7 @@ mod tests {
                 id: "12345678".to_owned(),
                 children: vec![],
                 property: ParagraphProperty {
-                    run_property: RunProperty::new(),
+                    run_property: None,
                     style: None,
                     numbering_property: Some(
                         NumberingProperty::new().add_num(NumberingId::new(1), IndentLevel::new(0),)
@@ -272,7 +270,7 @@ mod tests {
                         .date("2019-11-15T14:19:04Z")
                 )],
                 property: ParagraphProperty {
-                    run_property: RunProperty::new(),
+                    run_property: None,
                     style: None,
                     numbering_property: None,
                     alignment: None,
@@ -311,7 +309,7 @@ mod tests {
                         .date("2019-11-15T14:19:04Z")
                 )],
                 property: ParagraphProperty {
-                    run_property: RunProperty::new(),
+                    run_property: None,
                     style: None,
                     numbering_property: None,
                     alignment: None,
@@ -349,7 +347,7 @@ mod tests {
                     ParagraphChild::BookmarkEnd(BookmarkEnd::new(0)),
                 ],
                 property: ParagraphProperty {
-                    run_property: RunProperty::new(),
+                    run_property: None,
                     style: None,
                     numbering_property: None,
                     alignment: None,
@@ -399,7 +397,7 @@ mod tests {
                     )
                 ],
                 property: ParagraphProperty {
-                    run_property: RunProperty::new(),
+                    run_property: None,
                     style: None,
                     numbering_property: None,
                     alignment: None,
@@ -441,7 +439,7 @@ mod tests {
                         .add_run(Run::new().add_text("H")),
                 )],
                 property: ParagraphProperty {
-                    run_property: RunProperty::new(),
+                    run_property: None,
                     style: None,
                     numbering_property: None,
                     alignment: None,

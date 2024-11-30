@@ -441,7 +441,7 @@ mod tests {
         };
         assert_eq!(
             serde_json::to_string(&run).unwrap(),
-            r#"{"runProperty":{"sz":30,"szCs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true,"characterSpacing":100},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#,
+            r#"{"runProperty":{"bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true,"color":"C9211E","characterSpacing":100,"sz":30,"szCs":30,"highlight":"yellow","underline":"single"},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#,
         );
     }
 

@@ -74,7 +74,7 @@ mod tests {
         let b = c.build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:abstractNum w:abstractNumId="0"><w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /></w:lvl></w:abstractNum>"#
+            r#"<w:abstractNum w:abstractNumId="0"><w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr /><w:rPr /></w:lvl></w:abstractNum>"#
         );
     }
 
@@ -92,7 +92,7 @@ mod tests {
             .num_style_link("style1");
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
-            r#"{"id":0,"styleLink":null,"numStyleLink":"style1","levels":[{"level":1,"start":1,"format":"decimal","text":"%4.","jc":"left","paragraphProperty":{"runProperty":{},"tabs":[]},"runProperty":{},"suffix":"tab","pstyle":null,"levelRestart":null}]}"#,
+            r#"{"id":0,"styleLink":null,"numStyleLink":"style1","levels":[{"level":1,"start":1,"format":"decimal","text":"%4.","jc":"left","paragraphProperty":{"tabs":[]},"runProperty":{},"suffix":"tab","pstyle":null,"levelRestart":null}]}"#,
         );
     }
 }

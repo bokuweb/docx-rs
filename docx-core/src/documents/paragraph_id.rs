@@ -7,8 +7,7 @@ static PARA_ID: AtomicUsize = AtomicUsize::new(1);
 pub fn generate_para_id() -> String {
     use std::sync::atomic::Ordering;
 
-    let id = PARA_ID.load(Ordering::Relaxed);
-    PARA_ID.store(id.wrapping_add(1), Ordering::Relaxed);
+    let id = PARA_ID.fetch_add(1, Ordering::Relaxed);
     format!("{:08x}", id)
 }
 

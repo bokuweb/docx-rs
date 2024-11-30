@@ -1,9 +1,11 @@
-import { RunProperty, createDefaultRunProperty } from "./run";
+import { RunProperty, createDefaultRunProperty } from "./run-property";
 
 import * as wasm from "./pkg";
 import { TextAlignmentType } from "./json/bindings/TextAlignmentType";
 import { Tab } from "./json/bindings/Tab";
 import { AlignmentType } from "./json/bindings/AlignmentType";
+import { TabValueType } from "./json/bindings/TabValueType";
+import { TabLeaderType } from "./json/bindings/TabLeaderType";
 
 export { AlignmentType } from "./json/bindings/AlignmentType";
 
@@ -60,9 +62,9 @@ export class LineSpacing {
   }
 }
 
-export type ParagraphProperty = {
-  align?: AlignmentType;
-  textAlignment?: TextAlignmentType;
+export class ParagraphProperty {
+  _align?: AlignmentType;
+  _textAlignment?: TextAlignmentType;
   styleId?: string;
   indent?: {
     left: number;
@@ -75,7 +77,7 @@ export type ParagraphProperty = {
     level: number;
   };
   lineSpacing?: LineSpacing;
-  runProperty: RunProperty;
+  runProperty: RunProperty = createDefaultRunProperty();
   keepNext: boolean;
   keepLines: boolean;
   pageBreakBefore: boolean;
@@ -83,19 +85,52 @@ export type ParagraphProperty = {
   paragraphPropertyChange?: ParagraphPropertyChange;
   outlineLvl?: number | null;
   snapToGrid?: boolean;
-  adjustRightInd?: number;
-  tabs?: Tab[];
+  _adjustRightInd?: number;
+  _tabs?: Tab[];
   frameProperty?: FrameProperty;
-};
+
+  constructor() {}
+
+  tabs(
+    tabs: {
+      val: TabValueType | null;
+      leader: TabLeaderType | null;
+      pos: number | null;
+    }[]
+  ) {
+    this._tabs = tabs;
+    return this;
+  }
+
+  align(type: AlignmentType) {
+    this._align = type;
+    return this;
+  }
+
+  textAlignment(type: TextAlignmentType) {
+    this._textAlignment = type;
+    return this;
+  }
+
+  adjustRightInd(v: number) {
+    this._adjustRightInd = v;
+    return this;
+  }
+
+  style(id: string) {
+    this.styleId = id;
+    return this;
+  }
+}
 
 export const createDefaultParagraphProperty = (): ParagraphProperty => {
-  return {
-    runProperty: createDefaultRunProperty(),
-    keepNext: false,
-    keepLines: false,
-    pageBreakBefore: false,
-    widowControl: false,
-  };
+  let p = new ParagraphProperty();
+  p.runProperty = createDefaultRunProperty();
+  p.keepNext = false;
+  p.keepLines = false;
+  p.pageBreakBefore = false;
+  p.widowControl = false;
+  return p;
 };
 
 export const createParagraphAlignment = (
@@ -170,17 +205,17 @@ export class ParagraphPropertyChange {
   }
 
   align(type: AlignmentType) {
-    this._property.align = type;
+    this._property._align = type;
     return this;
   }
 
   textAlignment(type: TextAlignmentType) {
-    this._property.textAlignment = type;
+    this._property._textAlignment = type;
     return this;
   }
 
   adjustRightInd(v: number) {
-    this._property.adjustRightInd = v;
+    this._property._adjustRightInd = v;
     return this;
   }
 
@@ -251,22 +286,23 @@ export const buildLineSpacing = (
   return spacing;
 };
 
+// @deprecated
 export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
   target: T,
   property: ParagraphProperty
 ): T => {
-  const alignment = createParagraphAlignment(property.align);
+  const alignment = createParagraphAlignment(property._align);
   if (alignment != null) {
     target = target.align(alignment) as T;
   }
 
-  const textAlignment = createParagraphTextAlignment(property.textAlignment);
+  const textAlignment = createParagraphTextAlignment(property._textAlignment);
   if (textAlignment != null) {
     target = target.text_alignment(textAlignment) as T;
   }
 
-  if (property.adjustRightInd != null) {
-    target = target.adjust_right_ind(property.adjustRightInd) as T;
+  if (property._adjustRightInd != null) {
+    target = target.adjust_right_ind(property._adjustRightInd) as T;
   }
 
   if (typeof property.indent !== "undefined") {
@@ -295,12 +331,12 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
     target = target.numbering(numbering.id, numbering.level) as T;
   }
 
-  if (property.runProperty.bold) {
+  if (property.runProperty._bold) {
     target = target.bold() as T;
   }
 
-  if (property.runProperty.color) {
-    target = target.color(property.runProperty.color) as T;
+  if (property.runProperty._color) {
+    target = target.color(property.runProperty._color) as T;
   }
 
   if (typeof property.lineSpacing !== "undefined") {
@@ -310,27 +346,27 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
     }
   }
 
-  if (property.runProperty.italic) {
+  if (property.runProperty._italic) {
     target = target.italic() as T;
   }
 
-  if (property.runProperty.size) {
-    target = target.size(property.runProperty.size) as T;
+  if (property.runProperty._size) {
+    target = target.size(property.runProperty._size) as T;
   }
 
-  if (property.runProperty.fonts) {
+  if (property.runProperty._fonts) {
     let f = wasm.createRunFonts();
-    if (property.runProperty.fonts._ascii) {
-      f = f.ascii(property.runProperty.fonts._ascii);
+    if (property.runProperty._fonts._ascii) {
+      f = f.ascii(property.runProperty._fonts._ascii);
     }
-    if (property.runProperty.fonts._hiAnsi) {
-      f = f.hi_ansi(property.runProperty.fonts._hiAnsi);
+    if (property.runProperty._fonts._hiAnsi) {
+      f = f.hi_ansi(property.runProperty._fonts._hiAnsi);
     }
-    if (property.runProperty.fonts._cs) {
-      f = f.cs(property.runProperty.fonts._cs);
+    if (property.runProperty._fonts._cs) {
+      f = f.cs(property.runProperty._fonts._cs);
     }
-    if (property.runProperty.fonts._eastAsia) {
-      f = f.east_asia(property.runProperty.fonts._eastAsia);
+    if (property.runProperty._fonts._eastAsia) {
+      f = f.east_asia(property.runProperty._fonts._eastAsia);
     }
     target = target.fonts(f) as T;
   }
@@ -359,8 +395,8 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
     target = target.outline_lvl(property.outlineLvl) as T;
   }
 
-  if (property.tabs) {
-    for (const tab of property.tabs) {
+  if (property._tabs) {
+    for (const tab of property._tabs) {
       let val: wasm.TabValueType | undefined;
       let leader: wasm.TabLeaderType | undefined;
       switch (tab.val) {
@@ -460,4 +496,221 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
   }
 
   return target;
+};
+
+export const createParagraphProperty = (
+  property: ParagraphProperty
+): wasm.ParagraphProperty => {
+  let p = wasm.createParagraphProperty();
+  const alignment = createParagraphAlignment(property._align);
+  if (alignment != null) {
+    p = p.align(alignment);
+  }
+
+  const textAlignment = createParagraphTextAlignment(property._textAlignment);
+  if (textAlignment != null) {
+    p = p.text_alignment(textAlignment);
+  }
+
+  if (property._adjustRightInd != null) {
+    p = p.adjust_right_ind(property._adjustRightInd);
+  }
+
+  if (typeof property.indent !== "undefined") {
+    const { indent } = property;
+    let kind;
+    switch (property.indent.specialIndentKind) {
+      case "firstLine": {
+        kind = wasm.SpecialIndentKind.FirstLine;
+        break;
+      }
+      case "hanging": {
+        kind = wasm.SpecialIndentKind.Hanging;
+        break;
+      }
+    }
+    p = p.indent(indent.left, kind, indent.specialIndentSize, indent.right);
+  }
+
+  if (typeof property.lineSpacing !== "undefined") {
+    const spacing = buildLineSpacing(property);
+    if (spacing) {
+      p = p.line_spacing(spacing);
+    }
+  }
+
+  if (typeof property.numbering !== "undefined") {
+    const { numbering } = property;
+    p = p.numbering(numbering.id, numbering.level);
+  }
+
+  let runProperty = wasm.createRunProperty();
+  if (property.runProperty._bold) {
+    runProperty = runProperty.bold();
+  }
+
+  if (property.runProperty._color) {
+    runProperty = runProperty.color(property.runProperty._color);
+  }
+
+  if (property.runProperty._italic) {
+    runProperty = runProperty.italic();
+  }
+
+  if (property.runProperty._size) {
+    runProperty = runProperty.size(property.runProperty._size);
+  }
+
+  if (property.runProperty._fonts) {
+    let f = wasm.createRunFonts();
+    if (property.runProperty._fonts._ascii) {
+      f = f.ascii(property.runProperty._fonts._ascii);
+    }
+    if (property.runProperty._fonts._hiAnsi) {
+      f = f.hi_ansi(property.runProperty._fonts._hiAnsi);
+    }
+    if (property.runProperty._fonts._cs) {
+      f = f.cs(property.runProperty._fonts._cs);
+    }
+    if (property.runProperty._fonts._eastAsia) {
+      f = f.east_asia(property.runProperty._fonts._eastAsia);
+    }
+    runProperty = runProperty.fonts(f);
+  }
+
+  if (property.runProperty) {
+    p = p.run_property(runProperty);
+  }
+
+  if (property.keepLines) {
+    p = p.keep_lines(true);
+  }
+
+  if (property.snapToGrid != null) {
+    p = p.snap_to_grid(!!property.snapToGrid);
+  }
+
+  if (property.keepNext) {
+    p = p.keep_next(true);
+  }
+
+  if (property.pageBreakBefore) {
+    p = p.page_break_before(true);
+  }
+
+  if (property.widowControl) {
+    p = p.widow_control(true);
+  }
+
+  if (property.outlineLvl != null) {
+    p = p.outline_lvl(property.outlineLvl);
+  }
+
+  if (property.styleId) {
+    p = p.style(property.styleId);
+  }
+
+  if (property._tabs) {
+    for (const tab of property._tabs) {
+      let val: wasm.TabValueType | undefined;
+      let leader: wasm.TabLeaderType | undefined;
+      switch (tab.val) {
+        case "bar":
+          val = wasm.TabValueType.Bar;
+          break;
+        case "bar":
+          val = wasm.TabValueType.Bar;
+          break;
+        case "center":
+          val = wasm.TabValueType.Center;
+          break;
+        case "clear":
+          val = wasm.TabValueType.Clear;
+          break;
+        case "decimal":
+          val = wasm.TabValueType.Decimal;
+          break;
+        case "end":
+          val = wasm.TabValueType.End;
+          break;
+        case "right":
+          val = wasm.TabValueType.Right;
+          break;
+        case "num":
+          val = wasm.TabValueType.Num;
+          break;
+        case "start":
+          val = wasm.TabValueType.Start;
+          break;
+        case "left":
+          val = wasm.TabValueType.Left;
+          break;
+      }
+
+      switch (tab.leader) {
+        case "dot":
+          leader = wasm.TabLeaderType.Dot;
+          break;
+        case "heavy":
+          leader = wasm.TabLeaderType.Heavy;
+          break;
+        case "hyphen":
+          leader = wasm.TabLeaderType.Hyphen;
+          break;
+        case "middleDot":
+          leader = wasm.TabLeaderType.MiddleDot;
+          break;
+        case "none":
+          leader = wasm.TabLeaderType.None;
+          break;
+        case "underscore":
+          leader = wasm.TabLeaderType.None;
+          break;
+      }
+      p = p.add_tab(val, leader, tab.pos ?? undefined);
+    }
+  }
+
+  if (property.frameProperty) {
+    let frameProperty = wasm.createFrameProperty();
+    if (property.frameProperty?.h != null) {
+      frameProperty = frameProperty.height(property.frameProperty.h);
+    }
+    if (property.frameProperty?.hRule != null) {
+      frameProperty = frameProperty.h_rule(property.frameProperty.hRule);
+    }
+    if (property.frameProperty?.hAnchor != null) {
+      frameProperty = frameProperty.h_anchor(property.frameProperty.hAnchor);
+    }
+    if (property.frameProperty?.hSpace != null) {
+      frameProperty = frameProperty.h_space(property.frameProperty.hSpace);
+    }
+    if (property.frameProperty?.vAnchor != null) {
+      frameProperty = frameProperty.v_anchor(property.frameProperty.vAnchor);
+    }
+    if (property.frameProperty?.vSpace != null) {
+      frameProperty = frameProperty.v_space(property.frameProperty.vSpace);
+    }
+    if (property.frameProperty?.w != null) {
+      frameProperty = frameProperty.width(property.frameProperty.w);
+    }
+    if (property.frameProperty?.wrap != null) {
+      frameProperty = frameProperty.wrap(property.frameProperty.wrap);
+    }
+    if (property.frameProperty?.x != null) {
+      frameProperty = frameProperty.x(property.frameProperty.x);
+    }
+    if (property.frameProperty?.xAlign != null) {
+      frameProperty = frameProperty.x_align(property.frameProperty.xAlign);
+    }
+    if (property.frameProperty?.y != null) {
+      frameProperty = frameProperty.y(property.frameProperty.y);
+    }
+    if (property.frameProperty?.yAlign != null) {
+      frameProperty = frameProperty.y_align(property.frameProperty.yAlign);
+    }
+    p = p.frame_property(frameProperty);
+  }
+
+  return p;
 };

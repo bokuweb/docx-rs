@@ -7,7 +7,7 @@ import {
   DeleteJSONData,
 } from "..";
 import { BorderType } from "../border";
-import { VertAlignType } from "../run";
+import { VertAlignType } from "../run-property";
 import { FieldChar } from "./bindings/FieldChar";
 import { InstrHyperlink } from "./bindings/InstrHyperlink";
 import { InstrToC } from "./bindings/InstrToC";

@@ -21,7 +21,7 @@ impl ParagraphPropertyDefault {
         self
     }
 
-    pub(crate) fn paragraph_property(mut self, p: ParagraphProperty) -> Self {
+    pub fn paragraph_property(mut self, p: ParagraphProperty) -> Self {
         self.paragraph_property = p;
         self
     }

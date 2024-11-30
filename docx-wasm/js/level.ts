@@ -4,7 +4,11 @@ import {
   ParagraphProperty,
   SpecialIndentKind,
 } from "./paragraph-property";
-import { RunFonts, RunProperty } from "./run";
+import {
+  createDefaultRunProperty,
+  RunFonts,
+  RunProperty,
+} from "./run-property";
 
 export type LevelSuffixType = "nothing" | "tab" | "space";
 
@@ -15,7 +19,7 @@ export class Level {
   text: string;
   jc: string;
   paragraphProperty: ParagraphProperty = createDefaultParagraphProperty();
-  runProperty: RunProperty = {};
+  runProperty?: RunProperty = createDefaultRunProperty();
   levelSuffix: LevelSuffixType;
 
   constructor(
@@ -52,47 +56,56 @@ export class Level {
   }
 
   size(size: number) {
-    this.runProperty = { ...this.runProperty, size };
+    this.runProperty ??= createDefaultRunProperty();
+    this.runProperty.size(size);
     return this;
   }
 
   color(color: string) {
-    this.runProperty = { ...this.runProperty, color };
+    this.runProperty ??= createDefaultRunProperty();
+    this.runProperty.color(color);
     return this;
   }
 
   highlight(color: string) {
-    this.runProperty = { ...this.runProperty, highlight: color };
+    this.runProperty ??= createDefaultRunProperty();
+    this.runProperty.highlight(color);
     return this;
   }
 
   bold() {
-    this.runProperty = { ...this.runProperty, bold: true };
+    this.runProperty ??= createDefaultRunProperty();
+    this.runProperty.bold();
     return this;
   }
 
   italic() {
-    this.runProperty = { ...this.runProperty, italic: true };
+    this.runProperty ??= createDefaultRunProperty();
+    this.runProperty.italic();
     return this;
   }
 
   underline(type: string) {
-    this.runProperty = { ...this.runProperty, underline: type };
+    this.runProperty ??= createDefaultRunProperty();
+    this.runProperty.underline(type);
     return this;
   }
 
   vanish() {
-    this.runProperty = { ...this.runProperty, vanish: true };
+    this.runProperty ??= createDefaultRunProperty();
+    this.runProperty.vanish();
     return this;
   }
 
   fonts(fonts: RunFonts) {
-    this.runProperty = { ...this.runProperty, fonts };
+    this.runProperty ??= createDefaultRunProperty();
+    this.runProperty.fonts(fonts);
     return this;
   }
 
   characterSpacing(characterSpacing: number) {
-    this.runProperty = { ...this.runProperty, characterSpacing };
+    this.runProperty ??= createDefaultRunProperty();
+    this.runProperty.spacing(characterSpacing);
     return this;
   }
 }

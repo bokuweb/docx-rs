@@ -40,7 +40,7 @@
     "text-encoding": "0.7.0",
     "ts-loader": "9.4.2",
     "typescript": "4.9.3",
-    "webpack": "4.46.0",
+    "webpack": "5.97.1",
     "webpack-cli": "5.0.1",
     "webpack-dev-server": "3.11.3",
     "webpack-merge": "5.8.0"

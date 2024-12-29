@@ -319,6 +319,10 @@ export class Docx {
       level = level.fonts(f);
     }
 
+    if (l.runProperty._characterSpacing != null) {
+      level = level.spacing(l.runProperty._characterSpacing);
+    }
+
     if (l.paragraphProperty.indent) {
       let kind;
       if (l.paragraphProperty.indent.specialIndentKind === "firstLine") {

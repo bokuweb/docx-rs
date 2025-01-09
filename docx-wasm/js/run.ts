@@ -14,8 +14,16 @@ import {
   setRunProperty,
   VertAlignType,
 } from "./run-property";
+import { Tc } from "./tc";
 
-export type RunChild = Text | DeleteText | Tab | Break | Image | PositionalTab;
+export type RunChild =
+  | Text
+  | DeleteText
+  | Tab
+  | Break
+  | Image
+  | PositionalTab
+  | Tc;
 
 export class Run {
   children: RunChild[] = [];
@@ -48,6 +56,11 @@ export class Run {
 
   addBreak(type: BreakType) {
     this.children.push(new Break(type));
+    return this;
+  }
+
+  addTc(tc: Tc) {
+    this.children.push(tc);
     return this;
   }
 
@@ -178,6 +191,8 @@ export class Run {
           pic = pic.rotate(child.rot);
         }
         run = run.add_image(pic);
+      } else if (child instanceof Tc) {
+        run = run.add_tc(child._text, child._omitPageNumber, child._level);
       }
     });
 

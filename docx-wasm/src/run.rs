@@ -51,6 +51,16 @@ impl Run {
         self
     }
 
+    pub fn add_tc(mut self, text: &str, omits_page_number: bool, level: Option<usize>) -> Run {
+        self.0 = self.0.add_tc(docx_rs::InstrTC {
+            text: text.into(),
+            omits_page_number,
+            level,
+            item_type_identifier: None,
+        });
+        self
+    }
+
     pub fn style(mut self, style: &str) -> Run {
         self.0.run_property = self.0.run_property.style(style);
         self

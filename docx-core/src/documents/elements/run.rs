@@ -194,6 +194,13 @@ impl Run {
         self
     }
 
+    pub fn add_tc(mut self, tc: InstrTC) -> Run {
+        self = self.add_field_char(crate::types::FieldCharType::Begin, false);
+        self = self.add_instr_text(InstrText::TC(tc));
+        self = self.add_field_char(crate::types::FieldCharType::End, false);
+        self
+    }
+
     pub fn add_instr_text(mut self, i: InstrText) -> Run {
         self.children.push(RunChild::InstrText(Box::new(i)));
         self

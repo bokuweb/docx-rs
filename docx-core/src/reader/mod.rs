@@ -30,6 +30,8 @@ mod insert;
 mod level;
 mod level_override;
 mod mc_fallback;
+mod move_from;
+mod move_to;
 mod numbering_property;
 mod numberings;
 mod page_num_type;

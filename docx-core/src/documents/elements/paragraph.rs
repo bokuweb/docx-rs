@@ -32,6 +32,8 @@ pub enum ParagraphChild {
     Run(Box<Run>),
     Insert(Insert),
     Delete(Delete),
+    MoveTo(MoveTo),
+    MoveFrom(MoveFrom),
     BookmarkStart(BookmarkStart),
     Hyperlink(Hyperlink),
     BookmarkEnd(BookmarkEnd),
@@ -51,6 +53,8 @@ impl BuildXML for ParagraphChild {
             ParagraphChild::Run(v) => v.build_to(stream),
             ParagraphChild::Insert(v) => v.build_to(stream),
             ParagraphChild::Delete(v) => v.build_to(stream),
+            ParagraphChild::MoveTo(v) => v.build_to(stream),
+            ParagraphChild::MoveFrom(v) => v.build_to(stream),
             ParagraphChild::Hyperlink(v) => v.build_to(stream),
             ParagraphChild::BookmarkStart(v) => v.build_to(stream),
             ParagraphChild::BookmarkEnd(v) => v.build_to(stream),
@@ -84,6 +88,18 @@ impl Serialize for ParagraphChild {
             ParagraphChild::Delete(ref r) => {
                 let mut t = serializer.serialize_struct("Delete", 2)?;
                 t.serialize_field("type", "delete")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            ParagraphChild::MoveTo(ref r) => {
+                let mut t = serializer.serialize_struct("MoveTo", 2)?;
+                t.serialize_field("type", "moveTo")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            ParagraphChild::MoveFrom(ref r) => {
+                let mut t = serializer.serialize_struct("MoveFrom", 2)?;
+                t.serialize_field("type", "moveFrom")?;
                 t.serialize_field("data", r)?;
                 t.end()
             }
@@ -192,6 +208,16 @@ impl Paragraph {
 
     pub fn add_delete(mut self, delete: Delete) -> Paragraph {
         self.children.push(ParagraphChild::Delete(delete));
+        self
+    }
+
+    pub fn add_move_to(mut self, move_to: MoveTo) -> Paragraph {
+        self.children.push(ParagraphChild::MoveTo(move_to));
+        self
+    }
+
+    pub fn add_move_from(mut self, move_from: MoveFrom) -> Paragraph {
+        self.children.push(ParagraphChild::MoveFrom(move_from));
         self
     }
 
@@ -379,6 +405,17 @@ impl Paragraph {
                     for c in run.children.iter() {
                         if let RunChild::Text(t) = c {
                             s.push_str(&t.text);
+                        }
+                    }
+                }
+                ParagraphChild::MoveTo(m) => {
+                    for c in m.children.iter() {
+                        if let MoveToChild::Run(r) = c {
+                            for c in r.children.iter() {
+                                if let RunChild::Text(t) = c {
+                                    s.push_str(&t.text);
+                                }
+                            }
                         }
                     }
                 }

@@ -392,7 +392,7 @@ mod tests {
     #[test]
     fn test_toc() {
         let b = InstrToC::new().heading_styles_range(1, 3).build();
-        assert_eq!(str::from_utf8(&b).unwrap(), r#"TOC \o &quot;1-3&quot;"#);
+        assert_eq!(str::from_utf8(&b).unwrap(), r"TOC \o &quot;1-3&quot;");
     }
 
     #[test]
@@ -404,20 +404,20 @@ mod tests {
             .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"TOC \o &quot;1-3&quot; \t &quot;style1,2,style2,3&quot;"#
+            r"TOC \o &quot;1-3&quot; \t &quot;style1,2,style2,3&quot;"
         );
     }
 
     #[test]
     fn read_toc_with_o_and_h() {
-        let i = r#"TOC \o &quot;1-3&quot; \h"#;
+        let i = r"TOC \o &quot;1-3&quot; \h";
         let i = InstrToC::from_str(i).unwrap();
         assert_eq!(i, InstrToC::new().heading_styles_range(1, 3).hyperlink());
     }
 
     #[test]
     fn read_toc_with_l_and_n() {
-        let i = r#"TOC \o &quot;1-3&quot; \l &quot;4-5&quot; \n &quot;1-4&quot; \h"#;
+        let i = r"TOC \o &quot;1-3&quot; \l &quot;4-5&quot; \n &quot;1-4&quot; \h";
         let i = InstrToC::from_str(i).unwrap();
         assert_eq!(
             i,
@@ -431,7 +431,7 @@ mod tests {
 
     #[test]
     fn read_toc_with_a_and_b_and_t() {
-        let i = r#"TOC \a &quot;hoge&quot; \b &quot;test&quot; \o &quot;1-3&quot; \t &quot;MySpectacularStyle,1,MySpectacularStyle2,4&quot;"#;
+        let i = r"TOC \a &quot;hoge&quot; \b &quot;test&quot; \o &quot;1-3&quot; \t &quot;MySpectacularStyle,1,MySpectacularStyle2,4&quot;";
         let i = InstrToC::from_str(i).unwrap();
         assert_eq!(
             i,

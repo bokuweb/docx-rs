@@ -57,7 +57,7 @@ pub struct InstrToC {
     pub seq_field_identifier_for_prefix: Option<String>,
     // \f
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub tc_field_identifier: Option<String>,
+    pub tc_field_identifier: Option<Option<String>>,
     // \h
     pub hyperlink: bool,
     // \w
@@ -89,8 +89,8 @@ impl InstrToC {
         self
     }
 
-    pub fn tc_field_identifier(mut self, t: impl Into<String>) -> Self {
-        self.tc_field_identifier = Some(t.into());
+    pub fn tc_field_identifier(mut self, t: Option<String>) -> Self {
+        self.tc_field_identifier = Some(t);
         self
     }
 
@@ -192,7 +192,11 @@ impl BuildXML for InstrToC {
 
         // \f
         if let Some(ref t) = self.tc_field_identifier {
-            write!(raw, " \\f &quot;{}&quot;", t)?;
+            if let Some(ref t) = t {
+                write!(raw, " \\f &quot;{}&quot;", t)?;
+            } else {
+                write!(raw, " \\f")?;
+            }
         }
 
         // \l
@@ -311,7 +315,11 @@ impl std::str::FromStr for InstrToC {
                     "\\f" => {
                         if let Some(r) = s.next() {
                             let r = r.replace("&quot;", "").replace('\"', "");
-                            toc = toc.tc_field_identifier(r);
+                            if r.is_empty() {
+                                toc = toc.tc_field_identifier(None);
+                            } else {
+                                toc = toc.tc_field_identifier(Some(r));
+                            }
                         }
                     }
                     "\\h" => toc = toc.hyperlink(),

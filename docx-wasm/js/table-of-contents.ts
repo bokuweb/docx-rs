@@ -23,6 +23,7 @@ export class TableOfContents {
   _afterContents: (Paragraph | Table)[] = [];
   _delete: { author: string; date: string } | null = null;
   _paragraphProperty: ParagraphProperty | null = null;
+  _tcFieldIdentifier?: string | null;
 
   constructor(instrText?: string) {
     this._instrText = instrText;
@@ -50,6 +51,11 @@ export class TableOfContents {
 
   headingStylesRange = (r: [number, number]) => {
     this._headingStylesRange = r;
+    return this;
+  };
+
+  tcFieldIdentifier = (f?: string) => {
+    this._tcFieldIdentifier = f ?? null;
     return this;
   };
 
@@ -140,6 +146,10 @@ export class TableOfContents {
 
     if (this._delete) {
       toc = toc.delete(this._delete.author, this._delete.date);
+    }
+
+    if (this._tcFieldIdentifier !== undefined) {
+      toc = toc.tc_field_identifier(this._tcFieldIdentifier ?? undefined);
     }
 
     for (const sl of this._styleWithLevels) {

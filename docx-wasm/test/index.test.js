@@ -1159,4 +1159,61 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write ToC with TC", () => {
+    const p1 = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello!!"))
+      .addRun(new w.Run().addTc(new w.Tc("Hello!!TC").level(1)))
+      .pageBreakBefore(true);
+    const p2 = new w.Paragraph()
+      .addRun(new w.Run().addText("World"))
+      .addRun(new w.Run().addTc(new w.Tc("World!!TC").level(1)))
+      .pageBreakBefore(true);
+    const buffer = new w.Docx()
+      .addTableOfContents(
+        new w.TableOfContents()
+          .alias("Table of contents")
+          .dirty()
+          .tcFieldIdentifier()
+          .paragraphProperty(new w.ParagraphProperty().style("11"))
+      )
+      .addParagraph(p1)
+      .addParagraph(p2)
+      .build();
+    writeFileSync("../output/js/toc_with_tc.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write ToC with instrText TC", () => {
+    const p1 = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello!!"))
+      .addRun(new w.Run().addTc(new w.Tc("Hello!!TC").level(1)))
+      .pageBreakBefore(true);
+    const p2 = new w.Paragraph()
+      .addRun(new w.Run().addText("World"))
+      .addRun(new w.Run().addTc(new w.Tc("World!!TC").level(1)))
+      .pageBreakBefore(true);
+    const buffer = new w.Docx()
+      .addTableOfContents(
+        new w.TableOfContents("TOC \\f \\h \\z \\u")
+          .alias("Table of contents")
+          .dirty()
+          .paragraphProperty(new w.ParagraphProperty().style("11"))
+      )
+      .addParagraph(p1)
+      .addParagraph(p2)
+      .build();
+    writeFileSync("../output/js/toc_with_instrtext_tc.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

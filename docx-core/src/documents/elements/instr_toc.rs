@@ -57,7 +57,7 @@ pub struct InstrToC {
     pub seq_field_identifier_for_prefix: Option<String>,
     // \f
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub tc_field_identifier: Option<String>,
+    pub tc_field_identifier: Option<Option<String>>,
     // \h
     pub hyperlink: bool,
     // \w
@@ -89,8 +89,8 @@ impl InstrToC {
         self
     }
 
-    pub fn tc_field_identifier(mut self, t: impl Into<String>) -> Self {
-        self.tc_field_identifier = Some(t.into());
+    pub fn tc_field_identifier(mut self, t: Option<String>) -> Self {
+        self.tc_field_identifier = Some(t);
         self
     }
 
@@ -192,7 +192,11 @@ impl BuildXML for InstrToC {
 
         // \f
         if let Some(ref t) = self.tc_field_identifier {
-            write!(raw, " \\f &quot;{}&quot;", t)?;
+            if let Some(ref t) = t {
+                write!(raw, " \\f &quot;{}&quot;", t)?;
+            } else {
+                write!(raw, " \\f")?;
+            }
         }
 
         // \l
@@ -279,7 +283,7 @@ impl std::str::FromStr for InstrToC {
     type Err = ();
 
     fn from_str(instr: &str) -> Result<Self, Self::Err> {
-        let mut s = instr.split(' ');
+        let mut s = instr.split(' ').peekable();
         let mut toc = InstrToC::new();
         loop {
             if let Some(i) = s.next() {
@@ -309,9 +313,19 @@ impl std::str::FromStr for InstrToC {
                         }
                     }
                     "\\f" => {
-                        if let Some(r) = s.next() {
-                            let r = r.replace("&quot;", "").replace('\"', "");
-                            toc = toc.tc_field_identifier(r);
+                        if let Some(n) = s.peek() {
+                            if !n.starts_with("\\") {
+                                if let Some(r) = s.next() {
+                                    let r = r.replace("&quot;", "").replace('\"', "");
+                                    if r.is_empty() {
+                                        toc = toc.tc_field_identifier(None);
+                                    } else {
+                                        toc = toc.tc_field_identifier(Some(r));
+                                    }
+                                }
+                            } else {
+                                toc = toc.tc_field_identifier(None);
+                            }
                         }
                     }
                     "\\h" => toc = toc.hyperlink(),
@@ -452,6 +466,20 @@ mod tests {
             i,
             InstrToC::new()
                 .heading_styles_range(1, 3)
+                .use_applied_paragraph_line_level()
+                .hide_tab_and_page_numbers_in_webview()
+                .hyperlink()
+        );
+    }
+
+    #[test]
+    fn with_instr_text2() {
+        let s = r#"TOC \f \h \z \u"#;
+        let i = InstrToC::with_instr_text(s);
+        assert_eq!(
+            i,
+            InstrToC::new()
+                .tc_field_identifier(None)
                 .use_applied_paragraph_line_level()
                 .hide_tab_and_page_numbers_in_webview()
                 .hyperlink()

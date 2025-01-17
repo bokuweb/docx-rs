@@ -654,6 +654,7 @@ export * from "./paragraph-property";
 export * from "./insert";
 export * from "./delete";
 export * from "./border";
+export * from "./tc";
 export * from "./table";
 export * from "./table-cell";
 export * from "./table-cell-border";

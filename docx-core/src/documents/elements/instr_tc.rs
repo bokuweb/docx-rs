@@ -48,7 +48,7 @@ impl BuildXML for InstrTC {
         let mut b = XMLBuilder::from(stream);
         let raw = b.inner_mut()?;
 
-        write!(raw, "TC {}", self.text)?;
+        write!(raw, "TC \"{}\"", self.text)?;
 
         if let Some(ref t) = self.item_type_identifier {
             write!(raw, " \\f {}", t)?;

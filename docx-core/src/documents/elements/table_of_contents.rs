@@ -83,6 +83,11 @@ impl TableOfContents {
         self
     }
 
+    pub fn tc_field_identifier(mut self, f: Option<String>) -> Self {
+        self.instr = self.instr.tc_field_identifier(f);
+        self
+    }
+
     pub fn add_style_with_level(mut self, s: StyleWithLevel) -> Self {
         self.instr = self.instr.add_style_with_level(s);
         self

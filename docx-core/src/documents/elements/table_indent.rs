@@ -24,7 +24,7 @@ impl BuildXML for TableIndent {
         stream: xml::writer::EventWriter<W>,
     ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
-            .table_indent(self.width, WidthType::Dxa)?
+            .table_indent(self.width, self.width_type)?
             .into_inner()
     }
 }

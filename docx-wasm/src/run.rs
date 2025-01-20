@@ -51,12 +51,18 @@ impl Run {
         self
     }
 
-    pub fn add_tc(mut self, text: &str, omits_page_number: bool, level: Option<usize>) -> Run {
+    pub fn add_tc(
+        mut self,
+        text: &str,
+        omits_page_number: bool,
+        level: Option<usize>,
+        id: Option<String>,
+    ) -> Run {
         self.0 = self.0.add_tc(docx_rs::InstrTC {
             text: text.into(),
             omits_page_number,
             level,
-            item_type_identifier: None,
+            item_type_identifier: id,
         });
         self
     }

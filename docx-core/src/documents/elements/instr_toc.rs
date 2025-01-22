@@ -485,4 +485,18 @@ mod tests {
                 .hyperlink()
         );
     }
+
+    #[test]
+    fn with_instr_text3() {
+        let s = r#"TOC \f abc \h \z \u"#;
+        let i = InstrToC::with_instr_text(s);
+        assert_eq!(
+            i,
+            InstrToC::new()
+                .tc_field_identifier(Some("abc".to_string()))
+                .use_applied_paragraph_line_level()
+                .hide_tab_and_page_numbers_in_webview()
+                .hyperlink()
+        );
+    }
 }

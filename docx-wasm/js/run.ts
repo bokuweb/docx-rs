@@ -192,7 +192,12 @@ export class Run {
         }
         run = run.add_image(pic);
       } else if (child instanceof Tc) {
-        run = run.add_tc(child._text, child._omitPageNumber, child._level);
+        run = run.add_tc(
+          child._text,
+          child._omitPageNumber,
+          child._level,
+          child._identifier
+        );
       }
     });
 

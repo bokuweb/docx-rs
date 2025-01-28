@@ -77,6 +77,7 @@ export class Level {
 
   disableBold() {
     this.runProperty.disableBold();
+    return this;
   }
 
   italic() {
@@ -86,6 +87,7 @@ export class Level {
 
   disableItalic() {
     this.runProperty.disableItalic();
+    return this;
   }
 
   strike() {

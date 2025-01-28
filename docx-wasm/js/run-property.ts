@@ -68,13 +68,28 @@ export class RunProperty {
     return this;
   }
 
+  disableBold() {
+    this._bold = false;
+    return this;
+  }
+
   strike() {
     this._strike = true;
     return this;
   }
 
+  disableStrike() {
+    this._strike = false;
+    return this;
+  }
+
   italic() {
     this._italic = true;
+    return this;
+  }
+
+  disableItalic() {
+    this._italic = false;
     return this;
   }
 
@@ -340,16 +355,28 @@ export const createRunProperty = (property: RunProperty): wasm.RunProperty => {
     }
   }
 
-  if (property._bold) {
-    target = target.bold();
+  if (property._bold != null) {
+    if (property._bold) {
+      target = target.bold();
+    } else {
+      target = target.disable_bold();
+    }
   }
 
-  if (property._italic) {
-    target = target.italic();
+  if (property._italic != null) {
+    if (property._italic) {
+      target = target.italic();
+    } else {
+      target = target.disable_italic();
+    }
   }
 
-  if (property._strike) {
-    target = target.strike();
+  if (property._strike != null) {
+    if (property._strike) {
+      target = target.strike();
+    } else {
+      target = target.disable_strike();
+    }
   }
 
   if (property._underline) {

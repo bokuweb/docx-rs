@@ -119,6 +119,11 @@ impl RunProperty {
         self
     }
 
+    pub fn disable_strike(mut self) -> RunProperty {
+        self.strike = Some(Strike::new().disable());
+        self
+    }
+
     pub fn disable_italic(mut self) -> RunProperty {
         self.italic = Some(Italic::new().disable());
         self.italic_cs = Some(ItalicCs::new().disable());

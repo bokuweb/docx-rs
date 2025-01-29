@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!--
 - Support `TC`
+- Update `Level` styles.
 -->
 
 ## @0.4.17 (26. Apr, 2024)
@@ -57,7 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - escape author in del/ins.
 
-## docx-wasm@0.0.278-rc19 (9. Aug, 2023)
+## docx-wasm@0.0.278-rc19 (9. Aug, 20)
 
 - use i32 for line instead of u32.
 

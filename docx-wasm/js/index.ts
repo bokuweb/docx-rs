@@ -298,6 +298,30 @@ export class Docx {
       level = level.italic();
     }
 
+    if (l.runProperty._bold != null) {
+      if (l.runProperty._bold) {
+        level = level.bold();
+      } else {
+        level = level.disable_bold();
+      }
+    }
+
+    if (l.runProperty._italic != null) {
+      if (l.runProperty._italic) {
+        level = level.italic();
+      } else {
+        level = level.disable_italic();
+      }
+    }
+
+    if (l.runProperty._strike != null) {
+      if (l.runProperty._strike) {
+        level = level.strike();
+      } else {
+        level = level.disable_strike();
+      }
+    }
+
     if (l.runProperty._size) {
       level = level.size(l.runProperty._size);
     }

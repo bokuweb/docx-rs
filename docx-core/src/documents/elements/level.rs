@@ -94,8 +94,28 @@ impl Level {
         self
     }
 
+    pub fn disable_bold(mut self) -> Self {
+        self.run_property = self.run_property.disable_bold();
+        self
+    }
+
     pub fn italic(mut self) -> Self {
         self.run_property = self.run_property.italic();
+        self
+    }
+
+    pub fn disable_italic(mut self) -> Self {
+        self.run_property = self.run_property.disable_italic();
+        self
+    }
+
+    pub fn strike(mut self) -> Self {
+        self.run_property = self.run_property.strike();
+        self
+    }
+
+    pub fn disable_strike(mut self) -> Self {
+        self.run_property = self.run_property.disable_strike();
         self
     }
 

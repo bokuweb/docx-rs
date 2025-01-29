@@ -62,8 +62,28 @@ impl Level {
         self
     }
 
+    pub fn disable_bold(mut self) -> Self {
+        self.0 = self.0.disable_bold();
+        self
+    }
+
     pub fn italic(mut self) -> Self {
         self.0 = self.0.italic();
+        self
+    }
+
+    pub fn strike(mut self) -> Self {
+        self.0 = self.0.strike();
+        self
+    }
+
+    pub fn disable_strike(mut self) -> Self {
+        self.0 = self.0.disable_strike();
+        self
+    }
+
+    pub fn disable_italic(mut self) -> Self {
+        self.0 = self.0.disable_italic();
         self
     }
 

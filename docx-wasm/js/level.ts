@@ -75,8 +75,28 @@ export class Level {
     return this;
   }
 
+  disableBold() {
+    this.runProperty.disableBold();
+    return this;
+  }
+
   italic() {
     this.runProperty.italic();
+    return this;
+  }
+
+  disableItalic() {
+    this.runProperty.disableItalic();
+    return this;
+  }
+
+  strike() {
+    this.runProperty.strike();
+    return this;
+  }
+
+  disableStrike() {
+    this.runProperty.disableStrike();
     return this;
   }
 

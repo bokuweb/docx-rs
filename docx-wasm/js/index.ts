@@ -326,6 +326,10 @@ export class Docx {
       level = level.size(l.runProperty._size);
     }
 
+    if (l.runProperty._color) {
+      level = level.color(l.runProperty._color);
+    }
+
     if (l.runProperty._fonts) {
       let f = wasm.createRunFonts();
       if (l.runProperty._fonts._ascii) {

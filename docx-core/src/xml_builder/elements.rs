@@ -470,7 +470,7 @@ impl<W: Write> XMLBuilder<W> {
     closed!(keep_lines, "w:keepLines");
     closed!(page_break_before, "w:pageBreakBefore");
     closed!(widow_control, "w:widowControl", "w:val");
-
+    closed!(bidi,"w:bidi");
     /*
     <w:lvlOverride w:ilvl="0">
       <w:startOverride w:val="1"/>

@@ -58,12 +58,17 @@ impl Run {
         level: Option<usize>,
         id: Option<String>,
     ) -> Run {
-        self.0 = self.0.add_tc(docx_rs::InstrTC {
-            text: text.into(),
-            omits_page_number,
-            level,
-            item_type_identifier: id,
-        });
+        let mut tc = docx_rs::InstrTC::new(text);
+        if omits_page_number {
+            tc = tc.omits_page_number();
+        }
+        if let Some(level) = level {
+            tc = tc.level(level);
+        }
+        if let Some(id) = id {
+            tc = tc.item_type_identifier(id);
+        }
+        self.0 = self.0.add_tc(tc);
         self
     }
 

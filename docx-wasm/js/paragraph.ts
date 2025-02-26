@@ -151,7 +151,7 @@ export class Paragraph {
   }
 
   snapToGrid(v: boolean) {
-    this.property.snapToGrid = v;
+    this.property._snapToGrid = v;
     return this;
   }
 

@@ -359,6 +359,12 @@ impl Paragraph {
         self
     }
 
+    // internal
+    pub(crate) fn paragraph_property(mut self, p: ParagraphProperty) -> Self {
+        self.property = p;
+        self
+    }
+
     pub fn raw_text(&self) -> String {
         let mut s = "".to_string();
         // For now support only run and ins.

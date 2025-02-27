@@ -135,6 +135,11 @@ impl Style {
         self
     }
 
+    pub fn line_spacing(mut self, spacing: LineSpacing) -> Self {
+        self.paragraph_property = self.paragraph_property.line_spacing(spacing);
+        self
+    }
+
     pub fn indent(
         mut self,
         left: Option<i32>,

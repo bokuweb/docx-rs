@@ -130,6 +130,11 @@ impl Style {
         self
     }
 
+    pub fn snap_to_grid(mut self, v: bool) -> Self {
+        self.paragraph_property = self.paragraph_property.snap_to_grid(v);
+        self
+    }
+
     pub fn indent(
         mut self,
         left: Option<i32>,

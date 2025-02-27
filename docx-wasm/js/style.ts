@@ -189,6 +189,11 @@ export class Style {
     return this;
   }
 
+  snapToGrid(v: boolean) {
+    this._paragraphProperty._snapToGrid = v;
+    return this;
+  }
+
   pageBreakBefore(v: boolean) {
     this._paragraphProperty.pageBreakBefore = v;
     return this;

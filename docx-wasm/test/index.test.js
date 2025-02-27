@@ -1279,4 +1279,36 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should write ToC with paragraphProperty", () => {
+    const p1 = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello!!"))
+      .addRun(
+        new w.Run().addTc(new w.Tc("Hello!!<div>").level(1).identifier("abc"))
+      )
+      .pageBreakBefore(true);
+    const p2 = new w.Paragraph()
+      .addRun(new w.Run().addText("World"))
+      .addRun(new w.Run().addTc(new w.Tc("World!!TC").level(1)))
+      .pageBreakBefore(true);
+    const buffer = new w.Docx()
+      .addTableOfContents(
+        new w.TableOfContents("TOC \\f abc \\h \\z \\u")
+          .alias("Table of contents")
+          .dirty()
+          .paragraphProperty(
+            new w.ParagraphProperty().style("11").snapToGrid(false)
+          )
+      )
+      .addParagraph(p1)
+      .addParagraph(p2)
+      .build();
+    writeFileSync("../output/js/toc_with_paragraph_property.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
 });

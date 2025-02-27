@@ -84,7 +84,7 @@ export class ParagraphProperty {
   widowControl: boolean;
   paragraphPropertyChange?: ParagraphPropertyChange;
   outlineLvl?: number | null;
-  snapToGrid?: boolean;
+  _snapToGrid?: boolean;
   _adjustRightInd?: number;
   _tabs?: Tab[];
   frameProperty?: FrameProperty;
@@ -114,6 +114,11 @@ export class ParagraphProperty {
 
   adjustRightInd(v: number) {
     this._adjustRightInd = v;
+    return this;
+  }
+
+  snapToGrid(v: boolean) {
+    this._snapToGrid = v;
     return this;
   }
 
@@ -375,8 +380,8 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
     target = target.keep_lines(true) as T;
   }
 
-  if (property.snapToGrid != null) {
-    target = target.snap_to_grid(!!property.snapToGrid) as T;
+  if (property._snapToGrid != null) {
+    target = target.snap_to_grid(!!property._snapToGrid) as T;
   }
 
   if (property.keepNext) {
@@ -586,8 +591,8 @@ export const createParagraphProperty = (
     p = p.keep_lines(true);
   }
 
-  if (property.snapToGrid != null) {
-    p = p.snap_to_grid(!!property.snapToGrid);
+  if (property._snapToGrid != null) {
+    p = p.snap_to_grid(!!property._snapToGrid);
   }
 
   if (property.keepNext) {

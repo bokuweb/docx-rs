@@ -418,6 +418,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             )?;
             let nums = Numberings::from_xml(&data[..])?;
             docx = docx.numberings(nums);
+            docx.document_rels.has_numberings = true;
         }
     }
 

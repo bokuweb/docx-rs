@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <!--
 - Support `TC`
 - Support `dstrike`
+- Update Add after for default toc styles #806
 - Update `Level` styles.
 -->
 

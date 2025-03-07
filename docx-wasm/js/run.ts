@@ -106,6 +106,12 @@ export class Run {
     return this;
   }
 
+  dstrike() {
+    this.property ??= createDefaultRunProperty();
+    this.property.dstrike();
+    return this;
+  }
+
   italic() {
     this.property ??= createDefaultRunProperty();
     this.property.italic();

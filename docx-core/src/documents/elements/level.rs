@@ -119,6 +119,16 @@ impl Level {
         self
     }
 
+    pub fn dstrike(mut self) -> Self {
+        self.run_property = self.run_property.dstrike();
+        self
+    }
+
+    pub fn disable_dstrike(mut self) -> Self {
+        self.run_property = self.run_property.disable_dstrike();
+        self
+    }
+
     pub fn underline(mut self, line_type: impl Into<String>) -> Self {
         self.run_property = self.run_property.underline(line_type);
         self

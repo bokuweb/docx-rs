@@ -30,6 +30,7 @@ export class RunProperty {
   _bold?: boolean;
   _italic?: boolean;
   _strike?: boolean;
+  _dstrike?: boolean;
   _underline?: string;
   _vanish?: boolean;
   _fonts?: RunFonts;
@@ -80,6 +81,16 @@ export class RunProperty {
 
   disableStrike() {
     this._strike = false;
+    return this;
+  }
+
+  dstrike() {
+    this._dstrike = true;
+    return this;
+  }
+
+  disableDstrike() {
+    this._dstrike = false;
     return this;
   }
 
@@ -298,6 +309,10 @@ export const setRunProperty = <T extends wasm.Run | wasm.Style>(
     target = target.strike() as T;
   }
 
+  if (property._dstrike) {
+    target = target.dstrike() as T;
+  }
+
   if (property._underline) {
     target = target.underline(property._underline) as T;
   }
@@ -376,6 +391,14 @@ export const createRunProperty = (property: RunProperty): wasm.RunProperty => {
       target = target.strike();
     } else {
       target = target.disable_strike();
+    }
+  }
+
+  if (property._dstrike != null) {
+    if (property._dstrike) {
+      target = target.dstrike();
+    } else {
+      target = target.disable_dstrike();
     }
   }
 

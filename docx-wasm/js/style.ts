@@ -100,6 +100,11 @@ export class Style {
     return this;
   }
 
+  dstrike() {
+    this._runProperty.dstrike();
+    return this;
+  }
+
   italic() {
     this._runProperty.italic();
     return this;

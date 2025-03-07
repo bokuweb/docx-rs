@@ -51,6 +51,16 @@ impl RunProperty {
         self
     }
 
+    pub fn dstrike(mut self) -> Self {
+        self.0 = self.0.dstrike();
+        self
+    }
+
+    pub fn disable_dstrike(mut self) -> Self {
+        self.0 = self.0.disable_dstrike();
+        self
+    }
+
     pub fn fonts(mut self, f: RunFonts) -> Self {
         self.0 = self.0.fonts(f.take());
         self

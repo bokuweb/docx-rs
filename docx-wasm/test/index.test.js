@@ -450,6 +450,20 @@ describe("writer", () => {
     }
   });
 
+  test("should write dstrike", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello "))
+      .addRun(new w.Run().addText("World!").dstrike());
+    const buffer = new w.Docx().addParagraph(p).build();
+    writeFileSync("../output/js/dstrike.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
   test("should write page orientation", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello "));
     const buffer = new w.Docx()

@@ -189,6 +189,7 @@ impl<W: Write> XMLBuilder<W> {
     closed!(i_cs, "w:iCs");
 
     closed!(strike, "w:strike");
+    closed!(dstrike, "w:dstrike");
 
     // Build w:style element
     // i.e. <w:style ... >

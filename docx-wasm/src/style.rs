@@ -53,6 +53,11 @@ impl Style {
         self
     }
 
+    pub fn dstrike(mut self) -> Self {
+        self.0.run_property = self.0.run_property.dstrike();
+        self
+    }
+
     pub fn underline(mut self, line_type: &str) -> Self {
         self.0.run_property = self.0.run_property.underline(line_type);
         self

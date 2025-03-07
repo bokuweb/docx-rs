@@ -82,6 +82,16 @@ impl Level {
         self
     }
 
+    pub fn dstrike(mut self) -> Self {
+        self.0 = self.0.dstrike();
+        self
+    }
+
+    pub fn disable_dstrike(mut self) -> Self {
+        self.0 = self.0.disable_dstrike();
+        self
+    }
+
     pub fn disable_italic(mut self) -> Self {
         self.0 = self.0.disable_italic();
         self

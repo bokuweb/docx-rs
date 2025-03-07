@@ -55,6 +55,7 @@ export type RunPropertyJSON = {
   ins?: InsertJSONData | null;
   del?: DeleteJSONData | null;
   strike?: boolean;
+  dstrike?: boolean;
 };
 
 export type RunChildJSON =

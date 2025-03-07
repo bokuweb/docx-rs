@@ -50,6 +50,8 @@ pub struct RunProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub strike: Option<Strike>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub dstrike: Option<Dstrike>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub positional_tab: Option<PositionalTab>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub shading: Option<Shading>,
@@ -116,11 +118,23 @@ impl RunProperty {
 
     pub fn strike(mut self) -> RunProperty {
         self.strike = Some(Strike::new());
+        self.dstrike = None;
         self
     }
 
     pub fn disable_strike(mut self) -> RunProperty {
         self.strike = Some(Strike::new().disable());
+        self
+    }
+
+    pub fn dstrike(mut self) -> RunProperty {
+        self.dstrike = Some(Dstrike::new());
+        self.strike = None;
+        self
+    }
+
+    pub fn disable_dstrike(mut self) -> RunProperty {
+        self.dstrike = Some(Dstrike::new().disable());
         self
     }
 
@@ -197,6 +211,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.italic)?
             .add_optional_child(&self.italic_cs)?
             .add_optional_child(&self.strike)?
+            .add_optional_child(&self.dstrike)?
             .add_optional_child(&self.highlight)?
             .add_optional_child(&self.underline)?
             .add_optional_child(&self.vanish)?
@@ -329,6 +344,16 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:rPr><w:shd w:val="clear" w:color="auto" w:fill="FFFFFF" /></w:rPr>"#
+        );
+    }
+
+    #[test]
+    fn test_dstrike() {
+        let c = RunProperty::new().dstrike();
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rPr><w:dstrike /></w:rPr>"#
         );
     }
 }

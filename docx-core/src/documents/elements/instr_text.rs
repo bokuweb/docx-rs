@@ -104,7 +104,7 @@ mod tests {
         let b = Box::new(InstrText::TOC(InstrToC::new().heading_styles_range(1, 3))).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:instrText>TOC \o &quot;1-3&quot;</w:instrText>"#
+            r"<w:instrText>TOC \o &quot;1-3&quot;</w:instrText>"
         );
     }
 
@@ -117,7 +117,7 @@ mod tests {
         .build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:instrText>PAGEREF _Toc90425847 \h</w:instrText>"#
+            r"<w:instrText>PAGEREF _Toc90425847 \h</w:instrText>"
         );
     }
 }

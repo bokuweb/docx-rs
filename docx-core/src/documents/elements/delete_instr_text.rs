@@ -86,7 +86,7 @@ mod tests {
         let b = DeleteInstrText::TOC(InstrToC::new().heading_styles_range(1, 3)).build();
         assert_eq!(
             str::from_utf8(&b).unwrap(),
-            r#"<w:delInstrText>TOC \o &quot;1-3&quot;</w:delInstrText>"#
+            r"<w:delInstrText>TOC \o &quot;1-3&quot;</w:delInstrText>"
         );
     }
 }

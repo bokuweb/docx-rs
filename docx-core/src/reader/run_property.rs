@@ -92,6 +92,13 @@ impl ElementReader for RunProperty {
                             }
                             rp = rp.strike();
                         }
+                        XMLElement::Dstrike => {
+                            if !read_bool(&attributes) {
+                                rp.dstrike = Some(Dstrike::new().disable());
+                                continue;
+                            }
+                            rp = rp.dstrike();
+                        }
                         XMLElement::VertAlign => {
                             if let Ok(v) = VertAlignType::from_str(&attributes[0].value) {
                                 rp = rp.vert_align(v)

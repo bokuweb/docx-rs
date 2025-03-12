@@ -1,6 +1,7 @@
 import * as wasm from "./pkg/docx_wasm";
 
 import { BorderType } from "./border";
+import { Shading } from "./shading";
 
 export type TextBorder = {
   borderType: BorderType;
@@ -38,6 +39,7 @@ export class RunProperty {
   _textBorder?: TextBorder;
   _ins?: RunPropertyIns;
   _del?: RunPropertyDel;
+  _shading?: Shading;
 
   style(style: string) {
     this._style = style;
@@ -141,6 +143,15 @@ export class RunProperty {
       space,
       color,
     };
+    return this;
+  }
+
+  shading(type: string, color: string, fill: string) {
+    const s = new Shading();
+    s.color(color);
+    s.fill(fill);
+    s.type(type);
+    this._shading = s;
     return this;
   }
 }
@@ -340,6 +351,14 @@ export const setRunProperty = <T extends wasm.Run | wasm.Style>(
     target = target.fonts(fonts) as T;
   }
 
+  if (property._shading != null) {
+    target = target.shading(
+      property._shading._type,
+      property._shading._color,
+      property._shading._fill
+    ) as T;
+  }
+
   return target;
 };
 
@@ -427,6 +446,14 @@ export const createRunProperty = (property: RunProperty): wasm.RunProperty => {
   if (property._fonts) {
     const fonts = property._fonts.buildWasmObject();
     target = target.fonts(fonts);
+  }
+
+  if (property._shading != null) {
+    target = target.shading(
+      property._shading._type,
+      property._shading._color,
+      property._shading._fill
+    );
   }
 
   return target;

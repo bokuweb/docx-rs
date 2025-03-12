@@ -160,6 +160,12 @@ export class Run {
     return this;
   }
 
+  shading(type: string, color: string, fill: string) {
+    this.property ??= createDefaultRunProperty();
+    this.property.shading(type, color, fill);
+    return this;
+  }
+
   build() {
     let run = wasm.createRun();
     this.children.forEach((child) => {

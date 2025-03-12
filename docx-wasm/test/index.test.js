@@ -470,6 +470,20 @@ describe("writer", () => {
     }
   });
 
+  test("should write shd", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello "))
+      .addRun(new w.Run().addText("World!").shading("clear", "auto", "FFC000"));
+    const buffer = new w.Docx().addParagraph(p).build();
+    writeFileSync("../output/js/shading.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
   test("should write page orientation", () => {
     const p = new w.Paragraph().addRun(new w.Run().addText("Hello "));
     const buffer = new w.Docx()

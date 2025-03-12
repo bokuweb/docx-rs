@@ -128,6 +128,11 @@ impl ElementReader for RunProperty {
                             }
                             rp = rp.italic();
                         }
+                        XMLElement::Shading => {
+                            if let Ok(shd) = Shading::read(r, &attributes) {
+                                rp = rp.shading(shd);
+                            }
+                        }
                         XMLElement::Vanish => rp = rp.vanish(),
                         XMLElement::SpecVanish => rp = rp.spec_vanish(),
                         XMLElement::TextBorder => {

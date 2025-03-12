@@ -1,5 +1,6 @@
 use super::*;
-use docx_rs::{BorderType, TextBorder, VertAlignType};
+use docx_rs::{BorderType, Shading, TextBorder, VertAlignType};
+use std::str::FromStr;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -134,6 +135,15 @@ impl Run {
 
     pub fn vert_align(mut self, a: VertAlignType) -> Run {
         self.0.run_property = self.0.run_property.vert_align(a);
+        self
+    }
+
+    pub fn shading(mut self, t: &str, color: &str, fill: &str) -> Self {
+        let mut s = Shading::new().color(color).fill(fill);
+        if let Ok(t) = docx_rs::ShdType::from_str(t) {
+            s = s.shd_type(t);
+        }
+        self.0.run_property = self.0.run_property.shading(s);
         self
     }
 

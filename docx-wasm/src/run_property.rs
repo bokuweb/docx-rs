@@ -1,5 +1,7 @@
 use super::*;
 use wasm_bindgen::prelude::*;
+use std::str::FromStr;
+
 
 #[wasm_bindgen]
 pub struct RunProperty(docx_rs::RunProperty);
@@ -128,6 +130,15 @@ impl RunProperty {
             .space(space)
             .color(color);
         self.0 = self.0.text_border(border);
+        self
+    }
+
+    pub fn shading(mut self, t: &str, color: &str, fill: &str) -> Self {
+        let mut s = docx_rs::Shading::new().color(color).fill(fill);
+        if let Ok(t) = docx_rs::ShdType::from_str(t) {
+            s = s.shd_type(t);
+        }
+        self.0 = self.0.shading(s);
         self
     }
 }

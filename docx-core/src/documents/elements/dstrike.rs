@@ -40,6 +40,10 @@ impl BuildXML for Dstrike {
         &self,
         stream: xml::writer::EventWriter<W>,
     ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
-        XMLBuilder::from(stream).dstrike()?.into_inner()
+        if self.val {
+            XMLBuilder::from(stream).dstrike()?.into_inner()
+        } else {
+            XMLBuilder::from(stream).disable_dstrike()?.into_inner()
+        }
     }
 }

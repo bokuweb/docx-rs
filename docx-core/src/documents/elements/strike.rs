@@ -40,6 +40,10 @@ impl BuildXML for Strike {
         &self,
         stream: xml::writer::EventWriter<W>,
     ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
-        XMLBuilder::from(stream).strike()?.into_inner()
+        if self.val {
+            XMLBuilder::from(stream).strike()?.into_inner()
+        } else {
+            XMLBuilder::from(stream).disable_strike()?.into_inner()
+        }
     }
 }

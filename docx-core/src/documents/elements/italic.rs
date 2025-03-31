@@ -40,6 +40,10 @@ impl BuildXML for Italic {
         &self,
         stream: xml::writer::EventWriter<W>,
     ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
-        XMLBuilder::from(stream).i()?.into_inner()
+        if self.val {
+            XMLBuilder::from(stream).i()?.into_inner()
+        } else {
+            XMLBuilder::from(stream).disable_italic()?.into_inner()
+        }
     }
 }

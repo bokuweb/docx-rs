@@ -263,6 +263,11 @@ impl Run {
         self
     }
 
+    pub fn stretch(mut self, v: i32) -> Run {
+        self.run_property = self.run_property.stretch(v);
+        self
+    }
+
     pub fn color(mut self, color: impl Into<String>) -> Run {
         self.run_property = self.run_property.color(color);
         self

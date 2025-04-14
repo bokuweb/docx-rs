@@ -278,6 +278,12 @@ impl<W: Write> XMLBuilder<W> {
             .close()
     }
 
+    // i.e. <w:w ... >
+    pub(crate) fn w(self, s: i32) -> Result<Self> {
+        self.write(XmlEvent::start_element("w:w").attr("w:val", &format!("{}", s)))?
+            .close()
+    }
+
     // i.e. <w:spacing ... >
     pub(crate) fn line_spacing(
         self,

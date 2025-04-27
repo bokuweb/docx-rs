@@ -9,17 +9,17 @@ use serde::*;
 #[serde(rename_all = "camelCase")]
 pub struct LineSpacing {
     #[serde(skip_serializing_if = "Option::is_none")]
-    line_rule: Option<LineSpacingType>,
+    pub line_rule: Option<LineSpacingType>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    before: Option<u32>,
+    pub before: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    after: Option<u32>,
+    pub after: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    before_lines: Option<u32>,
+    pub before_lines: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    after_lines: Option<u32>,
+    pub after_lines: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    line: Option<i32>,
+    pub line: Option<i32>,
 }
 
 impl LineSpacing {

@@ -6,7 +6,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct BoldCs {
-    val: bool,
+    pub val: bool,
 }
 
 impl BoldCs {

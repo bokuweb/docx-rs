@@ -152,6 +152,11 @@ export class Docx {
     return this;
   }
 
+  titlePg() {
+    this.sectionProperty.titlePg();
+    return this;
+  }
+
   pageSize(w: number, h: number) {
     this.sectionProperty.pageSize(w, h);
     return this;

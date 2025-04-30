@@ -123,6 +123,11 @@ impl Docx {
         self
     }
 
+    pub fn title_pg(mut self) -> Docx {
+        self.0 = self.0.title_pg();
+        self
+    }
+
     pub fn page_size(mut self, w: u32, h: u32) -> Docx {
         self.0 = self.0.page_size(w, h);
         self

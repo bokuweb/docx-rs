@@ -549,6 +549,10 @@ export class Docx {
       }
     }
 
+    if (this.sectionProperty._titlePg) {
+      docx = docx.title_pg();
+    }
+
     if (this.sectionProperty._pageTypeNum) {
       const { start, chapStyle } = this.sectionProperty._pageTypeNum;
       const p = wasm.createPageNumType(start, chapStyle);

@@ -78,6 +78,7 @@ pub use web_settings::*;
 pub use webextension::*;
 pub use xml_docx::*;
 
+use base64::Engine;
 use serde::{ser, Serialize};
 
 use self::image_collector::{collect_images_from_paragraph, collect_images_from_table};
@@ -96,7 +97,7 @@ impl ser::Serialize for Image {
     where
         S: ser::Serializer,
     {
-        let base64 = base64::display::Base64Display::with_config(&self.0, base64::STANDARD);
+        let base64 = base64::engine::general_purpose::STANDARD.encode(&self.0);
         serializer.collect_str(&base64)
     }
 }
@@ -106,7 +107,7 @@ impl ser::Serialize for Png {
     where
         S: ser::Serializer,
     {
-        let base64 = base64::display::Base64Display::with_config(&self.0, base64::STANDARD);
+        let base64 = base64::engine::general_purpose::STANDARD.encode(&self.0);
         serializer.collect_str(&base64)
     }
 }

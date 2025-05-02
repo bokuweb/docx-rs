@@ -7,7 +7,7 @@ use serde::*;
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct CharacterSpacing {
-    pub value: i32,
+    value: i32,
 }
 
 impl CharacterSpacing {

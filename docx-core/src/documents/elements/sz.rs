@@ -6,7 +6,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct Sz {
-    pub val: usize,
+    val: usize,
 }
 
 impl Sz {

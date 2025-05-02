@@ -6,7 +6,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct ItalicCs {
-    pub val: bool,
+    val: bool,
 }
 
 impl ItalicCs {

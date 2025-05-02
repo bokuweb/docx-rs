@@ -152,6 +152,11 @@ export class Docx {
     return this;
   }
 
+  titlePg() {
+    this.sectionProperty.titlePg();
+    return this;
+  }
+
   pageSize(w: number, h: number) {
     this.sectionProperty.pageSize(w, h);
     return this;
@@ -547,6 +552,10 @@ export class Docx {
           docx = docx.page_orient(wasm.PageOrientationType.Portrait);
           break;
       }
+    }
+
+    if (this.sectionProperty._titlePg) {
+      docx = docx.title_pg();
     }
 
     if (this.sectionProperty._pageTypeNum) {

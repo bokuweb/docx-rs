@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support `dstrike`
 - Update Add after for default toc styles #806
 - Update `Level` styles.
+- Support `titlePg`
 -->
 
 ## @0.4.17 (26. Apr, 2024)

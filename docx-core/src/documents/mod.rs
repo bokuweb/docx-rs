@@ -457,6 +457,11 @@ impl Docx {
         self
     }
 
+    pub fn title_pg(mut self) -> Self {
+        self.document = self.document.title_pg();
+        self
+    }
+
     pub fn page_size(mut self, w: u32, h: u32) -> Self {
         self.document = self.document.page_size(PageSize::new().size(w, h));
         self

@@ -14,6 +14,7 @@ export class SectionProperty {
     w: 11906,
     h: 16838,
   };
+  _titlePg: boolean | null = null;
   _pageMargin: PageMargin | null = null;
   _docGrid: DocGrid | null = null;
   _header: Header | null = null;
@@ -23,6 +24,11 @@ export class SectionProperty {
   _firstFooter: Footer | null = null;
   _evenFooter: Footer | null = null;
   _pageTypeNum: PageNumType | null = null;
+
+  titlePg() {
+    this._titlePg = true;
+    return this;
+  }
 
   pageSize(w: number, h: number) {
     this._pageSize.w = w;

@@ -8,7 +8,7 @@ use crate::{xml_builder::XMLBuilder, BuildXML};
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct Caps {
-    val: bool,
+    pub val: bool,
 }
 
 impl Caps {

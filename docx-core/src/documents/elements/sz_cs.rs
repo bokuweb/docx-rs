@@ -5,7 +5,7 @@ use std::io::Write;
 
 #[derive(Deserialize, Debug, Clone, PartialEq)]
 pub struct SzCs {
-    val: usize,
+    pub val: usize,
 }
 
 impl SzCs {

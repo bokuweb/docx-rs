@@ -7,7 +7,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct VertAlign {
-    val: VertAlignType,
+    pub val: VertAlignType,
 }
 
 impl VertAlign {

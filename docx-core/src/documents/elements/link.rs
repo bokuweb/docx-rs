@@ -7,7 +7,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Link {
-    val: String,
+    pub val: String,
 }
 
 impl Link {

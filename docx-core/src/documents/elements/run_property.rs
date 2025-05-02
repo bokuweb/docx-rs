@@ -40,6 +40,8 @@ pub struct RunProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub character_spacing: Option<CharacterSpacing>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub stretch: Option<Stretch>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub fonts: Option<RunFonts>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub text_border: Option<TextBorder>,
@@ -169,6 +171,11 @@ impl RunProperty {
         self
     }
 
+    pub fn stretch(mut self, v: i32) -> RunProperty {
+        self.stretch = Some(Stretch::new(v));
+        self
+    }
+
     pub fn text_border(mut self, b: TextBorder) -> Self {
         self.text_border = Some(b);
         self
@@ -222,6 +229,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.del)?
             .add_optional_child(&self.vert_align)?
             .add_optional_child(&self.character_spacing)?
+            .add_optional_child(&self.stretch)?
             .add_optional_child(&self.style)?
             .add_optional_child(&self.positional_tab)?
             .add_optional_child(&self.shading)?
@@ -315,6 +323,16 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:rPr><w:spacing w:val="20" /></w:rPr>"#
+        );
+    }
+
+    #[test]
+    fn test_stretch() {
+        let c = RunProperty::new().stretch(80);
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rPr><w:w w:val="80" /></w:rPr>"#
         );
     }
 

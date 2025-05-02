@@ -6,7 +6,7 @@ use crate::xml_builder::*;
 
 #[derive(Deserialize, Debug, Clone, PartialEq)]
 pub struct Color {
-    pub val: String,
+    val: String,
 }
 
 impl Color {

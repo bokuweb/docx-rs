@@ -17,23 +17,23 @@ use crate::xml_builder::*;
 #[serde(rename_all = "camelCase")]
 pub struct RunFonts {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub ascii: Option<String>,
+    ascii: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub hi_ansi: Option<String>,
+    hi_ansi: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub east_asia: Option<String>,
+    east_asia: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub cs: Option<String>,
+    cs: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub ascii_theme: Option<String>,
+    ascii_theme: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub hi_ansi_theme: Option<String>,
+    hi_ansi_theme: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub east_asia_theme: Option<String>,
+    east_asia_theme: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub cs_theme: Option<String>,
+    cs_theme: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub hint: Option<String>,
+    hint: Option<String>,
 }
 
 impl RunFonts {

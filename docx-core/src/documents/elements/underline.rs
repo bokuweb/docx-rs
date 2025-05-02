@@ -6,7 +6,7 @@ use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct Underline {
-    pub val: String,
+    val: String,
 }
 
 impl Underline {

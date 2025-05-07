@@ -421,6 +421,8 @@ impl<W: Write> XMLBuilder<W> {
 
     open!(open_insert, "w:ins", "w:id", "w:author", "w:date");
     open!(open_delete, "w:del", "w:id", "w:author", "w:date");
+    open!(open_move_to, "w:moveTo", "w:id", "w:author", "w:date");
+    open!(open_move_from, "w:moveFrom", "w:id", "w:author", "w:date");
     open!(
         open_paragraph_property_change,
         "w:pPrChange",

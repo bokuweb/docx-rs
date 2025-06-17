@@ -130,6 +130,12 @@ export class Run {
     return this;
   }
 
+  caps() {
+    this.property ??= createDefaultRunProperty();
+    this.property.caps();
+    return this;
+  }
+
   fonts(fonts: RunFonts) {
     this.property ??= createDefaultRunProperty();
     this.property.fonts(fonts);

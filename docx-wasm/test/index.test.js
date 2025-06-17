@@ -470,6 +470,20 @@ describe("writer", () => {
     }
   });
 
+  test("should write caps", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello "))
+      .addRun(new w.Run().addText("World!").caps());
+    const buffer = new w.Docx().addParagraph(p).build();
+    writeFileSync("../output/js/caps.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
   test("should write shd", () => {
     const p = new w.Paragraph()
       .addRun(new w.Run().addText("Hello "))

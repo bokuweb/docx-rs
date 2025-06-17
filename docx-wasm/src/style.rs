@@ -83,6 +83,11 @@ impl Style {
         self
     }
 
+    pub fn caps(mut self) -> Self {
+        self.0.run_property = self.0.run_property.caps();
+        self
+    }
+
     pub fn fonts(mut self, f: RunFonts) -> Self {
         self.0 = self.0.fonts(f.take());
         self

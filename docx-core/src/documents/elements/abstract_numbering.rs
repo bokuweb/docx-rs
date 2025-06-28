@@ -11,6 +11,7 @@ pub struct AbstractNumbering {
     pub style_link: Option<String>,
     pub num_style_link: Option<String>,
     pub levels: Vec<Level>,
+     pub multi_level_type: Option<String>,
 }
 
 impl AbstractNumbering {
@@ -20,6 +21,7 @@ impl AbstractNumbering {
             style_link: None,
             num_style_link: None,
             levels: vec![],
+            multi_level_type: None,
         }
     }
 
@@ -44,11 +46,18 @@ impl BuildXML for AbstractNumbering {
         &self,
         stream: xml::writer::EventWriter<W>,
     ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
-        XMLBuilder::from(stream)
-            .open_abstract_num(&self.id.to_string())?
-            .add_children(&self.levels)?
-            .close()?
-            .into_inner()
+        let mut builder = XMLBuilder::from(stream)  
+            .open_abstract_num(&self.id.to_string())?;  
+          
+        // 添加 multiLevelType 元素（如果存在）  
+        if let Some(ref multi_level_type) = self.multi_level_type {  
+            builder = builder.multi_level_type(multi_level_type)?;  
+        }  
+          
+        builder  
+            .add_children(&self.levels)?  
+            .close()?  
+            .into_inner()  
     }
 }
 

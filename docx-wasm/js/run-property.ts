@@ -32,6 +32,7 @@ export class RunProperty {
   _italic?: boolean;
   _strike?: boolean;
   _dstrike?: boolean;
+  _caps?: boolean;
   _underline?: string;
   _vanish?: boolean;
   _fonts?: RunFonts;
@@ -103,6 +104,11 @@ export class RunProperty {
 
   disableItalic() {
     this._italic = false;
+    return this;
+  }
+
+  caps() {
+    this._caps = true;
     return this;
   }
 
@@ -322,6 +328,10 @@ export const setRunProperty = <T extends wasm.Run | wasm.Style>(
 
   if (property._dstrike) {
     target = target.dstrike() as T;
+  }
+
+  if (property._caps) {
+    target = target.caps() as T;
   }
 
   if (property._underline) {

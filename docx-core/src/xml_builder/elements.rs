@@ -446,6 +446,8 @@ impl<W: Write> XMLBuilder<W> {
         "w:initials"
     );
 
+    closed_with_str!(multi_level_type, "w:multiLevelType");
+
     open!(open_abstract_num, "w:abstractNum", "w:abstractNumId");
     open!(open_level, "w:lvl", "w:ilvl");
     open!(open_tabs, "w:tabs");

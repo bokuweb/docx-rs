@@ -11,7 +11,8 @@ pub struct AbstractNumbering {
     pub style_link: Option<String>,
     pub num_style_link: Option<String>,
     pub levels: Vec<Level>,
-     pub multi_level_type: Option<String>,
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub multi_level_type: Option<String>,
 }
 
 impl AbstractNumbering {

@@ -140,6 +140,11 @@ impl Document {
         self
     }
 
+    pub fn title_pg(mut self) -> Self {
+        self.section_property = self.section_property.title_pg();
+        self
+    }
+
     pub fn page_size(mut self, size: PageSize) -> Self {
         self.section_property = self.section_property.page_size(size);
         self

@@ -14,8 +14,16 @@ import {
   setRunProperty,
   VertAlignType,
 } from "./run-property";
+import { Tc } from "./tc";
 
-export type RunChild = Text | DeleteText | Tab | Break | Image | PositionalTab;
+export type RunChild =
+  | Text
+  | DeleteText
+  | Tab
+  | Break
+  | Image
+  | PositionalTab
+  | Tc;
 
 export class Run {
   children: RunChild[] = [];
@@ -48,6 +56,11 @@ export class Run {
 
   addBreak(type: BreakType) {
     this.children.push(new Break(type));
+    return this;
+  }
+
+  addTc(tc: Tc) {
+    this.children.push(tc);
     return this;
   }
 
@@ -93,6 +106,12 @@ export class Run {
     return this;
   }
 
+  dstrike() {
+    this.property ??= createDefaultRunProperty();
+    this.property.dstrike();
+    return this;
+  }
+
   italic() {
     this.property ??= createDefaultRunProperty();
     this.property.italic();
@@ -108,6 +127,12 @@ export class Run {
   vanish() {
     this.property ??= createDefaultRunProperty();
     this.property.vanish();
+    return this;
+  }
+
+  caps() {
+    this.property ??= createDefaultRunProperty();
+    this.property.caps();
     return this;
   }
 
@@ -138,6 +163,12 @@ export class Run {
   textBorder(type: BorderType, size: number, space: number, color: string) {
     this.property ??= createDefaultRunProperty();
     this.property.textBorder(type, size, space, color);
+    return this;
+  }
+
+  shading(type: string, color: string, fill: string) {
+    this.property ??= createDefaultRunProperty();
+    this.property.shading(type, color, fill);
     return this;
   }
 
@@ -178,6 +209,13 @@ export class Run {
           pic = pic.rotate(child.rot);
         }
         run = run.add_image(pic);
+      } else if (child instanceof Tc) {
+        run = run.add_tc(
+          child._text,
+          child._omitPageNumber,
+          child._level,
+          child._identifier
+        );
       }
     });
 

@@ -152,6 +152,11 @@ export class Docx {
     return this;
   }
 
+  titlePg() {
+    this.sectionProperty.titlePg();
+    return this;
+  }
+
   pageSize(w: number, h: number) {
     this.sectionProperty.pageSize(w, h);
     return this;
@@ -298,8 +303,36 @@ export class Docx {
       level = level.italic();
     }
 
+    if (l.runProperty._bold != null) {
+      if (l.runProperty._bold) {
+        level = level.bold();
+      } else {
+        level = level.disable_bold();
+      }
+    }
+
+    if (l.runProperty._italic != null) {
+      if (l.runProperty._italic) {
+        level = level.italic();
+      } else {
+        level = level.disable_italic();
+      }
+    }
+
+    if (l.runProperty._strike != null) {
+      if (l.runProperty._strike) {
+        level = level.strike();
+      } else {
+        level = level.disable_strike();
+      }
+    }
+
     if (l.runProperty._size) {
       level = level.size(l.runProperty._size);
+    }
+
+    if (l.runProperty._color) {
+      level = level.color(l.runProperty._color);
     }
 
     if (l.runProperty._fonts) {
@@ -317,6 +350,10 @@ export class Docx {
         f = f.east_asia(l.runProperty._fonts._eastAsia);
       }
       level = level.fonts(f);
+    }
+
+    if (l.runProperty._characterSpacing != null) {
+      level = level.spacing(l.runProperty._characterSpacing);
     }
 
     if (l.paragraphProperty.indent) {
@@ -517,6 +554,10 @@ export class Docx {
       }
     }
 
+    if (this.sectionProperty._titlePg) {
+      docx = docx.title_pg();
+    }
+
     if (this.sectionProperty._pageTypeNum) {
       const { start, chapStyle } = this.sectionProperty._pageTypeNum;
       const p = wasm.createPageNumType(start, chapStyle);
@@ -650,6 +691,7 @@ export * from "./paragraph-property";
 export * from "./insert";
 export * from "./delete";
 export * from "./border";
+export * from "./tc";
 export * from "./table";
 export * from "./table-cell";
 export * from "./table-cell-border";

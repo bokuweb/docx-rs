@@ -1,5 +1,6 @@
 use super::*;
-use docx_rs::{BorderType, TextBorder, VertAlignType, WidthType};
+use docx_rs::{BorderType, Shading, TextBorder, VertAlignType, WidthType};
+use std::str::FromStr;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -53,8 +54,22 @@ impl Style {
         self
     }
 
+    pub fn dstrike(mut self) -> Self {
+        self.0.run_property = self.0.run_property.dstrike();
+        self
+    }
+
     pub fn underline(mut self, line_type: &str) -> Self {
         self.0.run_property = self.0.run_property.underline(line_type);
+        self
+    }
+
+    pub fn shading(mut self, t: &str, color: &str, fill: &str) -> Self {
+        let mut s = Shading::new().color(color).fill(fill);
+        if let Ok(t) = docx_rs::ShdType::from_str(t) {
+            s = s.shd_type(t);
+        }
+        self.0.run_property = self.0.run_property.shading(s);
         self
     }
 
@@ -65,6 +80,11 @@ impl Style {
 
     pub fn vanish(mut self) -> Self {
         self.0.run_property = self.0.run_property.vanish();
+        self
+    }
+
+    pub fn caps(mut self) -> Self {
+        self.0.run_property = self.0.run_property.caps();
         self
     }
 

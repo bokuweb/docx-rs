@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!--
+- Support `TC`
+- Support `dstrike`
+- Update Add after for default toc styles #806
+- Update `Level` styles.
+- Support `titlePg`
+- Support `caps` in wasm.
+-->
+
 ## @0.4.17 (26. Apr, 2024)
 
 - Floating images cause docx generation to fail with error `should end: LastElementNameNotAvailable`
@@ -53,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - escape author in del/ins.
 
-## docx-wasm@0.0.278-rc19 (9. Aug, 2023)
+## docx-wasm@0.0.278-rc19 (9. Aug, 20)
 
 - use i32 for line instead of u32.
 

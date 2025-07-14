@@ -83,6 +83,11 @@ impl TableOfContents {
         self
     }
 
+    pub fn tc_field_identifier(mut self, f: Option<String>) -> Self {
+        self.instr = self.instr.tc_field_identifier(f);
+        self
+    }
+
     pub fn add_style_with_level(mut self, s: StyleWithLevel) -> Self {
         self.instr = self.instr.add_style_with_level(s);
         self
@@ -189,7 +194,7 @@ impl BuildXML for TableOfContents {
                 }
             }
 
-            let p1 = if let Some(ref del) = self.delete {
+            let mut p1 = if let Some(ref del) = self.delete {
                 Paragraph::new().add_delete(
                     Delete::new().author(&del.author).date(&del.date).add_run(
                         Run::new()
@@ -206,6 +211,10 @@ impl BuildXML for TableOfContents {
                         .add_field_char(FieldCharType::Separate, false),
                 )
             };
+
+            if let Some(ref p) = self.paragraph_property {
+                p1 = p1.paragraph_property(p.clone());
+            }
 
             b = b.add_child(&p1)?;
 

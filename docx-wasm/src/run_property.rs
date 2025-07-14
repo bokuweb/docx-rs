@@ -1,5 +1,7 @@
 use super::*;
 use wasm_bindgen::prelude::*;
+use std::str::FromStr;
+
 
 #[wasm_bindgen]
 pub struct RunProperty(docx_rs::RunProperty);
@@ -26,13 +28,38 @@ impl RunProperty {
         self
     }
 
+    pub fn disable_bold(mut self) -> Self {
+        self.0 = self.0.disable_bold();
+        self
+    }
+
     pub fn italic(mut self) -> Self {
         self.0 = self.0.italic();
         self
     }
 
+    pub fn disable_italic(mut self) -> Self {
+        self.0 = self.0.disable_italic();
+        self
+    }
+
     pub fn strike(mut self) -> Self {
         self.0 = self.0.strike();
+        self
+    }
+
+    pub fn disable_strike(mut self) -> Self {
+        self.0 = self.0.disable_strike();
+        self
+    }
+
+    pub fn dstrike(mut self) -> Self {
+        self.0 = self.0.dstrike();
+        self
+    }
+
+    pub fn disable_dstrike(mut self) -> Self {
+        self.0 = self.0.disable_dstrike();
         self
     }
 
@@ -103,6 +130,15 @@ impl RunProperty {
             .space(space)
             .color(color);
         self.0 = self.0.text_border(border);
+        self
+    }
+
+    pub fn shading(mut self, t: &str, color: &str, fill: &str) -> Self {
+        let mut s = docx_rs::Shading::new().color(color).fill(fill);
+        if let Ok(t) = docx_rs::ShdType::from_str(t) {
+            s = s.shd_type(t);
+        }
+        self.0 = self.0.shading(s);
         self
     }
 }

@@ -40,6 +40,10 @@ impl BuildXML for Bold {
         &self,
         stream: xml::writer::EventWriter<W>,
     ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
-        XMLBuilder::from(stream).b()?.into_inner()
+        if self.val {
+            XMLBuilder::from(stream).b()?.into_inner()
+        } else {
+            XMLBuilder::from(stream).disable_bold()?.into_inner()
+        }
     }
 }

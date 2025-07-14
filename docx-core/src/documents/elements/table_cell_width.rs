@@ -24,7 +24,7 @@ impl BuildXML for TableCellWidth {
         stream: xml::writer::EventWriter<W>,
     ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
-            .table_cell_width(self.width as i32, WidthType::Dxa)?
+            .table_cell_width(self.width as i32, self.width_type)?
             .into_inner()
     }
 }

@@ -40,6 +40,8 @@ pub struct RunProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub character_spacing: Option<CharacterSpacing>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub stretch: Option<Stretch>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub fonts: Option<RunFonts>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub text_border: Option<TextBorder>,
@@ -49,6 +51,8 @@ pub struct RunProperty {
     pub ins: Option<Insert>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub strike: Option<Strike>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub dstrike: Option<Dstrike>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub positional_tab: Option<PositionalTab>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -116,6 +120,23 @@ impl RunProperty {
 
     pub fn strike(mut self) -> RunProperty {
         self.strike = Some(Strike::new());
+        self.dstrike = None;
+        self
+    }
+
+    pub fn disable_strike(mut self) -> RunProperty {
+        self.strike = Some(Strike::new().disable());
+        self
+    }
+
+    pub fn dstrike(mut self) -> RunProperty {
+        self.dstrike = Some(Dstrike::new());
+        self.strike = None;
+        self
+    }
+
+    pub fn disable_dstrike(mut self) -> RunProperty {
+        self.dstrike = Some(Dstrike::new().disable());
         self
     }
 
@@ -147,6 +168,11 @@ impl RunProperty {
 
     pub fn character_spacing(mut self, v: i32) -> RunProperty {
         self.character_spacing = Some(CharacterSpacing::new(v));
+        self
+    }
+
+    pub fn stretch(mut self, v: i32) -> RunProperty {
+        self.stretch = Some(Stretch::new(v));
         self
     }
 
@@ -192,6 +218,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.italic)?
             .add_optional_child(&self.italic_cs)?
             .add_optional_child(&self.strike)?
+            .add_optional_child(&self.dstrike)?
             .add_optional_child(&self.highlight)?
             .add_optional_child(&self.underline)?
             .add_optional_child(&self.vanish)?
@@ -202,6 +229,7 @@ impl BuildXML for RunProperty {
             .add_optional_child(&self.del)?
             .add_optional_child(&self.vert_align)?
             .add_optional_child(&self.character_spacing)?
+            .add_optional_child(&self.stretch)?
             .add_optional_child(&self.style)?
             .add_optional_child(&self.positional_tab)?
             .add_optional_child(&self.shading)?
@@ -299,6 +327,16 @@ mod tests {
     }
 
     #[test]
+    fn test_stretch() {
+        let c = RunProperty::new().stretch(80);
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rPr><w:w w:val="80" /></w:rPr>"#
+        );
+    }
+
+    #[test]
     fn test_ptab() {
         let c = RunProperty::new().ptab(PositionalTab::new(
             PositionalTabAlignmentType::Left,
@@ -324,6 +362,16 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:rPr><w:shd w:val="clear" w:color="auto" w:fill="FFFFFF" /></w:rPr>"#
+        );
+    }
+
+    #[test]
+    fn test_dstrike() {
+        let c = RunProperty::new().dstrike();
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:rPr><w:dstrike /></w:rPr>"#
         );
     }
 }

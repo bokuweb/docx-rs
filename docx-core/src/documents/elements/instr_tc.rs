@@ -2,6 +2,7 @@ use serde::Serialize;
 use std::io::Write;
 
 use crate::documents::*;
+use crate::escape::escape;
 use crate::xml_builder::XMLBuilder;
 
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TCTC_topic_ID0EU2N1.html
@@ -19,7 +20,7 @@ pub struct InstrTC {
 impl InstrTC {
     pub fn new(text: impl Into<String>) -> Self {
         Self {
-            text: text.into(),
+            text: escape(&text.into()),
             ..Default::default()
         }
     }
@@ -48,7 +49,7 @@ impl BuildXML for InstrTC {
         let mut b = XMLBuilder::from(stream);
         let raw = b.inner_mut()?;
 
-        write!(raw, "TC {}", self.text)?;
+        write!(raw, "TC \"{}\"", self.text)?;
 
         if let Some(ref t) = self.item_type_identifier {
             write!(raw, " \\f {}", t)?;

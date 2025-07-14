@@ -1,6 +1,7 @@
 import * as wasm from "./pkg/docx_wasm";
 
 import { BorderType } from "./border";
+import { Shading } from "./shading";
 
 export type TextBorder = {
   borderType: BorderType;
@@ -30,6 +31,8 @@ export class RunProperty {
   _bold?: boolean;
   _italic?: boolean;
   _strike?: boolean;
+  _dstrike?: boolean;
+  _caps?: boolean;
   _underline?: string;
   _vanish?: boolean;
   _fonts?: RunFonts;
@@ -37,6 +40,7 @@ export class RunProperty {
   _textBorder?: TextBorder;
   _ins?: RunPropertyIns;
   _del?: RunPropertyDel;
+  _shading?: Shading;
 
   style(style: string) {
     this._style = style;
@@ -68,13 +72,43 @@ export class RunProperty {
     return this;
   }
 
+  disableBold() {
+    this._bold = false;
+    return this;
+  }
+
   strike() {
     this._strike = true;
     return this;
   }
 
+  disableStrike() {
+    this._strike = false;
+    return this;
+  }
+
+  dstrike() {
+    this._dstrike = true;
+    return this;
+  }
+
+  disableDstrike() {
+    this._dstrike = false;
+    return this;
+  }
+
   italic() {
     this._italic = true;
+    return this;
+  }
+
+  disableItalic() {
+    this._italic = false;
+    return this;
+  }
+
+  caps() {
+    this._caps = true;
     return this;
   }
 
@@ -115,6 +149,15 @@ export class RunProperty {
       space,
       color,
     };
+    return this;
+  }
+
+  shading(type: string, color: string, fill: string) {
+    const s = new Shading();
+    s.color(color);
+    s.fill(fill);
+    s.type(type);
+    this._shading = s;
     return this;
   }
 }
@@ -283,6 +326,14 @@ export const setRunProperty = <T extends wasm.Run | wasm.Style>(
     target = target.strike() as T;
   }
 
+  if (property._dstrike) {
+    target = target.dstrike() as T;
+  }
+
+  if (property._caps) {
+    target = target.caps() as T;
+  }
+
   if (property._underline) {
     target = target.underline(property._underline) as T;
   }
@@ -308,6 +359,14 @@ export const setRunProperty = <T extends wasm.Run | wasm.Style>(
   if (property._fonts) {
     const fonts = property._fonts.buildWasmObject();
     target = target.fonts(fonts) as T;
+  }
+
+  if (property._shading != null) {
+    target = target.shading(
+      property._shading._type,
+      property._shading._color,
+      property._shading._fill
+    ) as T;
   }
 
   return target;
@@ -340,16 +399,36 @@ export const createRunProperty = (property: RunProperty): wasm.RunProperty => {
     }
   }
 
-  if (property._bold) {
-    target = target.bold();
+  if (property._bold != null) {
+    if (property._bold) {
+      target = target.bold();
+    } else {
+      target = target.disable_bold();
+    }
   }
 
-  if (property._italic) {
-    target = target.italic();
+  if (property._italic != null) {
+    if (property._italic) {
+      target = target.italic();
+    } else {
+      target = target.disable_italic();
+    }
   }
 
-  if (property._strike) {
-    target = target.strike();
+  if (property._strike != null) {
+    if (property._strike) {
+      target = target.strike();
+    } else {
+      target = target.disable_strike();
+    }
+  }
+
+  if (property._dstrike != null) {
+    if (property._dstrike) {
+      target = target.dstrike();
+    } else {
+      target = target.disable_dstrike();
+    }
   }
 
   if (property._underline) {
@@ -377,6 +456,14 @@ export const createRunProperty = (property: RunProperty): wasm.RunProperty => {
   if (property._fonts) {
     const fonts = property._fonts.buildWasmObject();
     target = target.fonts(fonts);
+  }
+
+  if (property._shading != null) {
+    target = target.shading(
+      property._shading._type,
+      property._shading._color,
+      property._shading._fill
+    );
   }
 
   return target;

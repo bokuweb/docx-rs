@@ -183,12 +183,38 @@ impl<W: Write> XMLBuilder<W> {
     closed!(b, "w:b");
     closed!(b_cs, "w:bCs");
 
+    pub(crate) fn disable_bold(self) -> Result<Self> {
+        let f = "false";
+        self.write(XmlEvent::start_element("w:b").attr("w:val", &f))?
+            .close()
+    }
+
     closed_with_str!(caps, "w:caps");
 
     closed!(i, "w:i");
     closed!(i_cs, "w:iCs");
 
+    pub(crate) fn disable_italic(self) -> Result<Self> {
+        let f = "false";
+        self.write(XmlEvent::start_element("w:i").attr("w:val", &f))?
+            .close()
+    }
+
     closed!(strike, "w:strike");
+
+    pub(crate) fn disable_strike(self) -> Result<Self> {
+        let f = "false";
+        self.write(XmlEvent::start_element("w:strike").attr("w:val", &f))?
+            .close()
+    }
+
+    closed!(dstrike, "w:dstrike");
+
+    pub(crate) fn disable_dstrike(self) -> Result<Self> {
+        let f = "false";
+        self.write(XmlEvent::start_element("w:dstrike").attr("w:val", &f))?
+            .close()
+    }
 
     // Build w:style element
     // i.e. <w:style ... >
@@ -249,6 +275,12 @@ impl<W: Write> XMLBuilder<W> {
     // i.e. <w:spacing ... >
     pub(crate) fn spacing(self, s: i32) -> Result<Self> {
         self.write(XmlEvent::start_element("w:spacing").attr("w:val", &format!("{}", s)))?
+            .close()
+    }
+
+    // i.e. <w:w ... >
+    pub(crate) fn w(self, s: i32) -> Result<Self> {
+        self.write(XmlEvent::start_element("w:w").attr("w:val", &format!("{}", s)))?
             .close()
     }
 
@@ -470,7 +502,7 @@ impl<W: Write> XMLBuilder<W> {
     closed!(keep_lines, "w:keepLines");
     closed!(page_break_before, "w:pageBreakBefore");
     closed!(widow_control, "w:widowControl", "w:val");
-
+    closed!(bidi, "w:bidi");
     /*
     <w:lvlOverride w:ilvl="0">
       <w:startOverride w:val="1"/>

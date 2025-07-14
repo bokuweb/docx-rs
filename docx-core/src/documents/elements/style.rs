@@ -130,6 +130,16 @@ impl Style {
         self
     }
 
+    pub fn snap_to_grid(mut self, v: bool) -> Self {
+        self.paragraph_property = self.paragraph_property.snap_to_grid(v);
+        self
+    }
+
+    pub fn line_spacing(mut self, spacing: LineSpacing) -> Self {
+        self.paragraph_property = self.paragraph_property.line_spacing(spacing);
+        self
+    }
+
     pub fn indent(
         mut self,
         left: Option<i32>,

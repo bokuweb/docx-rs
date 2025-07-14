@@ -5,6 +5,7 @@ import {
   CommentRangeEndJSON,
   InsertJSONData,
   DeleteJSONData,
+  ShadingJSON,
 } from "..";
 import { BorderType } from "../border";
 import { VertAlignType } from "../run-property";
@@ -55,6 +56,8 @@ export type RunPropertyJSON = {
   ins?: InsertJSONData | null;
   del?: DeleteJSONData | null;
   strike?: boolean;
+  dstrike?: boolean;
+  shading?: ShadingJSON | null;
 };
 
 export type RunChildJSON =

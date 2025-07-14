@@ -220,6 +220,12 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read dstrike", () => {
+    const buffer = readFileSync("../fixtures/dstrike/dstrike.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {
@@ -442,6 +448,48 @@ describe("writer", () => {
       .addRun(new w.Run().addText("World!").textBorder("single", 4, 0, "auto"));
     const buffer = new w.Docx().addParagraph(p).build();
     writeFileSync("../output/js/text_border.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write dstrike", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello "))
+      .addRun(new w.Run().addText("World!").dstrike());
+    const buffer = new w.Docx().addParagraph(p).build();
+    writeFileSync("../output/js/dstrike.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write caps", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello "))
+      .addRun(new w.Run().addText("World!").caps());
+    const buffer = new w.Docx().addParagraph(p).build();
+    writeFileSync("../output/js/caps.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write shd", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello "))
+      .addRun(new w.Run().addText("World!").shading("clear", "auto", "FFC000"));
+    const buffer = new w.Docx().addParagraph(p).build();
+    writeFileSync("../output/js/shading.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml|numbering.xml/)) {
@@ -1152,6 +1200,158 @@ describe("writer", () => {
       "../output/js/toc_with_paragraph_property_without_sdt.docx",
       buffer
     );
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write ToC with TC", () => {
+    const p1 = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello!!"))
+      .addRun(new w.Run().addTc(new w.Tc("Hello!!TC").level(1)))
+      .pageBreakBefore(true);
+    const p2 = new w.Paragraph()
+      .addRun(new w.Run().addText("World"))
+      .addRun(new w.Run().addTc(new w.Tc("World!!TC").level(1)))
+      .pageBreakBefore(true);
+    const buffer = new w.Docx()
+      .addTableOfContents(
+        new w.TableOfContents()
+          .alias("Table of contents")
+          .dirty()
+          .tcFieldIdentifier()
+          .paragraphProperty(new w.ParagraphProperty().style("11"))
+      )
+      .addParagraph(p1)
+      .addParagraph(p2)
+      .build();
+    writeFileSync("../output/js/toc_with_tc.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write ToC with instrText TC", () => {
+    const p1 = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello!!"))
+      .addRun(new w.Run().addTc(new w.Tc("Hello!!TC").level(1)))
+      .pageBreakBefore(true);
+    const p2 = new w.Paragraph()
+      .addRun(new w.Run().addText("World"))
+      .addRun(new w.Run().addTc(new w.Tc("World!!TC").level(1)))
+      .pageBreakBefore(true);
+    const buffer = new w.Docx()
+      .addTableOfContents(
+        new w.TableOfContents("TOC \\f \\h \\z \\u")
+          .alias("Table of contents")
+          .dirty()
+          .paragraphProperty(new w.ParagraphProperty().style("11"))
+      )
+      .addParagraph(p1)
+      .addParagraph(p2)
+      .build();
+    writeFileSync("../output/js/toc_with_instrtext_tc.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write ToC with instrText TC with id", () => {
+    const p1 = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello!!"))
+      .addRun(
+        new w.Run().addTc(new w.Tc("Hello!!TC").level(1).identifier("abc"))
+      )
+      .pageBreakBefore(true);
+    const p2 = new w.Paragraph()
+      .addRun(new w.Run().addText("World"))
+      .addRun(new w.Run().addTc(new w.Tc("World!!TC").level(1)))
+      .pageBreakBefore(true);
+    const buffer = new w.Docx()
+      .addTableOfContents(
+        new w.TableOfContents("TOC \\f abc \\h \\z \\u")
+          .alias("Table of contents")
+          .dirty()
+          .paragraphProperty(new w.ParagraphProperty().style("11"))
+      )
+      .addParagraph(p1)
+      .addParagraph(p2)
+      .build();
+    writeFileSync("../output/js/toc_with_instrtext_tc_with_id.docx", buffer);
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write ToC with instrText TC escaped text", () => {
+    const p1 = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello!!"))
+      .addRun(
+        new w.Run().addTc(new w.Tc("Hello!!<div>").level(1).identifier("abc"))
+      )
+      .pageBreakBefore(true);
+    const p2 = new w.Paragraph()
+      .addRun(new w.Run().addText("World"))
+      .addRun(new w.Run().addTc(new w.Tc("World!!TC").level(1)))
+      .pageBreakBefore(true);
+    const buffer = new w.Docx()
+      .addTableOfContents(
+        new w.TableOfContents("TOC \\f abc \\h \\z \\u")
+          .alias("Table of contents")
+          .dirty()
+          .paragraphProperty(new w.ParagraphProperty().style("11"))
+      )
+      .addParagraph(p1)
+      .addParagraph(p2)
+      .build();
+    writeFileSync(
+      "../output/js/toc_with_instrtext_tc_escaped_text.docx",
+      buffer
+    );
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
+  test("should write ToC with paragraphProperty", () => {
+    const p1 = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello!!"))
+      .addRun(
+        new w.Run().addTc(new w.Tc("Hello!!<div>").level(1).identifier("abc"))
+      )
+      .pageBreakBefore(true);
+    const p2 = new w.Paragraph()
+      .addRun(new w.Run().addText("World"))
+      .addRun(new w.Run().addTc(new w.Tc("World!!TC").level(1)))
+      .pageBreakBefore(true);
+    const buffer = new w.Docx()
+      .addTableOfContents(
+        new w.TableOfContents("TOC \\f abc \\h \\z \\u")
+          .alias("Table of contents")
+          .dirty()
+          .paragraphProperty(
+            new w.ParagraphProperty().style("11").snapToGrid(false)
+          )
+      )
+      .addParagraph(p1)
+      .addParagraph(p2)
+      .build();
+    writeFileSync("../output/js/toc_with_paragraph_property.docx", buffer);
     const z = new Zip(Buffer.from(buffer));
     for (const e of z.getEntries()) {
       if (e.entryName.match(/document.xml/)) {

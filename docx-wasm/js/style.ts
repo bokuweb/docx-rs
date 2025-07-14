@@ -100,6 +100,11 @@ export class Style {
     return this;
   }
 
+  dstrike() {
+    this._runProperty.dstrike();
+    return this;
+  }
+
   italic() {
     this._runProperty.italic();
     return this;
@@ -186,6 +191,11 @@ export class Style {
 
   keepLines(v: boolean) {
     this._paragraphProperty.keepLines = v;
+    return this;
+  }
+
+  snapToGrid(v: boolean) {
+    this._paragraphProperty._snapToGrid = v;
     return this;
   }
 

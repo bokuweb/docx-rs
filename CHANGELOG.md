@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update Add after for default toc styles #806
 - Update `Level` styles.
 - Support `titlePg`
+- Support  AbstractNumbering <w:multiLevelType w:val="multilevel"/> 
 - Support `caps` in wasm.
 
 ## @0.4.17 (26. Apr, 2024)

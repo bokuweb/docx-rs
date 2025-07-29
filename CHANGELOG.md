@@ -5,14 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<!--
+## @0.4.18 (29. Jul, 2025)
+
 - Support `TC`
 - Support `dstrike`
 - Update Add after for default toc styles #806
 - Update `Level` styles.
 - Support `titlePg`
+- Support  AbstractNumbering <w:multiLevelType w:val="multilevel"/> 
 - Support `caps` in wasm.
--->
 
 ## @0.4.17 (26. Apr, 2024)
 

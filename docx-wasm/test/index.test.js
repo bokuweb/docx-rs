@@ -1359,4 +1359,10 @@ describe("writer", () => {
       }
     }
   });
+
+  test("should ignore RunPropertyChange in RunProperty", () => {
+    const buffer = readFileSync("../fixtures/run_property_change/ignore.docx");
+    const json = w.readDocx(buffer);
+    expect(json).toMatchSnapshot();
+  });
 });

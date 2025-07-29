@@ -59,6 +59,9 @@ impl ElementReader for RunProperty {
                     attributes, name, ..
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
+
+                    ignore::ignore_element(e.clone(), XMLElement::RunPropertyChange, r);
+
                     match e {
                         XMLElement::RunStyle => {
                             if let Some(v) = read_val(&attributes) {

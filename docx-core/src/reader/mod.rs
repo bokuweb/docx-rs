@@ -689,6 +689,17 @@ fn decode_html_entities(text: &str) -> String {
         .replace("&#62;", ">")
 }
 
+/// Additional decoding specifically for Theme data
+fn decode_theme_specific_entities(text: &str) -> String {
+    // Fix broken attributes like typeface="/"> to typeface="">
+    let text = text.replace("\"/>", "\">");
+    
+    // Fix empty attributes like typeface="> to typeface="">
+    let text = text.replace("=\">", "=\"\">");
+    
+    text
+}
+
 /// Extract parts from a Microsoft Word XML package using simple string parsing
 pub fn extract_xml_package_parts(xml_content: &str) -> Result<Vec<XmlPackagePart>, ReaderError> {
     let mut parts = Vec::new();
@@ -808,15 +819,35 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
         Rels::default()
     };
     
-    // Read themes (basic implementation)
+    // Read themes (improved implementation with debug)
     if let Some(theme_rel) = document_rels.find_target(THEME_TYPE) {
-        let theme_path_str = format!("{}/{}", 
-            document_path.replace("document.xml", ""), 
-            theme_rel.2
-        );
-        if let Some(theme_data) = part_map.get(&theme_path_str) {
-            if let Ok(theme) = Theme::from_xml(theme_data.as_bytes()) {
-                docx.themes.push(theme);
+        let base_path = document_path.replace("document.xml", "").trim_end_matches('/').to_string();
+        let theme_path_str = format!("{}/{}", base_path, theme_rel.2);
+        
+        // Also try the direct path from XML package
+        let direct_theme_path = if theme_path_str.starts_with("/") {
+            theme_path_str.clone()
+        } else {
+            format!("/{}", theme_path_str)
+        };
+        
+
+        
+        if let Some(theme_data) = part_map.get(&theme_path_str).or_else(|| part_map.get(&direct_theme_path)) {
+
+            
+            // Apply additional HTML entity decoding for Theme data
+            let decoded_theme_data = decode_theme_specific_entities(&decode_html_entities(theme_data));
+            
+
+            
+            match Theme::from_xml(decoded_theme_data.as_bytes()) {
+                Ok(theme) => {
+                    docx.themes.push(theme);
+                }
+                Err(_) => {
+                    // Theme parsing failed - this is a known limitation for some XML formats
+                }
             }
         }
     }
@@ -837,13 +868,21 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     
     docx = docx.document(document);
     
-    // Read styles if available (basic implementation)
+    // Read styles if available (improved implementation with debug)
     if let Some(styles_rel) = document_rels.find_target(STYLE_RELATIONSHIP_TYPE) {
-        let styles_path_str = format!("{}/{}", 
-            document_path.replace("document.xml", ""), 
-            styles_rel.2
-        );
-        if let Some(styles_data) = part_map.get(&styles_path_str) {
+        let base_path = document_path.replace("document.xml", "").trim_end_matches('/').to_string();
+        let styles_path_str = format!("{}/{}", base_path, styles_rel.2);
+        
+        // Also try the direct path from XML package
+        let direct_styles_path = if styles_path_str.starts_with("/") {
+            styles_path_str.clone()
+        } else {
+            format!("/{}", styles_path_str)
+        };
+        
+
+        
+        if let Some(styles_data) = part_map.get(&styles_path_str).or_else(|| part_map.get(&direct_styles_path)) {
             if let Ok(styles) = Styles::from_xml(styles_data.as_bytes()) {
                 docx.styles = styles;
             }
@@ -852,10 +891,8 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     
     // Read numbering if available (basic implementation)
     if let Some(numbering_rel) = document_rels.find_target(NUMBERING_RELATIONSHIP_TYPE) {
-        let numbering_path_str = format!("{}/{}", 
-            document_path.replace("document.xml", ""), 
-            numbering_rel.2
-        );
+        let base_path = document_path.replace("document.xml", "").trim_end_matches('/').to_string();
+        let numbering_path_str = format!("{}/{}", base_path, numbering_rel.2);
         if let Some(numbering_data) = part_map.get(&numbering_path_str) {
             if let Ok(numberings) = Numberings::from_xml(numbering_data.as_bytes()) {
                 docx.numberings = numberings;
@@ -865,10 +902,8 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     
     // Read settings if available (basic implementation)
     if let Some(settings_rel) = document_rels.find_target(SETTINGS_TYPE) {
-        let settings_path_str = format!("{}/{}", 
-            document_path.replace("document.xml", ""), 
-            settings_rel.2
-        );
+        let base_path = document_path.replace("document.xml", "").trim_end_matches('/').to_string();
+        let settings_path_str = format!("{}/{}", base_path, settings_rel.2);
         if let Some(settings_data) = part_map.get(&settings_path_str) {
             if let Ok(settings) = Settings::from_xml(settings_data.as_bytes()) {
                 docx.settings = settings;
@@ -878,10 +913,8 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     
     // Read web settings if available (basic implementation)
     if let Some(web_settings_rel) = document_rels.find_target(WEB_SETTINGS_TYPE) {
-        let web_settings_path_str = format!("{}/{}", 
-            document_path.replace("document.xml", ""), 
-            web_settings_rel.2
-        );
+        let base_path = document_path.replace("document.xml", "").trim_end_matches('/').to_string();
+        let web_settings_path_str = format!("{}/{}", base_path, web_settings_rel.2);
         if let Some(web_settings_data) = part_map.get(&web_settings_path_str) {
             if let Ok(web_settings) = WebSettings::from_xml(web_settings_data.as_bytes()) {
                 docx.web_settings = web_settings;

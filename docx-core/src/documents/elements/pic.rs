@@ -25,6 +25,8 @@ pub struct Pic {
     // unit is emu
     pub simple_pos_x: i32,
     pub simple_pos_y: i32,
+    /// Specifies whether this DrawingML object (e.g., an image) is displayed behind the document text.
+    pub behind_doc: bool,
     /// Specifies how this DrawingML object behaves when its anchor is located in a table cell;
     /// and its specified position would cause it to intersect with a table cell displayed in the
     /// document. That behavior shall be as follows:
@@ -76,6 +78,7 @@ impl Pic {
             simple_pos: false,
             simple_pos_x: 0,
             simple_pos_y: 0,
+            behind_doc: false,
             layout_in_cell: false,
             relative_height: 190500,
             allow_overlap: false,
@@ -100,6 +103,7 @@ impl Pic {
             simple_pos: false,
             simple_pos_x: 0,
             simple_pos_y: 0,
+            behind_doc: false,
             layout_in_cell: false,
             relative_height: 190500,
             allow_overlap: false,
@@ -134,6 +138,11 @@ impl Pic {
 
     pub fn floating(mut self) -> Pic {
         self.position_type = DrawingPositionType::Anchor;
+        self
+    }
+
+    pub fn behind(mut self) -> Pic {
+        self.behind_doc = true;
         self
     }
 

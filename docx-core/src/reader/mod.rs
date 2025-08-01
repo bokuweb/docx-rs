@@ -482,6 +482,103 @@ fn add_images(
     docx
 }
 
+fn read_headers_from_xml(
+    _rels: &Rels,
+    _part_map: &HashMap<String, String>,
+    _document_path: &str,
+) -> HashMap<RId, (Header, ReadHeaderOrFooterRels)> {
+    // For now, return empty hashmap as headers are complex to implement without full ReadDocumentRels
+    // This is a simplified implementation for XML packages
+    HashMap::new()
+}
+
+fn read_footers_from_xml(
+    _rels: &Rels,
+    _part_map: &HashMap<String, String>,
+    _document_path: &str,
+) -> HashMap<RId, (Footer, ReadHeaderOrFooterRels)> {
+    // For now, return empty hashmap as footers are complex to implement without full ReadDocumentRels
+    // This is a simplified implementation for XML packages
+    HashMap::new()
+}
+
+fn read_comments_from_xml(
+    rels: &Rels,
+    part_map: &HashMap<String, String>,
+    document_path: &str,
+) -> (Comments, CommentsExtended) {
+    // Simplified implementation for XML packages - try to read comments if available
+    let comments_extended = if let Some((_, _, target)) = rels.find_target(COMMENTS_EXTENDED_TYPE) {
+        let ext_path = format!("{}/{}", 
+            document_path.replace("document.xml", ""), 
+            target
+        );
+        if let Some(comments_ext_data) = part_map.get(&ext_path) {
+            CommentsExtended::from_xml(comments_ext_data.as_bytes()).unwrap_or_default()
+        } else {
+            CommentsExtended::default()
+        }
+    } else {
+        CommentsExtended::default()
+    };
+
+    // Read comments
+    let comments = if let Some((_, _, target)) = rels.find_target(COMMENTS_TYPE) {
+        let comm_path = format!("{}/{}", 
+            document_path.replace("document.xml", ""), 
+            target
+        );
+        if let Some(comments_data) = part_map.get(&comm_path) {
+            if let Ok(comments) = Comments::from_xml(comments_data.as_bytes()) {
+                // Process extended comments relationships
+                let mut comments_inner = comments.into_inner();
+                for i in 0..comments_inner.len() {
+                    let c = &comments_inner[i];
+                    let extended = comments_extended.children.iter().find(|ex| {
+                        for child in &c.children {
+                            if let CommentChild::Paragraph(p) = child {
+                                if ex.paragraph_id == p.id {
+                                    return true;
+                                }
+                            }
+                        }
+                        false
+                    });
+                    if let Some(CommentExtended {
+                        parent_paragraph_id: Some(parent_paragraph_id),
+                        ..
+                    }) = extended
+                    {
+                        if let Some(parent_comment) = comments_inner.iter().find(|c| {
+                            for child in &c.children {
+                                if let CommentChild::Paragraph(p) = child {
+                                    if &p.id == parent_paragraph_id {
+                                        return true;
+                                    }
+                                }
+                            }
+                            false
+                        }) {
+                            comments_inner[i].parent_comment_id = Some(parent_comment.id);
+                        }
+                    }
+                }
+                Comments { comments: comments_inner }
+            } else {
+                Comments::default()
+            }
+        } else {
+            Comments::default()
+        }
+    } else {
+        Comments::default()
+    };
+
+    (comments, comments_extended)
+}
+
+
+
 /// A struct to hold information about a part in an XML package
 #[derive(Debug, Clone)]
 pub struct XmlPackagePart {
@@ -490,13 +587,22 @@ pub struct XmlPackagePart {
     pub data: String,
 }
 
-/// Decode HTML entities
+/// Decode HTML entities and fix double-quote issues in Word XML
 fn decode_html_entities(text: &str) -> String {
+    // The main issue: Word XML uses double quotes incorrectly - fix them first
+    let text = text.replace("\"\"", "\"");
+    
+    // Then handle standard HTML entities
     text.replace("&quot;", "\"")
         .replace("&amp;", "&")
         .replace("&lt;", "<")
         .replace("&gt;", ">")
         .replace("&apos;", "'")
+        .replace("&#39;", "'")
+        .replace("&#34;", "\"")
+        .replace("&#38;", "&")
+        .replace("&#60;", "<")
+        .replace("&#62;", ">")
 }
 
 /// Extract parts from a Microsoft Word XML package using simple string parsing
@@ -551,7 +657,7 @@ pub fn extract_xml_package_parts(xml_content: &str) -> Result<Vec<XmlPackagePart
             parts.push(XmlPackagePart {
                 name,
                 _content_type: content_type,
-                data,
+                data: decode_html_entities(&data),
             });
             
             start_idx = part_end;
@@ -603,7 +709,7 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
         }
     }
     
-    // Read document relationships
+    // Read document relationships - use Rels directly for XML packages
     let document_rels_path = document_path.replace("document.xml", "_rels/document.xml.rels");
     let document_rels = if let Some(rels_data) = part_map.get(&document_rels_path) {
         Rels::from_xml(rels_data.as_bytes())?
@@ -623,6 +729,13 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
             }
         }
     }
+
+    // Read headers and footers
+    let headers = read_headers_from_xml(&document_rels, &part_map, &document_path);
+    let footers = read_footers_from_xml(&document_rels, &part_map, &document_path);
+
+    // Read comments and comments extended
+    let (comments, comments_extended) = read_comments_from_xml(&document_rels, &part_map, &document_path);
     
     // Read the main document
     let document = if let Some(doc_data) = part_map.get(&document_path) {
@@ -683,6 +796,74 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
                 docx.web_settings = web_settings;
             }
         }
+    }
+
+    // Assign headers
+    if let Some(h) = docx.document.section_property.header_reference.clone() {
+        if let Some((header, _rels)) = headers.get(&h.id) {
+            docx.document = docx.document.header(header.clone(), &h.id);
+            let count = docx.document_rels.header_count + 1;
+            docx.document_rels.header_count = count;
+            docx.content_type = docx.content_type.add_header();
+        }
+    }
+    if let Some(ref h) = docx.document.section_property.first_header_reference.clone() {
+        if let Some((header, _rels)) = headers.get(&h.id) {
+            docx.document = docx.document.first_header_without_title_pg(header.clone(), &h.id);
+            let count = docx.document_rels.header_count + 1;
+            docx.document_rels.header_count = count;
+            docx.content_type = docx.content_type.add_header();
+        }
+    }
+    if let Some(ref h) = docx.document.section_property.even_header_reference.clone() {
+        if let Some((header, _rels)) = headers.get(&h.id) {
+            docx.document = docx.document.even_header(header.clone(), &h.id);
+            let count = docx.document_rels.header_count + 1;
+            docx.document_rels.header_count = count;
+            docx.content_type = docx.content_type.add_header();
+        }
+    }
+
+    // Assign footers
+    if let Some(f) = docx.document.section_property.footer_reference.clone() {
+        if let Some((footer, _rels)) = footers.get(&f.id) {
+            docx.document = docx.document.footer(footer.clone(), &f.id);
+            let count = docx.document_rels.footer_count + 1;
+            docx.document_rels.footer_count = count;
+            docx.content_type = docx.content_type.add_footer();
+        }
+    }
+    if let Some(ref f) = docx.document.section_property.first_footer_reference.clone() {
+        if let Some((footer, _rels)) = footers.get(&f.id) {
+            docx.document = docx.document.first_footer_without_title_pg(footer.clone(), &f.id);
+            let count = docx.document_rels.footer_count + 1;
+            docx.document_rels.footer_count = count;
+            docx.content_type = docx.content_type.add_footer();
+        }
+    }
+    if let Some(ref f) = docx.document.section_property.even_footer_reference.clone() {
+        if let Some((footer, _rels)) = footers.get(&f.id) {
+            docx.document = docx.document.even_footer(footer.clone(), &f.id);
+            let count = docx.document_rels.footer_count + 1;
+            docx.document_rels.footer_count = count;
+            docx.content_type = docx.content_type.add_footer();
+        }
+    }
+
+    // Store comments to paragraphs
+    if !comments.inner().is_empty() {
+        docx.store_comments(comments.inner());
+        docx = docx.comments(comments);
+        docx = docx.comments_extended(comments_extended);
+    }
+
+    // Read and add images from XML package - simplified for now
+    // Image processing in XML packages is complex and requires proper relationship parsing
+
+    // Read and add hyperlinks - simplified for XML packages
+    if let Some((id, _, target)) = document_rels.find_target(HYPERLINK_TYPE) {
+        // For XML packages, we'll add the hyperlink with a default mode
+        docx = docx.add_hyperlink(id, target, "External".to_string());
     }
     
     Ok(docx)

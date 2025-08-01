@@ -3,6 +3,7 @@ mod a_graphic_data;
 mod attributes;
 mod bookmark_end;
 mod bookmark_start;
+
 mod cell_margins;
 mod comment;
 mod comment_extended;
@@ -69,6 +70,7 @@ mod wps_text_box;
 mod xml_element;
 
 use std::{collections::HashMap, io::Cursor, path::PathBuf};
+use base64::Engine;
 
 use crate::documents::*;
 
@@ -483,24 +485,64 @@ fn add_images(
 }
 
 fn read_headers_from_xml(
-    _rels: &Rels,
-    _part_map: &HashMap<String, String>,
-    _document_path: &str,
+    rels: &Rels,
+    part_map: &HashMap<String, String>,
+    document_path: &str,
 ) -> HashMap<RId, (Header, ReadHeaderOrFooterRels)> {
-    // For now, return empty hashmap as headers are complex to implement without full ReadDocumentRels
-    // This is a simplified implementation for XML packages
-    HashMap::new()
+    let mut headers = HashMap::new();
+    
+    // Find all header relationships by looking for header types in rels
+    for (rel_type, id, target) in &rels.rels {
+        if rel_type == HEADER_TYPE {
+            let header_path = format!("{}/{}", 
+                document_path.replace("document.xml", ""), 
+                target
+            );
+            
+            if let Some(header_data) = part_map.get(&header_path) {
+                if let Ok(header) = Header::from_xml(header_data.as_bytes()) {
+                    // For simplicity, use default ReadHeaderOrFooterRels
+                    // In a full implementation, we would read the header's _rels file
+                    let header_rels = ReadHeaderOrFooterRels::default();
+                    headers.insert(id.clone(), (header, header_rels));
+                }
+            }
+        }
+    }
+    
+    headers
 }
 
 fn read_footers_from_xml(
-    _rels: &Rels,
-    _part_map: &HashMap<String, String>,
-    _document_path: &str,
+    rels: &Rels,
+    part_map: &HashMap<String, String>,
+    document_path: &str,
 ) -> HashMap<RId, (Footer, ReadHeaderOrFooterRels)> {
-    // For now, return empty hashmap as footers are complex to implement without full ReadDocumentRels
-    // This is a simplified implementation for XML packages
-    HashMap::new()
+    let mut footers = HashMap::new();
+    
+    // Find all footer relationships by looking for footer types in rels
+    for (rel_type, id, target) in &rels.rels {
+        if rel_type == FOOTER_TYPE {
+            let footer_path = format!("{}/{}", 
+                document_path.replace("document.xml", ""), 
+                target
+            );
+            
+            if let Some(footer_data) = part_map.get(&footer_path) {
+                if let Ok(footer) = Footer::from_xml(footer_data.as_bytes()) {
+                    // For simplicity, use default ReadHeaderOrFooterRels
+                    // In a full implementation, we would read the footer's _rels file
+                    let footer_rels = ReadHeaderOrFooterRels::default();
+                    footers.insert(id.clone(), (footer, footer_rels));
+                }
+            }
+        }
+    }
+    
+    footers
 }
+
+
 
 fn read_comments_from_xml(
     rels: &Rels,
@@ -577,7 +619,49 @@ fn read_comments_from_xml(
     (comments, comments_extended)
 }
 
+fn add_images_from_xml(
+    mut docx: Docx,
+    media: Option<Vec<(RId, PathBuf, Option<String>)>>,
+    part_map: &HashMap<String, String>,
+    document_path: &str,
+) -> Docx {
+    // Read media from XML package
+    if let Some(paths) = media {
+        for (id, media_path, ..) in paths {
+            let image_path = format!("{}/{}", 
+                document_path.replace("document.xml", ""), 
+                media_path.to_str().unwrap_or("")
+            );
+            
+            if let Some(image_data) = part_map.get(&image_path) {
+                // For XML packages, image data is typically base64 encoded
+                // Try to decode base64 first, or use as raw bytes if that fails
+                let bytes = if image_data.trim().starts_with('<') {
+                    // If it starts with '<', it's probably XML wrapper, skip it
+                    image_data.as_bytes().to_vec()
+                } else if let Ok(decoded) = base64::engine::general_purpose::STANDARD.decode(image_data.trim()) {
+                    decoded
+                } else {
+                    image_data.as_bytes().to_vec()
+                };
+                docx = docx.add_image(id, media_path.to_str().unwrap().to_string(), bytes);
+            }
+        }
+    }
+    docx
+}
 
+fn add_header_footer_images(
+    docx: Docx,
+    _header_footer_rels: &ReadHeaderOrFooterRels,
+    _part_map: &HashMap<String, String>,
+    _document_path: &str,
+) -> Docx {
+    // For XML packages, header/footer image handling is simplified
+    // In a full implementation, we would process header/footer relationships for images
+    // For now, we'll use the default ReadHeaderOrFooterRels which doesn't have images
+    docx
+}
 
 /// A struct to hold information about a part in an XML package
 #[derive(Debug, Clone)]
@@ -681,6 +765,13 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     for part in parts {
         part_map.insert(part.name, part.data);
     }
+    
+    // Read content types (not strictly necessary for XML format, but helps with compatibility)
+    let _content_types = if let Some(content_types_data) = part_map.get("[Content_Types].xml") {
+        ContentTypes::from_xml(content_types_data.as_bytes()).ok()
+    } else {
+        None
+    };
     
     // Read main relationships
     let rels = if let Some(rels_data) = part_map.get("_rels/.rels") {
@@ -800,53 +891,71 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
 
     // Assign headers
     if let Some(h) = docx.document.section_property.header_reference.clone() {
-        if let Some((header, _rels)) = headers.get(&h.id) {
+        if let Some((header, header_rels)) = headers.get(&h.id) {
             docx.document = docx.document.header(header.clone(), &h.id);
             let count = docx.document_rels.header_count + 1;
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
+            
+            // Read media from header if available
+            docx = add_header_footer_images(docx, header_rels, &part_map, &document_path);
         }
     }
     if let Some(ref h) = docx.document.section_property.first_header_reference.clone() {
-        if let Some((header, _rels)) = headers.get(&h.id) {
+        if let Some((header, header_rels)) = headers.get(&h.id) {
             docx.document = docx.document.first_header_without_title_pg(header.clone(), &h.id);
             let count = docx.document_rels.header_count + 1;
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
+            
+            // Read media from header if available
+            docx = add_header_footer_images(docx, header_rels, &part_map, &document_path);
         }
     }
     if let Some(ref h) = docx.document.section_property.even_header_reference.clone() {
-        if let Some((header, _rels)) = headers.get(&h.id) {
+        if let Some((header, header_rels)) = headers.get(&h.id) {
             docx.document = docx.document.even_header(header.clone(), &h.id);
             let count = docx.document_rels.header_count + 1;
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
+            
+            // Read media from header if available
+            docx = add_header_footer_images(docx, header_rels, &part_map, &document_path);
         }
     }
 
     // Assign footers
     if let Some(f) = docx.document.section_property.footer_reference.clone() {
-        if let Some((footer, _rels)) = footers.get(&f.id) {
+        if let Some((footer, footer_rels)) = footers.get(&f.id) {
             docx.document = docx.document.footer(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
+            
+            // Read media from footer if available
+            docx = add_header_footer_images(docx, footer_rels, &part_map, &document_path);
         }
     }
     if let Some(ref f) = docx.document.section_property.first_footer_reference.clone() {
-        if let Some((footer, _rels)) = footers.get(&f.id) {
+        if let Some((footer, footer_rels)) = footers.get(&f.id) {
             docx.document = docx.document.first_footer_without_title_pg(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
+            
+            // Read media from footer if available
+            docx = add_header_footer_images(docx, footer_rels, &part_map, &document_path);
         }
     }
     if let Some(ref f) = docx.document.section_property.even_footer_reference.clone() {
-        if let Some((footer, _rels)) = footers.get(&f.id) {
+        if let Some((footer, footer_rels)) = footers.get(&f.id) {
             docx.document = docx.document.even_footer(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
+            
+            // Read media from footer if available
+            docx = add_header_footer_images(docx, footer_rels, &part_map, &document_path);
         }
     }
 
@@ -857,8 +966,15 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
         docx = docx.comments_extended(comments_extended);
     }
 
-    // Read and add images from XML package - simplified for now
-    // Image processing in XML packages is complex and requires proper relationship parsing
+    // Read and add images from XML package
+    let media = document_rels.rels.iter()
+        .filter(|(rel_type, ..)| *rel_type == IMAGE_TYPE)
+        .map(|(_, id, target)| (id.clone(), PathBuf::from(target), None))
+        .collect::<Vec<_>>();
+    
+    if !media.is_empty() {
+        docx = add_images_from_xml(docx, Some(media), &part_map, &document_path);
+    }
 
     // Read and add hyperlinks - simplified for XML packages
     if let Some((id, _, target)) = document_rels.find_target(HYPERLINK_TYPE) {

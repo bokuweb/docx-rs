@@ -689,16 +689,8 @@ fn decode_html_entities(text: &str) -> String {
         .replace("&#62;", ">")
 }
 
-/// Additional decoding specifically for Theme data
-fn decode_theme_specific_entities(text: &str) -> String {
-    // Fix broken attributes like typeface="/"> to typeface="">
-    let text = text.replace("\"/>", "\">");
-    
-    // Fix empty attributes like typeface="> to typeface="">
-    let text = text.replace("=\">", "=\"\">");
-    
-    text
-}
+
+
 
 /// Extract parts from a Microsoft Word XML package using simple string parsing
 pub fn extract_xml_package_parts(xml_content: &str) -> Result<Vec<XmlPackagePart>, ReaderError> {
@@ -714,26 +706,57 @@ pub fn extract_xml_package_parts(xml_content: &str) -> Result<Vec<XmlPackagePart
             let part_end = part_start + part_end + 11; // 11 = "</pkg:part>".len()
             let part_xml = &xml_content[part_start..part_end];
             
-            // Extract name and contentType attributes (handle HTML entities)
+            // Extract name attribute (handle both standard and double-quoted patterns)
             let name = if let Some(name_start) = part_xml.find("pkg:name=\"\"") {
+                // Handle double-quoted pattern: pkg:name=""value""
                 let name_start = name_start + 12; // 12 = "pkg:name=\"\"".len()
                 if let Some(name_end) = part_xml[name_start..].find("\"\"") {
                     decode_html_entities(&part_xml[name_start..name_start + name_end])
                 } else {
+                    // Skip this part but continue processing
+                    start_idx = part_end;
+                    continue;
+                }
+            } else if let Some(name_start) = part_xml.find("pkg:name=\"") {
+                // Handle standard pattern: pkg:name="value"
+                let name_start = name_start + 10; // 10 = "pkg:name=\"".len()
+                if let Some(name_end) = part_xml[name_start..].find("\"") {
+                    part_xml[name_start..name_start + name_end].to_string()
+                } else {
+                    // Skip this part but continue processing
+                    start_idx = part_end;
                     continue;
                 }
             } else {
+                // Skip this part but continue processing
+                start_idx = part_end;
                 continue;
             };
             
+            // Extract contentType attribute (handle both standard and double-quoted patterns)
             let content_type = if let Some(type_start) = part_xml.find("pkg:contentType=\"\"") {
+                // Handle double-quoted pattern: pkg:contentType=""value""
                 let type_start = type_start + 19; // 19 = "pkg:contentType=\"\"".len()
                 if let Some(type_end) = part_xml[type_start..].find("\"\"") {
                     decode_html_entities(&part_xml[type_start..type_start + type_end])
                 } else {
+                    // Skip this part but continue processing
+                    start_idx = part_end;
+                    continue;
+                }
+            } else if let Some(type_start) = part_xml.find("pkg:contentType=\"") {
+                // Handle standard pattern: pkg:contentType="value"
+                let type_start = type_start + 17; // 17 = "pkg:contentType=\"".len()
+                if let Some(type_end) = part_xml[type_start..].find("\"") {
+                    part_xml[type_start..type_start + type_end].to_string()
+                } else {
+                    // Skip this part but continue processing
+                    start_idx = part_end;
                     continue;
                 }
             } else {
+                // Skip this part but continue processing
+                start_idx = part_end;
                 continue;
             };
             
@@ -741,23 +764,28 @@ pub fn extract_xml_package_parts(xml_content: &str) -> Result<Vec<XmlPackagePart
             let data = if let Some(data_start) = part_xml.find("<pkg:xmlData>") {
                 let data_start = data_start + 13; // 13 = "<pkg:xmlData>".len()
                 if let Some(data_end) = part_xml[data_start..].find("</pkg:xmlData>") {
-                    decode_html_entities(&part_xml[data_start..data_start + data_end])
+                    part_xml[data_start..data_start + data_end].to_string()
                 } else {
+                    // Skip this part but continue processing
+                    start_idx = part_end;
                     continue;
                 }
             } else {
+                // Skip this part but continue processing
+                start_idx = part_end;
                 continue;
             };
             
             parts.push(XmlPackagePart {
                 name,
                 _content_type: content_type,
-                data: decode_html_entities(&data),
+                data,
             });
             
             start_idx = part_end;
         } else {
-            break;
+            // No closing tag found, move to next position to avoid infinite loop
+            start_idx = part_start + 1;
         }
     }
     
@@ -784,8 +812,10 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
         None
     };
     
-    // Read main relationships
+    // Read main relationships (try both with and without leading slash)
     let rels = if let Some(rels_data) = part_map.get("_rels/.rels") {
+        Rels::from_xml(rels_data.as_bytes())?
+    } else if let Some(rels_data) = part_map.get("/_rels/.rels") {
         Rels::from_xml(rels_data.as_bytes())?
     } else {
         return Err(ReaderError::DocumentNotFoundError);
@@ -836,12 +866,7 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
         if let Some(theme_data) = part_map.get(&theme_path_str).or_else(|| part_map.get(&direct_theme_path)) {
 
             
-            // Apply additional HTML entity decoding for Theme data
-            let decoded_theme_data = decode_theme_specific_entities(&decode_html_entities(theme_data));
-            
-
-            
-            match Theme::from_xml(decoded_theme_data.as_bytes()) {
+            match Theme::from_xml(theme_data.as_bytes()) {
                 Ok(theme) => {
                     docx.themes.push(theme);
                 }
@@ -859,9 +884,17 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     // Read comments and comments extended
     let (comments, comments_extended) = read_comments_from_xml(&document_rels, &part_map, &document_path);
     
-    // Read the main document
+    // Read the main document (try both with and without leading slash)
     let document = if let Some(doc_data) = part_map.get(&document_path) {
         Document::from_xml(doc_data.as_bytes())?
+    } else if let Some(doc_data) = part_map.get(&format!("/{}", document_path)) {
+        Document::from_xml(doc_data.as_bytes())?
+    } else if document_path.starts_with("/") {
+        if let Some(doc_data) = part_map.get(&document_path[1..]) {
+            Document::from_xml(doc_data.as_bytes())?
+        } else {
+            return Err(ReaderError::DocumentNotFoundError);
+        }
     } else {
         return Err(ReaderError::DocumentNotFoundError);
     };

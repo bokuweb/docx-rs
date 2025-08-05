@@ -185,7 +185,7 @@ impl<W: Write> XMLBuilder<W> {
 
     pub(crate) fn disable_bold(self) -> Result<Self> {
         let f = "false";
-        self.write(XmlEvent::start_element("w:b").attr("w:val", &f))?
+        self.write(XmlEvent::start_element("w:b").attr("w:val", f))?
             .close()
     }
 
@@ -196,7 +196,7 @@ impl<W: Write> XMLBuilder<W> {
 
     pub(crate) fn disable_italic(self) -> Result<Self> {
         let f = "false";
-        self.write(XmlEvent::start_element("w:i").attr("w:val", &f))?
+        self.write(XmlEvent::start_element("w:i").attr("w:val", f))?
             .close()
     }
 
@@ -204,7 +204,7 @@ impl<W: Write> XMLBuilder<W> {
 
     pub(crate) fn disable_strike(self) -> Result<Self> {
         let f = "false";
-        self.write(XmlEvent::start_element("w:strike").attr("w:val", &f))?
+        self.write(XmlEvent::start_element("w:strike").attr("w:val", f))?
             .close()
     }
 
@@ -212,7 +212,7 @@ impl<W: Write> XMLBuilder<W> {
 
     pub(crate) fn disable_dstrike(self) -> Result<Self> {
         let f = "false";
-        self.write(XmlEvent::start_element("w:dstrike").attr("w:val", &f))?
+        self.write(XmlEvent::start_element("w:dstrike").attr("w:val", f))?
             .close()
     }
 

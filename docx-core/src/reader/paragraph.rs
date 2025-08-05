@@ -46,6 +46,16 @@ impl ElementReader for Paragraph {
                             p = p.add_delete(del);
                             continue;
                         }
+                        XMLElement::MoveTo => {
+                            let move_to = MoveTo::read(r, &attributes)?;
+                            p = p.add_move_to(move_to);
+                            continue;
+                        }
+                        XMLElement::MoveFrom => {
+                            let move_from = MoveFrom::read(r, &attributes)?;
+                            p = p.add_move_from(move_from);
+                            continue;
+                        }
                         XMLElement::BookmarkStart => {
                             let s = BookmarkStart::read(r, &attributes)?;
                             p = p.add_bookmark_start(s.id, s.name);

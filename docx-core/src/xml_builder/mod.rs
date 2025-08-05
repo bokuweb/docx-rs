@@ -28,8 +28,6 @@ use std::str;
 use xml::common::XmlVersion;
 use xml::writer::{EmitterConfig, EventWriter, Result, XmlEvent};
 
-pub use elements::*;
-
 pub struct XMLBuilder<W> {
     writer: EventWriter<W>,
 }

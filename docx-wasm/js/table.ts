@@ -11,7 +11,7 @@ export type TableAlignmentType = "center" | "left" | "right";
 export type TableLayoutType = "fixed" | "autofit";
 
 export class TablePosition {
-  property: TablePositionProperty = {};
+  property: Partial<TablePositionProperty> = {};
 
   leftFromText(n: number) {
     this.property.leftFromText = n;

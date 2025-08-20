@@ -686,6 +686,10 @@ export const readDocx = (buf: Uint8Array) => {
   return JSON.parse(wasm.readDocx(buf)) as DocxJSON;
 };
 
+export const readXML = (xml: string) => {
+  return JSON.parse(wasm.readXML(xml)) as DocxJSON;
+};
+
 export * from "./paragraph";
 export * from "./paragraph-property";
 export * from "./insert";

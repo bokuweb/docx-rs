@@ -21,15 +21,19 @@ impl FromXML for Rels {
                     if depth == 1 {
                         let mut rel_type = "".to_owned();
                         let mut target = "".to_owned();
+                        let mut id = "".to_owned();
                         for attr in attributes {
                             let name: &str = &attr.name.local_name;
                             if name == "Type" {
                                 rel_type = attr.value.clone();
                             } else if name == "Target" {
                                 target = attr.value.clone();
+                            } else if name == "Id" {
+                                id = attr.value.clone();
                             }
                         }
-                        s = s.add_rel(rel_type, target);
+                        // Preserve original relationship ID
+                        s.rels.push((rel_type, id, target));
                     }
                     depth += 1;
                 }

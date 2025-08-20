@@ -226,6 +226,12 @@ describe("reader", () => {
     const json = w.readDocx(buffer);
     expect(json).toMatchSnapshot();
   });
+
+  test("should read image.xml", () => {
+    const str = readFileSync("../fixtures/image_xml/image.xml", "utf-8");
+    const json = w.readXML(str);
+    expect(json).toMatchSnapshot();
+  });
 });
 
 describe("writer", () => {

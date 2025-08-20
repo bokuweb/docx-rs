@@ -9,15 +9,13 @@ where
     W: Write + Seek,
 {
     let mut zip = zip::ZipWriter::new(w);
-    let default_options = FileOptions::<()>::default()
-        .compression_method(zip::CompressionMethod::Stored)
-        .unix_permissions(0o755);
-    zip.add_directory("word/", default_options)?;
-    zip.add_directory("word/_rels", default_options)?;
-    zip.add_directory("_rels/", default_options)?;
-    zip.add_directory("docProps/", default_options)?;
 
-    let options = FileOptions::<()>::default()
+    zip.add_directory("word/", Default::default())?;
+    zip.add_directory("word/_rels", Default::default())?;
+    zip.add_directory("_rels/", Default::default())?;
+    zip.add_directory("docProps/", Default::default())?;
+
+    let options = FileOptions::default()
         .compression_method(zip::CompressionMethod::Stored)
         .unix_permissions(0o755);
 
@@ -71,7 +69,7 @@ where
     }
 
     if !xml.media.is_empty() {
-        zip.add_directory("word/media/", default_options)?;
+        zip.add_directory("word/media/", Default::default())?;
         for m in xml.media {
             // For now only png supported
             zip.start_file(format!("word/media/{}.png", m.0), options)?;
@@ -81,11 +79,11 @@ where
 
     // For now support only taskpanes
     if let Some(taskpanes) = xml.taskpanes {
-        zip.add_directory("word/webextensions/", default_options)?;
+        zip.add_directory("word/webextensions/", Default::default())?;
         zip.start_file("word/webextensions/taskpanes.xml", options)?;
         zip.write_all(&taskpanes)?;
 
-        zip.add_directory("word/webextensions/_rels", default_options)?;
+        zip.add_directory("word/webextensions/_rels", Default::default())?;
         zip.start_file("word/webextensions/_rels/taskpanes.xml.rels", options)?;
         zip.write_all(&xml.taskpanes_rels)?;
 
@@ -99,7 +97,7 @@ where
     }
 
     if !xml.custom_items.is_empty() {
-        zip.add_directory("customXml/_rels", default_options)?;
+        zip.add_directory("customXml/_rels", Default::default())?;
     }
 
     for (i, item) in xml.custom_items.into_iter().enumerate() {

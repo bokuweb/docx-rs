@@ -9,7 +9,7 @@ where
     W: Write + Seek,
 {
     let mut zip = zip::ZipWriter::new(w);
-    let default_options = FileOptions::<()>::default()
+    let default_options = FileOptions::default()
         .compression_method(zip::CompressionMethod::Stored)
         .unix_permissions(0o755);
     zip.add_directory("word/", default_options)?;
@@ -17,7 +17,7 @@ where
     zip.add_directory("_rels/", default_options)?;
     zip.add_directory("docProps/", default_options)?;
 
-    let options = FileOptions::<()>::default()
+    let options = FileOptions::default()
         .compression_method(zip::CompressionMethod::Stored)
         .unix_permissions(0o755);
 

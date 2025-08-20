@@ -82,7 +82,7 @@ export class SectionProperty {
   }
 
   pageTypeNum({ start, chapStyle }: { start?: number; chapStyle?: string }) {
-    this._pageTypeNum = { start: start ?? null, chapStyle: chapStyle ?? null };
+    this._pageTypeNum = { start: start, chapStyle: chapStyle };
     return this;
   }
 }

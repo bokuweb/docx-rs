@@ -858,20 +858,11 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     
     // Read document relationships - use Rels directly for XML packages
     let document_rels_path = document_path.replace("document.xml", "_rels/document.xml.rels");
-    println!("DEBUG: Looking for document_rels at path: {}", document_rels_path);
-    println!("DEBUG: Available parts in map:");
-    for key in part_map.keys() {
-        println!("  - {}", key);
-    }
-    
     let document_rels = if let Some(rels_data) = part_map.get(&document_rels_path) {
-        println!("DEBUG: Found document rels data, parsing...");
         Rels::from_xml(rels_data.as_bytes())?
     } else if let Some(rels_data) = part_map.get(&format!("/{}", document_rels_path)) {
-        println!("DEBUG: Found document rels data with leading slash, parsing...");
         Rels::from_xml(rels_data.as_bytes())?
     } else {
-        println!("DEBUG: No document rels found, using default");
         Rels::default()
     };
     
@@ -1059,17 +1050,10 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     }
 
     // Read and add images from XML package
-    println!("DEBUG: Checking document_rels for images. Total rels: {}", document_rels.rels.len());
-    for (rel_type, id, target) in &document_rels.rels {
-        println!("DEBUG: Rel - type: {}, id: {}, target: {}", rel_type, id, target);
-    }
-    
     let media = document_rels.rels.iter()
         .filter(|(rel_type, ..)| *rel_type == IMAGE_TYPE)
         .map(|(_, id, target)| (id.clone(), PathBuf::from(target), None))
         .collect::<Vec<_>>();
-    
-    println!("DEBUG: Found {} image relationships", media.len());
     
     if !media.is_empty() {
         docx = add_images_from_xml(docx, Some(media), &part_map, &document_path);
@@ -1215,12 +1199,6 @@ mod tests {
         
         let docx = result.unwrap();
         assert!(!docx.document.children.is_empty(), "Document should contain some content");
-        
-        // Debug: print what we got
-        println!("Number of images loaded: {}", docx.images.len());
-        for (i, image) in docx.images.iter().enumerate() {
-            println!("Image {}: id={}, path={}, data_len={}", i, image.0, image.1, image.2.0.len());
-        }
         
         // Check that the image was loaded
         assert!(!docx.images.is_empty(), "Document should contain images");

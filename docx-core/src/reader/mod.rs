@@ -628,23 +628,28 @@ fn add_images_from_xml(
     // Read media from XML package
     if let Some(paths) = media {
         for (id, media_path, ..) in paths {
-            let image_path = format!("{}/{}", 
-                document_path.replace("document.xml", ""), 
-                media_path.to_str().unwrap_or("")
-            );
+            let base_path = document_path.replace("document.xml", "").trim_end_matches('/').to_string();
+            let image_path = format!("{}/{}", base_path, media_path.to_str().unwrap_or(""));
             
-            if let Some(image_data) = part_map.get(&image_path) {
-                // For XML packages, image data is typically base64 encoded
-                // Try to decode base64 first, or use as raw bytes if that fails
-                let bytes = if image_data.trim().starts_with('<') {
-                    // If it starts with '<', it's probably XML wrapper, skip it
-                    image_data.as_bytes().to_vec()
-                } else if let Ok(decoded) = base64::engine::general_purpose::STANDARD.decode(image_data.trim()) {
-                    decoded
-                } else {
-                    image_data.as_bytes().to_vec()
-                };
-                docx = docx.add_image(id, media_path.to_str().unwrap().to_string(), bytes);
+            // Try multiple possible paths for the image
+            let paths_to_try = vec![
+                image_path.clone(),
+                format!("/{}", image_path.trim_start_matches('/')),
+                image_path.trim_start_matches('/').to_string(),
+            ];
+            
+            for path in paths_to_try {
+                if let Some(image_data) = part_map.get(&path) {
+                    // For XML packages with binaryData, the data is base64 encoded
+                    let bytes = if let Ok(decoded) = base64::engine::general_purpose::STANDARD.decode(image_data.trim()) {
+                        decoded
+                    } else {
+                        // If base64 decode fails, try as raw bytes (shouldn't happen for binaryData)
+                        image_data.as_bytes().to_vec()
+                    };
+                    docx = docx.add_image(id.clone(), media_path.to_str().unwrap().to_string(), bytes);
+                    break;
+                }
             }
         }
     }
@@ -760,11 +765,21 @@ pub fn extract_xml_package_parts(xml_content: &str) -> Result<Vec<XmlPackagePart
                 continue;
             };
             
-            // Extract xmlData content
+            // Extract xmlData or binaryData content
             let data = if let Some(data_start) = part_xml.find("<pkg:xmlData>") {
                 let data_start = data_start + 13; // 13 = "<pkg:xmlData>".len()
                 if let Some(data_end) = part_xml[data_start..].find("</pkg:xmlData>") {
                     part_xml[data_start..data_start + data_end].to_string()
+                } else {
+                    // Skip this part but continue processing
+                    start_idx = part_end;
+                    continue;
+                }
+            } else if let Some(data_start) = part_xml.find("<pkg:binaryData>") {
+                let data_start = data_start + 16; // 16 = "<pkg:binaryData>".len()
+                if let Some(data_end) = part_xml[data_start..].find("</pkg:binaryData>") {
+                    // Binary data in XML packages is base64 encoded
+                    part_xml[data_start..data_start + data_end].trim().to_string()
                 } else {
                     // Skip this part but continue processing
                     start_idx = part_end;
@@ -843,9 +858,20 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     
     // Read document relationships - use Rels directly for XML packages
     let document_rels_path = document_path.replace("document.xml", "_rels/document.xml.rels");
+    println!("DEBUG: Looking for document_rels at path: {}", document_rels_path);
+    println!("DEBUG: Available parts in map:");
+    for key in part_map.keys() {
+        println!("  - {}", key);
+    }
+    
     let document_rels = if let Some(rels_data) = part_map.get(&document_rels_path) {
+        println!("DEBUG: Found document rels data, parsing...");
+        Rels::from_xml(rels_data.as_bytes())?
+    } else if let Some(rels_data) = part_map.get(&format!("/{}", document_rels_path)) {
+        println!("DEBUG: Found document rels data with leading slash, parsing...");
         Rels::from_xml(rels_data.as_bytes())?
     } else {
+        println!("DEBUG: No document rels found, using default");
         Rels::default()
     };
     
@@ -1033,10 +1059,17 @@ pub fn read_docx_from_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     }
 
     // Read and add images from XML package
+    println!("DEBUG: Checking document_rels for images. Total rels: {}", document_rels.rels.len());
+    for (rel_type, id, target) in &document_rels.rels {
+        println!("DEBUG: Rel - type: {}, id: {}, target: {}", rel_type, id, target);
+    }
+    
     let media = document_rels.rels.iter()
         .filter(|(rel_type, ..)| *rel_type == IMAGE_TYPE)
         .map(|(_, id, target)| (id.clone(), PathBuf::from(target), None))
         .collect::<Vec<_>>();
+    
+    println!("DEBUG: Found {} image relationships", media.len());
     
     if !media.is_empty() {
         docx = add_images_from_xml(docx, Some(media), &part_map, &document_path);
@@ -1106,5 +1139,99 @@ mod tests {
         assert_eq!(parts.len(), 1);
         assert_eq!(parts[0].name, "/_rels/.rels");
         assert!(parts[0].data.contains("<test>content</test>"));
+    }
+
+    #[test]
+    fn test_read_docx_from_xml_with_image() {
+        let xml_content = r#"<?xml version="1.0" standalone="yes"?>
+<pkg:package xmlns:pkg="http://schemas.microsoft.com/office/2006/xmlPackage">
+  <pkg:part pkg:name="/_rels/.rels" pkg:contentType="application/vnd.openxmlformats-package.relationships+xml">
+    <pkg:xmlData>
+      <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+        <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+      </Relationships>
+    </pkg:xmlData>
+  </pkg:part>
+  <pkg:part pkg:name="/word/document.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml">
+    <pkg:xmlData>
+      <w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+        <w:body>
+          <w:p>
+            <w:r>
+              <w:drawing>
+                <wp:inline distT="0" distB="0" distL="0" distR="0">
+                  <wp:extent cx="1000000" cy="1000000"/>
+                  <wp:docPr id="1" name="Picture 1"/>
+                  <wp:cNvGraphicFramePr>
+                    <a:graphicFrameLocks noChangeAspect="1"/>
+                  </wp:cNvGraphicFramePr>
+                  <a:graphic>
+                    <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                      <pic:pic>
+                        <pic:nvPicPr>
+                          <pic:cNvPr id="1" name="test.png"/>
+                          <pic:cNvPicPr/>
+                        </pic:nvPicPr>
+                        <pic:blipFill>
+                          <a:blip r:embed="rId1"/>
+                          <a:stretch>
+                            <a:fillRect/>
+                          </a:stretch>
+                        </pic:blipFill>
+                        <pic:spPr>
+                          <a:xfrm>
+                            <a:off x="0" y="0"/>
+                            <a:ext cx="1000000" cy="1000000"/>
+                          </a:xfrm>
+                          <a:prstGeom prst="rect">
+                            <a:avLst/>
+                          </a:prstGeom>
+                        </pic:spPr>
+                      </pic:pic>
+                    </a:graphicData>
+                  </a:graphic>
+                </wp:inline>
+              </w:drawing>
+            </w:r>
+          </w:p>
+        </w:body>
+      </w:document>
+    </pkg:xmlData>
+  </pkg:part>
+  <pkg:part pkg:name="/word/_rels/document.xml.rels" pkg:contentType="application/vnd.openxmlformats-package.relationships+xml">
+    <pkg:xmlData>
+      <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+        <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/image1.png"/>
+      </Relationships>
+    </pkg:xmlData>
+  </pkg:part>
+  <pkg:part pkg:name="/word/media/image1.png" pkg:contentType="image/png">
+    <pkg:binaryData>iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==</pkg:binaryData>
+  </pkg:part>
+</pkg:package>"#;
+
+        let result = read_docx_from_xml(xml_content);
+        assert!(result.is_ok(), "Failed to parse XML with image: {:?}", result.err());
+        
+        let docx = result.unwrap();
+        assert!(!docx.document.children.is_empty(), "Document should contain some content");
+        
+        // Debug: print what we got
+        println!("Number of images loaded: {}", docx.images.len());
+        for (i, image) in docx.images.iter().enumerate() {
+            println!("Image {}: id={}, path={}, data_len={}", i, image.0, image.1, image.2.0.len());
+        }
+        
+        // Check that the image was loaded
+        assert!(!docx.images.is_empty(), "Document should contain images");
+        assert_eq!(docx.images.len(), 1, "Document should contain exactly one image");
+        
+        // Verify the image data was decoded correctly (this is a 1x1 pixel PNG)
+        let image = &docx.images[0];
+        assert_eq!(image.1, "media/image1.png", "Image path should match");
+        assert!(!image.2.0.is_empty(), "Image data should not be empty");
+        
+        // Verify it's proper PNG data (starts with PNG magic bytes)
+        assert_eq!(&image.2.0[0..8], &[0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A], "Should be valid PNG data");
     }
 }

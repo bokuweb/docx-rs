@@ -641,7 +641,9 @@ fn add_images_from_xml(
             for path in paths_to_try {
                 if let Some(image_data) = part_map.get(&path) {
                     // For XML packages with binaryData, the data is base64 encoded
-                    let bytes = if let Ok(decoded) = base64::engine::general_purpose::STANDARD.decode(image_data.trim()) {
+                    // Remove all whitespace and newlines from base64 data
+                    let clean_base64 = image_data.chars().filter(|c| !c.is_whitespace()).collect::<String>();
+                    let bytes = if let Ok(decoded) = base64::engine::general_purpose::STANDARD.decode(&clean_base64) {
                         decoded
                     } else {
                         // If base64 decode fails, try as raw bytes (shouldn't happen for binaryData)

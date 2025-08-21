@@ -2,4 +2,4 @@
 import type { TabLeaderType } from "./TabLeaderType";
 import type { TabValueType } from "./TabValueType";
 
-export type Tab = { val: TabValueType | null, leader: TabLeaderType | null, pos: number | null, };
+export interface Tab { val: TabValueType | null, leader: TabLeaderType | null, pos: number | null, }

@@ -4,29 +4,4 @@ import type { DrawingPositionType } from "./DrawingPositionType";
 import type { RelativeFromHType } from "./RelativeFromHType";
 import type { RelativeFromVType } from "./RelativeFromVType";
 
-export type Pic = { id: string, image: Array<number>, size: [number, number], positionType: DrawingPositionType, 
-/**
- * Specifies that this object shall be positioned using the positioning information in the
- * simplePos child element (§20.4.2.13). This positioning, when specified, positions the
- * object on the page by placing its top left point at the x-y coordinates specified by that
- * element.
- */
-simplePos: boolean, simplePosX: number, simplePosY: number, 
-/**
- * Specifies how this DrawingML object behaves when its anchor is located in a table cell;
- * and its specified position would cause it to intersect with a table cell displayed in the
- * document. That behavior shall be as follows:
- */
-layoutInCell: boolean, 
-/**
- * Specifies the relative Z-ordering of all DrawingML objects in this document. Each floating
- * DrawingML object shall have a Z-ordering value, which determines which object is
- * displayed when any two objects intersect. Higher values shall indicate higher Z-order;
- * lower values shall indicate lower Z-order.
- */
-relativeHeight: number, allowOverlap: boolean, positionH: DrawingPosition, positionV: DrawingPosition, relativeFromH: RelativeFromHType, relativeFromV: RelativeFromVType, 
-/**
- * Specifies the minimum distance which shall be maintained between the top edge of this drawing object and any subsequent text within the document when this graphical object is displayed within the document's contents.,
- * The distance shall be measured in EMUs (English Metric Units).,
- */
-distT: number, distB: number, distL: number, distR: number, rot: number, };
+export interface Pic { id: string, image: Array<number>, size: [number, number], positionType: DrawingPositionType, simplePos: boolean, simplePosX: number, simplePosY: number, layoutInCell: boolean, relativeHeight: number, allowOverlap: boolean, positionH: DrawingPosition, positionV: DrawingPosition, relativeFromH: RelativeFromHType, relativeFromV: RelativeFromVType, distT: number, distB: number, distL: number, distR: number, rot: number, }

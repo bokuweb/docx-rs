@@ -303,16 +303,63 @@ impl Docx {
             // This is because numberings.xml without numbering cause an error on word online.
             self.document_rels.has_numberings = true;
         }
-        let headers = s.get_headers();
-        for header in headers {
+
+        let mut new_section = s;
+        if let Some(header) = new_section.temp_header {
             if header.has_numbering {
                 self.document_rels.has_numberings = true;
             }
             let count = self.document_rels.header_count + 1;
+            new_section = Section {
+                property: new_section
+                    .property
+                    .header(header, &create_header_rid(count)),
+                children: new_section.children,
+                has_numbering: new_section.has_numbering,
+                temp_header: None,
+                ..Default::default()
+            };
             self.document_rels.header_count = count;
             self.content_type = self.content_type.add_header();
         }
-        self.document = self.document.add_section(s);
+
+        if let Some(header) = new_section.temp_first_header {
+            if header.has_numbering {
+                self.document_rels.has_numberings = true;
+            }
+            let count = self.document_rels.header_count + 1;
+            new_section = Section {
+                property: new_section
+                    .property
+                    .first_header(header, &create_header_rid(count)),
+                children: new_section.children,
+                has_numbering: new_section.has_numbering,
+                temp_first_header: None,
+                ..Default::default()
+            };
+            self.document_rels.header_count = count;
+            self.content_type = self.content_type.add_header();
+        }
+
+        if let Some(header) = new_section.temp_even_header {
+            if header.has_numbering {
+                self.document_rels.has_numberings = true;
+            }
+            let count = self.document_rels.header_count + 1;
+            new_section = Section {
+                property: new_section
+                    .property
+                    .even_header(header, &create_header_rid(count)),
+                children: new_section.children,
+                has_numbering: new_section.has_numbering,
+                temp_even_header: None,
+                ..Default::default()
+            };
+            self.document_rels.header_count = count;
+            self.content_type = self.content_type.add_header();
+        }
+
+        self.document = self.document.add_section(new_section);
         self
     }
 
@@ -607,13 +654,18 @@ impl Docx {
 
         self.document_rels.images = images;
 
-        let headers: Vec<Vec<u8>> = self
-            .document
-            .section_property
-            .get_headers()
-            .iter()
-            .map(|h| h.build())
-            .collect();
+        let mut headers: Vec<&(Header, String)> = self.document.section_property.get_headers();
+
+        self.document.children.iter().for_each(|child| {
+            if let DocumentChild::Section(section) = child {
+                for h in section.property.get_headers() {
+                    headers.push(h);
+                }
+            }
+        });
+
+        headers.sort_by(|a, b| a.1.cmp(&b.1));
+        let headers = headers.iter().map(|h| h.0.build()).collect();
 
         let footers: Vec<Vec<u8>> = self
             .document
@@ -980,11 +1032,11 @@ impl Docx {
 
         if let Some(header) = &mut self.document.section_property.header.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
-            for child in header.children.iter_mut() {
+            for child in header.0.children.iter_mut() {
                 match child {
                     HeaderChild::Paragraph(paragraph) => {
                         collect_images_from_paragraph(
-                            paragraph,
+                            &mut **paragraph,
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
@@ -992,7 +1044,7 @@ impl Docx {
                     }
                     HeaderChild::Table(table) => {
                         collect_images_from_table(
-                            table,
+                            &mut **table,
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
@@ -1025,11 +1077,11 @@ impl Docx {
 
         if let Some(header) = &mut self.document.section_property.first_header.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
-            for child in header.children.iter_mut() {
+            for child in header.0.children.iter_mut() {
                 match child {
                     HeaderChild::Paragraph(paragraph) => {
                         collect_images_from_paragraph(
-                            paragraph,
+                            &mut **paragraph,
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
@@ -1037,7 +1089,7 @@ impl Docx {
                     }
                     HeaderChild::Table(table) => {
                         collect_images_from_table(
-                            table,
+                            &mut **table,
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
@@ -1068,7 +1120,7 @@ impl Docx {
             header_images[1] = images;
         }
 
-        if let Some(header) = &mut self.document.section_property.even_header.as_mut() {
+        if let Some((header, _)) = &mut self.document.section_property.even_header.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
             for child in header.children.iter_mut() {
                 match child {

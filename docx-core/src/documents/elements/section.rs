@@ -3,7 +3,7 @@ use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
-use crate::{delegate_getters_to_field, delegate_to_field, Footer, Header};
+use crate::{delegate_to_field, Header};
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
 use std::io::Write;
@@ -99,9 +99,12 @@ impl BuildXML for SectionChild {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Section {
-    property: SectionProperty,
-    children: Vec<SectionChild>,
+    pub(crate) property: SectionProperty,
+    pub(crate) children: Vec<SectionChild>,
     pub(crate) has_numbering: bool,
+    pub(crate) temp_header: Option<Header>,
+    pub(crate) temp_first_header: Option<Header>,
+    pub(crate) temp_even_header: Option<Header>,
 }
 
 impl Section {
@@ -126,12 +129,6 @@ impl Section {
         // first_footer_without_title_pg(h: Footer, rid: &str) -> Self,
         // even_footer(h: Footer, rid: &str) -> Self,
         page_num_type(h: PageNumType) -> Self,
-    }
-
-    delegate_getters_to_field! {
-        property =>
-        get_headers() -> Vec<&Header>,
-        get_footers() -> Vec<&Footer>,
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> Self {
@@ -175,11 +172,20 @@ impl Section {
         self
     }
 
-    // TODO: inject count or create temp header
-    // pub fn header(mut self, header: Header) -> Self {
-    //     self.property = self.property.header(header, &create_header_rid(count));
-    //     self
-    // }
+    pub fn header(mut self, header: Header) -> Self {
+        self.temp_header = Some(header);
+        self
+    }
+
+    pub fn first_header(mut self, header: Header) -> Self {
+        self.temp_first_header = Some(header);
+        self
+    }
+
+    pub fn even_header(mut self, header: Header) -> Self {
+        self.temp_even_header = Some(header);
+        self
+    }
 }
 
 impl Default for Section {
@@ -188,6 +194,9 @@ impl Default for Section {
             property: SectionProperty::new(),
             children: vec![],
             has_numbering: false,
+            temp_header: None,
+            temp_first_header: None,
+            temp_even_header: None,
         }
     }
 }

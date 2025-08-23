@@ -24,6 +24,7 @@ pub enum DocumentChild {
     CommentEnd(CommentRangeEnd),
     StructuredDataTag(Box<StructuredDataTag>),
     TableOfContents(Box<TableOfContents>),
+    Section(Box<Section>),
 }
 
 impl Serialize for DocumentChild {
@@ -77,6 +78,12 @@ impl Serialize for DocumentChild {
             DocumentChild::TableOfContents(ref r) => {
                 let mut t = serializer.serialize_struct("TableOfContents", 2)?;
                 t.serialize_field("type", "tableOfContents")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            DocumentChild::Section(ref r) => {
+                let mut t = serializer.serialize_struct("Section", 2)?;
+                t.serialize_field("type", "section")?;
                 t.serialize_field("data", r)?;
                 t.end()
             }
@@ -137,6 +144,11 @@ impl Document {
     pub fn add_comment_end(mut self, id: usize) -> Self {
         self.children
             .push(DocumentChild::CommentEnd(CommentRangeEnd::new(id)));
+        self
+    }
+
+    pub fn add_section(mut self, sec: Section) -> Self {
+        self.children.push(DocumentChild::Section(Box::new(sec)));
         self
     }
 
@@ -255,6 +267,7 @@ impl BuildXML for DocumentChild {
             DocumentChild::CommentEnd(v) => v.build_to(stream),
             DocumentChild::StructuredDataTag(v) => v.build_to(stream),
             DocumentChild::TableOfContents(v) => v.build_to(stream),
+            DocumentChild::Section(v) => v.build_to(stream),
         }
     }
 }

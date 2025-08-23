@@ -2,6 +2,7 @@ mod documents;
 #[allow(hidden_glob_reexports)] // should rename?
 mod errors;
 mod escape;
+mod macros;
 mod reader;
 mod types;
 mod xml_builder;

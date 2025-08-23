@@ -654,7 +654,7 @@ impl Docx {
 
         self.document_rels.images = images;
 
-        let mut headers: Vec<&(Header, String)> = self.document.section_property.get_headers();
+        let mut headers: Vec<&(String, Header)> = self.document.section_property.get_headers();
 
         self.document.children.iter().for_each(|child| {
             if let DocumentChild::Section(section) = child {
@@ -664,8 +664,8 @@ impl Docx {
             }
         });
 
-        headers.sort_by(|a, b| a.1.cmp(&b.1));
-        let headers = headers.iter().map(|h| h.0.build()).collect();
+        headers.sort_by(|a, b| a.0.cmp(&b.0));
+        let headers = headers.iter().map(|h| h.1.build()).collect();
 
         let footers: Vec<Vec<u8>> = self
             .document
@@ -1030,13 +1030,13 @@ impl Docx {
         let mut header_images: Vec<Vec<ImageIdAndPath>> = vec![vec![]; 3];
         let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
 
-        if let Some(header) = &mut self.document.section_property.header.as_mut() {
+        if let Some((_, header)) = &mut self.document.section_property.header.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
-            for child in header.0.children.iter_mut() {
+            for child in header.children.iter_mut() {
                 match child {
                     HeaderChild::Paragraph(paragraph) => {
                         collect_images_from_paragraph(
-                            &mut **paragraph,
+                            paragraph,
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
@@ -1044,7 +1044,7 @@ impl Docx {
                     }
                     HeaderChild::Table(table) => {
                         collect_images_from_table(
-                            &mut **table,
+                            table,
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
@@ -1075,13 +1075,13 @@ impl Docx {
             header_images[0] = images;
         }
 
-        if let Some(header) = &mut self.document.section_property.first_header.as_mut() {
+        if let Some((_, header)) = &mut self.document.section_property.first_header.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
-            for child in header.0.children.iter_mut() {
+            for child in header.children.iter_mut() {
                 match child {
                     HeaderChild::Paragraph(paragraph) => {
                         collect_images_from_paragraph(
-                            &mut **paragraph,
+                            paragraph,
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
@@ -1089,7 +1089,7 @@ impl Docx {
                     }
                     HeaderChild::Table(table) => {
                         collect_images_from_table(
-                            &mut **table,
+                            table,
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
@@ -1120,7 +1120,7 @@ impl Docx {
             header_images[1] = images;
         }
 
-        if let Some((header, _)) = &mut self.document.section_property.even_header.as_mut() {
+        if let Some((_, header)) = &mut self.document.section_property.even_header.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
             for child in header.children.iter_mut() {
                 match child {

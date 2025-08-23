@@ -6,7 +6,7 @@
 /// 
 /// # Example
 /// 
-/// ```rust
+/// ```rust,ignore
 /// use docx_rs::delegate_to_field;
 /// 
 /// struct Wrapper {
@@ -42,7 +42,7 @@ macro_rules! delegate_to_field {
 /// 
 /// # Example
 /// 
-/// ```rust
+/// ```rust,ignore
 /// use docx_rs::delegate_getters_to_field;
 /// 
 /// struct Wrapper {

@@ -297,6 +297,25 @@ impl Docx {
         self
     }
 
+    pub fn add_section(mut self, s: Section) -> Docx {
+        if s.has_numbering {
+            // If this document has numbering, set numberings.xml to document_rels.
+            // This is because numberings.xml without numbering cause an error on word online.
+            self.document_rels.has_numberings = true;
+        }
+        let headers = s.get_headers();
+        for header in headers {
+            if header.has_numbering {
+                self.document_rels.has_numberings = true;
+            }
+            let count = self.document_rels.header_count + 1;
+            self.document_rels.header_count = count;
+            self.content_type = self.content_type.add_header();
+        }
+        self.document = self.document.add_section(s);
+        self
+    }
+
     pub fn add_structured_data_tag(mut self, t: StructuredDataTag) -> Docx {
         if t.has_numbering {
             // If this document has numbering, set numberings.xml to document_rels.

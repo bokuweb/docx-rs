@@ -1,4 +1,5 @@
 use super::*;
+use crate::create_header_rid;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
@@ -100,6 +101,7 @@ impl BuildXML for SectionChild {
 pub struct Section {
     property: SectionProperty,
     children: Vec<SectionChild>,
+    pub(crate) has_numbering: bool,
 }
 
 impl Section {
@@ -115,14 +117,14 @@ impl Section {
         doc_grid(doc_grid: DocGrid) -> Self,
         text_direction(direction: String) -> Self,
         title_pg() -> Self,
-        header(h: Header, rid: &str) -> Self,
-        first_header(h: Header, rid: &str) -> Self,
-        first_header_without_title_pg(h: Header, rid: &str) -> Self,
-        even_header(h: Header, rid: &str) -> Self,
-        footer(h: Footer, rid: &str) -> Self,
-        first_footer(h: Footer, rid: &str) -> Self,
-        first_footer_without_title_pg(h: Footer, rid: &str) -> Self,
-        even_footer(h: Footer, rid: &str) -> Self,
+        // header(h: Header, rid: &str) -> Self,
+        // first_header(h: Header, rid: &str) -> Self,
+        // first_header_without_title_pg(h: Header, rid: &str) -> Self,
+        // even_header(h: Header, rid: &str) -> Self,
+        // footer(h: Footer, rid: &str) -> Self,
+        // first_footer(h: Footer, rid: &str) -> Self,
+        // first_footer_without_title_pg(h: Footer, rid: &str) -> Self,
+        // even_footer(h: Footer, rid: &str) -> Self,
         page_num_type(h: PageNumType) -> Self,
     }
 
@@ -131,6 +133,53 @@ impl Section {
         get_headers() -> Vec<&Header>,
         get_footers() -> Vec<&Footer>,
     }
+
+    pub fn add_paragraph(mut self, p: Paragraph) -> Self {
+        if p.has_numbering {
+            self.has_numbering = true
+        }
+        self.children.push(SectionChild::Paragraph(Box::new(p)));
+        self
+    }
+
+    pub fn add_table(mut self, t: Table) -> Self {
+        if t.has_numbering {
+            self.has_numbering = true
+        }
+        self.children.push(SectionChild::Table(Box::new(t)));
+        self
+    }
+
+    pub fn add_bookmark_start(mut self, id: usize, name: impl Into<String>) -> Self {
+        self.children
+            .push(SectionChild::BookmarkStart(BookmarkStart::new(id, name)));
+        self
+    }
+
+    pub fn add_bookmark_end(mut self, id: usize) -> Self {
+        self.children
+            .push(SectionChild::BookmarkEnd(BookmarkEnd::new(id)));
+        self
+    }
+
+    pub fn add_comment_start(mut self, comment: Comment) -> Self {
+        self.children.push(SectionChild::CommentStart(Box::new(
+            CommentRangeStart::new(comment),
+        )));
+        self
+    }
+
+    pub fn add_comment_end(mut self, id: usize) -> Self {
+        self.children
+            .push(SectionChild::CommentEnd(CommentRangeEnd::new(id)));
+        self
+    }
+
+    // TODO: inject count or create temp header
+    // pub fn header(mut self, header: Header) -> Self {
+    //     self.property = self.property.header(header, &create_header_rid(count));
+    //     self
+    // }
 }
 
 impl Default for Section {
@@ -138,6 +187,7 @@ impl Default for Section {
         Self {
             property: SectionProperty::new(),
             children: vec![],
+            has_numbering: false,
         }
     }
 }
@@ -174,6 +224,17 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:p w14:paraId="12345678"><w:pPr><w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" /></w:sectPr></w:pPr></w:p>"#
+        );
+    }
+
+    #[test]
+    fn test_section_with_paragraph() {
+        let c =
+            Section::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")));
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p><w:p w14:paraId="12345678"><w:pPr><w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" /></w:sectPr></w:pPr></w:p>"#
         );
     }
 }

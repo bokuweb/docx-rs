@@ -21,15 +21,15 @@ pub struct SectionProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub header_reference: Option<HeaderReference>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub header: Option<Header>,
+    pub header: Option<(String, Header)>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub first_header_reference: Option<HeaderReference>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub first_header: Option<Header>,
+    pub first_header: Option<(String, Header)>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub even_header_reference: Option<HeaderReference>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub even_header: Option<Header>,
+    pub even_header: Option<(String, Header)>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub footer_reference: Option<FooterReference>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -85,26 +85,26 @@ impl SectionProperty {
 
     pub fn header(mut self, h: Header, rid: &str) -> Self {
         self.header_reference = Some(HeaderReference::new("default", rid));
-        self.header = Some(h);
+        self.header = Some((rid.to_string(), h));
         self
     }
 
     pub fn first_header(mut self, h: Header, rid: &str) -> Self {
         self.first_header_reference = Some(HeaderReference::new("first", rid));
-        self.first_header = Some(h);
+        self.first_header = Some((rid.to_string(), h));
         self.title_pg = true;
         self
     }
 
     pub fn first_header_without_title_pg(mut self, h: Header, rid: &str) -> Self {
         self.first_header_reference = Some(HeaderReference::new("first", rid));
-        self.first_header = Some(h);
+        self.first_header = Some((rid.to_string(), h));
         self
     }
 
     pub fn even_header(mut self, h: Header, rid: &str) -> Self {
         self.even_header_reference = Some(HeaderReference::new("even", rid));
-        self.even_header = Some(h);
+        self.even_header = Some((rid.to_string(), h));
         self
     }
 
@@ -133,7 +133,7 @@ impl SectionProperty {
         self
     }
 
-    pub fn get_headers(&self) -> Vec<&Header> {
+    pub fn get_headers(&self) -> Vec<&(String, Header)> {
         let mut headers = vec![];
         if let Some(ref header) = self.header {
             headers.push(header);

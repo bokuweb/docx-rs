@@ -462,16 +462,38 @@ pub fn read_xml(xml_content: &str) -> Result<Docx, ReaderError> {
         }
     }
 
-    // Read numbering if available (basic implementation)
+    // Read numbering if available (improved implementation with debug)
     if let Some(numbering_rel) = document_rels.find_target(NUMBERING_RELATIONSHIP_TYPE) {
         let base_path = document_path
             .replace("document.xml", "")
             .trim_end_matches('/')
             .to_string();
         let numbering_path_str = format!("{}/{}", base_path, numbering_rel.2);
-        if let Some(numbering_data) = part_map.get(&numbering_path_str) {
+
+        // Also try the direct path from XML package
+        let direct_numbering_path = if numbering_path_str.starts_with("/") {
+            numbering_path_str.clone()
+        } else {
+            format!("/{}", numbering_path_str)
+        };
+
+        if let Some(numbering_data) = part_map
+            .get(&numbering_path_str)
+            .or_else(|| part_map.get(&direct_numbering_path))
+        {
             if let Ok(numberings) = Numberings::from_xml(numbering_data.as_bytes()) {
                 docx.numberings = numberings;
+            }
+        }
+    } else {
+        // Try to find numbering.xml directly in the package if no relationship is found
+        let direct_paths = ["/word/numbering.xml", "word/numbering.xml"];
+        for path in &direct_paths {
+            if let Some(numbering_data) = part_map.get(*path) {
+                if let Ok(numberings) = Numberings::from_xml(numbering_data.as_bytes()) {
+                    docx.numberings = numberings;
+                    break;
+                }
             }
         }
     }
@@ -619,6 +641,19 @@ pub fn read_xml(xml_content: &str) -> Result<Docx, ReaderError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_read_xml_with_numbering() {
+        let xml_content = include_str!("../../../1.xml");
+        let docx = read_xml(xml_content).unwrap();
+        
+        println!("Abstract nums count: {}", docx.numberings.abstract_nums.len());
+        println!("Numberings count: {}", docx.numberings.numberings.len());
+        
+        // 最低限のnumberingが読み取られていることを確認
+        assert!(docx.numberings.abstract_nums.len() > 0, "Abstract numberings should be read");
+        assert!(docx.numberings.numberings.len() > 0, "Numberings should be read");
+    }
 
     #[test]
     fn test_read_xml_basic() {

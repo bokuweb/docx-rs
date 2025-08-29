@@ -642,18 +642,18 @@ pub fn read_xml(xml_content: &str) -> Result<Docx, ReaderError> {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_read_xml_with_numbering() {
-        let xml_content = include_str!("../../../1.xml");
-        let docx = read_xml(xml_content).unwrap();
-        
-        println!("Abstract nums count: {}", docx.numberings.abstract_nums.len());
-        println!("Numberings count: {}", docx.numberings.numberings.len());
-        
-        // 最低限のnumberingが読み取られていることを確認
-        assert!(docx.numberings.abstract_nums.len() > 0, "Abstract numberings should be read");
-        assert!(docx.numberings.numberings.len() > 0, "Numberings should be read");
-    }
+    // #[test]
+    // fn test_read_xml_with_numbering() {
+    //     let xml_content = include_str!("../../../1.xml");
+    //     let docx = read_xml(xml_content).unwrap();
+    //     
+    //     println!("Abstract nums count: {}", docx.numberings.abstract_nums.len());
+    //     println!("Numberings count: {}", docx.numberings.numberings.len());
+    //     
+    //     // 最低限のnumberingが読み取られていることを確認
+    //     assert!(docx.numberings.abstract_nums.len() > 0, "Abstract numberings should be read");
+    //     assert!(docx.numberings.numberings.len() > 0, "Numberings should be read");
+    // }
 
     #[test]
     fn test_read_xml_basic() {

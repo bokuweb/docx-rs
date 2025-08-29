@@ -33,15 +33,15 @@ pub struct SectionProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub footer_reference: Option<FooterReference>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub footer: Option<Footer>,
+    pub footer: Option<(String, Footer)>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub first_footer_reference: Option<FooterReference>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub first_footer: Option<Footer>,
+    pub first_footer: Option<(String, Footer)>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub even_footer_reference: Option<FooterReference>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub even_footer: Option<Footer>,
+    pub even_footer: Option<(String, Footer)>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub section_type: Option<SectionType>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -110,26 +110,26 @@ impl SectionProperty {
 
     pub fn footer(mut self, h: Footer, rid: &str) -> Self {
         self.footer_reference = Some(FooterReference::new("default", rid));
-        self.footer = Some(h);
+        self.footer = Some((rid.to_string(), h));
         self
     }
 
     pub fn first_footer(mut self, h: Footer, rid: &str) -> Self {
         self.first_footer_reference = Some(FooterReference::new("first", rid));
-        self.first_footer = Some(h);
+        self.first_footer = Some((rid.to_string(), h));
         self.title_pg = true;
         self
     }
 
     pub fn first_footer_without_title_pg(mut self, h: Footer, rid: &str) -> Self {
         self.first_footer_reference = Some(FooterReference::new("first", rid));
-        self.first_footer = Some(h);
+        self.first_footer = Some((rid.to_string(), h));
         self
     }
 
     pub fn even_footer(mut self, h: Footer, rid: &str) -> Self {
         self.even_footer_reference = Some(FooterReference::new("even", rid));
-        self.even_footer = Some(h);
+        self.even_footer = Some((rid.to_string(), h));
         self
     }
 
@@ -147,7 +147,7 @@ impl SectionProperty {
         headers
     }
 
-    pub fn get_footers(&self) -> Vec<&Footer> {
+    pub fn get_footers(&self) -> Vec<&(String, Footer)> {
         let mut footers = vec![];
         if let Some(ref footer) = self.footer {
             footers.push(footer);

@@ -3,6 +3,7 @@ use super::*;
 use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
+use crate::Footer;
 use crate::{delegate_to_field, Header};
 use serde::ser::{SerializeStruct, Serializer};
 use serde::Serialize;
@@ -105,6 +106,9 @@ pub struct Section {
     pub(crate) temp_header: Option<Header>,
     pub(crate) temp_first_header: Option<Header>,
     pub(crate) temp_even_header: Option<Header>,
+    pub(crate) temp_footer: Option<Footer>,
+    pub(crate) temp_first_footer: Option<Footer>,
+    pub(crate) temp_even_footer: Option<Footer>,
 }
 
 impl Section {
@@ -186,6 +190,21 @@ impl Section {
         self.temp_even_header = Some(header);
         self
     }
+
+    pub fn footer(mut self, footer: Footer) -> Self {
+        self.temp_footer = Some(footer);
+        self
+    }
+
+    pub fn first_footer(mut self, footer: Footer) -> Self {
+        self.temp_first_footer = Some(footer);
+        self
+    }
+
+    pub fn even_footer(mut self, footer: Footer) -> Self {
+        self.temp_even_footer = Some(footer);
+        self
+    }
 }
 
 impl Default for Section {
@@ -197,6 +216,9 @@ impl Default for Section {
             temp_header: None,
             temp_first_header: None,
             temp_even_header: None,
+            temp_footer: None,
+            temp_first_footer: None,
+            temp_even_footer: None,
         }
     }
 }

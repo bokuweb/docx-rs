@@ -305,6 +305,8 @@ impl Docx {
         }
 
         let mut new_section = s;
+
+        // header
         if let Some(header) = new_section.temp_header {
             if header.has_numbering {
                 self.document_rels.has_numberings = true;
@@ -357,6 +359,116 @@ impl Docx {
             };
             self.document_rels.header_count = count;
             self.content_type = self.content_type.add_header();
+        }
+
+        // header
+        if let Some(header) = new_section.temp_header {
+            if header.has_numbering {
+                self.document_rels.has_numberings = true;
+            }
+            let count = self.document_rels.header_count + 1;
+            new_section = Section {
+                property: new_section
+                    .property
+                    .header(header, &create_header_rid(count)),
+                children: new_section.children,
+                has_numbering: new_section.has_numbering,
+                temp_header: None,
+                ..Default::default()
+            };
+            self.document_rels.header_count = count;
+            self.content_type = self.content_type.add_header();
+        }
+
+        if let Some(header) = new_section.temp_first_header {
+            if header.has_numbering {
+                self.document_rels.has_numberings = true;
+            }
+            let count = self.document_rels.header_count + 1;
+            new_section = Section {
+                property: new_section
+                    .property
+                    .first_header(header, &create_header_rid(count)),
+                children: new_section.children,
+                has_numbering: new_section.has_numbering,
+                temp_first_header: None,
+                ..Default::default()
+            };
+            self.document_rels.header_count = count;
+            self.content_type = self.content_type.add_header();
+        }
+
+        if let Some(header) = new_section.temp_even_header {
+            if header.has_numbering {
+                self.document_rels.has_numberings = true;
+            }
+            let count = self.document_rels.header_count + 1;
+            new_section = Section {
+                property: new_section
+                    .property
+                    .even_header(header, &create_header_rid(count)),
+                children: new_section.children,
+                has_numbering: new_section.has_numbering,
+                temp_even_header: None,
+                ..Default::default()
+            };
+            self.document_rels.header_count = count;
+            self.content_type = self.content_type.add_header();
+        }
+
+        // footer
+        if let Some(footer) = new_section.temp_footer {
+            if footer.has_numbering {
+                self.document_rels.has_numberings = true;
+            }
+            let count = self.document_rels.footer_count + 1;
+            new_section = Section {
+                property: new_section
+                    .property
+                    .footer(footer, &create_footer_rid(count)),
+                children: new_section.children,
+                has_numbering: new_section.has_numbering,
+                temp_footer: None,
+                ..Default::default()
+            };
+            self.document_rels.footer_count = count;
+            self.content_type = self.content_type.add_footer();
+        }
+
+        if let Some(footer) = new_section.temp_first_footer {
+            if footer.has_numbering {
+                self.document_rels.has_numberings = true;
+            }
+            let count = self.document_rels.footer_count + 1;
+            new_section = Section {
+                property: new_section
+                    .property
+                    .first_footer(footer, &create_footer_rid(count)),
+                children: new_section.children,
+                has_numbering: new_section.has_numbering,
+                temp_first_footer: None,
+                ..Default::default()
+            };
+            self.document_rels.footer_count = count;
+            self.content_type = self.content_type.add_footer();
+        }
+
+        if let Some(footer) = new_section.temp_even_footer {
+            if footer.has_numbering {
+                self.document_rels.has_numberings = true;
+            }
+            let count = self.document_rels.footer_count + 1;
+            new_section = Section {
+                property: new_section
+                    .property
+                    .even_footer(footer, &create_footer_rid(count)),
+                children: new_section.children,
+                has_numbering: new_section.has_numbering,
+                temp_even_footer: None,
+                ..Default::default()
+            };
+            self.document_rels.footer_count = count;
+            self.content_type = self.content_type.add_footer();
         }
 
         self.document = self.document.add_section(new_section);
@@ -667,13 +779,18 @@ impl Docx {
         headers.sort_by(|a, b| a.0.cmp(&b.0));
         let headers = headers.iter().map(|h| h.1.build()).collect();
 
-        let footers: Vec<Vec<u8>> = self
-            .document
-            .section_property
-            .get_footers()
-            .iter()
-            .map(|h| h.build())
-            .collect();
+        let mut footers: Vec<&(String, Footer)> = self.document.section_property.get_footers();
+
+        self.document.children.iter().for_each(|child| {
+            if let DocumentChild::Section(section) = child {
+                for h in section.property.get_footers() {
+                    footers.push(h);
+                }
+            }
+        });
+
+        footers.sort_by(|a, b| a.0.cmp(&b.0));
+        let footers = footers.iter().map(|h| h.1.build()).collect();
 
         // Collect footnotes
         if self.collect_footnotes() {
@@ -1172,7 +1289,7 @@ impl Docx {
         let mut footer_images: Vec<Vec<ImageIdAndPath>> = vec![vec![]; 3];
         let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
 
-        if let Some(footer) = &mut self.document.section_property.footer.as_mut() {
+        if let Some((_, footer)) = &mut self.document.section_property.footer.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
             for child in footer.children.iter_mut() {
                 match child {
@@ -1217,7 +1334,7 @@ impl Docx {
             footer_images[0] = images;
         }
 
-        if let Some(footer) = &mut self.document.section_property.first_footer.as_mut() {
+        if let Some((_, footer)) = &mut self.document.section_property.first_footer.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
             for child in footer.children.iter_mut() {
                 match child {
@@ -1262,7 +1379,7 @@ impl Docx {
             footer_images[1] = images;
         }
 
-        if let Some(footer) = &mut self.document.section_property.even_footer.as_mut() {
+        if let Some((_, footer)) = &mut self.document.section_property.even_footer.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
             for child in footer.children.iter_mut() {
                 match child {

@@ -228,7 +228,7 @@ impl BuildXML for TableOfContents {
                         TocContent::Paragraph(p) => {
                             // Merge paragraph
                             if i == 0 {
-                                let mut new_p = p.clone();
+                                let mut new_p = p.clone(); // cloneで自動的に新しいIDが生成される
                                 new_p.children.insert(
                                     0,
                                     ParagraphChild::Run(Box::new(

@@ -7,7 +7,7 @@ use crate::documents::BuildXML;
 use crate::types::*;
 use crate::xml_builder::*;
 
-#[derive(Serialize, Debug, PartialEq)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Paragraph {
     pub id: String,
@@ -23,17 +23,6 @@ impl Default for Paragraph {
             children: Vec::new(),
             property: ParagraphProperty::new(),
             has_numbering: false,
-        }
-    }
-}
-
-impl Clone for Paragraph {
-    fn clone(&self) -> Self {
-        Self {
-            id: crate::generate_para_id(), // 新しいIDを生成してID重複を防ぐ
-            children: self.children.clone(),
-            property: self.property.clone(),
-            has_numbering: self.has_numbering,
         }
     }
 }

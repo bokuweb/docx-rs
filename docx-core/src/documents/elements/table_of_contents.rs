@@ -235,6 +235,7 @@ impl BuildXML for TableOfContents {
                                         Run::new().add_field_char(FieldCharType::End, false),
                                     )),
                                 );
+                                new_p.id = crate::generate_para_id();
                                 b = b.add_child(&new_p)?
                             } else {
                                 b = b.add_child(&p)?;

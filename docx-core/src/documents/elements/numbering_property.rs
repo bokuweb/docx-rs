@@ -22,6 +22,11 @@ impl NumberingProperty {
         self
     }
 
+    pub(crate) fn level(mut self, level: IndentLevel) -> NumberingProperty {
+        self.level = Some(level);
+        self
+    }
+
     pub fn add_num(mut self, id: NumberingId, level: IndentLevel) -> NumberingProperty {
         self.id = Some(id);
         self.level = Some(level);

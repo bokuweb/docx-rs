@@ -35,17 +35,21 @@ impl ElementReader for NumberingProperty {
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     if e == XMLElement::NumberingProperty {
-                        if level.is_none() {
-                            if let Some(id) = id {
+                        match (id, level) {
+                            (Some(id), Some(level)) => {
+                                return Ok(NumberingProperty::new()
+                                    .add_num(NumberingId::new(id), IndentLevel::new(level)));
+                            }
+                            (Some(id), None) => {
                                 return Ok(NumberingProperty::new().id(NumberingId::new(id)));
                             }
+                            (None, Some(level)) => {
+                                return Ok(NumberingProperty::new().level(IndentLevel::new(level)));
+                            }
+                            (None, None) => {
+                                return Ok(NumberingProperty::new());
+                            }
                         }
-                        if let Some(id) = id {
-                            let np = NumberingProperty::new()
-                                .add_num(NumberingId::new(id), IndentLevel::new(level.unwrap()));
-                            return Ok(np);
-                        }
-                        return Ok(NumberingProperty::new());
                     }
                 }
                 Err(_) => return Err(ReaderError::XMLReadError),

@@ -3,6 +3,8 @@ name = "docx-wasm"
 version = "0.1.0"
 authors = ["bokuweb <bokuweb12@gmail.com>"]
 edition = "2021"
+license-file = "../LICENSE"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

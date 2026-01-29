@@ -5,6 +5,7 @@ authors = ["bokuweb <bokuweb12@gmail.com>"]
 repository = "https://github.com/bokuweb/docx-rs"
 edition = "2021"
 license = "MIT"
+license-file = "../LICENSE"
 readme = "../README.md"
 description = "A .docx file writer with Rust/WebAssembly."
 keywords = [

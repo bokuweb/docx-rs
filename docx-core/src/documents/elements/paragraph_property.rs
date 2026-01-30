@@ -244,6 +244,7 @@ impl BuildXML for ParagraphProperty {
                     .apply_each(&self.tabs, |tab, b| b.tab(tab.val, tab.leader, tab.pos))?
                     .close()
             })?
+            .add_optional_child(&self.section_property)?
             .close()?
             .into_inner()
     }
@@ -252,6 +253,7 @@ impl BuildXML for ParagraphProperty {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::types::SectionType;
     use crate::types::LineSpacingType;
     #[cfg(test)]
     use pretty_assertions::assert_eq;
@@ -331,6 +333,19 @@ mod tests {
         assert_eq!(
             str::from_utf8(&bytes).unwrap(),
             r#"<w:pPr><w:rPr /><w:spacing w:line="100" w:lineRule="atLeast" /></w:pPr>"#
+        )
+    }
+
+    #[test]
+    fn test_section_property() {
+        let props = ParagraphProperty::new().section_property(SectionProperty {
+            section_type: Some(SectionType::NextPage),
+            ..Default::default()
+        });
+        let bytes = props.build();
+        assert_eq!(
+            str::from_utf8(&bytes).unwrap(),
+            r#"<w:pPr><w:rPr /><w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" /><w:type w:val="nextPage" /></w:sectPr></w:pPr>"#
         )
     }
 }

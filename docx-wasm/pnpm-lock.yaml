@@ -15,8 +15,8 @@ importers:
         specifier: 2.0.7
         version: 2.0.7
       '@wasm-tool/wasm-pack-plugin':
-        specifier: 1.6.0
-        version: 1.6.0
+        specifier: 1.7.0
+        version: 1.7.0
       adm-zip:
         specifier: 0.5.14
         version: 0.5.14
@@ -395,8 +395,8 @@ packages:
   '@types/yargs@17.0.33':
     resolution: {integrity: sha512-WpxBCKWPLr4xSsHgz511rFJAM+wS28w2zEO1QDNY5zM/S8ok70NNfztH0xwhqKyaK0OHCbN98LDAZuy1ctxDkA==}
 
-  '@wasm-tool/wasm-pack-plugin@1.6.0':
-    resolution: {integrity: sha512-Iax4nEgIvVCZqrmuseJm7ln/muWpg7uT5fXMAT0crYo+k5JTuZE58DJvBQoeIAegA3IM9cZgfkcZjAOUCPsT1g==}
+  '@wasm-tool/wasm-pack-plugin@1.7.0':
+    resolution: {integrity: sha512-WikzYsw7nTd5CZxH75h7NxM/FLJAgqfWt+/gk3EL3wYKxiIlpMIYPja+sHQl3ARiicIYy4BDfxkbAVjRYlouTA==}
 
   '@webassemblyjs/ast@1.9.0':
     resolution: {integrity: sha512-C6wW5L+b7ogSDVqymbkkvuW9kruN//YisMED04xzeBBqjHa2FYnmvOlS6Xj68xWQRgWvI9cIglsjFowH/RJyEA==}
@@ -3867,7 +3867,7 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@wasm-tool/wasm-pack-plugin@1.6.0':
+  '@wasm-tool/wasm-pack-plugin@1.7.0':
     dependencies:
       chalk: 2.4.2
       command-exists: 1.2.9

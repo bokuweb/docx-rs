@@ -1,4 +1,7 @@
-use std::{collections::HashMap, str::FromStr};
+use std::{
+    collections::{HashMap, HashSet},
+    str::FromStr,
+};
 
 mod bookmark_id;
 mod build_xml;
@@ -708,6 +711,7 @@ impl Docx {
 
     pub fn build(mut self) -> XMLDocx {
         self.reset();
+        self.refresh_duplicate_para_ids();
 
         self.update_dependencies();
 
@@ -864,6 +868,16 @@ impl Docx {
 
     fn reset(&self) {
         crate::reset_para_id();
+    }
+
+    fn refresh_duplicate_para_ids(&mut self) {
+        let mut counts: HashMap<String, usize> = HashMap::new();
+        collect_para_ids_in_docx(self, &mut counts);
+
+        let mut used: HashSet<String> = counts.keys().cloned().collect();
+        let mut seen: HashSet<String> = HashSet::new();
+
+        refresh_para_ids_in_docx(self, &counts, &mut used, &mut seen);
     }
 
     fn insert_comment_to_map(
@@ -1654,6 +1668,529 @@ fn store_comments_in_table(table: &mut Table, comments: &[Comment]) {
             }
         }
     }
+}
+
+fn collect_para_ids_in_docx(docx: &Docx, counts: &mut HashMap<String, usize>) {
+    for child in &docx.document.children {
+        collect_para_ids_in_document_child(child, counts);
+    }
+    collect_para_ids_in_section_property(&docx.document.section_property, counts);
+
+    for comment in &docx.comments.comments {
+        collect_para_ids_in_comment(comment, counts);
+    }
+
+    for footnote in &docx.footnotes.footnotes {
+        for paragraph in &footnote.content {
+            collect_para_ids_in_paragraph(paragraph, counts);
+        }
+    }
+}
+
+fn collect_para_ids_in_document_child(child: &DocumentChild, counts: &mut HashMap<String, usize>) {
+    match child {
+        DocumentChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
+        DocumentChild::Table(table) => collect_para_ids_in_table(table, counts),
+        DocumentChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+        DocumentChild::TableOfContents(toc) => collect_para_ids_in_toc(toc, counts),
+        DocumentChild::Section(section) => collect_para_ids_in_section(section, counts),
+        _ => {}
+    }
+}
+
+fn collect_para_ids_in_section(section: &Section, counts: &mut HashMap<String, usize>) {
+    for child in &section.children {
+        match child {
+            SectionChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
+            SectionChild::Table(table) => collect_para_ids_in_table(table, counts),
+            SectionChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+            SectionChild::TableOfContents(toc) => collect_para_ids_in_toc(toc, counts),
+            _ => {}
+        }
+    }
+    collect_para_ids_in_section_property(&section.property, counts);
+}
+
+fn collect_para_ids_in_section_property(
+    property: &SectionProperty,
+    counts: &mut HashMap<String, usize>,
+) {
+    if let Some((_, header)) = property.header.as_ref() {
+        collect_para_ids_in_header(header, counts);
+    }
+    if let Some((_, header)) = property.first_header.as_ref() {
+        collect_para_ids_in_header(header, counts);
+    }
+    if let Some((_, header)) = property.even_header.as_ref() {
+        collect_para_ids_in_header(header, counts);
+    }
+    if let Some((_, footer)) = property.footer.as_ref() {
+        collect_para_ids_in_footer(footer, counts);
+    }
+    if let Some((_, footer)) = property.first_footer.as_ref() {
+        collect_para_ids_in_footer(footer, counts);
+    }
+    if let Some((_, footer)) = property.even_footer.as_ref() {
+        collect_para_ids_in_footer(footer, counts);
+    }
+}
+
+fn collect_para_ids_in_header(header: &Header, counts: &mut HashMap<String, usize>) {
+    for child in &header.children {
+        match child {
+            HeaderChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
+            HeaderChild::Table(table) => collect_para_ids_in_table(table, counts),
+            HeaderChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+        }
+    }
+}
+
+fn collect_para_ids_in_footer(footer: &Footer, counts: &mut HashMap<String, usize>) {
+    for child in &footer.children {
+        match child {
+            FooterChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
+            FooterChild::Table(table) => collect_para_ids_in_table(table, counts),
+            FooterChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+        }
+    }
+}
+
+fn collect_para_ids_in_toc(toc: &TableOfContents, counts: &mut HashMap<String, usize>) {
+    for child in &toc.before_contents {
+        match child {
+            TocContent::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
+            TocContent::Table(table) => collect_para_ids_in_table(table, counts),
+        }
+    }
+    for child in &toc.after_contents {
+        match child {
+            TocContent::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
+            TocContent::Table(table) => collect_para_ids_in_table(table, counts),
+        }
+    }
+}
+
+fn collect_para_ids_in_table(table: &Table, counts: &mut HashMap<String, usize>) {
+    for TableChild::TableRow(row) in &table.rows {
+        for TableRowChild::TableCell(cell) in &row.cells {
+            for content in &cell.children {
+                match content {
+                    TableCellContent::Paragraph(paragraph) => {
+                        collect_para_ids_in_paragraph(paragraph, counts)
+                    }
+                    TableCellContent::Table(table) => collect_para_ids_in_table(table, counts),
+                    TableCellContent::StructuredDataTag(tag) => {
+                        collect_para_ids_in_structured_data_tag(tag, counts)
+                    }
+                    TableCellContent::TableOfContents(toc) => collect_para_ids_in_toc(toc, counts),
+                }
+            }
+        }
+    }
+}
+
+fn collect_para_ids_in_paragraph(paragraph: &Paragraph, counts: &mut HashMap<String, usize>) {
+    *counts.entry(paragraph.id.clone()).or_insert(0) += 1;
+
+    for child in &paragraph.children {
+        match child {
+            ParagraphChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
+            ParagraphChild::Insert(insert) => collect_para_ids_in_insert(insert, counts),
+            ParagraphChild::Delete(delete) => collect_para_ids_in_delete(delete, counts),
+            ParagraphChild::Hyperlink(hyperlink) => collect_para_ids_in_hyperlink(hyperlink, counts),
+            ParagraphChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+            _ => {}
+        }
+    }
+}
+
+fn collect_para_ids_in_hyperlink(hyperlink: &Hyperlink, counts: &mut HashMap<String, usize>) {
+    for child in &hyperlink.children {
+        match child {
+            ParagraphChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
+            ParagraphChild::Insert(insert) => collect_para_ids_in_insert(insert, counts),
+            ParagraphChild::Delete(delete) => collect_para_ids_in_delete(delete, counts),
+            ParagraphChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+            _ => {}
+        }
+    }
+}
+
+fn collect_para_ids_in_insert(insert: &Insert, counts: &mut HashMap<String, usize>) {
+    for child in &insert.children {
+        match child {
+            InsertChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
+            InsertChild::Delete(delete) => collect_para_ids_in_delete(delete, counts),
+            _ => {}
+        }
+    }
+}
+
+fn collect_para_ids_in_delete(delete: &Delete, counts: &mut HashMap<String, usize>) {
+    for child in &delete.children {
+        if let DeleteChild::CommentStart(c) = child {
+            collect_para_ids_in_comment(&c.comment, counts);
+        }
+    }
+}
+
+fn collect_para_ids_in_structured_data_tag(
+    tag: &StructuredDataTag,
+    counts: &mut HashMap<String, usize>,
+) {
+    for child in &tag.children {
+        match child {
+            StructuredDataTagChild::Paragraph(paragraph) => {
+                collect_para_ids_in_paragraph(paragraph, counts)
+            }
+            StructuredDataTagChild::Table(table) => collect_para_ids_in_table(table, counts),
+            StructuredDataTagChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
+            StructuredDataTagChild::StructuredDataTag(inner) => {
+                collect_para_ids_in_structured_data_tag(inner, counts)
+            }
+            _ => {}
+        }
+    }
+}
+
+fn collect_para_ids_in_comment(comment: &Comment, counts: &mut HashMap<String, usize>) {
+    for child in &comment.children {
+        match child {
+            CommentChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
+            CommentChild::Table(table) => collect_para_ids_in_table(table, counts),
+        }
+    }
+}
+
+fn refresh_para_ids_in_docx(
+    docx: &mut Docx,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut docx.document.children {
+        refresh_para_ids_in_document_child(child, counts, used, seen);
+    }
+    refresh_para_ids_in_section_property(&mut docx.document.section_property, counts, used, seen);
+
+    for comment in &mut docx.comments.comments {
+        refresh_para_ids_in_comment(comment, counts, used, seen);
+    }
+
+    for footnote in &mut docx.footnotes.footnotes {
+        for paragraph in &mut footnote.content {
+            refresh_para_ids_in_paragraph(paragraph, counts, used, seen);
+        }
+    }
+}
+
+fn refresh_para_ids_in_document_child(
+    child: &mut DocumentChild,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    match child {
+        DocumentChild::Paragraph(paragraph) => refresh_para_ids_in_paragraph(paragraph, counts, used, seen),
+        DocumentChild::Table(table) => refresh_para_ids_in_table(table, counts, used, seen),
+        DocumentChild::StructuredDataTag(tag) => {
+            refresh_para_ids_in_structured_data_tag(tag, counts, used, seen)
+        }
+        DocumentChild::TableOfContents(toc) => refresh_para_ids_in_toc(toc, counts, used, seen),
+        DocumentChild::Section(section) => refresh_para_ids_in_section(section, counts, used, seen),
+        _ => {}
+    }
+}
+
+fn refresh_para_ids_in_section(
+    section: &mut Section,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut section.children {
+        match child {
+            SectionChild::Paragraph(paragraph) => {
+                refresh_para_ids_in_paragraph(paragraph, counts, used, seen)
+            }
+            SectionChild::Table(table) => refresh_para_ids_in_table(table, counts, used, seen),
+            SectionChild::StructuredDataTag(tag) => {
+                refresh_para_ids_in_structured_data_tag(tag, counts, used, seen)
+            }
+            SectionChild::TableOfContents(toc) => refresh_para_ids_in_toc(toc, counts, used, seen),
+            _ => {}
+        }
+    }
+    refresh_para_ids_in_section_property(&mut section.property, counts, used, seen);
+}
+
+fn refresh_para_ids_in_section_property(
+    property: &mut SectionProperty,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    if let Some((_, header)) = property.header.as_mut() {
+        refresh_para_ids_in_header(header, counts, used, seen);
+    }
+    if let Some((_, header)) = property.first_header.as_mut() {
+        refresh_para_ids_in_header(header, counts, used, seen);
+    }
+    if let Some((_, header)) = property.even_header.as_mut() {
+        refresh_para_ids_in_header(header, counts, used, seen);
+    }
+    if let Some((_, footer)) = property.footer.as_mut() {
+        refresh_para_ids_in_footer(footer, counts, used, seen);
+    }
+    if let Some((_, footer)) = property.first_footer.as_mut() {
+        refresh_para_ids_in_footer(footer, counts, used, seen);
+    }
+    if let Some((_, footer)) = property.even_footer.as_mut() {
+        refresh_para_ids_in_footer(footer, counts, used, seen);
+    }
+}
+
+fn refresh_para_ids_in_header(
+    header: &mut Header,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut header.children {
+        match child {
+            HeaderChild::Paragraph(paragraph) => {
+                refresh_para_ids_in_paragraph(paragraph, counts, used, seen)
+            }
+            HeaderChild::Table(table) => refresh_para_ids_in_table(table, counts, used, seen),
+            HeaderChild::StructuredDataTag(tag) => {
+                refresh_para_ids_in_structured_data_tag(tag, counts, used, seen)
+            }
+        }
+    }
+}
+
+fn refresh_para_ids_in_footer(
+    footer: &mut Footer,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut footer.children {
+        match child {
+            FooterChild::Paragraph(paragraph) => {
+                refresh_para_ids_in_paragraph(paragraph, counts, used, seen)
+            }
+            FooterChild::Table(table) => refresh_para_ids_in_table(table, counts, used, seen),
+            FooterChild::StructuredDataTag(tag) => {
+                refresh_para_ids_in_structured_data_tag(tag, counts, used, seen)
+            }
+        }
+    }
+}
+
+fn refresh_para_ids_in_toc(
+    toc: &mut TableOfContents,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut toc.before_contents {
+        match child {
+            TocContent::Paragraph(paragraph) => {
+                refresh_para_ids_in_paragraph(paragraph, counts, used, seen)
+            }
+            TocContent::Table(table) => refresh_para_ids_in_table(table, counts, used, seen),
+        }
+    }
+    for child in &mut toc.after_contents {
+        match child {
+            TocContent::Paragraph(paragraph) => {
+                refresh_para_ids_in_paragraph(paragraph, counts, used, seen)
+            }
+            TocContent::Table(table) => refresh_para_ids_in_table(table, counts, used, seen),
+        }
+    }
+}
+
+fn refresh_para_ids_in_table(
+    table: &mut Table,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for TableChild::TableRow(row) in &mut table.rows {
+        for TableRowChild::TableCell(cell) in &mut row.cells {
+            for content in &mut cell.children {
+                match content {
+                    TableCellContent::Paragraph(paragraph) => {
+                        refresh_para_ids_in_paragraph(paragraph, counts, used, seen)
+                    }
+                    TableCellContent::Table(table) => {
+                        refresh_para_ids_in_table(table, counts, used, seen)
+                    }
+                    TableCellContent::StructuredDataTag(tag) => {
+                        refresh_para_ids_in_structured_data_tag(tag, counts, used, seen)
+                    }
+                    TableCellContent::TableOfContents(toc) => {
+                        refresh_para_ids_in_toc(toc, counts, used, seen)
+                    }
+                }
+            }
+        }
+    }
+}
+
+fn refresh_para_ids_in_paragraph(
+    paragraph: &mut Paragraph,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    ensure_unique_paragraph_id(paragraph, counts, used, seen);
+
+    for child in &mut paragraph.children {
+        match child {
+            ParagraphChild::CommentStart(c) => {
+                refresh_para_ids_in_comment(&mut c.comment, counts, used, seen)
+            }
+            ParagraphChild::Insert(insert) => {
+                refresh_para_ids_in_insert(insert, counts, used, seen)
+            }
+            ParagraphChild::Delete(delete) => {
+                refresh_para_ids_in_delete(delete, counts, used, seen)
+            }
+            ParagraphChild::Hyperlink(hyperlink) => {
+                refresh_para_ids_in_hyperlink(hyperlink, counts, used, seen)
+            }
+            ParagraphChild::StructuredDataTag(tag) => {
+                refresh_para_ids_in_structured_data_tag(tag, counts, used, seen)
+            }
+            _ => {}
+        }
+    }
+}
+
+fn refresh_para_ids_in_hyperlink(
+    hyperlink: &mut Hyperlink,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut hyperlink.children {
+        match child {
+            ParagraphChild::CommentStart(c) => {
+                refresh_para_ids_in_comment(&mut c.comment, counts, used, seen)
+            }
+            ParagraphChild::Insert(insert) => {
+                refresh_para_ids_in_insert(insert, counts, used, seen)
+            }
+            ParagraphChild::Delete(delete) => {
+                refresh_para_ids_in_delete(delete, counts, used, seen)
+            }
+            ParagraphChild::StructuredDataTag(tag) => {
+                refresh_para_ids_in_structured_data_tag(tag, counts, used, seen)
+            }
+            _ => {}
+        }
+    }
+}
+
+fn refresh_para_ids_in_insert(
+    insert: &mut Insert,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut insert.children {
+        match child {
+            InsertChild::CommentStart(c) => {
+                refresh_para_ids_in_comment(&mut c.comment, counts, used, seen)
+            }
+            InsertChild::Delete(delete) => {
+                refresh_para_ids_in_delete(delete, counts, used, seen)
+            }
+            _ => {}
+        }
+    }
+}
+
+fn refresh_para_ids_in_delete(
+    delete: &mut Delete,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut delete.children {
+        if let DeleteChild::CommentStart(c) = child {
+            refresh_para_ids_in_comment(&mut c.comment, counts, used, seen);
+        }
+    }
+}
+
+fn refresh_para_ids_in_structured_data_tag(
+    tag: &mut StructuredDataTag,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut tag.children {
+        match child {
+            StructuredDataTagChild::Paragraph(paragraph) => {
+                refresh_para_ids_in_paragraph(paragraph, counts, used, seen)
+            }
+            StructuredDataTagChild::Table(table) => {
+                refresh_para_ids_in_table(table, counts, used, seen)
+            }
+            StructuredDataTagChild::CommentStart(c) => {
+                refresh_para_ids_in_comment(&mut c.comment, counts, used, seen)
+            }
+            StructuredDataTagChild::StructuredDataTag(inner) => {
+                refresh_para_ids_in_structured_data_tag(inner, counts, used, seen)
+            }
+            _ => {}
+        }
+    }
+}
+
+fn refresh_para_ids_in_comment(
+    comment: &mut Comment,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut comment.children {
+        match child {
+            CommentChild::Paragraph(paragraph) => {
+                refresh_para_ids_in_paragraph(paragraph, counts, used, seen)
+            }
+            CommentChild::Table(table) => refresh_para_ids_in_table(table, counts, used, seen),
+        }
+    }
+}
+
+fn ensure_unique_paragraph_id(
+    paragraph: &mut Paragraph,
+    counts: &HashMap<String, usize>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    let id = paragraph.id.clone();
+    let count = counts.get(&id).copied().unwrap_or(0);
+
+    if !id.is_empty() && count <= 1 {
+        return;
+    }
+    if !id.is_empty() && count > 1 && !seen.contains(&id) {
+        seen.insert(id);
+        return;
+    }
+
+    let mut new_id = crate::generate_para_id();
+    while used.contains(&new_id) {
+        new_id = crate::generate_para_id();
+    }
+    paragraph.id = new_id.clone();
+    used.insert(new_id);
 }
 
 fn push_comment_and_comment_extended(

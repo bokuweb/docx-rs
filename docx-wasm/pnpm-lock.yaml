@@ -18,8 +18,8 @@ importers:
         specifier: 1.6.0
         version: 1.6.0
       adm-zip:
-        specifier: 0.5.14
-        version: 0.5.14
+        specifier: 0.5.16
+        version: 0.5.16
       cpy-cli:
         specifier: 4.2.0
         version: 4.2.0
@@ -497,8 +497,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  adm-zip@0.5.14:
-    resolution: {integrity: sha512-DnyqqifT4Jrcvb8USYjp6FHtBpEIz1mnXu6pTRHZ0RL69LbQYiO+0lDFg5+OKA7U29oWSs3a/i8fhn8ZcceIWg==}
+  adm-zip@0.5.16:
+    resolution: {integrity: sha512-TGw5yVi4saajsSEgz25grObGHEUaDrniwvA2qwSC060KfqGPdglhvPMA2lPIoxs3PQIItj2iag35fONcQqgUaQ==}
     engines: {node: '>=12.0'}
 
   aggregate-error@4.0.1:
@@ -4003,7 +4003,7 @@ snapshots:
 
   acorn@8.14.0: {}
 
-  adm-zip@0.5.14: {}
+  adm-zip@0.5.16: {}
 
   aggregate-error@4.0.1:
     dependencies:

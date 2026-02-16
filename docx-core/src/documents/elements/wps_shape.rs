@@ -47,8 +47,8 @@ impl WpsShape {
 impl BuildXML for WpsShapeChild {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         match self {
             WpsShapeChild::WpsTextBox(t) => t.build_to(stream),
         }
@@ -58,8 +58,8 @@ impl BuildXML for WpsShapeChild {
 impl BuildXML for WpsShape {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_wp_text_box()?
             .add_children(&self.children)?

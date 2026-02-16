@@ -96,8 +96,8 @@ impl Comment {
 impl BuildXML for CommentChild {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         match self {
             CommentChild::Paragraph(v) => v.build_to(stream),
             CommentChild::Table(v) => v.build_to(stream),
@@ -108,8 +108,8 @@ impl BuildXML for CommentChild {
 impl BuildXML for Comment {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_comment(&self.id.to_string(), &self.author, &self.date, "")?
             .add_children(&self.children)?

@@ -23,16 +23,18 @@ mod styles;
 
 use crate::BuildXML;
 
+use crate::xml::common::XmlVersion;
+use crate::xml::writer::{EmitterConfig, EventWriter, Result};
 use std::io::Write;
 use std::str;
-use xml::common::XmlVersion;
-use xml::writer::{EmitterConfig, EventWriter, Result, XmlEvent};
 
-pub struct XMLBuilder<W> {
+pub use crate::xml::writer::XmlEvent;
+
+pub struct XMLBuilder<W: Write> {
     writer: EventWriter<W>,
 }
 
-impl<W> From<EventWriter<W>> for XMLBuilder<W> {
+impl<W: Write> From<EventWriter<W>> for XMLBuilder<W> {
     fn from(writer: EventWriter<W>) -> Self {
         Self { writer }
     }
@@ -156,7 +158,7 @@ impl<W: Write> XMLBuilder<W> {
     /// ```
     pub(crate) fn inner_mut(&mut self) -> Result<&mut W> {
         self.writer.write("")?; // closes non-finished tags
-        Ok(self.writer.inner_mut())
+        Ok(self.writer.inner_mut()?)
     }
 
     /// Unwraps this `XmlBuilder`, returning the underlying writer.
@@ -209,7 +211,7 @@ mod tests {
             .plain_text("child")?
             .close()?
             .into_inner()?
-            .into_inner();
+            .into_inner()?;
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<Types xmlns="http://example">child</Types>"#

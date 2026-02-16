@@ -25,8 +25,8 @@ impl<'a> Font<'a> {
 impl<'a> BuildXML for Font<'a> {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_font(self.name)?
             .charset(self.charset)?

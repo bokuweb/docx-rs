@@ -256,8 +256,8 @@ impl Document {
 impl BuildXML for DocumentChild {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         match self {
             DocumentChild::Paragraph(v) => v.build_to(stream),
             DocumentChild::Table(v) => v.build_to(stream),
@@ -275,8 +275,8 @@ impl BuildXML for DocumentChild {
 impl BuildXML for Document {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .declaration(Some(true))?
             .open_document()?

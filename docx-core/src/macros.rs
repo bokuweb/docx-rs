@@ -1,18 +1,18 @@
 /// Macro to delegate methods to a specified field
-/// 
+///
 /// This macro generates methods that delegate to methods on a field of the struct.
 /// Each delegated method will call the corresponding method on the specified field
 /// and return `self` for method chaining.
-/// 
+///
 /// # Example
-/// 
+///
 /// ```rust,ignore
 /// use docx_rs::delegate_to_field;
-/// 
+///
 /// struct Wrapper {
 ///     inner: SomeType,
 /// }
-/// 
+///
 /// impl Wrapper {
 ///     delegate_to_field! {
 ///         inner =>
@@ -35,20 +35,20 @@ macro_rules! delegate_to_field {
 }
 
 /// Macro to delegate getter methods to a specified field
-/// 
+///
 /// This macro generates getter methods that delegate to methods on a field of the struct.
 /// Each delegated method will call the corresponding method on the specified field
 /// and return the result directly.
-/// 
+///
 /// # Example
-/// 
+///
 /// ```rust,ignore
 /// use docx_rs::delegate_getters_to_field;
-/// 
+///
 /// struct Wrapper {
 ///     inner: SomeType,
 /// }
-/// 
+///
 /// impl Wrapper {
 ///     delegate_getters_to_field! {
 ///         inner =>

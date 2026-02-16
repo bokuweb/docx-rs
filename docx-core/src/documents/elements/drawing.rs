@@ -59,8 +59,8 @@ impl Drawing {
 impl BuildXML for Drawing {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         let b = XMLBuilder::from(stream);
         let mut b = b.open_drawing()?;
 

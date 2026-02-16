@@ -38,8 +38,8 @@ impl Serialize for ItalicCs {
 impl BuildXML for ItalicCs {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream).i_cs()?.into_inner()
     }
 }

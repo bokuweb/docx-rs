@@ -22,8 +22,8 @@ impl<W: Write> XMLBuilder<W> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::xml::writer::Result;
     use std::str;
-    use xml::writer::Result;
 
     #[test]
     fn test_open_relationships() -> Result<()> {
@@ -33,7 +33,7 @@ mod tests {
             .plain_text("child")?
             .close()?
             .into_inner()?
-            .into_inner();
+            .into_inner()?;
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<Relationships xmlns="http://example">child</Relationships>"#
@@ -47,7 +47,7 @@ mod tests {
         let r = b
             .relationship("rId1", "http://example", "core.xml")?
             .into_inner()?
-            .into_inner();
+            .into_inner()?;
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<Relationship Id="rId1" Type="http://example" Target="core.xml" />"#

@@ -1,8 +1,6 @@
 use std::io::Read;
 use std::str::FromStr;
 
-use xml::reader::{EventReader, XmlEvent};
-
 use super::*;
 
 impl FromXML for Comments {

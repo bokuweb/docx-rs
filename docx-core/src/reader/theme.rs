@@ -2,7 +2,6 @@ use std::io::Read;
 use std::str::FromStr;
 
 use crate::reader::*;
-use xml::reader::{EventReader, XmlEvent};
 
 impl FromXML for Theme {
     fn from_xml<R: Read>(reader: R) -> Result<Self, ReaderError> {

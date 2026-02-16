@@ -1,9 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::io::Read;
-use xml::attribute::OwnedAttribute;
-use xml::reader::{EventReader, XmlEvent};
-
 use crate::documents::BuildXML;
 use crate::reader::{FromXML, ReaderError};
 use crate::xml_builder::*;

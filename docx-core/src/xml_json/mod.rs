@@ -12,10 +12,8 @@ use std::fmt::{Display, Formatter, Write};
 use std::io::prelude::*;
 use std::io::Cursor;
 use std::str::FromStr;
-use xml::attribute::OwnedAttribute;
-use xml::name::OwnedName;
-use xml::namespace::{self, Namespace};
-use xml::reader::{EventReader, XmlEvent};
+
+use crate::reader::{EventReader, Namespace, OwnedAttribute, OwnedName, XmlEvent};
 
 /// An XML Document
 #[derive(Debug, Clone)]
@@ -85,7 +83,7 @@ impl Display for XmlData {
 }
 
 /// Get the XML attributes as a string
-fn map_owned_attributes(attrs: Vec<xml::attribute::OwnedAttribute>) -> Vec<(String, String)> {
+fn map_owned_attributes(attrs: Vec<OwnedAttribute>) -> Vec<(String, String)> {
     attrs
         .into_iter()
         .map(|attr| {
@@ -134,15 +132,15 @@ fn parse(
                     let n = namespace.clone();
                     let ns = n
                         .into_iter()
-                        .filter(|&(_k, v)| {
-                            (v != namespace::NS_EMPTY_URI)
-                                && (v != namespace::NS_XMLNS_URI)
-                                && (v != namespace::NS_XML_URI)
+                        .filter(|(_k, v)| {
+                            (v != "")
+                                && (v != "http://www.w3.org/2000/xmlns/")
+                                && (v != "http://www.w3.org/XML/1998/namespace")
                         })
                         .map(|(k, v)| OwnedAttribute {
                             name: OwnedName {
                                 local_name: k.to_string(),
-                                namespace: if v == namespace::NS_NO_PREFIX {
+                                namespace: if v.is_empty() {
                                     None
                                 } else {
                                     Some(v.to_string())

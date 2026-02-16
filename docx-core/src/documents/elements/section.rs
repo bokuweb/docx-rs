@@ -82,8 +82,8 @@ impl Serialize for SectionChild {
 impl BuildXML for SectionChild {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         match self {
             SectionChild::Paragraph(v) => v.build_to(stream),
             SectionChild::Table(v) => v.build_to(stream),
@@ -226,8 +226,8 @@ impl Default for Section {
 impl BuildXML for Section {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         let id = crate::generate_para_id();
         XMLBuilder::from(stream)
             .add_children(&self.children)?

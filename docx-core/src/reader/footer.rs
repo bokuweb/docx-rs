@@ -2,7 +2,6 @@ use std::io::Read;
 use std::str::FromStr;
 
 use crate::reader::*;
-use xml::reader::{EventReader, XmlEvent};
 
 use super::{Paragraph, Table};
 

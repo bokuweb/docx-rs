@@ -1,7 +1,7 @@
 use super::XMLBuilder;
 use super::XmlEvent;
+use crate::xml::writer::Result;
 use std::io::Write;
-use xml::writer::Result;
 
 impl<W: Write> XMLBuilder<W> {
     // Build w:style element
@@ -45,7 +45,7 @@ mod tests {
     #[test]
     fn test_declaration() -> Result<()> {
         let b = XMLBuilder::new(Vec::new());
-        let r = b.open_styles()?.close()?.into_inner()?.into_inner();
+        let r = b.open_styles()?.close()?.into_inner()?.into_inner()?;
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:styles xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" mc:Ignorable="w14 w15" />"#

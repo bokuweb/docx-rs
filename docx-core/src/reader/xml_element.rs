@@ -1,8 +1,7 @@
 use std::io::Read;
 use std::str::FromStr;
 
-use xml::attribute::OwnedAttribute;
-use xml::reader::EventReader;
+use super::{EventReader, OwnedAttribute};
 
 use crate::reader::ReaderError;
 

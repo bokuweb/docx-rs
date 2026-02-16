@@ -1,7 +1,6 @@
 use super::*;
-use wasm_bindgen::prelude::*;
 use std::str::FromStr;
-
+use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 pub struct RunProperty(docx_rs::RunProperty);

@@ -45,8 +45,8 @@ pub enum ParagraphChild {
 impl BuildXML for ParagraphChild {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         match self {
             ParagraphChild::Run(v) => v.build_to(stream),
             ParagraphChild::Insert(v) => v.build_to(stream),
@@ -505,8 +505,8 @@ impl Paragraph {
 impl BuildXML for Paragraph {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_paragraph(&self.id)?
             .add_child(&self.property)?

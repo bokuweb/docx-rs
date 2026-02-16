@@ -1,7 +1,7 @@
 use super::XMLBuilder;
 use super::XmlEvent;
+use crate::xml::writer::Result;
 use std::io::Write;
-use xml::writer::Result;
 
 impl<W: Write> XMLBuilder<W> {
     pub(crate) fn open_comments_extended(self) -> Result<Self> {

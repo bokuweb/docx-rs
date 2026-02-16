@@ -5,6 +5,7 @@ mod escape;
 mod macros;
 mod reader;
 mod types;
+pub mod xml;
 mod xml_builder;
 mod xml_json;
 mod zipper;

@@ -16,8 +16,8 @@ impl TextAlignment {
 impl BuildXML for TextAlignment {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .text_alignment(&format!("{}", self.0))?
             .into_inner()

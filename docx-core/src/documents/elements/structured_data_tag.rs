@@ -40,8 +40,8 @@ pub enum StructuredDataTagChild {
 impl BuildXML for StructuredDataTagChild {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         match self {
             StructuredDataTagChild::Run(v) => v.build_to(stream),
             StructuredDataTagChild::Paragraph(v) => v.build_to(stream),
@@ -156,8 +156,8 @@ impl StructuredDataTag {
 impl BuildXML for StructuredDataTag {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_structured_tag()?
             .add_child(&self.property)?

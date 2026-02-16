@@ -71,8 +71,8 @@ impl TableCellBorder {
 impl BuildXML for TableCellBorder {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         let func = match self.position {
             TableCellBorderPosition::Top => XMLBuilder::border_top,
             TableCellBorderPosition::Left => XMLBuilder::border_left,
@@ -193,8 +193,8 @@ impl TableCellBorders {
 impl BuildXML for TableCellBorders {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_table_cell_borders()?
             .add_optional_child(&self.top)?

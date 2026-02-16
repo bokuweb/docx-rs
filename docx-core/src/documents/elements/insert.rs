@@ -18,8 +18,8 @@ pub enum InsertChild {
 impl BuildXML for InsertChild {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         match self {
             InsertChild::Run(v) => v.build_to(stream),
             InsertChild::Delete(v) => v.build_to(stream),
@@ -146,8 +146,8 @@ impl HistoryId for Insert {}
 impl BuildXML for Insert {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_insert(&self.generate(), &self.author, &self.date)?
             .add_children(&self.children)?

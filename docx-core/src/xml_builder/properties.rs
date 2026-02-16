@@ -21,8 +21,8 @@ impl<W: Write> XMLBuilder<W> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::xml::writer::Result;
     use std::str;
-    use xml::writer::Result;
 
     #[test]
     fn test_properties() -> Result<()> {
@@ -32,7 +32,7 @@ mod tests {
             .plain_text("child")?
             .close()?
             .into_inner()?
-            .into_inner();
+            .into_inner()?;
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<Properties xmlns="http://example" xmlns:vt="http://example2">child</Properties>"#
@@ -43,7 +43,7 @@ mod tests {
     #[test]
     fn test_template() -> Result<()> {
         let b = XMLBuilder::new(Vec::new());
-        let r = b.template("0")?.into_inner()?.into_inner();
+        let r = b.template("0")?.into_inner()?.into_inner()?;
         assert_eq!(str::from_utf8(&r).unwrap(), r#"<Template>0</Template>"#);
         Ok(())
     }
@@ -51,7 +51,7 @@ mod tests {
     #[test]
     fn test_application() -> Result<()> {
         let b = XMLBuilder::new(Vec::new());
-        let r = b.application("Lawgue")?.into_inner()?.into_inner();
+        let r = b.application("Lawgue")?.into_inner()?.into_inner()?;
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<Application>Lawgue</Application>"#

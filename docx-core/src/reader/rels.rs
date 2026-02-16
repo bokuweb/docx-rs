@@ -6,8 +6,6 @@ use std::{
     io::Read,
     path::{Path, PathBuf},
 };
-use xml::reader::{EventReader, XmlEvent};
-
 pub type ReadRels = BTreeMap<String, BTreeSet<(RId, PathBuf, Option<String>)>>;
 
 impl FromXML for Rels {

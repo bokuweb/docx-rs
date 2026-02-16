@@ -1,8 +1,8 @@
 use crate::line_spacing_type::LineSpacingType;
+use crate::reader::OwnedAttribute;
 use crate::LineSpacing;
 use crate::ReaderError;
 use std::str::FromStr;
-use xml::attribute::OwnedAttribute;
 
 pub fn read_line_spacing(attributes: &[OwnedAttribute]) -> Result<LineSpacing, ReaderError> {
     let mut spacing = LineSpacing::new();

@@ -19,8 +19,8 @@ impl FontTable {
 impl BuildXML for FontTable {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         let b = XMLBuilder::from(stream);
         let times = Font::new("Times New Roman", "00", "roman", FontPitchType::Variable);
         let symbol = Font::new("Symbol", "02", "roman", FontPitchType::Variable);

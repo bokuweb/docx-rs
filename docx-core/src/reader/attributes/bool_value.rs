@@ -1,4 +1,4 @@
-use xml::attribute::OwnedAttribute;
+use crate::reader::OwnedAttribute;
 
 pub fn is_false(v: &str) -> bool {
     v == "0" || v == "false"

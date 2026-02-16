@@ -11,8 +11,8 @@ pub struct AbstractNumbering {
     pub style_link: Option<String>,
     pub num_style_link: Option<String>,
     pub levels: Vec<Level>,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  pub multi_level_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub multi_level_type: Option<String>,
 }
 
 impl AbstractNumbering {
@@ -45,20 +45,16 @@ impl AbstractNumbering {
 impl BuildXML for AbstractNumbering {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
-        let mut builder = XMLBuilder::from(stream)  
-            .open_abstract_num(&self.id.to_string())?;  
-          
-        // 添加 multiLevelType 元素（如果存在）  
-        if let Some(ref multi_level_type) = self.multi_level_type {  
-            builder = builder.multi_level_type(multi_level_type)?;  
-        }  
-          
-        builder  
-            .add_children(&self.levels)?  
-            .close()?  
-            .into_inner()  
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
+        let mut builder = XMLBuilder::from(stream).open_abstract_num(&self.id.to_string())?;
+
+        // 添加 multiLevelType 元素（如果存在）
+        if let Some(ref multi_level_type) = self.multi_level_type {
+            builder = builder.multi_level_type(multi_level_type)?;
+        }
+
+        builder.add_children(&self.levels)?.close()?.into_inner()
     }
 }
 

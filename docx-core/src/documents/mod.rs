@@ -1691,7 +1691,9 @@ fn collect_para_ids_in_document_child(child: &DocumentChild, counts: &mut HashMa
     match child {
         DocumentChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
         DocumentChild::Table(table) => collect_para_ids_in_table(table, counts),
-        DocumentChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+        DocumentChild::StructuredDataTag(tag) => {
+            collect_para_ids_in_structured_data_tag(tag, counts)
+        }
         DocumentChild::TableOfContents(toc) => collect_para_ids_in_toc(toc, counts),
         DocumentChild::Section(section) => collect_para_ids_in_section(section, counts),
         _ => {}
@@ -1703,7 +1705,9 @@ fn collect_para_ids_in_section(section: &Section, counts: &mut HashMap<String, u
         match child {
             SectionChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
             SectionChild::Table(table) => collect_para_ids_in_table(table, counts),
-            SectionChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+            SectionChild::StructuredDataTag(tag) => {
+                collect_para_ids_in_structured_data_tag(tag, counts)
+            }
             SectionChild::TableOfContents(toc) => collect_para_ids_in_toc(toc, counts),
             _ => {}
         }
@@ -1740,7 +1744,9 @@ fn collect_para_ids_in_header(header: &Header, counts: &mut HashMap<String, usiz
         match child {
             HeaderChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
             HeaderChild::Table(table) => collect_para_ids_in_table(table, counts),
-            HeaderChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+            HeaderChild::StructuredDataTag(tag) => {
+                collect_para_ids_in_structured_data_tag(tag, counts)
+            }
         }
     }
 }
@@ -1750,7 +1756,9 @@ fn collect_para_ids_in_footer(footer: &Footer, counts: &mut HashMap<String, usiz
         match child {
             FooterChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
             FooterChild::Table(table) => collect_para_ids_in_table(table, counts),
-            FooterChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+            FooterChild::StructuredDataTag(tag) => {
+                collect_para_ids_in_structured_data_tag(tag, counts)
+            }
         }
     }
 }
@@ -1797,8 +1805,12 @@ fn collect_para_ids_in_paragraph(paragraph: &Paragraph, counts: &mut HashMap<Str
             ParagraphChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
             ParagraphChild::Insert(insert) => collect_para_ids_in_insert(insert, counts),
             ParagraphChild::Delete(delete) => collect_para_ids_in_delete(delete, counts),
-            ParagraphChild::Hyperlink(hyperlink) => collect_para_ids_in_hyperlink(hyperlink, counts),
-            ParagraphChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+            ParagraphChild::Hyperlink(hyperlink) => {
+                collect_para_ids_in_hyperlink(hyperlink, counts)
+            }
+            ParagraphChild::StructuredDataTag(tag) => {
+                collect_para_ids_in_structured_data_tag(tag, counts)
+            }
             _ => {}
         }
     }
@@ -1810,7 +1822,9 @@ fn collect_para_ids_in_hyperlink(hyperlink: &Hyperlink, counts: &mut HashMap<Str
             ParagraphChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
             ParagraphChild::Insert(insert) => collect_para_ids_in_insert(insert, counts),
             ParagraphChild::Delete(delete) => collect_para_ids_in_delete(delete, counts),
-            ParagraphChild::StructuredDataTag(tag) => collect_para_ids_in_structured_data_tag(tag, counts),
+            ParagraphChild::StructuredDataTag(tag) => {
+                collect_para_ids_in_structured_data_tag(tag, counts)
+            }
             _ => {}
         }
     }
@@ -1844,7 +1858,9 @@ fn collect_para_ids_in_structured_data_tag(
                 collect_para_ids_in_paragraph(paragraph, counts)
             }
             StructuredDataTagChild::Table(table) => collect_para_ids_in_table(table, counts),
-            StructuredDataTagChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
+            StructuredDataTagChild::CommentStart(c) => {
+                collect_para_ids_in_comment(&c.comment, counts)
+            }
             StructuredDataTagChild::StructuredDataTag(inner) => {
                 collect_para_ids_in_structured_data_tag(inner, counts)
             }
@@ -1891,7 +1907,9 @@ fn refresh_para_ids_in_document_child(
     seen: &mut HashSet<String>,
 ) {
     match child {
-        DocumentChild::Paragraph(paragraph) => refresh_para_ids_in_paragraph(paragraph, counts, used, seen),
+        DocumentChild::Paragraph(paragraph) => {
+            refresh_para_ids_in_paragraph(paragraph, counts, used, seen)
+        }
         DocumentChild::Table(table) => refresh_para_ids_in_table(table, counts, used, seen),
         DocumentChild::StructuredDataTag(tag) => {
             refresh_para_ids_in_structured_data_tag(tag, counts, used, seen)
@@ -2106,9 +2124,7 @@ fn refresh_para_ids_in_insert(
             InsertChild::CommentStart(c) => {
                 refresh_para_ids_in_comment(&mut c.comment, counts, used, seen)
             }
-            InsertChild::Delete(delete) => {
-                refresh_para_ids_in_delete(delete, counts, used, seen)
-            }
+            InsertChild::Delete(delete) => refresh_para_ids_in_delete(delete, counts, used, seen),
             _ => {}
         }
     }

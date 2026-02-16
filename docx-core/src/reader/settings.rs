@@ -1,10 +1,8 @@
-use std::io::Read;
-use std::str::FromStr;
-use xml::reader::{EventReader, XmlEvent};
-
 use super::*;
 use crate::reader::{FromXML, ReaderError};
 use crate::types::CharacterSpacingValues;
+use std::io::Read;
+use std::str::FromStr;
 
 impl FromXML for Settings {
     fn from_xml<R: Read>(reader: R) -> Result<Self, ReaderError> {

@@ -1,17 +1,17 @@
 macro_rules! open {
     ($name: ident, $el_name: expr) => {
         #[allow(dead_code)]
-        pub(crate) fn $name(self) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self) -> crate::xml::writer::Result<Self> {
             self.write(XmlEvent::start_element($el_name))
         }
     };
     ($name: ident, $el_name: expr, $attr0: expr) => {
-        pub(crate) fn $name(self, arg0: &str) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self, arg0: &str) -> crate::xml::writer::Result<Self> {
             self.write(XmlEvent::start_element($el_name).attr($attr0, arg0))
         }
     };
     ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr) => {
-        pub(crate) fn $name(self, arg0: &str, arg1: &str) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self, arg0: &str, arg1: &str) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -25,7 +25,7 @@ macro_rules! open {
             arg0: &str,
             arg1: &str,
             arg2: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -41,7 +41,7 @@ macro_rules! open {
             arg1: &str,
             arg2: &str,
             arg3: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -59,7 +59,7 @@ macro_rules! open {
             arg2: &str,
             arg3: &str,
             arg4: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -79,7 +79,7 @@ macro_rules! open {
             arg3: &str,
             arg4: &str,
             arg5: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -101,7 +101,7 @@ macro_rules! open {
             arg4: &str,
             arg5: &str,
             arg6: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -125,7 +125,7 @@ macro_rules! open {
             arg5: &str,
             arg6: &str,
             arg7: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -151,7 +151,7 @@ macro_rules! open {
             arg6: &str,
             arg7: &str,
             arg8: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -180,7 +180,7 @@ macro_rules! open {
             arg7: &str,
             arg8: &str,
             arg9: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -210,7 +210,7 @@ macro_rules! open {
             arg8: &str,
             arg9: &str,
             arg10: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -232,14 +232,14 @@ macro_rules! open {
 macro_rules! closed_with_child {
     ($name: ident, $el_name: expr) => {
         #[allow(dead_code)]
-        pub(crate) fn $name(self, child: &str) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self, child: &str) -> crate::xml::writer::Result<Self> {
             self.write(XmlEvent::start_element($el_name))?
                 .write(child)?
                 .close()
         }
     };
     ($name: ident, $el_name: expr, $attr0: expr) => {
-        pub(crate) fn $name(self, arg0: &str, child: &str) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self, arg0: &str, child: &str) -> crate::xml::writer::Result<Self> {
             self.write(XmlEvent::start_element($el_name).attr($attr0, arg0))?
                 .write(child)?
                 .close()
@@ -251,7 +251,7 @@ macro_rules! closed_with_child {
             arg0: &str,
             arg1: &str,
             child: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -268,7 +268,7 @@ macro_rules! closed_with_child {
             arg1: &str,
             arg2: &str,
             child: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -284,14 +284,14 @@ macro_rules! closed_with_child {
 macro_rules! closed {
     ($name: ident, $el_name: expr) => {
         #[allow(clippy::wrong_self_convention)]
-        pub(crate) fn $name(self) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self) -> crate::xml::writer::Result<Self> {
             self.write(XmlEvent::start_element($el_name))?.close()
         }
     };
     ($name: ident, $el_name: expr, $attr0: expr) => {
         #[allow(clippy::wrong_self_convention)]
 
-        pub(crate) fn $name(self, arg0: &str) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self, arg0: &str) -> crate::xml::writer::Result<Self> {
             self.write(XmlEvent::start_element($el_name).attr($attr0, arg0))?
                 .close()
         }
@@ -299,7 +299,7 @@ macro_rules! closed {
     ($name: ident, $el_name: expr, $attr0: expr, $attr1: expr) => {
         #[allow(dead_code)]
         #[allow(clippy::wrong_self_convention)]
-        pub(crate) fn $name(self, arg0: &str, arg1: &str) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self, arg0: &str, arg1: &str) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -314,7 +314,7 @@ macro_rules! closed {
             arg0: &str,
             arg1: &str,
             arg2: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -331,7 +331,7 @@ macro_rules! closed {
             arg1: &str,
             arg2: &str,
             arg3: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -350,7 +350,7 @@ macro_rules! closed {
             arg2: &str,
             arg3: &str,
             arg4: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -371,7 +371,7 @@ macro_rules! closed {
             arg3: &str,
             arg4: &str,
             arg5: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -395,7 +395,7 @@ macro_rules! closed {
             arg4: &str,
             arg5: &str,
             arg6: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -421,7 +421,7 @@ macro_rules! closed {
             arg5: &str,
             arg6: &str,
             arg7: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -449,7 +449,7 @@ macro_rules! closed {
             arg6: &str,
             arg7: &str,
             arg8: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr($attr0, arg0)
@@ -470,7 +470,7 @@ macro_rules! closed {
 macro_rules! closed_with_str {
     ($name: ident, $el_name: expr) => {
         #[allow(dead_code)]
-        pub(crate) fn $name(self, val: &str) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self, val: &str) -> crate::xml::writer::Result<Self> {
             self.write(XmlEvent::start_element($el_name).attr("w:val", val))?
                 .close()
         }
@@ -479,7 +479,7 @@ macro_rules! closed_with_str {
 
 macro_rules! closed_with_usize {
     ($name: ident, $el_name: expr) => {
-        pub(crate) fn $name(self, val: usize) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self, val: usize) -> crate::xml::writer::Result<Self> {
             self.write(XmlEvent::start_element($el_name).attr("w:val", &format!("{}", val)))?
                 .close()
         }
@@ -488,7 +488,7 @@ macro_rules! closed_with_usize {
 
 macro_rules! closed_with_isize {
     ($name: ident, $el_name: expr) => {
-        pub(crate) fn $name(self, val: isize) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self, val: isize) -> crate::xml::writer::Result<Self> {
             self.write(XmlEvent::start_element($el_name).attr("w:val", &format!("{}", val)))?
                 .close()
         }
@@ -497,7 +497,7 @@ macro_rules! closed_with_isize {
 
 macro_rules! closed_w_with_type_el {
     ($name: ident, $el_name: expr) => {
-        pub(crate) fn $name(self, w: i32, t: WidthType) -> ::xml::writer::Result<Self> {
+        pub(crate) fn $name(self, w: i32, t: WidthType) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr("w:w", &format!("{}", w))
@@ -516,7 +516,7 @@ macro_rules! closed_border_el {
             size: usize,
             space: usize,
             color: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr("w:val", &val.to_string())
@@ -537,7 +537,7 @@ macro_rules! closed_paragraph_border_el {
             space: &str,
             size: &str,
             color: &str,
-        ) -> ::xml::writer::Result<Self> {
+        ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
                     .attr("w:val", val)

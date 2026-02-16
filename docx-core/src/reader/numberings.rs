@@ -1,8 +1,6 @@
-use std::io::Read;
-use xml::reader::{EventReader, XmlEvent};
-
 use super::*;
 use crate::reader::{FromXML, ReaderError};
+use std::io::Read;
 
 use std::str::FromStr;
 

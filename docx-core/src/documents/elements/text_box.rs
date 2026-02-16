@@ -144,7 +144,7 @@ impl TextBox {
 
 /*
 impl BuildXML for TextBox {
-    fn build_to<W: Write>(&self, stream: xml::writer::EventWriter<W>) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+    fn build_to<W: Write>(&self, stream: crate::xml::writer::EventWriter<W>) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         let w = format!("{}", self.size.0);
         let h = format!("{}", self.size.1);
         XMLBuilder::from(stream)

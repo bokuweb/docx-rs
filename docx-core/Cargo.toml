@@ -25,7 +25,6 @@ wasm = ["wasm-bindgen", "ts-rs", "image"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-xml = { version = "1.2", default-features = false }
 thiserror = "2.0.12"
 zip = { version = "0.6.3", default-features = false, features = ["deflate"] }
 serde = { version = "1.0.219", features = ["derive"] }
@@ -34,7 +33,13 @@ base64 = "0.22.1"
 image = { version = "0.25.6", default-features = false, features=["gif", "jpeg", "png", "bmp", "tiff"], optional = true }
 wasm-bindgen = { version = "0.2.92", optional = true }
 ts-rs = { version = "6.1", optional = true }
+quick-xml = { version = "0.36", default-features = false, features = ["encoding"] }
 
 [dev-dependencies]
 pretty_assertions = "1.4.1"
 insta = "1.43.1"
+criterion = { version = "0.5", default-features = false, features = ["cargo_bench_support"] }
+
+[[bench]]
+name = "read_docx"
+harness = false

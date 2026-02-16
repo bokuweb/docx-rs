@@ -26,8 +26,8 @@ impl PageNum {
 impl BuildXML for PageNum {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         Run::new()
             .add_field_char(FieldCharType::Begin, false)
             .add_instr_text(InstrText::PAGE(self.instr.clone()))

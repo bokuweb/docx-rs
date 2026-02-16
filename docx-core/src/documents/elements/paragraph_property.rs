@@ -25,8 +25,8 @@ pub struct ParagraphProperty {
     pub keep_next: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub keep_lines: Option<bool>,
-    #[serde(skip_serializing_if="Option::is_none")]
-    pub bidi:Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub bidi: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub page_break_before: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -133,8 +133,8 @@ impl ParagraphProperty {
         self.page_break_before = Some(v);
         self
     }
-    pub fn bidi(mut self,v:bool)->Self{
-        self.bidi=Some(v);
+    pub fn bidi(mut self, v: bool) -> Self {
+        self.bidi = Some(v);
         self
     }
     pub fn widow_control(mut self, v: bool) -> Self {
@@ -215,8 +215,8 @@ impl ParagraphProperty {
 impl BuildXML for ParagraphProperty {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_paragraph_property()?
             .add_child(&self.run_property)?
@@ -235,7 +235,7 @@ impl BuildXML for ParagraphProperty {
             .apply_if(self.keep_next, |b| b.keep_next())?
             .apply_if(self.keep_lines, |b| b.keep_lines())?
             .apply_if(self.page_break_before, |b| b.page_break_before())?
-            .apply_if(self.bidi,|b| b.bidi())?
+            .apply_if(self.bidi, |b| b.bidi())?
             .apply_opt(self.widow_control, |flag, b| {
                 b.widow_control(if flag { "1" } else { "0" })
             })?
@@ -253,8 +253,8 @@ impl BuildXML for ParagraphProperty {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::types::SectionType;
     use crate::types::LineSpacingType;
+    use crate::types::SectionType;
     #[cfg(test)]
     use pretty_assertions::assert_eq;
     use std::str;
@@ -267,11 +267,14 @@ mod tests {
     }
 
     #[test]
-    fn test_bidi(){
-        let c=ParagraphProperty::new().bidi(true);
-        let b=c.build();
+    fn test_bidi() {
+        let c = ParagraphProperty::new().bidi(true);
+        let b = c.build();
         println!("-----Test bidi: {}", str::from_utf8(&b).unwrap());
-        assert_eq!(str::from_utf8(&b).unwrap(),r#"<w:pPr><w:rPr /><w:bidi /></w:pPr>"#);
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:pPr><w:rPr /><w:bidi /></w:pPr>"#
+        );
     }
     #[test]
     fn test_alignment() {

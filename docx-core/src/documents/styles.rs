@@ -79,8 +79,8 @@ impl Default for Styles {
 impl BuildXML for Styles {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         let normal = Style::new("Normal", StyleType::Paragraph).name("Normal");
         XMLBuilder::from(stream)
             .open_styles()?

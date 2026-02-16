@@ -71,6 +71,7 @@ mod wp_anchor;
 mod wps_shape;
 mod wps_text_box;
 mod xml_element;
+mod xml_parser;
 
 use base64::Engine;
 use std::{collections::HashMap, io::Cursor, path::PathBuf};
@@ -85,4 +86,4 @@ pub use read_docx::*;
 pub use read_xml::*;
 pub use read_zip::*;
 pub use xml_element::*;
-
+pub use xml_parser::{EventReader, Namespace, OwnedAttribute, OwnedName, XmlEvent};

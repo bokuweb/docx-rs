@@ -329,8 +329,8 @@ impl Style {
 impl BuildXML for Style {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         // Set "Normal" as default if you need change these values please fix it
         XMLBuilder::from(stream)
             .open_style(self.style_type, &self.style_id)?

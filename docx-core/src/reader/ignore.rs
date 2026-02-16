@@ -1,8 +1,6 @@
 use std::io::Read;
 use std::str::FromStr;
 
-use xml::reader::{EventReader, XmlEvent};
-
 use super::*;
 
 pub(crate) fn ignore_element<R: Read>(el: XMLElement, ignore: XMLElement, r: &mut EventReader<R>) {

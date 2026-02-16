@@ -17,7 +17,7 @@ pub use name::*;
 pub use val::*;
 pub use width::*;
 
-use xml::attribute::OwnedAttribute;
+use crate::reader::OwnedAttribute;
 
 pub fn read(attrs: &[OwnedAttribute], target: &str) -> Option<String> {
     for a in attrs {

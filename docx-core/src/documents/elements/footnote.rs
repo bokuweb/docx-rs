@@ -50,8 +50,8 @@ impl From<&FootnoteReference> for Footnote {
 impl BuildXML for Footnote {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         // To ensure docx compatible XML serialization for footnotes, we default to an empty paragraph.
         let mut footnote = self.clone();
         if self.content == vec![] {

@@ -24,8 +24,8 @@ pub enum TableChild {
 impl BuildXML for TableChild {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         match self {
             TableChild::TableRow(v) => v.build_to(stream),
         }
@@ -128,8 +128,8 @@ impl Table {
 impl BuildXML for Table {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         let grid = TableGrid::new(self.grid.clone());
         XMLBuilder::from(stream)
             .open_table()?

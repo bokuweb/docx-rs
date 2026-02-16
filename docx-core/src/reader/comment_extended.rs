@@ -1,8 +1,5 @@
 use std::io::Read;
 
-use xml::attribute::OwnedAttribute;
-use xml::reader::EventReader;
-
 use super::*;
 
 impl ElementReader for CommentExtended {

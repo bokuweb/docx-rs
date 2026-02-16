@@ -349,8 +349,8 @@ impl Run {
 impl BuildXML for RunChild {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         match self {
             RunChild::Text(t) => t.build_to(stream),
             RunChild::Sym(t) => t.build_to(stream),
@@ -377,8 +377,8 @@ impl BuildXML for RunChild {
 impl BuildXML for Run {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_run()?
             .add_child(&self.run_property)?

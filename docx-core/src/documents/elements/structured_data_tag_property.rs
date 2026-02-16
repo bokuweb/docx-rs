@@ -43,8 +43,8 @@ impl StructuredDataTagProperty {
 impl BuildXML for StructuredDataTagProperty {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_structured_tag_property()?
             .add_child(&self.run_property)?

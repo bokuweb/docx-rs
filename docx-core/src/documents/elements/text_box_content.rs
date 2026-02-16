@@ -66,8 +66,8 @@ impl TextBoxContent {
 impl BuildXML for TextBoxContentChild {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         match self {
             TextBoxContentChild::Paragraph(p) => p.build_to(stream),
             TextBoxContentChild::Table(t) => t.build_to(stream),
@@ -78,8 +78,8 @@ impl BuildXML for TextBoxContentChild {
 impl BuildXML for TextBoxContent {
     fn build_to<W: Write>(
         &self,
-        stream: xml::writer::EventWriter<W>,
-    ) -> xml::writer::Result<xml::writer::EventWriter<W>> {
+        stream: crate::xml::writer::EventWriter<W>,
+    ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_text_box_content()?
             .add_children(&self.children)?

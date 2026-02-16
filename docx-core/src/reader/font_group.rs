@@ -3,9 +3,6 @@
 use std::io::Read;
 use std::str::FromStr;
 
-use xml::attribute::OwnedAttribute;
-use xml::reader::{EventReader, XmlEvent};
-
 use super::*;
 
 fn read_typeface(attributes: &[OwnedAttribute]) -> Option<String> {

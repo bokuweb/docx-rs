@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use xml::attribute::OwnedAttribute;
+use crate::reader::OwnedAttribute;
 
 use crate::types::*;
 

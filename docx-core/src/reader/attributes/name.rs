@@ -1,4 +1,4 @@
-use xml::attribute::OwnedAttribute;
+use crate::reader::OwnedAttribute;
 
 pub fn read_name(attrs: &[OwnedAttribute]) -> Option<String> {
     for a in attrs {

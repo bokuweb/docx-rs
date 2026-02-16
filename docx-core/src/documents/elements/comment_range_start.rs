@@ -23,8 +23,8 @@ impl CommentRangeStart {
         self.comment = comment;
     }
 
-    pub(crate) fn get_comment(&self) -> Comment {
-        self.comment.clone()
+    pub(crate) fn get_comment_ref(&self) -> &Comment {
+        &self.comment
     }
 
     pub(crate) fn get_id(&self) -> usize {

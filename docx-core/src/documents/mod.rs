@@ -885,12 +885,12 @@ impl Docx {
         comment_map: &mut HashMap<usize, String>,
         c: &CommentRangeStart,
     ) {
-        let comment = c.get_comment();
+        let comment = c.get_comment_ref();
         let comment_id = comment.id();
-        for child in comment.children {
+        for child in &comment.children {
             if let CommentChild::Paragraph(child) = child {
                 let para_id = child.id.clone();
-                comment_map.insert(comment_id, para_id.clone());
+                comment_map.insert(comment_id, para_id);
             }
             // TODO: Support table in comment
         }
@@ -912,8 +912,8 @@ impl Docx {
                             self.insert_comment_to_map(&mut comment_map, c);
                         }
                         if let ParagraphChild::Hyperlink(h) = child {
-                            if let HyperlinkData::External { rid, path } = h.link.clone() {
-                                hyperlink_map.insert(rid, path);
+                            if let HyperlinkData::External { rid, path } = &h.link {
+                                hyperlink_map.insert(rid.clone(), path.clone());
                             };
                             for child in &h.children {
                                 if let ParagraphChild::CommentStart(c) = child {
@@ -949,8 +949,8 @@ impl Docx {
                             );
                         }
                         if let ParagraphChild::Hyperlink(h) = child {
-                            if let HyperlinkData::External { rid, path } = h.link.clone() {
-                                hyperlink_map.insert(rid, path);
+                            if let HyperlinkData::External { rid, path } = &h.link {
+                                hyperlink_map.insert(rid.clone(), path.clone());
                             };
                             for child in &h.children {
                                 if let ParagraphChild::CommentStart(c) = child {
@@ -988,8 +988,8 @@ impl Docx {
                                     );
                                 }
                                 if let ParagraphChild::Hyperlink(h) = child {
-                                    if let HyperlinkData::External { rid, path } = h.link.clone() {
-                                        hyperlink_map.insert(rid, path);
+                                    if let HyperlinkData::External { rid, path } = &h.link {
+                                        hyperlink_map.insert(rid.clone(), path.clone());
                                     };
                                     for child in &h.children {
                                         if let ParagraphChild::CommentStart(c) = child {
@@ -1026,8 +1026,8 @@ impl Docx {
                                     );
                                 }
                                 if let ParagraphChild::Hyperlink(h) = child {
-                                    if let HyperlinkData::External { rid, path } = h.link.clone() {
-                                        hyperlink_map.insert(rid, path);
+                                    if let HyperlinkData::External { rid, path } = &h.link {
+                                        hyperlink_map.insert(rid.clone(), path.clone());
                                     };
                                     for child in &h.children {
                                         if let ParagraphChild::CommentStart(c) = child {
@@ -1480,8 +1480,8 @@ fn collect_dependencies_in_paragraph(
             push_comment_and_comment_extended(comments, comments_extended, comment_map, c);
         }
         if let ParagraphChild::Hyperlink(h) = child {
-            if let HyperlinkData::External { rid, path } = h.link.clone() {
-                hyperlink_map.insert(rid, path);
+            if let HyperlinkData::External { rid, path } = &h.link {
+                hyperlink_map.insert(rid.clone(), path.clone());
             };
             for child in &h.children {
                 if let ParagraphChild::CommentStart(c) = child {
@@ -2215,11 +2215,11 @@ fn push_comment_and_comment_extended(
     comment_map: &HashMap<usize, String>,
     c: &CommentRangeStart,
 ) {
-    let comment = c.get_comment();
-    for child in comment.children {
+    let comment = c.get_comment_ref();
+    for child in &comment.children {
         if let CommentChild::Paragraph(child) = child {
             let para_id = child.id.clone();
-            comments.push(c.get_comment());
+            comments.push(comment.clone());
             let comment_extended = CommentExtended::new(para_id);
             if let Some(parent_comment_id) = comment.parent_comment_id {
                 if let Some(parent_para_id) = comment_map.get(&parent_comment_id) {

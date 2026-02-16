@@ -885,12 +885,12 @@ impl Docx {
         comment_map: &mut HashMap<usize, String>,
         c: &CommentRangeStart,
     ) {
-        let comment = c.get_comment();
+        let comment = c.get_comment_ref();
         let comment_id = comment.id();
-        for child in comment.children {
+        for child in &comment.children {
             if let CommentChild::Paragraph(child) = child {
                 let para_id = child.id.clone();
-                comment_map.insert(comment_id, para_id.clone());
+                comment_map.insert(comment_id, para_id);
             }
             // TODO: Support table in comment
         }
@@ -912,9 +912,6 @@ impl Docx {
                             self.insert_comment_to_map(&mut comment_map, c);
                         }
                         if let ParagraphChild::Hyperlink(h) = child {
-                            if let HyperlinkData::External { rid, path } = h.link.clone() {
-                                hyperlink_map.insert(rid, path);
-                            };
                             for child in &h.children {
                                 if let ParagraphChild::CommentStart(c) = child {
                                     self.insert_comment_to_map(&mut comment_map, c);
@@ -924,13 +921,25 @@ impl Docx {
                     }
                 }
                 DocumentChild::Table(table) => {
-                    collect_dependencies_in_table(
-                        table,
-                        &mut comments,
-                        &mut comments_extended,
-                        &mut comment_map,
-                        &mut hyperlink_map,
-                    );
+                    collect_comment_map_in_table(table, &mut comment_map);
+                }
+                DocumentChild::TableOfContents(toc) => {
+                    for child in &toc.before_contents {
+                        if let TocContent::Paragraph(paragraph) = child {
+                            collect_comment_map_in_paragraph(paragraph, &mut comment_map);
+                        }
+                        if let TocContent::Table(table) = child {
+                            collect_comment_map_in_table(table, &mut comment_map);
+                        }
+                    }
+                    for child in &toc.after_contents {
+                        if let TocContent::Paragraph(paragraph) = child {
+                            collect_comment_map_in_paragraph(paragraph, &mut comment_map);
+                        }
+                        if let TocContent::Table(table) = child {
+                            collect_comment_map_in_table(table, &mut comment_map);
+                        }
+                    }
                 }
                 _ => {}
             }
@@ -949,8 +958,8 @@ impl Docx {
                             );
                         }
                         if let ParagraphChild::Hyperlink(h) = child {
-                            if let HyperlinkData::External { rid, path } = h.link.clone() {
-                                hyperlink_map.insert(rid, path);
+                            if let HyperlinkData::External { rid, path } = &h.link {
+                                hyperlink_map.insert(rid.clone(), path.clone());
                             };
                             for child in &h.children {
                                 if let ParagraphChild::CommentStart(c) = child {
@@ -988,8 +997,8 @@ impl Docx {
                                     );
                                 }
                                 if let ParagraphChild::Hyperlink(h) = child {
-                                    if let HyperlinkData::External { rid, path } = h.link.clone() {
-                                        hyperlink_map.insert(rid, path);
+                                    if let HyperlinkData::External { rid, path } = &h.link {
+                                        hyperlink_map.insert(rid.clone(), path.clone());
                                     };
                                     for child in &h.children {
                                         if let ParagraphChild::CommentStart(c) = child {
@@ -1026,8 +1035,8 @@ impl Docx {
                                     );
                                 }
                                 if let ParagraphChild::Hyperlink(h) = child {
-                                    if let HyperlinkData::External { rid, path } = h.link.clone() {
-                                        hyperlink_map.insert(rid, path);
+                                    if let HyperlinkData::External { rid, path } = &h.link {
+                                        hyperlink_map.insert(rid.clone(), path.clone());
                                     };
                                     for child in &h.children {
                                         if let ParagraphChild::CommentStart(c) = child {
@@ -1480,12 +1489,87 @@ fn collect_dependencies_in_paragraph(
             push_comment_and_comment_extended(comments, comments_extended, comment_map, c);
         }
         if let ParagraphChild::Hyperlink(h) = child {
-            if let HyperlinkData::External { rid, path } = h.link.clone() {
-                hyperlink_map.insert(rid, path);
+            if let HyperlinkData::External { rid, path } = &h.link {
+                hyperlink_map.insert(rid.clone(), path.clone());
             };
             for child in &h.children {
                 if let ParagraphChild::CommentStart(c) = child {
                     push_comment_and_comment_extended(comments, comments_extended, comment_map, c);
+                }
+            }
+        }
+    }
+}
+
+fn collect_comment_map_in_paragraph(
+    paragraph: &Paragraph,
+    comment_map: &mut HashMap<usize, String>,
+) {
+    for child in &paragraph.children {
+        if let ParagraphChild::CommentStart(c) = child {
+            let comment = c.get_comment_ref();
+            let comment_id = comment.id();
+            for child in &comment.children {
+                if let CommentChild::Paragraph(child) = child {
+                    comment_map.insert(comment_id, child.id.clone());
+                }
+            }
+        }
+        if let ParagraphChild::Hyperlink(h) = child {
+            for child in &h.children {
+                if let ParagraphChild::CommentStart(c) = child {
+                    let comment = c.get_comment_ref();
+                    let comment_id = comment.id();
+                    for child in &comment.children {
+                        if let CommentChild::Paragraph(child) = child {
+                            comment_map.insert(comment_id, child.id.clone());
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+fn collect_comment_map_in_table(table: &Table, comment_map: &mut HashMap<usize, String>) {
+    for TableChild::TableRow(row) in &table.rows {
+        for TableRowChild::TableCell(cell) in &row.cells {
+            for content in &cell.children {
+                match content {
+                    TableCellContent::Paragraph(paragraph) => {
+                        collect_comment_map_in_paragraph(paragraph, comment_map);
+                    }
+                    TableCellContent::Table(table) => {
+                        collect_comment_map_in_table(table, comment_map)
+                    }
+                    TableCellContent::StructuredDataTag(tag) => {
+                        for child in &tag.children {
+                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
+                                collect_comment_map_in_paragraph(paragraph, comment_map);
+                            }
+                            if let StructuredDataTagChild::Table(table) = child {
+                                collect_comment_map_in_table(table, comment_map);
+                            }
+                        }
+                    }
+                    TableCellContent::TableOfContents(t) => {
+                        for child in &t.before_contents {
+                            if let TocContent::Paragraph(paragraph) = child {
+                                collect_comment_map_in_paragraph(paragraph, comment_map);
+                            }
+                            if let TocContent::Table(table) = child {
+                                collect_comment_map_in_table(table, comment_map);
+                            }
+                        }
+                        for child in &t.after_contents {
+                            if let TocContent::Paragraph(paragraph) = child {
+                                collect_comment_map_in_paragraph(paragraph, comment_map);
+                            }
+                            if let TocContent::Table(table) = child {
+                                collect_comment_map_in_table(table, comment_map);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -2215,11 +2299,11 @@ fn push_comment_and_comment_extended(
     comment_map: &HashMap<usize, String>,
     c: &CommentRangeStart,
 ) {
-    let comment = c.get_comment();
-    for child in comment.children {
+    let comment = c.get_comment_ref();
+    for child in &comment.children {
         if let CommentChild::Paragraph(child) = child {
             let para_id = child.id.clone();
-            comments.push(c.get_comment());
+            comments.push(comment.clone());
             let comment_extended = CommentExtended::new(para_id);
             if let Some(parent_comment_id) = comment.parent_comment_id {
                 if let Some(parent_para_id) = comment_map.get(&parent_comment_id) {

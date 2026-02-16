@@ -147,16 +147,27 @@ impl<W: Write> EventWriter<W> {
     }
 
     fn flush_pending(&mut self) -> Result<()> {
-        if let Some((name, attrs)) = self
-            .element_stack
-            .last_mut()
-            .filter(|state| state.pending)
-            .map(|state| {
+        if let Some(state) = self.element_stack.last_mut() {
+            if state.pending {
                 state.pending = false;
-                (state.name.clone(), std::mem::take(&mut state.attributes))
-            })
-        {
-            self.write_tag(name.as_str(), &attrs, b">")?;
+                let writer = self.writer.get_mut();
+                writer.write_all(b"<").map_err(Error::from)?;
+                writer
+                    .write_all(state.name.as_bytes())
+                    .map_err(Error::from)?;
+                for attr in &state.attributes {
+                    writer.write_all(b" ").map_err(Error::from)?;
+                    writer
+                        .write_all(attr.name.as_bytes())
+                        .map_err(Error::from)?;
+                    writer.write_all(b"=\"").map_err(Error::from)?;
+                    writer
+                        .write_all(attr.value.as_bytes())
+                        .map_err(Error::from)?;
+                    writer.write_all(b"\"").map_err(Error::from)?;
+                }
+                writer.write_all(b">").map_err(Error::from)?;
+            }
         }
         Ok(())
     }

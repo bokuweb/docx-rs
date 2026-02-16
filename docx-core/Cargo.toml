@@ -43,3 +43,7 @@ criterion = { version = "0.5", default-features = false, features = ["cargo_benc
 [[bench]]
 name = "read_docx"
 harness = false
+
+[[bench]]
+name = "write_docx"
+harness = false

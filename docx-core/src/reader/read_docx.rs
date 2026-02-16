@@ -143,35 +143,42 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             );
             if let Ok(data) = data {
                 let mut comments = Comments::from_xml(&data[..])?.into_inner();
-                for i in 0..comments.len() {
-                    let c = &comments[i];
-                    let extended = comments_extended.children.iter().find(|ex| {
-                        for child in &c.children {
+                if !comments.is_empty() && !comments_extended.children.is_empty() {
+                    let mut comment_id_by_paragraph: HashMap<String, usize> = HashMap::new();
+                    for comment in &comments {
+                        for child in &comment.children {
                             if let CommentChild::Paragraph(p) = child {
-                                if ex.paragraph_id == p.id {
-                                    return true;
-                                }
+                                comment_id_by_paragraph.insert(p.id.clone(), comment.id);
                             }
                         }
-                        false
-                    });
-                    if let Some(CommentExtended {
-                        parent_paragraph_id: Some(parent_paragraph_id),
-                        ..
-                    }) = extended
-                    {
-                        if let Some(parent_comment) = comments.iter().find(|c| {
-                            for child in &c.children {
-                                if let CommentChild::Paragraph(p) = child {
-                                    if &p.id == parent_paragraph_id {
-                                        return true;
+                    }
+
+                    let mut parent_paragraph_by_paragraph: HashMap<String, String> = HashMap::new();
+                    for extended in &comments_extended.children {
+                        if let Some(parent_paragraph_id) = extended.parent_paragraph_id.as_deref() {
+                            parent_paragraph_by_paragraph.insert(
+                                extended.paragraph_id.clone(),
+                                parent_paragraph_id.to_string(),
+                            );
+                        }
+                    }
+
+                    for comment in &mut comments {
+                        let mut parent_comment_id = None;
+                        for child in &comment.children {
+                            if let CommentChild::Paragraph(p) = child {
+                                if let Some(parent_paragraph_id) =
+                                    parent_paragraph_by_paragraph.get(&p.id)
+                                {
+                                    parent_comment_id =
+                                        comment_id_by_paragraph.get(parent_paragraph_id).copied();
+                                    if parent_comment_id.is_some() {
+                                        break;
                                     }
                                 }
                             }
-                            false
-                        }) {
-                            comments[i].parent_comment_id = Some(parent_comment.id);
                         }
+                        comment.parent_comment_id = parent_comment_id;
                     }
                 }
                 Comments { comments }

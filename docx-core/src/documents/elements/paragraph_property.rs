@@ -220,6 +220,7 @@ impl BuildXML for ParagraphProperty {
         XMLBuilder::from(stream)
             .open_paragraph_property()?
             .add_child(&self.run_property)?
+            .add_optional_child(&self.section_property)?
             .add_optional_child(&self.style)?
             .add_optional_child(&self.numbering_property)?
             .add_optional_child(&self.frame_property)?

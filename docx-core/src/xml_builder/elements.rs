@@ -284,6 +284,17 @@ impl<W: Write> XMLBuilder<W> {
             .close()
     }
 
+    // i.e. <w:fitText ... >
+    pub(crate) fn fit_text(self, val: usize, id: Option<u32>) -> Result<Self> {
+        let mut fit_text = XmlEvent::start_element("w:fitText").attr("w:val", &format!("{}", val));
+        let id_value;
+        if let Some(id) = id {
+            id_value = format!("{}", id);
+            fit_text = fit_text.attr("w:id", &id_value);
+        }
+        self.write(fit_text)?.close()
+    }
+
     // i.e. <w:spacing ... >
     pub(crate) fn line_spacing(
         self,

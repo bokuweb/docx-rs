@@ -115,6 +115,15 @@ impl ElementReader for RunProperty {
                                 }
                             }
                         }
+                        XMLElement::FitText => {
+                            if let Some(v) = read_val(&attributes) {
+                                if let Ok(val) = usize::from_str(&v) {
+                                    let id = read(&attributes, "id")
+                                        .and_then(|id| u32::from_str(&id).ok());
+                                    rp = rp.fit_text(val, id);
+                                }
+                            }
+                        }
                         XMLElement::RunFonts => {
                             if let Ok(f) = read_run_fonts(&attributes) {
                                 rp = rp.fonts(f);

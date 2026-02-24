@@ -138,6 +138,11 @@ impl Run {
         self
     }
 
+    pub fn fit_text(mut self, val: usize, id: Option<u32>) -> Run {
+        self.0.run_property = self.0.run_property.fit_text(val, id);
+        self
+    }
+
     pub fn vert_align(mut self, a: VertAlignType) -> Run {
         self.0.run_property = self.0.run_property.vert_align(a);
         self

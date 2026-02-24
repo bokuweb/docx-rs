@@ -148,6 +148,12 @@ export class Run {
     return this;
   }
 
+  fitText(val: number, id?: number) {
+    this.property ??= createDefaultRunProperty();
+    this.property.fitText(val, id);
+    return this;
+  }
+
   delete(author: string, date: string) {
     this.property ??= createDefaultRunProperty();
     this.property.delete(author, date);

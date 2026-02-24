@@ -476,6 +476,19 @@ describe("writer", () => {
     }
   });
 
+  test("should write fitText", () => {
+    const p = new w.Paragraph().addRun(
+      new w.Run().addText("第１").fitText(840, 1266434317)
+    );
+    const buffer = new w.Docx().addParagraph(p).build();
+    const z = new Zip(Buffer.from(buffer));
+    for (const e of z.getEntries()) {
+      if (e.entryName.match(/document.xml|numbering.xml/)) {
+        expect(z.readAsText(e)).toMatchSnapshot();
+      }
+    }
+  });
+
   test("should write caps", () => {
     const p = new w.Paragraph()
       .addRun(new w.Run().addText("Hello "))

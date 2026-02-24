@@ -311,4 +311,25 @@ mod tests {
             }
         );
     }
+
+    #[test]
+    fn test_read_fit_text() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:r><w:rPr>
+    <w:fitText w:val="840" w:id="1266434317"/>
+  </w:rPr></w:r>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let run = Run::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            run,
+            Run {
+                children: vec![],
+                run_property: RunProperty {
+                    fit_text: Some(FitText::new(840).id(1266434317)),
+                    ..RunProperty::default()
+                },
+            }
+        );
+    }
 }

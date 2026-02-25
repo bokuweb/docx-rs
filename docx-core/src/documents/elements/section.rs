@@ -116,6 +116,10 @@ impl Section {
         Default::default()
     }
 
+    pub fn children(&self) -> &Vec<SectionChild> {
+        &self.children
+    }
+
     delegate_to_field! {
         property =>
         page_size(size: PageSize) -> Self,

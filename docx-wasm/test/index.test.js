@@ -227,6 +227,15 @@ describe("reader", () => {
     expect(json).toMatchSnapshot();
   });
 
+  test("should read fitText docx", () => {
+    const p = new w.Paragraph().addRun(
+      new w.Run().addText("第１").fitText(840, 1266434317)
+    );
+    const buffer = new w.Docx().addParagraph(p).build();
+    const json = w.readDocx(Buffer.from(buffer));
+    expect(json).toMatchSnapshot();
+  });
+
   test("should read image.xml", () => {
     const str = readFileSync("../fixtures/image_xml/image.xml", "utf-8");
     const json = w.readXML(str);

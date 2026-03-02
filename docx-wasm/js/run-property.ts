@@ -27,11 +27,6 @@ export type RunPropertyIns = {
   date: string;
 };
 
-export type FitText = {
-  val: number;
-  id?: number;
-};
-
 export class RunProperty {
   _style?: string;
   _size?: number;

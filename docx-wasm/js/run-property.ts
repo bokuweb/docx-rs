@@ -10,6 +10,11 @@ export type TextBorder = {
   size: number;
 };
 
+export type FitText = {
+  val: number;
+  id?: number;
+};
+
 export type VertAlignType = "baseline" | "superscript" | "subscript";
 
 export type RunPropertyDel = {
@@ -139,7 +144,7 @@ export class RunProperty {
   }
 
   fitText(val: number, id?: number) {
-    this._fitText = { val, id };
+    this._fitText = { val, ...(id != null && { id }) };
     return this;
   }
 

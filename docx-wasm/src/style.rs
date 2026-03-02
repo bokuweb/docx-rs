@@ -24,6 +24,26 @@ impl Style {
         self
     }
 
+    pub fn q_format(mut self, q_format: bool) -> Self {
+        self.0.q_format = q_format;
+        self
+    }
+
+    pub fn ui_priority(mut self, ui_priority: usize) -> Self {
+        self.0.ui_priority = Some(ui_priority);
+        self
+    }
+
+    pub fn semi_hidden(mut self) -> Self {
+        self.0.semi_hidden = true;
+        self
+    }
+
+    pub fn unhide_when_used(mut self) -> Self {
+        self.0.unhide_when_used = true;
+        self
+    }
+
     pub fn size(mut self, size: usize) -> Self {
         self.0.run_property = self.0.run_property.size(size);
         self

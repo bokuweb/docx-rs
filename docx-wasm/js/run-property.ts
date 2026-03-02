@@ -10,6 +10,11 @@ export type TextBorder = {
   size: number;
 };
 
+export type FitText = {
+  val: number;
+  id?: number;
+};
+
 export type VertAlignType = "baseline" | "superscript" | "subscript";
 
 export type RunPropertyDel = {
@@ -37,6 +42,7 @@ export class RunProperty {
   _vanish?: boolean;
   _fonts?: RunFonts;
   _characterSpacing?: number;
+  _fitText?: FitText;
   _textBorder?: TextBorder;
   _ins?: RunPropertyIns;
   _del?: RunPropertyDel;
@@ -129,6 +135,11 @@ export class RunProperty {
 
   spacing(characterSpacing: number) {
     this._characterSpacing = characterSpacing;
+    return this;
+  }
+
+  fitText(val: number, id?: number) {
+    this._fitText = { val, ...(id != null && { id }) };
     return this;
   }
 
@@ -346,6 +357,10 @@ export const setRunProperty = <T extends wasm.Run | wasm.Style>(
     target = target.character_spacing(property._characterSpacing) as T;
   }
 
+  if (property._fitText != null) {
+    target = target.fit_text(property._fitText.val, property._fitText.id) as T;
+  }
+
   if (property._textBorder) {
     const { borderType, color, space, size } = property._textBorder;
     target = target.text_border(
@@ -441,6 +456,10 @@ export const createRunProperty = (property: RunProperty): wasm.RunProperty => {
 
   if (property._characterSpacing != null) {
     target = target.character_spacing(property._characterSpacing);
+  }
+
+  if (property._fitText != null) {
+    target = target.fit_text(property._fitText.val, property._fitText.id);
   }
 
   if (property._textBorder) {

@@ -5,6 +5,7 @@ import type { Caps } from "./Caps";
 import type { CharacterSpacing } from "./CharacterSpacing";
 import type { Color } from "./Color";
 import type { Delete } from "./Delete";
+import type { FitText } from "./FitText";
 import type { Highlight } from "./Highlight";
 import type { Insert } from "./Insert";
 import type { Italic } from "./Italic";
@@ -20,4 +21,4 @@ import type { Underline } from "./Underline";
 import type { Vanish } from "./Vanish";
 import type { VertAlign } from "./VertAlign";
 
-export interface RunProperty { style?: RunStyle, sz?: Sz, szCs?: SzCs, color?: Color, highlight?: Highlight, vertAlign?: VertAlign, underline?: Underline, bold?: Bold, boldCs?: BoldCs, caps?: Caps, italic?: Italic, italicCs?: ItalicCs, vanish?: Vanish, specVanish?: SpecVanish, characterSpacing?: CharacterSpacing, fonts?: RunFonts, textBorder?: TextBorder, del?: Delete, ins?: Insert, strike?: Strike, }
+export interface RunProperty { style?: RunStyle, sz?: Sz, szCs?: SzCs, color?: Color, highlight?: Highlight, vertAlign?: VertAlign, underline?: Underline, bold?: Bold, boldCs?: BoldCs, caps?: Caps, italic?: Italic, italicCs?: ItalicCs, vanish?: Vanish, specVanish?: SpecVanish, characterSpacing?: CharacterSpacing, fitText?: FitText, fonts?: RunFonts, textBorder?: TextBorder, del?: Delete, ins?: Insert, strike?: Strike, }

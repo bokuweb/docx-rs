@@ -87,6 +87,11 @@ impl RunProperty {
         self
     }
 
+    pub fn fit_text(mut self, val: usize, id: Option<u32>) -> Self {
+        self.0 = self.0.fit_text(val, id);
+        self
+    }
+
     pub fn vert_align(mut self, a: docx_rs::VertAlignType) -> Self {
         self.0 = self.0.vert_align(a);
         self

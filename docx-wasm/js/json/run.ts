@@ -35,6 +35,11 @@ export type RunFontsJSON = {
   hint?: string;
 };
 
+export type FitTextJSON = {
+  val: number;
+  id?: number;
+};
+
 export type RunPropertyJSON = {
   style?: string | null;
   sz?: number | null;
@@ -52,6 +57,7 @@ export type RunPropertyJSON = {
   vanish?: boolean | null;
   specVanish?: boolean | null;
   characterSpacing?: number | null;
+  fitText?: FitTextJSON | null;
   textBorder?: TextBorderJSON | null;
   ins?: InsertJSONData | null;
   del?: DeleteJSONData | null;

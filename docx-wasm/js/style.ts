@@ -36,6 +36,10 @@ export class Style {
   _tableProperty: TableProperty;
   _basedOn: string | null;
   _link: string | null;
+  _qFormat: boolean;
+  _uiPriority: number | null;
+  _semiHidden: boolean;
+  _unhideWhenUsed: boolean;
 
   constructor(id: string, type: StyleType) {
     this._styleId = id;
@@ -47,6 +51,10 @@ export class Style {
     this._paragraphProperty = createDefaultParagraphProperty();
     this._basedOn = null;
     this._link = null;
+    this._qFormat = true;
+    this._uiPriority = null;
+    this._semiHidden = false;
+    this._unhideWhenUsed = false;
   }
 
   name = (n: string) => {
@@ -61,6 +69,26 @@ export class Style {
 
   link = (n: string) => {
     this._link = n;
+    return this;
+  };
+
+  qFormat = (v: boolean) => {
+    this._qFormat = v;
+    return this;
+  };
+
+  uiPriority = (v: number) => {
+    this._uiPriority = v;
+    return this;
+  };
+
+  semiHidden = () => {
+    this._semiHidden = true;
+    return this;
+  };
+
+  unhideWhenUsed = () => {
+    this._unhideWhenUsed = true;
     return this;
   };
 
@@ -300,6 +328,18 @@ export class Style {
 
     if (this._link) {
       s = s.link(this._link);
+    }
+    if (!this._qFormat) {
+      s = s.q_format(false);
+    }
+    if (this._uiPriority != null) {
+      s = s.ui_priority(this._uiPriority);
+    }
+    if (this._semiHidden) {
+      s = s.semi_hidden();
+    }
+    if (this._unhideWhenUsed) {
+      s = s.unhide_when_used();
     }
 
     if (this._runProperty) {

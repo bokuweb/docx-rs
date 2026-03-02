@@ -136,6 +136,12 @@ impl<W: Write> XMLBuilder<W> {
     open!(open_paragraph_property_default, "w:pPrDefault");
     // i.e. <w:qFormat ... >
     closed!(q_format, "w:qFormat");
+    // i.e. <w:uiPriority ... >
+    closed_with_usize!(ui_priority, "w:uiPriority");
+    // i.e. <w:semiHidden ... >
+    closed!(semi_hidden, "w:semiHidden");
+    // i.e. <w:unhideWhenUsed ... >
+    closed!(unhide_when_used, "w:unhideWhenUsed");
     // i.e. <w:p ... >
     // open!(open_paragraph, "w:p");
     open!(open_paragraph, "w:p", "w14:paraId");

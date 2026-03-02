@@ -158,6 +158,11 @@ export class Style {
     return this;
   }
 
+  fitText(val: number, id?: number) {
+    this._runProperty.fitText(val, id);
+    return this;
+  }
+
   delete(author: string, date: string) {
     this._runProperty.delete(author, date);
     return this;

@@ -27,7 +27,9 @@ impl BuildXML for FitText {
         &self,
         stream: crate::xml::writer::EventWriter<W>,
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
-        XMLBuilder::from(stream).fit_text(self.val, self.id)?.into_inner()
+        XMLBuilder::from(stream)
+            .fit_text(self.val, self.id)?
+            .into_inner()
     }
 }
 

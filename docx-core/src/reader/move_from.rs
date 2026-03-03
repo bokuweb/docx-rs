@@ -3,12 +3,12 @@ use std::str::FromStr;
 
 use super::*;
 
-impl ElementReader for Delete {
+impl ElementReader for MoveFrom {
     fn read<R: Read>(
         r: &mut EventReader<R>,
         attrs: &[OwnedAttribute],
     ) -> Result<Self, ReaderError> {
-        let mut del = Delete::new();
+        let mut mf = MoveFrom::new();
         loop {
             let e = r.next();
             match e {
@@ -19,41 +19,38 @@ impl ElementReader for Delete {
                         .expect("should convert to XMLElement");
                     match e {
                         XMLElement::Run => {
-                            del = del.add_run(Run::read(r, attrs)?);
+                            mf = mf.add_run(Run::read(r, &attributes)?);
                         }
                         XMLElement::CommentRangeStart => {
                             if let Some(id) = read(&attributes, "id") {
                                 if let Ok(id) = usize::from_str(&id) {
                                     let comment = Comment::new(id);
-                                    del = del.add_comment_start(comment);
+                                    mf = mf.add_comment_start(comment);
                                 }
                             }
                         }
                         XMLElement::CommentRangeEnd => {
                             if let Some(id) = read(&attributes, "id") {
                                 if let Ok(id) = usize::from_str(&id) {
-                                    del = del.add_comment_end(id);
+                                    mf = mf.add_comment_end(id);
                                 }
                             }
-                        }
-                        XMLElement::MoveFrom => {
-                            ignore::ignore_element(XMLElement::MoveFrom, XMLElement::MoveFrom, r);
                         }
                         _ => {}
                     }
                 }
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
-                    if e == XMLElement::Delete {
+                    if e == XMLElement::MoveFrom {
                         for attr in attrs {
                             let local_name = &attr.name.local_name;
                             if local_name == "author" {
-                                del = del.author(&attr.value);
+                                mf = mf.author(&attr.value);
                             } else if local_name == "date" {
-                                del = del.date(&attr.value);
+                                mf = mf.date(&attr.value);
                             }
                         }
-                        return Ok(del);
+                        return Ok(mf);
                     }
                 }
                 Err(_) => return Err(ReaderError::XMLReadError),

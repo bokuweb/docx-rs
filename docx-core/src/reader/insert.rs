@@ -36,6 +36,10 @@ impl ElementReader for Insert {
                             }
                             continue;
                         }
+                        XMLElement::MoveFrom => {
+                            // Skip moveFrom subtree — ghost text must not flatten into Insert children
+                            ignore::ignore_element(XMLElement::MoveFrom, XMLElement::MoveFrom, r);
+                        }
                         _ => {}
                     }
                 }

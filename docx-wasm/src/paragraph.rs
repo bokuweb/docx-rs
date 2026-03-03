@@ -36,6 +36,20 @@ impl Paragraph {
         self
     }
 
+    pub fn add_move_from(mut self, mf: MoveFrom) -> Paragraph {
+        self.0
+            .children
+            .push(docx_rs::ParagraphChild::MoveFrom(mf.take()));
+        self
+    }
+
+    pub fn add_move_to(mut self, mt: MoveTo) -> Paragraph {
+        self.0
+            .children
+            .push(docx_rs::ParagraphChild::MoveTo(mt.take()));
+        self
+    }
+
     pub fn add_bookmark_start(mut self, id: usize, name: &str) -> Paragraph {
         self.0.children.push(docx_rs::ParagraphChild::BookmarkStart(
             docx_rs::BookmarkStart::new(id, name),

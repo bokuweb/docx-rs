@@ -130,6 +130,11 @@ impl ElementReader for ParagraphProperty {
                                 p.frame_property = Some(pr);
                             }
                         }
+                        XMLElement::Shading => {
+                            if let Ok(shd) = Shading::read(r, &attributes) {
+                                p.shading = Some(shd);
+                            }
+                        }
                         XMLElement::Tabs => {
                             if let Ok(tabs) = Tabs::read(r, &attributes) {
                                 for t in tabs.tabs {

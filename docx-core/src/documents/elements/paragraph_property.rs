@@ -48,6 +48,8 @@ pub struct ParagraphProperty {
     pub adjust_right_ind: Option<AdjustRightInd>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub snap_to_grid: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub shading: Option<Shading>,
     // read only
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) div_id: Option<String>,
@@ -106,6 +108,11 @@ impl ParagraphProperty {
 
     pub fn snap_to_grid(mut self, v: bool) -> Self {
         self.snap_to_grid = Some(v);
+        self
+    }
+
+    pub fn shading(mut self, s: Shading) -> Self {
+        self.shading = Some(s);
         self
     }
 
@@ -229,6 +236,7 @@ impl BuildXML for ParagraphProperty {
             .add_optional_child(&self.outline_lvl)?
             .add_optional_child(&self.paragraph_property_change)?
             .add_optional_child(&self.borders)?
+            .add_optional_child(&self.shading)?
             .add_optional_child(&self.text_alignment)?
             .add_optional_child(&self.adjust_right_ind)?
             .apply_opt(self.snap_to_grid, |v, b| b.snap_to_grid(v))?
@@ -337,6 +345,16 @@ mod tests {
             str::from_utf8(&bytes).unwrap(),
             r#"<w:pPr><w:rPr /><w:spacing w:line="100" w:lineRule="atLeast" /></w:pPr>"#
         )
+    }
+
+    #[test]
+    fn test_shading() {
+        let props = ParagraphProperty::new().shading(Shading::new().fill("F0F0F0"));
+        let bytes = props.build();
+        assert_eq!(
+            str::from_utf8(&bytes).unwrap(),
+            r#"<w:pPr><w:rPr /><w:shd w:val="clear" w:color="auto" w:fill="F0F0F0" /></w:pPr>"#
+        );
     }
 
     #[test]

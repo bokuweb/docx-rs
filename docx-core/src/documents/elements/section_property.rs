@@ -204,22 +204,22 @@ impl BuildXML for SectionProperty {
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_section_property()?
-            .add_child(&self.page_size)?
-            .add_child(&self.page_margin)?
-            .columns(&format!("{}", &self.space), &format!("{}", &self.columns))?
-            .add_optional_child(&self.doc_grid)?
             .add_optional_child(&self.header_reference)?
             .add_optional_child(&self.first_header_reference)?
             .add_optional_child(&self.even_header_reference)?
             .add_optional_child(&self.footer_reference)?
             .add_optional_child(&self.first_footer_reference)?
             .add_optional_child(&self.even_footer_reference)?
+            .apply_opt(self.section_type, |t, b| b.type_tag(&t.to_string()))?
+            .add_child(&self.page_size)?
+            .add_child(&self.page_margin)?
             .add_optional_child(&self.page_num_type)?
+            .columns(&format!("{}", &self.space), &format!("{}", &self.columns))?
             .apply_if(self.text_direction != "lrTb", |b| {
                 b.text_direction(&self.text_direction)
             })?
-            .apply_opt(self.section_type, |t, b| b.type_tag(&t.to_string()))?
             .apply_if(self.title_pg, |b| b.title_pg())?
+            .add_optional_child(&self.doc_grid)?
             .close()?
             .into_inner()
     }

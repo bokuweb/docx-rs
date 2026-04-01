@@ -21,7 +21,7 @@ impl BuildXML for TableGrid {
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_table_grid()?
-            .apply_each(&self.grid, |g, b| b.grid_column(*g as i32, WidthType::Dxa))?
+            .apply_each(&self.grid, |g, b| b.grid_column(*g as i32))?
             .close()?
             .into_inner()
     }

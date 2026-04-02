@@ -313,6 +313,31 @@ mod tests {
     }
 
     #[test]
+    fn test_read_on_off_values() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:r><w:rPr>
+    <w:b w:val="off"/>
+    <w:i w:val="on"/>
+  </w:rPr></w:r>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let run = Run::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            run,
+            Run {
+                children: vec![],
+                run_property: RunProperty {
+                    bold: Some(Bold::new().disable()),
+                    bold_cs: Some(BoldCs::new().disable()),
+                    italic: Some(Italic::new()),
+                    italic_cs: Some(ItalicCs::new()),
+                    ..RunProperty::default()
+                },
+            }
+        );
+    }
+
+    #[test]
     fn test_read_fit_text() {
         let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
   <w:r><w:rPr>

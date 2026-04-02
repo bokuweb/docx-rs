@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support `fitText`
 - Support `qFormat` / `uiPriority` / `semiHidden` / `unhideWhenUsed`
+- Support `off`
 
 ## @0.4.19 (8. Feb, 2026)
 

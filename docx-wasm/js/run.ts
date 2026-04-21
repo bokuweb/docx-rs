@@ -4,6 +4,7 @@ import { Text } from "./text";
 import { DeleteText } from "./delete-text";
 import { Tab } from "./tab";
 import { Break, BreakType } from "./break";
+import { CarriageReturn } from "./carriage-return";
 import { BorderType } from "./border";
 import { Image } from "./image";
 import { PositionalTab } from "./positional-tab";
@@ -20,6 +21,7 @@ export type RunChild =
   | Text
   | DeleteText
   | Tab
+  | CarriageReturn
   | Break
   | Image
   | PositionalTab
@@ -56,6 +58,11 @@ export class Run {
 
   addBreak(type: BreakType) {
     this.children.push(new Break(type));
+    return this;
+  }
+
+  addCarriageReturn() {
+    this.children.push(new CarriageReturn());
     return this;
   }
 
@@ -187,6 +194,8 @@ export class Run {
         run = run.add_delete_text(child.text);
       } else if (child instanceof Tab) {
         run = run.add_tab();
+      } else if (child instanceof CarriageReturn) {
+        run = run.add_carriage_return();
       } else if (child instanceof PositionalTab) {
         run = run.add_ptab(child.buildWasmObject());
       } else if (child instanceof Break) {

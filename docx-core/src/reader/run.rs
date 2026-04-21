@@ -94,6 +94,9 @@ impl ElementReader for Run {
                                         run = run.add_break(BreakType::TextWrapping)
                                     }
                                 }
+                                XMLElement::CarriageReturn => {
+                                    run = run.add_carriage_return();
+                                }
                                 XMLElement::Drawing => {
                                     if let Ok(drawing) = Drawing::read(r, &attributes) {
                                         run = run.add_drawing(drawing);
@@ -257,6 +260,22 @@ mod tests {
             run,
             Run {
                 children: vec![RunChild::Break(Break::new(BreakType::TextWrapping))],
+                run_property: RunProperty::default(),
+            }
+        );
+    }
+
+    #[test]
+    fn test_read_cr() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:r><w:cr /></w:r>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let run = Run::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            run,
+            Run {
+                children: vec![RunChild::CarriageReturn(CarriageReturn::new())],
                 run_property: RunProperty::default(),
             }
         );

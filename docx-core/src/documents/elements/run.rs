@@ -32,6 +32,7 @@ pub enum RunChild {
     Tab(Tab),
     PTab(PositionalTab),
     Break(Break),
+    CarriageReturn(CarriageReturn),
     Drawing(Box<Drawing>),
     Shape(Box<Shape>),
     CommentStart(Box<CommentRangeStart>),
@@ -84,6 +85,11 @@ impl Serialize for RunChild {
                 let mut t = serializer.serialize_struct("Break", 2)?;
                 t.serialize_field("type", "break")?;
                 t.serialize_field("data", s)?;
+                t.end()
+            }
+            RunChild::CarriageReturn(_) => {
+                let mut t = serializer.serialize_struct("CarriageReturn", 1)?;
+                t.serialize_field("type", "carriageReturn")?;
                 t.end()
             }
             RunChild::Drawing(ref s) => {
@@ -243,6 +249,12 @@ impl Run {
         self
     }
 
+    pub fn add_carriage_return(mut self) -> Run {
+        self.children
+            .push(RunChild::CarriageReturn(CarriageReturn::new()));
+        self
+    }
+
     pub fn add_sym(mut self, sym: Sym) -> Run {
         self.children.push(RunChild::Sym(sym));
         self
@@ -358,6 +370,7 @@ impl BuildXML for RunChild {
             RunChild::Tab(t) => t.build_to(stream),
             RunChild::PTab(t) => t.build_to(stream),
             RunChild::Break(t) => t.build_to(stream),
+            RunChild::CarriageReturn(t) => t.build_to(stream),
             RunChild::Drawing(t) => t.build_to(stream),
             RunChild::Shape(_t) => {
                 todo!("Support shape writer.")
@@ -439,6 +452,7 @@ mod tests {
                 RunChild::Tab(Tab::new()),
                 RunChild::Text(Text::new("Hello")),
                 RunChild::Break(Break::new(BreakType::Page)),
+                RunChild::CarriageReturn(CarriageReturn::new()),
                 RunChild::DeleteText(DeleteText::new("deleted")),
             ],
             run_property: RunProperty {
@@ -458,7 +472,7 @@ mod tests {
         };
         assert_eq!(
             serde_json::to_string(&run).unwrap(),
-            r#"{"runProperty":{"sz":30,"szCs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true,"characterSpacing":100},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#,
+            r#"{"runProperty":{"sz":30,"szCs":30,"color":"C9211E","highlight":"yellow","underline":"single","bold":true,"boldCs":true,"italic":true,"italicCs":true,"vanish":true,"characterSpacing":100},"children":[{"type":"tab"},{"type":"text","data":{"preserveSpace":true,"text":"Hello"}},{"type":"break","data":{"breakType":"page"}},{"type":"carriageReturn"},{"type":"deleteText","data":{"text":"deleted","preserveSpace":true}}]}"#,
         );
     }
 

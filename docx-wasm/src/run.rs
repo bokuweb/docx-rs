@@ -52,6 +52,11 @@ impl Run {
         self
     }
 
+    pub fn add_carriage_return(mut self) -> Run {
+        self.0 = self.0.add_carriage_return();
+        self
+    }
+
     pub fn add_tc(
         mut self,
         text: &str,

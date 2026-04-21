@@ -71,6 +71,7 @@ export type RunChildJSON =
   | SymJSON
   | DeleteTextJSON
   | TabJSON
+  | CarriageReturnJSON
   | BreakJSON
   | DrawingJSON
   | PtabJSON
@@ -115,6 +116,10 @@ export type DeleteTextJSON = {
 
 export type TabJSON = {
   type: "tab";
+};
+
+export type CarriageReturnJSON = {
+  type: "carriageReturn";
 };
 
 export type BreakJSON = {

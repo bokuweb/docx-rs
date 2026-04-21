@@ -403,6 +403,7 @@ impl<W: Write> XMLBuilder<W> {
     closed!(tab_with_pos, "w:tab", "w:val", "w:pos");
 
     closed!(br, "w:br", "w:type");
+    closed!(cr, "w:cr");
     closed!(sym, "w:sym", "w:font", "w:char");
     closed!(zoom, "w:zoom", "w:percent");
     closed_with_usize!(default_tab_stop, "w:defaultTabStop");

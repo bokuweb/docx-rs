@@ -401,8 +401,20 @@ impl Paragraph {
                     for c in i.children.iter() {
                         if let InsertChild::Run(r) = c {
                             for c in r.children.iter() {
-                                if let RunChild::Text(t) = c {
-                                    s.push_str(&t.text);
+                                match c {
+                                    RunChild::Text(t) => {
+                                        s.push_str(&t.text);
+                                    }
+                                    RunChild::Tab(_t) => {
+                                        s.push_str("\t");
+                                    }
+                                    RunChild::PTab(_t) => {
+                                        s.push_str("\t");
+                                    }
+                                    RunChild::Break(_b) => {
+                                        s.push_str("\n");
+                                    }
+                                    _ => {}
                                 }
                             }
                         }
@@ -410,8 +422,20 @@ impl Paragraph {
                 }
                 ParagraphChild::Run(run) => {
                     for c in run.children.iter() {
-                        if let RunChild::Text(t) = c {
-                            s.push_str(&t.text);
+                        match c {
+                            RunChild::Text(t) => {
+                                s.push_str(&t.text);
+                            }
+                            RunChild::Tab(_t) => {
+                                s.push_str("\t");
+                            }
+                            RunChild::PTab(_t) => {
+                                s.push_str("\t");
+                            }
+                            RunChild::Break(_b) => {
+                                s.push_str("\n");
+                            }
+                            _ => {}
                         }
                     }
                 }

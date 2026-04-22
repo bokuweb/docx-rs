@@ -43,6 +43,16 @@ impl ElementReader for Paragraph {
                             p = p.add_delete(del);
                             continue;
                         }
+                        XMLElement::MoveFrom => {
+                            let mf = MoveFrom::read(r, &attributes)?;
+                            p = p.add_move_from(mf);
+                            continue;
+                        }
+                        XMLElement::MoveTo => {
+                            let mt = MoveTo::read(r, &attributes)?;
+                            p = p.add_move_to(mt);
+                            continue;
+                        }
                         XMLElement::BookmarkStart => {
                             let s = BookmarkStart::read(r, &attributes)?;
                             p = p.add_bookmark_start(s.id, s.name);
@@ -449,5 +459,108 @@ mod tests {
                 has_numbering: false,
             }
         );
+    }
+
+    #[test]
+    fn test_read_move_from_to() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:p>
+        <w:moveFrom w:id="1" w:author="user1" w:date="2024-01-01T00:00:00Z">
+            <w:r>
+                <w:rPr></w:rPr>
+                <w:t>moved</w:t>
+            </w:r>
+        </w:moveFrom>
+        <w:moveTo w:id="2" w:author="user1" w:date="2024-01-01T00:00:00Z">
+            <w:r>
+                <w:rPr></w:rPr>
+                <w:t>moved</w:t>
+            </w:r>
+        </w:moveTo>
+    </w:p>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            p,
+            Paragraph {
+                id: "12345678".to_owned(),
+                children: vec![
+                    ParagraphChild::MoveFrom(
+                        MoveFrom::new()
+                            .add_run(Run::new().add_text("moved"))
+                            .author("user1")
+                            .date("2024-01-01T00:00:00Z")
+                    ),
+                    ParagraphChild::MoveTo(
+                        MoveTo::new(Run::new().add_text("moved"))
+                            .author("user1")
+                            .date("2024-01-01T00:00:00Z")
+                    ),
+                ],
+                property: ParagraphProperty {
+                    run_property: RunProperty::new(),
+                    style: None,
+                    numbering_property: None,
+                    alignment: None,
+                    indent: None,
+                    line_spacing: None,
+                    ..Default::default()
+                },
+                has_numbering: false,
+            }
+        );
+        // Verify raw_text excludes MoveFrom and includes MoveTo
+        assert_eq!(p.raw_text(), "moved");
+    }
+
+    #[test]
+    fn test_read_move_from_nested_in_insert() {
+        // MoveFrom inside Insert: ghost text should be skipped, not flattened into Insert runs
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:p>
+        <w:ins w:id="0" w:author="unknown" w:date="2024-01-01T00:00:00Z">
+            <w:moveFrom w:id="1" w:author="unknown" w:date="2024-01-01T00:00:00Z">
+                <w:r>
+                    <w:rPr></w:rPr>
+                    <w:t>ghost</w:t>
+                </w:r>
+            </w:moveFrom>
+            <w:r>
+                <w:rPr></w:rPr>
+                <w:t>live</w:t>
+            </w:r>
+        </w:ins>
+    </w:p>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
+        // The MoveFrom ghost text should have been skipped by ignore_element in the insert reader
+        assert_eq!(p.raw_text(), "live");
+    }
+
+    #[test]
+    fn test_read_move_from_nested_in_move_to() {
+        // MoveFrom inside MoveTo: ghost text should be skipped, not flattened into MoveTo runs
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:p>
+        <w:moveTo w:id="2" w:author="unknown" w:date="2024-01-01T00:00:00Z">
+            <w:moveFrom w:id="1" w:author="unknown" w:date="2024-01-01T00:00:00Z">
+                <w:r>
+                    <w:rPr></w:rPr>
+                    <w:t>ghost</w:t>
+                </w:r>
+            </w:moveFrom>
+            <w:r>
+                <w:rPr></w:rPr>
+                <w:t>live</w:t>
+            </w:r>
+        </w:moveTo>
+    </w:p>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
+        // The MoveFrom ghost text should have been skipped by ignore_element in the moveTo reader
+        assert_eq!(p.raw_text(), "live");
     }
 }

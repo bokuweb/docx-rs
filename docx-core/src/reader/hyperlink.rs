@@ -84,6 +84,9 @@ impl ElementReader for Hyperlink {
                             }
                             continue;
                         }
+                        XMLElement::MoveFrom => {
+                            ignore::ignore_element(XMLElement::MoveFrom, XMLElement::MoveFrom, r);
+                        }
                         _ => {}
                     }
                 }

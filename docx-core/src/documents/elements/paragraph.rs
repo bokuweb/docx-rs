@@ -32,6 +32,8 @@ pub enum ParagraphChild {
     Run(Box<Run>),
     Insert(Insert),
     Delete(Delete),
+    MoveFrom(MoveFrom),
+    MoveTo(MoveTo),
     BookmarkStart(BookmarkStart),
     Hyperlink(Hyperlink),
     BookmarkEnd(BookmarkEnd),
@@ -51,6 +53,8 @@ impl BuildXML for ParagraphChild {
             ParagraphChild::Run(v) => v.build_to(stream),
             ParagraphChild::Insert(v) => v.build_to(stream),
             ParagraphChild::Delete(v) => v.build_to(stream),
+            ParagraphChild::MoveFrom(v) => v.build_to(stream),
+            ParagraphChild::MoveTo(v) => v.build_to(stream),
             ParagraphChild::Hyperlink(v) => v.build_to(stream),
             ParagraphChild::BookmarkStart(v) => v.build_to(stream),
             ParagraphChild::BookmarkEnd(v) => v.build_to(stream),
@@ -84,6 +88,18 @@ impl Serialize for ParagraphChild {
             ParagraphChild::Delete(ref r) => {
                 let mut t = serializer.serialize_struct("Delete", 2)?;
                 t.serialize_field("type", "delete")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            ParagraphChild::MoveFrom(ref r) => {
+                let mut t = serializer.serialize_struct("MoveFrom", 2)?;
+                t.serialize_field("type", "moveFrom")?;
+                t.serialize_field("data", r)?;
+                t.end()
+            }
+            ParagraphChild::MoveTo(ref r) => {
+                let mut t = serializer.serialize_struct("MoveTo", 2)?;
+                t.serialize_field("type", "moveTo")?;
                 t.serialize_field("data", r)?;
                 t.end()
             }
@@ -192,6 +208,16 @@ impl Paragraph {
 
     pub fn add_delete(mut self, delete: Delete) -> Paragraph {
         self.children.push(ParagraphChild::Delete(delete));
+        self
+    }
+
+    pub fn add_move_from(mut self, move_from: MoveFrom) -> Paragraph {
+        self.children.push(ParagraphChild::MoveFrom(move_from));
+        self
+    }
+
+    pub fn add_move_to(mut self, move_to: MoveTo) -> Paragraph {
+        self.children.push(ParagraphChild::MoveTo(move_to));
         self
     }
 
@@ -367,7 +393,8 @@ impl Paragraph {
 
     pub fn raw_text(&self) -> String {
         let mut s = "".to_string();
-        // For now support only run and ins.
+        // For now support only run, ins, and moveTo.
+        // MoveFrom is skipped — it contains ghost text from the original location.
         for c in self.children.iter() {
             match c {
                 ParagraphChild::Insert(i) => {
@@ -387,6 +414,20 @@ impl Paragraph {
                             s.push_str(&t.text);
                         }
                     }
+                }
+                ParagraphChild::MoveTo(mt) => {
+                    for c in mt.children.iter() {
+                        if let MoveToChild::Run(r) = c {
+                            for c in r.children.iter() {
+                                if let RunChild::Text(t) = c {
+                                    s.push_str(&t.text);
+                                }
+                            }
+                        }
+                    }
+                }
+                ParagraphChild::MoveFrom(_) => {
+                    // Skip — ghost text from original location
                 }
                 _ => {}
             }
@@ -619,5 +660,28 @@ mod tests {
             .add_delete(Delete::new().add_run(Run::new().add_delete_text("!!!!!")))
             .raw_text();
         assert_eq!(b, "HelloWorld".to_owned());
+    }
+
+    #[test]
+    fn test_raw_text_move_from_to_dedup() {
+        // MoveFrom text should be excluded (ghost text from original location),
+        // MoveTo text should be included (destination, live text).
+        let b = Paragraph::new()
+            .add_run(Run::new().add_text("Hello "))
+            .add_move_from(MoveFrom::new().add_run(Run::new().add_text("world")))
+            .add_move_to(MoveTo::new(Run::new().add_text("world")))
+            .raw_text();
+        assert_eq!(b, "Hello world".to_owned());
+    }
+
+    #[test]
+    fn test_raw_text_mixed_content_with_move() {
+        let b = Paragraph::new()
+            .add_run(Run::new().add_text("Start "))
+            .add_move_from(MoveFrom::new().add_run(Run::new().add_text("moved")))
+            .add_move_to(MoveTo::new(Run::new().add_text("moved")))
+            .add_run(Run::new().add_text(" end"))
+            .raw_text();
+        assert_eq!(b, "Start moved end".to_owned());
     }
 }

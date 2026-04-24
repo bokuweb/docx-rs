@@ -414,6 +414,9 @@ impl Paragraph {
                                     RunChild::Break(_b) => {
                                         s.push_str("\n");
                                     }
+                                    RunChild::CarriageReturn(_cr) => {
+                                        s.push_str("\n");
+                                    }
                                     _ => {}
                                 }
                             }
@@ -433,6 +436,9 @@ impl Paragraph {
                                 s.push_str("\t");
                             }
                             RunChild::Break(_b) => {
+                                s.push_str("\n");
+                            }
+                            RunChild::CarriageReturn(_cr) => {
                                 s.push_str("\n");
                             }
                             _ => {}

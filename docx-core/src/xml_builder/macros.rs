@@ -508,6 +508,15 @@ macro_rules! closed_w_with_type_el {
     };
 }
 
+macro_rules! closed_w_el {
+    ($name: ident, $el_name: expr) => {
+        pub(crate) fn $name(self, w: i32) -> crate::xml::writer::Result<Self> {
+            self.write(XmlEvent::start_element($el_name).attr("w:w", &format!("{}", w)))?
+                .close()
+        }
+    };
+}
+
 macro_rules! closed_border_el {
     ($name: ident, $el_name: expr) => {
         pub(crate) fn $name(

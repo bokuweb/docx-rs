@@ -375,20 +375,20 @@ impl BuildXML for Style {
         XMLBuilder::from(stream)
             .open_style(self.style_type, &self.style_id)?
             .add_child(&self.name)?
-            .add_child(&self.run_property)?
+            .add_optional_child(&self.next)?
+            .add_optional_child(&self.link)?
+            .apply_if(self.ui_priority.is_some(), |b| {
+                b.ui_priority(self.ui_priority.unwrap_or_default())
+            })?
+            .apply_if(self.q_format, |b| b.add_child(&QFormat::new()))?
+            .apply_if(self.semi_hidden, |b| b.semi_hidden())?
+            .apply_if(self.unhide_when_used, |b| b.unhide_when_used())?
             .add_child(&self.paragraph_property)?
+            .add_child(&self.run_property)?
             .apply_if(self.style_type == StyleType::Table, |b| {
                 b.add_child(&self.table_cell_property)?
                     .add_child(&self.table_property)
             })?
-            .add_optional_child(&self.next)?
-            .add_optional_child(&self.link)?
-            .apply_if(self.q_format, |b| b.add_child(&QFormat::new()))?
-            .apply_if(self.ui_priority.is_some(), |b| {
-                b.ui_priority(self.ui_priority.unwrap_or_default())
-            })?
-            .apply_if(self.semi_hidden, |b| b.semi_hidden())?
-            .apply_if(self.unhide_when_used, |b| b.unhide_when_used())?
             .add_optional_child(&self.based_on)?
             .close()?
             .into_inner()

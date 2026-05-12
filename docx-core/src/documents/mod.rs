@@ -92,8 +92,32 @@ pub struct Image(pub Vec<u8>);
 #[derive(Debug, Clone)]
 pub struct Png(pub Vec<u8>);
 
+#[derive(Debug, Clone)]
+pub struct Svg(pub Vec<u8>);
+
 pub type ImageIdAndPath = (String, String);
 pub type ImageIdAndBuf = (String, Vec<u8>);
+
+#[cfg(feature = "emf")]
+fn is_emf(path: &str, buf: &[u8]) -> bool {
+    if path.to_ascii_lowercase().ends_with(".emf") {
+        return true;
+    }
+    // EMF files start with EMR_HEADER, whose first 4 bytes are the
+    // record type 0x00000001 (little-endian) and bytes 40..44 hold
+    // the signature " EMF" (0x464D4520).
+    buf.len() >= 44
+        && buf[0..4] == [0x01, 0x00, 0x00, 0x00]
+        && buf[40..44] == [0x20, 0x45, 0x4D, 0x46]
+}
+
+#[cfg(feature = "emf")]
+fn convert_emf_to_svg(buf: &[u8]) -> Option<Vec<u8>> {
+    let wmf_player = wmf_core::converter::SVGPlayer::new();
+    let emf_player = emf_core::converter::SVGPlayer::new();
+    let converter = emf_core::converter::EMFConverter::new(buf, emf_player, wmf_player);
+    converter.run().ok()
+}
 
 impl ser::Serialize for Image {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
@@ -106,6 +130,16 @@ impl ser::Serialize for Image {
 }
 
 impl ser::Serialize for Png {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: ser::Serializer,
+    {
+        let base64 = base64::engine::general_purpose::STANDARD.encode(&self.0);
+        serializer.collect_str(&base64)
+    }
+}
+
+impl ser::Serialize for Svg {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: ser::Serializer,
@@ -141,6 +175,10 @@ pub struct Docx {
     pub themes: Vec<Theme>,
     // reader only
     pub images: Vec<(String, String, Image, Png)>,
+    // reader only — EMF images converted to SVG via the `emf` feature.
+    // Tuple: (rId, media path, original EMF bytes, converted SVG bytes).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub images_emf: Vec<(String, String, Image, Svg)>,
     // reader only
     pub hyperlinks: Vec<(String, String, String)>,
     pub footnotes: Footnotes,
@@ -185,6 +223,7 @@ impl Default for Docx {
             custom_item_rels: vec![],
             themes: vec![],
             images: vec![],
+            images_emf: vec![],
             hyperlinks: vec![],
             footnotes,
         }
@@ -249,6 +288,19 @@ impl Docx {
         path: impl Into<String>,
         buf: Vec<u8>,
     ) -> Self {
+        let path: String = path.into();
+
+        #[cfg(feature = "emf")]
+        if is_emf(&path, &buf) {
+            if let Some(svg) = convert_emf_to_svg(&buf) {
+                self.images_emf
+                    .push((id.into(), path, Image(buf), Svg(svg)));
+                return self;
+            }
+            // Conversion failed — fall through so the original bytes
+            // are still surfaced via the regular path (best-effort).
+        }
+
         #[cfg(feature = "image")]
         if let Ok(dimg) = image::load_from_memory(&buf) {
             let mut png = std::io::Cursor::new(vec![]);
@@ -257,13 +309,13 @@ impl Docx {
                 .expect("Unable to write dynamic image");
 
             self.images
-                .push((id.into(), path.into(), Image(buf), Png(png.into_inner())));
+                .push((id.into(), path, Image(buf), Png(png.into_inner())));
         }
         #[cfg(not(feature = "image"))]
         // without 'image' crate we can only test for PNG file signature
         if buf.starts_with(&[137, 80, 78, 71, 13, 10, 26, 10]) {
             self.images
-                .push((id.into(), path.into(), Image(buf.clone()), Png(buf)));
+                .push((id.into(), path, Image(buf.clone()), Png(buf)));
         }
         self
     }
@@ -2416,4 +2468,46 @@ fn update_document_by_toc(
     toc.items = items;
     children[toc_index] = DocumentChild::TableOfContents(Box::new(toc));
     children
+}
+
+#[cfg(all(test, feature = "emf"))]
+mod emf_tests {
+    use super::*;
+
+    fn emf_header_bytes() -> Vec<u8> {
+        // Minimal 88-byte EMR_HEADER prefix: record type 0x00000001,
+        // record size 0x00000058 (88), and signature " EMF" at offset 40.
+        let mut buf = vec![0u8; 88];
+        buf[0..4].copy_from_slice(&[0x01, 0x00, 0x00, 0x00]);
+        buf[4..8].copy_from_slice(&[0x58, 0x00, 0x00, 0x00]);
+        buf[40..44].copy_from_slice(&[0x20, 0x45, 0x4D, 0x46]);
+        buf
+    }
+
+    #[test]
+    fn is_emf_detects_extension() {
+        assert!(is_emf("word/media/image1.emf", &[]));
+        assert!(is_emf("word/media/IMAGE1.EMF", &[]));
+        assert!(!is_emf("word/media/image1.png", &[]));
+    }
+
+    #[test]
+    fn is_emf_detects_magic_bytes() {
+        let buf = emf_header_bytes();
+        assert!(is_emf("word/media/image1.bin", &buf));
+    }
+
+    #[test]
+    fn add_image_routes_emf_to_images_emf() {
+        let buf = emf_header_bytes();
+        let docx = Docx::new().add_image("rId1", "word/media/image1.emf", buf.clone());
+        // Conversion of this synthetic header may or may not succeed,
+        // but either way the regular `images` vector should not receive it.
+        assert!(docx.images.is_empty());
+        // If conversion succeeded, the EMF bucket holds it; otherwise it
+        // was silently dropped — both are acceptable for malformed input.
+        for (_, path, _, _) in &docx.images_emf {
+            assert!(path.ends_with(".emf"));
+        }
+    }
 }

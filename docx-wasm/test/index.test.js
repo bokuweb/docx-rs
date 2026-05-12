@@ -241,6 +241,110 @@ describe("reader", () => {
     const json = w.readXML(str);
     expect(json).toMatchSnapshot();
   });
+
+  test("should convert embedded EMF to SVG and expose it via imagesEmf", () => {
+    // Build a minimum-viable docx ZIP in memory that contains a single
+    // EMF media file (EMR_HEADER + EMR_EOF, 108 bytes). The Rust reader
+    // detects EMF by path/magic and routes it through emf-core, surfacing
+    // the converted SVG bytes on `imagesEmf`.
+    const u32 = (n) => {
+      const b = Buffer.alloc(4);
+      b.writeUInt32LE(n >>> 0, 0);
+      return b;
+    };
+    const i32 = (n) => {
+      const b = Buffer.alloc(4);
+      b.writeInt32LE(n, 0);
+      return b;
+    };
+    const u16 = (n) => {
+      const b = Buffer.alloc(2);
+      b.writeUInt16LE(n, 0);
+      return b;
+    };
+    const minimalEmf = Buffer.concat([
+      // EMR_HEADER (88 bytes)
+      u32(1), // record type
+      u32(88), // record size
+      i32(0), i32(0), i32(100), i32(100), // bounds
+      i32(0), i32(0), i32(2540), i32(2540), // frame
+      u32(0x464d4520), // " EMF" signature
+      u32(0x00010000), // version
+      u32(108), // total bytes
+      u32(2), // record count
+      u16(0), u16(0), // handles, reserved
+      u32(0), u32(0), u32(0), // description, palette
+      i32(1024), i32(768), // device size
+      i32(320), i32(240), // millimeters size
+      // EMR_EOF (20 bytes)
+      u32(14), // record type
+      u32(20), // record size
+      u32(0), u32(0), u32(20), // nPalEntries, off, sizeLast
+    ]);
+    expect(minimalEmf.length).toBe(108);
+
+    const zip = new Zip();
+    zip.addFile(
+      "[Content_Types].xml",
+      Buffer.from(
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+          '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+          '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
+          '<Default Extension="xml" ContentType="application/xml"/>' +
+          '<Default Extension="emf" ContentType="image/x-emf"/>' +
+          '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>' +
+          "</Types>"
+      )
+    );
+    zip.addFile(
+      "_rels/.rels",
+      Buffer.from(
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+          '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+          '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>' +
+          "</Relationships>"
+      )
+    );
+    zip.addFile(
+      "word/_rels/document.xml.rels",
+      Buffer.from(
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+          '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+          '<Relationship Id="rId10" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/image1.emf"/>' +
+          "</Relationships>"
+      )
+    );
+    zip.addFile(
+      "word/document.xml",
+      Buffer.from(
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+          '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
+          "<w:body><w:p><w:r><w:t>hello</w:t></w:r></w:p></w:body>" +
+          "</w:document>"
+      )
+    );
+    zip.addFile("word/media/image1.emf", minimalEmf);
+
+    const json = w.readDocx(zip.toBuffer());
+
+    // EMF images must NOT leak into the raster `images` array.
+    expect(json.images).toEqual([]);
+
+    // `imagesEmf` is omitted when empty, so guard for its presence.
+    expect(json.imagesEmf).toBeDefined();
+    expect(json.imagesEmf).toHaveLength(1);
+
+    const [rId, path, originalB64, svgB64] = json.imagesEmf[0];
+    expect(rId).toBe("rId10");
+    expect(path).toMatch(/image1\.emf$/);
+
+    // The original bytes round-trip through base64.
+    expect(Buffer.from(originalB64, "base64").equals(minimalEmf)).toBe(true);
+
+    // The converted bytes are a real SVG document.
+    const svgText = Buffer.from(svgB64, "base64").toString("utf-8");
+    expect(svgText).toMatch(/<svg/);
+  });
 });
 
 describe("writer", () => {

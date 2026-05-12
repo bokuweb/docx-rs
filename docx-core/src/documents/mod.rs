@@ -92,8 +92,32 @@ pub struct Image(pub Vec<u8>);
 #[derive(Debug, Clone)]
 pub struct Png(pub Vec<u8>);
 
+#[derive(Debug, Clone)]
+pub struct Svg(pub Vec<u8>);
+
 pub type ImageIdAndPath = (String, String);
 pub type ImageIdAndBuf = (String, Vec<u8>);
+
+#[cfg(feature = "emf")]
+fn is_emf(path: &str, buf: &[u8]) -> bool {
+    if path.to_ascii_lowercase().ends_with(".emf") {
+        return true;
+    }
+    // EMF files start with EMR_HEADER, whose first 4 bytes are the
+    // record type 0x00000001 (little-endian) and bytes 40..44 hold
+    // the signature " EMF" (0x464D4520).
+    buf.len() >= 44
+        && buf[0..4] == [0x01, 0x00, 0x00, 0x00]
+        && buf[40..44] == [0x20, 0x45, 0x4D, 0x46]
+}
+
+#[cfg(feature = "emf")]
+fn convert_emf_to_svg(buf: &[u8]) -> Option<Vec<u8>> {
+    let wmf_player = wmf_core::converter::SVGPlayer::new();
+    let emf_player = emf_core::converter::SVGPlayer::new();
+    let converter = emf_core::converter::EMFConverter::new(buf, emf_player, wmf_player);
+    converter.run().ok()
+}
 
 impl ser::Serialize for Image {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
@@ -106,6 +130,16 @@ impl ser::Serialize for Image {
 }
 
 impl ser::Serialize for Png {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: ser::Serializer,
+    {
+        let base64 = base64::engine::general_purpose::STANDARD.encode(&self.0);
+        serializer.collect_str(&base64)
+    }
+}
+
+impl ser::Serialize for Svg {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: ser::Serializer,
@@ -141,6 +175,10 @@ pub struct Docx {
     pub themes: Vec<Theme>,
     // reader only
     pub images: Vec<(String, String, Image, Png)>,
+    // reader only — EMF images converted to SVG via the `emf` feature.
+    // Tuple: (rId, media path, original EMF bytes, converted SVG bytes).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub images_emf: Vec<(String, String, Image, Svg)>,
     // reader only
     pub hyperlinks: Vec<(String, String, String)>,
     pub footnotes: Footnotes,
@@ -185,6 +223,7 @@ impl Default for Docx {
             custom_item_rels: vec![],
             themes: vec![],
             images: vec![],
+            images_emf: vec![],
             hyperlinks: vec![],
             footnotes,
         }
@@ -249,6 +288,19 @@ impl Docx {
         path: impl Into<String>,
         buf: Vec<u8>,
     ) -> Self {
+        let path: String = path.into();
+
+        #[cfg(feature = "emf")]
+        if is_emf(&path, &buf) {
+            if let Some(svg) = convert_emf_to_svg(&buf) {
+                self.images_emf
+                    .push((id.into(), path, Image(buf), Svg(svg)));
+                return self;
+            }
+            // Conversion failed — fall through so the original bytes
+            // are still surfaced via the regular path (best-effort).
+        }
+
         #[cfg(feature = "image")]
         if let Ok(dimg) = image::load_from_memory(&buf) {
             let mut png = std::io::Cursor::new(vec![]);
@@ -257,13 +309,13 @@ impl Docx {
                 .expect("Unable to write dynamic image");
 
             self.images
-                .push((id.into(), path.into(), Image(buf), Png(png.into_inner())));
+                .push((id.into(), path, Image(buf), Png(png.into_inner())));
         }
         #[cfg(not(feature = "image"))]
         // without 'image' crate we can only test for PNG file signature
         if buf.starts_with(&[137, 80, 78, 71, 13, 10, 26, 10]) {
             self.images
-                .push((id.into(), path.into(), Image(buf.clone()), Png(buf)));
+                .push((id.into(), path, Image(buf.clone()), Png(buf)));
         }
         self
     }
@@ -2416,4 +2468,303 @@ fn update_document_by_toc(
     toc.items = items;
     children[toc_index] = DocumentChild::TableOfContents(Box::new(toc));
     children
+}
+
+#[cfg(all(test, feature = "emf"))]
+mod emf_tests {
+    use super::*;
+
+    /// Build a syntactically-valid, minimal EMF: an EMR_HEADER followed by
+    /// an EMR_EOF. emf-core should accept this and emit a (possibly empty)
+    /// SVG document.
+    pub(super) fn minimal_valid_emf() -> Vec<u8> {
+        let mut buf = Vec::<u8>::with_capacity(108);
+
+        // ---- EMR_HEADER (88 bytes) ----
+        buf.extend_from_slice(&1u32.to_le_bytes()); // record type
+        buf.extend_from_slice(&88u32.to_le_bytes()); // record size
+        // Bounds rect (RECTL)
+        buf.extend_from_slice(&0i32.to_le_bytes());
+        buf.extend_from_slice(&0i32.to_le_bytes());
+        buf.extend_from_slice(&100i32.to_le_bytes());
+        buf.extend_from_slice(&100i32.to_le_bytes());
+        // Frame rect (RECTL)
+        buf.extend_from_slice(&0i32.to_le_bytes());
+        buf.extend_from_slice(&0i32.to_le_bytes());
+        buf.extend_from_slice(&2540i32.to_le_bytes());
+        buf.extend_from_slice(&2540i32.to_le_bytes());
+        // " EMF" signature, version, total bytes, record count
+        buf.extend_from_slice(&0x464D_4520u32.to_le_bytes());
+        buf.extend_from_slice(&0x0001_0000u32.to_le_bytes());
+        buf.extend_from_slice(&108u32.to_le_bytes());
+        buf.extend_from_slice(&2u32.to_le_bytes());
+        // handles, reserved, description, palette
+        buf.extend_from_slice(&0u16.to_le_bytes());
+        buf.extend_from_slice(&0u16.to_le_bytes());
+        buf.extend_from_slice(&0u32.to_le_bytes());
+        buf.extend_from_slice(&0u32.to_le_bytes());
+        buf.extend_from_slice(&0u32.to_le_bytes());
+        // Device size (SIZEL)
+        buf.extend_from_slice(&1024i32.to_le_bytes());
+        buf.extend_from_slice(&768i32.to_le_bytes());
+        // Millimeters size (SIZEL)
+        buf.extend_from_slice(&320i32.to_le_bytes());
+        buf.extend_from_slice(&240i32.to_le_bytes());
+        debug_assert_eq!(buf.len(), 88);
+
+        // ---- EMR_EOF (20 bytes) ----
+        buf.extend_from_slice(&14u32.to_le_bytes()); // record type
+        buf.extend_from_slice(&20u32.to_le_bytes()); // record size
+        buf.extend_from_slice(&0u32.to_le_bytes()); // nPalEntries
+        buf.extend_from_slice(&0u32.to_le_bytes()); // offPalEntries
+        buf.extend_from_slice(&20u32.to_le_bytes()); // SizeLast
+
+        buf
+    }
+
+    /// 44-byte buffer with the right magic bytes but no payload. Detected
+    /// as EMF, but can't actually be parsed — used to exercise the
+    /// best-effort fallback.
+    fn corrupt_emf_header() -> Vec<u8> {
+        let mut buf = vec![0u8; 44];
+        buf[0..4].copy_from_slice(&[0x01, 0x00, 0x00, 0x00]);
+        buf[4..8].copy_from_slice(&[0x2C, 0x00, 0x00, 0x00]);
+        buf[40..44].copy_from_slice(&[0x20, 0x45, 0x4D, 0x46]);
+        buf
+    }
+
+    fn png_signature_bytes() -> Vec<u8> {
+        // 8-byte PNG signature followed by zeros — enough to fail PNG
+        // decoding but plenty to verify routing decisions.
+        let mut buf = vec![137, 80, 78, 71, 13, 10, 26, 10];
+        buf.resize(64, 0);
+        buf
+    }
+
+    // ---------- is_emf ----------
+
+    #[test]
+    fn is_emf_detects_lowercase_extension() {
+        assert!(is_emf("word/media/image1.emf", &[]));
+    }
+
+    #[test]
+    fn is_emf_detects_uppercase_extension() {
+        assert!(is_emf("word/media/IMAGE1.EMF", &[]));
+    }
+
+    #[test]
+    fn is_emf_rejects_png_extension() {
+        assert!(!is_emf("word/media/image1.png", &png_signature_bytes()));
+    }
+
+    #[test]
+    fn is_emf_rejects_empty_buffer_with_unrelated_extension() {
+        assert!(!is_emf("word/media/image1.bin", &[]));
+    }
+
+    #[test]
+    fn is_emf_detects_magic_bytes_without_extension() {
+        let buf = minimal_valid_emf();
+        assert!(is_emf("word/media/image1.bin", &buf));
+    }
+
+    #[test]
+    fn is_emf_rejects_buffer_too_short_for_signature() {
+        // Has the record-type bytes but is shorter than 44 bytes, so the
+        // signature check at offset 40 cannot pass.
+        let buf = vec![0x01, 0x00, 0x00, 0x00];
+        assert!(!is_emf("x.bin", &buf));
+    }
+
+    #[test]
+    fn is_emf_rejects_wrong_signature() {
+        // Right size, right record type, wrong signature bytes.
+        let mut buf = vec![0u8; 44];
+        buf[0..4].copy_from_slice(&[0x01, 0x00, 0x00, 0x00]);
+        buf[40..44].copy_from_slice(&[0xDE, 0xAD, 0xBE, 0xEF]);
+        assert!(!is_emf("x.bin", &buf));
+    }
+
+    // ---------- convert_emf_to_svg ----------
+
+    #[test]
+    fn convert_emf_to_svg_produces_svg_for_valid_input() {
+        let bytes = convert_emf_to_svg(&minimal_valid_emf()).expect("conversion should succeed");
+        assert!(!bytes.is_empty(), "SVG output should not be empty");
+        let text = std::str::from_utf8(&bytes).expect("SVG output should be UTF-8");
+        // The emf-core SVG player emits an <svg ...> element. Don't pin
+        // down the exact prologue — just look for the opening tag.
+        assert!(
+            text.contains("<svg"),
+            "SVG output should contain `<svg`, got: {}",
+            &text[..text.len().min(200)]
+        );
+    }
+
+    #[test]
+    fn convert_emf_to_svg_handles_corrupt_input_without_panicking() {
+        // Either Some(_) or None is fine — we only care that it doesn't
+        // panic on bytes that pass our cheap signature sniff but aren't
+        // a real EMF stream.
+        let _ = convert_emf_to_svg(&corrupt_emf_header());
+    }
+
+    // ---------- add_image routing ----------
+
+    #[test]
+    fn add_image_routes_valid_emf_into_images_emf() {
+        let buf = minimal_valid_emf();
+        let docx = Docx::new().add_image("rId1", "word/media/image1.emf", buf.clone());
+
+        assert!(
+            docx.images.is_empty(),
+            "EMF should not appear in the raster `images` vector"
+        );
+        assert_eq!(docx.images_emf.len(), 1);
+        let (id, path, original, svg) = &docx.images_emf[0];
+        assert_eq!(id, "rId1");
+        assert_eq!(path, "word/media/image1.emf");
+        assert_eq!(original.0, buf);
+        assert!(!svg.0.is_empty());
+        assert!(std::str::from_utf8(&svg.0).unwrap().contains("<svg"));
+    }
+
+    #[test]
+    fn add_image_falls_through_on_emf_conversion_failure() {
+        // The corrupt header passes `is_emf` (correct signature) but
+        // can't be parsed end-to-end. The reader should fall through to
+        // the image-crate path rather than dropping the bytes silently
+        // or storing an empty SVG.
+        let buf = corrupt_emf_header();
+        let docx = Docx::new().add_image("rId1", "word/media/image1.bin", buf);
+        assert!(
+            docx.images_emf.is_empty(),
+            "failed conversion should not produce an `images_emf` entry"
+        );
+    }
+
+    #[test]
+    fn add_image_does_not_route_png_into_images_emf() {
+        let buf = png_signature_bytes();
+        let docx = Docx::new().add_image("rId1", "word/media/image1.png", buf);
+        assert!(docx.images_emf.is_empty());
+    }
+
+    // ---------- Svg serialization ----------
+
+    #[test]
+    fn svg_serializes_as_base64() {
+        use base64::Engine;
+        let svg = Svg(b"<svg xmlns=\"http://www.w3.org/2000/svg\"/>".to_vec());
+        let json = serde_json::to_string(&svg).expect("should serialize");
+        // Quoted base64 string — strip the surrounding quotes before decoding.
+        let inner = json.trim_matches('"');
+        let decoded = base64::engine::general_purpose::STANDARD
+            .decode(inner)
+            .expect("should base64-decode");
+        assert_eq!(decoded, svg.0);
+    }
+
+    #[test]
+    fn docx_serializes_with_images_emf_when_populated() {
+        let docx = Docx::new().add_image("rId1", "word/media/image1.emf", minimal_valid_emf());
+        let json = serde_json::to_string(&docx).expect("should serialize");
+        assert!(
+            json.contains("imagesEmf"),
+            "serialized Docx should expose `imagesEmf` field when populated"
+        );
+    }
+
+    #[test]
+    fn docx_omits_images_emf_when_empty() {
+        // Empty Docx — `imagesEmf` should not appear thanks to
+        // `skip_serializing_if = "Vec::is_empty"`. This protects every
+        // existing JSON snapshot from gaining a spurious key.
+        let docx = Docx::new();
+        let json = serde_json::to_string(&docx).expect("should serialize");
+        assert!(
+            !json.contains("imagesEmf"),
+            "empty `images_emf` should be skipped in serialization"
+        );
+    }
+}
+
+/// Reader-level integration tests for the `emf` feature. We construct a
+/// tiny in-memory docx (just enough relationships + a media entry) and
+/// run it through `read_docx` to verify the converted SVG surfaces on
+/// `Docx.images_emf`.
+#[cfg(all(test, feature = "emf"))]
+mod emf_reader_tests {
+    use super::emf_tests::minimal_valid_emf;
+    use std::io::Write;
+
+    /// Builds a minimum-viable docx ZIP that contains one EMF media
+    /// file referenced from `document.xml.rels`. The XML payloads are
+    /// the smallest accepted by the reader; the EMF is the same minimal
+    /// header/EOF pair used in the unit tests.
+    fn build_docx_with_emf() -> Vec<u8> {
+        let buf = std::io::Cursor::new(Vec::<u8>::new());
+        let mut zip = zip::ZipWriter::new(buf);
+        let opts = zip::write::FileOptions::default()
+            .compression_method(zip::CompressionMethod::Deflated);
+
+        let content_types = r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Default Extension="emf" ContentType="image/x-emf"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+</Types>"#;
+        let root_rels = r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>"#;
+        let doc_rels = r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId10" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/image1.emf"/>
+</Relationships>"#;
+        let document = r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>
+    <w:p><w:r><w:t>hello</w:t></w:r></w:p>
+  </w:body>
+</w:document>"#;
+
+        for (path, body) in [
+            ("[Content_Types].xml", content_types),
+            ("_rels/.rels", root_rels),
+            ("word/_rels/document.xml.rels", doc_rels),
+            ("word/document.xml", document),
+        ] {
+            zip.start_file(path, opts).unwrap();
+            zip.write_all(body.as_bytes()).unwrap();
+        }
+        zip.start_file("word/media/image1.emf", opts).unwrap();
+        zip.write_all(&minimal_valid_emf()).unwrap();
+
+        zip.finish().unwrap().into_inner()
+    }
+
+    #[test]
+    fn read_docx_routes_emf_media_to_images_emf() {
+        let docx_bytes = build_docx_with_emf();
+        let docx = crate::reader::read_docx(&docx_bytes).expect("should read docx");
+
+        assert!(
+            docx.images.is_empty(),
+            "EMF media should not appear in the raster `images` vector"
+        );
+        assert_eq!(
+            docx.images_emf.len(),
+            1,
+            "EMF media should be routed into `images_emf`"
+        );
+        let (id, path, original, svg) = &docx.images_emf[0];
+        assert_eq!(id, "rId10");
+        assert!(path.ends_with("image1.emf"));
+        assert_eq!(original.0, minimal_valid_emf());
+        let svg_text = std::str::from_utf8(&svg.0).expect("SVG should be UTF-8");
+        assert!(svg_text.contains("<svg"));
+    }
 }

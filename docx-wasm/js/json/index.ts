@@ -50,6 +50,10 @@ export type DocxJSON = {
   themes: ThemeJSON[];
   //(id, path, base64 encoded original image data, base64 encoded png image data)
   images: [string, string, string, string][];
+  // (id, path, base64 encoded original EMF bytes, base64 encoded SVG bytes).
+  // Only populated when the `emf` feature is enabled on the Rust side
+  // (it is for docx-wasm). Omitted from the JSON when empty.
+  imagesEmf?: [string, string, string, string][];
   hyperlinks: [string, string, string][];
 };
 

@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support `fitText`
 - Support `qFormat` / `uiPriority` / `semiHidden` / `unhideWhenUsed`
 - Support `off`
+- Add optional `emf` feature: convert embedded EMF images to SVG on read via
+  the [`emf-core`](https://github.com/mythrnr/emf-rs) crate. EMF images are
+  exposed via the new `Docx.images_emf` field (and `imagesEmf` in the
+  docx-wasm JSON). docx-wasm enables this by default. MSRV bumped to
+  Rust 1.85.0 because the upstream deps require it.
 
 ## @0.4.19 (8. Feb, 2026)
 

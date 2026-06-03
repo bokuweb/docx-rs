@@ -2,7 +2,7 @@ use crate::XMLDocx;
 
 use std::io::prelude::*;
 use std::io::Seek;
-use zip::write::FileOptions;
+use zip::write::SimpleFileOptions;
 
 pub fn zip<W>(w: W, xml: XMLDocx) -> zip::result::ZipResult<()>
 where
@@ -10,12 +10,14 @@ where
 {
     let mut zip = zip::ZipWriter::new(w);
 
-    zip.add_directory("word/", Default::default())?;
-    zip.add_directory("word/_rels", Default::default())?;
-    zip.add_directory("_rels/", Default::default())?;
-    zip.add_directory("docProps/", Default::default())?;
+    let directory_options = SimpleFileOptions::default();
 
-    let options = FileOptions::default()
+    zip.add_directory("word/", directory_options)?;
+    zip.add_directory("word/_rels", directory_options)?;
+    zip.add_directory("_rels/", directory_options)?;
+    zip.add_directory("docProps/", directory_options)?;
+
+    let options = SimpleFileOptions::default()
         .compression_method(zip::CompressionMethod::Stored)
         .unix_permissions(0o755);
 
@@ -69,7 +71,7 @@ where
     }
 
     if !xml.media.is_empty() {
-        zip.add_directory("word/media/", Default::default())?;
+        zip.add_directory("word/media/", directory_options)?;
         for m in xml.media {
             // For now only png supported
             zip.start_file(format!("word/media/{}.png", m.0), options)?;
@@ -79,11 +81,11 @@ where
 
     // For now support only taskpanes
     if let Some(taskpanes) = xml.taskpanes {
-        zip.add_directory("word/webextensions/", Default::default())?;
+        zip.add_directory("word/webextensions/", directory_options)?;
         zip.start_file("word/webextensions/taskpanes.xml", options)?;
         zip.write_all(&taskpanes)?;
 
-        zip.add_directory("word/webextensions/_rels", Default::default())?;
+        zip.add_directory("word/webextensions/_rels", directory_options)?;
         zip.start_file("word/webextensions/_rels/taskpanes.xml.rels", options)?;
         zip.write_all(&xml.taskpanes_rels)?;
 
@@ -97,7 +99,7 @@ where
     }
 
     if !xml.custom_items.is_empty() {
-        zip.add_directory("customXml/_rels", Default::default())?;
+        zip.add_directory("customXml/_rels", directory_options)?;
     }
 
     for (i, item) in xml.custom_items.into_iter().enumerate() {

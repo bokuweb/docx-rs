@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support `fitText`
 - Support `qFormat` / `uiPriority` / `semiHidden` / `unhideWhenUsed`
 - Support `off`
+- Add optional `emf` feature: convert embedded EMF images to SVG on read
+  via the [`emf-core`](https://github.com/mythrnr/emf-rs) crate. EMF
+  entries are surfaced through the existing `Docx.images` field; the
+  preview slot holds SVG bytes (instead of PNG) for paths ending in
+  `.emf`. docx-wasm enables this feature by default.
 
 ## @0.4.19 (8. Feb, 2026)
 

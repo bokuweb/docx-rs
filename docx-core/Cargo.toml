@@ -34,8 +34,8 @@ serde = { version = "1.0.219", features = ["derive"] }
 serde_json = {version = "1.0.142" }
 base64 = "0.22.1"
 image = { version = "0.25.6", default-features = false, features=["gif", "jpeg", "png", "bmp", "tiff"], optional = true }
-emf-core = { git = "https://github.com/mythrnr/emf-rs.git", tag = "0.0.5", default-features = false, features = ["svg"], optional = true }
-wmf-core = { git = "https://github.com/mythrnr/wmf-rs.git", tag = "0.0.17", default-features = false, features = ["svg"], optional = true }
+emf-core = { git = "https://github.com/mythrnr/emf-rs.git", tag = "0.0.7", default-features = false, features = ["svg"], optional = true }
+wmf-core = { git = "https://github.com/mythrnr/wmf-rs.git", tag = "0.0.23", default-features = false, features = ["svg"], optional = true }
 wasm-bindgen = { version = "0.2.92", optional = true }
 ts-rs = { version = "6.1", optional = true }
 quick-xml = { version = "0.36", default-features = false, features = ["encoding"] }

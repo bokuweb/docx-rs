@@ -242,11 +242,12 @@ describe("reader", () => {
     expect(json).toMatchSnapshot();
   });
 
-  test("should convert embedded EMF to SVG and expose it via imagesEmf", () => {
+  test("should convert embedded EMF to SVG and surface it via images", () => {
     // Build a minimum-viable docx ZIP in memory that contains a single
     // EMF media file (EMR_HEADER + EMR_EOF, 108 bytes). The Rust reader
-    // detects EMF by path/magic and routes it through emf-core, surfacing
-    // the converted SVG bytes on `imagesEmf`.
+    // detects EMF by path/magic and routes it through emf-core. The
+    // converted SVG bytes are surfaced in the 4th slot of the `images`
+    // tuple — the same slot that holds PNG bytes for raster originals.
     const u32 = (n) => {
       const b = Buffer.alloc(4);
       b.writeUInt32LE(n >>> 0, 0);
@@ -327,23 +328,22 @@ describe("reader", () => {
 
     const json = w.readDocx(zip.toBuffer());
 
-    // EMF images must NOT leak into the raster `images` array.
-    expect(json.images).toEqual([]);
+    // EMF entries live in the unified `images` array, with SVG bytes
+    // in the preview slot (4th element of the tuple). No separate
+    // `imagesEmf` key is emitted.
+    expect(json.imagesEmf).toBeUndefined();
+    expect(json.images).toHaveLength(1);
 
-    // `imagesEmf` is omitted when empty, so guard for its presence.
-    expect(json.imagesEmf).toBeDefined();
-    expect(json.imagesEmf).toHaveLength(1);
-
-    const [rId, path, originalB64, svgB64] = json.imagesEmf[0];
+    const [rId, path, originalB64, previewB64] = json.images[0];
     expect(rId).toBe("rId10");
     expect(path).toMatch(/image1\.emf$/);
 
     // The original bytes round-trip through base64.
     expect(Buffer.from(originalB64, "base64").equals(minimalEmf)).toBe(true);
 
-    // The converted bytes are a real SVG document.
-    const svgText = Buffer.from(svgB64, "base64").toString("utf-8");
-    expect(svgText).toMatch(/<svg/);
+    // The preview is SVG (not PNG) because the path is `.emf`.
+    const previewText = Buffer.from(previewB64, "base64").toString("utf-8");
+    expect(previewText).toMatch(/<svg/);
   });
 });
 

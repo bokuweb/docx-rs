@@ -89,11 +89,16 @@ use self::image_collector::{collect_images_from_paragraph, collect_images_from_t
 #[derive(Debug, Clone)]
 pub struct Image(pub Vec<u8>);
 
+/// Decoded preview bytes for an entry in `Docx.images`.
+///
+/// For raster originals (PNG / JPEG / BMP / GIF / TIFF) decoded via the
+/// `image` crate, the contents are PNG bytes. For EMF originals decoded
+/// via the `emf` feature, the contents are SVG bytes instead. The struct
+/// is named `Png` for backwards compatibility; callers can distinguish
+/// the two cases by sniffing the bytes (`<svg` / `\x89PNG`) or by
+/// checking the corresponding path's file extension (`.emf` → SVG).
 #[derive(Debug, Clone)]
 pub struct Png(pub Vec<u8>);
-
-#[derive(Debug, Clone)]
-pub struct Svg(pub Vec<u8>);
 
 pub type ImageIdAndPath = (String, String);
 pub type ImageIdAndBuf = (String, Vec<u8>);
@@ -139,16 +144,6 @@ impl ser::Serialize for Png {
     }
 }
 
-impl ser::Serialize for Svg {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: ser::Serializer,
-    {
-        let base64 = base64::engine::general_purpose::STANDARD.encode(&self.0);
-        serializer.collect_str(&base64)
-    }
-}
-
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Docx {
@@ -173,12 +168,13 @@ pub struct Docx {
     pub custom_item_rels: Vec<CustomItemRels>,
     // reader only
     pub themes: Vec<Theme>,
-    // reader only
+    /// Reader-only collection of images embedded in `word/media/`.
+    ///
+    /// Each tuple is `(rId, media path, original bytes, preview bytes)`.
+    /// The preview is PNG for raster originals decoded via the `image`
+    /// crate, and SVG for EMF originals decoded via the `emf` feature.
+    /// See [`Png`] for details.
     pub images: Vec<(String, String, Image, Png)>,
-    // reader only — EMF images converted to SVG via the `emf` feature.
-    // Tuple: (rId, media path, original EMF bytes, converted SVG bytes).
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub images_emf: Vec<(String, String, Image, Svg)>,
     // reader only
     pub hyperlinks: Vec<(String, String, String)>,
     pub footnotes: Footnotes,
@@ -223,7 +219,6 @@ impl Default for Docx {
             custom_item_rels: vec![],
             themes: vec![],
             images: vec![],
-            images_emf: vec![],
             hyperlinks: vec![],
             footnotes,
         }
@@ -293,8 +288,10 @@ impl Docx {
         #[cfg(feature = "emf")]
         if is_emf(&path, &buf) {
             if let Some(svg) = convert_emf_to_svg(&buf) {
-                self.images_emf
-                    .push((id.into(), path, Image(buf), Svg(svg)));
+                // The `Png` slot holds SVG bytes here — see the doc
+                // comment on `Png`. Consumers can detect this case via
+                // the `.emf` extension on the path.
+                self.images.push((id.into(), path, Image(buf), Png(svg)));
                 return self;
             }
             // Conversion failed — fall through so the original bytes
@@ -2613,87 +2610,83 @@ mod emf_tests {
     // ---------- add_image routing ----------
 
     #[test]
-    fn add_image_routes_valid_emf_into_images_emf() {
+    fn add_image_routes_valid_emf_into_images_with_svg_preview() {
         let buf = minimal_valid_emf();
         let docx = Docx::new().add_image("rId1", "word/media/image1.emf", buf.clone());
 
-        assert!(
-            docx.images.is_empty(),
-            "EMF should not appear in the raster `images` vector"
+        assert_eq!(
+            docx.images.len(),
+            1,
+            "EMF should land in the unified `images` vector"
         );
-        assert_eq!(docx.images_emf.len(), 1);
-        let (id, path, original, svg) = &docx.images_emf[0];
+        let (id, path, original, preview) = &docx.images[0];
         assert_eq!(id, "rId1");
         assert_eq!(path, "word/media/image1.emf");
         assert_eq!(original.0, buf);
-        assert!(!svg.0.is_empty());
-        assert!(std::str::from_utf8(&svg.0).unwrap().contains("<svg"));
+        // For .emf entries the `Png` slot actually holds SVG bytes.
+        assert!(!preview.0.is_empty());
+        assert!(std::str::from_utf8(&preview.0).unwrap().contains("<svg"));
     }
 
     #[test]
     fn add_image_falls_through_on_emf_conversion_failure() {
         // The corrupt header passes `is_emf` (correct signature) but
         // can't be parsed end-to-end. The reader should fall through to
-        // the image-crate path rather than dropping the bytes silently
-        // or storing an empty SVG.
+        // the image-crate path rather than storing an empty SVG. The
+        // `image` crate will then also fail on these bytes, so nothing
+        // ends up in `images` — same behaviour as today for any
+        // unrecognised media file.
         let buf = corrupt_emf_header();
         let docx = Docx::new().add_image("rId1", "word/media/image1.bin", buf);
         assert!(
-            docx.images_emf.is_empty(),
-            "failed conversion should not produce an `images_emf` entry"
+            docx.images.is_empty(),
+            "failed EMF conversion + failed PNG decode = no entry"
         );
     }
 
     #[test]
-    fn add_image_does_not_route_png_into_images_emf() {
-        let buf = png_signature_bytes();
-        let docx = Docx::new().add_image("rId1", "word/media/image1.png", buf);
-        assert!(docx.images_emf.is_empty());
+    fn add_image_routes_png_as_png_preview() {
+        // Smallest valid 1x1 RGB PNG, generated via the `image` crate.
+        let png_bytes = {
+            let img = image::RgbImage::from_pixel(1, 1, image::Rgb([0, 0, 0]));
+            let mut cursor = std::io::Cursor::new(Vec::new());
+            image::DynamicImage::ImageRgb8(img)
+                .write_to(&mut cursor, image::ImageFormat::Png)
+                .unwrap();
+            cursor.into_inner()
+        };
+        let _ = png_signature_bytes(); // suppress unused warning if any
+        let docx = Docx::new().add_image("rId1", "word/media/image1.png", png_bytes);
+        assert_eq!(docx.images.len(), 1);
+        let (_, _, _, preview) = &docx.images[0];
+        // PNG preview starts with the PNG signature, not `<svg`.
+        assert_eq!(&preview.0[..8], &[137, 80, 78, 71, 13, 10, 26, 10]);
     }
 
-    // ---------- Svg serialization ----------
+    // ---------- Docx JSON serialization ----------
 
     #[test]
-    fn svg_serializes_as_base64() {
-        use base64::Engine;
-        let svg = Svg(b"<svg xmlns=\"http://www.w3.org/2000/svg\"/>".to_vec());
-        let json = serde_json::to_string(&svg).expect("should serialize");
-        // Quoted base64 string — strip the surrounding quotes before decoding.
-        let inner = json.trim_matches('"');
-        let decoded = base64::engine::general_purpose::STANDARD
-            .decode(inner)
-            .expect("should base64-decode");
-        assert_eq!(decoded, svg.0);
-    }
-
-    #[test]
-    fn docx_serializes_with_images_emf_when_populated() {
+    fn docx_serializes_emf_under_images_field() {
         let docx = Docx::new().add_image("rId1", "word/media/image1.emf", minimal_valid_emf());
         let json = serde_json::to_string(&docx).expect("should serialize");
-        assert!(
-            json.contains("imagesEmf"),
-            "serialized Docx should expose `imagesEmf` field when populated"
-        );
-    }
-
-    #[test]
-    fn docx_omits_images_emf_when_empty() {
-        // Empty Docx — `imagesEmf` should not appear thanks to
-        // `skip_serializing_if = "Vec::is_empty"`. This protects every
-        // existing JSON snapshot from gaining a spurious key.
-        let docx = Docx::new();
-        let json = serde_json::to_string(&docx).expect("should serialize");
+        // EMF entries appear under the existing `images` key — no
+        // separate `imagesEmf` key is emitted.
+        assert!(json.contains("\"images\""));
         assert!(
             !json.contains("imagesEmf"),
-            "empty `images_emf` should be skipped in serialization"
+            "EMF is unified into `images`; no separate `imagesEmf` key"
         );
+        // The original bytes are base64-serialised inside the tuple.
+        use base64::Engine;
+        let b64 = base64::engine::general_purpose::STANDARD.encode(minimal_valid_emf());
+        assert!(json.contains(&b64));
     }
 }
 
 /// Reader-level integration tests for the `emf` feature. We construct a
 /// tiny in-memory docx (just enough relationships + a media entry) and
 /// run it through `read_docx` to verify the converted SVG surfaces on
-/// `Docx.images_emf`.
+/// `Docx.images` (the EMF case stores SVG bytes in the preview slot).
 #[cfg(all(test, feature = "emf"))]
 mod emf_reader_tests {
     use super::emf_tests::minimal_valid_emf;
@@ -2706,7 +2699,7 @@ mod emf_reader_tests {
     fn build_docx_with_emf() -> Vec<u8> {
         let buf = std::io::Cursor::new(Vec::<u8>::new());
         let mut zip = zip::ZipWriter::new(buf);
-        let opts = zip::write::FileOptions::default()
+        let opts: zip::write::FileOptions<'_, ()> = zip::write::FileOptions::default()
             .compression_method(zip::CompressionMethod::Deflated);
 
         let content_types = r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2747,24 +2740,21 @@ mod emf_reader_tests {
     }
 
     #[test]
-    fn read_docx_routes_emf_media_to_images_emf() {
+    fn read_docx_routes_emf_media_to_images_with_svg_preview() {
         let docx_bytes = build_docx_with_emf();
         let docx = crate::reader::read_docx(&docx_bytes).expect("should read docx");
 
-        assert!(
-            docx.images.is_empty(),
-            "EMF media should not appear in the raster `images` vector"
-        );
         assert_eq!(
-            docx.images_emf.len(),
+            docx.images.len(),
             1,
-            "EMF media should be routed into `images_emf`"
+            "EMF media should be routed into the unified `images` vector"
         );
-        let (id, path, original, svg) = &docx.images_emf[0];
+        let (id, path, original, preview) = &docx.images[0];
         assert_eq!(id, "rId10");
         assert!(path.ends_with("image1.emf"));
         assert_eq!(original.0, minimal_valid_emf());
-        let svg_text = std::str::from_utf8(&svg.0).expect("SVG should be UTF-8");
-        assert!(svg_text.contains("<svg"));
+        // For .emf entries the preview slot holds SVG bytes (not PNG).
+        let preview_text = std::str::from_utf8(&preview.0).expect("SVG should be UTF-8");
+        assert!(preview_text.contains("<svg"));
     }
 }

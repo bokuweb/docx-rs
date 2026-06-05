@@ -48,12 +48,17 @@ export type DocxJSON = {
   webSettings: WebSettingsJSON;
   fontTable: {};
   themes: ThemeJSON[];
-  //(id, path, base64 encoded original image data, base64 encoded png image data)
+  /**
+   * `[id, path, base64 original bytes, base64 preview bytes]`.
+   *
+   * The preview is PNG for raster originals (PNG / JPEG / GIF / BMP / TIFF).
+   * For EMF originals (path ends with `.emf`) the preview is SVG bytes
+   * instead — decoded via emf-core on the Rust side. Distinguish the
+   * two cases via the file extension on `path`, or by sniffing the
+   * decoded preview bytes (PNG starts with `\x89PNG`, SVG starts with
+   * `<svg` / `<?xml`).
+   */
   images: [string, string, string, string][];
-  // (id, path, base64 encoded original EMF bytes, base64 encoded SVG bytes).
-  // Only populated when the `emf` feature is enabled on the Rust side
-  // (it is for docx-wasm). Omitted from the JSON when empty.
-  imagesEmf?: [string, string, string, string][];
   hyperlinks: [string, string, string][];
 };
 

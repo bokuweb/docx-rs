@@ -373,7 +373,7 @@ impl<W: Write> XMLBuilder<W> {
     closed_with_str!(table_style, "w:tblStyle");
     closed_w_with_type_el!(table_width, "w:tblW");
     closed_w_with_type_el!(table_indent, "w:tblInd");
-    closed_w_with_type_el!(grid_column, "w:gridCol");
+    closed_w_el!(grid_column, "w:gridCol");
     closed_w_with_type_el!(table_cell_width, "w:tcW");
 
     closed!(table_row_height, "w:trHeight", "w:val", "w:hRule");

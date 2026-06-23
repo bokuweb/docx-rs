@@ -9,7 +9,7 @@ use std::str::FromStr;
 
 // @See: 20.4.3.4 ST_RelFromH (Horizontal Relative Positioning)
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
-#[derive(Debug, Clone, Copy, PartialEq, Serialize)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Serialize)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
@@ -31,6 +31,7 @@ pub enum RelativeFromHType {
     LeftMargin,
     /// Specifies that the horizontal positioning shall be
     /// relative to the page margins.
+    #[default]
     Margin,
     /// Specifies that the horizontal positioning shall be
     /// relative to the outside margin of the current page (the
@@ -42,12 +43,6 @@ pub enum RelativeFromHType {
     /// Specifies that the horizontal positioning shall be
     /// relative to the right margin of the page.
     RightMargin,
-}
-
-impl Default for RelativeFromHType {
-    fn default() -> Self {
-        Self::Margin
-    }
 }
 
 impl fmt::Display for RelativeFromHType {
@@ -83,7 +78,7 @@ impl FromStr for RelativeFromHType {
 }
 
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
-#[derive(Debug, Clone, Copy, PartialEq, Serialize)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Serialize)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[cfg_attr(feature = "wasm", ts(export))]
 #[serde(rename_all = "camelCase")]
@@ -91,17 +86,12 @@ pub enum RelativeFromVType {
     BottomMargin,
     InsideMargin,
     Line,
+    #[default]
     Margin,
     OutsizeMargin,
     Page,
     Paragraph,
     TopMargin,
-}
-
-impl Default for RelativeFromVType {
-    fn default() -> Self {
-        Self::Margin
-    }
 }
 
 impl fmt::Display for RelativeFromVType {

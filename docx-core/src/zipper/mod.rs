@@ -104,11 +104,11 @@ where
 
     for (i, item) in xml.custom_items.into_iter().enumerate() {
         let n = i + 1;
-        zip.start_file(format!("customXml/_rels/item{}.xml.rels", n), options)?;
+        zip.start_file(format!("customXml/_rels/item{n}.xml.rels"), options)?;
         zip.write_all(&xml.custom_item_rels[i])?;
-        zip.start_file(format!("customXml/item{}.xml", n), options)?;
+        zip.start_file(format!("customXml/item{n}.xml"), options)?;
         zip.write_all(&item)?;
-        zip.start_file(format!("customXml/itemProps{}.xml", n), options)?;
+        zip.start_file(format!("customXml/itemProps{n}.xml"), options)?;
         zip.write_all(&xml.custom_item_props[i])?;
     }
 

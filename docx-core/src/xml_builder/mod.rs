@@ -47,7 +47,6 @@ impl<W: Write> XMLBuilder<W> {
             perform_escaping: false,
             perform_indent: false,
             line_separator: "".into(),
-            ..Default::default()
         };
         let writer = config.create_writer(writer);
         XMLBuilder { writer }
@@ -158,7 +157,7 @@ impl<W: Write> XMLBuilder<W> {
     /// ```
     pub(crate) fn inner_mut(&mut self) -> Result<&mut W> {
         self.writer.write("")?; // closes non-finished tags
-        Ok(self.writer.inner_mut()?)
+        self.writer.inner_mut()
     }
 
     /// Unwraps this `XmlBuilder`, returning the underlying writer.

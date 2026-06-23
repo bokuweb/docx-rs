@@ -59,13 +59,13 @@ impl XmlData {
         write!(f, "<{}", self.name)?;
 
         for (key, val) in self.attributes.iter() {
-            write!(f, r#" {}="{}""#, key, val)?;
+            write!(f, r#" {key}="{val}""#)?;
         }
 
         f.write_char('>')?;
 
         if let Some(ref data) = self.data {
-            write!(f, "{}", data)?
+            write!(f, "{data}")?
         }
 
         for child in self.children.iter() {
@@ -87,14 +87,12 @@ fn map_owned_attributes(attrs: Vec<OwnedAttribute>) -> Vec<(String, String)> {
     attrs
         .into_iter()
         .map(|attr| {
-            let fmt_name = if attr.name.prefix.is_some() {
-                if !attr.name.local_name.is_empty() {
-                    format!("{}:{}", attr.name.prefix.unwrap(), attr.name.local_name)
-                } else {
-                    attr.name.prefix.unwrap()
+            let fmt_name = match attr.name.prefix {
+                Some(prefix) if !attr.name.local_name.is_empty() => {
+                    format!("{}:{}", prefix, attr.name.local_name)
                 }
-            } else {
-                attr.name.local_name.clone()
+                Some(prefix) => prefix,
+                None => attr.name.local_name,
             };
             (fmt_name, attr.value)
         })
@@ -115,14 +113,12 @@ fn parse(
                 attributes,
                 namespace,
             } => {
-                let fmt_name = if name.prefix.is_some() {
-                    if !name.local_name.is_empty() {
-                        format!("{}:{}", name.prefix.unwrap(), name.local_name)
-                    } else {
-                        name.prefix.unwrap()
+                let fmt_name = match name.prefix {
+                    Some(prefix) if !name.local_name.is_empty() => {
+                        format!("{}:{}", prefix, name.local_name)
                     }
-                } else {
-                    name.local_name
+                    Some(prefix) => prefix,
+                    None => name.local_name,
                 };
 
                 let attributes = if namespace == current_namespace {
@@ -133,7 +129,7 @@ fn parse(
                     let ns = n
                         .into_iter()
                         .filter(|(_k, v)| {
-                            (v != "")
+                            (!v.is_empty())
                                 && (v != "http://www.w3.org/2000/xmlns/")
                                 && (v != "http://www.w3.org/XML/1998/namespace")
                         })
@@ -180,14 +176,12 @@ fn parse(
                 }
             }
             XmlEvent::EndElement { name } => {
-                let fmt_name = if name.prefix.is_some() {
-                    if !name.local_name.is_empty() {
-                        format!("{}:{}", name.prefix.unwrap(), name.local_name)
-                    } else {
-                        name.prefix.unwrap()
+                let fmt_name = match &name.prefix {
+                    Some(prefix) if !name.local_name.is_empty() => {
+                        format!("{}:{}", prefix, name.local_name)
                     }
-                } else {
-                    name.local_name.clone()
+                    Some(prefix) => prefix.clone(),
+                    None => name.local_name.clone(),
                 };
                 if let Some(crnt) = current {
                     if crnt.name == fmt_name {

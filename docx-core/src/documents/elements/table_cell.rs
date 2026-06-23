@@ -17,8 +17,8 @@ pub struct TableCell {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum TableCellContent {
-    Paragraph(Paragraph),
-    Table(Table),
+    Paragraph(Box<Paragraph>),
+    Table(Box<Table>),
     StructuredDataTag(Box<StructuredDataTag>),
     TableOfContents(Box<TableOfContents>),
 }
@@ -66,7 +66,7 @@ impl TableCell {
         if p.has_numbering {
             self.has_numbering = true
         }
-        self.children.push(TableCellContent::Paragraph(p));
+        self.children.push(TableCellContent::Paragraph(Box::new(p)));
         self
     }
 
@@ -86,7 +86,7 @@ impl TableCell {
         if t.has_numbering {
             self.has_numbering = true
         }
-        self.children.push(TableCellContent::Table(t));
+        self.children.push(TableCellContent::Table(Box::new(t)));
         self
     }
 
@@ -163,9 +163,9 @@ impl BuildXML for TableCell {
             .add_child(&self.property)?
             .apply_each(&self.children, |ch, b| {
                 match ch {
-                    TableCellContent::Paragraph(p) => b.add_child(p),
+                    TableCellContent::Paragraph(p) => b.add_child(&**p),
                     TableCellContent::Table(t) => {
-                        b.add_child(t)?
+                        b.add_child(&**t)?
                             // INFO: We need to add empty paragraph when parent cell includes only cell.
                             .apply_if(self.children.len() == 1, |b| b.add_child(&Paragraph::new()))
                     }

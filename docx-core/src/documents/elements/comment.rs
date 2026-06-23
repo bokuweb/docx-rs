@@ -17,8 +17,8 @@ pub struct Comment {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum CommentChild {
-    Paragraph(Paragraph),
-    Table(Table),
+    Paragraph(Box<Paragraph>),
+    Table(Box<Table>),
 }
 
 impl Serialize for CommentChild {
@@ -74,12 +74,12 @@ impl Comment {
     }
 
     pub fn add_paragraph(mut self, p: Paragraph) -> Self {
-        self.children.push(CommentChild::Paragraph(p));
+        self.children.push(CommentChild::Paragraph(Box::new(p)));
         self
     }
 
     pub fn add_table(mut self, t: Table) -> Self {
-        self.children.push(CommentChild::Table(t));
+        self.children.push(CommentChild::Table(Box::new(t)));
         self
     }
 
@@ -99,8 +99,8 @@ impl BuildXML for CommentChild {
         stream: crate::xml::writer::EventWriter<W>,
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         match self {
-            CommentChild::Paragraph(v) => v.build_to(stream),
-            CommentChild::Table(v) => v.build_to(stream),
+            CommentChild::Paragraph(v) => v.as_ref().build_to(stream),
+            CommentChild::Table(v) => v.as_ref().build_to(stream),
         }
     }
 }

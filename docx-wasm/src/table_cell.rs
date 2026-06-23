@@ -24,14 +24,14 @@ impl TableCell {
     pub fn add_paragraph(mut self, p: Paragraph) -> TableCell {
         self.0
             .children
-            .push(docx_rs::TableCellContent::Paragraph(p.take()));
+            .push(docx_rs::TableCellContent::Paragraph(Box::new(p.take())));
         self
     }
 
     pub fn add_table(mut self, t: Table) -> TableCell {
         self.0
             .children
-            .push(docx_rs::TableCellContent::Table(t.take()));
+            .push(docx_rs::TableCellContent::Table(Box::new(t.take())));
         self
     }
 

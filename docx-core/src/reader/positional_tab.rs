@@ -62,7 +62,7 @@ impl ElementReader for PositionalTab {
             tab = tab.leader(leader);
         }
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();

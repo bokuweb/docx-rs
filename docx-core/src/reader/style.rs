@@ -22,7 +22,7 @@ impl ElementReader for Style {
         }
         let mut style = Style::new(id, style_type);
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

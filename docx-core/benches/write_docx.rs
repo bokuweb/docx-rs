@@ -1,5 +1,6 @@
-use criterion::{black_box, criterion_group, criterion_main, BatchSize, Criterion};
+use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
 use docx_rs::*;
+use std::hint::black_box;
 use std::io::Cursor;
 
 fn create_template(paragraph_count: usize, runs_per_paragraph: usize) -> Docx {

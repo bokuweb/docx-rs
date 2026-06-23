@@ -2,8 +2,10 @@ use std::collections::VecDeque;
 use std::io::{BufReader, Read};
 
 use quick_xml::encoding::Decoder;
-use quick_xml::events::{BytesEnd, BytesStart, Event};
+use quick_xml::escape::unescape;
+use quick_xml::events::{BytesEnd, BytesRef, BytesStart, BytesText, Event};
 use quick_xml::Reader;
+use quick_xml::XmlVersion;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct OwnedName {
@@ -79,7 +81,7 @@ impl<R: Read> EventReader<R> {
         }
     }
 
-    pub fn next(&mut self) -> Result<XmlEvent, quick_xml::Error> {
+    pub fn next_event(&mut self) -> Result<XmlEvent, quick_xml::Error> {
         self.read_next()
     }
 
@@ -110,12 +112,12 @@ impl<R: Read> EventReader<R> {
                     return Ok(XmlEvent::EndElement { name });
                 }
                 Event::Text(text) => {
-                    let text = text.unescape()?.into_owned();
-                    if text.chars().all(char::is_whitespace) {
-                        return Ok(XmlEvent::Whitespace(text));
-                    } else {
-                        return Ok(XmlEvent::Characters(text));
-                    }
+                    let text = decode_text(text)?;
+                    return self.read_text_event(text);
+                }
+                Event::GeneralRef(reference) => {
+                    let text = decode_reference(reference)?;
+                    return self.read_text_event(text);
                 }
                 Event::CData(text) => {
                     let decoded = self.reader.decoder().decode(text.as_ref())?.into_owned();
@@ -129,6 +131,63 @@ impl<R: Read> EventReader<R> {
                     // Skip non-structural events
                 }
             }
+        }
+    }
+
+    fn read_text_event(&mut self, mut text: String) -> Result<XmlEvent, quick_xml::Error> {
+        loop {
+            self.buf.clear();
+            match self.reader.read_event_into(&mut self.buf)? {
+                Event::Text(next_text) => {
+                    text.push_str(&decode_text(next_text)?);
+                }
+                Event::GeneralRef(reference) => {
+                    text.push_str(&decode_reference(reference)?);
+                }
+                Event::Start(element) => {
+                    let decoder = self.reader.decoder();
+                    let event = Self::build_start_event(element, decoder)?;
+                    self.pending.push_back(event);
+                    break;
+                }
+                Event::Empty(element) => {
+                    let decoder = self.reader.decoder();
+                    let event = Self::build_start_event(element, decoder)?;
+                    let end_event = if let XmlEvent::StartElement { name, .. } = &event {
+                        Some(XmlEvent::EndElement { name: name.clone() })
+                    } else {
+                        None
+                    };
+                    self.pending.push_back(event);
+                    if let Some(end_event) = end_event {
+                        self.pending.push_back(end_event);
+                    }
+                    break;
+                }
+                Event::End(element) => {
+                    let name = build_name_from_end(&element)?;
+                    self.pending.push_back(XmlEvent::EndElement { name });
+                    break;
+                }
+                Event::CData(text) => {
+                    let decoded = self.reader.decoder().decode(text.as_ref())?.into_owned();
+                    self.pending.push_back(XmlEvent::Characters(decoded));
+                    break;
+                }
+                Event::Eof => {
+                    self.pending.push_back(XmlEvent::EndDocument);
+                    break;
+                }
+                Event::Decl(_) | Event::PI(_) | Event::Comment(_) | Event::DocType(_) => {
+                    break;
+                }
+            }
+        }
+
+        if text.chars().all(char::is_whitespace) {
+            Ok(XmlEvent::Whitespace(text))
+        } else {
+            Ok(XmlEvent::Characters(text))
         }
     }
 
@@ -177,6 +236,16 @@ fn build_name_from_end(element: &BytesEnd<'_>) -> Result<OwnedName, quick_xml::E
     Ok(split_qname(name.as_ref()))
 }
 
+fn decode_text(text: BytesText<'_>) -> Result<String, quick_xml::Error> {
+    Ok(text.xml_content(XmlVersion::Implicit1_0)?.into_owned())
+}
+
+fn decode_reference(reference: BytesRef<'_>) -> Result<String, quick_xml::Error> {
+    let reference = reference.xml_content(XmlVersion::Implicit1_0)?;
+    let escaped = format!("&{reference};");
+    Ok(unescape(&escaped)?.into_owned())
+}
+
 fn split_qname(raw: &[u8]) -> OwnedName {
     let text = String::from_utf8_lossy(raw).into_owned();
     if let Some(idx) = text.find(':') {
@@ -203,9 +272,46 @@ fn build_attributes(
     let mut attributes = Vec::new();
     for attr_result in element.attributes().with_checks(false) {
         let attr = attr_result.map_err(quick_xml::Error::from)?;
-        let value = attr.decode_and_unescape_value(decoder)?.into_owned();
+        let value = attr
+            .decoded_and_normalized_value(XmlVersion::Implicit1_0, decoder)?
+            .into_owned();
         let name = split_qname(attr.key.as_ref());
         attributes.push(OwnedAttribute { name, value });
     }
     Ok(attributes)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn decodes_xml_entities_in_text_and_attributes() {
+        let xml = r#"<w:t w:val="A &amp; B">A &amp; B</w:t>"#;
+        let mut reader = EventReader::new(xml.as_bytes());
+
+        let start = reader.next_event().unwrap();
+        match start {
+            XmlEvent::StartElement {
+                name, attributes, ..
+            } => {
+                assert_eq!(name.prefix.as_deref(), Some("w"));
+                assert_eq!(name.local_name, "t");
+                assert_eq!(attributes[0].name.prefix.as_deref(), Some("w"));
+                assert_eq!(attributes[0].name.local_name, "val");
+                assert_eq!(attributes[0].value, "A & B");
+            }
+            event => panic!("expected start element, got {event:?}"),
+        }
+
+        assert_eq!(
+            reader.next_event().unwrap(),
+            XmlEvent::Characters("A & B".to_string())
+        );
+        assert!(matches!(
+            reader.next_event().unwrap(),
+            XmlEvent::EndElement { name } if name.local_name == "t"
+        ));
+        assert_eq!(reader.next_event().unwrap(), XmlEvent::EndDocument);
+    }
 }

@@ -10,7 +10,7 @@ impl ElementReader for TextBoxContent {
     ) -> Result<Self, ReaderError> {
         let mut content = TextBoxContent::new();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..

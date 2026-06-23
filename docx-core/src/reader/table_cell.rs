@@ -7,7 +7,7 @@ impl ElementReader for TableCell {
     fn read<R: Read>(r: &mut EventReader<R>, _: &[OwnedAttribute]) -> Result<Self, ReaderError> {
         let mut cell = TableCell::new();
         loop {
-            let e = r.next();
+            let e = r.next_event();
 
             match e {
                 Ok(XmlEvent::StartElement {

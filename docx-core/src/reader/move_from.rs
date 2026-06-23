@@ -10,7 +10,7 @@ impl ElementReader for MoveFrom {
     ) -> Result<Self, ReaderError> {
         let mut mf = MoveFrom::new();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..

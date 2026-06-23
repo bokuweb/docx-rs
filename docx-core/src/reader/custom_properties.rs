@@ -9,7 +9,7 @@ impl FromXML for CustomProps {
         // TODO: Fow now, support only string.
         let mut props = CustomProps::new();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..
@@ -17,14 +17,14 @@ impl FromXML for CustomProps {
                     if let Ok(XMLElement::Property) = XMLElement::from_str(&name.local_name) {
                         if let Some(key) = read_name(&attributes) {
                             loop {
-                                let e = r.next();
+                                let e = r.next_event();
                                 match e {
                                     Ok(XmlEvent::StartElement { name, .. }) => {
                                         // TODO: Fow now, support only string.
                                         if let Ok(VtXMLElement::Lpwstr) =
                                             VtXMLElement::from_str(&name.local_name)
                                         {
-                                            let e = r.next();
+                                            let e = r.next_event();
                                             if let Ok(XmlEvent::Characters(c)) = e {
                                                 props = props.add_custom_property(&key, c)
                                             }
@@ -43,7 +43,7 @@ impl FromXML for CustomProps {
                         }
                     }
                 }
-                Ok(XmlEvent::EndDocument { .. }) => {
+                Ok(XmlEvent::EndDocument) => {
                     return Ok(props);
                 }
                 Err(_) => return Err(ReaderError::XMLReadError),

@@ -21,7 +21,7 @@ fn read_position_h<R: Read>(
                 relative_from_h = h;
             }
         }
-        let e = r.next();
+        let e = r.next_event();
         match e {
             Ok(XmlEvent::Characters(c)) => {
                 if let Ok(p) = f64::from_str(&c) {
@@ -53,7 +53,7 @@ fn read_position_v<R: Read>(
             }
         }
 
-        let e = r.next();
+        let e = r.next_event();
         match e {
             Ok(XmlEvent::Characters(c)) => {
                 if let Ok(p) = f64::from_str(&c) {
@@ -78,7 +78,7 @@ fn read_textbox_content<R: Read>(
 ) -> Result<Vec<TextBoxContentChild>, ReaderError> {
     let mut children = vec![];
     loop {
-        let e = r.next();
+        let e = r.next_event();
         match e {
             Ok(XmlEvent::StartElement {
                 attributes, name, ..
@@ -134,7 +134,7 @@ impl ElementReader for Drawing {
         let mut dist_r = 0;
 
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..

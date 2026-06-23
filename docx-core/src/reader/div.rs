@@ -11,7 +11,7 @@ impl ElementReader for Div {
         let id = read_id(attrs).unwrap_or_default();
         let mut div = Div::new(id);
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..
@@ -47,7 +47,7 @@ impl ElementReader for Div {
                             }
                         }
                         XMLElement::DivsChild => loop {
-                            let e = r.next();
+                            let e = r.next_event();
                             match e {
                                 Ok(XmlEvent::StartElement {
                                     attributes, name, ..

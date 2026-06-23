@@ -40,7 +40,7 @@ impl ElementReader for FontGroup {
     ) -> Result<Self, ReaderError> {
         let mut f = FontGroup::default();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

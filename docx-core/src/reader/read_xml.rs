@@ -376,7 +376,7 @@ pub fn read_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     let document_rels_path = document_path.replace("document.xml", "_rels/document.xml.rels");
     let document_rels = if let Some(rels_data) = part_map.get(&document_rels_path) {
         Rels::from_xml(rels_data.as_bytes())?
-    } else if let Some(rels_data) = part_map.get(&format!("/{}", document_rels_path)) {
+    } else if let Some(rels_data) = part_map.get(&format!("/{document_rels_path}")) {
         Rels::from_xml(rels_data.as_bytes())?
     } else {
         Rels::default()
@@ -394,7 +394,7 @@ pub fn read_xml(xml_content: &str) -> Result<Docx, ReaderError> {
         let direct_theme_path = if theme_path_str.starts_with("/") {
             theme_path_str.clone()
         } else {
-            format!("/{}", theme_path_str)
+            format!("/{theme_path_str}")
         };
 
         if let Some(theme_data) = part_map
@@ -423,7 +423,7 @@ pub fn read_xml(xml_content: &str) -> Result<Docx, ReaderError> {
     // Read the main document (try both with and without leading slash)
     let document = if let Some(doc_data) = part_map.get(&document_path) {
         Document::from_xml(doc_data.as_bytes())?
-    } else if let Some(doc_data) = part_map.get(&format!("/{}", document_path)) {
+    } else if let Some(doc_data) = part_map.get(&format!("/{document_path}")) {
         Document::from_xml(doc_data.as_bytes())?
     } else if let Some(stripped_path) = document_path.strip_prefix("/") {
         if let Some(doc_data) = part_map.get(stripped_path) {
@@ -449,7 +449,7 @@ pub fn read_xml(xml_content: &str) -> Result<Docx, ReaderError> {
         let direct_styles_path = if styles_path_str.starts_with("/") {
             styles_path_str.clone()
         } else {
-            format!("/{}", styles_path_str)
+            format!("/{styles_path_str}")
         };
 
         if let Some(styles_data) = part_map
@@ -474,7 +474,7 @@ pub fn read_xml(xml_content: &str) -> Result<Docx, ReaderError> {
         let direct_numbering_path = if numbering_path_str.starts_with("/") {
             numbering_path_str.clone()
         } else {
-            format!("/{}", numbering_path_str)
+            format!("/{numbering_path_str}")
         };
 
         if let Some(numbering_data) = part_map

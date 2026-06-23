@@ -11,7 +11,7 @@ impl ElementReader for LevelOverride {
         if let Ok(level) = usize::from_str(&attrs[0].value) {
             let mut o = LevelOverride::new(level);
             loop {
-                let e = r.next();
+                let e = r.next_event();
                 match e {
                     Ok(XmlEvent::StartElement {
                         attributes, name, ..

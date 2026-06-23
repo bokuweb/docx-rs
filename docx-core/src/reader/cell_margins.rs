@@ -7,7 +7,7 @@ impl ElementReader for CellMargins {
     fn read<R: Read>(r: &mut EventReader<R>, _: &[OwnedAttribute]) -> Result<Self, ReaderError> {
         let mut margins = CellMargins::default();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

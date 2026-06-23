@@ -6,7 +6,7 @@ use super::*;
 pub(crate) fn ignore_element<R: Read>(el: XMLElement, ignore: XMLElement, r: &mut EventReader<R>) {
     if ignore == el {
         loop {
-            let e = r.next();
+            let e = r.next_event();
             if let Ok(XmlEvent::EndElement { name, .. }) = e {
                 let e = XMLElement::from_str(&name.local_name).unwrap();
                 if e == ignore {

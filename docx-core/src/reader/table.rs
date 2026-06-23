@@ -9,7 +9,7 @@ impl ElementReader for Table {
         let mut t = Table::without_borders(vec![]);
         let mut grid_col: Vec<usize> = vec![];
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

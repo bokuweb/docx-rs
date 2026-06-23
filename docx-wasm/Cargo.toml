@@ -3,7 +3,6 @@ name = "docx-wasm"
 version = "0.1.0"
 authors = ["bokuweb <bokuweb12@gmail.com>"]
 edition = "2021"
-license-file = "../LICENSE"
 license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -12,9 +11,6 @@ license = "MIT"
 crate-type = ["cdylib"]
 
 [dependencies]
-wasm-bindgen = "0.2.92"
+wasm-bindgen = "0.2"
 console_error_panic_hook = "0.1.7"
-docx-rs= { path = "../docx-core", features = ["wasm", "emf"] }
-
-[profile.release]
-lto = true
+docx-rs = { path = "../docx-core", features = ["wasm", "emf"] }

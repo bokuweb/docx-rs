@@ -8,7 +8,7 @@ impl FromXML for Theme {
         let mut parser = EventReader::new(reader);
         let mut theme = Self::default();
         loop {
-            let e = parser.next();
+            let e = parser.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

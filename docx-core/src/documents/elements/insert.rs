@@ -148,8 +148,9 @@ impl BuildXML for Insert {
         &self,
         stream: crate::xml::writer::EventWriter<W>,
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
+        let id = self.generate();
         XMLBuilder::from(stream)
-            .open_insert(&self.generate(), &self.author, &self.date)?
+            .open_insert(id.as_ref(), &self.author, &self.date)?
             .add_children(&self.children)?
             .close()?
             .into_inner()

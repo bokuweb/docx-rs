@@ -10,7 +10,7 @@ pub trait HistoryId {
 
         let id = HISTORY_ID.load(Ordering::Relaxed);
         HISTORY_ID.store(id + 1, Ordering::Relaxed);
-        format!("{}", id)
+        format!("{id}")
     }
 }
 

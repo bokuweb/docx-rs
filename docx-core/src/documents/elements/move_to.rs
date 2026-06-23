@@ -141,8 +141,9 @@ impl BuildXML for MoveTo {
         &self,
         stream: crate::xml::writer::EventWriter<W>,
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
+        let id = self.generate();
         XMLBuilder::from(stream)
-            .open_move_to(&self.generate(), &self.author, &self.date)?
+            .open_move_to(id.as_ref(), &self.author, &self.date)?
             .add_children(&self.children)?
             .close()?
             .into_inner()

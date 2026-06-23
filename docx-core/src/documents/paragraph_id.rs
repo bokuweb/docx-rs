@@ -8,7 +8,7 @@ pub fn generate_para_id() -> String {
     use std::sync::atomic::Ordering;
 
     let id = PARA_ID.fetch_add(1, Ordering::Relaxed);
-    format!("{:08x}", id)
+    format!("{id:08x}")
 }
 
 #[cfg(not(test))]

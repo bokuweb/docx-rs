@@ -55,7 +55,7 @@ impl BuildXML for Footnote {
         // To ensure docx compatible XML serialization for footnotes, we default to an empty paragraph.
         let mut footnote = self.clone();
         if self.content == vec![] {
-            eprintln!("{:?}", footnote);
+            eprintln!("{footnote:?}");
             footnote.add_content(Paragraph::new());
         }
 

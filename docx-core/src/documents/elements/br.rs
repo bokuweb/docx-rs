@@ -34,7 +34,7 @@ impl Serialize for Break {
         S: Serializer,
     {
         let mut t = serializer.serialize_struct("Break", 1)?;
-        t.serialize_field("breakType", &format!("{}", &self.break_type))?;
+        t.serialize_field("breakType", &format!("{}", self.break_type))?;
         t.end()
     }
 }

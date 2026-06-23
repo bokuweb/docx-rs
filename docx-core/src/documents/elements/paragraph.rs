@@ -406,16 +406,16 @@ impl Paragraph {
                                         s.push_str(&t.text);
                                     }
                                     RunChild::Tab(_t) => {
-                                        s.push_str("\t");
+                                        s.push('\t');
                                     }
                                     RunChild::PTab(_t) => {
-                                        s.push_str("\t");
+                                        s.push('\t');
                                     }
                                     RunChild::Break(_b) => {
-                                        s.push_str("\n");
+                                        s.push('\n');
                                     }
                                     RunChild::CarriageReturn(_cr) => {
-                                        s.push_str("\n");
+                                        s.push('\n');
                                     }
                                     _ => {}
                                 }
@@ -430,16 +430,16 @@ impl Paragraph {
                                 s.push_str(&t.text);
                             }
                             RunChild::Tab(_t) => {
-                                s.push_str("\t");
+                                s.push('\t');
                             }
                             RunChild::PTab(_t) => {
-                                s.push_str("\t");
+                                s.push('\t');
                             }
                             RunChild::Break(_b) => {
-                                s.push_str("\n");
+                                s.push('\n');
                             }
                             RunChild::CarriageReturn(_cr) => {
-                                s.push_str("\n");
+                                s.push('\n');
                             }
                             _ => {}
                         }

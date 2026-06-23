@@ -206,7 +206,7 @@ impl BuildXML for SectionProperty {
             .open_section_property()?
             .add_child(&self.page_size)?
             .add_child(&self.page_margin)?
-            .columns(&format!("{}", &self.space), &format!("{}", &self.columns))?
+            .columns(&format!("{}", self.space), &format!("{}", self.columns))?
             .add_optional_child(&self.doc_grid)?
             .add_optional_child(&self.header_reference)?
             .add_optional_child(&self.first_header_reference)?

@@ -18,5 +18,5 @@ pub fn generate_pic_id() -> usize {
 }
 
 pub fn create_pic_rid(id: usize) -> String {
-    format!("rIdImage{}", id)
+    format!("rIdImage{id}")
 }

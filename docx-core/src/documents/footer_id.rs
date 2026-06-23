@@ -20,5 +20,5 @@ pub fn generate_footer_id() -> usize {
 */
 
 pub fn create_footer_rid(id: usize) -> String {
-    format!("rIdFooter{}", id)
+    format!("rIdFooter{id}")
 }

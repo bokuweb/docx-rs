@@ -239,6 +239,32 @@ impl<W: Write> XMLBuilder<W> {
     // i.e. <w:color ... >
     closed_with_str!(color, "w:color");
 
+    // i.e. <w:color w:val=".." w:themeColor=".." w:themeShade=".." w:themeTint=".." />
+    //
+    // Theme attributes are optional: when all three are `None` the output is
+    // byte-for-byte identical to `color()`, so existing callers are unaffected.
+    // Attributes are appended only when present, matching how Word emits its
+    // own built-in styles (the `w:val` hex stays as a non-theme fallback).
+    pub(crate) fn color_with_theme(
+        self,
+        val: &str,
+        theme_color: Option<&str>,
+        theme_shade: Option<&str>,
+        theme_tint: Option<&str>,
+    ) -> Result<Self> {
+        let mut el = XmlEvent::start_element("w:color").attr("w:val", val);
+        if let Some(tc) = theme_color {
+            el = el.attr("w:themeColor", tc);
+        }
+        if let Some(ts) = theme_shade {
+            el = el.attr("w:themeShade", ts);
+        }
+        if let Some(tt) = theme_tint {
+            el = el.attr("w:themeTint", tt);
+        }
+        self.write(el)?.close()
+    }
+
     // i.e. <w:highlight ... >
     closed_with_str!(highlight, "w:highlight");
 

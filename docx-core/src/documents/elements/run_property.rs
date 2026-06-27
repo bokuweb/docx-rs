@@ -87,6 +87,30 @@ impl RunProperty {
         self
     }
 
+    /// Sets the theme color reference (`w:themeColor`) on the run color.
+    ///
+    /// The hex value set via [`color`](Self::color) is kept as a fallback. If no
+    /// color has been set yet this defaults the fallback to `auto`.
+    pub fn theme_color(mut self, theme_color: crate::types::ThemeColor) -> RunProperty {
+        let color = self.color.take().unwrap_or_else(|| Color::new("auto"));
+        self.color = Some(color.theme_color(theme_color));
+        self
+    }
+
+    /// Sets the theme shade modifier (`w:themeShade`) on the run color.
+    pub fn theme_shade(mut self, theme_shade: impl Into<String>) -> RunProperty {
+        let color = self.color.take().unwrap_or_else(|| Color::new("auto"));
+        self.color = Some(color.theme_shade(theme_shade));
+        self
+    }
+
+    /// Sets the theme tint modifier (`w:themeTint`) on the run color.
+    pub fn theme_tint(mut self, theme_tint: impl Into<String>) -> RunProperty {
+        let color = self.color.take().unwrap_or_else(|| Color::new("auto"));
+        self.color = Some(color.theme_tint(theme_tint));
+        self
+    }
+
     pub fn highlight(mut self, color: impl Into<String>) -> RunProperty {
         self.highlight = Some(Highlight::new(color));
         self

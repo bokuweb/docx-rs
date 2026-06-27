@@ -285,6 +285,24 @@ impl Run {
         self
     }
 
+    /// Sets the theme color reference (`w:themeColor`) on the run color.
+    pub fn theme_color(mut self, theme_color: crate::types::ThemeColor) -> Run {
+        self.run_property = self.run_property.theme_color(theme_color);
+        self
+    }
+
+    /// Sets the theme shade modifier (`w:themeShade`) on the run color.
+    pub fn theme_shade(mut self, theme_shade: impl Into<String>) -> Run {
+        self.run_property = self.run_property.theme_shade(theme_shade);
+        self
+    }
+
+    /// Sets the theme tint modifier (`w:themeTint`) on the run color.
+    pub fn theme_tint(mut self, theme_tint: impl Into<String>) -> Run {
+        self.run_property = self.run_property.theme_tint(theme_tint);
+        self
+    }
+
     pub fn highlight(mut self, color: impl Into<String>) -> Run {
         self.run_property = self.run_property.highlight(color);
         self

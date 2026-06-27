@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## @0.4.20 (x. XXX, 2026)
 
+- Support theme colors on `<w:color>`: new `ThemeColor` enum and
+  `theme_color` / `theme_shade` / `theme_tint` builders on `Color`,
+  `RunProperty`, `Run`, and `Style`. Emits `w:themeColor` / `w:themeShade`
+  / `w:themeTint` (with the `w:val` hex kept as a fallback) and reads them
+  back, so generated documents adapt when the Word theme changes.
 - Support `fitText`
 - Support `qFormat` / `uiPriority` / `semiHidden` / `unhideWhenUsed`
 - Support `off`

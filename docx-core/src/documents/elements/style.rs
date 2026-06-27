@@ -125,6 +125,24 @@ impl Style {
         self
     }
 
+    /// Sets the theme color reference (`w:themeColor`) on the style's run color.
+    pub fn theme_color(mut self, theme_color: crate::types::ThemeColor) -> Self {
+        self.run_property = self.run_property.theme_color(theme_color);
+        self
+    }
+
+    /// Sets the theme shade modifier (`w:themeShade`) on the style's run color.
+    pub fn theme_shade(mut self, theme_shade: impl Into<String>) -> Self {
+        self.run_property = self.run_property.theme_shade(theme_shade);
+        self
+    }
+
+    /// Sets the theme tint modifier (`w:themeTint`) on the style's run color.
+    pub fn theme_tint(mut self, theme_tint: impl Into<String>) -> Self {
+        self.run_property = self.run_property.theme_tint(theme_tint);
+        self
+    }
+
     pub fn highlight(mut self, color: impl Into<String>) -> Self {
         self.run_property = self.run_property.highlight(color);
         self

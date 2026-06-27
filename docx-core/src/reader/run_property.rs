@@ -1,9 +1,32 @@
 use std::io::Read;
 use std::str::FromStr;
 
-use crate::VertAlignType;
+use crate::{ThemeColor, VertAlignType};
 
 use super::*;
+
+// Parse a `<w:color>` element, including the optional theme attributes.
+//
+// Attributes are read by local name rather than position: Word may emit them
+// in any order, and a theme-only color can omit `w:val` (we fall back to
+// "auto"). Unknown themeColor tokens degrade to `ThemeColor::Unsupported`
+// via its `FromStr`, so a future ST_ThemeColor value never breaks reading.
+fn read_color(rp: RunProperty, attributes: &[OwnedAttribute]) -> RunProperty {
+    let val = read(attributes, "val").unwrap_or_else(|| "auto".to_string());
+    let mut rp = rp.color(val);
+    if let Some(tc) = read(attributes, "themeColor") {
+        if let Ok(theme) = ThemeColor::from_str(&tc) {
+            rp = rp.theme_color(theme);
+        }
+    }
+    if let Some(ts) = read(attributes, "themeShade") {
+        rp = rp.theme_shade(ts);
+    }
+    if let Some(tt) = read(attributes, "themeTint") {
+        rp = rp.theme_tint(tt);
+    }
+    rp
+}
 
 fn read_run_fonts(attributes: &[OwnedAttribute]) -> Result<RunFonts, ReaderError> {
     let mut f = RunFonts::new();
@@ -104,7 +127,7 @@ impl ElementReader for RunProperty {
                                 rp = rp.vert_align(v)
                             }
                         }
-                        XMLElement::Color => rp = rp.color(attributes[0].value.clone()),
+                        XMLElement::Color => rp = read_color(rp, &attributes),
                         XMLElement::Size => {
                             rp = rp.size(f64::from_str(&attributes[0].value)? as usize)
                         }

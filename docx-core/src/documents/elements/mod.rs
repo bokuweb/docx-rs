@@ -103,6 +103,7 @@ mod strike;
 mod structured_data_tag;
 mod structured_data_tag_property;
 mod style;
+mod style_ext;
 mod sym;
 mod sz;
 mod sz_cs;

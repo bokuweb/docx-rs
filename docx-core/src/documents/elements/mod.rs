@@ -80,6 +80,7 @@ mod page_num_type;
 mod page_size;
 mod paragraph;
 mod paragraph_borders;
+mod paragraph_ext;
 mod paragraph_property;
 mod paragraph_property_change;
 mod paragraph_property_default;

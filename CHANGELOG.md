@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   entries are surfaced through the existing `Docx.images` field; the
   preview slot holds SVG bytes (instead of PNG) for paths ending in
   `.emf`. docx-wasm enables this feature by default.
+- Added `Style::shading` and `Paragraph::set_borders` delegating builders (fork).
 
 ## @0.4.19 (8. Feb, 2026)
 

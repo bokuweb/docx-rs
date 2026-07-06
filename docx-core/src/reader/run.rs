@@ -218,6 +218,31 @@ mod tests {
     }
 
     #[test]
+    fn test_read_theme_color() {
+        // The reader must pick attributes by name (not position) and round-trip
+        // w:themeColor / w:themeShade alongside the w:val fallback.
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:r><w:rPr><w:color w:val="2E74B5" w:themeColor="accent1" w:themeShade="BF"/></w:rPr><w:t>H</w:t></w:r>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let run = Run::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            run,
+            Run {
+                children: vec![RunChild::Text(Text::new("H"))],
+                run_property: RunProperty {
+                    color: Some(
+                        Color::new("2E74B5")
+                            .theme_color(crate::ThemeColor::Accent1)
+                            .theme_shade("BF")
+                    ),
+                    ..RunProperty::default()
+                },
+            }
+        );
+    }
+
+    #[test]
     fn test_read_tab() {
         let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
   <w:r><w:tab /></w:r>

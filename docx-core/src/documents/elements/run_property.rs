@@ -244,31 +244,31 @@ impl BuildXML for RunProperty {
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_run_property()?
-            .add_optional_child(&self.sz)?
-            .add_optional_child(&self.sz_cs)?
-            .add_optional_child(&self.color)?
+            .add_optional_child(&self.fonts)?
             .add_optional_child(&self.bold)?
             .add_optional_child(&self.bold_cs)?
-            .add_optional_child(&self.caps)?
             .add_optional_child(&self.italic)?
             .add_optional_child(&self.italic_cs)?
+            .add_optional_child(&self.caps)?
             .add_optional_child(&self.strike)?
             .add_optional_child(&self.dstrike)?
-            .add_optional_child(&self.highlight)?
-            .add_optional_child(&self.underline)?
             .add_optional_child(&self.vanish)?
-            .add_optional_child(&self.spec_vanish)?
-            .add_optional_child(&self.fonts)?
+            .add_optional_child(&self.color)?
+            .add_optional_child(&self.character_spacing)?
+            .add_optional_child(&self.sz)?
+            .add_optional_child(&self.sz_cs)?
+            .add_optional_child(&self.underline)?
             .add_optional_child(&self.text_border)?
+            .add_optional_child(&self.shading)?
+            .add_optional_child(&self.fit_text)?
+            .add_optional_child(&self.vert_align)?
+            .add_optional_child(&self.spec_vanish)?
             .add_optional_child(&self.ins)?
             .add_optional_child(&self.del)?
-            .add_optional_child(&self.vert_align)?
-            .add_optional_child(&self.character_spacing)?
-            .add_optional_child(&self.fit_text)?
-            .add_optional_child(&self.stretch)?
             .add_optional_child(&self.style)?
             .add_optional_child(&self.positional_tab)?
-            .add_optional_child(&self.shading)?
+            .add_optional_child(&self.stretch)?
+            .add_optional_child(&self.highlight)?
             .close()?
             .into_inner()
     }

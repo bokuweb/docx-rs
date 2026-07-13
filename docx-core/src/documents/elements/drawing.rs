@@ -82,7 +82,7 @@ impl BuildXML for Drawing {
                             &format!("{}", p.dist_r),
                             "0",
                             if p.simple_pos { "1" } else { "0" },
-                            "0",
+                            if p.behind_doc { "1" } else { "0" },
                             "0",
                             if p.layout_in_cell { "1" } else { "0" },
                             &format!("{}", p.relative_height),

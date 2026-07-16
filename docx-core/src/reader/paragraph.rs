@@ -221,6 +221,43 @@ mod tests {
     }
 
     #[test]
+    fn test_read_paragraph_borders() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:p>
+        <w:pPr>
+            <w:pBdr>
+                <w:top w:val="double" w:sz="24" w:space="1" w:color="622423"/>
+                <w:between w:val="dashed" w:sz="8" w:space="2" w:color="auto"/>
+            </w:pBdr>
+        </w:pPr>
+    </w:p>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
+
+        assert_eq!(
+            p.property.borders,
+            Some(
+                ParagraphBorders::with_empty()
+                    .set(
+                        ParagraphBorder::new(ParagraphBorderPosition::Top)
+                            .val(BorderType::Double)
+                            .size(24)
+                            .space(1)
+                            .color("622423"),
+                    )
+                    .set(
+                        ParagraphBorder::new(ParagraphBorderPosition::Between)
+                            .val(BorderType::Dashed)
+                            .size(8)
+                            .space(2)
+                            .color("auto"),
+                    ),
+            )
+        );
+    }
+
+    #[test]
     fn test_read_numbering() {
         let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <w:p>

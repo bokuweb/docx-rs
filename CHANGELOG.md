@@ -13,11 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `RunProperty`, `Run`, and `Style`. Emits `w:themeColor` / `w:themeShade`
   / `w:themeTint` (with the `w:val` hex kept as a fallback) and reads them
   back, so generated documents adapt when the Word theme changes.
-- Add optional `emf` feature: convert embedded EMF images to SVG on read
-  via the [`emf-core`](https://github.com/mythrnr/emf-rs) crate. EMF
-  entries are surfaced through the existing `Docx.images` field; the
-  preview slot holds SVG bytes (instead of PNG) for paths ending in
-  `.emf`. docx-wasm enables this feature by default.
+- Convert embedded EMF images to SVG in docx-wasm via the
+  [`emf-core`](https://github.com/mythrnr/emf-rs) crate. EMF entries are
+  surfaced through the existing `Docx.images` field; the original bytes
+  are preserved and docx-wasm fills the preview slot with SVG instead of
+  PNG. The published `docx-rs` crate does not depend on the unpublished
+  EMF conversion crates.
 - Added `Style::shading` and `Paragraph::set_borders` delegating builders (fork).
 
 ## @0.4.20 (2. Apr, 2026)

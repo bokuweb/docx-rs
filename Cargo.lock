@@ -244,7 +244,6 @@ version = "0.4.21"
 dependencies = [
  "base64",
  "criterion",
- "emf-core",
  "image",
  "insta",
  "pretty_assertions",
@@ -254,7 +253,6 @@ dependencies = [
  "thiserror",
  "ts-rs",
  "wasm-bindgen",
- "wmf-core",
  "zip",
 ]
 
@@ -264,7 +262,9 @@ version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
  "docx-rs",
+ "emf-core",
  "wasm-bindgen",
+ "wmf-core",
 ]
 
 [[package]]

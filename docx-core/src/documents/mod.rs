@@ -922,15 +922,20 @@ impl Docx {
     }
 
     fn refresh_duplicate_para_ids(&mut self) {
-        let mut counts: HashMap<String, usize> = HashMap::new();
+        let mut counts: HashMap<&str, usize> = HashMap::new();
         collect_para_ids_in_docx(self, &mut counts);
 
         let duplicates: HashSet<String> = counts
             .iter()
             .filter(|(_, count)| **count > 1)
-            .map(|(id, _)| id.clone())
+            .map(|(id, _)| (*id).to_owned())
             .collect();
-        let mut used: HashSet<String> = counts.into_keys().collect();
+        let has_empty_id = counts.contains_key("");
+        if duplicates.is_empty() && !has_empty_id {
+            return;
+        }
+
+        let mut used: HashSet<String> = counts.into_keys().map(str::to_owned).collect();
         let mut seen: HashSet<String> = HashSet::new();
 
         refresh_para_ids_in_docx(self, &duplicates, &mut used, &mut seen);
@@ -968,6 +973,9 @@ impl Docx {
                             self.insert_comment_to_map(&mut comment_map, c);
                         }
                         if let ParagraphChild::Hyperlink(h) = child {
+                            if let HyperlinkData::External { rid, path } = &h.link {
+                                hyperlink_map.insert(rid.clone(), path.clone());
+                            }
                             for child in &h.children {
                                 if let ParagraphChild::CommentStart(c) = child {
                                     self.insert_comment_to_map(&mut comment_map, c);
@@ -977,28 +985,53 @@ impl Docx {
                     }
                 }
                 DocumentChild::Table(table) => {
-                    collect_comment_map_in_table(table, &mut comment_map);
+                    collect_comment_map_in_table(table, &mut comment_map, &mut hyperlink_map);
                 }
                 DocumentChild::TableOfContents(toc) => {
                     for child in &toc.before_contents {
                         if let TocContent::Paragraph(paragraph) = child {
-                            collect_comment_map_in_paragraph(paragraph, &mut comment_map);
+                            collect_comment_map_in_paragraph(
+                                paragraph,
+                                &mut comment_map,
+                                &mut hyperlink_map,
+                            );
                         }
                         if let TocContent::Table(table) = child {
-                            collect_comment_map_in_table(table, &mut comment_map);
+                            collect_comment_map_in_table(
+                                table,
+                                &mut comment_map,
+                                &mut hyperlink_map,
+                            );
                         }
                     }
                     for child in &toc.after_contents {
                         if let TocContent::Paragraph(paragraph) = child {
-                            collect_comment_map_in_paragraph(paragraph, &mut comment_map);
+                            collect_comment_map_in_paragraph(
+                                paragraph,
+                                &mut comment_map,
+                                &mut hyperlink_map,
+                            );
                         }
                         if let TocContent::Table(table) = child {
-                            collect_comment_map_in_table(table, &mut comment_map);
+                            collect_comment_map_in_table(
+                                table,
+                                &mut comment_map,
+                                &mut hyperlink_map,
+                            );
                         }
                     }
                 }
                 _ => {}
             }
+        }
+
+        if comment_map.is_empty() {
+            for (id, path) in hyperlink_map {
+                self.document_rels
+                    .hyperlinks
+                    .push((id, path, "External".to_owned()));
+            }
+            return;
         }
 
         for child in &self.document.children {
@@ -1601,6 +1634,7 @@ fn collect_dependencies_in_paragraph(
 fn collect_comment_map_in_paragraph(
     paragraph: &Paragraph,
     comment_map: &mut HashMap<usize, String>,
+    hyperlink_map: &mut HashMap<String, String>,
 ) {
     for child in &paragraph.children {
         if let ParagraphChild::CommentStart(c) = child {
@@ -1613,6 +1647,9 @@ fn collect_comment_map_in_paragraph(
             }
         }
         if let ParagraphChild::Hyperlink(h) = child {
+            if let HyperlinkData::External { rid, path } = &h.link {
+                hyperlink_map.insert(rid.clone(), path.clone());
+            }
             for child in &h.children {
                 if let ParagraphChild::CommentStart(c) = child {
                     let comment = c.get_comment_ref();
@@ -1628,42 +1665,58 @@ fn collect_comment_map_in_paragraph(
     }
 }
 
-fn collect_comment_map_in_table(table: &Table, comment_map: &mut HashMap<usize, String>) {
+fn collect_comment_map_in_table(
+    table: &Table,
+    comment_map: &mut HashMap<usize, String>,
+    hyperlink_map: &mut HashMap<String, String>,
+) {
     for TableChild::TableRow(row) in &table.rows {
         for TableRowChild::TableCell(cell) in &row.cells {
             for content in &cell.children {
                 match content {
                     TableCellContent::Paragraph(paragraph) => {
-                        collect_comment_map_in_paragraph(paragraph, comment_map);
+                        collect_comment_map_in_paragraph(paragraph, comment_map, hyperlink_map);
                     }
                     TableCellContent::Table(table) => {
-                        collect_comment_map_in_table(table, comment_map)
+                        collect_comment_map_in_table(table, comment_map, hyperlink_map)
                     }
                     TableCellContent::StructuredDataTag(tag) => {
                         for child in &tag.children {
                             if let StructuredDataTagChild::Paragraph(paragraph) = child {
-                                collect_comment_map_in_paragraph(paragraph, comment_map);
+                                collect_comment_map_in_paragraph(
+                                    paragraph,
+                                    comment_map,
+                                    hyperlink_map,
+                                );
                             }
                             if let StructuredDataTagChild::Table(table) = child {
-                                collect_comment_map_in_table(table, comment_map);
+                                collect_comment_map_in_table(table, comment_map, hyperlink_map);
                             }
                         }
                     }
                     TableCellContent::TableOfContents(t) => {
                         for child in &t.before_contents {
                             if let TocContent::Paragraph(paragraph) = child {
-                                collect_comment_map_in_paragraph(paragraph, comment_map);
+                                collect_comment_map_in_paragraph(
+                                    paragraph,
+                                    comment_map,
+                                    hyperlink_map,
+                                );
                             }
                             if let TocContent::Table(table) = child {
-                                collect_comment_map_in_table(table, comment_map);
+                                collect_comment_map_in_table(table, comment_map, hyperlink_map);
                             }
                         }
                         for child in &t.after_contents {
                             if let TocContent::Paragraph(paragraph) = child {
-                                collect_comment_map_in_paragraph(paragraph, comment_map);
+                                collect_comment_map_in_paragraph(
+                                    paragraph,
+                                    comment_map,
+                                    hyperlink_map,
+                                );
                             }
                             if let TocContent::Table(table) = child {
-                                collect_comment_map_in_table(table, comment_map);
+                                collect_comment_map_in_table(table, comment_map, hyperlink_map);
                             }
                         }
                     }
@@ -1854,7 +1907,7 @@ fn store_comments_in_table(table: &mut Table, comments_by_id: &HashMap<usize, &C
     }
 }
 
-fn collect_para_ids_in_docx(docx: &Docx, counts: &mut HashMap<String, usize>) {
+fn collect_para_ids_in_docx<'a>(docx: &'a Docx, counts: &mut HashMap<&'a str, usize>) {
     for child in &docx.document.children {
         collect_para_ids_in_document_child(child, counts);
     }
@@ -1871,7 +1924,10 @@ fn collect_para_ids_in_docx(docx: &Docx, counts: &mut HashMap<String, usize>) {
     }
 }
 
-fn collect_para_ids_in_document_child(child: &DocumentChild, counts: &mut HashMap<String, usize>) {
+fn collect_para_ids_in_document_child<'a>(
+    child: &'a DocumentChild,
+    counts: &mut HashMap<&'a str, usize>,
+) {
     match child {
         DocumentChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
         DocumentChild::Table(table) => collect_para_ids_in_table(table, counts),
@@ -1884,7 +1940,7 @@ fn collect_para_ids_in_document_child(child: &DocumentChild, counts: &mut HashMa
     }
 }
 
-fn collect_para_ids_in_section(section: &Section, counts: &mut HashMap<String, usize>) {
+fn collect_para_ids_in_section<'a>(section: &'a Section, counts: &mut HashMap<&'a str, usize>) {
     for child in &section.children {
         match child {
             SectionChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
@@ -1899,9 +1955,9 @@ fn collect_para_ids_in_section(section: &Section, counts: &mut HashMap<String, u
     collect_para_ids_in_section_property(&section.property, counts);
 }
 
-fn collect_para_ids_in_section_property(
-    property: &SectionProperty,
-    counts: &mut HashMap<String, usize>,
+fn collect_para_ids_in_section_property<'a>(
+    property: &'a SectionProperty,
+    counts: &mut HashMap<&'a str, usize>,
 ) {
     if let Some((_, header)) = property.header.as_ref() {
         collect_para_ids_in_header(header, counts);
@@ -1923,7 +1979,7 @@ fn collect_para_ids_in_section_property(
     }
 }
 
-fn collect_para_ids_in_header(header: &Header, counts: &mut HashMap<String, usize>) {
+fn collect_para_ids_in_header<'a>(header: &'a Header, counts: &mut HashMap<&'a str, usize>) {
     for child in &header.children {
         match child {
             HeaderChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
@@ -1935,7 +1991,7 @@ fn collect_para_ids_in_header(header: &Header, counts: &mut HashMap<String, usiz
     }
 }
 
-fn collect_para_ids_in_footer(footer: &Footer, counts: &mut HashMap<String, usize>) {
+fn collect_para_ids_in_footer<'a>(footer: &'a Footer, counts: &mut HashMap<&'a str, usize>) {
     for child in &footer.children {
         match child {
             FooterChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
@@ -1947,7 +2003,7 @@ fn collect_para_ids_in_footer(footer: &Footer, counts: &mut HashMap<String, usiz
     }
 }
 
-fn collect_para_ids_in_toc(toc: &TableOfContents, counts: &mut HashMap<String, usize>) {
+fn collect_para_ids_in_toc<'a>(toc: &'a TableOfContents, counts: &mut HashMap<&'a str, usize>) {
     for child in &toc.before_contents {
         match child {
             TocContent::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
@@ -1962,7 +2018,7 @@ fn collect_para_ids_in_toc(toc: &TableOfContents, counts: &mut HashMap<String, u
     }
 }
 
-fn collect_para_ids_in_table(table: &Table, counts: &mut HashMap<String, usize>) {
+fn collect_para_ids_in_table<'a>(table: &'a Table, counts: &mut HashMap<&'a str, usize>) {
     for TableChild::TableRow(row) in &table.rows {
         for TableRowChild::TableCell(cell) in &row.cells {
             for content in &cell.children {
@@ -1981,8 +2037,11 @@ fn collect_para_ids_in_table(table: &Table, counts: &mut HashMap<String, usize>)
     }
 }
 
-fn collect_para_ids_in_paragraph(paragraph: &Paragraph, counts: &mut HashMap<String, usize>) {
-    *counts.entry(paragraph.id.clone()).or_insert(0) += 1;
+fn collect_para_ids_in_paragraph<'a>(
+    paragraph: &'a Paragraph,
+    counts: &mut HashMap<&'a str, usize>,
+) {
+    *counts.entry(paragraph.id.as_str()).or_insert(0) += 1;
 
     for child in &paragraph.children {
         match child {
@@ -2000,7 +2059,10 @@ fn collect_para_ids_in_paragraph(paragraph: &Paragraph, counts: &mut HashMap<Str
     }
 }
 
-fn collect_para_ids_in_hyperlink(hyperlink: &Hyperlink, counts: &mut HashMap<String, usize>) {
+fn collect_para_ids_in_hyperlink<'a>(
+    hyperlink: &'a Hyperlink,
+    counts: &mut HashMap<&'a str, usize>,
+) {
     for child in &hyperlink.children {
         match child {
             ParagraphChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
@@ -2014,7 +2076,7 @@ fn collect_para_ids_in_hyperlink(hyperlink: &Hyperlink, counts: &mut HashMap<Str
     }
 }
 
-fn collect_para_ids_in_insert(insert: &Insert, counts: &mut HashMap<String, usize>) {
+fn collect_para_ids_in_insert<'a>(insert: &'a Insert, counts: &mut HashMap<&'a str, usize>) {
     for child in &insert.children {
         match child {
             InsertChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
@@ -2024,7 +2086,7 @@ fn collect_para_ids_in_insert(insert: &Insert, counts: &mut HashMap<String, usiz
     }
 }
 
-fn collect_para_ids_in_delete(delete: &Delete, counts: &mut HashMap<String, usize>) {
+fn collect_para_ids_in_delete<'a>(delete: &'a Delete, counts: &mut HashMap<&'a str, usize>) {
     for child in &delete.children {
         if let DeleteChild::CommentStart(c) = child {
             collect_para_ids_in_comment(&c.comment, counts);
@@ -2032,9 +2094,9 @@ fn collect_para_ids_in_delete(delete: &Delete, counts: &mut HashMap<String, usiz
     }
 }
 
-fn collect_para_ids_in_structured_data_tag(
-    tag: &StructuredDataTag,
-    counts: &mut HashMap<String, usize>,
+fn collect_para_ids_in_structured_data_tag<'a>(
+    tag: &'a StructuredDataTag,
+    counts: &mut HashMap<&'a str, usize>,
 ) {
     for child in &tag.children {
         match child {
@@ -2053,7 +2115,7 @@ fn collect_para_ids_in_structured_data_tag(
     }
 }
 
-fn collect_para_ids_in_comment(comment: &Comment, counts: &mut HashMap<String, usize>) {
+fn collect_para_ids_in_comment<'a>(comment: &'a Comment, counts: &mut HashMap<&'a str, usize>) {
     for child in &comment.children {
         match child {
             CommentChild::Paragraph(paragraph) => collect_para_ids_in_paragraph(paragraph, counts),
@@ -2523,6 +2585,56 @@ fn update_document_by_toc(
     toc.items = items;
     children[toc_index] = DocumentChild::TableOfContents(Box::new(toc));
     children
+}
+
+#[cfg(test)]
+mod paragraph_id_tests {
+    use super::*;
+
+    fn paragraph_ids(docx: &Docx) -> Vec<&str> {
+        docx.document
+            .children
+            .iter()
+            .filter_map(|child| match child {
+                DocumentChild::Paragraph(paragraph) => Some(paragraph.id.as_str()),
+                _ => None,
+            })
+            .collect()
+    }
+
+    #[test]
+    fn unique_paragraph_ids_remain_unchanged() {
+        let mut docx = Docx::new()
+            .add_paragraph(Paragraph::new().id("first"))
+            .add_paragraph(Paragraph::new().id("second"));
+
+        docx.refresh_duplicate_para_ids();
+
+        assert_eq!(paragraph_ids(&docx), ["first", "second"]);
+    }
+
+    #[test]
+    fn duplicate_paragraph_ids_are_refreshed() {
+        let mut docx = Docx::new()
+            .add_paragraph(Paragraph::new().id("duplicate"))
+            .add_paragraph(Paragraph::new().id("duplicate"));
+
+        docx.refresh_duplicate_para_ids();
+
+        let ids = paragraph_ids(&docx);
+        assert_eq!(ids[0], "duplicate");
+        assert_ne!(ids[1], "duplicate");
+        assert_eq!(ids.iter().copied().collect::<HashSet<_>>().len(), 2);
+    }
+
+    #[test]
+    fn empty_paragraph_id_is_refreshed() {
+        let mut docx = Docx::new().add_paragraph(Paragraph::new().id(""));
+
+        docx.refresh_duplicate_para_ids();
+
+        assert!(!paragraph_ids(&docx)[0].is_empty());
+    }
 }
 
 #[cfg(test)]

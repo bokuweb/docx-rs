@@ -57,6 +57,18 @@ fn bench_write_docx(c: &mut Criterion) {
         );
     });
 
+    c.bench_function("write_docx_direct_pack", |b| {
+        b.iter_batched(
+            || template.clone(),
+            |docx| {
+                let mut cursor = Cursor::new(Vec::with_capacity(64 * 1024));
+                docx.pack(&mut cursor).expect("failed to write docx");
+                black_box(cursor.into_inner());
+            },
+            BatchSize::SmallInput,
+        );
+    });
+
     let large_template = create_template(2_000, 5);
     c.bench_function("write_docx_large_build_pack", |b| {
         b.iter_batched(

@@ -174,6 +174,13 @@ pub struct Docx {
     pub footnotes: Footnotes,
 }
 
+/// Package metadata derived while normalizing a document for output.
+pub(crate) struct PackageMetadata {
+    pub(crate) media: Vec<ImageIdAndBuf>,
+    pub(crate) header_rels: Vec<HeaderRels>,
+    pub(crate) footer_rels: Vec<FooterRels>,
+}
+
 impl Default for Docx {
     fn default() -> Self {
         let content_type = ContentTypes::new().set_default();
@@ -766,27 +773,7 @@ impl Docx {
     /// This consumes the document. Call [`XMLDocx::pack`] to write a DOCX
     /// archive.
     pub fn build(mut self) -> XMLDocx {
-        let has_toc = self.prepare_for_build();
-
-        let (images, mut images_bufs) = self.images_in_doc();
-        let (header_images, header_images_bufs) = self.images_in_header();
-        let (footer_images, footer_images_bufs) = self.images_in_footer();
-
-        images_bufs.extend(header_images_bufs);
-        images_bufs.extend(footer_images_bufs);
-
-        let mut header_rels = vec![HeaderRels::new(); 3];
-        for (i, images) in header_images.iter().enumerate() {
-            if let Some(h) = header_rels.get_mut(i) {
-                h.set_images(images.to_owned());
-            }
-        }
-        let mut footer_rels = vec![FooterRels::new(); 3];
-        for (i, images) in footer_images.iter().enumerate() {
-            if let Some(f) = footer_rels.get_mut(i) {
-                f.set_images(images.to_owned());
-            }
-        }
+        let package = self.prepare_package();
 
         let web_extensions = self.web_extensions.iter().map(|ext| ext.build()).collect();
         let custom_items = self.custom_items.iter().map(|xml| xml.build()).collect();
@@ -796,8 +783,6 @@ impl Docx {
             .iter()
             .map(|rel| rel.build())
             .collect();
-
-        self.document_rels.images = images;
 
         let mut headers: Vec<&(String, Header)> = self.document.section_property.get_headers();
 
@@ -825,28 +810,6 @@ impl Docx {
         footers.sort_by(|a, b| a.0.cmp(&b.0));
         let footers = footers.iter().map(|h| h.1.build()).collect();
 
-        // Collect footnotes
-        if self.collect_footnotes() {
-            // Relationship entry for footnotes
-            self.content_type = self.content_type.add_footnotes();
-            self.document_rels.has_footnotes = true;
-        }
-
-        if has_toc {
-            for i in 1..=9 {
-                if !self
-                    .styles
-                    .styles
-                    .iter()
-                    .any(|s| s.name == Name::new(format!("toc {i}")))
-                {
-                    self.styles = self
-                        .styles
-                        .add_style(crate::documents::preset_styles::toc(i));
-                }
-            }
-        }
-
         XMLDocx {
             content_type: self.content_type.build(),
             rels: self.rels.build(),
@@ -855,12 +818,12 @@ impl Docx {
             document: self.document.build(),
             comments: self.comments.build(),
             document_rels: self.document_rels.build(),
-            header_rels: header_rels.into_iter().map(|r| r.build()).collect(),
-            footer_rels: footer_rels.into_iter().map(|r| r.build()).collect(),
+            header_rels: package.header_rels.into_iter().map(|r| r.build()).collect(),
+            footer_rels: package.footer_rels.into_iter().map(|r| r.build()).collect(),
             settings: self.settings.build(),
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
-            media: images_bufs,
+            media: package.media,
             headers,
             footers,
             comments_extended: self.comments_extended.build(),
@@ -872,6 +835,19 @@ impl Docx {
             custom_item_props,
             footnotes: self.footnotes.build(),
         }
+    }
+
+    /// Writes this document directly as a DOCX ZIP archive.
+    ///
+    /// Unlike [`Docx::build`] followed by [`XMLDocx::pack`], this method
+    /// streams XML package parts into the archive instead of retaining every
+    /// rendered part in a separate `Vec<u8>`.
+    pub fn pack<W>(mut self, writer: W) -> zip::result::ZipResult<()>
+    where
+        W: std::io::Write + std::io::Seek,
+    {
+        let package = self.prepare_package();
+        crate::zipper::zip_docx(writer, self, package)
     }
 
     pub fn json(&self) -> String {
@@ -931,6 +907,54 @@ impl Docx {
         self.refresh_duplicate_para_ids();
         self.update_dependencies();
         has_toc
+    }
+
+    /// Normalizes the document and collects metadata shared by buffered and
+    /// streaming package output.
+    fn prepare_package(&mut self) -> PackageMetadata {
+        let has_toc = self.prepare_for_build();
+
+        let (images, mut media) = self.images_in_doc();
+        let (header_images, header_media) = self.images_in_header();
+        let (footer_images, footer_media) = self.images_in_footer();
+        media.extend(header_media);
+        media.extend(footer_media);
+        self.document_rels.images = images;
+
+        let mut header_rels = vec![HeaderRels::new(); 3];
+        for (rels, images) in header_rels.iter_mut().zip(header_images) {
+            rels.set_images(images);
+        }
+
+        let mut footer_rels = vec![FooterRels::new(); 3];
+        for (rels, images) in footer_rels.iter_mut().zip(footer_images) {
+            rels.set_images(images);
+        }
+
+        if self.collect_footnotes() {
+            self.content_type = std::mem::take(&mut self.content_type).add_footnotes();
+            self.document_rels.has_footnotes = true;
+        }
+
+        if has_toc {
+            for level in 1..=9 {
+                if !self
+                    .styles
+                    .styles
+                    .iter()
+                    .any(|style| style.name == Name::new(format!("toc {level}")))
+                {
+                    self.styles = std::mem::take(&mut self.styles)
+                        .add_style(crate::documents::preset_styles::toc(level));
+                }
+            }
+        }
+
+        PackageMetadata {
+            media,
+            header_rels,
+            footer_rels,
+        }
     }
 
     /// Replaces empty and duplicate paragraph IDs with unique values.
@@ -2467,12 +2491,23 @@ fn ensure_unique_paragraph_id(
         return;
     }
 
-    let mut new_id = crate::generate_para_id();
-    while used.contains(&new_id) {
-        new_id = crate::generate_para_id();
-    }
+    let new_id = next_unique_paragraph_id(used);
     paragraph.id = new_id.clone();
     used.insert(new_id);
+}
+
+/// Returns a generated paragraph ID, falling back to a deterministic scan if
+/// the generator collides with an existing value.
+fn next_unique_paragraph_id(used: &HashSet<String>) -> String {
+    let generated = crate::generate_para_id();
+    if !used.contains(&generated) {
+        return generated;
+    }
+
+    (1usize..)
+        .map(|value| format!("{value:08x}"))
+        .find(|candidate| !used.contains(candidate))
+        .expect("the paragraph ID space should not be exhausted")
 }
 
 fn push_comment_and_comment_extended(
@@ -2620,6 +2655,40 @@ mod image_collection_tests {
 
         assert!(relationships[0][0].0.starts_with("footer"));
         assert!(media[0].0.starts_with("footer"));
+    }
+}
+
+#[cfg(test)]
+mod pack_tests {
+    use super::*;
+    use std::io::Cursor;
+
+    #[test]
+    fn direct_pack_matches_buffered_package_output() {
+        let image = vec![1, 2, 3, 4];
+        let header = Header::new().add_paragraph(
+            Paragraph::new().add_run(Run::new().add_image(Pic::new_with_dimensions(
+                image.clone(),
+                1,
+                1,
+            ))),
+        );
+        let footer = Footer::new().add_paragraph(
+            Paragraph::new().add_run(Run::new().add_image(Pic::new_with_dimensions(image, 1, 1))),
+        );
+        let docx = Docx::new()
+            .header(header)
+            .footer(footer)
+            .add_paragraph(Paragraph::new().add_run(Run::new().add_text("streamed package")));
+
+        let mut buffered = Cursor::new(Vec::new());
+        let xml = docx.clone().build();
+        xml.pack(&mut buffered).unwrap();
+
+        let mut streamed = Cursor::new(Vec::new());
+        docx.pack(&mut streamed).unwrap();
+
+        assert_eq!(streamed.into_inner(), buffered.into_inner());
     }
 }
 

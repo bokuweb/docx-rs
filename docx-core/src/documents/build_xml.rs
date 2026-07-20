@@ -22,7 +22,7 @@ pub trait BuildXML {
     }
 }
 
-impl<'a, T: BuildXML> BuildXML for &'a T {
+impl<T: BuildXML> BuildXML for &T {
     /// Building XML from `&T` is the same as from `T`.
     fn build_to<W: Write>(
         &self,

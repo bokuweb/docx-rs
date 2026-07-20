@@ -172,28 +172,28 @@ impl BuildXML for InstrToC {
 
         // \a
         if let Some(ref t) = self.caption_label {
-            write!(raw, " \\a &quot;{}&quot;", t)?;
+            write!(raw, " \\a &quot;{t}&quot;")?;
         }
 
         // \b
         if let Some(ref t) = self.entry_bookmark_name {
-            write!(raw, " \\b &quot;{}&quot;", t)?;
+            write!(raw, " \\b &quot;{t}&quot;")?;
         }
 
         // \c
         if let Some(ref t) = self.caption_label_including_numbers {
-            write!(raw, " \\c &quot;{}&quot;", t)?;
+            write!(raw, " \\c &quot;{t}&quot;")?;
         }
 
         // \d
         if let Some(ref t) = self.sequence_and_page_numbers_separator {
-            write!(raw, " \\d &quot;{}&quot;", t)?;
+            write!(raw, " \\d &quot;{t}&quot;")?;
         }
 
         // \f
         if let Some(ref t) = self.tc_field_identifier {
             if let Some(ref t) = t {
-                write!(raw, " \\f &quot;{}&quot;", t)?;
+                write!(raw, " \\f &quot;{t}&quot;")?;
             } else {
                 write!(raw, " \\f")?;
             }
@@ -216,12 +216,12 @@ impl BuildXML for InstrToC {
 
         // \p
         if let Some(ref t) = self.entry_and_page_number_separator {
-            write!(raw, " \\p &quot;{}&quot;", t)?;
+            write!(raw, " \\p &quot;{t}&quot;")?;
         }
 
         // \s
         if let Some(ref t) = self.seq_field_identifier_for_prefix {
-            write!(raw, " \\s &quot;{}&quot;", t)?;
+            write!(raw, " \\s &quot;{t}&quot;")?;
         }
 
         // \t
@@ -232,7 +232,7 @@ impl BuildXML for InstrToC {
                 .map(|s| format!("{},{}", (s.0).0, (s.0).1))
                 .collect::<Vec<String>>()
                 .join(",");
-            write!(raw, " \\t &quot;{}&quot;", s)?;
+            write!(raw, " \\t &quot;{s}&quot;")?;
         }
 
         // \h

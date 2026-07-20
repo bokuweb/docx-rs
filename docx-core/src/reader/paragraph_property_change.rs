@@ -18,7 +18,7 @@ impl ElementReader for ParagraphPropertyChange {
             }
         }
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement { name, .. }) => {
                     let e = XMLElement::from_str(&name.local_name)

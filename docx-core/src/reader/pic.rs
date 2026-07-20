@@ -12,7 +12,7 @@ impl ElementReader for Pic {
     ) -> Result<Self, ReaderError> {
         let mut pic = Pic::with_empty();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..

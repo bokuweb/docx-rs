@@ -10,7 +10,7 @@ impl ElementReader for MoveTo {
     ) -> Result<Self, ReaderError> {
         let mut mt = MoveTo::new_with_empty();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..

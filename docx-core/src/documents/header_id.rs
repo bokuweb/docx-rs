@@ -18,5 +18,5 @@ pub fn generate_header_id() -> usize {
 }
 */
 pub fn create_header_rid(id: usize) -> String {
-    format!("rIdHeader{}", id)
+    format!("rIdHeader{id}")
 }

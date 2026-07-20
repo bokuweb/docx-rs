@@ -53,7 +53,7 @@ impl ElementReader for Run {
         let mut run = Run::new();
         let mut text_state = TextState::Idle;
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..
@@ -108,7 +108,7 @@ impl ElementReader for Run {
                                     }
                                 }
                                 XMLElement::InstrText => loop {
-                                    let e = r.next();
+                                    let e = r.next_event();
                                     match e {
                                         Ok(XmlEvent::Characters(c)) => {
                                             run.children.push(RunChild::InstrTextString(c));

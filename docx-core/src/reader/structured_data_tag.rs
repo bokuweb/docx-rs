@@ -12,7 +12,7 @@ impl ElementReader for StructuredDataTag {
     ) -> Result<Self, ReaderError> {
         let mut sdt = StructuredDataTag::new();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

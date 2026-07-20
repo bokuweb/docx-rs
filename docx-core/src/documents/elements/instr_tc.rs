@@ -52,11 +52,11 @@ impl BuildXML for InstrTC {
         write!(raw, "TC \"{}\"", self.text)?;
 
         if let Some(ref t) = self.item_type_identifier {
-            write!(raw, " \\f {}", t)?;
+            write!(raw, " \\f {t}")?;
         }
 
         if let Some(level) = self.level {
-            write!(raw, " \\l {}", level)?;
+            write!(raw, " \\l {level}")?;
         }
 
         if self.omits_page_number {

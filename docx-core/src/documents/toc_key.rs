@@ -10,7 +10,7 @@ pub trait TocKeyGenerator {
 
         let id = TOC_KEY.load(Ordering::Relaxed);
         TOC_KEY.store(id + 1, Ordering::Relaxed);
-        format!("_Toc{:08}", id)
+        format!("_Toc{id:08}")
     }
 }
 

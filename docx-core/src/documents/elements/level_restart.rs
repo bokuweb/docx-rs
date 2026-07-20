@@ -21,7 +21,7 @@ impl BuildXML for LevelRestart {
         stream: crate::xml::writer::EventWriter<W>,
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
-            .level_restart(&format!("{}", &self.val))?
+            .level_restart(&format!("{}", self.val))?
             .into_inner()
     }
 }

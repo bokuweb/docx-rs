@@ -15,7 +15,7 @@ impl ElementReader for Paragraph {
             p = p.id(para_id);
         }
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

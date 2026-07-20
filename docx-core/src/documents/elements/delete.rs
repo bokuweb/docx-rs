@@ -14,7 +14,7 @@ pub struct Delete {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum DeleteChild {
-    Run(Run),
+    Run(Box<Run>),
     CommentStart(Box<CommentRangeStart>),
     CommentEnd(CommentRangeEnd),
 }
@@ -66,7 +66,7 @@ impl Delete {
     }
 
     pub fn add_run(mut self, run: Run) -> Delete {
-        self.children.push(DeleteChild::Run(run));
+        self.children.push(DeleteChild::Run(Box::new(run)));
         self
     }
 
@@ -104,9 +104,9 @@ impl BuildXML for Delete {
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         let id = self.generate();
         XMLBuilder::from(stream)
-            .open_delete(&id, &self.author, &self.date)?
+            .open_delete(id.as_ref(), &self.author, &self.date)?
             .apply_each(&self.children, |ch, b| match ch {
-                DeleteChild::Run(t) => b.add_child(t),
+                DeleteChild::Run(t) => b.add_child(&**t),
                 DeleteChild::CommentStart(c) => b.add_child(&c),
                 DeleteChild::CommentEnd(c) => b.add_child(c),
             })?

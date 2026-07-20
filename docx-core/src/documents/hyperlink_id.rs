@@ -18,5 +18,5 @@ pub fn generate_hyperlink_id() -> usize {
 }
 
 pub fn create_hyperlink_rid(id: usize) -> String {
-    format!("rIdHyperlink{}", id)
+    format!("rIdHyperlink{id}")
 }

@@ -10,7 +10,7 @@
     "noEmitOnError": true,
     "strictNullChecks": true,
     "target": "es6",
-    "lib": ["ES2017", "DOM"],
+    "lib": ["ES2017", "ESNext.Disposable", "DOM"],
     "sourceMap": true,
     "esModuleInterop": true,
     "outDir": "dist/node",

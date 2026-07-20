@@ -10,7 +10,7 @@ impl ElementReader for AGraphic {
     ) -> Result<Self, ReaderError> {
         let mut graphic = AGraphic::new();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..

@@ -4,6 +4,36 @@ const Zip = require("adm-zip");
 
 const { encodedCat } = require("./encoded-cat");
 
+const PNG_SIGNATURE = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+
+const normalizeImagePreviewsForSnapshot = (result) => ({
+  ...result,
+  images: result.images.map(([id, path, original, preview]) => {
+    expect(Buffer.from(original, "base64").length).toBeGreaterThan(0);
+    expect(Buffer.from(preview, "base64").subarray(0, 8)).toEqual(
+      PNG_SIGNATURE
+    );
+    return [id, path, original, "<valid PNG preview>"];
+  }),
+});
+
+describe("snapshot helpers", () => {
+  test("should normalize PNG previews independently of compressed bytes", () => {
+    const original = Buffer.from("source image").toString("base64");
+    const preview = (suffix) =>
+      Buffer.from([137, 80, 78, 71, 13, 10, 26, 10, suffix]).toString(
+        "base64"
+      );
+    const result = (suffix) => ({
+      images: [["rId1", "media/image.png", original, preview(suffix)]],
+    });
+
+    expect(normalizeImagePreviewsForSnapshot(result(1))).toEqual(
+      normalizeImagePreviewsForSnapshot(result(2))
+    );
+  });
+});
+
 describe("reader", () => {
   test("should read lvlOverride docx", () => {
     const buffer = readFileSync("../fixtures/lvl_override/override.docx");
@@ -132,7 +162,7 @@ describe("reader", () => {
       "../fixtures/image_inline_and_anchor/image_inline_and_anchor.docx"
     );
     const json = w.readDocx(buffer);
-    expect(json).toMatchSnapshot();
+    expect(normalizeImagePreviewsForSnapshot(json)).toMatchSnapshot();
   });
 
   test("should read textbox", () => {
@@ -239,7 +269,7 @@ describe("reader", () => {
   test("should read image.xml", () => {
     const str = readFileSync("../fixtures/image_xml/image.xml", "utf-8");
     const json = w.readXML(str);
-    expect(json).toMatchSnapshot();
+    expect(normalizeImagePreviewsForSnapshot(json)).toMatchSnapshot();
   });
 
   test("should convert embedded EMF to SVG and surface it via images", () => {

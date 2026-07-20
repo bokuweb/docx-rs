@@ -4,29 +4,29 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: node
       - uses: moonrepo/setup-rust@v1
         with:
           profile: minimal
           cache: false
           inherit-toolchain: true
       - name: Cache cargo registry
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache cargo index
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache cargo build
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: target
           key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
@@ -36,18 +36,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: moonrepo/setup-rust@v1
         with:
           profile: minimal
           inherit-toolchain: true
       - name: Cache cargo registry
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache cargo index
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
@@ -57,20 +57,23 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./docx-wasm    
+        working-directory: ./docx-wasm
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: node
       - uses: moonrepo/setup-rust@v1
         with:
           profile: minimal
           inherit-toolchain: true
-      - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-      - run: rustup target add wasm32-unknown-unknown
-      - run: npm install -g pnpm
-      - run: pnpm install --frozen-lockfile && pnpm wasm-pack:node && pnpm wasm-pack:dev && pnpm exec tsc -p tsconfig.node.json && pnpm test
+          targets: wasm32-unknown-unknown
+          bins: wasm-pack@0.13.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm wasm-pack:node && pnpm wasm-pack:dev && pnpm exec tsc -p tsconfig.node.json && pnpm test
       - name: screenshot
         run: pnpm screenshot
       - uses: reg-viz/reg-actions@v3
@@ -86,10 +89,10 @@ jobs:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: moonrepo/setup-rust@v1
         with:
-            inherit-toolchain: true
-            components: clippy
+          inherit-toolchain: true
+          components: clippy
     # TODO(@unvalley): enable
     #   - run: cargo clippy -- -D warnings

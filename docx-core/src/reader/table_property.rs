@@ -14,7 +14,7 @@ impl ElementReader for TableProperty {
         let mut tp = TableProperty::new();
         tp = tp.set_borders(TableBorders::with_empty());
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

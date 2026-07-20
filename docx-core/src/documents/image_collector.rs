@@ -25,7 +25,7 @@ pub(crate) fn collect_images_from_paragraph(
                             images.push((
                                 pic_id.clone(),
                                 // For now only png supported
-                                format!("media/{}.png", pic_id),
+                                format!("media/{pic_id}.png"),
                             ));
                             image_bufs.push((pic_id.clone(), b));
                             pic.id = pic_id;

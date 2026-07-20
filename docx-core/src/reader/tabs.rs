@@ -10,7 +10,7 @@ impl ElementReader for Tabs {
     ) -> Result<Self, ReaderError> {
         let mut tabs = Tabs::new();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

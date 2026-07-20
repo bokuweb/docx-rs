@@ -65,7 +65,7 @@ impl BuildXML for WebExtension {
             .declaration(Some(true))?
             .open_webextension(
                 "http://schemas.microsoft.com/office/webextensions/webextension/2010/11",
-                &format!("{{{}}}", &self.id),
+                &format!("{{{}}}", self.id),
             )?
             .webextension_reference(
                 &self.reference_id,

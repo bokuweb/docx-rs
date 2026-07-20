@@ -66,7 +66,7 @@ impl BuildXML for Drawing {
 
         match &self.data {
             Some(DrawingData::Pic(p)) => {
-                if let DrawingPositionType::Inline { .. } = p.position_type {
+                if let DrawingPositionType::Inline = p.position_type {
                     b = b.open_wp_inline(
                         &format!("{}", p.dist_t),
                         &format!("{}", p.dist_b),

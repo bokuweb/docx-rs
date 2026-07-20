@@ -10,7 +10,7 @@ impl FromXML for Settings {
         let mut settings = Self::default();
 
         loop {
-            let e = parser.next();
+            let e = parser.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..
@@ -72,7 +72,7 @@ impl FromXML for Settings {
                         break;
                     }
                 }
-                Ok(XmlEvent::EndDocument { .. }) => break,
+                Ok(XmlEvent::EndDocument) => break,
                 Err(_) => return Err(ReaderError::XMLReadError),
                 _ => {}
             }

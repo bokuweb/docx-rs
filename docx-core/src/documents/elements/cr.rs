@@ -8,6 +8,12 @@ use crate::xml_builder::*;
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 pub struct CarriageReturn {}
 
+impl Default for CarriageReturn {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl CarriageReturn {
     pub fn new() -> CarriageReturn {
         CarriageReturn {}

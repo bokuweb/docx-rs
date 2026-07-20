@@ -18,7 +18,7 @@ impl ElementReader for AGraphicData {
         }
         let mut graphic_data = AGraphicData::new(t);
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..

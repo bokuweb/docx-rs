@@ -47,7 +47,7 @@ impl BuildXML for LevelOverride {
             .open_level_override(&format!("{}", self.level))?
             .add_optional_child(&self.override_level)?
             .apply_opt(self.override_start, |start, b| {
-                b.start_override(&format!("{}", start))
+                b.start_override(&format!("{start}"))
             })?
             .close()?
             .into_inner()

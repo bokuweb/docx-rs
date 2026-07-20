@@ -9,7 +9,7 @@ impl FromXML for WebSettings {
         let mut parser = EventReader::new(reader);
         let mut settings = Self::default();
         loop {
-            let e = parser.next();
+            let e = parser.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..
@@ -27,7 +27,7 @@ impl FromXML for WebSettings {
                         break;
                     }
                 }
-                Ok(XmlEvent::EndDocument { .. }) => break,
+                Ok(XmlEvent::EndDocument) => break,
                 Err(_) => return Err(ReaderError::XMLReadError),
                 _ => {}
             }

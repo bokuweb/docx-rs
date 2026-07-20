@@ -12,7 +12,7 @@ impl ElementReader for WpsTextBox {
     ) -> Result<Self, ReaderError> {
         let mut text_box = WpsTextBox::new();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..

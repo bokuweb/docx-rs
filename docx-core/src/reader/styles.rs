@@ -9,7 +9,7 @@ impl FromXML for Styles {
         let mut parser = EventReader::new(reader);
         let mut styles = Self::default();
         loop {
-            let e = parser.next();
+            let e = parser.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

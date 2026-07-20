@@ -8,7 +8,7 @@ impl FromXML for Comments {
         let mut r = EventReader::new(reader);
         let mut comments: Vec<Comment> = vec![];
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..
@@ -25,7 +25,7 @@ impl FromXML for Comments {
                         return Ok(Comments { comments });
                     }
                 }
-                Ok(XmlEvent::EndDocument { .. }) => {
+                Ok(XmlEvent::EndDocument) => {
                     return Ok(Comments { comments });
                 }
                 Err(_) => return Err(ReaderError::XMLReadError),

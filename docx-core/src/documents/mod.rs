@@ -92,18 +92,16 @@ pub struct Image(pub Vec<u8>);
 /// Decoded preview bytes for an entry in `Docx.images`.
 ///
 /// For raster originals (PNG / JPEG / BMP / GIF / TIFF) decoded via the
-/// `image` crate, the contents are PNG bytes. For EMF originals decoded
-/// via the `emf` feature, the contents are SVG bytes instead. The struct
-/// is named `Png` for backwards compatibility; callers can distinguish
-/// the two cases by sniffing the bytes (`<svg` / `\x89PNG`) or by
-/// checking the corresponding path's file extension (`.emf` → SVG).
+/// `image` crate, the contents are PNG bytes. Unsupported formats such as
+/// EMF are surfaced with an empty preview so downstream consumers can
+/// provide their own conversion. The struct is named `Png` for backwards
+/// compatibility.
 #[derive(Debug, Clone)]
 pub struct Png(pub Vec<u8>);
 
 pub type ImageIdAndPath = (String, String);
 pub type ImageIdAndBuf = (String, Vec<u8>);
 
-#[cfg(feature = "emf")]
 fn is_emf(path: &str, buf: &[u8]) -> bool {
     if path.to_ascii_lowercase().ends_with(".emf") {
         return true;
@@ -114,14 +112,6 @@ fn is_emf(path: &str, buf: &[u8]) -> bool {
     buf.len() >= 44
         && buf[0..4] == [0x01, 0x00, 0x00, 0x00]
         && buf[40..44] == [0x20, 0x45, 0x4D, 0x46]
-}
-
-#[cfg(feature = "emf")]
-fn convert_emf_to_svg(buf: &[u8]) -> Option<Vec<u8>> {
-    let wmf_player = wmf_core::converter::SVGPlayer::new();
-    let emf_player = emf_core::converter::SVGPlayer::new();
-    let converter = emf_core::converter::EMFConverter::new(buf, emf_player, wmf_player);
-    converter.run().ok()
 }
 
 impl ser::Serialize for Image {
@@ -172,8 +162,8 @@ pub struct Docx {
     ///
     /// Each tuple is `(rId, media path, original bytes, preview bytes)`.
     /// The preview is PNG for raster originals decoded via the `image`
-    /// crate, and SVG for EMF originals decoded via the `emf` feature.
-    /// See [`Png`] for details.
+    /// crate. Unsupported formats such as EMF keep an empty preview for
+    /// downstream consumers to populate. See [`Png`] for details.
     pub images: Vec<(String, String, Image, Png)>,
     // reader only
     pub hyperlinks: Vec<(String, String, String)>,
@@ -283,17 +273,10 @@ impl Docx {
     ) -> Self {
         let path: String = path.into();
 
-        #[cfg(feature = "emf")]
         if is_emf(&path, &buf) {
-            if let Some(svg) = convert_emf_to_svg(&buf) {
-                // The `Png` slot holds SVG bytes here — see the doc
-                // comment on `Png`. Consumers can detect this case via
-                // the `.emf` extension on the path.
-                self.images.push((id.into(), path, Image(buf), Png(svg)));
-                return self;
-            }
-            // Conversion failed — fall through so the original bytes
-            // are still surfaced via the regular path (best-effort).
+            self.images
+                .push((id.into(), path, Image(buf), Png(Vec::new())));
+            return self;
         }
 
         #[cfg(feature = "image")]
@@ -2465,13 +2448,12 @@ fn update_document_by_toc(
     children
 }
 
-#[cfg(all(test, feature = "emf"))]
+#[cfg(test)]
 mod emf_tests {
     use super::*;
 
     /// Build a syntactically-valid, minimal EMF: an EMR_HEADER followed by
-    /// an EMR_EOF. emf-core should accept this and emit a (possibly empty)
-    /// SVG document.
+    /// an EMR_EOF.
     pub(super) fn minimal_valid_emf() -> Vec<u8> {
         let mut buf = Vec::<u8>::with_capacity(108);
 
@@ -2581,34 +2563,10 @@ mod emf_tests {
         assert!(!is_emf("x.bin", &buf));
     }
 
-    // ---------- convert_emf_to_svg ----------
-
-    #[test]
-    fn convert_emf_to_svg_produces_svg_for_valid_input() {
-        let bytes = convert_emf_to_svg(&minimal_valid_emf()).expect("conversion should succeed");
-        assert!(!bytes.is_empty(), "SVG output should not be empty");
-        let text = std::str::from_utf8(&bytes).expect("SVG output should be UTF-8");
-        // The emf-core SVG player emits an <svg ...> element. Don't pin
-        // down the exact prologue — just look for the opening tag.
-        assert!(
-            text.contains("<svg"),
-            "SVG output should contain `<svg`, got: {}",
-            &text[..text.len().min(200)]
-        );
-    }
-
-    #[test]
-    fn convert_emf_to_svg_handles_corrupt_input_without_panicking() {
-        // Either Some(_) or None is fine — we only care that it doesn't
-        // panic on bytes that pass our cheap signature sniff but aren't
-        // a real EMF stream.
-        let _ = convert_emf_to_svg(&corrupt_emf_header());
-    }
-
     // ---------- add_image routing ----------
 
     #[test]
-    fn add_image_routes_valid_emf_into_images_with_svg_preview() {
+    fn add_image_routes_valid_emf_into_images_with_empty_preview() {
         let buf = minimal_valid_emf();
         let docx = Docx::new().add_image("rId1", "word/media/image1.emf", buf.clone());
 
@@ -2621,25 +2579,17 @@ mod emf_tests {
         assert_eq!(id, "rId1");
         assert_eq!(path, "word/media/image1.emf");
         assert_eq!(original.0, buf);
-        // For .emf entries the `Png` slot actually holds SVG bytes.
-        assert!(!preview.0.is_empty());
-        assert!(std::str::from_utf8(&preview.0).unwrap().contains("<svg"));
+        assert!(preview.0.is_empty());
     }
 
     #[test]
-    fn add_image_falls_through_on_emf_conversion_failure() {
-        // The corrupt header passes `is_emf` (correct signature) but
-        // can't be parsed end-to-end. The reader should fall through to
-        // the image-crate path rather than storing an empty SVG. The
-        // `image` crate will then also fail on these bytes, so nothing
-        // ends up in `images` — same behaviour as today for any
-        // unrecognised media file.
+    fn add_image_preserves_emf_detected_by_magic_bytes() {
         let buf = corrupt_emf_header();
-        let docx = Docx::new().add_image("rId1", "word/media/image1.bin", buf);
-        assert!(
-            docx.images.is_empty(),
-            "failed EMF conversion + failed PNG decode = no entry"
-        );
+        let docx = Docx::new().add_image("rId1", "word/media/image1.bin", buf.clone());
+        assert_eq!(docx.images.len(), 1);
+        let (_, _, original, preview) = &docx.images[0];
+        assert_eq!(original.0, buf);
+        assert!(preview.0.is_empty());
     }
 
     #[test]
@@ -2681,11 +2631,10 @@ mod emf_tests {
     }
 }
 
-/// Reader-level integration tests for the `emf` feature. We construct a
-/// tiny in-memory docx (just enough relationships + a media entry) and
-/// run it through `read_docx` to verify the converted SVG surfaces on
-/// `Docx.images` (the EMF case stores SVG bytes in the preview slot).
-#[cfg(all(test, feature = "emf"))]
+/// Reader-level integration tests for EMF passthrough. We construct a tiny
+/// in-memory docx (just enough relationships + a media entry) and run it
+/// through `read_docx` to verify the original bytes surface on `Docx.images`.
+#[cfg(test)]
 mod emf_reader_tests {
     use super::emf_tests::minimal_valid_emf;
     use std::io::Write;
@@ -2738,7 +2687,7 @@ mod emf_reader_tests {
     }
 
     #[test]
-    fn read_docx_routes_emf_media_to_images_with_svg_preview() {
+    fn read_docx_routes_emf_media_to_images_with_empty_preview() {
         let docx_bytes = build_docx_with_emf();
         let docx = crate::reader::read_docx(&docx_bytes).expect("should read docx");
 
@@ -2751,8 +2700,6 @@ mod emf_reader_tests {
         assert_eq!(id, "rId10");
         assert!(path.ends_with("image1.emf"));
         assert_eq!(original.0, minimal_valid_emf());
-        // For .emf entries the preview slot holds SVG bytes (not PNG).
-        let preview_text = std::str::from_utf8(&preview.0).expect("SVG should be UTF-8");
-        assert!(preview_text.contains("<svg"));
+        assert!(preview.0.is_empty());
     }
 }

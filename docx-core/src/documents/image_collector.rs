@@ -3,12 +3,11 @@ use crate::{
     StructuredDataTagChild, Table, TableCellContent, TableChild, TableRowChild, TocContent,
 };
 use std::collections::HashMap;
-use std::hash::{DefaultHasher, Hash, Hasher};
 
 #[derive(Default)]
 pub(crate) struct ImageDeduplicator {
     by_id: HashMap<String, usize>,
-    by_hash: HashMap<u64, Vec<usize>>,
+    by_fingerprint: HashMap<(usize, u32), Vec<usize>>,
 }
 
 fn collect_pic(
@@ -25,15 +24,17 @@ fn collect_pic(
         return;
     }
 
-    let mut hasher = DefaultHasher::new();
-    image.hash(&mut hasher);
-    let hash = hasher.finish();
-    if let Some(index) = deduplicator.by_hash.get(&hash).and_then(|candidates| {
-        candidates
-            .iter()
-            .copied()
-            .find(|index| image_bufs[*index].1 == image)
-    }) {
+    let fingerprint = (image.len(), crc32fast::hash(&image));
+    if let Some(index) = deduplicator
+        .by_fingerprint
+        .get(&fingerprint)
+        .and_then(|candidates| {
+            candidates
+                .iter()
+                .copied()
+                .find(|index| image_bufs[*index].1 == image)
+        })
+    {
         pic.id = image_bufs[index].0.clone();
         return;
     }
@@ -47,7 +48,11 @@ fn collect_pic(
     let index = image_bufs.len();
     image_bufs.push((pic_id.clone(), image));
     deduplicator.by_id.insert(pic_id.clone(), index);
-    deduplicator.by_hash.entry(hash).or_default().push(index);
+    deduplicator
+        .by_fingerprint
+        .entry(fingerprint)
+        .or_default()
+        .push(index);
     pic.id = pic_id;
 }
 

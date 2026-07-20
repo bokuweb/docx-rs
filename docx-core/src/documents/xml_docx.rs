@@ -5,6 +5,7 @@ use std::io::prelude::*;
 use std::io::Seek;
 
 #[derive(Debug)]
+/// Uncompressed OPC package parts produced by [`crate::Docx::build`].
 pub struct XMLDocx {
     pub content_type: Vec<u8>,
     pub rels: Vec<u8>,
@@ -32,6 +33,7 @@ pub struct XMLDocx {
 }
 
 impl XMLDocx {
+    /// Writes these package parts as a DOCX ZIP archive to a seekable destination.
     pub fn pack<W>(self, w: W) -> zip::result::ZipResult<()>
     where
         W: Write + Seek,

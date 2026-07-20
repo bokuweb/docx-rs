@@ -231,6 +231,9 @@ impl From<String> for XmlEvent<'static> {
 }
 
 impl<'a> StartElement<'a> {
+    /// Appends an attribute with an already escaped string value.
+    ///
+    /// The value is copied directly into the start tag and is not XML-escaped.
     pub fn attr(mut self, name: &str, value: &str) -> Self {
         self.encoded.push(b' ');
         self.encoded.extend_from_slice(name.as_bytes());
@@ -240,6 +243,10 @@ impl<'a> StartElement<'a> {
         self
     }
 
+    /// Appends an attribute by formatting its value directly into the start tag.
+    ///
+    /// This avoids allocating an intermediate `String`. The formatted value is
+    /// not XML-escaped.
     pub fn attr_display(mut self, name: &str, value: impl fmt::Display) -> Self {
         self.encoded.push(b' ');
         self.encoded.extend_from_slice(name.as_bytes());

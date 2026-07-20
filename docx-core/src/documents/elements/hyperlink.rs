@@ -3,7 +3,7 @@ use std::io::Write;
 
 use super::*;
 use crate::documents::BuildXML;
-use crate::escape::escape;
+use crate::escape::escape_owned;
 use crate::types::*;
 use crate::{create_hyperlink_rid, generate_hyperlink_id, xml_builder::*};
 
@@ -37,7 +37,7 @@ impl Hyperlink {
             match t {
                 HyperlinkType::External => HyperlinkData::External {
                     rid: create_hyperlink_rid(generate_hyperlink_id()),
-                    path: escape(&value.into()),
+                    path: escape_owned(value.into()),
                 },
                 HyperlinkType::Anchor => HyperlinkData::Anchor {
                     anchor: value.into(),

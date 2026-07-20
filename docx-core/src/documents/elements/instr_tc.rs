@@ -2,7 +2,7 @@ use serde::Serialize;
 use std::io::Write;
 
 use crate::documents::*;
-use crate::escape::escape;
+use crate::escape::escape_owned;
 use crate::xml_builder::XMLBuilder;
 
 // https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TCTC_topic_ID0EU2N1.html
@@ -20,7 +20,7 @@ pub struct InstrTC {
 impl InstrTC {
     pub fn new(text: impl Into<String>) -> Self {
         Self {
-            text: escape(&text.into()),
+            text: escape_owned(text.into()),
             ..Default::default()
         }
     }

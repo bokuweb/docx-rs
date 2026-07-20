@@ -40,7 +40,7 @@ pub struct TableOfContentsReviewData {
     pub date: String,
 }
 
-/// https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TOCTOC_topic_ID0ELZO1.html
+/// <https://c-rex.net/projects/samples/ooxml/e1/Part4/OOXML_P4_DOCX_TOCTOC_topic_ID0ELZO1.html>
 /// This struct is only used by writers
 #[derive(Serialize, Debug, Clone, PartialEq, Default)]
 pub struct TableOfContents {
@@ -105,7 +105,7 @@ impl TableOfContents {
 
     pub fn delete(mut self, author: impl Into<String>, date: impl Into<String>) -> Self {
         self.delete = Some(TableOfContentsReviewData {
-            author: escape::escape(&author.into()),
+            author: escape::escape_owned(author.into()),
             date: date.into(),
         });
         self

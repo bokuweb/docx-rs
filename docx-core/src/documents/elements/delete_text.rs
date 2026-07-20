@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::io::Write;
 
 use crate::documents::BuildXML;
-use crate::escape::escape;
+use crate::escape::escape_owned;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
@@ -15,7 +15,7 @@ pub struct DeleteText {
 impl DeleteText {
     pub fn new(text: impl Into<String>) -> DeleteText {
         DeleteText {
-            text: escape(&text.into()),
+            text: escape_owned(text.into()),
             preserve_space: true,
         }
     }

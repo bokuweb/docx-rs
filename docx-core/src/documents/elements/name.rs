@@ -14,7 +14,7 @@ pub struct Name {
 impl Name {
     pub fn new(name: impl Into<String>) -> Name {
         Name {
-            name: escape::escape(&name.into()),
+            name: escape::escape_owned(name.into()),
         }
     }
 

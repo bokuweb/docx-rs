@@ -84,7 +84,7 @@ impl MoveFrom {
     }
 
     pub fn author(mut self, author: impl Into<String>) -> MoveFrom {
-        self.author = escape::escape(&author.into());
+        self.author = escape::escape_owned(author.into());
         self
     }
 

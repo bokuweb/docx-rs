@@ -5,6 +5,7 @@ use std::marker::PhantomData;
 
 use quick_xml::events::{BytesDecl, BytesText, Event};
 use quick_xml::Writer as QuickWriter;
+use smallvec::SmallVec;
 
 use super::common::XmlVersion;
 
@@ -74,14 +75,16 @@ impl EmitterConfig {
             writer: QuickWriter::new(writer),
             perform_escaping: self.perform_escaping,
             element_stack: Vec::new(),
+            element_names: Vec::new(),
+            pending_start: SmallVec::new(),
         }
     }
 }
 
 #[derive(Debug)]
 struct ElementState {
-    name: String,
-    attributes: Vec<Attribute>,
+    name_start: usize,
+    name_len: usize,
     pending: bool,
 }
 
@@ -89,6 +92,8 @@ pub struct EventWriter<W: Write> {
     writer: QuickWriter<W>,
     perform_escaping: bool,
     element_stack: Vec<ElementState>,
+    element_names: Vec<u8>,
+    pending_start: SmallVec<[u8; 128]>,
 }
 
 impl<W: Write> EventWriter<W> {
@@ -108,22 +113,33 @@ impl<W: Write> EventWriter<W> {
             }
             XmlEvent::StartElement(element) => {
                 self.flush_pending()?;
-                let StartElement {
-                    name, attributes, ..
-                } = element;
+                let name = &element.encoded[1..1 + element.name_len];
+                let name_start = self.element_names.len();
+                self.element_names.extend_from_slice(name);
                 self.element_stack.push(ElementState {
-                    name,
-                    attributes,
+                    name_start,
+                    name_len: element.name_len,
                     pending: true,
                 });
+                self.pending_start = element.encoded;
             }
             XmlEvent::EndElement => {
                 let state = self.element_stack.pop().ok_or(Error::UnbalancedEndTag)?;
                 if state.pending {
-                    self.write_empty(state)?;
+                    let writer = self.writer.get_mut();
+                    writer.write_all(&self.pending_start).map_err(Error::from)?;
+                    writer.write_all(b" />").map_err(Error::from)?;
+                    self.pending_start.clear();
                 } else {
-                    self.write_closing(&state.name)?;
+                    let name_end = state.name_start + state.name_len;
+                    let writer = self.writer.get_mut();
+                    writer.write_all(b"</").map_err(Error::from)?;
+                    writer
+                        .write_all(&self.element_names[state.name_start..name_end])
+                        .map_err(Error::from)?;
+                    writer.write_all(b">").map_err(Error::from)?;
                 }
+                self.element_names.truncate(state.name_start);
             }
             XmlEvent::Characters(text) => {
                 self.flush_pending()?;
@@ -151,68 +167,20 @@ impl<W: Write> EventWriter<W> {
             if state.pending {
                 state.pending = false;
                 let writer = self.writer.get_mut();
-                writer.write_all(b"<").map_err(Error::from)?;
-                writer
-                    .write_all(state.name.as_bytes())
-                    .map_err(Error::from)?;
-                for attr in &state.attributes {
-                    writer.write_all(b" ").map_err(Error::from)?;
-                    writer
-                        .write_all(attr.name.as_bytes())
-                        .map_err(Error::from)?;
-                    writer.write_all(b"=\"").map_err(Error::from)?;
-                    writer
-                        .write_all(attr.value.as_bytes())
-                        .map_err(Error::from)?;
-                    writer.write_all(b"\"").map_err(Error::from)?;
-                }
+                writer.write_all(&self.pending_start).map_err(Error::from)?;
                 writer.write_all(b">").map_err(Error::from)?;
+                self.pending_start.clear();
             }
         }
         Ok(())
-    }
-
-    fn write_empty(&mut self, state: ElementState) -> Result<()> {
-        self.write_tag(state.name.as_str(), &state.attributes, b" />")
-    }
-
-    fn write_closing(&mut self, name: &str) -> Result<()> {
-        let writer = self.writer.get_mut();
-        writer.write_all(b"</").map_err(Error::from)?;
-        writer.write_all(name.as_bytes()).map_err(Error::from)?;
-        writer.write_all(b">").map_err(Error::from)
-    }
-
-    fn write_tag(&mut self, name: &str, attributes: &[Attribute], suffix: &[u8]) -> Result<()> {
-        let writer = self.writer.get_mut();
-        writer.write_all(b"<").map_err(Error::from)?;
-        writer.write_all(name.as_bytes()).map_err(Error::from)?;
-        for attr in attributes {
-            writer.write_all(b" ").map_err(Error::from)?;
-            writer
-                .write_all(attr.name.as_bytes())
-                .map_err(Error::from)?;
-            writer.write_all(b"=\"").map_err(Error::from)?;
-            writer
-                .write_all(attr.value.as_bytes())
-                .map_err(Error::from)?;
-            writer.write_all(b"\"").map_err(Error::from)?;
-        }
-        writer.write_all(suffix).map_err(Error::from)
     }
 }
 
 #[derive(Clone, Debug)]
 pub struct StartElement<'a> {
-    name: String,
-    attributes: Vec<Attribute>,
+    encoded: SmallVec<[u8; 128]>,
+    name_len: usize,
     _marker: PhantomData<&'a ()>,
-}
-
-#[derive(Clone, Debug)]
-struct Attribute {
-    name: String,
-    value: String,
 }
 
 #[derive(Clone, Debug)]
@@ -229,9 +197,12 @@ pub enum XmlEvent<'a> {
 
 impl<'a> XmlEvent<'a> {
     pub fn start_element(name: &'a str) -> StartElement<'a> {
+        let mut encoded = SmallVec::new();
+        encoded.push(b'<');
+        encoded.extend_from_slice(name.as_bytes());
         StartElement {
-            name: name.to_string(),
-            attributes: Vec::new(),
+            encoded,
+            name_len: name.len(),
             _marker: std::marker::PhantomData,
         }
     }
@@ -261,10 +232,11 @@ impl From<String> for XmlEvent<'static> {
 
 impl<'a> StartElement<'a> {
     pub fn attr(mut self, name: &str, value: &str) -> Self {
-        self.attributes.push(Attribute {
-            name: name.to_string(),
-            value: value.to_string(),
-        });
+        self.encoded.push(b' ');
+        self.encoded.extend_from_slice(name.as_bytes());
+        self.encoded.extend_from_slice(b"=\"");
+        self.encoded.extend_from_slice(value.as_bytes());
+        self.encoded.push(b'"');
         self
     }
 }

@@ -96,15 +96,9 @@ pub fn read_rels_xml<R: Read>(reader: R, dir: impl AsRef<Path>) -> Result<ReadRe
                         Path::new("").join(target_string)
                     };
 
-                    let current = rels.remove(&rel_type);
-                    if let Some(mut paths) = current {
-                        paths.insert((rid, target, target_mode));
-                        rels.insert(rel_type, paths);
-                    } else {
-                        let s: BTreeSet<(RId, PathBuf, Option<String>)> =
-                            vec![(rid, target, target_mode)].into_iter().collect();
-                        rels.insert(rel_type, s);
-                    }
+                    rels.entry(rel_type)
+                        .or_default()
+                        .insert((rid, target, target_mode));
                     continue;
                 }
             }

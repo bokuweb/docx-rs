@@ -8,16 +8,16 @@ fn read_headers(
     rels: &ReadDocumentRels,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
 ) -> HashMap<RId, (Header, ReadHeaderOrFooterRels)> {
-    let header_paths = rels.find_target_path(HEADER_TYPE);
+    let header_paths = rels.target_paths(HEADER_TYPE);
     let headers: HashMap<RId, (Header, ReadHeaderOrFooterRels)> = header_paths
-        .unwrap_or_default()
         .into_iter()
+        .flatten()
         .filter_map(|(rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have header path."));
             if let Ok(d) = data {
                 if let Ok(h) = Header::from_xml(&d[..]) {
                     let rels = read_header_or_footer_rels(archive, path).unwrap_or_default();
-                    return Some((rid, (h, rels)));
+                    return Some((rid.clone(), (h, rels)));
                 }
             }
             None
@@ -30,16 +30,16 @@ fn read_footers(
     rels: &ReadDocumentRels,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
 ) -> HashMap<RId, (Footer, ReadHeaderOrFooterRels)> {
-    let footer_paths = rels.find_target_path(FOOTER_TYPE);
+    let footer_paths = rels.target_paths(FOOTER_TYPE);
     let footers: HashMap<RId, (Footer, ReadHeaderOrFooterRels)> = footer_paths
-        .unwrap_or_default()
         .into_iter()
+        .flatten()
         .filter_map(|(rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have footer path."));
             if let Ok(d) = data {
                 if let Ok(h) = Footer::from_xml(&d[..]) {
                     let rels = read_header_or_footer_rels(archive, path).unwrap_or_default();
-                    return Some((rid, (h, rels)));
+                    return Some((rid.clone(), (h, rels)));
                 }
             }
             None
@@ -49,10 +49,10 @@ fn read_footers(
 }
 
 fn read_themes(rels: &ReadDocumentRels, archive: &mut ZipArchive<Cursor<&[u8]>>) -> Vec<Theme> {
-    let theme_paths = rels.find_target_path(THEME_TYPE);
+    let theme_paths = rels.target_paths(THEME_TYPE);
     theme_paths
-        .unwrap_or_default()
         .into_iter()
+        .flatten()
         .filter_map(|(_rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have footer path."));
             if let Ok(d) = data {
@@ -112,7 +112,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     docx.themes = read_themes(&rels, &mut archive);
 
     // Read commentsExtended
-    let comments_extended_path = rels.find_target_path(COMMENTS_EXTENDED_TYPE);
+    let comments_extended_path = rels.target_paths(COMMENTS_EXTENDED_TYPE);
     let comments_extended = if let Some(comments_extended_path) = comments_extended_path {
         if let Some((_, comments_extended_path, ..)) = comments_extended_path.first() {
             let data = read_zip(
@@ -134,7 +134,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     };
 
     // Read comments
-    let comments_path = rels.find_target_path(COMMENTS_TYPE);
+    let comments_path = rels.target_paths(COMMENTS_TYPE);
     let comments = if let Some(paths) = comments_path {
         if let Some((_, comments_path, ..)) = paths.first() {
             let data = read_zip(
@@ -206,7 +206,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
+            let media = rels.target_paths(IMAGE_TYPE);
             docx = add_images(docx, media, &mut archive);
         }
     }
@@ -224,7 +224,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
+            let media = rels.target_paths(IMAGE_TYPE);
             docx = add_images(docx, media, &mut archive);
         }
     }
@@ -236,7 +236,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.content_type = docx.content_type.add_header();
 
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
+            let media = rels.target_paths(IMAGE_TYPE);
             docx = add_images(docx, media, &mut archive);
         }
     }
@@ -250,7 +250,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.content_type = docx.content_type.add_footer();
 
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
+            let media = rels.target_paths(IMAGE_TYPE);
             docx = add_images(docx, media, &mut archive);
         }
     }
@@ -270,7 +270,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.content_type = docx.content_type.add_footer();
 
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
+            let media = rels.target_paths(IMAGE_TYPE);
             docx = add_images(docx, media, &mut archive);
         }
     }
@@ -282,7 +282,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.content_type = docx.content_type.add_footer();
 
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
+            let media = rels.target_paths(IMAGE_TYPE);
             docx = add_images(docx, media, &mut archive);
         }
     }
@@ -296,7 +296,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
     // Read document relationships
     // Read styles
-    let style_path = rels.find_target_path(STYLE_RELATIONSHIP_TYPE);
+    let style_path = rels.target_paths(STYLE_RELATIONSHIP_TYPE);
     if let Some(paths) = style_path {
         if let Some((_, style_path, ..)) = paths.first() {
             let data = read_zip(
@@ -309,7 +309,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     }
 
     // Read numberings
-    let num_path = rels.find_target_path(NUMBERING_RELATIONSHIP_TYPE);
+    let num_path = rels.target_paths(NUMBERING_RELATIONSHIP_TYPE);
     if let Some(paths) = num_path {
         if let Some((_, num_path, ..)) = paths.first() {
             let data = read_zip(
@@ -322,7 +322,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     }
 
     // Read settings
-    let settings_path = rels.find_target_path(SETTINGS_TYPE);
+    let settings_path = rels.target_paths(SETTINGS_TYPE);
     if let Some(paths) = settings_path {
         if let Some((_, settings_path, ..)) = paths.first() {
             let data = read_zip(
@@ -335,7 +335,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     }
 
     // Read web settings
-    let web_settings_path = rels.find_target_path(WEB_SETTINGS_TYPE);
+    let web_settings_path = rels.target_paths(WEB_SETTINGS_TYPE);
     if let Some(paths) = web_settings_path {
         if let Some((_, web_settings_path, ..)) = paths.first() {
             let data = read_zip(
@@ -349,16 +349,19 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         }
     }
     // Read media
-    let media = rels.find_target_path(IMAGE_TYPE);
+    let media = rels.target_paths(IMAGE_TYPE);
     docx = add_images(docx, media, &mut archive);
 
     // Read hyperlinks
-    let links = rels.find_target_path(HYPERLINK_TYPE);
+    let links = rels.target_paths(HYPERLINK_TYPE);
     if let Some(paths) = links {
         for (id, target, mode) in paths {
             if let Some(mode) = mode {
-                docx =
-                    docx.add_hyperlink(id, target.to_str().expect("should convert to str"), mode);
+                docx = docx.add_hyperlink(
+                    id.clone(),
+                    target.to_str().expect("should convert to str"),
+                    mode.clone(),
+                );
             }
         }
     }
@@ -368,14 +371,14 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
 fn add_images(
     mut docx: Docx,
-    media: Option<Vec<(RId, PathBuf, Option<String>)>>,
+    media: Option<&std::collections::BTreeSet<(RId, PathBuf, Option<String>)>>,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
 ) -> Docx {
     // Read media
     if let Some(paths) = media {
         for (id, media, ..) in paths {
             if let Ok(data) = read_zip(archive, media.to_str().expect("should have media")) {
-                docx = docx.add_image(id, media.to_str().unwrap().to_string(), data);
+                docx = docx.add_image(id.clone(), media.to_str().unwrap().to_string(), data);
             }
         }
     }

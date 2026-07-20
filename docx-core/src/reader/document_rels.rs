@@ -22,6 +22,13 @@ impl ReadDocumentRels {
             .get(target)
             .map(|s| s.clone().into_iter().collect())
     }
+
+    pub(crate) fn target_paths(
+        &self,
+        target: &str,
+    ) -> Option<&BTreeSet<(RId, PathBuf, Option<String>)>> {
+        self.rels.get(target)
+    }
 }
 
 pub fn read_document_rels(

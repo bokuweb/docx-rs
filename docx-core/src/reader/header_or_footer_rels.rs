@@ -18,10 +18,18 @@ pub struct ReadHeaderOrFooterRels {
 }
 
 impl ReadHeaderOrFooterRels {
+    #[allow(dead_code)]
     pub fn find_target_path(&self, target: &str) -> Option<Vec<(RId, PathBuf, Option<String>)>> {
         self.rels
             .get(target)
             .map(|s| s.clone().into_iter().collect())
+    }
+
+    pub(crate) fn target_paths(
+        &self,
+        target: &str,
+    ) -> Option<&BTreeSet<(RId, PathBuf, Option<String>)>> {
+        self.rels.get(target)
     }
 }
 

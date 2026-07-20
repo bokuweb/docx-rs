@@ -184,7 +184,11 @@ impl<R: Read> EventReader<R> {
             }
         }
 
-        if text.chars().all(char::is_whitespace) {
+        if text
+            .as_bytes()
+            .iter()
+            .all(|byte| matches!(byte, b' ' | b'\t' | b'\n' | b'\r'))
+        {
             Ok(XmlEvent::Whitespace(text))
         } else {
             Ok(XmlEvent::Characters(text))
@@ -241,16 +245,26 @@ fn decode_text(text: BytesText<'_>) -> Result<String, quick_xml::Error> {
 }
 
 fn decode_reference(reference: BytesRef<'_>) -> Result<String, quick_xml::Error> {
+    if let Some(ch) = reference.resolve_char_ref()? {
+        return Ok(ch.to_string());
+    }
     let reference = reference.xml_content(XmlVersion::Implicit1_0)?;
+    match reference.as_ref() {
+        "lt" => return Ok("<".to_owned()),
+        "gt" => return Ok(">".to_owned()),
+        "amp" => return Ok("&".to_owned()),
+        "apos" => return Ok("'".to_owned()),
+        "quot" => return Ok("\"".to_owned()),
+        _ => {}
+    }
     let escaped = format!("&{reference};");
     Ok(unescape(&escaped)?.into_owned())
 }
 
 fn split_qname(raw: &[u8]) -> OwnedName {
-    let text = String::from_utf8_lossy(raw).into_owned();
-    if let Some(idx) = text.find(':') {
-        let prefix = text[..idx].to_string();
-        let local = text[idx + 1..].to_string();
+    if let Some(idx) = raw.iter().position(|byte| *byte == b':') {
+        let prefix = String::from_utf8_lossy(&raw[..idx]).into_owned();
+        let local = String::from_utf8_lossy(&raw[idx + 1..]).into_owned();
         OwnedName {
             local_name: local,
             namespace: None,
@@ -258,7 +272,7 @@ fn split_qname(raw: &[u8]) -> OwnedName {
         }
     } else {
         OwnedName {
-            local_name: text,
+            local_name: String::from_utf8_lossy(raw).into_owned(),
             namespace: None,
             prefix: None,
         }
@@ -269,8 +283,10 @@ fn build_attributes(
     element: &BytesStart<'_>,
     decoder: Decoder,
 ) -> Result<Vec<OwnedAttribute>, quick_xml::Error> {
-    let mut attributes = Vec::new();
-    for attr_result in element.attributes().with_checks(false) {
+    let mut raw_attributes = element.attributes();
+    let iter = raw_attributes.with_checks(false);
+    let mut attributes = Vec::with_capacity(iter.size_hint().0);
+    for attr_result in iter {
         let attr = attr_result.map_err(quick_xml::Error::from)?;
         let value = attr
             .decoded_and_normalized_value(XmlVersion::Implicit1_0, decoder)?

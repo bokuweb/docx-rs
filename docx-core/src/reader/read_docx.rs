@@ -8,16 +8,16 @@ fn read_headers(
     rels: &ReadDocumentRels,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
 ) -> HashMap<RId, (Header, ReadHeaderOrFooterRels)> {
-    let header_paths = rels.find_target_path(HEADER_TYPE);
+    let header_paths = rels.target_paths(HEADER_TYPE);
     let headers: HashMap<RId, (Header, ReadHeaderOrFooterRels)> = header_paths
-        .unwrap_or_default()
         .into_iter()
+        .flatten()
         .filter_map(|(rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have header path."));
             if let Ok(d) = data {
                 if let Ok(h) = Header::from_xml(&d[..]) {
                     let rels = read_header_or_footer_rels(archive, path).unwrap_or_default();
-                    return Some((rid, (h, rels)));
+                    return Some((rid.clone(), (h, rels)));
                 }
             }
             None
@@ -30,16 +30,16 @@ fn read_footers(
     rels: &ReadDocumentRels,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
 ) -> HashMap<RId, (Footer, ReadHeaderOrFooterRels)> {
-    let footer_paths = rels.find_target_path(FOOTER_TYPE);
+    let footer_paths = rels.target_paths(FOOTER_TYPE);
     let footers: HashMap<RId, (Footer, ReadHeaderOrFooterRels)> = footer_paths
-        .unwrap_or_default()
         .into_iter()
+        .flatten()
         .filter_map(|(rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have footer path."));
             if let Ok(d) = data {
                 if let Ok(h) = Footer::from_xml(&d[..]) {
                     let rels = read_header_or_footer_rels(archive, path).unwrap_or_default();
-                    return Some((rid, (h, rels)));
+                    return Some((rid.clone(), (h, rels)));
                 }
             }
             None
@@ -49,10 +49,10 @@ fn read_footers(
 }
 
 fn read_themes(rels: &ReadDocumentRels, archive: &mut ZipArchive<Cursor<&[u8]>>) -> Vec<Theme> {
-    let theme_paths = rels.find_target_path(THEME_TYPE);
+    let theme_paths = rels.target_paths(THEME_TYPE);
     theme_paths
-        .unwrap_or_default()
         .into_iter()
+        .flatten()
         .filter_map(|(_rid, path, ..)| {
             let data = read_zip(archive, path.to_str().expect("should have footer path."));
             if let Ok(d) = data {
@@ -65,7 +65,38 @@ fn read_themes(rels: &ReadDocumentRels, archive: &mut ZipArchive<Cursor<&[u8]>>)
         .collect()
 }
 
+/// Controls optional work performed while reading a DOCX package.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[non_exhaustive]
+pub struct ReadDocxOptions {
+    /// Generate PNG previews for embedded images.
+    ///
+    /// Disabling this avoids decoding and re-encoding non-PNG images. The original
+    /// image bytes are still available in [`Docx::images`], while the preview is empty.
+    pub generate_image_previews: bool,
+}
+
+impl ReadDocxOptions {
+    /// Enables or disables PNG preview generation for embedded images.
+    pub const fn with_image_previews(mut self, generate: bool) -> Self {
+        self.generate_image_previews = generate;
+        self
+    }
+}
+
+impl Default for ReadDocxOptions {
+    fn default() -> Self {
+        Self {
+            generate_image_previews: true,
+        }
+    }
+}
+
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
+    read_docx_with_options(buf, ReadDocxOptions::default())
+}
+
+pub fn read_docx_with_options(buf: &[u8], options: ReadDocxOptions) -> Result<Docx, ReaderError> {
     let mut docx = Docx::new();
     let cur = Cursor::new(buf);
     let mut archive = zip::ZipArchive::new(cur)?;
@@ -112,7 +143,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     docx.themes = read_themes(&rels, &mut archive);
 
     // Read commentsExtended
-    let comments_extended_path = rels.find_target_path(COMMENTS_EXTENDED_TYPE);
+    let comments_extended_path = rels.target_paths(COMMENTS_EXTENDED_TYPE);
     let comments_extended = if let Some(comments_extended_path) = comments_extended_path {
         if let Some((_, comments_extended_path, ..)) = comments_extended_path.first() {
             let data = read_zip(
@@ -134,7 +165,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     };
 
     // Read comments
-    let comments_path = rels.find_target_path(COMMENTS_TYPE);
+    let comments_path = rels.target_paths(COMMENTS_TYPE);
     let comments = if let Some(paths) = comments_path {
         if let Some((_, comments_path, ..)) = paths.first() {
             let data = read_zip(
@@ -206,8 +237,8 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            let media = rels.target_paths(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
     if let Some(ref h) = docx
@@ -224,8 +255,8 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            let media = rels.target_paths(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
     if let Some(ref h) = docx.document.section_property.even_header_reference.clone() {
@@ -236,8 +267,8 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.content_type = docx.content_type.add_header();
 
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            let media = rels.target_paths(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
 
@@ -250,8 +281,8 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.content_type = docx.content_type.add_footer();
 
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            let media = rels.target_paths(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
 
@@ -270,8 +301,8 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.content_type = docx.content_type.add_footer();
 
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            let media = rels.target_paths(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
     if let Some(ref f) = docx.document.section_property.even_footer_reference.clone() {
@@ -282,8 +313,8 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.content_type = docx.content_type.add_footer();
 
             // Read media
-            let media = rels.find_target_path(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            let media = rels.target_paths(IMAGE_TYPE);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
 
@@ -296,7 +327,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
     // Read document relationships
     // Read styles
-    let style_path = rels.find_target_path(STYLE_RELATIONSHIP_TYPE);
+    let style_path = rels.target_paths(STYLE_RELATIONSHIP_TYPE);
     if let Some(paths) = style_path {
         if let Some((_, style_path, ..)) = paths.first() {
             let data = read_zip(
@@ -309,7 +340,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     }
 
     // Read numberings
-    let num_path = rels.find_target_path(NUMBERING_RELATIONSHIP_TYPE);
+    let num_path = rels.target_paths(NUMBERING_RELATIONSHIP_TYPE);
     if let Some(paths) = num_path {
         if let Some((_, num_path, ..)) = paths.first() {
             let data = read_zip(
@@ -322,7 +353,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     }
 
     // Read settings
-    let settings_path = rels.find_target_path(SETTINGS_TYPE);
+    let settings_path = rels.target_paths(SETTINGS_TYPE);
     if let Some(paths) = settings_path {
         if let Some((_, settings_path, ..)) = paths.first() {
             let data = read_zip(
@@ -335,7 +366,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     }
 
     // Read web settings
-    let web_settings_path = rels.find_target_path(WEB_SETTINGS_TYPE);
+    let web_settings_path = rels.target_paths(WEB_SETTINGS_TYPE);
     if let Some(paths) = web_settings_path {
         if let Some((_, web_settings_path, ..)) = paths.first() {
             let data = read_zip(
@@ -349,16 +380,19 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
         }
     }
     // Read media
-    let media = rels.find_target_path(IMAGE_TYPE);
-    docx = add_images(docx, media, &mut archive);
+    let media = rels.target_paths(IMAGE_TYPE);
+    docx = add_images(docx, media, &mut archive, options.generate_image_previews);
 
     // Read hyperlinks
-    let links = rels.find_target_path(HYPERLINK_TYPE);
+    let links = rels.target_paths(HYPERLINK_TYPE);
     if let Some(paths) = links {
         for (id, target, mode) in paths {
             if let Some(mode) = mode {
-                docx =
-                    docx.add_hyperlink(id, target.to_str().expect("should convert to str"), mode);
+                docx = docx.add_hyperlink(
+                    id.clone(),
+                    target.to_str().expect("should convert to str"),
+                    mode.clone(),
+                );
             }
         }
     }
@@ -368,16 +402,53 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
 fn add_images(
     mut docx: Docx,
-    media: Option<Vec<(RId, PathBuf, Option<String>)>>,
+    media: Option<&std::collections::BTreeSet<(RId, PathBuf, Option<String>)>>,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
+    generate_previews: bool,
 ) -> Docx {
     // Read media
     if let Some(paths) = media {
         for (id, media, ..) in paths {
             if let Ok(data) = read_zip(archive, media.to_str().expect("should have media")) {
-                docx = docx.add_image(id, media.to_str().unwrap().to_string(), data);
+                docx = docx.add_image_with_options(
+                    id.clone(),
+                    media.to_str().unwrap().to_string(),
+                    data,
+                    generate_previews,
+                );
             }
         }
     }
     docx
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    static JPEG_DOCX: &[u8] = include_bytes!("../../../fixtures/image_output/image.docx");
+
+    #[test]
+    fn read_without_image_previews_preserves_original_image() {
+        let docx = read_docx_with_options(
+            JPEG_DOCX,
+            ReadDocxOptions::default().with_image_previews(false),
+        )
+        .unwrap();
+
+        assert_eq!(docx.images.len(), 1);
+        let (_, _, image, preview) = &docx.images[0];
+        assert!(!image.0.is_empty());
+        assert!(preview.0.is_empty());
+    }
+
+    #[cfg(feature = "image")]
+    #[test]
+    fn read_with_default_options_generates_image_preview() {
+        let docx = read_docx(JPEG_DOCX).unwrap();
+
+        assert_eq!(docx.images.len(), 1);
+        let (_, _, _, preview) = &docx.images[0];
+        assert!(!preview.0.is_empty());
+    }
 }

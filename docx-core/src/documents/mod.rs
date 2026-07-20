@@ -270,14 +270,31 @@ impl Docx {
 
     // reader only
     pub(crate) fn add_image(
-        mut self,
+        self,
         id: impl Into<String>,
         path: impl Into<String>,
         buf: Vec<u8>,
     ) -> Self {
+        self.add_image_with_options(id, path, buf, true)
+    }
+
+    // reader only
+    pub(crate) fn add_image_with_options(
+        mut self,
+        id: impl Into<String>,
+        path: impl Into<String>,
+        buf: Vec<u8>,
+        generate_preview: bool,
+    ) -> Self {
         let path: String = path.into();
 
         if is_emf(&path, &buf) {
+            self.images
+                .push((id.into(), path, Image(buf), Png(Vec::new())));
+            return self;
+        }
+
+        if !generate_preview {
             self.images
                 .push((id.into(), path, Image(buf), Png(Vec::new())));
             return self;

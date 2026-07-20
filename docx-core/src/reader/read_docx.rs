@@ -65,7 +65,38 @@ fn read_themes(rels: &ReadDocumentRels, archive: &mut ZipArchive<Cursor<&[u8]>>)
         .collect()
 }
 
+/// Controls optional work performed while reading a DOCX package.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[non_exhaustive]
+pub struct ReadDocxOptions {
+    /// Generate PNG previews for embedded images.
+    ///
+    /// Disabling this avoids decoding and re-encoding non-PNG images. The original
+    /// image bytes are still available in [`Docx::images`], while the preview is empty.
+    pub generate_image_previews: bool,
+}
+
+impl ReadDocxOptions {
+    /// Enables or disables PNG preview generation for embedded images.
+    pub const fn with_image_previews(mut self, generate: bool) -> Self {
+        self.generate_image_previews = generate;
+        self
+    }
+}
+
+impl Default for ReadDocxOptions {
+    fn default() -> Self {
+        Self {
+            generate_image_previews: true,
+        }
+    }
+}
+
 pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
+    read_docx_with_options(buf, ReadDocxOptions::default())
+}
+
+pub fn read_docx_with_options(buf: &[u8], options: ReadDocxOptions) -> Result<Docx, ReaderError> {
     let mut docx = Docx::new();
     let cur = Cursor::new(buf);
     let mut archive = zip::ZipArchive::new(cur)?;
@@ -207,7 +238,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.content_type = docx.content_type.add_header();
             // Read media
             let media = rels.target_paths(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
     if let Some(ref h) = docx
@@ -225,7 +256,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
             docx.content_type = docx.content_type.add_header();
             // Read media
             let media = rels.target_paths(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
     if let Some(ref h) = docx.document.section_property.even_header_reference.clone() {
@@ -237,7 +268,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
             // Read media
             let media = rels.target_paths(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
 
@@ -251,7 +282,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
             // Read media
             let media = rels.target_paths(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
 
@@ -271,7 +302,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
             // Read media
             let media = rels.target_paths(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
     if let Some(ref f) = docx.document.section_property.even_footer_reference.clone() {
@@ -283,7 +314,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
 
             // Read media
             let media = rels.target_paths(IMAGE_TYPE);
-            docx = add_images(docx, media, &mut archive);
+            docx = add_images(docx, media, &mut archive, options.generate_image_previews);
         }
     }
 
@@ -350,7 +381,7 @@ pub fn read_docx(buf: &[u8]) -> Result<Docx, ReaderError> {
     }
     // Read media
     let media = rels.target_paths(IMAGE_TYPE);
-    docx = add_images(docx, media, &mut archive);
+    docx = add_images(docx, media, &mut archive, options.generate_image_previews);
 
     // Read hyperlinks
     let links = rels.target_paths(HYPERLINK_TYPE);
@@ -373,14 +404,51 @@ fn add_images(
     mut docx: Docx,
     media: Option<&std::collections::BTreeSet<(RId, PathBuf, Option<String>)>>,
     archive: &mut ZipArchive<Cursor<&[u8]>>,
+    generate_previews: bool,
 ) -> Docx {
     // Read media
     if let Some(paths) = media {
         for (id, media, ..) in paths {
             if let Ok(data) = read_zip(archive, media.to_str().expect("should have media")) {
-                docx = docx.add_image(id.clone(), media.to_str().unwrap().to_string(), data);
+                docx = docx.add_image_with_options(
+                    id.clone(),
+                    media.to_str().unwrap().to_string(),
+                    data,
+                    generate_previews,
+                );
             }
         }
     }
     docx
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    static JPEG_DOCX: &[u8] = include_bytes!("../../../fixtures/image_output/image.docx");
+
+    #[test]
+    fn read_without_image_previews_preserves_original_image() {
+        let docx = read_docx_with_options(
+            JPEG_DOCX,
+            ReadDocxOptions::default().with_image_previews(false),
+        )
+        .unwrap();
+
+        assert_eq!(docx.images.len(), 1);
+        let (_, _, image, preview) = &docx.images[0];
+        assert!(!image.0.is_empty());
+        assert!(preview.0.is_empty());
+    }
+
+    #[cfg(feature = "image")]
+    #[test]
+    fn read_with_default_options_generates_image_preview() {
+        let docx = read_docx(JPEG_DOCX).unwrap();
+
+        assert_eq!(docx.images.len(), 1);
+        let (_, _, _, preview) = &docx.images[0];
+        assert!(!preview.0.is_empty());
+    }
 }

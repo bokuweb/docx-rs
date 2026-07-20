@@ -84,7 +84,9 @@ pub use xml_docx::*;
 use base64::Engine;
 use serde::{ser, Serialize};
 
-use self::image_collector::{collect_images_from_paragraph, collect_images_from_table};
+use self::image_collector::{
+    collect_images_from_paragraph, collect_images_from_table, ImageDeduplicator,
+};
 
 #[derive(Debug, Clone)]
 pub struct Image(pub Vec<u8>);
@@ -101,6 +103,8 @@ pub struct Png(pub Vec<u8>);
 
 pub type ImageIdAndPath = (String, String);
 pub type ImageIdAndBuf = (String, Vec<u8>);
+
+const PNG_SIGNATURE: &[u8; 8] = &[137, 80, 78, 71, 13, 10, 26, 10];
 
 fn is_emf(path: &str, buf: &[u8]) -> bool {
     if path.to_ascii_lowercase().ends_with(".emf") {
@@ -279,6 +283,12 @@ impl Docx {
             return self;
         }
 
+        if buf.starts_with(PNG_SIGNATURE) {
+            self.images
+                .push((id.into(), path, Image(buf.clone()), Png(buf)));
+            return self;
+        }
+
         #[cfg(feature = "image")]
         if let Ok(dimg) = image::load_from_memory(&buf) {
             let mut png = std::io::Cursor::new(vec![]);
@@ -288,12 +298,6 @@ impl Docx {
 
             self.images
                 .push((id.into(), path, Image(buf), Png(png.into_inner())));
-        }
-        #[cfg(not(feature = "image"))]
-        // without 'image' crate we can only test for PNG file signature
-        if buf.starts_with(&[137, 80, 78, 71, 13, 10, 26, 10]) {
-            self.images
-                .push((id.into(), path, Image(buf.clone()), Png(buf)));
         }
         self
     }
@@ -1181,14 +1185,27 @@ impl Docx {
     fn images_in_doc(&mut self) -> (Vec<ImageIdAndPath>, Vec<ImageIdAndBuf>) {
         let mut images: Vec<(String, String)> = vec![];
         let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
+        let mut deduplicator = ImageDeduplicator::default();
 
         for child in &mut self.document.children {
             match child {
                 DocumentChild::Paragraph(paragraph) => {
-                    collect_images_from_paragraph(paragraph, &mut images, &mut image_bufs, None);
+                    collect_images_from_paragraph(
+                        paragraph,
+                        &mut images,
+                        &mut image_bufs,
+                        None,
+                        &mut deduplicator,
+                    );
                 }
                 DocumentChild::Table(table) => {
-                    collect_images_from_table(table, &mut images, &mut image_bufs, None);
+                    collect_images_from_table(
+                        table,
+                        &mut images,
+                        &mut image_bufs,
+                        None,
+                        &mut deduplicator,
+                    );
                 }
                 _ => {}
             }
@@ -1199,6 +1216,7 @@ impl Docx {
     fn images_in_header(&mut self) -> (Vec<Vec<ImageIdAndPath>>, Vec<ImageIdAndBuf>) {
         let mut header_images: Vec<Vec<ImageIdAndPath>> = vec![vec![]; 3];
         let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
+        let mut deduplicator = ImageDeduplicator::default();
 
         if let Some((_, header)) = &mut self.document.section_property.header.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
@@ -1210,6 +1228,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
+                            &mut deduplicator,
                         );
                     }
                     HeaderChild::Table(table) => {
@@ -1218,6 +1237,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
+                            &mut deduplicator,
                         );
                     }
                     HeaderChild::StructuredDataTag(tag) => {
@@ -1228,6 +1248,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                             if let StructuredDataTagChild::Table(table) = child {
@@ -1236,6 +1257,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                         }
@@ -1255,6 +1277,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
+                            &mut deduplicator,
                         );
                     }
                     HeaderChild::Table(table) => {
@@ -1263,6 +1286,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
+                            &mut deduplicator,
                         );
                     }
                     HeaderChild::StructuredDataTag(tag) => {
@@ -1273,6 +1297,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                             if let StructuredDataTagChild::Table(table) = child {
@@ -1281,6 +1306,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                         }
@@ -1300,6 +1326,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
+                            &mut deduplicator,
                         );
                     }
                     HeaderChild::Table(table) => {
@@ -1308,6 +1335,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("header"),
+                            &mut deduplicator,
                         );
                     }
                     HeaderChild::StructuredDataTag(tag) => {
@@ -1318,6 +1346,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                             if let StructuredDataTagChild::Table(table) = child {
@@ -1326,6 +1355,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                         }
@@ -1341,6 +1371,7 @@ impl Docx {
     fn images_in_footer(&mut self) -> (Vec<Vec<ImageIdAndPath>>, Vec<ImageIdAndBuf>) {
         let mut footer_images: Vec<Vec<ImageIdAndPath>> = vec![vec![]; 3];
         let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
+        let mut deduplicator = ImageDeduplicator::default();
 
         if let Some((_, footer)) = &mut self.document.section_property.footer.as_mut() {
             let mut images: Vec<ImageIdAndPath> = vec![];
@@ -1352,6 +1383,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("footer"),
+                            &mut deduplicator,
                         );
                     }
                     FooterChild::Table(table) => {
@@ -1360,6 +1392,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("footer"),
+                            &mut deduplicator,
                         );
                     }
                     FooterChild::StructuredDataTag(tag) => {
@@ -1370,6 +1403,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                             if let StructuredDataTagChild::Table(table) = child {
@@ -1378,6 +1412,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                         }
@@ -1397,6 +1432,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("footer"),
+                            &mut deduplicator,
                         );
                     }
                     FooterChild::Table(table) => {
@@ -1405,6 +1441,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("footer"),
+                            &mut deduplicator,
                         );
                     }
                     FooterChild::StructuredDataTag(tag) => {
@@ -1415,6 +1452,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                             if let StructuredDataTagChild::Table(table) = child {
@@ -1423,6 +1461,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                         }
@@ -1442,6 +1481,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("footer"),
+                            &mut deduplicator,
                         );
                     }
                     FooterChild::Table(table) => {
@@ -1450,6 +1490,7 @@ impl Docx {
                             &mut images,
                             &mut image_bufs,
                             Some("footer"),
+                            &mut deduplicator,
                         );
                     }
                     FooterChild::StructuredDataTag(tag) => {
@@ -1460,6 +1501,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                             if let StructuredDataTagChild::Table(table) = child {
@@ -1468,6 +1510,7 @@ impl Docx {
                                     &mut images,
                                     &mut image_bufs,
                                     Some("header"),
+                                    &mut deduplicator,
                                 );
                             }
                         }
@@ -2594,21 +2637,14 @@ mod emf_tests {
 
     #[test]
     fn add_image_routes_png_as_png_preview() {
-        // Smallest valid 1x1 RGB PNG, generated via the `image` crate.
-        let png_bytes = {
-            let img = image::RgbImage::from_pixel(1, 1, image::Rgb([0, 0, 0]));
-            let mut cursor = std::io::Cursor::new(Vec::new());
-            image::DynamicImage::ImageRgb8(img)
-                .write_to(&mut cursor, image::ImageFormat::Png)
-                .unwrap();
-            cursor.into_inner()
-        };
-        let _ = png_signature_bytes(); // suppress unused warning if any
-        let docx = Docx::new().add_image("rId1", "word/media/image1.png", png_bytes);
+        let png_bytes = png_signature_bytes();
+        let docx = Docx::new().add_image("rId1", "word/media/image1.png", png_bytes.clone());
         assert_eq!(docx.images.len(), 1);
-        let (_, _, _, preview) = &docx.images[0];
+        let (_, _, original, preview) = &docx.images[0];
         // PNG preview starts with the PNG signature, not `<svg`.
         assert_eq!(&preview.0[..8], &[137, 80, 78, 71, 13, 10, 26, 10]);
+        assert_eq!(original.0, png_bytes);
+        assert_eq!(preview.0, png_bytes);
     }
 
     // ---------- Docx JSON serialization ----------

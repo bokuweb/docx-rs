@@ -55,6 +55,16 @@ impl Pic {
     ///
     /// Converts the passed image to PNG internally and computes its size.
     pub fn new(buf: &[u8]) -> Pic {
+        if buf.starts_with(&[137, 80, 78, 71, 13, 10, 26, 10]) {
+            let reader = ::image::ImageReader::new(std::io::Cursor::new(buf))
+                .with_guessed_format()
+                .expect("Should detect PNG format.");
+            let (w, h) = reader
+                .into_dimensions()
+                .expect("Should read PNG dimensions.");
+            return Self::new_with_dimensions(buf.to_vec(), w, h);
+        }
+
         let img = ::image::load_from_memory(buf).expect("Should load image from memory.");
         let (w, h) = ::image::GenericImageView::dimensions(&img);
         let mut buf = std::io::Cursor::new(vec![]);

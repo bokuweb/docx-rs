@@ -18,8 +18,8 @@ impl TaskpanesRels {
         let index = self.rels.len() + 1;
         self.rels.push((
             "http://schemas.microsoft.com/office/2011/relationships/webextension".to_string(),
-            format!("rId{}", index),
-            format!("webextension{}.xml", index),
+            format!("rId{index}"),
+            format!("webextension{index}.xml"),
         ));
         self
     }

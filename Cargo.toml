@@ -5,3 +5,6 @@ members = [
     "docx-core",
     "docx-wasm",
 ]
+
+[profile.release]
+lto = true

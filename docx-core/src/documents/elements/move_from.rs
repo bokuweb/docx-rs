@@ -103,7 +103,7 @@ impl BuildXML for MoveFrom {
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         let id = self.generate();
         XMLBuilder::from(stream)
-            .open_move_from(&id, &self.author, &self.date)?
+            .open_move_from(id.as_ref(), &self.author, &self.date)?
             .apply_each(&self.children, |ch, b| match ch {
                 MoveFromChild::Run(t) => b.add_child(&**t),
                 MoveFromChild::CommentStart(c) => b.add_child(&**c),

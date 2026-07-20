@@ -87,7 +87,7 @@ impl BuildXML for TableRowProperty {
             .add_optional_child(&self.cant_split)?
             .apply_opt(self.row_height, |h, b| {
                 b.table_row_height(
-                    &format!("{}", h),
+                    &format!("{h}"),
                     &self.height_rule.unwrap_or_default().to_string(),
                 )
             })?

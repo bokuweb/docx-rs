@@ -123,7 +123,7 @@ impl<W: Write> XMLBuilder<W> {
         if let Some(anchor) = anchor {
             e = e.attr("w:anchor", anchor);
         }
-        let s = format!("{}", history);
+        let s = format!("{history}");
         e = e.attr("w:history", s.as_str());
         self.write(e)
     }
@@ -282,7 +282,7 @@ impl<W: Write> XMLBuilder<W> {
         start_chars: Option<i32>,
     ) -> Result<Self> {
         let start = &format!("{}", start.unwrap_or(0));
-        let end = &format!("{}", end);
+        let end = &format!("{end}");
         let start_chars_value = format!("{}", start_chars.unwrap_or(0));
         let mut base = XmlEvent::start_element("w:ind")
             .attr("w:left", start)
@@ -294,10 +294,10 @@ impl<W: Write> XMLBuilder<W> {
 
         match special_indent {
             Some(SpecialIndentType::FirstLine(v)) => {
-                self.write(base.attr("w:firstLine", &format!("{}", v)))
+                self.write(base.attr("w:firstLine", &format!("{v}")))
             }
             Some(SpecialIndentType::Hanging(v)) => {
-                self.write(base.attr("w:hanging", &format!("{}", v)))
+                self.write(base.attr("w:hanging", &format!("{v}")))
             }
             None => self.write(base),
         }?
@@ -306,22 +306,22 @@ impl<W: Write> XMLBuilder<W> {
 
     // i.e. <w:spacing ... >
     pub(crate) fn spacing(self, s: i32) -> Result<Self> {
-        self.write(XmlEvent::start_element("w:spacing").attr("w:val", &format!("{}", s)))?
+        self.write(XmlEvent::start_element("w:spacing").attr("w:val", &format!("{s}")))?
             .close()
     }
 
     // i.e. <w:w ... >
     pub(crate) fn w(self, s: i32) -> Result<Self> {
-        self.write(XmlEvent::start_element("w:w").attr("w:val", &format!("{}", s)))?
+        self.write(XmlEvent::start_element("w:w").attr("w:val", &format!("{s}")))?
             .close()
     }
 
     // i.e. <w:fitText ... >
     pub(crate) fn fit_text(self, val: usize, id: Option<u32>) -> Result<Self> {
-        let mut fit_text = XmlEvent::start_element("w:fitText").attr("w:val", &format!("{}", val));
+        let mut fit_text = XmlEvent::start_element("w:fitText").attr("w:val", &format!("{val}"));
         let id_value;
         if let Some(id) = id {
-            id_value = format!("{}", id);
+            id_value = format!("{id}");
             fit_text = fit_text.attr("w:id", &id_value);
         }
         self.write(fit_text)?.close()
@@ -345,23 +345,23 @@ impl<W: Write> XMLBuilder<W> {
         let line_val: String;
 
         if let Some(before) = before {
-            before_val = format!("{}", before);
+            before_val = format!("{before}");
             xml_event = xml_event.attr("w:before", &before_val)
         }
         if let Some(after) = after {
-            after_val = format!("{}", after);
+            after_val = format!("{after}");
             xml_event = xml_event.attr("w:after", &after_val)
         }
         if let Some(before_lines) = before_lines {
-            before_lines_val = format!("{}", before_lines);
+            before_lines_val = format!("{before_lines}");
             xml_event = xml_event.attr("w:beforeLines", &before_lines_val)
         }
         if let Some(after_lines) = after_lines {
-            after_lines_val = format!("{}", after_lines);
+            after_lines_val = format!("{after_lines}");
             xml_event = xml_event.attr("w:afterLines", &after_lines_val)
         }
         if let Some(line) = line {
-            line_val = format!("{}", line);
+            line_val = format!("{line}");
             xml_event = xml_event.attr("w:line", &line_val)
         }
         if let Some(spacing_type) = spacing {
@@ -641,11 +641,6 @@ impl<W: Write> XMLBuilder<W> {
         }
         self.write(w)?.close()
     }
-
-    /**
-    pub h_space: Option<String>,
-    pub v_space: Option<String>,
-     */
 
     pub(crate) fn frame_property(self, prop: &FrameProperty) -> Result<Self> {
         let mut w = XmlEvent::start_element("w:framePr");

@@ -20,8 +20,8 @@ pub enum Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Error::Io(err) => write!(f, "io error: {}", err),
-            Error::Xml(err) => write!(f, "xml error: {}", err),
+            Error::Io(err) => write!(f, "io error: {err}"),
+            Error::Xml(err) => write!(f, "xml error: {err}"),
             Error::UnbalancedEndTag => write!(f, "attempted to close more elements than opened"),
         }
     }

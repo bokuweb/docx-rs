@@ -21,7 +21,7 @@ impl Serialize for VertAlign {
     where
         S: Serializer,
     {
-        serializer.serialize_str(&format!("{}", &self.val))
+        serializer.serialize_str(&format!("{}", self.val))
     }
 }
 

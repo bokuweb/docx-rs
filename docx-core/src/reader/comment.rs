@@ -18,7 +18,7 @@ impl ElementReader for Comment {
             comment = comment.date(date);
         }
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..

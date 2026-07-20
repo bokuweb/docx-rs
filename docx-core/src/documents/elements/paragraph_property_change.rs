@@ -55,7 +55,7 @@ impl BuildXML for ParagraphPropertyChange {
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         let id = self.generate();
         XMLBuilder::from(stream)
-            .open_paragraph_property_change(&id, &self.author, &self.date)?
+            .open_paragraph_property_change(id.as_ref(), &self.author, &self.date)?
             .add_child(&self.property)?
             .close()?
             .into_inner()

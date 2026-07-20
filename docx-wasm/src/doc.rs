@@ -213,7 +213,7 @@ impl Docx {
         }
         let res = self.0.build().pack(&mut cur);
         if res.is_err() {
-            return Err(format!("{:?}", res).into());
+            return Err(format!("{res:?}").into());
         }
         Ok(cur.into_inner())
     }

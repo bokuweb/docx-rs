@@ -14,7 +14,7 @@ impl ElementReader for McFallback {
     ) -> Result<Self, ReaderError> {
         loop {
             let fallback = McFallback::new();
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::EndElement { name, .. }) => {
                     let e = McXMLElement::from_str(&name.local_name).unwrap();

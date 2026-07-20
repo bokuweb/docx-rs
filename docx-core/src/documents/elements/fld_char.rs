@@ -36,7 +36,7 @@ impl BuildXML for FieldChar {
         XMLBuilder::from(stream)
             .field_character(
                 &format!("{}", self.field_char_type),
-                &format!("{}", &self.dirty),
+                &format!("{}", self.dirty),
             )?
             .into_inner()
     }

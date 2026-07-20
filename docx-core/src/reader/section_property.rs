@@ -30,25 +30,25 @@ fn read_page_margin(
         let local_name = &a.name.local_name;
         match local_name.as_str() {
             "top" => {
-                margin = margin.top(value_to_dax(&a.value)? as i32);
+                margin = margin.top(value_to_dax(&a.value)?);
             }
             "right" => {
-                margin = margin.right(value_to_dax(&a.value)? as i32);
+                margin = margin.right(value_to_dax(&a.value)?);
             }
             "bottom" => {
-                margin = margin.bottom(value_to_dax(&a.value)? as i32);
+                margin = margin.bottom(value_to_dax(&a.value)?);
             }
             "left" => {
-                margin = margin.left(value_to_dax(&a.value)? as i32);
+                margin = margin.left(value_to_dax(&a.value)?);
             }
             "header" => {
-                margin = margin.header(value_to_dax(&a.value)? as i32);
+                margin = margin.header(value_to_dax(&a.value)?);
             }
             "footer" => {
-                margin = margin.footer(value_to_dax(&a.value)? as i32);
+                margin = margin.footer(value_to_dax(&a.value)?);
             }
             "gutter" => {
-                margin = margin.gutter(value_to_dax(&a.value)? as i32);
+                margin = margin.gutter(value_to_dax(&a.value)?);
             }
             _ => {}
         }
@@ -83,7 +83,7 @@ impl ElementReader for SectionProperty {
     ) -> Result<Self, ReaderError> {
         let mut sp = SectionProperty::new();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..

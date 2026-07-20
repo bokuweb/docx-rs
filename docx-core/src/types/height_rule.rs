@@ -8,18 +8,13 @@ use super::errors;
 use std::str::FromStr;
 
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
-#[derive(Debug, Clone, Copy, PartialEq, Serialize)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum HeightRule {
     Auto,
+    #[default]
     AtLeast,
     Exact,
-}
-
-impl Default for HeightRule {
-    fn default() -> Self {
-        Self::AtLeast
-    }
 }
 
 impl fmt::Display for HeightRule {

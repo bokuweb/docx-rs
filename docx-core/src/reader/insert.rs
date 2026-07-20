@@ -10,7 +10,7 @@ impl ElementReader for Insert {
     ) -> Result<Self, ReaderError> {
         let mut ins = Insert::new_with_empty();
         loop {
-            let e = r.next();
+            let e = r.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     name, attributes, ..

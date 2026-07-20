@@ -65,7 +65,7 @@ pub fn read_rels_xml<R: Read>(reader: R, dir: impl AsRef<Path>) -> Result<ReadRe
     let mut rels: BTreeMap<String, BTreeSet<(RId, PathBuf, Option<String>)>> = BTreeMap::new();
 
     loop {
-        let e = parser.next();
+        let e = parser.next_event();
         match e {
             Ok(XmlEvent::StartElement {
                 attributes, name, ..

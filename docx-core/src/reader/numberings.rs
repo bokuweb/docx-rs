@@ -9,7 +9,7 @@ impl FromXML for Numberings {
         let mut parser = EventReader::new(reader);
         let mut nums = Self::default();
         loop {
-            let e = parser.next();
+            let e = parser.next_event();
             match e {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..
@@ -26,7 +26,7 @@ impl FromXML for Numberings {
                             }
                             let mut abs_num = AbstractNumbering::new(id);
                             loop {
-                                let e = parser.next();
+                                let e = parser.next_event();
                                 match e {
                                     Ok(XmlEvent::StartElement {
                                         attributes, name, ..
@@ -71,7 +71,7 @@ impl FromXML for Numberings {
                             let mut level_overrides = vec![];
 
                             loop {
-                                let e = parser.next();
+                                let e = parser.next_event();
                                 match e {
                                     Ok(XmlEvent::StartElement {
                                         attributes, name, ..
@@ -114,7 +114,7 @@ impl FromXML for Numberings {
                         break;
                     }
                 }
-                Ok(XmlEvent::EndDocument { .. }) => break,
+                Ok(XmlEvent::EndDocument) => break,
                 Err(_) => return Err(ReaderError::XMLReadError),
                 _ => {}
             }

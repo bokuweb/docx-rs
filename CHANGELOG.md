@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## @0.4.22 (Unreleased)
+
+- Improve DOCX reading and writing performance by reducing XML allocations,
+  avoiding repeated ZIP lookups, and deduplicating embedded images without
+  cloning their full buffers.
+- Add `Docx::pack` to stream XML package parts directly into a DOCX archive.
+  This avoids retaining every rendered XML part in memory and is faster than
+  calling `Docx::build` followed by `XMLDocx::pack`.
+- Add `ReadDocxOptions::with_image_previews(false)` for callers that want to
+  preserve original image data without generating decoded previews.
+- Fix paragraph ID normalization when generated IDs collide, and ensure
+  automatically generated table-of-contents content is normalized before
+  dependency collection.
+- Fix images inside footer structured data tags using header relationship IDs.
 
 ## @0.4.21 (20. Jul, 2026)
 

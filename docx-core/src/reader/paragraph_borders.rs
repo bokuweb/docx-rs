@@ -8,7 +8,7 @@ impl ElementReader for ParagraphBorders {
     fn read<R: Read>(r: &mut EventReader<R>, _: &[OwnedAttribute]) -> Result<Self, ReaderError> {
         let mut borders = ParagraphBorders::with_empty();
         loop {
-            match r.next() {
+            match r.next_event() {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..
                 }) => {

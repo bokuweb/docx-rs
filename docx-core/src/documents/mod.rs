@@ -760,35 +760,13 @@ impl Docx {
         self
     }
 
+    /// Finalizes document-wide identifiers and relationships and renders the
+    /// uncompressed OPC package parts.
+    ///
+    /// This consumes the document. Call [`XMLDocx::pack`] to write a DOCX
+    /// archive.
     pub fn build(mut self) -> XMLDocx {
-        self.reset();
-        self.refresh_duplicate_para_ids();
-
-        self.update_dependencies();
-
-        let tocs: Vec<(usize, Box<TableOfContents>)> = self
-            .document
-            .children
-            .iter()
-            .enumerate()
-            .filter_map(|(i, child)| {
-                if let DocumentChild::TableOfContents(toc) = child {
-                    Some((i, toc.clone()))
-                } else {
-                    None
-                }
-            })
-            .collect();
-
-        let has_toc = !tocs.is_empty();
-
-        for (i, toc) in tocs {
-            if toc.items.is_empty() && toc.auto {
-                let children =
-                    update_document_by_toc(self.document.children, &self.styles, *toc, i);
-                self.document.children = children;
-            }
-        }
+        let has_toc = self.prepare_for_build();
 
         let (images, mut images_bufs) = self.images_in_doc();
         let (header_images, header_images_bufs) = self.images_in_header();
@@ -921,6 +899,41 @@ impl Docx {
         crate::reset_para_id();
     }
 
+    /// Expands automatically generated tables of contents before the document
+    /// tree is normalized and inspected for dependencies.
+    fn expand_auto_tocs(&mut self) -> bool {
+        let tocs: Vec<(usize, Box<TableOfContents>)> = self
+            .document
+            .children
+            .iter()
+            .enumerate()
+            .filter_map(|(index, child)| match child {
+                DocumentChild::TableOfContents(toc) => Some((index, toc.clone())),
+                _ => None,
+            })
+            .collect();
+
+        for (index, toc) in &tocs {
+            if toc.items.is_empty() && toc.auto {
+                let children = std::mem::take(&mut self.document.children);
+                self.document.children =
+                    update_document_by_toc(children, &self.styles, *toc.clone(), *index);
+            }
+        }
+
+        !tocs.is_empty()
+    }
+
+    /// Prepares the complete document tree for package-part rendering.
+    fn prepare_for_build(&mut self) -> bool {
+        self.reset();
+        let has_toc = self.expand_auto_tocs();
+        self.refresh_duplicate_para_ids();
+        self.update_dependencies();
+        has_toc
+    }
+
+    /// Replaces empty and duplicate paragraph IDs with unique values.
     fn refresh_duplicate_para_ids(&mut self) {
         let mut counts: HashMap<&str, usize> = HashMap::new();
         collect_para_ids_in_docx(self, &mut counts);
@@ -1459,7 +1472,7 @@ impl Docx {
                                     paragraph,
                                     &mut images,
                                     &mut image_bufs,
-                                    Some("header"),
+                                    Some("footer"),
                                     &mut deduplicator,
                                 );
                             }
@@ -1468,7 +1481,7 @@ impl Docx {
                                     table,
                                     &mut images,
                                     &mut image_bufs,
-                                    Some("header"),
+                                    Some("footer"),
                                     &mut deduplicator,
                                 );
                             }
@@ -1508,7 +1521,7 @@ impl Docx {
                                     paragraph,
                                     &mut images,
                                     &mut image_bufs,
-                                    Some("header"),
+                                    Some("footer"),
                                     &mut deduplicator,
                                 );
                             }
@@ -1517,7 +1530,7 @@ impl Docx {
                                     table,
                                     &mut images,
                                     &mut image_bufs,
-                                    Some("header"),
+                                    Some("footer"),
                                     &mut deduplicator,
                                 );
                             }
@@ -1557,7 +1570,7 @@ impl Docx {
                                     paragraph,
                                     &mut images,
                                     &mut image_bufs,
-                                    Some("header"),
+                                    Some("footer"),
                                     &mut deduplicator,
                                 );
                             }
@@ -1566,7 +1579,7 @@ impl Docx {
                                     table,
                                     &mut images,
                                     &mut image_bufs,
-                                    Some("header"),
+                                    Some("footer"),
                                     &mut deduplicator,
                                 );
                             }
@@ -2588,6 +2601,29 @@ fn update_document_by_toc(
 }
 
 #[cfg(test)]
+mod image_collection_tests {
+    use super::*;
+
+    #[test]
+    fn structured_footer_images_use_footer_relationship_ids() {
+        let tag = StructuredDataTag::new().add_paragraph(
+            Paragraph::new().add_run(Run::new().add_image(Pic::new_with_dimensions(
+                vec![1, 2, 3],
+                1,
+                1,
+            ))),
+        );
+        let footer = Footer::new().add_structured_data_tag(tag);
+        let mut docx = Docx::new().footer(footer);
+
+        let (relationships, media) = docx.images_in_footer();
+
+        assert!(relationships[0][0].0.starts_with("footer"));
+        assert!(media[0].0.starts_with("footer"));
+    }
+}
+
+#[cfg(test)]
 mod paragraph_id_tests {
     use super::*;
 
@@ -2634,6 +2670,25 @@ mod paragraph_id_tests {
         docx.refresh_duplicate_para_ids();
 
         assert!(!paragraph_ids(&docx)[0].is_empty());
+    }
+
+    #[test]
+    fn auto_toc_paragraph_ids_are_normalized_after_expansion() {
+        let heading = Paragraph::new()
+            .id("00000001")
+            .style("Heading1")
+            .add_run(Run::new().add_text("Heading"));
+        let mut docx = Docx::new()
+            .add_style(Style::new("Heading1", crate::StyleType::Paragraph).name("Heading 1"))
+            .add_table_of_contents(TableOfContents::new().heading_styles_range(1, 3).auto())
+            .add_paragraph(heading);
+
+        docx.prepare_for_build();
+
+        let mut counts = HashMap::new();
+        collect_para_ids_in_docx(&docx, &mut counts);
+        assert!(!counts.contains_key(""));
+        assert!(counts.values().all(|count| *count == 1));
     }
 }
 

@@ -2,7 +2,7 @@ use serde::{Serialize, Serializer};
 use std::io::Write;
 
 use crate::documents::BuildXML;
-use crate::escape::escape;
+use crate::escape::escape_owned;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -13,7 +13,7 @@ pub struct Link {
 impl Link {
     pub fn new(val: impl Into<String>) -> Link {
         Link {
-            val: escape(&val.into()),
+            val: escape_owned(val.into()),
         }
     }
 }

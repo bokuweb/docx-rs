@@ -85,7 +85,7 @@ impl Delete {
     }
 
     pub fn author(mut self, author: impl Into<String>) -> Delete {
-        self.author = escape::escape(&author.into());
+        self.author = escape::escape_owned(author.into());
         self
     }
 

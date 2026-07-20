@@ -18,6 +18,10 @@ fn create_template(paragraph_count: usize, runs_per_paragraph: usize) -> Docx {
 }
 
 fn bench_write_docx(c: &mut Criterion) {
+    c.bench_function("write_docx_construct", |b| {
+        b.iter(|| black_box(create_template(200, 5)));
+    });
+
     let template = create_template(200, 5);
     c.bench_function("write_docx_build", |b| {
         b.iter_batched(

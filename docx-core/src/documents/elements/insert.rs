@@ -131,7 +131,7 @@ impl Insert {
     }
 
     pub fn author(mut self, author: impl Into<String>) -> Insert {
-        self.author = escape::escape(&author.into());
+        self.author = escape::escape_owned(author.into());
         self
     }
 

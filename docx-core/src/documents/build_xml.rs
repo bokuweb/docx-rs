@@ -1,6 +1,7 @@
 use crate::xml_builder::XMLBuilder;
 use std::io::Write;
 
+/// Renders an OOXML package part to an XML byte stream.
 pub trait BuildXML {
     /// Write XML to the output stream.
     #[doc(hidden)]

@@ -25,12 +25,7 @@ impl<W: Write> XMLBuilder<W> {
     }
 
     pub(crate) fn snap_to_grid(self, v: bool) -> Result<Self> {
-        let v = if v {
-            "true".to_string()
-        } else {
-            "false".to_string()
-        };
-        self.write(XmlEvent::start_element("w:snapToGrid").attr("w:val", &v))?
+        self.write(XmlEvent::start_element("w:snapToGrid").attr_display("w:val", v))?
             .close()
     }
 
@@ -123,8 +118,7 @@ impl<W: Write> XMLBuilder<W> {
         if let Some(anchor) = anchor {
             e = e.attr("w:anchor", anchor);
         }
-        let s = format!("{history}");
-        e = e.attr("w:history", s.as_str());
+        e = e.attr_display("w:history", history);
         self.write(e)
     }
 
@@ -227,7 +221,7 @@ impl<W: Write> XMLBuilder<W> {
     pub(crate) fn open_style(self, style_type: StyleType, id: &str) -> Result<Self> {
         self.write(
             XmlEvent::start_element("w:style")
-                .attr("w:type", &style_type.to_string())
+                .attr_display("w:type", style_type)
                 .attr("w:styleId", id),
         )
     }

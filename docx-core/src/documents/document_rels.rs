@@ -40,7 +40,7 @@ impl DocumentRels {
         r#type: impl Into<String>,
     ) -> Self {
         self.hyperlinks
-            .push((id.into(), escape(&path.into()), r#type.into()));
+            .push((id.into(), escape_owned(path.into()), r#type.into()));
         self
     }
 }

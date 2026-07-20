@@ -2,7 +2,7 @@ use serde::Serialize;
 use std::io::Write;
 
 use crate::documents::BuildXML;
-use crate::escape::escape;
+use crate::escape::escape_owned;
 use crate::types::*;
 use crate::xml_builder::*;
 use crate::StyleType;
@@ -69,7 +69,7 @@ impl Style {
     pub fn new(style_id: impl Into<String>, style_type: StyleType) -> Self {
         let default = Default::default();
         Style {
-            style_id: escape(&style_id.into()),
+            style_id: escape_owned(style_id.into()),
             style_type,
             ..default
         }

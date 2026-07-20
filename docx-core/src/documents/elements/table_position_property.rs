@@ -4,7 +4,7 @@ use std::io::Write;
 use crate::documents::BuildXML;
 use crate::xml_builder::*;
 
-/// https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.tablepositionproperties?view=openxml-3.0.1
+/// <https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.tablepositionproperties?view=openxml-3.0.1>
 #[derive(Debug, Clone, PartialEq, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS), ts(export))]

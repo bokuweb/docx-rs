@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::io::Write;
 
 use crate::documents::BuildXML;
-use crate::escape::escape;
+use crate::escape::escape_owned;
 use crate::xml_builder::*;
 
 /*
@@ -42,56 +42,47 @@ impl RunFonts {
     }
 
     pub fn ascii(mut self, f: impl Into<String>) -> Self {
-        let s = f.into();
-        self.ascii = Some(escape(&s));
+        self.ascii = Some(escape_owned(f.into()));
         self
     }
 
     pub fn hi_ansi(mut self, f: impl Into<String>) -> Self {
-        let s = f.into();
-        self.hi_ansi = Some(escape(&s));
+        self.hi_ansi = Some(escape_owned(f.into()));
         self
     }
 
     pub fn east_asia(mut self, f: impl Into<String>) -> Self {
-        let s = f.into();
-        self.east_asia = Some(escape(&s));
+        self.east_asia = Some(escape_owned(f.into()));
         self
     }
 
     pub fn cs(mut self, f: impl Into<String>) -> Self {
-        let s = f.into();
-        self.cs = Some(escape(&s));
+        self.cs = Some(escape_owned(f.into()));
         self
     }
 
     pub fn ascii_theme(mut self, f: impl Into<String>) -> Self {
-        let s = f.into();
-        self.ascii_theme = Some(escape(&s));
+        self.ascii_theme = Some(escape_owned(f.into()));
         self
     }
 
     pub fn hi_ansi_theme(mut self, f: impl Into<String>) -> Self {
-        let s = f.into();
-        self.hi_ansi_theme = Some(escape(&s));
+        self.hi_ansi_theme = Some(escape_owned(f.into()));
         self
     }
 
     pub fn east_asia_theme(mut self, f: impl Into<String>) -> Self {
-        let s = f.into();
-        self.east_asia_theme = Some(escape(&s));
+        self.east_asia_theme = Some(escape_owned(f.into()));
         self
     }
 
     pub fn cs_theme(mut self, f: impl Into<String>) -> Self {
-        let s = f.into();
-        self.cs_theme = Some(escape(&s));
+        self.cs_theme = Some(escape_owned(f.into()));
         self
     }
 
     pub fn hint(mut self, f: impl Into<String>) -> Self {
-        let s = f.into();
-        self.hint = Some(escape(&s));
+        self.hint = Some(escape_owned(f.into()));
         self
     }
 }

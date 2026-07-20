@@ -2,7 +2,7 @@ use serde::{Serialize, Serializer};
 use std::io::Write;
 
 use crate::documents::BuildXML;
-use crate::escape::escape;
+use crate::escape::escape_owned;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -28,7 +28,7 @@ impl ParagraphStyle {
     pub fn new(val: Option<impl Into<String>>) -> ParagraphStyle {
         if let Some(v) = val {
             ParagraphStyle {
-                val: escape(&v.into()),
+                val: escape_owned(v.into()),
             }
         } else {
             Default::default()

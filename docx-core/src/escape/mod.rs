@@ -16,6 +16,22 @@ pub(crate) fn escape(text: &str) -> String {
     escaped
 }
 
+/// Escapes an owned XML value without reallocating plain text.
+///
+/// The original `String` is returned unchanged when it contains no character
+/// that needs escaping or removal.
+pub(crate) fn escape_owned(text: String) -> String {
+    if text
+        .as_bytes()
+        .iter()
+        .any(|byte| matches!(byte, b'&' | b'<' | b'>' | b'"' | b'\'' | b'\n' | b'\r'))
+    {
+        escape(&text)
+    } else {
+        text
+    }
+}
+
 pub(crate) fn replace_escaped(text: &str) -> String {
     let mut decoded = String::with_capacity(text.len());
     let mut rest = text;
@@ -56,6 +72,24 @@ mod tests {
         assert_eq!(
             escape("<&>\"'\n\rplain"),
             "&lt;&amp;&gt;&quot;&apos;&#xA;plain"
+        );
+    }
+
+    #[test]
+    fn preserves_the_allocation_for_plain_owned_text() {
+        let text = String::from("plain text");
+        let pointer = text.as_ptr();
+        let escaped = escape_owned(text);
+
+        assert_eq!(escaped, "plain text");
+        assert_eq!(escaped.as_ptr(), pointer);
+    }
+
+    #[test]
+    fn escapes_special_characters_in_owned_text() {
+        assert_eq!(
+            escape_owned("<&>\"'\n\r".to_owned()),
+            "&lt;&amp;&gt;&quot;&apos;&#xA;"
         );
     }
 

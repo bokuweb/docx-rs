@@ -1,6 +1,9 @@
 name: Continuous Integration
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -10,7 +13,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: node
-      - uses: moonrepo/setup-rust@v1
+      - uses: moonrepo/setup-rust@abb2d32350334249b178c401e5ec5836e0cd88d3 # v1
         with:
           profile: minimal
           cache: false
@@ -37,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: moonrepo/setup-rust@v1
+      - uses: moonrepo/setup-rust@abb2d32350334249b178c401e5ec5836e0cd88d3 # v1
         with:
           profile: minimal
           inherit-toolchain: true
@@ -55,6 +58,10 @@ jobs:
 
   build-wasm:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+      pull-requests: write
     defaults:
       run:
         working-directory: ./docx-wasm
@@ -63,20 +70,18 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: node
-      - uses: moonrepo/setup-rust@v1
+      - uses: moonrepo/setup-rust@abb2d32350334249b178c401e5ec5836e0cd88d3 # v1
         with:
           profile: minimal
           inherit-toolchain: true
           targets: wasm32-unknown-unknown
           bins: wasm-pack@0.13.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: corepack enable
       - run: pnpm install --frozen-lockfile
       - run: pnpm wasm-pack:node && pnpm wasm-pack:dev && pnpm exec tsc -p tsconfig.node.json && pnpm test
       - name: screenshot
         run: pnpm screenshot
-      - uses: reg-viz/reg-actions@v3
+      - uses: reg-viz/reg-actions@f0cccbcab7e7ecf9b0434b719f1e842c97bcd2a7 # v3
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
           image-directory-path: 'docx-wasm/export-png/png'
@@ -90,7 +95,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: moonrepo/setup-rust@v1
+      - uses: moonrepo/setup-rust@abb2d32350334249b178c401e5ec5836e0cd88d3 # v1
         with:
           inherit-toolchain: true
           components: clippy

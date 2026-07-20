@@ -281,24 +281,19 @@ impl<W: Write> XMLBuilder<W> {
         end: i32,
         start_chars: Option<i32>,
     ) -> Result<Self> {
-        let start = &format!("{}", start.unwrap_or(0));
-        let end = &format!("{end}");
-        let start_chars_value = format!("{}", start_chars.unwrap_or(0));
         let mut base = XmlEvent::start_element("w:ind")
-            .attr("w:left", start)
-            .attr("w:right", end);
+            .attr_display("w:left", start.unwrap_or(0))
+            .attr_display("w:right", end);
 
-        if start_chars.is_some() {
-            base = base.attr("w:leftChars", &start_chars_value);
+        if let Some(start_chars) = start_chars {
+            base = base.attr_display("w:leftChars", start_chars);
         }
 
         match special_indent {
             Some(SpecialIndentType::FirstLine(v)) => {
-                self.write(base.attr("w:firstLine", &format!("{v}")))
+                self.write(base.attr_display("w:firstLine", v))
             }
-            Some(SpecialIndentType::Hanging(v)) => {
-                self.write(base.attr("w:hanging", &format!("{v}")))
-            }
+            Some(SpecialIndentType::Hanging(v)) => self.write(base.attr_display("w:hanging", v)),
             None => self.write(base),
         }?
         .close()
@@ -306,23 +301,21 @@ impl<W: Write> XMLBuilder<W> {
 
     // i.e. <w:spacing ... >
     pub(crate) fn spacing(self, s: i32) -> Result<Self> {
-        self.write(XmlEvent::start_element("w:spacing").attr("w:val", &format!("{s}")))?
+        self.write(XmlEvent::start_element("w:spacing").attr_display("w:val", s))?
             .close()
     }
 
     // i.e. <w:w ... >
     pub(crate) fn w(self, s: i32) -> Result<Self> {
-        self.write(XmlEvent::start_element("w:w").attr("w:val", &format!("{s}")))?
+        self.write(XmlEvent::start_element("w:w").attr_display("w:val", s))?
             .close()
     }
 
     // i.e. <w:fitText ... >
     pub(crate) fn fit_text(self, val: usize, id: Option<u32>) -> Result<Self> {
-        let mut fit_text = XmlEvent::start_element("w:fitText").attr("w:val", &format!("{val}"));
-        let id_value;
+        let mut fit_text = XmlEvent::start_element("w:fitText").attr_display("w:val", val);
         if let Some(id) = id {
-            id_value = format!("{id}");
-            fit_text = fit_text.attr("w:id", &id_value);
+            fit_text = fit_text.attr_display("w:id", id);
         }
         self.write(fit_text)?.close()
     }
@@ -338,31 +331,20 @@ impl<W: Write> XMLBuilder<W> {
         spacing: Option<LineSpacingType>,
     ) -> Result<Self> {
         let mut xml_event = XmlEvent::start_element("w:spacing");
-        let before_val: String;
-        let after_val: String;
-        let before_lines_val: String;
-        let after_lines_val: String;
-        let line_val: String;
-
         if let Some(before) = before {
-            before_val = format!("{before}");
-            xml_event = xml_event.attr("w:before", &before_val)
+            xml_event = xml_event.attr_display("w:before", before)
         }
         if let Some(after) = after {
-            after_val = format!("{after}");
-            xml_event = xml_event.attr("w:after", &after_val)
+            xml_event = xml_event.attr_display("w:after", after)
         }
         if let Some(before_lines) = before_lines {
-            before_lines_val = format!("{before_lines}");
-            xml_event = xml_event.attr("w:beforeLines", &before_lines_val)
+            xml_event = xml_event.attr_display("w:beforeLines", before_lines)
         }
         if let Some(after_lines) = after_lines {
-            after_lines_val = format!("{after_lines}");
-            xml_event = xml_event.attr("w:afterLines", &after_lines_val)
+            xml_event = xml_event.attr_display("w:afterLines", after_lines)
         }
         if let Some(line) = line {
-            line_val = format!("{line}");
-            xml_event = xml_event.attr("w:line", &line_val)
+            xml_event = xml_event.attr_display("w:line", line)
         }
         if let Some(spacing_type) = spacing {
             match spacing_type {
@@ -609,15 +591,14 @@ impl<W: Write> XMLBuilder<W> {
         done: bool,
         parent_paragraph_id: &Option<String>,
     ) -> Result<Self> {
-        let done = format!("{}", done as usize);
         let el = match parent_paragraph_id {
             Some(parent_paragraph_id) => XmlEvent::start_element("w15:commentEx")
                 .attr("w15:paraId", paragraph_id)
                 .attr("w15:paraIdParent", parent_paragraph_id)
-                .attr("w15:done", &done),
+                .attr_display("w15:done", done as usize),
             None => XmlEvent::start_element("w15:commentEx")
                 .attr("w15:paraId", paragraph_id)
-                .attr("w15:done", &done),
+                .attr_display("w15:done", done as usize),
         };
         self.write(el)?.close()
     }
@@ -629,15 +610,12 @@ impl<W: Write> XMLBuilder<W> {
         line_pitch: Option<usize>,
         char_space: Option<isize>,
     ) -> Result<Self> {
-        let t = t.to_string();
-        let line_pitch_string = format!("{}", line_pitch.unwrap_or_default());
-        let char_space_string = format!("{}", char_space.unwrap_or_default());
-        let mut w = XmlEvent::start_element("w:docGrid").attr("w:type", &t);
-        if line_pitch.is_some() {
-            w = w.attr("w:linePitch", &line_pitch_string);
+        let mut w = XmlEvent::start_element("w:docGrid").attr_display("w:type", t);
+        if let Some(line_pitch) = line_pitch {
+            w = w.attr_display("w:linePitch", line_pitch);
         }
-        if char_space.is_some() {
-            w = w.attr("w:charSpace", &char_space_string);
+        if let Some(char_space) = char_space {
+            w = w.attr_display("w:charSpace", char_space);
         }
         self.write(w)?.close()
     }
@@ -668,29 +646,23 @@ impl<W: Write> XMLBuilder<W> {
         if prop.y_align.is_some() {
             w = w.attr("w:yAlign", &y_align);
         }
-        let x: String = format!("{}", prop.x.unwrap_or_default());
-        if prop.x.is_some() {
-            w = w.attr("w:x", &x);
+        if let Some(x) = prop.x {
+            w = w.attr_display("w:x", x);
         }
-        let y: String = format!("{}", prop.y.unwrap_or_default());
-        if prop.y.is_some() {
-            w = w.attr("w:y", &y);
+        if let Some(y) = prop.y {
+            w = w.attr_display("w:y", y);
         }
-        let h_space: String = format!("{}", prop.h_space.unwrap_or_default());
-        if prop.h_space.is_some() {
-            w = w.attr("w:h_space", &h_space);
+        if let Some(h_space) = prop.h_space {
+            w = w.attr_display("w:h_space", h_space);
         }
-        let v_space: String = format!("{}", prop.v_space.unwrap_or_default());
-        if prop.v_space.is_some() {
-            w = w.attr("w:v_space", &v_space);
+        if let Some(v_space) = prop.v_space {
+            w = w.attr_display("w:v_space", v_space);
         }
-        let width: String = format!("{}", prop.w.unwrap_or_default());
-        if prop.w.is_some() {
-            w = w.attr("w:w", &width);
+        if let Some(width) = prop.w {
+            w = w.attr_display("w:w", width);
         }
-        let h: String = format!("{}", prop.h.unwrap_or_default());
-        if prop.h.is_some() {
-            w = w.attr("w:h", &h);
+        if let Some(height) = prop.h {
+            w = w.attr_display("w:h", height);
         }
         self.write(w)?.close()
     }
@@ -698,14 +670,12 @@ impl<W: Write> XMLBuilder<W> {
     pub(crate) fn table_position_property(self, prop: &TablePositionProperty) -> Result<Self> {
         let mut w = XmlEvent::start_element("w:tblpPr");
 
-        let v: String = format!("{}", prop.left_from_text.unwrap_or_default());
-        if prop.left_from_text.is_some() {
-            w = w.attr("w:leftFromText", &v);
+        if let Some(left_from_text) = prop.left_from_text {
+            w = w.attr_display("w:leftFromText", left_from_text);
         }
 
-        let v: String = format!("{}", prop.right_from_text.unwrap_or_default());
-        if prop.right_from_text.is_some() {
-            w = w.attr("w:rightFromText", &v);
+        if let Some(right_from_text) = prop.right_from_text {
+            w = w.attr_display("w:rightFromText", right_from_text);
         }
 
         let v: String = prop.vertical_anchor.iter().cloned().collect();
@@ -728,14 +698,12 @@ impl<W: Write> XMLBuilder<W> {
             w = w.attr("w:tblpYSpec", &v);
         }
 
-        let v: String = format!("{}", prop.position_x.unwrap_or_default());
-        if prop.position_x.is_some() {
-            w = w.attr("w:tblpX", &v);
+        if let Some(position_x) = prop.position_x {
+            w = w.attr_display("w:tblpX", position_x);
         }
 
-        let v: String = format!("{}", prop.position_y.unwrap_or_default());
-        if prop.position_y.is_some() {
-            w = w.attr("w:tblpY", &v);
+        if let Some(position_y) = prop.position_y {
+            w = w.attr_display("w:tblpY", position_y);
         }
 
         self.write(w)?.close()
@@ -747,13 +715,11 @@ impl<W: Write> XMLBuilder<W> {
         chap_style: Option<String>,
     ) -> Result<Self> {
         let mut w = XmlEvent::start_element("w:pgNumType");
-        let start_string = format!("{}", start.unwrap_or_default());
-        let chap_style_string = chap_style.clone().unwrap_or_default();
-        if start.is_some() {
-            w = w.attr("w:start", &start_string);
+        if let Some(start) = start {
+            w = w.attr_display("w:start", start);
         }
-        if chap_style.is_some() {
-            w = w.attr("w:chapStyle", &chap_style_string);
+        if let Some(chap_style) = chap_style.as_deref() {
+            w = w.attr("w:chapStyle", chap_style);
         }
         self.write(w)?.close()
     }
@@ -764,31 +730,17 @@ impl<W: Write> XMLBuilder<W> {
         leader: Option<TabLeaderType>,
         pos: Option<usize>,
     ) -> Result<Self> {
-        let v_string = if let Some(v) = v {
-            v.to_string()
-        } else {
-            "".to_string()
-        };
-
-        let leader_string = if let Some(leader) = leader {
-            leader.to_string()
-        } else {
-            "".to_string()
-        };
-
-        let pos_string = format!("{}", pos.unwrap_or_default());
-
         let mut t = XmlEvent::start_element("w:tab");
-        if v.is_some() {
-            t = t.attr("w:val", &v_string);
+        if let Some(v) = v {
+            t = t.attr_display("w:val", v);
         }
 
-        if leader.is_some() {
-            t = t.attr("w:leader", &leader_string);
+        if let Some(leader) = leader {
+            t = t.attr_display("w:leader", leader);
         }
 
-        if pos.is_some() {
-            t = t.attr("w:pos", &pos_string);
+        if let Some(pos) = pos {
+            t = t.attr_display("w:pos", pos);
         }
         self.write(t)?.close()
     }
@@ -799,15 +751,10 @@ impl<W: Write> XMLBuilder<W> {
         relative_to: PositionalTabRelativeTo,
         leader: TabLeaderType,
     ) -> Result<Self> {
-        let alignment_string = alignment.to_string();
-        let relative_to_string = relative_to.to_string();
-        let leader_string = leader.to_string();
-
-        let mut t = XmlEvent::start_element("w:ptab");
-
-        t = t.attr("w:alignment", &alignment_string);
-        t = t.attr("w:relativeTo", &relative_to_string);
-        t = t.attr("w:leader", &leader_string);
+        let t = XmlEvent::start_element("w:ptab")
+            .attr_display("w:alignment", alignment)
+            .attr_display("w:relativeTo", relative_to)
+            .attr_display("w:leader", leader);
 
         self.write(t)?.close()
     }
@@ -815,7 +762,7 @@ impl<W: Write> XMLBuilder<W> {
     // FootnoteReference
     // w:footnoteReference w:id="1"
     pub(crate) fn footnote_reference(self, id: usize) -> Result<Self> {
-        self.write(XmlEvent::start_element("w:footnoteReference").attr("w:id", &id.to_string()))?
+        self.write(XmlEvent::start_element("w:footnoteReference").attr_display("w:id", id))?
             .close()
     }
 

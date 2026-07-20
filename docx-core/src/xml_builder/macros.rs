@@ -480,7 +480,7 @@ macro_rules! closed_with_str {
 macro_rules! closed_with_usize {
     ($name: ident, $el_name: expr) => {
         pub(crate) fn $name(self, val: usize) -> crate::xml::writer::Result<Self> {
-            self.write(XmlEvent::start_element($el_name).attr("w:val", &format!("{}", val)))?
+            self.write(XmlEvent::start_element($el_name).attr_display("w:val", val))?
                 .close()
         }
     };
@@ -489,7 +489,7 @@ macro_rules! closed_with_usize {
 macro_rules! closed_with_isize {
     ($name: ident, $el_name: expr) => {
         pub(crate) fn $name(self, val: isize) -> crate::xml::writer::Result<Self> {
-            self.write(XmlEvent::start_element($el_name).attr("w:val", &format!("{}", val)))?
+            self.write(XmlEvent::start_element($el_name).attr_display("w:val", val))?
                 .close()
         }
     };
@@ -500,8 +500,8 @@ macro_rules! closed_w_with_type_el {
         pub(crate) fn $name(self, w: i32, t: WidthType) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
-                    .attr("w:w", &format!("{}", w))
-                    .attr("w:type", &t.to_string()),
+                    .attr_display("w:w", w)
+                    .attr_display("w:type", t),
             )?
             .close()
         }
@@ -519,9 +519,9 @@ macro_rules! closed_border_el {
         ) -> crate::xml::writer::Result<Self> {
             self.write(
                 XmlEvent::start_element($el_name)
-                    .attr("w:val", &val.to_string())
-                    .attr("w:sz", &format!("{}", size))
-                    .attr("w:space", &format!("{}", space))
+                    .attr_display("w:val", val)
+                    .attr_display("w:sz", size)
+                    .attr_display("w:space", space)
                     .attr("w:color", color),
             )?
             .close()

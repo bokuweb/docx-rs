@@ -239,4 +239,26 @@ impl<'a> StartElement<'a> {
         self.encoded.push(b'"');
         self
     }
+
+    pub fn attr_display(mut self, name: &str, value: impl fmt::Display) -> Self {
+        self.encoded.push(b' ');
+        self.encoded.extend_from_slice(name.as_bytes());
+        self.encoded.extend_from_slice(b"=\"");
+        fmt::write(
+            &mut AttributeValueWriter(&mut self.encoded),
+            format_args!("{value}"),
+        )
+        .expect("writing to an in-memory attribute buffer cannot fail");
+        self.encoded.push(b'"');
+        self
+    }
+}
+
+struct AttributeValueWriter<'a>(&'a mut SmallVec<[u8; 128]>);
+
+impl fmt::Write for AttributeValueWriter<'_> {
+    fn write_str(&mut self, value: &str) -> fmt::Result {
+        self.0.extend_from_slice(value.as_bytes());
+        Ok(())
+    }
 }

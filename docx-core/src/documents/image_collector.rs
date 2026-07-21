@@ -1,260 +1,253 @@
-use crate::{
-    DeleteChild, DrawingData, InsertChild, Paragraph, ParagraphChild, Pic, RunChild,
-    StructuredDataTagChild, Table, TableCellContent, TableChild, TableRowChild, TocContent,
-};
-use std::collections::HashMap;
+//! Collects image relationships, physical media, and footnotes for packaging.
+//!
+//! OPC relationships belong to individual XML parts, but media files belong
+//! to the whole package. This module models those scopes separately so shared
+//! image bytes are written once without losing any part-local relationship.
 
+use std::collections::{HashMap, HashSet};
+
+use super::document_tree::{visit_document, visit_footer, visit_header, DocumentTreeVisitor};
+use crate::{
+    Document, Footer, Footnote, FootnoteReference, Header, ImageIdAndBuf, ImageIdAndPath, Pic,
+};
+
+/// Stores physical media once for the entire OPC package.
+///
+/// Relationship IDs are scoped to individual XML parts, while files under
+/// `word/media` are package-global. Keeping those concepts separate allows a
+/// body, header, and footer to reference the same bytes without writing three
+/// copies or dropping a relationship from one of the parts.
 #[derive(Default)]
-pub(crate) struct ImageDeduplicator {
-    by_id: HashMap<String, usize>,
+pub(crate) struct MediaRegistry {
+    media: Vec<ImageIdAndBuf>,
+    media_ids: HashSet<String>,
     by_fingerprint: HashMap<(usize, u32), Vec<usize>>,
 }
 
-fn collect_pic(
-    pic: &mut Pic,
-    images: &mut Vec<(String, String)>,
-    image_bufs: &mut Vec<(String, Vec<u8>)>,
-    id_prefix: Option<&str>,
-    deduplicator: &mut ImageDeduplicator,
-) {
-    let image = std::mem::take(&mut pic.image);
+impl MediaRegistry {
+    /// Registers physical bytes and returns the package-global media ID.
+    fn register(&mut self, preferred_id: &str, bytes: Vec<u8>) -> String {
+        let fingerprint = (bytes.len(), crc32fast::hash(&bytes));
+        if let Some(index) = self
+            .by_fingerprint
+            .get(&fingerprint)
+            .and_then(|candidates| {
+                candidates
+                    .iter()
+                    .copied()
+                    .find(|index| self.media[*index].1 == bytes)
+            })
+        {
+            return self.media[index].0.clone();
+        }
 
-    if let Some(index) = deduplicator.by_id.get(&pic.id).copied() {
-        pic.id = image_bufs[index].0.clone();
-        return;
+        let media_id = self.unique_media_id(preferred_id);
+        let index = self.media.len();
+        self.media.push((media_id.clone(), bytes));
+        self.media_ids.insert(media_id.clone());
+        self.by_fingerprint
+            .entry(fingerprint)
+            .or_default()
+            .push(index);
+        media_id
     }
 
-    let fingerprint = (image.len(), crc32fast::hash(&image));
-    if let Some(index) = deduplicator
-        .by_fingerprint
-        .get(&fingerprint)
-        .and_then(|candidates| {
-            candidates
-                .iter()
-                .copied()
-                .find(|index| image_bufs[*index].1 == image)
-        })
-    {
-        pic.id = image_bufs[index].0.clone();
-        return;
+    /// Consumes the registry and returns files ready for ZIP packaging.
+    pub(crate) fn into_media(self) -> Vec<ImageIdAndBuf> {
+        self.media
     }
 
-    let pic_id = if let Some(prefix) = id_prefix {
-        format!("{prefix}{}", pic.id)
-    } else {
-        pic.id.clone()
-    };
-    images.push((pic_id.clone(), format!("media/{pic_id}.png")));
-    let index = image_bufs.len();
-    image_bufs.push((pic_id.clone(), image));
-    deduplicator.by_id.insert(pic_id.clone(), index);
-    deduplicator
-        .by_fingerprint
-        .entry(fingerprint)
-        .or_default()
-        .push(index);
-    pic.id = pic_id;
+    fn unique_media_id(&self, preferred_id: &str) -> String {
+        if !self.media_ids.contains(preferred_id) {
+            return preferred_id.to_owned();
+        }
+
+        (2usize..)
+            .map(|suffix| format!("{preferred_id}_{suffix}"))
+            .find(|candidate| !self.media_ids.contains(candidate))
+            .expect("the media ID space should not be exhausted")
+    }
 }
 
-pub(crate) fn collect_images_from_paragraph(
-    paragraph: &mut Paragraph,
-    images: &mut Vec<(String, String)>,
-    image_bufs: &mut Vec<(String, Vec<u8>)>,
-    id_prefix: Option<&str>,
-    deduplicator: &mut ImageDeduplicator,
-) {
-    for child in &mut paragraph.children {
-        if let ParagraphChild::Run(run) = child {
-            for child in &mut run.children {
-                if let RunChild::Drawing(d) = child {
-                    if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                        collect_pic(pic, images, image_bufs, id_prefix, deduplicator);
-                    }
-                }
-            }
-        } else if let ParagraphChild::Insert(ins) = child {
-            for child in &mut ins.children {
-                match child {
-                    InsertChild::Run(run) => {
-                        for child in &mut run.children {
-                            if let RunChild::Drawing(d) = child {
-                                if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                                    collect_pic(pic, images, image_bufs, id_prefix, deduplicator);
-                                }
-                            }
-                        }
-                    }
-                    InsertChild::Delete(del) => {
-                        for d in &mut del.children {
-                            if let DeleteChild::Run(run) = d {
-                                for child in &mut run.children {
-                                    if let RunChild::Drawing(d) = child {
-                                        if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                                            collect_pic(
-                                                pic,
-                                                images,
-                                                image_bufs,
-                                                id_prefix,
-                                                deduplicator,
-                                            );
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    _ => {}
-                }
-            }
-        } else if let ParagraphChild::Delete(del) = child {
-            for d in &mut del.children {
-                if let DeleteChild::Run(run) = d {
-                    for child in &mut run.children {
-                        if let RunChild::Drawing(d) = child {
-                            if let Some(DrawingData::Pic(pic)) = &mut d.data {
-                                collect_pic(pic, images, image_bufs, id_prefix, deduplicator);
-                            }
-                        }
-                    }
-                }
-            }
+/// Data collected from one relationship scope during a tree walk.
+pub(crate) struct CollectedPart {
+    pub(crate) relationships: Vec<ImageIdAndPath>,
+    pub(crate) footnotes: Vec<Footnote>,
+}
+
+/// Collects media relationships and footnotes while visiting one XML part.
+///
+/// A fresh collector is created for each relationship scope, but every
+/// collector shares one [`MediaRegistry`]. This is the key distinction that
+/// preserves per-part relationships while deduplicating physical media.
+struct PackagePartCollector<'a> {
+    registry: &'a mut MediaRegistry,
+    relationship_prefix: Option<&'a str>,
+    relationships: Vec<ImageIdAndPath>,
+    relationship_ids: HashSet<String>,
+    relationships_by_target: HashMap<String, String>,
+    footnotes: Vec<Footnote>,
+}
+
+impl<'a> PackagePartCollector<'a> {
+    fn new(registry: &'a mut MediaRegistry, relationship_prefix: Option<&'a str>) -> Self {
+        Self {
+            registry,
+            relationship_prefix,
+            relationships: Vec::new(),
+            relationship_ids: HashSet::new(),
+            relationships_by_target: HashMap::new(),
+            footnotes: Vec::new(),
+        }
+    }
+
+    fn finish(self) -> CollectedPart {
+        CollectedPart {
+            relationships: self.relationships,
+            footnotes: self.footnotes,
+        }
+    }
+
+    fn relationship_id(&self, picture_id: &str) -> String {
+        match self.relationship_prefix {
+            Some(prefix) => format!("{prefix}{picture_id}"),
+            None => picture_id.to_owned(),
+        }
+    }
+
+    /// Returns an ID that is unique inside this part's relationship scope.
+    fn unique_relationship_id(&self, preferred_id: &str) -> String {
+        match self.relationship_ids.contains(preferred_id) {
+            false => preferred_id.to_owned(),
+            true => (2usize..)
+                .map(|suffix| format!("{preferred_id}_{suffix}"))
+                .find(|candidate| !self.relationship_ids.contains(candidate))
+                .expect("the relationship ID space should not be exhausted"),
         }
     }
 }
 
-pub(crate) fn collect_images_from_table(
-    table: &mut Table,
-    images: &mut Vec<(String, String)>,
-    image_bufs: &mut Vec<(String, Vec<u8>)>,
-    id_prefix: Option<&str>,
-    deduplicator: &mut ImageDeduplicator,
-) {
-    for TableChild::TableRow(row) in &mut table.rows {
-        for TableRowChild::TableCell(cell) in &mut row.cells {
-            for content in &mut cell.children {
-                match content {
-                    TableCellContent::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(
-                            paragraph,
-                            images,
-                            image_bufs,
-                            id_prefix,
-                            deduplicator,
-                        );
-                    }
-                    TableCellContent::Table(table) => collect_images_from_table(
-                        table,
-                        images,
-                        image_bufs,
-                        id_prefix,
-                        deduplicator,
-                    ),
-                    TableCellContent::StructuredDataTag(tag) => {
-                        for child in &mut tag.children {
-                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(
-                                    paragraph,
-                                    images,
-                                    image_bufs,
-                                    id_prefix,
-                                    deduplicator,
-                                );
-                            }
-                            if let StructuredDataTagChild::Table(table) = child {
-                                collect_images_from_table(
-                                    table,
-                                    images,
-                                    image_bufs,
-                                    id_prefix,
-                                    deduplicator,
-                                );
-                            }
-                        }
-                    }
-                    TableCellContent::TableOfContents(t) => {
-                        for child in &mut t.before_contents {
-                            if let TocContent::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(
-                                    paragraph,
-                                    images,
-                                    image_bufs,
-                                    id_prefix,
-                                    deduplicator,
-                                );
-                            }
-                            if let TocContent::Table(table) = child {
-                                collect_images_from_table(
-                                    table,
-                                    images,
-                                    image_bufs,
-                                    id_prefix,
-                                    deduplicator,
-                                );
-                            }
-                        }
+impl DocumentTreeVisitor for PackagePartCollector<'_> {
+    fn visit_picture(&mut self, picture: &mut Pic) {
+        let preferred_relationship_id = self.relationship_id(&picture.id);
+        let media_id = self.registry.register(
+            &preferred_relationship_id,
+            std::mem::take(&mut picture.image),
+        );
+        let target = format!("media/{media_id}.png");
 
-                        for child in &mut t.after_contents {
-                            if let TocContent::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(
-                                    paragraph,
-                                    images,
-                                    image_bufs,
-                                    id_prefix,
-                                    deduplicator,
-                                );
-                            }
-                            if let TocContent::Table(table) = child {
-                                collect_images_from_table(
-                                    table,
-                                    images,
-                                    image_bufs,
-                                    id_prefix,
-                                    deduplicator,
-                                );
-                            }
-                        }
-                    }
-                }
-            }
+        if let Some(relationship_id) = self.relationships_by_target.get(&target) {
+            picture.id.clone_from(relationship_id);
+            return;
+        }
+
+        let relationship_id = self.unique_relationship_id(&preferred_relationship_id);
+        self.relationship_ids.insert(relationship_id.clone());
+        self.relationships_by_target
+            .insert(target.clone(), relationship_id.clone());
+        self.relationships.push((relationship_id.clone(), target));
+        picture.id = relationship_id;
+    }
+
+    fn visit_footnote_reference(&mut self, reference: &FootnoteReference) {
+        self.footnotes.push(reference.into());
+    }
+}
+
+/// Collects package data from the complete main document tree in one pass.
+pub(crate) fn collect_document_part(
+    document: &mut Document,
+    registry: &mut MediaRegistry,
+) -> CollectedPart {
+    let mut collector = PackagePartCollector::new(registry, None);
+    visit_document(document, &mut collector);
+    collector.finish()
+}
+
+/// Collects footnotes without consuming image buffers from the document tree.
+///
+/// This separate visitor keeps [`crate::Docx::collect_footnotes`] compatible
+/// for callers that invoke it directly. Package preparation uses
+/// [`collect_document_part`] so images and footnotes are normally gathered in
+/// one traversal.
+pub(crate) fn collect_document_footnotes(document: &mut Document) -> Vec<Footnote> {
+    #[derive(Default)]
+    struct FootnoteCollector {
+        footnotes: Vec<Footnote>,
+    }
+
+    impl DocumentTreeVisitor for FootnoteCollector {
+        fn visit_footnote_reference(&mut self, reference: &FootnoteReference) {
+            self.footnotes.push(reference.into());
         }
     }
+
+    let mut collector = FootnoteCollector::default();
+    visit_document(document, &mut collector);
+    collector.footnotes
+}
+
+/// Collects package data from one header relationship scope.
+pub(crate) fn collect_header_part(
+    header: &mut Header,
+    registry: &mut MediaRegistry,
+) -> CollectedPart {
+    let mut collector = PackagePartCollector::new(registry, Some("header"));
+    visit_header(header, &mut collector);
+    collector.finish()
+}
+
+/// Collects package data from one footer relationship scope.
+pub(crate) fn collect_footer_part(
+    footer: &mut Footer,
+    registry: &mut MediaRegistry,
+) -> CollectedPart {
+    let mut collector = PackagePartCollector::new(registry, Some("footer"));
+    visit_footer(footer, &mut collector);
+    collector.finish()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::Run;
 
     #[test]
-    fn deduplicates_identical_images_across_paragraphs() {
-        let image = vec![1, 2, 3, 4, 5];
-        let mut first = Paragraph::new().add_run(Run::new().add_image(Pic::new_with_dimensions(
-            image.clone(),
-            1,
-            1,
-        )));
-        let mut second =
-            Paragraph::new().add_run(Run::new().add_image(Pic::new_with_dimensions(image, 1, 1)));
-        let mut images = Vec::new();
-        let mut image_bufs = Vec::new();
-        let mut deduplicator = ImageDeduplicator::default();
-
-        collect_images_from_paragraph(
-            &mut first,
-            &mut images,
-            &mut image_bufs,
-            None,
-            &mut deduplicator,
+    fn registry_deduplicates_identical_media_but_keeps_part_relationships() {
+        let bytes = vec![1, 2, 3, 4, 5];
+        let mut first =
+            Header::new().add_paragraph(crate::Paragraph::new().add_run(
+                crate::Run::new().add_image(Pic::new_with_dimensions(bytes.clone(), 1, 1)),
+            ));
+        let mut second = Header::new().add_paragraph(
+            crate::Paragraph::new()
+                .add_run(crate::Run::new().add_image(Pic::new_with_dimensions(bytes, 1, 1))),
         );
-        collect_images_from_paragraph(
-            &mut second,
-            &mut images,
-            &mut image_bufs,
-            None,
-            &mut deduplicator,
-        );
+        let mut registry = MediaRegistry::default();
 
-        assert_eq!(images.len(), 1);
-        assert_eq!(image_bufs.len(), 1);
+        let first = collect_header_part(&mut first, &mut registry);
+        let second = collect_header_part(&mut second, &mut registry);
+
+        assert_eq!(registry.media.len(), 1);
+        assert_eq!(first.relationships.len(), 1);
+        assert_eq!(second.relationships.len(), 1);
+        assert_eq!(first.relationships[0].1, second.relationships[0].1);
+    }
+
+    #[test]
+    fn identical_media_reuses_one_relationship_within_a_part() {
+        let bytes = vec![9, 8, 7, 6];
+        let mut first = Pic::new_with_dimensions(bytes.clone(), 1, 1);
+        first.id = "first".to_owned();
+        let mut second = Pic::new_with_dimensions(bytes, 1, 1);
+        second.id = "second".to_owned();
+        let mut document = Document::new()
+            .add_paragraph(crate::Paragraph::new().add_run(crate::Run::new().add_image(first)))
+            .add_paragraph(crate::Paragraph::new().add_run(crate::Run::new().add_image(second)));
+        let mut registry = MediaRegistry::default();
+
+        let part = collect_document_part(&mut document, &mut registry);
+
+        assert_eq!(registry.media.len(), 1);
+        assert_eq!(part.relationships.len(), 1);
     }
 }

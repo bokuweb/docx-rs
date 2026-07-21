@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   automatically generated table-of-contents content is normalized before
   dependency collection.
 - Fix images inside footer structured data tags using header relationship IDs.
+- Deduplicate identical media across the document, header, and footer parts
+  while preserving each part's image relationships. Images and footnotes in
+  nested sections, structured data tags, tables, and tracked content are now
+  collected through one shared document-tree traversal.
 
 ## @0.4.21 (20. Jul, 2026)
 

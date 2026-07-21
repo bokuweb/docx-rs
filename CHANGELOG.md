@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   while preserving each part's image relationships. Images and footnotes in
   nested sections, structured data tags, tables, and tracked content are now
   collected through one shared document-tree traversal.
+- Support paragraph borders in the reader.
 
 ## @0.4.21 (20. Jul, 2026)
 

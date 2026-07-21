@@ -1,22 +1,26 @@
 #[cfg(not(test))]
-use std::sync::atomic::AtomicUsize;
+use std::cell::Cell;
 #[cfg(not(test))]
-static PARA_ID: AtomicUsize = AtomicUsize::new(1);
+thread_local! {
+    // Resetting a process-global counter lets one document reuse IDs while
+    // another thread is still creating paragraphs. Keep reset scope local;
+    // build-time normalization handles IDs from paragraphs merged across threads.
+    static PARA_ID: Cell<u32> = const { Cell::new(1) };
+}
 
 #[cfg(not(test))]
 pub fn generate_para_id() -> String {
-    use std::sync::atomic::Ordering;
-
-    let id = PARA_ID.fetch_add(1, Ordering::Relaxed);
+    let id = PARA_ID.with(|next| {
+        let id = next.get();
+        next.set(id.checked_add(1).expect("paragraph ID space exhausted"));
+        id
+    });
     format!("{id:08x}")
 }
 
 #[cfg(not(test))]
 pub fn reset_para_id() {
-    use std::sync::atomic::Ordering;
-
-    PARA_ID.load(Ordering::Relaxed);
-    PARA_ID.store(1, Ordering::Relaxed);
+    PARA_ID.set(1);
 }
 
 #[cfg(test)]

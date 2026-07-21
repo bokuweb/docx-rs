@@ -284,7 +284,7 @@ checksum = "9eb1aa714776b75c7e67e1da744b81a129b3ff919c8712b5e1b32252c1f07cc7"
 [[package]]
 name = "emf-core"
 version = "0.1.0"
-source = "git+https://github.com/mythrnr/emf-rs.git?tag=0.0.7#a440894ecdb35db165a9b4e8dce39f63617baadc"
+source = "git+https://github.com/mythrnr/emf-rs.git?tag=0.0.10#bacb9029f95cebe4fdf08050cf200b6842630b54"
 dependencies = [
  "embedded-io",
  "snafu",
@@ -1003,7 +1003,7 @@ dependencies = [
 [[package]]
 name = "wmf-core"
 version = "0.1.0"
-source = "git+https://github.com/mythrnr/wmf-rs.git?tag=0.0.23#1c552defac0384afb3207f92f9dacbd8a79ce9a9"
+source = "git+https://github.com/mythrnr/wmf-rs.git?tag=0.0.25#e2c8cde9525d32a725e0ff937f73bdd581702cb2"
 dependencies = [
  "base64",
  "codepage",

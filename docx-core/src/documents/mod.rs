@@ -14,6 +14,7 @@ mod custom_item_rels;
 mod doc_props;
 mod document;
 mod document_rels;
+mod document_tree;
 mod elements;
 mod font_table;
 mod footer;
@@ -85,7 +86,8 @@ use base64::Engine;
 use serde::{ser, Serialize};
 
 use self::image_collector::{
-    collect_images_from_paragraph, collect_images_from_table, ImageDeduplicator,
+    collect_document_footnotes, collect_document_part, collect_footer_part, collect_header_part,
+    MediaRegistry,
 };
 
 #[derive(Debug, Clone)]
@@ -914,12 +916,11 @@ impl Docx {
     fn prepare_package(&mut self) -> PackageMetadata {
         let has_toc = self.prepare_for_build();
 
-        let (images, mut media) = self.images_in_doc();
-        let (header_images, header_media) = self.images_in_header();
-        let (footer_images, footer_media) = self.images_in_footer();
-        media.extend(header_media);
-        media.extend(footer_media);
-        self.document_rels.images = images;
+        let mut media = MediaRegistry::default();
+        let document_part = collect_document_part(&mut self.document, &mut media);
+        let header_images = self.collect_header_images(&mut media);
+        let footer_images = self.collect_footer_images(&mut media);
+        self.document_rels.images = document_part.relationships;
 
         let mut header_rels = vec![HeaderRels::new(); 3];
         for (rels, images) in header_rels.iter_mut().zip(header_images) {
@@ -931,7 +932,8 @@ impl Docx {
             rels.set_images(images);
         }
 
-        if self.collect_footnotes() {
+        if !document_part.footnotes.is_empty() {
+            self.footnotes.add(document_part.footnotes);
             self.content_type = std::mem::take(&mut self.content_type).add_footnotes();
             self.document_rels.has_footnotes = true;
         }
@@ -951,7 +953,7 @@ impl Docx {
         }
 
         PackageMetadata {
-            media,
+            media: media.into_media(),
             header_rels,
             footer_rels,
         }
@@ -1275,369 +1277,55 @@ impl Docx {
         }
     }
 
-    // Traverse and collect images from document.
-    fn images_in_doc(&mut self) -> (Vec<ImageIdAndPath>, Vec<ImageIdAndBuf>) {
-        let mut images: Vec<(String, String)> = vec![];
-        let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
-        let mut deduplicator = ImageDeduplicator::default();
+    /// Collects image relationships for the default, first, and even headers.
+    ///
+    /// Each entry deliberately uses a separate relationship scope while all
+    /// entries share the package-wide media registry. This preserves valid
+    /// header `.rels` files without storing duplicate image bytes.
+    fn collect_header_images(&mut self, media: &mut MediaRegistry) -> Vec<Vec<ImageIdAndPath>> {
+        let mut images = vec![Vec::new(); 3];
+        let headers = [
+            &mut self.document.section_property.header,
+            &mut self.document.section_property.first_header,
+            &mut self.document.section_property.even_header,
+        ];
 
-        for child in &mut self.document.children {
-            match child {
-                DocumentChild::Paragraph(paragraph) => {
-                    collect_images_from_paragraph(
-                        paragraph,
-                        &mut images,
-                        &mut image_bufs,
-                        None,
-                        &mut deduplicator,
-                    );
-                }
-                DocumentChild::Table(table) => {
-                    collect_images_from_table(
-                        table,
-                        &mut images,
-                        &mut image_bufs,
-                        None,
-                        &mut deduplicator,
-                    );
-                }
-                _ => {}
+        for (images, header) in images.iter_mut().zip(headers) {
+            if let Some((_, header)) = header.as_mut() {
+                *images = collect_header_part(header, media).relationships;
             }
         }
-        (images, image_bufs)
+        images
     }
 
-    fn images_in_header(&mut self) -> (Vec<Vec<ImageIdAndPath>>, Vec<ImageIdAndBuf>) {
-        let mut header_images: Vec<Vec<ImageIdAndPath>> = vec![vec![]; 3];
-        let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
-        let mut deduplicator = ImageDeduplicator::default();
+    /// Collects image relationships for the default, first, and even footers.
+    ///
+    /// The fixed order matches the package writer's footer part ordering. A
+    /// shared registry prevents repeated footer and body images from being
+    /// emitted as separate physical media files.
+    fn collect_footer_images(&mut self, media: &mut MediaRegistry) -> Vec<Vec<ImageIdAndPath>> {
+        let mut images = vec![Vec::new(); 3];
+        let footers = [
+            &mut self.document.section_property.footer,
+            &mut self.document.section_property.first_footer,
+            &mut self.document.section_property.even_footer,
+        ];
 
-        if let Some((_, header)) = &mut self.document.section_property.header.as_mut() {
-            let mut images: Vec<ImageIdAndPath> = vec![];
-            for child in header.children.iter_mut() {
-                match child {
-                    HeaderChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(
-                            paragraph,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("header"),
-                            &mut deduplicator,
-                        );
-                    }
-                    HeaderChild::Table(table) => {
-                        collect_images_from_table(
-                            table,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("header"),
-                            &mut deduplicator,
-                        );
-                    }
-                    HeaderChild::StructuredDataTag(tag) => {
-                        for child in tag.children.iter_mut() {
-                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(
-                                    paragraph,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("header"),
-                                    &mut deduplicator,
-                                );
-                            }
-                            if let StructuredDataTagChild::Table(table) = child {
-                                collect_images_from_table(
-                                    table,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("header"),
-                                    &mut deduplicator,
-                                );
-                            }
-                        }
-                    }
-                }
+        for (images, footer) in images.iter_mut().zip(footers) {
+            if let Some((_, footer)) = footer.as_mut() {
+                *images = collect_footer_part(footer, media).relationships;
             }
-            header_images[0] = images;
         }
-
-        if let Some((_, header)) = &mut self.document.section_property.first_header.as_mut() {
-            let mut images: Vec<ImageIdAndPath> = vec![];
-            for child in header.children.iter_mut() {
-                match child {
-                    HeaderChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(
-                            paragraph,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("header"),
-                            &mut deduplicator,
-                        );
-                    }
-                    HeaderChild::Table(table) => {
-                        collect_images_from_table(
-                            table,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("header"),
-                            &mut deduplicator,
-                        );
-                    }
-                    HeaderChild::StructuredDataTag(tag) => {
-                        for child in tag.children.iter_mut() {
-                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(
-                                    paragraph,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("header"),
-                                    &mut deduplicator,
-                                );
-                            }
-                            if let StructuredDataTagChild::Table(table) = child {
-                                collect_images_from_table(
-                                    table,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("header"),
-                                    &mut deduplicator,
-                                );
-                            }
-                        }
-                    }
-                }
-            }
-            header_images[1] = images;
-        }
-
-        if let Some((_, header)) = &mut self.document.section_property.even_header.as_mut() {
-            let mut images: Vec<ImageIdAndPath> = vec![];
-            for child in header.children.iter_mut() {
-                match child {
-                    HeaderChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(
-                            paragraph,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("header"),
-                            &mut deduplicator,
-                        );
-                    }
-                    HeaderChild::Table(table) => {
-                        collect_images_from_table(
-                            table,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("header"),
-                            &mut deduplicator,
-                        );
-                    }
-                    HeaderChild::StructuredDataTag(tag) => {
-                        for child in tag.children.iter_mut() {
-                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(
-                                    paragraph,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("header"),
-                                    &mut deduplicator,
-                                );
-                            }
-                            if let StructuredDataTagChild::Table(table) = child {
-                                collect_images_from_table(
-                                    table,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("header"),
-                                    &mut deduplicator,
-                                );
-                            }
-                        }
-                    }
-                }
-            }
-            header_images[2] = images;
-        }
-        (header_images, image_bufs)
+        images
     }
 
-    // Traverse and collect images from header.
-    fn images_in_footer(&mut self) -> (Vec<Vec<ImageIdAndPath>>, Vec<ImageIdAndBuf>) {
-        let mut footer_images: Vec<Vec<ImageIdAndPath>> = vec![vec![]; 3];
-        let mut image_bufs: Vec<(String, Vec<u8>)> = vec![];
-        let mut deduplicator = ImageDeduplicator::default();
-
-        if let Some((_, footer)) = &mut self.document.section_property.footer.as_mut() {
-            let mut images: Vec<ImageIdAndPath> = vec![];
-            for child in footer.children.iter_mut() {
-                match child {
-                    FooterChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(
-                            paragraph,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("footer"),
-                            &mut deduplicator,
-                        );
-                    }
-                    FooterChild::Table(table) => {
-                        collect_images_from_table(
-                            table,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("footer"),
-                            &mut deduplicator,
-                        );
-                    }
-                    FooterChild::StructuredDataTag(tag) => {
-                        for child in tag.children.iter_mut() {
-                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(
-                                    paragraph,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("footer"),
-                                    &mut deduplicator,
-                                );
-                            }
-                            if let StructuredDataTagChild::Table(table) = child {
-                                collect_images_from_table(
-                                    table,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("footer"),
-                                    &mut deduplicator,
-                                );
-                            }
-                        }
-                    }
-                }
-            }
-            footer_images[0] = images;
-        }
-
-        if let Some((_, footer)) = &mut self.document.section_property.first_footer.as_mut() {
-            let mut images: Vec<ImageIdAndPath> = vec![];
-            for child in footer.children.iter_mut() {
-                match child {
-                    FooterChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(
-                            paragraph,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("footer"),
-                            &mut deduplicator,
-                        );
-                    }
-                    FooterChild::Table(table) => {
-                        collect_images_from_table(
-                            table,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("footer"),
-                            &mut deduplicator,
-                        );
-                    }
-                    FooterChild::StructuredDataTag(tag) => {
-                        for child in tag.children.iter_mut() {
-                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(
-                                    paragraph,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("footer"),
-                                    &mut deduplicator,
-                                );
-                            }
-                            if let StructuredDataTagChild::Table(table) = child {
-                                collect_images_from_table(
-                                    table,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("footer"),
-                                    &mut deduplicator,
-                                );
-                            }
-                        }
-                    }
-                }
-            }
-            footer_images[1] = images;
-        }
-
-        if let Some((_, footer)) = &mut self.document.section_property.even_footer.as_mut() {
-            let mut images: Vec<ImageIdAndPath> = vec![];
-            for child in footer.children.iter_mut() {
-                match child {
-                    FooterChild::Paragraph(paragraph) => {
-                        collect_images_from_paragraph(
-                            paragraph,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("footer"),
-                            &mut deduplicator,
-                        );
-                    }
-                    FooterChild::Table(table) => {
-                        collect_images_from_table(
-                            table,
-                            &mut images,
-                            &mut image_bufs,
-                            Some("footer"),
-                            &mut deduplicator,
-                        );
-                    }
-                    FooterChild::StructuredDataTag(tag) => {
-                        for child in tag.children.iter_mut() {
-                            if let StructuredDataTagChild::Paragraph(paragraph) = child {
-                                collect_images_from_paragraph(
-                                    paragraph,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("footer"),
-                                    &mut deduplicator,
-                                );
-                            }
-                            if let StructuredDataTagChild::Table(table) = child {
-                                collect_images_from_table(
-                                    table,
-                                    &mut images,
-                                    &mut image_bufs,
-                                    Some("footer"),
-                                    &mut deduplicator,
-                                );
-                            }
-                        }
-                    }
-                }
-            }
-            footer_images[2] = images;
-        }
-        (footer_images, image_bufs)
-    }
-
-    /// Collect footnotes from all Runs to the docx footnotes node.
+    /// Collects footnote references from the complete main document tree.
+    ///
+    /// This method remains available for callers that collect dependencies
+    /// explicitly. Normal package builds collect footnotes together with
+    /// images, avoiding a second traversal of the document tree.
     pub fn collect_footnotes(&mut self) -> bool {
-        let footnotes: Vec<Footnote> = self
-            .document
-            .children
-            .iter()
-            .filter_map(|child| match child {
-                DocumentChild::Paragraph(paragraph) => Some(&paragraph.children),
-                _ => None,
-            })
-            .flat_map(|children| children.iter())
-            .filter_map(|para_child| match para_child {
-                ParagraphChild::Run(run) => Some(&run.children),
-                _ => None,
-            })
-            .flat_map(|children| children.iter())
-            .filter_map(|run_child| match run_child {
-                RunChild::FootnoteReference(footnote_ref) => Some(footnote_ref),
-                _ => None,
-            })
-            .map(Into::<Footnote>::into)
-            .collect();
+        let footnotes = collect_document_footnotes(&mut self.document);
         let is_footnotes = !footnotes.is_empty();
         self.footnotes.add(footnotes);
         is_footnotes
@@ -2639,6 +2327,16 @@ fn update_document_by_toc(
 mod image_collection_tests {
     use super::*;
 
+    fn picture(id: &str, bytes: Vec<u8>) -> Pic {
+        let mut picture = Pic::new_with_dimensions(bytes, 1, 1);
+        picture.id = id.to_owned();
+        picture
+    }
+
+    fn image_paragraph(id: &str, bytes: Vec<u8>) -> Paragraph {
+        Paragraph::new().add_run(Run::new().add_image(picture(id, bytes)))
+    }
+
     #[test]
     fn structured_footer_images_use_footer_relationship_ids() {
         let tag = StructuredDataTag::new().add_paragraph(
@@ -2649,12 +2347,75 @@ mod image_collection_tests {
             ))),
         );
         let footer = Footer::new().add_structured_data_tag(tag);
-        let mut docx = Docx::new().footer(footer);
+        let xml = Docx::new().footer(footer).build();
 
-        let (relationships, media) = docx.images_in_footer();
+        assert!(String::from_utf8_lossy(&xml.footer_rels[0]).contains("Id=\"footer"));
+        assert!(xml.media[0].0.starts_with("footer"));
+    }
 
-        assert!(relationships[0][0].0.starts_with("footer"));
-        assert!(media[0].0.starts_with("footer"));
+    #[test]
+    fn repeated_header_images_keep_relationships_in_each_part() {
+        let bytes = vec![1, 2, 3, 4];
+        let xml = Docx::new()
+            .header(Header::new().add_paragraph(image_paragraph("default", bytes.clone())))
+            .first_header(Header::new().add_paragraph(image_paragraph("first", bytes)))
+            .build();
+
+        assert_eq!(xml.media.len(), 1);
+        assert!(String::from_utf8_lossy(&xml.header_rels[0]).contains("relationships/image"));
+        assert!(String::from_utf8_lossy(&xml.header_rels[1]).contains("relationships/image"));
+    }
+
+    #[test]
+    fn repeated_images_share_one_media_entry_across_package_parts() {
+        let bytes = vec![5, 6, 7, 8];
+        let xml = Docx::new()
+            .add_paragraph(image_paragraph("body", bytes.clone()))
+            .header(Header::new().add_paragraph(image_paragraph("header", bytes.clone())))
+            .footer(Footer::new().add_paragraph(image_paragraph("footer", bytes)))
+            .build();
+
+        assert_eq!(xml.media.len(), 1);
+        assert!(String::from_utf8_lossy(&xml.document_rels).contains("relationships/image"));
+        assert!(String::from_utf8_lossy(&xml.header_rels[0]).contains("relationships/image"));
+        assert!(String::from_utf8_lossy(&xml.footer_rels[0]).contains("relationships/image"));
+    }
+
+    #[test]
+    fn images_are_collected_from_top_level_sdt_and_section_content() {
+        let tag = StructuredDataTag::new().add_paragraph(image_paragraph("sdt", vec![9]));
+        let section = Section::new().add_paragraph(image_paragraph("section", vec![10]));
+        let xml = Docx::new()
+            .add_structured_data_tag(tag)
+            .add_section(section)
+            .build();
+
+        assert_eq!(xml.media.len(), 2);
+        assert_eq!(
+            String::from_utf8_lossy(&xml.document_rels)
+                .matches("relationships/image")
+                .count(),
+            2
+        );
+    }
+}
+
+#[cfg(test)]
+mod document_traversal_tests {
+    use super::*;
+
+    #[test]
+    fn footnotes_are_collected_from_table_paragraphs() {
+        let footnote = Footnote::new()
+            .add_content(Paragraph::new().add_run(Run::new().add_text("nested footnote")));
+        let table = Table::new(vec![TableRow::new(vec![TableCell::new().add_paragraph(
+            Paragraph::new().add_run(Run::new().add_footnote_reference(footnote)),
+        )])]);
+
+        let xml = Docx::new().add_table(table).build();
+
+        assert!(String::from_utf8_lossy(&xml.footnotes).contains("nested footnote"));
+        assert!(String::from_utf8_lossy(&xml.document_rels).contains("relationships/footnotes"));
     }
 }
 

@@ -1661,6 +1661,7 @@ fn collect_para_ids_in_document_child<'a>(
         }
         DocumentChild::TableOfContents(toc) => collect_para_ids_in_toc(toc, counts),
         DocumentChild::Section(section) => collect_para_ids_in_section(section, counts),
+        DocumentChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
         _ => {}
     }
 }
@@ -1674,6 +1675,7 @@ fn collect_para_ids_in_section<'a>(section: &'a Section, counts: &mut HashMap<&'
                 collect_para_ids_in_structured_data_tag(tag, counts)
             }
             SectionChild::TableOfContents(toc) => collect_para_ids_in_toc(toc, counts),
+            SectionChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
             _ => {}
         }
     }
@@ -1770,9 +1772,12 @@ fn collect_para_ids_in_paragraph<'a>(
 
     for child in &paragraph.children {
         match child {
+            ParagraphChild::Run(run) => collect_para_ids_in_run(run, counts),
             ParagraphChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
             ParagraphChild::Insert(insert) => collect_para_ids_in_insert(insert, counts),
             ParagraphChild::Delete(delete) => collect_para_ids_in_delete(delete, counts),
+            ParagraphChild::MoveFrom(moved) => collect_para_ids_in_move_from(moved, counts),
+            ParagraphChild::MoveTo(moved) => collect_para_ids_in_move_to(moved, counts),
             ParagraphChild::Hyperlink(hyperlink) => {
                 collect_para_ids_in_hyperlink(hyperlink, counts)
             }
@@ -1790,9 +1795,15 @@ fn collect_para_ids_in_hyperlink<'a>(
 ) {
     for child in &hyperlink.children {
         match child {
+            ParagraphChild::Run(run) => collect_para_ids_in_run(run, counts),
             ParagraphChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
             ParagraphChild::Insert(insert) => collect_para_ids_in_insert(insert, counts),
             ParagraphChild::Delete(delete) => collect_para_ids_in_delete(delete, counts),
+            ParagraphChild::MoveFrom(moved) => collect_para_ids_in_move_from(moved, counts),
+            ParagraphChild::MoveTo(moved) => collect_para_ids_in_move_to(moved, counts),
+            ParagraphChild::Hyperlink(hyperlink) => {
+                collect_para_ids_in_hyperlink(hyperlink, counts)
+            }
             ParagraphChild::StructuredDataTag(tag) => {
                 collect_para_ids_in_structured_data_tag(tag, counts)
             }
@@ -1804,6 +1815,7 @@ fn collect_para_ids_in_hyperlink<'a>(
 fn collect_para_ids_in_insert<'a>(insert: &'a Insert, counts: &mut HashMap<&'a str, usize>) {
     for child in &insert.children {
         match child {
+            InsertChild::Run(run) => collect_para_ids_in_run(run, counts),
             InsertChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
             InsertChild::Delete(delete) => collect_para_ids_in_delete(delete, counts),
             _ => {}
@@ -1813,7 +1825,38 @@ fn collect_para_ids_in_insert<'a>(insert: &'a Insert, counts: &mut HashMap<&'a s
 
 fn collect_para_ids_in_delete<'a>(delete: &'a Delete, counts: &mut HashMap<&'a str, usize>) {
     for child in &delete.children {
-        if let DeleteChild::CommentStart(c) = child {
+        match child {
+            DeleteChild::Run(run) => collect_para_ids_in_run(run, counts),
+            DeleteChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
+            DeleteChild::CommentEnd(_) => {}
+        }
+    }
+}
+
+fn collect_para_ids_in_move_from<'a>(moved: &'a MoveFrom, counts: &mut HashMap<&'a str, usize>) {
+    for child in &moved.children {
+        match child {
+            MoveFromChild::Run(run) => collect_para_ids_in_run(run, counts),
+            MoveFromChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
+            MoveFromChild::CommentEnd(_) => {}
+        }
+    }
+}
+
+fn collect_para_ids_in_move_to<'a>(moved: &'a MoveTo, counts: &mut HashMap<&'a str, usize>) {
+    for child in &moved.children {
+        match child {
+            MoveToChild::Run(run) => collect_para_ids_in_run(run, counts),
+            MoveToChild::Delete(delete) => collect_para_ids_in_delete(delete, counts),
+            MoveToChild::CommentStart(c) => collect_para_ids_in_comment(&c.comment, counts),
+            _ => {}
+        }
+    }
+}
+
+fn collect_para_ids_in_run<'a>(run: &'a Run, counts: &mut HashMap<&'a str, usize>) {
+    for child in &run.children {
+        if let RunChild::CommentStart(c) = child {
             collect_para_ids_in_comment(&c.comment, counts);
         }
     }
@@ -1825,6 +1868,7 @@ fn collect_para_ids_in_structured_data_tag<'a>(
 ) {
     for child in &tag.children {
         match child {
+            StructuredDataTagChild::Run(run) => collect_para_ids_in_run(run, counts),
             StructuredDataTagChild::Paragraph(paragraph) => {
                 collect_para_ids_in_paragraph(paragraph, counts)
             }
@@ -1894,6 +1938,9 @@ fn refresh_para_ids_in_document_child(
         DocumentChild::Section(section) => {
             refresh_para_ids_in_section(section, duplicates, used, seen)
         }
+        DocumentChild::CommentStart(c) => {
+            refresh_para_ids_in_comment(&mut c.comment, duplicates, used, seen)
+        }
         _ => {}
     }
 }
@@ -1915,6 +1962,9 @@ fn refresh_para_ids_in_section(
             }
             SectionChild::TableOfContents(toc) => {
                 refresh_para_ids_in_toc(toc, duplicates, used, seen)
+            }
+            SectionChild::CommentStart(c) => {
+                refresh_para_ids_in_comment(&mut c.comment, duplicates, used, seen)
             }
             _ => {}
         }
@@ -2048,6 +2098,7 @@ fn refresh_para_ids_in_paragraph(
 
     for child in &mut paragraph.children {
         match child {
+            ParagraphChild::Run(run) => refresh_para_ids_in_run(run, duplicates, used, seen),
             ParagraphChild::CommentStart(c) => {
                 refresh_para_ids_in_comment(&mut c.comment, duplicates, used, seen)
             }
@@ -2056,6 +2107,12 @@ fn refresh_para_ids_in_paragraph(
             }
             ParagraphChild::Delete(delete) => {
                 refresh_para_ids_in_delete(delete, duplicates, used, seen)
+            }
+            ParagraphChild::MoveFrom(moved) => {
+                refresh_para_ids_in_move_from(moved, duplicates, used, seen)
+            }
+            ParagraphChild::MoveTo(moved) => {
+                refresh_para_ids_in_move_to(moved, duplicates, used, seen)
             }
             ParagraphChild::Hyperlink(hyperlink) => {
                 refresh_para_ids_in_hyperlink(hyperlink, duplicates, used, seen)
@@ -2076,6 +2133,7 @@ fn refresh_para_ids_in_hyperlink(
 ) {
     for child in &mut hyperlink.children {
         match child {
+            ParagraphChild::Run(run) => refresh_para_ids_in_run(run, duplicates, used, seen),
             ParagraphChild::CommentStart(c) => {
                 refresh_para_ids_in_comment(&mut c.comment, duplicates, used, seen)
             }
@@ -2084,6 +2142,15 @@ fn refresh_para_ids_in_hyperlink(
             }
             ParagraphChild::Delete(delete) => {
                 refresh_para_ids_in_delete(delete, duplicates, used, seen)
+            }
+            ParagraphChild::MoveFrom(moved) => {
+                refresh_para_ids_in_move_from(moved, duplicates, used, seen)
+            }
+            ParagraphChild::MoveTo(moved) => {
+                refresh_para_ids_in_move_to(moved, duplicates, used, seen)
+            }
+            ParagraphChild::Hyperlink(hyperlink) => {
+                refresh_para_ids_in_hyperlink(hyperlink, duplicates, used, seen)
             }
             ParagraphChild::StructuredDataTag(tag) => {
                 refresh_para_ids_in_structured_data_tag(tag, duplicates, used, seen)
@@ -2101,6 +2168,7 @@ fn refresh_para_ids_in_insert(
 ) {
     for child in &mut insert.children {
         match child {
+            InsertChild::Run(run) => refresh_para_ids_in_run(run, duplicates, used, seen),
             InsertChild::CommentStart(c) => {
                 refresh_para_ids_in_comment(&mut c.comment, duplicates, used, seen)
             }
@@ -2119,7 +2187,61 @@ fn refresh_para_ids_in_delete(
     seen: &mut HashSet<String>,
 ) {
     for child in &mut delete.children {
-        if let DeleteChild::CommentStart(c) = child {
+        match child {
+            DeleteChild::Run(run) => refresh_para_ids_in_run(run, duplicates, used, seen),
+            DeleteChild::CommentStart(c) => {
+                refresh_para_ids_in_comment(&mut c.comment, duplicates, used, seen)
+            }
+            DeleteChild::CommentEnd(_) => {}
+        }
+    }
+}
+
+fn refresh_para_ids_in_move_from(
+    moved: &mut MoveFrom,
+    duplicates: &HashSet<String>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut moved.children {
+        match child {
+            MoveFromChild::Run(run) => refresh_para_ids_in_run(run, duplicates, used, seen),
+            MoveFromChild::CommentStart(c) => {
+                refresh_para_ids_in_comment(&mut c.comment, duplicates, used, seen)
+            }
+            MoveFromChild::CommentEnd(_) => {}
+        }
+    }
+}
+
+fn refresh_para_ids_in_move_to(
+    moved: &mut MoveTo,
+    duplicates: &HashSet<String>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut moved.children {
+        match child {
+            MoveToChild::Run(run) => refresh_para_ids_in_run(run, duplicates, used, seen),
+            MoveToChild::Delete(delete) => {
+                refresh_para_ids_in_delete(delete, duplicates, used, seen)
+            }
+            MoveToChild::CommentStart(c) => {
+                refresh_para_ids_in_comment(&mut c.comment, duplicates, used, seen)
+            }
+            _ => {}
+        }
+    }
+}
+
+fn refresh_para_ids_in_run(
+    run: &mut Run,
+    duplicates: &HashSet<String>,
+    used: &mut HashSet<String>,
+    seen: &mut HashSet<String>,
+) {
+    for child in &mut run.children {
+        if let RunChild::CommentStart(c) = child {
             refresh_para_ids_in_comment(&mut c.comment, duplicates, used, seen);
         }
     }
@@ -2133,6 +2255,9 @@ fn refresh_para_ids_in_structured_data_tag(
 ) {
     for child in &mut tag.children {
         match child {
+            StructuredDataTagChild::Run(run) => {
+                refresh_para_ids_in_run(run, duplicates, used, seen)
+            }
             StructuredDataTagChild::Paragraph(paragraph) => {
                 refresh_para_ids_in_paragraph(paragraph, duplicates, used, seen)
             }
@@ -2500,6 +2625,24 @@ mod paragraph_id_tests {
         docx.refresh_duplicate_para_ids();
 
         assert!(!paragraph_ids(&docx)[0].is_empty());
+    }
+
+    #[test]
+    fn duplicate_paragraph_ids_in_tracked_change_comments_are_refreshed() {
+        let moved_from_comment = Comment::new(1).add_paragraph(Paragraph::new().id("duplicate"));
+        let moved_to_comment = Comment::new(2).add_paragraph(Paragraph::new().id("duplicate"));
+        let paragraph = Paragraph::new()
+            .id("outer")
+            .add_move_from(MoveFrom::new().add_comment_start(moved_from_comment))
+            .add_move_to(MoveTo::new_with_empty().add_comment_start(moved_to_comment));
+        let mut docx = Docx::new().add_paragraph(paragraph);
+
+        docx.refresh_duplicate_para_ids();
+
+        let mut counts = HashMap::new();
+        collect_para_ids_in_docx(&docx, &mut counts);
+        assert_eq!(counts.len(), 3);
+        assert!(counts.values().all(|count| *count == 1));
     }
 
     #[test]

@@ -20,13 +20,26 @@ use crate::{
 #[derive(Default)]
 pub(crate) struct MediaRegistry {
     media: Vec<ImageIdAndBuf>,
-    media_ids: HashSet<String>,
+    media_by_id: HashMap<String, usize>,
     by_fingerprint: HashMap<(usize, u32), Vec<usize>>,
+    next_suffix_by_id: HashMap<String, usize>,
 }
 
 impl MediaRegistry {
-    /// Registers physical bytes and returns the package-global media ID.
-    fn register(&mut self, preferred_id: &str, bytes: Vec<u8>) -> String {
+    /// Registers physical bytes and returns their stable registry index.
+    ///
+    /// Part collectors use the numeric index as their deduplication key. This
+    /// avoids cloning and hashing a `media/<id>.png` target for every repeated
+    /// picture while keeping the package-visible media ID encapsulated here.
+    /// Reused picture IDs are checked before calculating a content fingerprint;
+    /// byte equality still protects callers that reuse an ID for new content.
+    fn register(&mut self, preferred_id: &str, bytes: Vec<u8>) -> usize {
+        if let Some(index) = self.media_by_id.get(preferred_id).copied() {
+            if self.media[index].1 == bytes {
+                return index;
+            }
+        }
+
         let fingerprint = (bytes.len(), crc32fast::hash(&bytes));
         if let Some(index) = self
             .by_fingerprint
@@ -38,18 +51,23 @@ impl MediaRegistry {
                     .find(|index| self.media[*index].1 == bytes)
             })
         {
-            return self.media[index].0.clone();
+            return index;
         }
 
         let media_id = self.unique_media_id(preferred_id);
         let index = self.media.len();
         self.media.push((media_id.clone(), bytes));
-        self.media_ids.insert(media_id.clone());
+        self.media_by_id.insert(media_id, index);
         self.by_fingerprint
             .entry(fingerprint)
             .or_default()
             .push(index);
-        media_id
+        index
+    }
+
+    /// Returns the package-visible ID assigned to registered media.
+    fn media_id(&self, index: usize) -> &str {
+        &self.media[index].0
     }
 
     /// Consumes the registry and returns files ready for ZIP packaging.
@@ -57,15 +75,30 @@ impl MediaRegistry {
         self.media
     }
 
-    fn unique_media_id(&self, preferred_id: &str) -> String {
-        if !self.media_ids.contains(preferred_id) {
+    /// Returns a free media ID without restarting collision scans at `_2`.
+    ///
+    /// Callers can reuse a preferred ID for different bytes. Remembering the
+    /// next suffix keeps a run of such collisions linear while still checking
+    /// explicitly registered suffixed IDs.
+    fn unique_media_id(&mut self, preferred_id: &str) -> String {
+        if !self.media_by_id.contains_key(preferred_id) {
             return preferred_id.to_owned();
         }
 
-        (2usize..)
-            .map(|suffix| format!("{preferred_id}_{suffix}"))
-            .find(|candidate| !self.media_ids.contains(candidate))
-            .expect("the media ID space should not be exhausted")
+        let (media_by_id, next_suffix_by_id) = (&self.media_by_id, &mut self.next_suffix_by_id);
+        let suffix = next_suffix_by_id
+            .entry(preferred_id.to_owned())
+            .or_insert(2);
+
+        loop {
+            let candidate = format!("{preferred_id}_{suffix}");
+            *suffix = suffix
+                .checked_add(1)
+                .expect("the media ID suffix space should not be exhausted");
+            if !media_by_id.contains_key(&candidate) {
+                return candidate;
+            }
+        }
     }
 }
 
@@ -85,7 +118,10 @@ struct PackagePartCollector<'a> {
     relationship_prefix: Option<&'a str>,
     relationships: Vec<ImageIdAndPath>,
     relationship_ids: HashSet<String>,
-    relationships_by_target: HashMap<String, String>,
+    /// Continues collision scans without revisiting previously used suffixes.
+    next_relationship_suffix_by_id: HashMap<String, usize>,
+    /// Maps media to the owning relationship entry, avoiding another owned ID.
+    relationships_by_media: HashMap<usize, usize>,
     footnotes: Vec<Footnote>,
 }
 
@@ -96,7 +132,8 @@ impl<'a> PackagePartCollector<'a> {
             relationship_prefix,
             relationships: Vec::new(),
             relationship_ids: HashSet::new(),
-            relationships_by_target: HashMap::new(),
+            next_relationship_suffix_by_id: HashMap::new(),
+            relationships_by_media: HashMap::new(),
             footnotes: Vec::new(),
         }
     }
@@ -115,14 +152,31 @@ impl<'a> PackagePartCollector<'a> {
         }
     }
 
-    /// Returns an ID that is unique inside this part's relationship scope.
-    fn unique_relationship_id(&self, preferred_id: &str) -> String {
-        match self.relationship_ids.contains(preferred_id) {
-            false => preferred_id.to_owned(),
-            true => (2usize..)
-                .map(|suffix| format!("{preferred_id}_{suffix}"))
-                .find(|candidate| !self.relationship_ids.contains(candidate))
-                .expect("the relationship ID space should not be exhausted"),
+    /// Returns a unique part-local relationship ID in amortized linear time.
+    ///
+    /// Repeated preferred IDs use the next unchecked suffix instead of
+    /// restarting at `_2`, while explicit suffixed IDs are still skipped.
+    fn unique_relationship_id(&mut self, preferred_id: &str) -> String {
+        if !self.relationship_ids.contains(preferred_id) {
+            return preferred_id.to_owned();
+        }
+
+        let (relationship_ids, next_suffix_by_id) = (
+            &self.relationship_ids,
+            &mut self.next_relationship_suffix_by_id,
+        );
+        let suffix = next_suffix_by_id
+            .entry(preferred_id.to_owned())
+            .or_insert(2);
+
+        loop {
+            let candidate = format!("{preferred_id}_{suffix}");
+            *suffix = suffix
+                .checked_add(1)
+                .expect("the relationship ID suffix space should not be exhausted");
+            if !relationship_ids.contains(&candidate) {
+                return candidate;
+            }
         }
     }
 }
@@ -130,23 +184,26 @@ impl<'a> PackagePartCollector<'a> {
 impl DocumentTreeVisitor for PackagePartCollector<'_> {
     fn visit_picture(&mut self, picture: &mut Pic) {
         let preferred_relationship_id = self.relationship_id(&picture.id);
-        let media_id = self.registry.register(
+        let media_index = self.registry.register(
             &preferred_relationship_id,
             std::mem::take(&mut picture.image),
         );
-        let target = format!("media/{media_id}.png");
 
-        if let Some(relationship_id) = self.relationships_by_target.get(&target) {
-            picture.id.clone_from(relationship_id);
+        if let Some(relationship_index) = self.relationships_by_media.get(&media_index) {
+            picture
+                .id
+                .clone_from(&self.relationships[*relationship_index].0);
             return;
         }
 
         let relationship_id = self.unique_relationship_id(&preferred_relationship_id);
+        let target = format!("media/{}.png", self.registry.media_id(media_index));
+        let relationship_index = self.relationships.len();
         self.relationship_ids.insert(relationship_id.clone());
-        self.relationships_by_target
-            .insert(target.clone(), relationship_id.clone());
-        self.relationships.push((relationship_id.clone(), target));
-        picture.id = relationship_id;
+        self.relationships_by_media
+            .insert(media_index, relationship_index);
+        picture.id.clone_from(&relationship_id);
+        self.relationships.push((relationship_id, target));
     }
 
     fn visit_footnote_reference(&mut self, reference: &FootnoteReference) {
@@ -212,6 +269,36 @@ mod tests {
     use super::*;
 
     #[test]
+    fn registry_reuses_the_stable_index_for_identical_media() {
+        let bytes = vec![1, 2, 3, 4];
+        let mut registry = MediaRegistry::default();
+
+        let first = registry.register("first", bytes.clone());
+        let second = registry.register("second", bytes);
+
+        assert_eq!(first, second);
+        assert_eq!(registry.media.len(), 1);
+    }
+
+    #[test]
+    fn registry_keeps_distinct_bytes_that_reuse_an_id() {
+        let mut registry = MediaRegistry::default();
+
+        registry.register("shared_2", vec![0]);
+        let first = registry.register("shared", vec![1, 2, 3]);
+        let second = registry.register("shared", vec![4, 5, 6]);
+        let third = registry.register("shared", vec![7, 8, 9]);
+
+        assert_ne!(first, second);
+        assert_ne!(second, third);
+        assert_eq!(registry.media.len(), 4);
+        assert_ne!(registry.media[first].0, registry.media[second].0);
+        assert_eq!(registry.media[first].0, "shared");
+        assert_eq!(registry.media[second].0, "shared_3");
+        assert_eq!(registry.media[third].0, "shared_4");
+    }
+
+    #[test]
     fn registry_deduplicates_identical_media_but_keeps_part_relationships() {
         let bytes = vec![1, 2, 3, 4, 5];
         let mut first =
@@ -249,5 +336,31 @@ mod tests {
 
         assert_eq!(registry.media.len(), 1);
         assert_eq!(part.relationships.len(), 1);
+    }
+
+    #[test]
+    fn colliding_picture_ids_keep_relationships_unique_and_reusable() {
+        let pictures = [
+            Pic::new_with_dimensions(vec![0], 1, 1).id("shared_2"),
+            Pic::new_with_dimensions(vec![1], 1, 1).id("shared"),
+            Pic::new_with_dimensions(vec![2], 1, 1).id("shared"),
+            Pic::new_with_dimensions(vec![1], 1, 1).id("shared"),
+        ];
+        let mut document = pictures
+            .into_iter()
+            .fold(Document::new(), |document, picture| {
+                document.add_paragraph(
+                    crate::Paragraph::new().add_run(crate::Run::new().add_image(picture)),
+                )
+            });
+        let mut registry = MediaRegistry::default();
+
+        let part = collect_document_part(&mut document, &mut registry);
+
+        assert_eq!(registry.media.len(), 3);
+        assert_eq!(part.relationships.len(), 3);
+        assert_eq!(part.relationships[0].0, "shared_2");
+        assert_eq!(part.relationships[1].0, "shared");
+        assert_eq!(part.relationships[2].0, "shared_3");
     }
 }

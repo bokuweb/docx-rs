@@ -251,6 +251,62 @@ impl Document {
         self.section_property = self.section_property.page_num_type(p);
         self
     }
+
+    /// Iterates headers in relationship creation order.
+    ///
+    /// Relationship IDs are assigned to the document property first and then
+    /// to section children in insertion order. Preserving that order avoids a
+    /// sort and keeps double-digit IDs aligned with numbered package parts.
+    pub(crate) fn headers(&self) -> impl Iterator<Item = &(String, Header)> {
+        self.section_property.headers().chain(
+            self.children
+                .iter()
+                .filter_map(|child| match child {
+                    DocumentChild::Section(section) => Some(section),
+                    _ => None,
+                })
+                .flat_map(|section| section.property.headers()),
+        )
+    }
+
+    /// Iterates mutable headers in the same order as [`Self::headers`].
+    pub(crate) fn headers_mut(&mut self) -> impl Iterator<Item = &mut (String, Header)> {
+        self.section_property.headers_mut().chain(
+            self.children
+                .iter_mut()
+                .filter_map(|child| match child {
+                    DocumentChild::Section(section) => Some(section),
+                    _ => None,
+                })
+                .flat_map(|section| section.property.headers_mut()),
+        )
+    }
+
+    /// Iterates footers in relationship creation order.
+    pub(crate) fn footers(&self) -> impl Iterator<Item = &(String, Footer)> {
+        self.section_property.footers().chain(
+            self.children
+                .iter()
+                .filter_map(|child| match child {
+                    DocumentChild::Section(section) => Some(section),
+                    _ => None,
+                })
+                .flat_map(|section| section.property.footers()),
+        )
+    }
+
+    /// Iterates mutable footers in the same order as [`Self::footers`].
+    pub(crate) fn footers_mut(&mut self) -> impl Iterator<Item = &mut (String, Footer)> {
+        self.section_property.footers_mut().chain(
+            self.children
+                .iter_mut()
+                .filter_map(|child| match child {
+                    DocumentChild::Section(section) => Some(section),
+                    _ => None,
+                })
+                .flat_map(|section| section.property.footers_mut()),
+        )
+    }
 }
 
 impl BuildXML for DocumentChild {

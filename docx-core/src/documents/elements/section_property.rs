@@ -133,32 +133,52 @@ impl SectionProperty {
         self
     }
 
+    /// Returns the default, first, and even headers that are present.
     pub fn get_headers(&self) -> Vec<&(String, Header)> {
-        let mut headers = vec![];
-        if let Some(ref header) = self.header {
-            headers.push(header);
-        }
-        if let Some(ref header) = self.first_header {
-            headers.push(header);
-        }
-        if let Some(ref header) = self.even_header {
-            headers.push(header);
-        }
-        headers
+        self.headers().collect()
     }
 
+    /// Returns the default, first, and even footers that are present.
     pub fn get_footers(&self) -> Vec<&(String, Footer)> {
-        let mut footers = vec![];
-        if let Some(ref footer) = self.footer {
-            footers.push(footer);
-        }
-        if let Some(ref footer) = self.first_footer {
-            footers.push(footer);
-        }
-        if let Some(ref footer) = self.even_footer {
-            footers.push(footer);
-        }
-        footers
+        self.footers().collect()
+    }
+
+    /// Iterates headers without allocating the compatibility `Vec` returned by
+    /// [`Self::get_headers`].
+    pub(crate) fn headers(&self) -> impl Iterator<Item = &(String, Header)> {
+        [&self.header, &self.first_header, &self.even_header]
+            .into_iter()
+            .filter_map(Option::as_ref)
+    }
+
+    /// Iterates mutable headers so package metadata can be collected in place.
+    pub(crate) fn headers_mut(&mut self) -> impl Iterator<Item = &mut (String, Header)> {
+        [
+            &mut self.header,
+            &mut self.first_header,
+            &mut self.even_header,
+        ]
+        .into_iter()
+        .filter_map(Option::as_mut)
+    }
+
+    /// Iterates footers without allocating the compatibility `Vec` returned by
+    /// [`Self::get_footers`].
+    pub(crate) fn footers(&self) -> impl Iterator<Item = &(String, Footer)> {
+        [&self.footer, &self.first_footer, &self.even_footer]
+            .into_iter()
+            .filter_map(Option::as_ref)
+    }
+
+    /// Iterates mutable footers so package metadata can be collected in place.
+    pub(crate) fn footers_mut(&mut self) -> impl Iterator<Item = &mut (String, Footer)> {
+        [
+            &mut self.footer,
+            &mut self.first_footer,
+            &mut self.even_footer,
+        ]
+        .into_iter()
+        .filter_map(Option::as_mut)
     }
 
     pub fn page_num_type(mut self, h: PageNumType) -> Self {

@@ -10,6 +10,12 @@ license = "MIT"
 [lib]
 crate-type = ["cdylib"]
 
+[package.metadata.wasm-pack.profile.release]
+# Keep Binaryen's stable speed/size optimization level explicit. `-O4` was
+# larger and did not produce a repeatable runtime improvement in the Node
+# package benchmark.
+wasm-opt = ["-O"]
+
 [dependencies]
 wasm-bindgen = "0.2"
 console_error_panic_hook = "0.1.7"

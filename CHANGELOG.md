@@ -9,10 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improve DOCX reading and writing performance by reducing XML allocations,
   avoiding repeated ZIP lookups, and deduplicating embedded images without
-  cloning their full buffers.
+  cloning their full buffers. Existing tables of contents are no longer deeply
+  cloned during package preparation, and automatic TOC expansion reuses the
+  document tree allocation without allocating style IDs per paragraph.
 - Add `Docx::pack` to stream XML package parts directly into a DOCX archive.
   This avoids retaining every rendered XML part in memory and is faster than
   calling `Docx::build` followed by `XMLDocx::pack`.
+- Use the streaming package path in `docx-wasm`, optimize release WASM with one
+  codegen unit and an explicit `wasm-opt -O`, and avoid rebuilding the same
+  WASM package repeatedly in CI.
 - Add `ReadDocxOptions::with_image_previews(false)` for callers that want to
   preserve original image data without generating decoded previews.
 - Fix paragraph ID normalization when generated IDs collide, and ensure

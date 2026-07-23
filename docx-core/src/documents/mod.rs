@@ -179,8 +179,27 @@ pub struct Docx {
 /// Package metadata derived while normalizing a document for output.
 pub(crate) struct PackageMetadata {
     pub(crate) media: Vec<ImageIdAndBuf>,
-    pub(crate) header_rels: Vec<HeaderRels>,
-    pub(crate) footer_rels: Vec<FooterRels>,
+    /// Non-empty header relationships keyed by zero-based part index.
+    pub(crate) header_rels: Vec<(usize, HeaderRels)>,
+    /// Non-empty footer relationships keyed by zero-based part index.
+    pub(crate) footer_rels: Vec<(usize, FooterRels)>,
+}
+
+/// Expands sparse relationships only through the last part that needs them.
+///
+/// Empty buffers preserve indexes before a non-empty part; the package writer
+/// skips those sentinels instead of emitting empty relationship files.
+fn build_sparse_relationships<T: BuildXML>(relationships: Vec<(usize, T)>) -> Vec<Vec<u8>> {
+    let mut parts = Vec::new();
+    for (index, relationships) in relationships {
+        debug_assert!(
+            index >= parts.len(),
+            "sparse relationship indexes must be strictly increasing"
+        );
+        parts.resize_with(index, Vec::new);
+        parts.push(relationships.build());
+    }
+    parts
 }
 
 impl Default for Docx {
@@ -360,6 +379,56 @@ impl Docx {
         self
     }
 
+    /// Attaches one header without rebuilding the surrounding section.
+    ///
+    /// Mutating the property in place preserves pending first/even headers and
+    /// footers until each receives its own relationship and content-type entry.
+    fn attach_section_header(
+        &mut self,
+        section: &mut Section,
+        header: Header,
+        attach: fn(SectionProperty, Header, &str) -> SectionProperty,
+    ) {
+        if header.has_numbering {
+            self.document_rels.has_numberings = true;
+        }
+        let count = self.document_rels.header_count + 1;
+        let relationship_id = create_header_rid(count);
+        section.property = attach(
+            std::mem::take(&mut section.property),
+            header,
+            &relationship_id,
+        );
+        self.document_rels.header_count = count;
+        self.content_type = std::mem::take(&mut self.content_type).add_header();
+    }
+
+    /// Attaches one footer while preserving every unprocessed section part.
+    fn attach_section_footer(
+        &mut self,
+        section: &mut Section,
+        footer: Footer,
+        attach: fn(SectionProperty, Footer, &str) -> SectionProperty,
+    ) {
+        if footer.has_numbering {
+            self.document_rels.has_numberings = true;
+        }
+        let count = self.document_rels.footer_count + 1;
+        let relationship_id = create_footer_rid(count);
+        section.property = attach(
+            std::mem::take(&mut section.property),
+            footer,
+            &relationship_id,
+        );
+        self.document_rels.footer_count = count;
+        self.content_type = std::mem::take(&mut self.content_type).add_footer();
+    }
+
+    /// Appends a section and registers all of its header and footer variants.
+    ///
+    /// Each pending part is attached independently so adding a default header
+    /// cannot discard first/even headers or any footer that still needs a
+    /// relationship and content-type entry.
     pub fn add_section(mut self, s: Section) -> Docx {
         if s.has_numbering {
             // If this document has numbering, set numberings.xml to document_rels.
@@ -369,169 +438,28 @@ impl Docx {
 
         let mut new_section = s;
 
-        // header
-        if let Some(header) = new_section.temp_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
+        if let Some(header) = new_section.temp_header.take() {
+            self.attach_section_header(&mut new_section, header, SectionProperty::header);
         }
 
-        if let Some(header) = new_section.temp_first_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .first_header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_first_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
+        if let Some(header) = new_section.temp_first_header.take() {
+            self.attach_section_header(&mut new_section, header, SectionProperty::first_header);
         }
 
-        if let Some(header) = new_section.temp_even_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .even_header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_even_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
+        if let Some(header) = new_section.temp_even_header.take() {
+            self.attach_section_header(&mut new_section, header, SectionProperty::even_header);
         }
 
-        // header
-        if let Some(header) = new_section.temp_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
+        if let Some(footer) = new_section.temp_footer.take() {
+            self.attach_section_footer(&mut new_section, footer, SectionProperty::footer);
         }
 
-        if let Some(header) = new_section.temp_first_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .first_header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_first_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
+        if let Some(footer) = new_section.temp_first_footer.take() {
+            self.attach_section_footer(&mut new_section, footer, SectionProperty::first_footer);
         }
 
-        if let Some(header) = new_section.temp_even_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .even_header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_even_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
-        }
-
-        // footer
-        if let Some(footer) = new_section.temp_footer {
-            if footer.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.footer_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .footer(footer, &create_footer_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_footer: None,
-                ..Default::default()
-            };
-            self.document_rels.footer_count = count;
-            self.content_type = self.content_type.add_footer();
-        }
-
-        if let Some(footer) = new_section.temp_first_footer {
-            if footer.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.footer_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .first_footer(footer, &create_footer_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_first_footer: None,
-                ..Default::default()
-            };
-            self.document_rels.footer_count = count;
-            self.content_type = self.content_type.add_footer();
-        }
-
-        if let Some(footer) = new_section.temp_even_footer {
-            if footer.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.footer_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .even_footer(footer, &create_footer_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_even_footer: None,
-                ..Default::default()
-            };
-            self.document_rels.footer_count = count;
-            self.content_type = self.content_type.add_footer();
+        if let Some(footer) = new_section.temp_even_footer.take() {
+            self.attach_section_footer(&mut new_section, footer, SectionProperty::even_footer);
         }
 
         self.document = self.document.add_section(new_section);
@@ -786,31 +714,20 @@ impl Docx {
             .map(|rel| rel.build())
             .collect();
 
-        let mut headers: Vec<&(String, Header)> = self.document.section_property.get_headers();
+        let headers = self
+            .document
+            .headers()
+            .map(|(_, header)| header.build())
+            .collect();
 
-        self.document.children.iter().for_each(|child| {
-            if let DocumentChild::Section(section) = child {
-                for h in section.property.get_headers() {
-                    headers.push(h);
-                }
-            }
-        });
+        let footers = self
+            .document
+            .footers()
+            .map(|(_, footer)| footer.build())
+            .collect();
 
-        headers.sort_by(|a, b| a.0.cmp(&b.0));
-        let headers = headers.iter().map(|h| h.1.build()).collect();
-
-        let mut footers: Vec<&(String, Footer)> = self.document.section_property.get_footers();
-
-        self.document.children.iter().for_each(|child| {
-            if let DocumentChild::Section(section) = child {
-                for h in section.property.get_footers() {
-                    footers.push(h);
-                }
-            }
-        });
-
-        footers.sort_by(|a, b| a.0.cmp(&b.0));
-        let footers = footers.iter().map(|h| h.1.build()).collect();
+        let header_rels = build_sparse_relationships(package.header_rels);
+        let footer_rels = build_sparse_relationships(package.footer_rels);
 
         XMLDocx {
             content_type: self.content_type.build(),
@@ -820,8 +737,8 @@ impl Docx {
             document: self.document.build(),
             comments: self.comments.build(),
             document_rels: self.document_rels.build(),
-            header_rels: package.header_rels.into_iter().map(|r| r.build()).collect(),
-            footer_rels: package.footer_rels.into_iter().map(|r| r.build()).collect(),
+            header_rels,
+            footer_rels,
             settings: self.settings.build(),
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
@@ -877,29 +794,41 @@ impl Docx {
         crate::reset_para_id();
     }
 
-    /// Expands automatically generated tables of contents before the document
-    /// tree is normalized and inspected for dependencies.
+    /// Expands automatically generated tables of contents before dependency
+    /// collection.
+    ///
+    /// Discovery records only indexes so static tables of contents are not
+    /// cloned. Eligible tables are moved out when expanded, while `has_toc`
+    /// still reports every table of contents so preset TOC styles are added.
     fn expand_auto_tocs(&mut self) -> bool {
-        let tocs: Vec<(usize, Box<TableOfContents>)> = self
+        let mut has_toc = false;
+        let auto_toc_indexes: Vec<usize> = self
             .document
             .children
             .iter()
             .enumerate()
-            .filter_map(|(index, child)| match child {
-                DocumentChild::TableOfContents(toc) => Some((index, toc.clone())),
-                _ => None,
+            .filter_map(|(index, child)| {
+                let DocumentChild::TableOfContents(toc) = child else {
+                    return None;
+                };
+                has_toc = true;
+                (toc.items.is_empty() && toc.auto).then_some(index)
             })
             .collect();
 
-        for (index, toc) in &tocs {
-            if toc.items.is_empty() && toc.auto {
-                let children = std::mem::take(&mut self.document.children);
-                self.document.children =
-                    update_document_by_toc(children, &self.styles, *toc.clone(), *index);
-            }
+        for index in auto_toc_indexes {
+            let mut children = std::mem::take(&mut self.document.children);
+            let toc = match std::mem::replace(
+                &mut children[index],
+                DocumentChild::TableOfContents(Box::default()),
+            ) {
+                DocumentChild::TableOfContents(toc) => *toc,
+                _ => unreachable!("collected index must still contain a table of contents"),
+            };
+            self.document.children = update_document_by_toc(children, &self.styles, toc, index);
         }
 
-        !tocs.is_empty()
+        has_toc
     }
 
     /// Prepares the complete document tree for package-part rendering.
@@ -922,15 +851,23 @@ impl Docx {
         let footer_images = self.collect_footer_images(&mut media);
         self.document_rels.images = document_part.relationships;
 
-        let mut header_rels = vec![HeaderRels::new(); 3];
-        for (rels, images) in header_rels.iter_mut().zip(header_images) {
-            rels.set_images(images);
-        }
+        let header_rels = header_images
+            .into_iter()
+            .map(|(index, images)| {
+                let mut rels = HeaderRels::new();
+                rels.set_images(images);
+                (index, rels)
+            })
+            .collect();
 
-        let mut footer_rels = vec![FooterRels::new(); 3];
-        for (rels, images) in footer_rels.iter_mut().zip(footer_images) {
-            rels.set_images(images);
-        }
+        let footer_rels = footer_images
+            .into_iter()
+            .map(|(index, images)| {
+                let mut rels = FooterRels::new();
+                rels.set_images(images);
+                (index, rels)
+            })
+            .collect();
 
         if !document_part.footnotes.is_empty() {
             self.footnotes.add(document_part.footnotes);
@@ -1277,46 +1214,42 @@ impl Docx {
         }
     }
 
-    /// Collects image relationships for the default, first, and even headers.
+    /// Collects image relationships for every header in package order.
     ///
     /// Each entry deliberately uses a separate relationship scope while all
-    /// entries share the package-wide media registry. This preserves valid
-    /// header `.rels` files without storing duplicate image bytes.
-    fn collect_header_images(&mut self, media: &mut MediaRegistry) -> Vec<Vec<ImageIdAndPath>> {
-        let mut images = vec![Vec::new(); 3];
-        let headers = [
-            &mut self.document.section_property.header,
-            &mut self.document.section_property.first_header,
-            &mut self.document.section_property.even_header,
-        ];
-
-        for (images, header) in images.iter_mut().zip(headers) {
-            if let Some((_, header)) = header.as_mut() {
-                *images = collect_header_part(header, media).relationships;
-            }
-        }
-        images
+    /// entries share the package-wide media registry. Relationship creation
+    /// order matches the order used to render and write header parts.
+    fn collect_header_images(
+        &mut self,
+        media: &mut MediaRegistry,
+    ) -> Vec<(usize, Vec<ImageIdAndPath>)> {
+        self.document
+            .headers_mut()
+            .enumerate()
+            .filter_map(|(index, (_, header))| {
+                let relationships = collect_header_part(header, media).relationships;
+                (!relationships.is_empty()).then_some((index, relationships))
+            })
+            .collect()
     }
 
-    /// Collects image relationships for the default, first, and even footers.
+    /// Collects image relationships for every footer in package order.
     ///
-    /// The fixed order matches the package writer's footer part ordering. A
-    /// shared registry prevents repeated footer and body images from being
-    /// emitted as separate physical media files.
-    fn collect_footer_images(&mut self, media: &mut MediaRegistry) -> Vec<Vec<ImageIdAndPath>> {
-        let mut images = vec![Vec::new(); 3];
-        let footers = [
-            &mut self.document.section_property.footer,
-            &mut self.document.section_property.first_footer,
-            &mut self.document.section_property.even_footer,
-        ];
-
-        for (images, footer) in images.iter_mut().zip(footers) {
-            if let Some((_, footer)) = footer.as_mut() {
-                *images = collect_footer_part(footer, media).relationships;
-            }
-        }
-        images
+    /// Relationship creation order matches the package writer. A shared
+    /// registry prevents repeated footer and body images from being emitted as
+    /// separate physical media files.
+    fn collect_footer_images(
+        &mut self,
+        media: &mut MediaRegistry,
+    ) -> Vec<(usize, Vec<ImageIdAndPath>)> {
+        self.document
+            .footers_mut()
+            .enumerate()
+            .filter_map(|(index, (_, footer))| {
+                let relationships = collect_footer_part(footer, media).relationships;
+                (!relationships.is_empty()).then_some((index, relationships))
+            })
+            .collect()
     }
 
     /// Collects footnote references from the complete main document tree.
@@ -2309,15 +2242,23 @@ fn ensure_unique_paragraph_id(
     used.insert(new_id);
 }
 
-/// Returns a generated paragraph ID, falling back to a deterministic scan if
-/// the generator collides with an existing value.
+/// Returns a generated paragraph ID, falling back to a deterministic scan.
+///
+/// Starting beyond the set cardinality avoids repeatedly revisiting a dense
+/// prefix of generated IDs after documents from multiple sources are merged.
+/// Lower gaps are deliberately ignored because uniqueness, not compactness, is
+/// the package invariant.
 fn next_unique_paragraph_id(used: &HashSet<String>) -> String {
     let generated = crate::generate_para_id();
     if !used.contains(&generated) {
         return generated;
     }
 
-    (1usize..)
+    let first_candidate = used
+        .len()
+        .checked_add(1)
+        .expect("the paragraph ID space should not be exhausted");
+    (first_candidate..)
         .map(|value| format!("{value:08x}"))
         .find(|candidate| !used.contains(candidate))
         .expect("the paragraph ID space should not be exhausted")
@@ -2348,49 +2289,57 @@ fn push_comment_and_comment_extended(
     }
 }
 
+/// Populates an automatic TOC and bookmarks matching headings in place.
+///
+/// `document_children[toc_index]` is the temporary placeholder installed by
+/// [`Docx::expand_auto_tocs`]. Reusing the input allocation preserves child
+/// order without rebuilding the entire document vector.
 fn update_document_by_toc(
-    document_children: Vec<DocumentChild>,
+    mut document_children: Vec<DocumentChild>,
     styles: &Styles,
-    toc: TableOfContents,
+    mut toc: TableOfContents,
     toc_index: usize,
 ) -> Vec<DocumentChild> {
     let heading_map = styles.create_heading_style_map();
     let mut items = vec![];
-    let mut children = vec![];
-    let style_map: std::collections::HashMap<String, usize> = toc
-        .instr
-        .styles_with_levels
-        .iter()
-        .map(|sl| sl.0.clone())
-        .collect();
 
     if toc.instr.heading_styles_range.is_none() && !toc.instr.styles_with_levels.is_empty() {
         // INFO: if \t option set without heading styles ranges, Microsoft word does not show ToC items...
+        document_children[toc_index] = DocumentChild::TableOfContents(Box::new(toc));
         return document_children;
     }
 
     let (min, max) = toc.instr.heading_styles_range.unwrap_or((0, 9));
 
-    for child in document_children.into_iter() {
-        match child {
-            DocumentChild::Paragraph(mut paragraph) => {
-                if let Some(heading_level) = paragraph
+    {
+        let style_map: std::collections::HashMap<&str, usize> = toc
+            .instr
+            .styles_with_levels
+            .iter()
+            .map(|style| {
+                let (style_id, level) = &style.0;
+                (style_id.as_str(), *level)
+            })
+            .collect();
+
+        for child in &mut document_children {
+            if let DocumentChild::Paragraph(paragraph) = child {
+                let heading_level = paragraph
                     .property
                     .style
                     .as_ref()
-                    .map(|p| p.val.to_string())
-                    .and_then(|sid| heading_map.get(&sid))
-                {
-                    if min <= *heading_level && max >= *heading_level {
+                    .and_then(|style| heading_map.get(&style.val))
+                    .copied();
+                if let Some(heading_level) = heading_level {
+                    if min <= heading_level && max >= heading_level {
                         let toc_key = TocKey::generate();
                         items.push(
                             TableOfContentsItem::new()
                                 .text(paragraph.raw_text())
                                 .toc_key(&toc_key)
-                                .level(*heading_level),
+                                .level(heading_level),
                         );
-                        paragraph =
-                            Box::new(paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key));
+                        paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
                     }
 
                     if let Some((_min, _max)) = toc.instr.tc_field_level_range {
@@ -2399,53 +2348,135 @@ fn update_document_by_toc(
                 }
 
                 // Support \t option. Collect toc items if style id matched.
-                if let Some(level) = paragraph
+                let custom_level = paragraph
                     .property
                     .style
                     .as_ref()
-                    .and_then(|s| style_map.get(&s.val))
-                {
-                    if min <= *level && max >= *level {
+                    .and_then(|style| style_map.get(style.val.as_str()))
+                    .copied();
+                if let Some(level) = custom_level {
+                    if min <= level && max >= level {
                         let toc_key = TocKey::generate();
                         items.push(
                             TableOfContentsItem::new()
                                 .text(paragraph.raw_text())
                                 .toc_key(&toc_key)
-                                .level(*level),
+                                .level(level),
                         );
-                        paragraph =
-                            Box::new(paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key));
+                        paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
                     }
                 }
-
-                children.push(DocumentChild::Paragraph(paragraph));
-            }
-            DocumentChild::Table(ref _table) => {
-                // TODO:
-                // for row in &table.rows {
-                //     for cell in &row.cells {
-                //         for content in &cell.children {
-                //             match content {
-                //                 TableCellContent::Paragraph(paragraph) => {}
-                //                 TableCellContent::Table(_) => {
-                //                     // TODO: Support table in table
-                //                 }
-                //             }
-                //         }
-                //     }
-                // }
-                children.push(child);
-            }
-            _ => {
-                children.push(child);
             }
         }
     }
 
-    let mut toc = toc;
     toc.items = items;
-    children[toc_index] = DocumentChild::TableOfContents(Box::new(toc));
-    children
+    document_children[toc_index] = DocumentChild::TableOfContents(Box::new(toc));
+    document_children
+}
+
+#[cfg(test)]
+mod toc_expansion_tests {
+    use super::*;
+
+    fn only_toc(docx: &Docx) -> &TableOfContents {
+        let [DocumentChild::TableOfContents(toc)] = docx.document.children.as_slice() else {
+            panic!("expected exactly one table of contents");
+        };
+        toc
+    }
+
+    #[test]
+    fn static_toc_is_preserved_while_reporting_toc_presence() {
+        let toc = TableOfContents::new()
+            .alias("static")
+            .add_before_paragraph(Paragraph::new().add_run(Run::new().add_text("before")));
+        let expected = toc.clone();
+        let mut docx = Docx::new().add_table_of_contents(toc);
+
+        assert!(docx.expand_auto_tocs());
+        assert_eq!(only_toc(&docx), &expected);
+    }
+
+    #[test]
+    fn non_expandable_auto_toc_is_restored_after_being_moved() {
+        let toc = TableOfContents::new()
+            .alias("custom")
+            .add_style_with_level(StyleWithLevel::new("Custom", 1))
+            .auto();
+        let expected = toc.clone();
+        let mut docx = Docx::new().add_table_of_contents(toc);
+
+        assert!(docx.expand_auto_tocs());
+        assert_eq!(only_toc(&docx), &expected);
+    }
+
+    #[test]
+    fn auto_toc_expansion_preserves_child_order_and_bookmarks_headings() {
+        let mut docx = Docx::new()
+            .add_style(Style::new("Heading1", crate::StyleType::Paragraph).name("Heading 1"))
+            .add_paragraph(Paragraph::new().add_run(Run::new().add_text("before")))
+            .add_table_of_contents(TableOfContents::new().heading_styles_range(1, 3).auto())
+            .add_paragraph(
+                Paragraph::new()
+                    .style("Heading1")
+                    .add_run(Run::new().add_text("Heading")),
+            )
+            .add_table(Table::new(vec![]));
+
+        assert!(docx.expand_auto_tocs());
+        assert!(matches!(
+            docx.document.children.as_slice(),
+            [
+                DocumentChild::Paragraph(_),
+                DocumentChild::TableOfContents(_),
+                DocumentChild::Paragraph(_),
+                DocumentChild::Table(_)
+            ]
+        ));
+
+        let DocumentChild::TableOfContents(toc) = &docx.document.children[1] else {
+            panic!("expected the table of contents to remain at its original index");
+        };
+        assert_eq!(toc.items.len(), 1);
+        assert_eq!(toc.items[0].text, "Heading");
+
+        let DocumentChild::Paragraph(heading) = &docx.document.children[2] else {
+            panic!("expected the heading to remain at its original index");
+        };
+        assert!(matches!(
+            heading.children.first(),
+            Some(ParagraphChild::BookmarkStart(_))
+        ));
+        assert!(matches!(
+            heading.children.last(),
+            Some(ParagraphChild::BookmarkEnd(_))
+        ));
+    }
+
+    #[test]
+    fn auto_toc_expansion_matches_custom_styles_without_owning_their_ids() {
+        let mut docx = Docx::new()
+            .add_table_of_contents(
+                TableOfContents::new()
+                    .heading_styles_range(1, 9)
+                    .add_style_with_level(StyleWithLevel::new("CustomHeading", 2))
+                    .auto(),
+            )
+            .add_paragraph(
+                Paragraph::new()
+                    .style("CustomHeading")
+                    .add_run(Run::new().add_text("Custom heading")),
+            );
+
+        assert!(docx.expand_auto_tocs());
+        let DocumentChild::TableOfContents(toc) = &docx.document.children[0] else {
+            panic!("expected an expanded table of contents");
+        };
+        assert_eq!(toc.items.len(), 1);
+        assert_eq!(toc.items[0].text, "Custom heading");
+        assert_eq!(toc.items[0].level, 2);
+    }
 }
 
 #[cfg(test)]
@@ -2541,6 +2572,158 @@ mod document_traversal_tests {
 
         assert!(String::from_utf8_lossy(&xml.footnotes).contains("nested footnote"));
         assert!(String::from_utf8_lossy(&xml.document_rels).contains("relationships/footnotes"));
+    }
+}
+
+#[cfg(test)]
+mod section_part_tests {
+    use super::*;
+
+    fn image_paragraph(picture: Pic) -> Paragraph {
+        Paragraph::new().add_run(Run::new().add_image(picture))
+    }
+
+    #[test]
+    fn add_section_preserves_all_header_and_footer_variants() {
+        let section = Section::new()
+            .header(Header::new())
+            .first_header(Header::new())
+            .even_header(Header::new())
+            .footer(Footer::new())
+            .first_footer(Footer::new())
+            .even_footer(Footer::new());
+
+        let docx = Docx::new().add_section(section);
+
+        assert_eq!(docx.document_rels.header_count, 3);
+        assert_eq!(docx.document_rels.footer_count, 3);
+        let DocumentChild::Section(section) = &docx.document.children[0] else {
+            panic!("expected a section");
+        };
+        assert_eq!(section.property.get_headers().len(), 3);
+        assert_eq!(section.property.get_footers().len(), 3);
+
+        let xml = docx.build();
+        assert_eq!(xml.headers.len(), 3);
+        assert_eq!(xml.footers.len(), 3);
+
+        let content_types = String::from_utf8_lossy(&xml.content_type);
+        for part_name in [
+            "header1.xml",
+            "header2.xml",
+            "header3.xml",
+            "footer1.xml",
+            "footer2.xml",
+            "footer3.xml",
+        ] {
+            assert!(
+                content_types.contains(part_name),
+                "missing content type for {part_name}"
+            );
+        }
+    }
+
+    #[test]
+    fn section_images_create_relationships_for_every_part() {
+        let picture = Pic::new_with_dimensions(vec![1, 2, 3, 4], 1, 1);
+        let mut docx = Docx::new();
+
+        for _ in 0..4 {
+            docx = docx.add_section(
+                Section::new()
+                    .header(Header::new().add_paragraph(image_paragraph(picture.clone())))
+                    .footer(Footer::new().add_paragraph(image_paragraph(picture.clone()))),
+            );
+        }
+
+        let direct = docx.clone();
+        let xml = docx.build();
+
+        assert_eq!(xml.headers.len(), 4);
+        assert_eq!(xml.header_rels.len(), 4);
+        assert_eq!(xml.footers.len(), 4);
+        assert_eq!(xml.footer_rels.len(), 4);
+        assert!(xml
+            .header_rels
+            .iter()
+            .all(|rels| String::from_utf8_lossy(rels).contains("relationships/image")));
+        assert!(xml
+            .footer_rels
+            .iter()
+            .all(|rels| String::from_utf8_lossy(rels).contains("relationships/image")));
+        assert_eq!(xml.media.len(), 1);
+
+        let mut cursor = std::io::Cursor::new(Vec::new());
+        direct
+            .pack(&mut cursor)
+            .expect("failed to directly pack document");
+        let mut archive =
+            zip::ZipArchive::new(std::io::Cursor::new(cursor.into_inner())).expect("invalid ZIP");
+        for path in ["word/_rels/header4.xml.rels", "word/_rels/footer4.xml.rels"] {
+            let mut relationships = String::new();
+            std::io::Read::read_to_string(
+                &mut archive.by_name(path).expect("missing relationship part"),
+                &mut relationships,
+            )
+            .expect("invalid relationship XML");
+            assert!(relationships.contains("relationships/image"));
+        }
+    }
+
+    #[test]
+    fn section_parts_keep_relationship_creation_order_past_nine() {
+        let mut docx = Docx::new();
+        for number in 1..=12 {
+            docx = docx.add_section(Section::new().header(Header::new().add_paragraph(
+                Paragraph::new().add_run(Run::new().add_text(format!("header-{number}"))),
+            )));
+        }
+
+        let xml = docx.build();
+
+        assert_eq!(xml.headers.len(), 12);
+        for (index, header) in xml.headers.iter().enumerate() {
+            let expected = format!("header-{}", index + 1);
+            assert!(
+                String::from_utf8_lossy(header).contains(&expected),
+                "header part {} did not contain {expected}",
+                index + 1
+            );
+        }
+    }
+
+    #[test]
+    fn section_parts_without_images_omit_relationship_files() {
+        let xml = Docx::new()
+            .add_section(Section::new().header(Header::new()).footer(Footer::new()))
+            .build();
+
+        assert!(xml.header_rels.is_empty());
+        assert!(xml.footer_rels.is_empty());
+
+        let mut cursor = std::io::Cursor::new(Vec::new());
+        xml.pack(&mut cursor).expect("failed to pack document");
+        let mut archive =
+            zip::ZipArchive::new(std::io::Cursor::new(cursor.into_inner())).expect("invalid ZIP");
+        assert!(archive.by_name("word/_rels/header1.xml.rels").is_err());
+        assert!(archive.by_name("word/_rels/footer1.xml.rels").is_err());
+    }
+
+    #[test]
+    fn sparse_section_relationships_keep_their_part_index() {
+        let mut docx = Docx::new();
+        for _ in 0..3 {
+            docx = docx.add_section(Section::new().header(Header::new()));
+        }
+        docx = docx.add_section(Section::new().header(Header::new().add_paragraph(
+            image_paragraph(Pic::new_with_dimensions(vec![1, 2, 3, 4], 1, 1)),
+        )));
+
+        let xml = docx.build();
+
+        assert_eq!(xml.header_rels.len(), 4);
+        assert!(xml.header_rels[..3].iter().all(Vec::is_empty));
+        assert!(String::from_utf8_lossy(&xml.header_rels[3]).contains("relationships/image"));
     }
 }
 
@@ -2662,6 +2845,21 @@ mod paragraph_id_tests {
         collect_para_ids_in_docx(&docx, &mut counts);
         assert!(!counts.contains_key(""));
         assert!(counts.values().all(|count| *count == 1));
+    }
+
+    #[test]
+    fn paragraph_id_fallback_skips_the_dense_used_prefix() {
+        let mut used: HashSet<String> = (1usize..=1_000)
+            .map(|value| format!("{value:08x}"))
+            .collect();
+        used.insert(crate::generate_para_id());
+
+        let first = next_unique_paragraph_id(&used);
+        assert_eq!(first, "000003ea");
+        used.insert(first);
+
+        let second = next_unique_paragraph_id(&used);
+        assert_eq!(second, "000003eb");
     }
 }
 

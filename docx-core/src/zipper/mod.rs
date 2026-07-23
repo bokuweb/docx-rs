@@ -5,9 +5,14 @@ use std::io::prelude::*;
 use std::io::Seek;
 use zip::write::SimpleFileOptions;
 
-/// Writes one XML part directly into the current ZIP entry.
+/// Renders one XML part into a reusable buffer and writes it to the ZIP entry.
+///
+/// Buffering one part avoids the many tiny writes that are costly in
+/// WebAssembly while still avoiding the package-wide buffering performed by
+/// [`XMLDocx`].
 fn write_xml<W, T>(
     zip: &mut zip::ZipWriter<W>,
+    buffer: &mut Vec<u8>,
     path: &str,
     options: SimpleFileOptions,
     part: &T,
@@ -16,12 +21,15 @@ where
     W: Write + Seek,
     T: BuildXML,
 {
-    zip.start_file(path, options)?;
-    let stream = XMLBuilder::new(&mut *zip)
+    buffer.clear();
+    let stream = XMLBuilder::new(&mut *buffer)
         .into_inner()
         .map_err(xml_to_zip_error)?;
     let stream = part.build_to(stream).map_err(xml_to_zip_error)?;
     stream.into_inner().map_err(xml_to_zip_error)?;
+
+    zip.start_file(path, options)?;
+    zip.write_all(buffer)?;
     Ok(())
 }
 
@@ -163,42 +171,113 @@ where
     let options = SimpleFileOptions::default()
         .compression_method(zip::CompressionMethod::Stored)
         .unix_permissions(0o755);
+    let mut xml_buffer = Vec::new();
 
-    write_xml(&mut zip, "[Content_Types].xml", options, &docx.content_type)?;
-    write_xml(&mut zip, "_rels/.rels", options, &docx.rels)?;
-    write_xml(&mut zip, "docProps/app.xml", options, &docx.doc_props.app)?;
-    write_xml(&mut zip, "docProps/core.xml", options, &docx.doc_props.core)?;
     write_xml(
         &mut zip,
+        &mut xml_buffer,
+        "[Content_Types].xml",
+        options,
+        &docx.content_type,
+    )?;
+    write_xml(
+        &mut zip,
+        &mut xml_buffer,
+        "_rels/.rels",
+        options,
+        &docx.rels,
+    )?;
+    write_xml(
+        &mut zip,
+        &mut xml_buffer,
+        "docProps/app.xml",
+        options,
+        &docx.doc_props.app,
+    )?;
+    write_xml(
+        &mut zip,
+        &mut xml_buffer,
+        "docProps/core.xml",
+        options,
+        &docx.doc_props.core,
+    )?;
+    write_xml(
+        &mut zip,
+        &mut xml_buffer,
         "docProps/custom.xml",
         options,
         &docx.doc_props.custom,
     )?;
     write_xml(
         &mut zip,
+        &mut xml_buffer,
         "word/_rels/document.xml.rels",
         options,
         &docx.document_rels,
     )?;
-    write_xml(&mut zip, "word/document.xml", options, &docx.document)?;
-    write_xml(&mut zip, "word/styles.xml", options, &docx.styles)?;
-    write_xml(&mut zip, "word/settings.xml", options, &docx.settings)?;
-    write_xml(&mut zip, "word/fontTable.xml", options, &docx.font_table)?;
-    write_xml(&mut zip, "word/comments.xml", options, &docx.comments)?;
-    write_xml(&mut zip, "word/numbering.xml", options, &docx.numberings)?;
     write_xml(
         &mut zip,
+        &mut xml_buffer,
+        "word/document.xml",
+        options,
+        &docx.document,
+    )?;
+    write_xml(
+        &mut zip,
+        &mut xml_buffer,
+        "word/styles.xml",
+        options,
+        &docx.styles,
+    )?;
+    write_xml(
+        &mut zip,
+        &mut xml_buffer,
+        "word/settings.xml",
+        options,
+        &docx.settings,
+    )?;
+    write_xml(
+        &mut zip,
+        &mut xml_buffer,
+        "word/fontTable.xml",
+        options,
+        &docx.font_table,
+    )?;
+    write_xml(
+        &mut zip,
+        &mut xml_buffer,
+        "word/comments.xml",
+        options,
+        &docx.comments,
+    )?;
+    write_xml(
+        &mut zip,
+        &mut xml_buffer,
+        "word/numbering.xml",
+        options,
+        &docx.numberings,
+    )?;
+    write_xml(
+        &mut zip,
+        &mut xml_buffer,
         "word/commentsExtended.xml",
         options,
         &docx.comments_extended,
     )?;
-    write_xml(&mut zip, "word/footnotes.xml", options, &docx.footnotes)?;
+    write_xml(
+        &mut zip,
+        &mut xml_buffer,
+        "word/footnotes.xml",
+        options,
+        &docx.footnotes,
+    )?;
 
     let mut header_rels = package.header_rels.iter().peekable();
     for (index, (_, header)) in docx.document.headers().enumerate() {
         let number = index + 1;
         write_xml(
             &mut zip,
+            &mut xml_buffer,
             &format!("word/header{number}.xml"),
             options,
             header,
@@ -212,6 +291,7 @@ where
                 .expect("peeked header relationship should exist");
             write_xml(
                 &mut zip,
+                &mut xml_buffer,
                 &format!("word/_rels/header{number}.xml.rels"),
                 options,
                 rels,
@@ -224,6 +304,7 @@ where
         let number = index + 1;
         write_xml(
             &mut zip,
+            &mut xml_buffer,
             &format!("word/footer{number}.xml"),
             options,
             footer,
@@ -237,6 +318,7 @@ where
                 .expect("peeked footer relationship should exist");
             write_xml(
                 &mut zip,
+                &mut xml_buffer,
                 &format!("word/_rels/footer{number}.xml.rels"),
                 options,
                 rels,
@@ -256,6 +338,7 @@ where
         zip.add_directory("word/webextensions/", directory_options)?;
         write_xml(
             &mut zip,
+            &mut xml_buffer,
             "word/webextensions/taskpanes.xml",
             options,
             taskpanes,
@@ -264,6 +347,7 @@ where
         zip.add_directory("word/webextensions/_rels", directory_options)?;
         write_xml(
             &mut zip,
+            &mut xml_buffer,
             "word/webextensions/_rels/taskpanes.xml.rels",
             options,
             &docx.taskpanes_rels,
@@ -272,6 +356,7 @@ where
         for (index, extension) in docx.web_extensions.iter().enumerate() {
             write_xml(
                 &mut zip,
+                &mut xml_buffer,
                 &format!("word/webextensions/webextension{}.xml", index + 1),
                 options,
                 extension,
@@ -286,18 +371,21 @@ where
         let number = index + 1;
         write_xml(
             &mut zip,
+            &mut xml_buffer,
             &format!("customXml/_rels/item{number}.xml.rels"),
             options,
             &docx.custom_item_rels[index],
         )?;
         write_xml(
             &mut zip,
+            &mut xml_buffer,
             &format!("customXml/item{number}.xml"),
             options,
             item,
         )?;
         write_xml(
             &mut zip,
+            &mut xml_buffer,
             &format!("customXml/itemProps{number}.xml"),
             options,
             &docx.custom_item_props[index],

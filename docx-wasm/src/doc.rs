@@ -205,13 +205,15 @@ impl Docx {
         self
     }
 
+    /// Builds the DOCX archive without retaining a second set of rendered XML
+    /// buffers in WebAssembly memory.
     pub fn build(mut self, has_numberings: bool) -> Result<Vec<u8>, JsValue> {
         let buf = Vec::new();
         let mut cur = std::io::Cursor::new(buf);
         if has_numberings {
             self.0.document_rels.has_numberings = true;
         }
-        let res = self.0.build().pack(&mut cur);
+        let res = self.0.pack(&mut cur);
         if res.is_err() {
             return Err(format!("{res:?}").into());
         }
@@ -224,5 +226,29 @@ impl Docx {
 
     pub fn comments_json(&mut self) -> String {
         self.0.comments_json()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use docx_rs::{Paragraph as CoreParagraph, Run as CoreRun};
+
+    #[test]
+    fn wasm_build_matches_buffered_package_output() {
+        let core = docx_rs::Docx::new().add_paragraph(
+            CoreParagraph::new().add_run(CoreRun::new().add_text("streamed wasm package")),
+        );
+        let mut expected = std::io::Cursor::new(Vec::new());
+        core.clone()
+            .build()
+            .pack(&mut expected)
+            .expect("failed to build buffered package");
+
+        let actual = Docx(core)
+            .build(false)
+            .expect("failed to build wasm package");
+
+        assert_eq!(actual, expected.into_inner());
     }
 }

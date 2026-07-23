@@ -3,6 +3,7 @@ target
 **/*.rs.bk
 dist
 node_modules
+docx-wasm/js/pkg/
 # pkg
 *.docx#
 *.docx

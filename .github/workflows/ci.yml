@@ -78,7 +78,7 @@ jobs:
           bins: wasm-pack@0.13.1
       - run: corepack enable
       - run: pnpm install --frozen-lockfile
-      - run: pnpm wasm-pack:node && pnpm wasm-pack:dev && pnpm exec tsc -p tsconfig.node.json && pnpm test
+      - run: pnpm test:ci
       - name: screenshot
         run: pnpm screenshot
       - uses: reg-viz/reg-actions@f0cccbcab7e7ecf9b0434b719f1e842c97bcd2a7 # v3

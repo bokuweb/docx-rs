@@ -1,5 +1,5 @@
 use crate::xml_builder::XMLBuilder;
-use crate::{BuildXML, DocumentChild, Docx, Footer, Header, PackageMetadata, XMLDocx};
+use crate::{BuildXML, Docx, PackageMetadata, XMLDocx};
 
 use std::io::prelude::*;
 use std::io::Seek;
@@ -80,7 +80,7 @@ where
         zip.start_file(format!("word/header{}.xml", i + 1), options)?;
         zip.write_all(h)?;
 
-        if let Some(rels) = xml.header_rels.get(i) {
+        if let Some(rels) = xml.header_rels.get(i).filter(|rels| !rels.is_empty()) {
             zip.start_file(format!("word/_rels/header{}.xml.rels", i + 1), options)?;
             zip.write_all(rels)?;
         }
@@ -90,7 +90,7 @@ where
         zip.start_file(format!("word/footer{}.xml", i + 1), options)?;
         zip.write_all(h)?;
 
-        if let Some(rels) = xml.footer_rels.get(i) {
+        if let Some(rels) = xml.footer_rels.get(i).filter(|rels| !rels.is_empty()) {
             zip.start_file(format!("word/_rels/footer{}.xml.rels", i + 1), options)?;
             zip.write_all(rels)?;
         }
@@ -194,14 +194,8 @@ where
     )?;
     write_xml(&mut zip, "word/footnotes.xml", options, &docx.footnotes)?;
 
-    let mut headers: Vec<&(String, Header)> = docx.document.section_property.get_headers();
-    for child in &docx.document.children {
-        if let DocumentChild::Section(section) = child {
-            headers.extend(section.property.get_headers());
-        }
-    }
-    headers.sort_by(|left, right| left.0.cmp(&right.0));
-    for (index, (_, header)) in headers.into_iter().enumerate() {
+    let mut header_rels = package.header_rels.iter().peekable();
+    for (index, (_, header)) in docx.document.headers().enumerate() {
         let number = index + 1;
         write_xml(
             &mut zip,
@@ -209,7 +203,13 @@ where
             options,
             header,
         )?;
-        if let Some(rels) = package.header_rels.get(index) {
+        if header_rels
+            .peek()
+            .is_some_and(|(part_index, _)| *part_index == index)
+        {
+            let (_, rels) = header_rels
+                .next()
+                .expect("peeked header relationship should exist");
             write_xml(
                 &mut zip,
                 &format!("word/_rels/header{number}.xml.rels"),
@@ -219,14 +219,8 @@ where
         }
     }
 
-    let mut footers: Vec<&(String, Footer)> = docx.document.section_property.get_footers();
-    for child in &docx.document.children {
-        if let DocumentChild::Section(section) = child {
-            footers.extend(section.property.get_footers());
-        }
-    }
-    footers.sort_by(|left, right| left.0.cmp(&right.0));
-    for (index, (_, footer)) in footers.into_iter().enumerate() {
+    let mut footer_rels = package.footer_rels.iter().peekable();
+    for (index, (_, footer)) in docx.document.footers().enumerate() {
         let number = index + 1;
         write_xml(
             &mut zip,
@@ -234,7 +228,13 @@ where
             options,
             footer,
         )?;
-        if let Some(rels) = package.footer_rels.get(index) {
+        if footer_rels
+            .peek()
+            .is_some_and(|(part_index, _)| *part_index == index)
+        {
+            let (_, rels) = footer_rels
+                .next()
+                .expect("peeked footer relationship should exist");
             write_xml(
                 &mut zip,
                 &format!("word/_rels/footer{number}.xml.rels"),

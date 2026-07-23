@@ -84,6 +84,25 @@ fn bench_write_docx(c: &mut Criterion) {
         );
     });
 
+    let mut many_section_parts_template = Docx::new();
+    for number in 0..250 {
+        let header = Header::new().add_paragraph(
+            Paragraph::new().add_run(Run::new().add_text(format!("header-{number}"))),
+        );
+        let footer = Footer::new().add_paragraph(
+            Paragraph::new().add_run(Run::new().add_text(format!("footer-{number}"))),
+        );
+        many_section_parts_template =
+            many_section_parts_template.add_section(Section::new().header(header).footer(footer));
+    }
+    c.bench_function("write_docx_many_section_parts", |b| {
+        b.iter_batched(
+            || many_section_parts_template.clone(),
+            |docx| black_box(docx.build()),
+            BatchSize::LargeInput,
+        );
+    });
+
     let image = vec![42; 64 * 1024];
     let mut repeated_image_template = Docx::new();
     for _ in 0..100 {
@@ -125,6 +144,51 @@ fn bench_write_docx(c: &mut Criterion) {
                 docx.build()
                     .pack(&mut cursor)
                     .expect("failed to write small-image docx");
+                black_box(cursor.into_inner());
+            },
+            BatchSize::LargeInput,
+        );
+    });
+
+    let mut many_unique_images_template = Docx::new();
+    for number in 0_u64..1_000 {
+        let mut image = vec![42; 128];
+        image[..8].copy_from_slice(&number.to_le_bytes());
+        many_unique_images_template = many_unique_images_template.add_paragraph(
+            Paragraph::new().add_run(Run::new().add_image(Pic::new_with_dimensions(image, 1, 1))),
+        );
+    }
+    c.bench_function("write_docx_many_unique_images", |b| {
+        b.iter_batched(
+            || many_unique_images_template.clone(),
+            |docx| {
+                let mut cursor = Cursor::new(Vec::with_capacity(512 * 1024));
+                docx.build()
+                    .pack(&mut cursor)
+                    .expect("failed to write unique-image docx");
+                black_box(cursor.into_inner());
+            },
+            BatchSize::LargeInput,
+        );
+    });
+
+    let mut colliding_image_ids_template = Docx::new();
+    for number in 0_u64..1_000 {
+        let mut image = vec![42; 128];
+        image[..8].copy_from_slice(&number.to_le_bytes());
+        colliding_image_ids_template = colliding_image_ids_template.add_paragraph(
+            Paragraph::new()
+                .add_run(Run::new().add_image(Pic::new_with_dimensions(image, 1, 1).id("shared"))),
+        );
+    }
+    c.bench_function("write_docx_colliding_image_ids", |b| {
+        b.iter_batched(
+            || colliding_image_ids_template.clone(),
+            |docx| {
+                let mut cursor = Cursor::new(Vec::with_capacity(512 * 1024));
+                docx.build()
+                    .pack(&mut cursor)
+                    .expect("failed to write colliding-image-ID docx");
                 black_box(cursor.into_inner());
             },
             BatchSize::LargeInput,

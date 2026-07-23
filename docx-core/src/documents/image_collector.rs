@@ -22,6 +22,7 @@ pub(crate) struct MediaRegistry {
     media: Vec<ImageIdAndBuf>,
     media_by_id: HashMap<String, usize>,
     by_fingerprint: HashMap<(usize, u32), Vec<usize>>,
+    next_suffix_by_id: HashMap<String, usize>,
 }
 
 impl MediaRegistry {
@@ -74,15 +75,30 @@ impl MediaRegistry {
         self.media
     }
 
-    fn unique_media_id(&self, preferred_id: &str) -> String {
+    /// Returns a free media ID without restarting collision scans at `_2`.
+    ///
+    /// Callers can reuse a preferred ID for different bytes. Remembering the
+    /// next suffix keeps a run of such collisions linear while still checking
+    /// explicitly registered suffixed IDs.
+    fn unique_media_id(&mut self, preferred_id: &str) -> String {
         if !self.media_by_id.contains_key(preferred_id) {
             return preferred_id.to_owned();
         }
 
-        (2usize..)
-            .map(|suffix| format!("{preferred_id}_{suffix}"))
-            .find(|candidate| !self.media_by_id.contains_key(candidate))
-            .expect("the media ID space should not be exhausted")
+        let (media_by_id, next_suffix_by_id) = (&self.media_by_id, &mut self.next_suffix_by_id);
+        let suffix = next_suffix_by_id
+            .entry(preferred_id.to_owned())
+            .or_insert(2);
+
+        loop {
+            let candidate = format!("{preferred_id}_{suffix}");
+            *suffix = suffix
+                .checked_add(1)
+                .expect("the media ID suffix space should not be exhausted");
+            if !media_by_id.contains_key(&candidate) {
+                return candidate;
+            }
+        }
     }
 }
 
@@ -102,7 +118,8 @@ struct PackagePartCollector<'a> {
     relationship_prefix: Option<&'a str>,
     relationships: Vec<ImageIdAndPath>,
     relationship_ids: HashSet<String>,
-    relationships_by_media: HashMap<usize, String>,
+    /// Maps media to the owning relationship entry, avoiding another owned ID.
+    relationships_by_media: HashMap<usize, usize>,
     footnotes: Vec<Footnote>,
 }
 
@@ -152,18 +169,21 @@ impl DocumentTreeVisitor for PackagePartCollector<'_> {
             std::mem::take(&mut picture.image),
         );
 
-        if let Some(relationship_id) = self.relationships_by_media.get(&media_index) {
-            picture.id.clone_from(relationship_id);
+        if let Some(relationship_index) = self.relationships_by_media.get(&media_index) {
+            picture
+                .id
+                .clone_from(&self.relationships[*relationship_index].0);
             return;
         }
 
         let relationship_id = self.unique_relationship_id(&preferred_relationship_id);
         let target = format!("media/{}.png", self.registry.media_id(media_index));
+        let relationship_index = self.relationships.len();
         self.relationship_ids.insert(relationship_id.clone());
         self.relationships_by_media
-            .insert(media_index, relationship_id.clone());
-        self.relationships.push((relationship_id.clone(), target));
-        picture.id = relationship_id;
+            .insert(media_index, relationship_index);
+        picture.id.clone_from(&relationship_id);
+        self.relationships.push((relationship_id, target));
     }
 
     fn visit_footnote_reference(&mut self, reference: &FootnoteReference) {
@@ -244,12 +264,18 @@ mod tests {
     fn registry_keeps_distinct_bytes_that_reuse_an_id() {
         let mut registry = MediaRegistry::default();
 
+        registry.register("shared_2", vec![0]);
         let first = registry.register("shared", vec![1, 2, 3]);
         let second = registry.register("shared", vec![4, 5, 6]);
+        let third = registry.register("shared", vec![7, 8, 9]);
 
         assert_ne!(first, second);
-        assert_eq!(registry.media.len(), 2);
+        assert_ne!(second, third);
+        assert_eq!(registry.media.len(), 4);
         assert_ne!(registry.media[first].0, registry.media[second].0);
+        assert_eq!(registry.media[first].0, "shared");
+        assert_eq!(registry.media[second].0, "shared_3");
+        assert_eq!(registry.media[third].0, "shared_4");
     }
 
     #[test]

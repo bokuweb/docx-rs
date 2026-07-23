@@ -179,8 +179,27 @@ pub struct Docx {
 /// Package metadata derived while normalizing a document for output.
 pub(crate) struct PackageMetadata {
     pub(crate) media: Vec<ImageIdAndBuf>,
-    pub(crate) header_rels: Vec<HeaderRels>,
-    pub(crate) footer_rels: Vec<FooterRels>,
+    /// Non-empty header relationships keyed by zero-based part index.
+    pub(crate) header_rels: Vec<(usize, HeaderRels)>,
+    /// Non-empty footer relationships keyed by zero-based part index.
+    pub(crate) footer_rels: Vec<(usize, FooterRels)>,
+}
+
+/// Expands sparse relationships only through the last part that needs them.
+///
+/// Empty buffers preserve indexes before a non-empty part; the package writer
+/// skips those sentinels instead of emitting empty relationship files.
+fn build_sparse_relationships<T: BuildXML>(relationships: Vec<(usize, T)>) -> Vec<Vec<u8>> {
+    let mut parts = Vec::new();
+    for (index, relationships) in relationships {
+        debug_assert!(
+            index >= parts.len(),
+            "sparse relationship indexes must be strictly increasing"
+        );
+        parts.resize_with(index, Vec::new);
+        parts.push(relationships.build());
+    }
+    parts
 }
 
 impl Default for Docx {
@@ -695,31 +714,20 @@ impl Docx {
             .map(|rel| rel.build())
             .collect();
 
-        let mut headers: Vec<&(String, Header)> = self.document.section_property.get_headers();
+        let headers = self
+            .document
+            .headers()
+            .map(|(_, header)| header.build())
+            .collect();
 
-        self.document.children.iter().for_each(|child| {
-            if let DocumentChild::Section(section) = child {
-                for h in section.property.get_headers() {
-                    headers.push(h);
-                }
-            }
-        });
+        let footers = self
+            .document
+            .footers()
+            .map(|(_, footer)| footer.build())
+            .collect();
 
-        headers.sort_by(|a, b| a.0.cmp(&b.0));
-        let headers = headers.iter().map(|h| h.1.build()).collect();
-
-        let mut footers: Vec<&(String, Footer)> = self.document.section_property.get_footers();
-
-        self.document.children.iter().for_each(|child| {
-            if let DocumentChild::Section(section) = child {
-                for h in section.property.get_footers() {
-                    footers.push(h);
-                }
-            }
-        });
-
-        footers.sort_by(|a, b| a.0.cmp(&b.0));
-        let footers = footers.iter().map(|h| h.1.build()).collect();
+        let header_rels = build_sparse_relationships(package.header_rels);
+        let footer_rels = build_sparse_relationships(package.footer_rels);
 
         XMLDocx {
             content_type: self.content_type.build(),
@@ -729,8 +737,8 @@ impl Docx {
             document: self.document.build(),
             comments: self.comments.build(),
             document_rels: self.document_rels.build(),
-            header_rels: package.header_rels.into_iter().map(|r| r.build()).collect(),
-            footer_rels: package.footer_rels.into_iter().map(|r| r.build()).collect(),
+            header_rels,
+            footer_rels,
             settings: self.settings.build(),
             font_table: self.font_table.build(),
             numberings: self.numberings.build(),
@@ -831,15 +839,23 @@ impl Docx {
         let footer_images = self.collect_footer_images(&mut media);
         self.document_rels.images = document_part.relationships;
 
-        let mut header_rels = vec![HeaderRels::new(); 3];
-        for (rels, images) in header_rels.iter_mut().zip(header_images) {
-            rels.set_images(images);
-        }
+        let header_rels = header_images
+            .into_iter()
+            .map(|(index, images)| {
+                let mut rels = HeaderRels::new();
+                rels.set_images(images);
+                (index, rels)
+            })
+            .collect();
 
-        let mut footer_rels = vec![FooterRels::new(); 3];
-        for (rels, images) in footer_rels.iter_mut().zip(footer_images) {
-            rels.set_images(images);
-        }
+        let footer_rels = footer_images
+            .into_iter()
+            .map(|(index, images)| {
+                let mut rels = FooterRels::new();
+                rels.set_images(images);
+                (index, rels)
+            })
+            .collect();
 
         if !document_part.footnotes.is_empty() {
             self.footnotes.add(document_part.footnotes);
@@ -1186,46 +1202,42 @@ impl Docx {
         }
     }
 
-    /// Collects image relationships for the default, first, and even headers.
+    /// Collects image relationships for every header in package order.
     ///
     /// Each entry deliberately uses a separate relationship scope while all
-    /// entries share the package-wide media registry. This preserves valid
-    /// header `.rels` files without storing duplicate image bytes.
-    fn collect_header_images(&mut self, media: &mut MediaRegistry) -> Vec<Vec<ImageIdAndPath>> {
-        let mut images = vec![Vec::new(); 3];
-        let headers = [
-            &mut self.document.section_property.header,
-            &mut self.document.section_property.first_header,
-            &mut self.document.section_property.even_header,
-        ];
-
-        for (images, header) in images.iter_mut().zip(headers) {
-            if let Some((_, header)) = header.as_mut() {
-                *images = collect_header_part(header, media).relationships;
-            }
-        }
-        images
+    /// entries share the package-wide media registry. Relationship creation
+    /// order matches the order used to render and write header parts.
+    fn collect_header_images(
+        &mut self,
+        media: &mut MediaRegistry,
+    ) -> Vec<(usize, Vec<ImageIdAndPath>)> {
+        self.document
+            .headers_mut()
+            .enumerate()
+            .filter_map(|(index, (_, header))| {
+                let relationships = collect_header_part(header, media).relationships;
+                (!relationships.is_empty()).then_some((index, relationships))
+            })
+            .collect()
     }
 
-    /// Collects image relationships for the default, first, and even footers.
+    /// Collects image relationships for every footer in package order.
     ///
-    /// The fixed order matches the package writer's footer part ordering. A
-    /// shared registry prevents repeated footer and body images from being
-    /// emitted as separate physical media files.
-    fn collect_footer_images(&mut self, media: &mut MediaRegistry) -> Vec<Vec<ImageIdAndPath>> {
-        let mut images = vec![Vec::new(); 3];
-        let footers = [
-            &mut self.document.section_property.footer,
-            &mut self.document.section_property.first_footer,
-            &mut self.document.section_property.even_footer,
-        ];
-
-        for (images, footer) in images.iter_mut().zip(footers) {
-            if let Some((_, footer)) = footer.as_mut() {
-                *images = collect_footer_part(footer, media).relationships;
-            }
-        }
-        images
+    /// Relationship creation order matches the package writer. A shared
+    /// registry prevents repeated footer and body images from being emitted as
+    /// separate physical media files.
+    fn collect_footer_images(
+        &mut self,
+        media: &mut MediaRegistry,
+    ) -> Vec<(usize, Vec<ImageIdAndPath>)> {
+        self.document
+            .footers_mut()
+            .enumerate()
+            .filter_map(|(index, (_, footer))| {
+                let relationships = collect_footer_part(footer, media).relationships;
+                (!relationships.is_empty()).then_some((index, relationships))
+            })
+            .collect()
     }
 
     /// Collects footnote references from the complete main document tree.
@@ -2457,6 +2469,10 @@ mod document_traversal_tests {
 mod section_part_tests {
     use super::*;
 
+    fn image_paragraph(picture: Pic) -> Paragraph {
+        Paragraph::new().add_run(Run::new().add_image(picture))
+    }
+
     #[test]
     fn add_section_preserves_all_header_and_footer_variants() {
         let section = Section::new()
@@ -2495,6 +2511,109 @@ mod section_part_tests {
                 "missing content type for {part_name}"
             );
         }
+    }
+
+    #[test]
+    fn section_images_create_relationships_for_every_part() {
+        let picture = Pic::new_with_dimensions(vec![1, 2, 3, 4], 1, 1);
+        let mut docx = Docx::new();
+
+        for _ in 0..4 {
+            docx = docx.add_section(
+                Section::new()
+                    .header(Header::new().add_paragraph(image_paragraph(picture.clone())))
+                    .footer(Footer::new().add_paragraph(image_paragraph(picture.clone()))),
+            );
+        }
+
+        let direct = docx.clone();
+        let xml = docx.build();
+
+        assert_eq!(xml.headers.len(), 4);
+        assert_eq!(xml.header_rels.len(), 4);
+        assert_eq!(xml.footers.len(), 4);
+        assert_eq!(xml.footer_rels.len(), 4);
+        assert!(xml
+            .header_rels
+            .iter()
+            .all(|rels| String::from_utf8_lossy(rels).contains("relationships/image")));
+        assert!(xml
+            .footer_rels
+            .iter()
+            .all(|rels| String::from_utf8_lossy(rels).contains("relationships/image")));
+        assert_eq!(xml.media.len(), 1);
+
+        let mut cursor = std::io::Cursor::new(Vec::new());
+        direct
+            .pack(&mut cursor)
+            .expect("failed to directly pack document");
+        let mut archive =
+            zip::ZipArchive::new(std::io::Cursor::new(cursor.into_inner())).expect("invalid ZIP");
+        for path in ["word/_rels/header4.xml.rels", "word/_rels/footer4.xml.rels"] {
+            let mut relationships = String::new();
+            std::io::Read::read_to_string(
+                &mut archive.by_name(path).expect("missing relationship part"),
+                &mut relationships,
+            )
+            .expect("invalid relationship XML");
+            assert!(relationships.contains("relationships/image"));
+        }
+    }
+
+    #[test]
+    fn section_parts_keep_relationship_creation_order_past_nine() {
+        let mut docx = Docx::new();
+        for number in 1..=12 {
+            docx = docx.add_section(Section::new().header(Header::new().add_paragraph(
+                Paragraph::new().add_run(Run::new().add_text(format!("header-{number}"))),
+            )));
+        }
+
+        let xml = docx.build();
+
+        assert_eq!(xml.headers.len(), 12);
+        for (index, header) in xml.headers.iter().enumerate() {
+            let expected = format!("header-{}", index + 1);
+            assert!(
+                String::from_utf8_lossy(header).contains(&expected),
+                "header part {} did not contain {expected}",
+                index + 1
+            );
+        }
+    }
+
+    #[test]
+    fn section_parts_without_images_omit_relationship_files() {
+        let xml = Docx::new()
+            .add_section(Section::new().header(Header::new()).footer(Footer::new()))
+            .build();
+
+        assert!(xml.header_rels.is_empty());
+        assert!(xml.footer_rels.is_empty());
+
+        let mut cursor = std::io::Cursor::new(Vec::new());
+        xml.pack(&mut cursor).expect("failed to pack document");
+        let mut archive =
+            zip::ZipArchive::new(std::io::Cursor::new(cursor.into_inner())).expect("invalid ZIP");
+        assert!(archive.by_name("word/_rels/header1.xml.rels").is_err());
+        assert!(archive.by_name("word/_rels/footer1.xml.rels").is_err());
+    }
+
+    #[test]
+    fn sparse_section_relationships_keep_their_part_index() {
+        let mut docx = Docx::new();
+        for _ in 0..3 {
+            docx = docx.add_section(Section::new().header(Header::new()));
+        }
+        docx = docx.add_section(Section::new().header(Header::new().add_paragraph(
+            image_paragraph(Pic::new_with_dimensions(vec![1, 2, 3, 4], 1, 1)),
+        )));
+
+        let xml = docx.build();
+
+        assert_eq!(xml.header_rels.len(), 4);
+        assert!(xml.header_rels[..3].iter().all(Vec::is_empty));
+        assert!(String::from_utf8_lossy(&xml.header_rels[3]).contains("relationships/image"));
     }
 }
 

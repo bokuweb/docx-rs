@@ -20,7 +20,7 @@ use crate::{
 #[derive(Default)]
 pub(crate) struct MediaRegistry {
     media: Vec<ImageIdAndBuf>,
-    media_ids: HashSet<String>,
+    media_by_id: HashMap<String, usize>,
     by_fingerprint: HashMap<(usize, u32), Vec<usize>>,
 }
 
@@ -30,7 +30,15 @@ impl MediaRegistry {
     /// Part collectors use the numeric index as their deduplication key. This
     /// avoids cloning and hashing a `media/<id>.png` target for every repeated
     /// picture while keeping the package-visible media ID encapsulated here.
+    /// Reused picture IDs are checked before calculating a content fingerprint;
+    /// byte equality still protects callers that reuse an ID for new content.
     fn register(&mut self, preferred_id: &str, bytes: Vec<u8>) -> usize {
+        if let Some(index) = self.media_by_id.get(preferred_id).copied() {
+            if self.media[index].1 == bytes {
+                return index;
+            }
+        }
+
         let fingerprint = (bytes.len(), crc32fast::hash(&bytes));
         if let Some(index) = self
             .by_fingerprint
@@ -48,7 +56,7 @@ impl MediaRegistry {
         let media_id = self.unique_media_id(preferred_id);
         let index = self.media.len();
         self.media.push((media_id.clone(), bytes));
-        self.media_ids.insert(media_id.clone());
+        self.media_by_id.insert(media_id, index);
         self.by_fingerprint
             .entry(fingerprint)
             .or_default()
@@ -67,13 +75,13 @@ impl MediaRegistry {
     }
 
     fn unique_media_id(&self, preferred_id: &str) -> String {
-        if !self.media_ids.contains(preferred_id) {
+        if !self.media_by_id.contains_key(preferred_id) {
             return preferred_id.to_owned();
         }
 
         (2usize..)
             .map(|suffix| format!("{preferred_id}_{suffix}"))
-            .find(|candidate| !self.media_ids.contains(candidate))
+            .find(|candidate| !self.media_by_id.contains_key(candidate))
             .expect("the media ID space should not be exhausted")
     }
 }
@@ -230,6 +238,18 @@ mod tests {
 
         assert_eq!(first, second);
         assert_eq!(registry.media.len(), 1);
+    }
+
+    #[test]
+    fn registry_keeps_distinct_bytes_that_reuse_an_id() {
+        let mut registry = MediaRegistry::default();
+
+        let first = registry.register("shared", vec![1, 2, 3]);
+        let second = registry.register("shared", vec![4, 5, 6]);
+
+        assert_ne!(first, second);
+        assert_eq!(registry.media.len(), 2);
+        assert_ne!(registry.media[first].0, registry.media[second].0);
     }
 
     #[test]

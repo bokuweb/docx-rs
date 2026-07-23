@@ -130,6 +130,26 @@ fn bench_write_docx(c: &mut Criterion) {
             BatchSize::LargeInput,
         );
     });
+
+    let reused_picture = Pic::new_with_dimensions(vec![42; 64 * 1024], 1, 1);
+    let mut reused_picture_template = Docx::new();
+    for _ in 0..100 {
+        reused_picture_template = reused_picture_template
+            .add_paragraph(Paragraph::new().add_run(Run::new().add_image(reused_picture.clone())));
+    }
+    c.bench_function("write_docx_reused_picture", |b| {
+        b.iter_batched(
+            || reused_picture_template.clone(),
+            |docx| {
+                let mut cursor = Cursor::new(Vec::with_capacity(128 * 1024));
+                docx.build()
+                    .pack(&mut cursor)
+                    .expect("failed to write reused-picture docx");
+                black_box(cursor.into_inner());
+            },
+            BatchSize::LargeInput,
+        );
+    });
 }
 
 criterion_group!(docx_write_benches, bench_write_docx);

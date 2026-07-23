@@ -360,6 +360,56 @@ impl Docx {
         self
     }
 
+    /// Attaches one header without rebuilding the surrounding section.
+    ///
+    /// Mutating the property in place preserves pending first/even headers and
+    /// footers until each receives its own relationship and content-type entry.
+    fn attach_section_header(
+        &mut self,
+        section: &mut Section,
+        header: Header,
+        attach: fn(SectionProperty, Header, &str) -> SectionProperty,
+    ) {
+        if header.has_numbering {
+            self.document_rels.has_numberings = true;
+        }
+        let count = self.document_rels.header_count + 1;
+        let relationship_id = create_header_rid(count);
+        section.property = attach(
+            std::mem::take(&mut section.property),
+            header,
+            &relationship_id,
+        );
+        self.document_rels.header_count = count;
+        self.content_type = std::mem::take(&mut self.content_type).add_header();
+    }
+
+    /// Attaches one footer while preserving every unprocessed section part.
+    fn attach_section_footer(
+        &mut self,
+        section: &mut Section,
+        footer: Footer,
+        attach: fn(SectionProperty, Footer, &str) -> SectionProperty,
+    ) {
+        if footer.has_numbering {
+            self.document_rels.has_numberings = true;
+        }
+        let count = self.document_rels.footer_count + 1;
+        let relationship_id = create_footer_rid(count);
+        section.property = attach(
+            std::mem::take(&mut section.property),
+            footer,
+            &relationship_id,
+        );
+        self.document_rels.footer_count = count;
+        self.content_type = std::mem::take(&mut self.content_type).add_footer();
+    }
+
+    /// Appends a section and registers all of its header and footer variants.
+    ///
+    /// Each pending part is attached independently so adding a default header
+    /// cannot discard first/even headers or any footer that still needs a
+    /// relationship and content-type entry.
     pub fn add_section(mut self, s: Section) -> Docx {
         if s.has_numbering {
             // If this document has numbering, set numberings.xml to document_rels.
@@ -369,169 +419,28 @@ impl Docx {
 
         let mut new_section = s;
 
-        // header
-        if let Some(header) = new_section.temp_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
+        if let Some(header) = new_section.temp_header.take() {
+            self.attach_section_header(&mut new_section, header, SectionProperty::header);
         }
 
-        if let Some(header) = new_section.temp_first_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .first_header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_first_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
+        if let Some(header) = new_section.temp_first_header.take() {
+            self.attach_section_header(&mut new_section, header, SectionProperty::first_header);
         }
 
-        if let Some(header) = new_section.temp_even_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .even_header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_even_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
+        if let Some(header) = new_section.temp_even_header.take() {
+            self.attach_section_header(&mut new_section, header, SectionProperty::even_header);
         }
 
-        // header
-        if let Some(header) = new_section.temp_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
+        if let Some(footer) = new_section.temp_footer.take() {
+            self.attach_section_footer(&mut new_section, footer, SectionProperty::footer);
         }
 
-        if let Some(header) = new_section.temp_first_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .first_header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_first_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
+        if let Some(footer) = new_section.temp_first_footer.take() {
+            self.attach_section_footer(&mut new_section, footer, SectionProperty::first_footer);
         }
 
-        if let Some(header) = new_section.temp_even_header {
-            if header.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.header_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .even_header(header, &create_header_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_even_header: None,
-                ..Default::default()
-            };
-            self.document_rels.header_count = count;
-            self.content_type = self.content_type.add_header();
-        }
-
-        // footer
-        if let Some(footer) = new_section.temp_footer {
-            if footer.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.footer_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .footer(footer, &create_footer_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_footer: None,
-                ..Default::default()
-            };
-            self.document_rels.footer_count = count;
-            self.content_type = self.content_type.add_footer();
-        }
-
-        if let Some(footer) = new_section.temp_first_footer {
-            if footer.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.footer_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .first_footer(footer, &create_footer_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_first_footer: None,
-                ..Default::default()
-            };
-            self.document_rels.footer_count = count;
-            self.content_type = self.content_type.add_footer();
-        }
-
-        if let Some(footer) = new_section.temp_even_footer {
-            if footer.has_numbering {
-                self.document_rels.has_numberings = true;
-            }
-            let count = self.document_rels.footer_count + 1;
-            new_section = Section {
-                property: new_section
-                    .property
-                    .even_footer(footer, &create_footer_rid(count)),
-                children: new_section.children,
-                has_numbering: new_section.has_numbering,
-                temp_even_footer: None,
-                ..Default::default()
-            };
-            self.document_rels.footer_count = count;
-            self.content_type = self.content_type.add_footer();
+        if let Some(footer) = new_section.temp_even_footer.take() {
+            self.attach_section_footer(&mut new_section, footer, SectionProperty::even_footer);
         }
 
         self.document = self.document.add_section(new_section);
@@ -2541,6 +2450,51 @@ mod document_traversal_tests {
 
         assert!(String::from_utf8_lossy(&xml.footnotes).contains("nested footnote"));
         assert!(String::from_utf8_lossy(&xml.document_rels).contains("relationships/footnotes"));
+    }
+}
+
+#[cfg(test)]
+mod section_part_tests {
+    use super::*;
+
+    #[test]
+    fn add_section_preserves_all_header_and_footer_variants() {
+        let section = Section::new()
+            .header(Header::new())
+            .first_header(Header::new())
+            .even_header(Header::new())
+            .footer(Footer::new())
+            .first_footer(Footer::new())
+            .even_footer(Footer::new());
+
+        let docx = Docx::new().add_section(section);
+
+        assert_eq!(docx.document_rels.header_count, 3);
+        assert_eq!(docx.document_rels.footer_count, 3);
+        let DocumentChild::Section(section) = &docx.document.children[0] else {
+            panic!("expected a section");
+        };
+        assert_eq!(section.property.get_headers().len(), 3);
+        assert_eq!(section.property.get_footers().len(), 3);
+
+        let xml = docx.build();
+        assert_eq!(xml.headers.len(), 3);
+        assert_eq!(xml.footers.len(), 3);
+
+        let content_types = String::from_utf8_lossy(&xml.content_type);
+        for part_name in [
+            "header1.xml",
+            "header2.xml",
+            "header3.xml",
+            "footer1.xml",
+            "footer2.xml",
+            "footer3.xml",
+        ] {
+            assert!(
+                content_types.contains(part_name),
+                "missing content type for {part_name}"
+            );
+        }
     }
 }
 

@@ -2230,15 +2230,23 @@ fn ensure_unique_paragraph_id(
     used.insert(new_id);
 }
 
-/// Returns a generated paragraph ID, falling back to a deterministic scan if
-/// the generator collides with an existing value.
+/// Returns a generated paragraph ID, falling back to a deterministic scan.
+///
+/// Starting beyond the set cardinality avoids repeatedly revisiting a dense
+/// prefix of generated IDs after documents from multiple sources are merged.
+/// Lower gaps are deliberately ignored because uniqueness, not compactness, is
+/// the package invariant.
 fn next_unique_paragraph_id(used: &HashSet<String>) -> String {
     let generated = crate::generate_para_id();
     if !used.contains(&generated) {
         return generated;
     }
 
-    (1usize..)
+    let first_candidate = used
+        .len()
+        .checked_add(1)
+        .expect("the paragraph ID space should not be exhausted");
+    (first_candidate..)
         .map(|value| format!("{value:08x}"))
         .find(|candidate| !used.contains(candidate))
         .expect("the paragraph ID space should not be exhausted")
@@ -2735,6 +2743,21 @@ mod paragraph_id_tests {
         collect_para_ids_in_docx(&docx, &mut counts);
         assert!(!counts.contains_key(""));
         assert!(counts.values().all(|count| *count == 1));
+    }
+
+    #[test]
+    fn paragraph_id_fallback_skips_the_dense_used_prefix() {
+        let mut used: HashSet<String> = (1usize..=1_000)
+            .map(|value| format!("{value:08x}"))
+            .collect();
+        used.insert(crate::generate_para_id());
+
+        let first = next_unique_paragraph_id(&used);
+        assert_eq!(first, "000003ea");
+        used.insert(first);
+
+        let second = next_unique_paragraph_id(&used);
+        assert_eq!(second, "000003eb");
     }
 }
 

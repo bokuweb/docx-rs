@@ -103,6 +103,23 @@ fn bench_write_docx(c: &mut Criterion) {
         );
     });
 
+    let mut colliding_paragraph_ids_template = Docx::new();
+    for id in 1_u32..=1_000 {
+        colliding_paragraph_ids_template = colliding_paragraph_ids_template
+            .add_paragraph(Paragraph::new().id(format!("{id:08x}")));
+    }
+    for _ in 0..1_000 {
+        colliding_paragraph_ids_template =
+            colliding_paragraph_ids_template.add_paragraph(Paragraph::new().id("duplicate"));
+    }
+    c.bench_function("write_docx_colliding_paragraph_ids", |b| {
+        b.iter_batched(
+            || colliding_paragraph_ids_template.clone(),
+            |docx| black_box(docx.build()),
+            BatchSize::LargeInput,
+        );
+    });
+
     let image = vec![42; 64 * 1024];
     let mut repeated_image_template = Docx::new();
     for _ in 0..100 {

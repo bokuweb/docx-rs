@@ -179,15 +179,17 @@ impl Paragraph {
         self
     }
 
-    pub(crate) fn wrap_by_bookmark(mut self, id: usize, name: impl Into<String>) -> Paragraph {
+    /// Wraps the existing paragraph contents in matching bookmark markers.
+    ///
+    /// Mutating in place lets automatic TOC expansion bookmark headings
+    /// without moving each paragraph out of the document tree.
+    pub(crate) fn wrap_by_bookmark(&mut self, id: usize, name: impl Into<String>) {
         self.children.insert(
             0,
             ParagraphChild::BookmarkStart(BookmarkStart::new(id, name)),
         );
         self.children
             .push(ParagraphChild::BookmarkEnd(BookmarkEnd::new(id)));
-
-        self
     }
 
     pub fn add_hyperlink(mut self, link: Hyperlink) -> Self {

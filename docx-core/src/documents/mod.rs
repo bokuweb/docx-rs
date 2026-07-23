@@ -2289,6 +2289,11 @@ fn push_comment_and_comment_extended(
     }
 }
 
+/// Populates an automatic TOC and bookmarks matching headings in place.
+///
+/// `document_children[toc_index]` is the temporary placeholder installed by
+/// [`Docx::expand_auto_tocs`]. Reusing the input allocation preserves child
+/// order without rebuilding the entire document vector.
 fn update_document_by_toc(
     mut document_children: Vec<DocumentChild>,
     styles: &Styles,
@@ -2297,13 +2302,6 @@ fn update_document_by_toc(
 ) -> Vec<DocumentChild> {
     let heading_map = styles.create_heading_style_map();
     let mut items = vec![];
-    let mut children = vec![];
-    let style_map: std::collections::HashMap<String, usize> = toc
-        .instr
-        .styles_with_levels
-        .iter()
-        .map(|sl| sl.0.clone())
-        .collect();
 
     if toc.instr.heading_styles_range.is_none() && !toc.instr.styles_with_levels.is_empty() {
         // INFO: if \t option set without heading styles ranges, Microsoft word does not show ToC items...
@@ -2313,26 +2311,35 @@ fn update_document_by_toc(
 
     let (min, max) = toc.instr.heading_styles_range.unwrap_or((0, 9));
 
-    for child in document_children.into_iter() {
-        match child {
-            DocumentChild::Paragraph(mut paragraph) => {
-                if let Some(heading_level) = paragraph
+    {
+        let style_map: std::collections::HashMap<&str, usize> = toc
+            .instr
+            .styles_with_levels
+            .iter()
+            .map(|style| {
+                let (style_id, level) = &style.0;
+                (style_id.as_str(), *level)
+            })
+            .collect();
+
+        for child in &mut document_children {
+            if let DocumentChild::Paragraph(paragraph) = child {
+                let heading_level = paragraph
                     .property
                     .style
                     .as_ref()
-                    .map(|p| p.val.to_string())
-                    .and_then(|sid| heading_map.get(&sid))
-                {
-                    if min <= *heading_level && max >= *heading_level {
+                    .and_then(|style| heading_map.get(&style.val))
+                    .copied();
+                if let Some(heading_level) = heading_level {
+                    if min <= heading_level && max >= heading_level {
                         let toc_key = TocKey::generate();
                         items.push(
                             TableOfContentsItem::new()
                                 .text(paragraph.raw_text())
                                 .toc_key(&toc_key)
-                                .level(*heading_level),
+                                .level(heading_level),
                         );
-                        paragraph =
-                            Box::new(paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key));
+                        paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
                     }
 
                     if let Some((_min, _max)) = toc.instr.tc_field_level_range {
@@ -2341,52 +2348,31 @@ fn update_document_by_toc(
                 }
 
                 // Support \t option. Collect toc items if style id matched.
-                if let Some(level) = paragraph
+                let custom_level = paragraph
                     .property
                     .style
                     .as_ref()
-                    .and_then(|s| style_map.get(&s.val))
-                {
-                    if min <= *level && max >= *level {
+                    .and_then(|style| style_map.get(style.val.as_str()))
+                    .copied();
+                if let Some(level) = custom_level {
+                    if min <= level && max >= level {
                         let toc_key = TocKey::generate();
                         items.push(
                             TableOfContentsItem::new()
                                 .text(paragraph.raw_text())
                                 .toc_key(&toc_key)
-                                .level(*level),
+                                .level(level),
                         );
-                        paragraph =
-                            Box::new(paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key));
+                        paragraph.wrap_by_bookmark(generate_bookmark_id(), &toc_key);
                     }
                 }
-
-                children.push(DocumentChild::Paragraph(paragraph));
-            }
-            DocumentChild::Table(ref _table) => {
-                // TODO:
-                // for row in &table.rows {
-                //     for cell in &row.cells {
-                //         for content in &cell.children {
-                //             match content {
-                //                 TableCellContent::Paragraph(paragraph) => {}
-                //                 TableCellContent::Table(_) => {
-                //                     // TODO: Support table in table
-                //                 }
-                //             }
-                //         }
-                //     }
-                // }
-                children.push(child);
-            }
-            _ => {
-                children.push(child);
             }
         }
     }
 
     toc.items = items;
-    children[toc_index] = DocumentChild::TableOfContents(Box::new(toc));
-    children
+    document_children[toc_index] = DocumentChild::TableOfContents(Box::new(toc));
+    document_children
 }
 
 #[cfg(test)]
@@ -2423,6 +2409,73 @@ mod toc_expansion_tests {
 
         assert!(docx.expand_auto_tocs());
         assert_eq!(only_toc(&docx), &expected);
+    }
+
+    #[test]
+    fn auto_toc_expansion_preserves_child_order_and_bookmarks_headings() {
+        let mut docx = Docx::new()
+            .add_style(Style::new("Heading1", crate::StyleType::Paragraph).name("Heading 1"))
+            .add_paragraph(Paragraph::new().add_run(Run::new().add_text("before")))
+            .add_table_of_contents(TableOfContents::new().heading_styles_range(1, 3).auto())
+            .add_paragraph(
+                Paragraph::new()
+                    .style("Heading1")
+                    .add_run(Run::new().add_text("Heading")),
+            )
+            .add_table(Table::new(vec![]));
+
+        assert!(docx.expand_auto_tocs());
+        assert!(matches!(
+            docx.document.children.as_slice(),
+            [
+                DocumentChild::Paragraph(_),
+                DocumentChild::TableOfContents(_),
+                DocumentChild::Paragraph(_),
+                DocumentChild::Table(_)
+            ]
+        ));
+
+        let DocumentChild::TableOfContents(toc) = &docx.document.children[1] else {
+            panic!("expected the table of contents to remain at its original index");
+        };
+        assert_eq!(toc.items.len(), 1);
+        assert_eq!(toc.items[0].text, "Heading");
+
+        let DocumentChild::Paragraph(heading) = &docx.document.children[2] else {
+            panic!("expected the heading to remain at its original index");
+        };
+        assert!(matches!(
+            heading.children.first(),
+            Some(ParagraphChild::BookmarkStart(_))
+        ));
+        assert!(matches!(
+            heading.children.last(),
+            Some(ParagraphChild::BookmarkEnd(_))
+        ));
+    }
+
+    #[test]
+    fn auto_toc_expansion_matches_custom_styles_without_owning_their_ids() {
+        let mut docx = Docx::new()
+            .add_table_of_contents(
+                TableOfContents::new()
+                    .heading_styles_range(1, 9)
+                    .add_style_with_level(StyleWithLevel::new("CustomHeading", 2))
+                    .auto(),
+            )
+            .add_paragraph(
+                Paragraph::new()
+                    .style("CustomHeading")
+                    .add_run(Run::new().add_text("Custom heading")),
+            );
+
+        assert!(docx.expand_auto_tocs());
+        let DocumentChild::TableOfContents(toc) = &docx.document.children[0] else {
+            panic!("expected an expanded table of contents");
+        };
+        assert_eq!(toc.items.len(), 1);
+        assert_eq!(toc.items[0].text, "Custom heading");
+        assert_eq!(toc.items[0].level, 2);
     }
 }
 

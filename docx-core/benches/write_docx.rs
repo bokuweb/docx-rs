@@ -139,6 +139,32 @@ fn bench_write_docx(c: &mut Criterion) {
         );
     });
 
+    let mut large_auto_toc_template =
+        Docx::new().add_style(Style::new("Heading1", StyleType::Paragraph).name("Heading 1"));
+    for _ in 0..4 {
+        large_auto_toc_template = large_auto_toc_template
+            .add_table_of_contents(TableOfContents::new().heading_styles_range(1, 3).auto());
+    }
+    for index in 0..5_000 {
+        let style = if index % 100 == 0 {
+            "Heading1"
+        } else {
+            "NormalParagraphText"
+        };
+        large_auto_toc_template = large_auto_toc_template.add_paragraph(
+            Paragraph::new()
+                .style(style)
+                .add_run(Run::new().add_text(format!("paragraph {index}"))),
+        );
+    }
+    c.bench_function("write_docx_large_auto_tocs", |b| {
+        b.iter_batched(
+            || large_auto_toc_template.clone(),
+            |docx| black_box(docx.build()),
+            BatchSize::LargeInput,
+        );
+    });
+
     let image = vec![42; 64 * 1024];
     let mut repeated_image_template = Docx::new();
     for _ in 0..100 {

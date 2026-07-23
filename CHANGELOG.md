@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improve DOCX reading and writing performance by reducing XML allocations,
   avoiding repeated ZIP lookups, and deduplicating embedded images without
-  cloning their full buffers.
+  cloning their full buffers. Existing tables of contents are no longer deeply
+  cloned during package preparation.
 - Add `Docx::pack` to stream XML package parts directly into a DOCX archive.
   This avoids retaining every rendered XML part in memory and is faster than
   calling `Docx::build` followed by `XMLDocx::pack`.

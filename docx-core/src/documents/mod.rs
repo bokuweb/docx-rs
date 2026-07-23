@@ -794,29 +794,41 @@ impl Docx {
         crate::reset_para_id();
     }
 
-    /// Expands automatically generated tables of contents before the document
-    /// tree is normalized and inspected for dependencies.
+    /// Expands automatically generated tables of contents before dependency
+    /// collection.
+    ///
+    /// Discovery records only indexes so static tables of contents are not
+    /// cloned. Eligible tables are moved out when expanded, while `has_toc`
+    /// still reports every table of contents so preset TOC styles are added.
     fn expand_auto_tocs(&mut self) -> bool {
-        let tocs: Vec<(usize, Box<TableOfContents>)> = self
+        let mut has_toc = false;
+        let auto_toc_indexes: Vec<usize> = self
             .document
             .children
             .iter()
             .enumerate()
-            .filter_map(|(index, child)| match child {
-                DocumentChild::TableOfContents(toc) => Some((index, toc.clone())),
-                _ => None,
+            .filter_map(|(index, child)| {
+                let DocumentChild::TableOfContents(toc) = child else {
+                    return None;
+                };
+                has_toc = true;
+                (toc.items.is_empty() && toc.auto).then_some(index)
             })
             .collect();
 
-        for (index, toc) in &tocs {
-            if toc.items.is_empty() && toc.auto {
-                let children = std::mem::take(&mut self.document.children);
-                self.document.children =
-                    update_document_by_toc(children, &self.styles, *toc.clone(), *index);
-            }
+        for index in auto_toc_indexes {
+            let mut children = std::mem::take(&mut self.document.children);
+            let toc = match std::mem::replace(
+                &mut children[index],
+                DocumentChild::TableOfContents(Box::default()),
+            ) {
+                DocumentChild::TableOfContents(toc) => *toc,
+                _ => unreachable!("collected index must still contain a table of contents"),
+            };
+            self.document.children = update_document_by_toc(children, &self.styles, toc, index);
         }
 
-        !tocs.is_empty()
+        has_toc
     }
 
     /// Prepares the complete document tree for package-part rendering.
@@ -2278,9 +2290,9 @@ fn push_comment_and_comment_extended(
 }
 
 fn update_document_by_toc(
-    document_children: Vec<DocumentChild>,
+    mut document_children: Vec<DocumentChild>,
     styles: &Styles,
-    toc: TableOfContents,
+    mut toc: TableOfContents,
     toc_index: usize,
 ) -> Vec<DocumentChild> {
     let heading_map = styles.create_heading_style_map();
@@ -2295,6 +2307,7 @@ fn update_document_by_toc(
 
     if toc.instr.heading_styles_range.is_none() && !toc.instr.styles_with_levels.is_empty() {
         // INFO: if \t option set without heading styles ranges, Microsoft word does not show ToC items...
+        document_children[toc_index] = DocumentChild::TableOfContents(Box::new(toc));
         return document_children;
     }
 
@@ -2371,10 +2384,46 @@ fn update_document_by_toc(
         }
     }
 
-    let mut toc = toc;
     toc.items = items;
     children[toc_index] = DocumentChild::TableOfContents(Box::new(toc));
     children
+}
+
+#[cfg(test)]
+mod toc_expansion_tests {
+    use super::*;
+
+    fn only_toc(docx: &Docx) -> &TableOfContents {
+        let [DocumentChild::TableOfContents(toc)] = docx.document.children.as_slice() else {
+            panic!("expected exactly one table of contents");
+        };
+        toc
+    }
+
+    #[test]
+    fn static_toc_is_preserved_while_reporting_toc_presence() {
+        let toc = TableOfContents::new()
+            .alias("static")
+            .add_before_paragraph(Paragraph::new().add_run(Run::new().add_text("before")));
+        let expected = toc.clone();
+        let mut docx = Docx::new().add_table_of_contents(toc);
+
+        assert!(docx.expand_auto_tocs());
+        assert_eq!(only_toc(&docx), &expected);
+    }
+
+    #[test]
+    fn non_expandable_auto_toc_is_restored_after_being_moved() {
+        let toc = TableOfContents::new()
+            .alias("custom")
+            .add_style_with_level(StyleWithLevel::new("Custom", 1))
+            .auto();
+        let expected = toc.clone();
+        let mut docx = Docx::new().add_table_of_contents(toc);
+
+        assert!(docx.expand_auto_tocs());
+        assert_eq!(only_toc(&docx), &expected);
+    }
 }
 
 #[cfg(test)]

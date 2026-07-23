@@ -120,6 +120,25 @@ fn bench_write_docx(c: &mut Criterion) {
         );
     });
 
+    let mut populated_static_toc = TableOfContents::new();
+    for index in 0..20 {
+        populated_static_toc = populated_static_toc.add_before_paragraph(
+            Paragraph::new().add_run(Run::new().add_text(format!("TOC context {index}"))),
+        );
+    }
+    let mut many_static_tocs_template = Docx::new();
+    for _ in 0..100 {
+        many_static_tocs_template =
+            many_static_tocs_template.add_table_of_contents(populated_static_toc.clone());
+    }
+    c.bench_function("write_docx_many_static_tocs", |b| {
+        b.iter_batched(
+            || many_static_tocs_template.clone(),
+            |docx| black_box(docx.build()),
+            BatchSize::LargeInput,
+        );
+    });
+
     let image = vec![42; 64 * 1024];
     let mut repeated_image_template = Docx::new();
     for _ in 0..100 {

@@ -118,6 +118,8 @@ struct PackagePartCollector<'a> {
     relationship_prefix: Option<&'a str>,
     relationships: Vec<ImageIdAndPath>,
     relationship_ids: HashSet<String>,
+    /// Continues collision scans without revisiting previously used suffixes.
+    next_relationship_suffix_by_id: HashMap<String, usize>,
     /// Maps media to the owning relationship entry, avoiding another owned ID.
     relationships_by_media: HashMap<usize, usize>,
     footnotes: Vec<Footnote>,
@@ -130,6 +132,7 @@ impl<'a> PackagePartCollector<'a> {
             relationship_prefix,
             relationships: Vec::new(),
             relationship_ids: HashSet::new(),
+            next_relationship_suffix_by_id: HashMap::new(),
             relationships_by_media: HashMap::new(),
             footnotes: Vec::new(),
         }
@@ -149,14 +152,31 @@ impl<'a> PackagePartCollector<'a> {
         }
     }
 
-    /// Returns an ID that is unique inside this part's relationship scope.
-    fn unique_relationship_id(&self, preferred_id: &str) -> String {
-        match self.relationship_ids.contains(preferred_id) {
-            false => preferred_id.to_owned(),
-            true => (2usize..)
-                .map(|suffix| format!("{preferred_id}_{suffix}"))
-                .find(|candidate| !self.relationship_ids.contains(candidate))
-                .expect("the relationship ID space should not be exhausted"),
+    /// Returns a unique part-local relationship ID in amortized linear time.
+    ///
+    /// Repeated preferred IDs use the next unchecked suffix instead of
+    /// restarting at `_2`, while explicit suffixed IDs are still skipped.
+    fn unique_relationship_id(&mut self, preferred_id: &str) -> String {
+        if !self.relationship_ids.contains(preferred_id) {
+            return preferred_id.to_owned();
+        }
+
+        let (relationship_ids, next_suffix_by_id) = (
+            &self.relationship_ids,
+            &mut self.next_relationship_suffix_by_id,
+        );
+        let suffix = next_suffix_by_id
+            .entry(preferred_id.to_owned())
+            .or_insert(2);
+
+        loop {
+            let candidate = format!("{preferred_id}_{suffix}");
+            *suffix = suffix
+                .checked_add(1)
+                .expect("the relationship ID suffix space should not be exhausted");
+            if !relationship_ids.contains(&candidate) {
+                return candidate;
+            }
         }
     }
 }
@@ -316,5 +336,31 @@ mod tests {
 
         assert_eq!(registry.media.len(), 1);
         assert_eq!(part.relationships.len(), 1);
+    }
+
+    #[test]
+    fn colliding_picture_ids_keep_relationships_unique_and_reusable() {
+        let pictures = [
+            Pic::new_with_dimensions(vec![0], 1, 1).id("shared_2"),
+            Pic::new_with_dimensions(vec![1], 1, 1).id("shared"),
+            Pic::new_with_dimensions(vec![2], 1, 1).id("shared"),
+            Pic::new_with_dimensions(vec![1], 1, 1).id("shared"),
+        ];
+        let mut document = pictures
+            .into_iter()
+            .fold(Document::new(), |document, picture| {
+                document.add_paragraph(
+                    crate::Paragraph::new().add_run(crate::Run::new().add_image(picture)),
+                )
+            });
+        let mut registry = MediaRegistry::default();
+
+        let part = collect_document_part(&mut document, &mut registry);
+
+        assert_eq!(registry.media.len(), 3);
+        assert_eq!(part.relationships.len(), 3);
+        assert_eq!(part.relationships[0].0, "shared_2");
+        assert_eq!(part.relationships[1].0, "shared");
+        assert_eq!(part.relationships[2].0, "shared_3");
     }
 }

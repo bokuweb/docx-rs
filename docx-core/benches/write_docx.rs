@@ -108,6 +108,28 @@ fn bench_write_docx(c: &mut Criterion) {
             BatchSize::LargeInput,
         );
     });
+
+    let small_image = vec![42; 128];
+    let mut many_small_images_template = Docx::new();
+    for _ in 0..1_000 {
+        many_small_images_template =
+            many_small_images_template.add_paragraph(Paragraph::new().add_run(
+                Run::new().add_image(Pic::new_with_dimensions(small_image.clone(), 1, 1)),
+            ));
+    }
+    c.bench_function("write_docx_many_small_repeated_images", |b| {
+        b.iter_batched(
+            || many_small_images_template.clone(),
+            |docx| {
+                let mut cursor = Cursor::new(Vec::with_capacity(256 * 1024));
+                docx.build()
+                    .pack(&mut cursor)
+                    .expect("failed to write small-image docx");
+                black_box(cursor.into_inner());
+            },
+            BatchSize::LargeInput,
+        );
+    });
 }
 
 criterion_group!(docx_write_benches, bench_write_docx);

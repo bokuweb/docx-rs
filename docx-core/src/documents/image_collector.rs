@@ -25,8 +25,12 @@ pub(crate) struct MediaRegistry {
 }
 
 impl MediaRegistry {
-    /// Registers physical bytes and returns the package-global media ID.
-    fn register(&mut self, preferred_id: &str, bytes: Vec<u8>) -> String {
+    /// Registers physical bytes and returns their stable registry index.
+    ///
+    /// Part collectors use the numeric index as their deduplication key. This
+    /// avoids cloning and hashing a `media/<id>.png` target for every repeated
+    /// picture while keeping the package-visible media ID encapsulated here.
+    fn register(&mut self, preferred_id: &str, bytes: Vec<u8>) -> usize {
         let fingerprint = (bytes.len(), crc32fast::hash(&bytes));
         if let Some(index) = self
             .by_fingerprint
@@ -38,7 +42,7 @@ impl MediaRegistry {
                     .find(|index| self.media[*index].1 == bytes)
             })
         {
-            return self.media[index].0.clone();
+            return index;
         }
 
         let media_id = self.unique_media_id(preferred_id);
@@ -49,7 +53,12 @@ impl MediaRegistry {
             .entry(fingerprint)
             .or_default()
             .push(index);
-        media_id
+        index
+    }
+
+    /// Returns the package-visible ID assigned to registered media.
+    fn media_id(&self, index: usize) -> &str {
+        &self.media[index].0
     }
 
     /// Consumes the registry and returns files ready for ZIP packaging.
@@ -85,7 +94,7 @@ struct PackagePartCollector<'a> {
     relationship_prefix: Option<&'a str>,
     relationships: Vec<ImageIdAndPath>,
     relationship_ids: HashSet<String>,
-    relationships_by_target: HashMap<String, String>,
+    relationships_by_media: HashMap<usize, String>,
     footnotes: Vec<Footnote>,
 }
 
@@ -96,7 +105,7 @@ impl<'a> PackagePartCollector<'a> {
             relationship_prefix,
             relationships: Vec::new(),
             relationship_ids: HashSet::new(),
-            relationships_by_target: HashMap::new(),
+            relationships_by_media: HashMap::new(),
             footnotes: Vec::new(),
         }
     }
@@ -130,21 +139,21 @@ impl<'a> PackagePartCollector<'a> {
 impl DocumentTreeVisitor for PackagePartCollector<'_> {
     fn visit_picture(&mut self, picture: &mut Pic) {
         let preferred_relationship_id = self.relationship_id(&picture.id);
-        let media_id = self.registry.register(
+        let media_index = self.registry.register(
             &preferred_relationship_id,
             std::mem::take(&mut picture.image),
         );
-        let target = format!("media/{media_id}.png");
 
-        if let Some(relationship_id) = self.relationships_by_target.get(&target) {
+        if let Some(relationship_id) = self.relationships_by_media.get(&media_index) {
             picture.id.clone_from(relationship_id);
             return;
         }
 
         let relationship_id = self.unique_relationship_id(&preferred_relationship_id);
+        let target = format!("media/{}.png", self.registry.media_id(media_index));
         self.relationship_ids.insert(relationship_id.clone());
-        self.relationships_by_target
-            .insert(target.clone(), relationship_id.clone());
+        self.relationships_by_media
+            .insert(media_index, relationship_id.clone());
         self.relationships.push((relationship_id.clone(), target));
         picture.id = relationship_id;
     }
@@ -210,6 +219,18 @@ pub(crate) fn collect_footer_part(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn registry_reuses_the_stable_index_for_identical_media() {
+        let bytes = vec![1, 2, 3, 4];
+        let mut registry = MediaRegistry::default();
+
+        let first = registry.register("first", bytes.clone());
+        let second = registry.register("second", bytes);
+
+        assert_eq!(first, second);
+        assert_eq!(registry.media.len(), 1);
+    }
 
     #[test]
     fn registry_deduplicates_identical_media_but_keeps_part_relationships() {

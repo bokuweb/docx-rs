@@ -47,7 +47,6 @@ mod xml_docx;
 pub use build_xml::BuildXML;
 pub(crate) use history_id::HistoryId;
 pub(crate) use hyperlink_id::*;
-pub(crate) use paragraph_id::*;
 pub(crate) use paragraph_property_change_id::ParagraphPropertyChangeId;
 pub(crate) use pic_id::*;
 
@@ -71,6 +70,7 @@ pub use header::*;
 pub use header_id::*;
 pub use header_rels::*;
 pub use numberings::*;
+pub use paragraph_id::*;
 pub use rels::*;
 pub use settings::*;
 pub use styles::*;

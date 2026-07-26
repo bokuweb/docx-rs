@@ -81,11 +81,17 @@ impl BuildXML for Styles {
         &self,
         stream: crate::xml::writer::EventWriter<W>,
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
-        let normal = Style::new("Normal", StyleType::Paragraph).name("Normal");
         XMLBuilder::from(stream)
             .open_styles()?
             .add_child(&self.doc_defaults)?
-            .add_child(&normal)?
+            .add_optional_child(
+                &self
+                    .styles
+                    .iter()
+                    .find(|style| style.style_id == "Normal")
+                    .is_none()
+                    .then_some(Style::new("Normal", StyleType::Paragraph).name("Normal")),
+            )?
             .add_children(&self.styles)?
             .close()?
             .into_inner()
@@ -109,6 +115,18 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:styles xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" mc:Ignorable="w14 w15"><w:docDefaults><w:rPrDefault><w:rPr /></w:rPrDefault><w:pPrDefault><w:pPr><w:rPr /></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:styleId="Normal"><w:name w:val="Normal" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:qFormat /></w:style><w:style w:type="paragraph" w:styleId="Title"><w:name w:val="TitleName" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:qFormat /></w:style></w:styles>"#
+        );
+    }
+
+    #[test]
+    fn test_styles_custom_normal_style_replaces_default() {
+        let c = Styles::new()
+            .add_style(Style::new("Normal", StyleType::Paragraph).name("Custom Normal"));
+        let b = c.build();
+
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:styles xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" mc:Ignorable="w14 w15"><w:docDefaults><w:rPrDefault><w:rPr /></w:rPrDefault><w:pPrDefault><w:pPr><w:rPr /></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:styleId="Normal"><w:name w:val="Custom Normal" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:qFormat /></w:style></w:styles>"#
         );
     }
 

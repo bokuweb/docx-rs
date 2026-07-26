@@ -86,15 +86,15 @@ impl BuildXML for TableCellMargins {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
     fn test_table_cell_margin() {
         let b = TableCellMargins::new().build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:tblCellMar><w:top w:w="0" w:type="dxa" /><w:left w:w="55" w:type="dxa" /><w:bottom w:w="0" w:type="dxa" /><w:right w:w="55" w:type="dxa" /></w:tblCellMar>"#
         );
@@ -103,7 +103,7 @@ mod tests {
     #[test]
     fn test_table_cell_margin_setter() {
         let b = TableCellMargins::new().margin(10, 20, 30, 40).build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:tblCellMar><w:top w:w="10" w:type="dxa" /><w:left w:w="40" w:type="dxa" /><w:bottom w:w="30" w:type="dxa" /><w:right w:w="20" w:type="dxa" /></w:tblCellMar>"#
         );

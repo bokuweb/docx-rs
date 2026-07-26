@@ -416,16 +416,16 @@ impl BuildXML for Style {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
     fn test_build() {
         let c = Style::new("Heading", StyleType::Paragraph).name("Heading1");
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:style w:type="paragraph" w:styleId="Heading"><w:name w:val="Heading1" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:qFormat /></w:style>"#
         );
@@ -440,7 +440,7 @@ mod tests {
             .semi_hidden()
             .unhide_when_used();
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:style w:type="paragraph" w:styleId="MyStyle"><w:name w:val="My Style" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:uiPriority w:val="99" /><w:semiHidden /><w:unhideWhenUsed /></w:style>"#
         );

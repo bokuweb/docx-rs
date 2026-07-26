@@ -39,7 +39,6 @@ impl BuildXML for AGraphic {
 mod tests {
 
     use super::*;
-    #[cfg(test)]
     use pretty_assertions::assert_eq;
 
     #[test]

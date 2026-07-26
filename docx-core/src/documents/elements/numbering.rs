@@ -52,8 +52,9 @@ impl BuildXML for Numbering {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
     use pretty_assertions::assert_eq;
     use std::str;
 
@@ -61,7 +62,7 @@ mod tests {
     fn test_numbering() {
         let c = Numbering::new(0, 2);
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:num w:numId="0"><w:abstractNumId w:val="2" /></w:num>"#
         );
@@ -74,7 +75,7 @@ mod tests {
             LevelOverride::new(1).start(1),
         ];
         let b = c.overrides(overrides).build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:num w:numId="0"><w:abstractNumId w:val="2" /><w:lvlOverride w:ilvl="0"><w:startOverride w:val="1" /></w:lvlOverride><w:lvlOverride w:ilvl="1"><w:startOverride w:val="1" /></w:lvlOverride></w:num>"#
         );

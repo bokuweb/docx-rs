@@ -91,9 +91,9 @@ impl BuildXML for WebExtension {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
@@ -107,7 +107,7 @@ mod tests {
         )
         .property("hello", "world");
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><we:webextension xmlns:we="http://schemas.microsoft.com/office/webextensions/webextension/2010/11" id="{7f33b723-fb58-4524-8733-dbedc4b7c095}"><we:reference id="abcd" version="1.0.0.0" store="developer" storeType="Registry" /><we:alternateReferences /><we:properties><we:property name="hello" value="&quot;world&quot;" /></we:properties><we:bindings /><we:snapshot xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" /></we:webextension>"#
         );

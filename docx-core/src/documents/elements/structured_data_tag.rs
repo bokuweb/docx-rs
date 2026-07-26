@@ -172,9 +172,9 @@ impl BuildXML for StructuredDataTag {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
@@ -183,7 +183,7 @@ mod tests {
             .data_binding(DataBinding::new().xpath("root/hello"))
             .add_run(Run::new().add_text("Hello"))
             .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:sdt><w:sdtPr><w:rPr /><w:dataBinding w:xpath="root/hello" /></w:sdtPr><w:sdtContent><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:sdtContent></w:sdt>"#
         );

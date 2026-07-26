@@ -125,16 +125,16 @@ impl BuildXML for Hyperlink {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
     fn test_hyperlink() {
         let l = Hyperlink::new("ToC1", HyperlinkType::Anchor).add_run(Run::new().add_text("hello"));
         let b = l.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:hyperlink w:anchor="ToC1" w:history="1"><w:r><w:rPr /><w:t xml:space="preserve">hello</w:t></w:r></w:hyperlink>"#
         );

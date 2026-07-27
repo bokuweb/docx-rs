@@ -2,7 +2,25 @@ use insta::assert_debug_snapshot;
 
 use docx_rs::*;
 use std::fs::*;
-use std::io::{Read, Write};
+use std::io::{Cursor, Read, Write};
+
+#[test]
+pub fn read_and_build_document_with_instr_text() {
+    let input = include_bytes!("../../fixtures/page_num_in_header/page_num_in_header.docx");
+    let document = read_docx(input).unwrap();
+    let mut output = Cursor::new(Vec::new());
+
+    document.build().pack(&mut output).unwrap();
+
+    let mut archive = zip::ZipArchive::new(output).unwrap();
+    let mut header = String::new();
+    archive
+        .by_name("word/header1.xml")
+        .unwrap()
+        .read_to_string(&mut header)
+        .unwrap();
+    assert!(header.contains(r#"<w:instrText xml:space="preserve"> PAGE </w:instrText>"#));
+}
 
 #[test]
 pub fn read_hello() {

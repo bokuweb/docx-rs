@@ -99,6 +99,34 @@ pub fn table() -> Result<(), DocxError> {
 }
 
 #[test]
+pub fn table_with_style_and_indent() -> Result<(), DocxError> {
+    let path = std::path::Path::new("./tests/output/table_with_style_and_indent.docx");
+    let file = std::fs::File::create(path).unwrap();
+
+    let style = Style::new("table_for_test", StyleType::Table).name("table_for_test");
+
+    let table = Table::new(vec![
+        TableRow::new(vec![
+            TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello"))),
+            TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("World"))),
+        ]),
+        TableRow::new(vec![
+            TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Foo"))),
+            TableCell::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Bar"))),
+        ]),
+    ])
+    .style("table_for_test")
+    .indent(1440);
+
+    Docx::new()
+        .add_style(style)
+        .add_table(table)
+        .build()
+        .pack(file)?;
+    Ok(())
+}
+
+#[test]
 pub fn table_with_grid() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/table_with_grid.docx");
     let file = std::fs::File::create(path).unwrap();

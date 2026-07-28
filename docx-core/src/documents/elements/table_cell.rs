@@ -218,4 +218,16 @@ mod tests {
             r#"{"children":[{"type":"paragraph","data":{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{},"tabs":[]},"hasNumbering":false}}],"property":{"width":null,"borders":null,"gridSpan":2,"verticalMerge":null,"verticalAlign":null,"textDirection":null,"shading":null},"hasNumbering":false}"#,
         );
     }
+
+    #[test]
+    fn test_cell_add_p_add_table() {
+        let c = TableCell::new()
+            .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
+            .add_table(Table::new(vec![TableRow::new(vec![TableCell::new()])]))
+            .build();
+        assert_eq!(
+            str::from_utf8(&c).unwrap(),
+            r#"<w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p><w:tbl><w:tblPr><w:tblW w:w="0" w:type="auto" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders></w:tblPr><w:tblGrid /><w:tr><w:trPr /><w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:tc></w:tr></w:tbl></w:tc>"#
+        );
+    }
 }

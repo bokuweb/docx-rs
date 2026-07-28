@@ -52,7 +52,7 @@ where
     zip.add_directory("docProps/", directory_options)?;
 
     let options = SimpleFileOptions::default()
-        .compression_method(zip::CompressionMethod::Stored)
+        .compression_method(zip::CompressionMethod::Deflated)
         .unix_permissions(0o755);
 
     zip.start_file("[Content_Types].xml", options)?;
@@ -169,7 +169,7 @@ where
     zip.add_directory("docProps/", directory_options)?;
 
     let options = SimpleFileOptions::default()
-        .compression_method(zip::CompressionMethod::Stored)
+        .compression_method(zip::CompressionMethod::Deflated)
         .unix_permissions(0o755);
     let mut xml_buffer = Vec::new();
 

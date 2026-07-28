@@ -161,20 +161,18 @@ impl BuildXML for TableCell {
         XMLBuilder::from(stream)
             .open_table_cell()?
             .add_child(&self.property)?
-            .apply_each(&self.children, |ch, b| {
-                match ch {
-                    TableCellContent::Paragraph(p) => b.add_child(&**p),
-                    TableCellContent::Table(t) => {
-                        b.add_child(&**t)?
-                            // INFO: We need to add empty paragraph when parent cell includes only cell.
-                            .apply_if(self.children.len() == 1, |b| b.add_child(&Paragraph::new()))
-                    }
-                    TableCellContent::StructuredDataTag(t) => b.add_child(&t),
-                    TableCellContent::TableOfContents(t) => b.add_child(&t),
-                }
+            .apply_each(&self.children, |ch, b| match ch {
+                TableCellContent::Paragraph(p) => b.add_child(&**p),
+                TableCellContent::Table(t) => b.add_child(&**t),
+                TableCellContent::StructuredDataTag(t) => b.add_child(&t),
+                TableCellContent::TableOfContents(t) => b.add_child(&t),
             })?
-            // INFO: We need to add empty paragraph when parent cell includes only cell.
-            .apply_if(self.children.is_empty(), |b| b.add_child(&Paragraph::new()))?
+            // INFO: To make word happy, the content of a table cell has to end in a paragraph.
+            .apply_if(
+                self.children.is_empty()
+                    || !matches!(self.children.last(), Some(TableCellContent::Paragraph(_))),
+                |b| b.add_child(&Paragraph::new()),
+            )?
             .close()?
             .into_inner()
     }
@@ -216,6 +214,18 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&c).unwrap(),
             r#"{"children":[{"type":"paragraph","data":{"id":"12345678","children":[{"type":"run","data":{"runProperty":{},"children":[{"type":"text","data":{"preserveSpace":true,"text":"Hello"}}]}}],"property":{"runProperty":{},"tabs":[]},"hasNumbering":false}}],"property":{"width":null,"borders":null,"gridSpan":2,"verticalMerge":null,"verticalAlign":null,"textDirection":null,"shading":null},"hasNumbering":false}"#,
+        );
+    }
+
+    #[test]
+    fn test_cell_add_p_add_table() {
+        let c = TableCell::new()
+            .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
+            .add_table(Table::new(vec![TableRow::new(vec![TableCell::new()])]))
+            .build();
+        assert_eq!(
+            str::from_utf8(&c).unwrap(),
+            r#"<w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p><w:tbl><w:tblPr><w:tblW w:w="0" w:type="auto" /><w:jc w:val="left" /><w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders></w:tblPr><w:tblGrid /><w:tr><w:trPr /><w:tc><w:tcPr /><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:tc></w:tr></w:tbl><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:tc>"#
         );
     }
 }

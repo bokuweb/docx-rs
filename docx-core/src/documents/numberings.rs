@@ -37,9 +37,23 @@ impl BuildXML for Numberings {
         XMLBuilder::from(stream)
             .declaration(Some(true))?
             .open_numbering()?
-            .add_child(&create_default_numbering())?
+            .add_optional_child(
+                &self
+                    .abstract_nums
+                    .iter()
+                    .find(|a| a.id == 1)
+                    .is_none()
+                    .then_some(create_default_numbering()),
+            )?
             .add_children(&self.abstract_nums)?
-            .add_child(&Numbering::new(1, 1))?
+            .add_optional_child(
+                &self
+                    .numberings
+                    .iter()
+                    .find(|n| n.id == 1)
+                    .is_none()
+                    .then_some(Numbering::new(1, 1)),
+            )?
             .add_children(&self.numberings)?
             .close()?
             .into_inner()
@@ -173,4 +187,62 @@ fn create_default_numbering() -> AbstractNumbering {
                 None,
             ),
         )
+}
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+    #[cfg(test)]
+    use pretty_assertions::assert_eq;
+    use std::str;
+
+    #[test]
+    fn test_numberings_default() {
+        let c = Numberings::new();
+        let b = c.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:numbering xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:abstractNum w:abstractNumId="1"><w:lvl w:ilvl="0"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%1." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="420" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="(%2)" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="840" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="2"><w:start w:val="1" /><w:numFmt w:val="decimalEnclosedCircle" /><w:lvlText w:val="%3" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="1260" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="3"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="1680" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="4"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="(%5)" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="2100" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="5"><w:start w:val="1" /><w:numFmt w:val="decimalEnclosedCircle" /><w:lvlText w:val="%6" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="2520" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="6"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%7." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="2940" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="7"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="(%8)" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="3360" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="8"><w:start w:val="1" /><w:numFmt w:val="decimalEnclosedCircle" /><w:lvlText w:val="%9" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="3780" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl></w:abstractNum><w:num w:numId="1"><w:abstractNumId w:val="1" /></w:num></w:numbering>"#
+        );
+    }
+
+    #[test]
+    fn test_numberings_custom_abstract_numbering_replaces_default() {
+        let mut c = AbstractNumbering::new(1);
+        c = c.add_level(Level::new(
+            1,
+            Start::new(1),
+            NumberFormat::new("decimal"),
+            LevelText::new("%4."),
+            LevelJc::new("left"),
+        ));
+        let mut d = Numberings::new();
+        d = d.add_abstract_numbering(c);
+        let b = d.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:numbering xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:abstractNum w:abstractNumId="1"><w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /></w:lvl></w:abstractNum><w:num w:numId="1"><w:abstractNumId w:val="1" /></w:num></w:numbering>"#
+        );
+    }
+
+    #[test]
+    fn test_numberings_custom_numbering_replaces_default() {
+        let mut c = AbstractNumbering::new(2);
+        c = c.add_level(Level::new(
+            1,
+            Start::new(1),
+            NumberFormat::new("decimal"),
+            LevelText::new("%4."),
+            LevelJc::new("left"),
+        ));
+        let mut d = Numberings::new();
+        d = d.add_abstract_numbering(c);
+        d = d.add_numbering(Numbering::new(1, 2));
+        let b = d.build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:numbering xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:abstractNum w:abstractNumId="1"><w:lvl w:ilvl="0"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%1." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="420" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="(%2)" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="840" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="2"><w:start w:val="1" /><w:numFmt w:val="decimalEnclosedCircle" /><w:lvlText w:val="%3" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="1260" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="3"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="1680" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="4"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="(%5)" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="2100" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="5"><w:start w:val="1" /><w:numFmt w:val="decimalEnclosedCircle" /><w:lvlText w:val="%6" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="2520" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="6"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%7." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="2940" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="7"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="(%8)" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="3360" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl><w:lvl w:ilvl="8"><w:start w:val="1" /><w:numFmt w:val="decimalEnclosedCircle" /><w:lvlText w:val="%9" /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="3780" w:right="0" w:hanging="420" /></w:pPr><w:rPr /></w:lvl></w:abstractNum><w:abstractNum w:abstractNumId="2"><w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /></w:lvl></w:abstractNum><w:num w:numId="1"><w:abstractNumId w:val="2" /></w:num></w:numbering>"#
+        );
+    }
 }

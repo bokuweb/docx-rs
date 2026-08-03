@@ -38,15 +38,16 @@ impl BuildXML for FontTable {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    use pretty_assertions::assert_str_eq;
     use std::str;
 
     #[test]
     fn test_settings() {
         let c = FontTable::new();
         let b = c.build();
-        assert_str_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:fonts xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:font w:name="Times New Roman"><w:charset w:val="00" /><w:family w:val="roman" /><w:pitch w:val="variable" /></w:font><w:font w:name="Symbol"><w:charset w:val="02" /><w:family w:val="roman" /><w:pitch w:val="variable" /></w:font><w:font w:name="Arial"><w:charset w:val="00" /><w:family w:val="swiss" /><w:pitch w:val="variable" /></w:font></w:fonts>"#
         );

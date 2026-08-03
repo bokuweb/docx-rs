@@ -34,7 +34,6 @@ impl BuildXML for BookmarkStart {
 mod tests {
 
     use super::*;
-    #[cfg(test)]
     use pretty_assertions::assert_eq;
     use std::str;
 

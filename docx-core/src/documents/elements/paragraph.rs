@@ -592,8 +592,9 @@ impl BuildXML for Paragraph {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
     use pretty_assertions::assert_eq;
     use std::str;
 
@@ -602,7 +603,7 @@ mod tests {
         let b = Paragraph::new()
             .add_run(Run::new().add_text("Hello"))
             .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );
@@ -615,7 +616,7 @@ mod tests {
             .add_run(Run::new().add_text("Hello"))
             .add_bookmark_end(0)
             .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:bookmarkStart w:id="0" w:name="article" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:bookmarkEnd w:id="0" /></w:p>"#
         );
@@ -628,7 +629,7 @@ mod tests {
             .add_run(Run::new().add_text("Hello"))
             .add_comment_end(1)
             .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr><w:commentRangeStart w:id="1" /><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r><w:r><w:rPr /></w:r><w:commentRangeEnd w:id="1" /><w:r><w:commentReference w:id="1" /></w:r></w:p>"#
         );
@@ -640,7 +641,7 @@ mod tests {
             .add_run(Run::new().add_text("Hello"))
             .numbering(NumberingId::new(0), IndentLevel::new(1))
             .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:numPr><w:numId w:val="0" /><w:ilvl w:val="1" /></w:numPr></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );
@@ -657,7 +658,7 @@ mod tests {
             .line_spacing(spacing)
             .add_run(Run::new().add_text("Hello"))
             .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:spacing w:before="20" w:after="30" w:line="200" w:lineRule="auto" /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );

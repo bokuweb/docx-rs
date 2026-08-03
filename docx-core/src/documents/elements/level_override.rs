@@ -57,16 +57,16 @@ impl BuildXML for LevelOverride {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
     fn test_level_override() {
         let c = LevelOverride::new(1).start(2);
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:lvlOverride w:ilvl="1"><w:startOverride w:val="2" /></w:lvlOverride>"#
         );
@@ -83,7 +83,7 @@ mod tests {
         );
         let c = LevelOverride::new(1).level(lvl);
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:lvlOverride w:ilvl="1"><w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /></w:lvl></w:lvlOverride>"#
         );

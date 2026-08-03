@@ -99,9 +99,9 @@ impl BuildXML for CoreProps {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
@@ -118,7 +118,7 @@ mod tests {
             title: None,
         });
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dcterms:created xsi:type="dcterms:W3CDTF">1970-01-01T00:00:00Z</dcterms:created><dc:creator>unknown</dc:creator><cp:lastModifiedBy>unknown</cp:lastModifiedBy><dcterms:modified xsi:type="dcterms:W3CDTF">1970-01-01T00:00:00Z</dcterms:modified><cp:revision>1</cp:revision></cp:coreProperties>"#
         );
@@ -138,7 +138,7 @@ mod tests {
             title: Some("title".to_owned()),
         });
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dcterms:created xsi:type="dcterms:W3CDTF">2019-01-01</dcterms:created><dc:creator>foo</dc:creator><cp:lastModifiedBy>go</cp:lastModifiedBy><dcterms:modified xsi:type="dcterms:W3CDTF">2019-01-01</dcterms:modified><cp:revision>1</cp:revision><dc:description>bar</dc:description><dc:language>en</dc:language><dc:subject>subject</dc:subject><dc:title>title</dc:title></cp:coreProperties>"#
         );

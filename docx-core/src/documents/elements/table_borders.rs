@@ -175,15 +175,15 @@ impl BuildXML for TableBorders {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
     fn test_table_borders() {
         let b = TableBorders::new().build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:tblBorders><w:top w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders>"#
         );
@@ -195,7 +195,7 @@ mod tests {
             .set(TableBorder::new(TableBorderPosition::Left).color("AAAAAA"))
             .clear(TableBorderPosition::Top)
             .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:tblBorders><w:top w:val="nil" w:sz="2" w:space="0" w:color="000000" /><w:left w:val="single" w:sz="2" w:space="0" w:color="AAAAAA" /><w:bottom w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:right w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideH w:val="single" w:sz="2" w:space="0" w:color="000000" /><w:insideV w:val="single" w:sz="2" w:space="0" w:color="000000" /></w:tblBorders>"#
         );

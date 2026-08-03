@@ -44,8 +44,9 @@ impl BuildXML for CustomItem {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
     use pretty_assertions::assert_eq;
 
     #[test]
@@ -55,8 +56,8 @@ mod tests {
         )
         .unwrap();
 
-        assert_eq!(
-            c.0.to_string(),
+        assert_xml_eq(
+            &c.0.to_string(),
             r#"<ds:datastoreItem ds:itemID="{06AC5857-5C65-A94A-BCEC-37356A209BC3}" xmlns:ds="http://schemas.openxmlformats.org/officeDocument/2006/customXml"><ds:schemaRefs><ds:schemaRef ds:uri="https://hoge.com"></ds:schemaRef></ds:schemaRefs></ds:datastoreItem>"#
         );
         assert_eq!(

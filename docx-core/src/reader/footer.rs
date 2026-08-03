@@ -47,9 +47,14 @@ impl FromXML for Footer {
     }
 }
 
-#[test]
-fn test_footer_from_xml() {
-    let xml = r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use pretty_assertions::assert_eq;
+
+    #[test]
+    fn test_footer_from_xml() {
+        let xml = r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:ftr xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
     xmlns:o="urn:schemas-microsoft-com:office:office"
     xmlns:v="urn:schemas-microsoft-com:vml"
@@ -71,8 +76,9 @@ fn test_footer_from_xml() {
         </w:r>
     </w:p>
 </w:ftr>"#;
-    let h = Footer::from_xml(xml.as_bytes()).unwrap();
-    let expected =
-        Footer::new().add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello Footer")));
-    assert_eq!(h, expected)
+        let h = Footer::from_xml(xml.as_bytes()).unwrap();
+        let expected = Footer::new()
+            .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello Footer")));
+        assert_eq!(h, expected)
+    }
 }

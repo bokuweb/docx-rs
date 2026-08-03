@@ -182,9 +182,9 @@ impl BuildXML for Level {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
@@ -197,7 +197,7 @@ mod tests {
             LevelJc::new("left"),
         )
         .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /></w:lvl>"#
         );
@@ -214,7 +214,7 @@ mod tests {
         )
         .indent(Some(320), Some(SpecialIndentType::Hanging(200)), None, None)
         .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr><w:rPr /></w:lvl>"#
         );
@@ -230,7 +230,7 @@ mod tests {
         )
         .suffix(LevelSuffixType::Space)
         .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /><w:suff w:val="space" /></w:lvl>"#
         );
@@ -246,7 +246,7 @@ mod tests {
         )
         .paragraph_style("a-style")
         .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /></w:pPr><w:rPr /><w:pStyle w:val="a-style" /></w:lvl>"#
         );

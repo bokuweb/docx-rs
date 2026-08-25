@@ -100,6 +100,7 @@ pub enum XMLElement {
     TableIndent,
     TableBorders,
     TableCellMargin,
+    TableLayout,
     TablePositionProperty,
     TableStyle,
     // Change
@@ -341,6 +342,7 @@ impl FromStr for XMLElement {
             "tblInd" => Ok(XMLElement::TableIndent),
             "tblBorders" => Ok(XMLElement::TableBorders),
             "tblCellMar" => Ok(XMLElement::TableCellMargin),
+            "tblLayout" => Ok(XMLElement::TableLayout),
             "tblStyle" => Ok(XMLElement::TableStyle),
             "tblpPr" => Ok(XMLElement::TablePositionProperty),
             "top" => Ok(XMLElement::Top),

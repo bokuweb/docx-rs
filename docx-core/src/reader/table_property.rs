@@ -1,11 +1,10 @@
 use std::io::Read;
 use std::str::FromStr;
 
-use crate::TableAlignmentType;
+use crate::{TableAlignmentType, TableLayoutType};
 
 use super::*;
 
-// TODO: layout: Option<TableLayout>,
 impl ElementReader for TableProperty {
     fn read<R: Read>(
         r: &mut EventReader<R>,
@@ -51,6 +50,16 @@ impl ElementReader for TableProperty {
                         XMLElement::TableStyle => {
                             if let Some(s) = read_val(&attributes) {
                                 tp = tp.style(s);
+                            }
+                        }
+                        XMLElement::TableLayout => {
+                            if let Some(v) = attributes
+                                .iter()
+                                .find(|attribute| attribute.name.local_name == "type")
+                            {
+                                if let Ok(layout) = TableLayoutType::from_str(&v.value) {
+                                    tp = tp.layout(layout);
+                                }
                             }
                         }
                         XMLElement::TablePositionProperty => {

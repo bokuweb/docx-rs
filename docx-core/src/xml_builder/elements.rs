@@ -218,12 +218,19 @@ impl<W: Write> XMLBuilder<W> {
 
     // Build w:style element
     // i.e. <w:style ... >
-    pub(crate) fn open_style(self, style_type: StyleType, id: &str) -> Result<Self> {
-        self.write(
-            XmlEvent::start_element("w:style")
-                .attr_display("w:type", style_type)
-                .attr("w:styleId", id),
-        )
+    pub(crate) fn open_style(
+        self,
+        style_type: StyleType,
+        id: &str,
+        is_default: bool,
+    ) -> Result<Self> {
+        let mut element = XmlEvent::start_element("w:style")
+            .attr_display("w:type", style_type)
+            .attr("w:styleId", id);
+        if is_default {
+            element = element.attr("w:default", "1");
+        }
+        self.write(element)
     }
     // i.e. <w:next ... >
     closed_with_str!(next, "w:next");
@@ -783,7 +790,7 @@ mod tests {
     fn test_declaration() -> Result<()> {
         let b = XMLBuilder::new(Vec::new());
         let r = b
-            .open_style(StyleType::Paragraph, "Heading")?
+            .open_style(StyleType::Paragraph, "Heading", false)?
             .close()?
             .into_inner()?
             .into_inner()?;

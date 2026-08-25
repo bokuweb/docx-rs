@@ -6,6 +6,7 @@ import { StyleType } from "../style";
 
 export type StyleJSON = {
   styleId: string;
+  default?: boolean;
   name: string;
   styleType: StyleType;
   runProperty: RunPropertyJSON;

@@ -13,6 +13,8 @@ use super::*;
 #[serde(rename_all = "camelCase")]
 pub struct Style {
     pub style_id: String,
+    #[serde(rename = "default", skip_serializing_if = "is_false")]
+    pub is_default: bool,
     pub name: Name,
     pub style_type: StyleType,
     pub run_property: RunProperty,
@@ -48,6 +50,7 @@ impl Default for Style {
         let ppr = ParagraphProperty::new();
         Style {
             style_id: "".to_owned(),
+            is_default: false,
             style_type: StyleType::Paragraph,
             name,
             run_property: rpr,
@@ -77,6 +80,11 @@ impl Style {
 
     pub fn name(mut self, name: impl Into<String>) -> Self {
         self.name = Name::new(name);
+        self
+    }
+
+    pub fn default_style(mut self) -> Self {
+        self.is_default = true;
         self
     }
 
@@ -391,7 +399,7 @@ impl BuildXML for Style {
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         // Set "Normal" as default if you need change these values please fix it
         XMLBuilder::from(stream)
-            .open_style(self.style_type, &self.style_id)?
+            .open_style(self.style_type, &self.style_id, self.is_default)?
             .add_child(&self.name)?
             .add_child(&self.run_property)?
             .add_child(&self.paragraph_property)?
@@ -428,6 +436,18 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:style w:type="paragraph" w:styleId="Heading"><w:name w:val="Heading1" /><w:rPr /><w:pPr><w:rPr /></w:pPr><w:qFormat /></w:style>"#
+        );
+    }
+
+    #[test]
+    fn test_build_default_style() {
+        let c = Style::new("TableNormal", StyleType::Table)
+            .default_style()
+            .name("Normal Table");
+        let xml = String::from_utf8(c.build()).unwrap();
+
+        assert!(
+            xml.starts_with(r#"<w:style w:type="table" w:styleId="TableNormal" w:default="1">"#)
         );
     }
 

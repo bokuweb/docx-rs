@@ -31,6 +31,7 @@ export class Style {
   _styleId: string;
   _name: string;
   _styleType: StyleType;
+  _default: boolean;
   _runProperty: RunProperty;
   _paragraphProperty: ParagraphProperty;
   _tableProperty: TableProperty;
@@ -44,6 +45,7 @@ export class Style {
   constructor(id: string, type: StyleType) {
     this._styleId = id;
     this._styleType = type;
+    this._default = false;
     this._name = "";
     this._runProperty;
     this._tableProperty = { cellMargins: createDefaultTableCellMargins() };
@@ -59,6 +61,11 @@ export class Style {
 
   name = (n: string) => {
     this._name = n;
+    return this;
+  };
+
+  default = () => {
+    this._default = true;
     return this;
   };
 
@@ -325,6 +332,10 @@ export class Style {
 
     if (this._name) {
       s = s.name(this._name);
+    }
+
+    if (this._default) {
+      s = s.default_style();
     }
 
     if (this._basedOn) {

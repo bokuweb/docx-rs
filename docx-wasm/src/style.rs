@@ -19,6 +19,11 @@ impl Style {
         self
     }
 
+    pub fn default_style(mut self) -> Self {
+        self.0.is_default = true;
+        self
+    }
+
     pub fn based_on(mut self, base: &str) -> Self {
         self.0.based_on = Some(docx_rs::BasedOn::new(base));
         self

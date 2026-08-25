@@ -116,6 +116,7 @@ mod tests {
     <w:tblPr>
         <w:jc w:val="center"/>
         <w:tblInd w:w="100" w:type="dxa"/>
+        <w:tblLayout w:type="fixed"/>
     </w:tblPr>
 </w:tbl>
 </w:document>"#;
@@ -126,6 +127,7 @@ mod tests {
             Table::without_borders(vec![])
                 .align(TableAlignmentType::Center)
                 .indent(100)
+                .layout(TableLayoutType::Fixed)
         );
     }
 }

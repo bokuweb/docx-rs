@@ -50,7 +50,6 @@ mod tests {
 
     use super::*;
     use crate::types::*;
-    #[cfg(test)]
     use pretty_assertions::assert_eq;
 
     #[test]

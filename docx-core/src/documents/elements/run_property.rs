@@ -277,16 +277,16 @@ impl BuildXML for RunProperty {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
     fn test_size() {
         let c = RunProperty::new().size(10).color("FFFFFF");
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:rPr><w:sz w:val="10" /><w:szCs w:val="10" /><w:color w:val="FFFFFF" /></w:rPr>"#
         );

@@ -30,15 +30,15 @@ impl BuildXML for TableGrid {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
     fn test_table_indent() {
         let b = TableGrid::new(vec![100, 200]).build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:tblGrid><w:gridCol w:w="100" w:type="dxa" /><w:gridCol w:w="200" w:type="dxa" /></w:tblGrid>"#
         );

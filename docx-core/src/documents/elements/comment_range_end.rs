@@ -36,16 +36,16 @@ impl BuildXML for CommentRangeEnd {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
     fn test_comment_range_end() {
         let c = CommentRangeEnd::new(1);
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:r><w:rPr /></w:r><w:commentRangeEnd w:id="1" /><w:r><w:commentReference w:id="1" /></w:r>"#
         );

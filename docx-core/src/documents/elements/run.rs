@@ -426,15 +426,16 @@ impl BuildXML for Run {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
     use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
     fn test_build() {
         let b = Run::new().add_text("Hello").build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r>"#
         );
@@ -443,7 +444,7 @@ mod tests {
     #[test]
     fn test_underline() {
         let b = Run::new().add_text("Hello").underline("single").build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:r><w:rPr><w:u w:val="single" /></w:rPr><w:t xml:space="preserve">Hello</w:t></w:r>"#
         );
@@ -452,7 +453,7 @@ mod tests {
     #[test]
     fn test_strike() {
         let b = Run::new().add_text("Hello").strike().build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:r><w:rPr><w:strike /></w:rPr><w:t xml:space="preserve">Hello</w:t></w:r>"#
         );

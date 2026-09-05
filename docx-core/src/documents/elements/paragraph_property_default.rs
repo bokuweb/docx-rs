@@ -47,19 +47,17 @@ impl BuildXML for ParagraphPropertyDefault {
     }
 }
 
+#[cfg(test)]
 mod tests {
+    use crate::xml::test_utils::assert_xml_eq;
 
-    #[allow(unused_imports)]
     use super::*;
-
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
 
     #[test]
     fn test_build() {
         let c = ParagraphPropertyDefault::new();
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             std::str::from_utf8(&b).unwrap(),
             r#"<w:pPrDefault><w:pPr><w:rPr /></w:pPr></w:pPrDefault>"#
         );

@@ -263,7 +263,7 @@ mod tests {
     use super::*;
     use crate::types::LineSpacingType;
     use crate::types::SectionType;
-    #[cfg(test)]
+    use crate::xml::test_utils::assert_xml_eq;
     use pretty_assertions::assert_eq;
     use std::str;
 
@@ -271,7 +271,7 @@ mod tests {
     fn test_default() {
         let c = ParagraphProperty::new();
         let b = c.build();
-        assert_eq!(str::from_utf8(&b).unwrap(), r#"<w:pPr><w:rPr /></w:pPr>"#);
+        assert_xml_eq(str::from_utf8(&b).unwrap(), r#"<w:pPr><w:rPr /></w:pPr>"#);
     }
 
     #[test]
@@ -279,7 +279,7 @@ mod tests {
         let c = ParagraphProperty::new().bidi(true);
         let b = c.build();
         println!("-----Test bidi: {}", str::from_utf8(&b).unwrap());
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:pPr><w:rPr /><w:bidi /></w:pPr>"#
         );
@@ -288,7 +288,7 @@ mod tests {
     fn test_alignment() {
         let c = ParagraphProperty::new();
         let b = c.align(AlignmentType::Right).build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:pPr><w:rPr /><w:jc w:val="right" /></w:pPr>"#
         );
@@ -298,7 +298,7 @@ mod tests {
     fn test_indent() {
         let c = ParagraphProperty::new();
         let b = c.indent(Some(20), None, None, None).build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:pPr><w:rPr /><w:ind w:left="20" w:right="0" /></w:pPr>"#
         );
@@ -308,7 +308,7 @@ mod tests {
     fn test_keep_next() {
         let c = ParagraphProperty::new();
         let b = c.keep_next(true).build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:pPr><w:rPr /><w:keepNext /></w:pPr>"#
         );
@@ -318,7 +318,7 @@ mod tests {
     fn test_outline_lvl() {
         let props = ParagraphProperty::new();
         let bytes = props.outline_lvl(1).build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&bytes).unwrap(),
             r#"<w:pPr><w:rPr /><w:outlineLvl w:val="1" /></w:pPr>"#
         )
@@ -341,7 +341,7 @@ mod tests {
             .line_rule(LineSpacingType::AtLeast)
             .line(100);
         let bytes = props.line_spacing(spacing).build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&bytes).unwrap(),
             r#"<w:pPr><w:rPr /><w:spacing w:line="100" w:lineRule="atLeast" /></w:pPr>"#
         )
@@ -351,7 +351,7 @@ mod tests {
     fn test_shading() {
         let props = ParagraphProperty::new().shading(Shading::new().fill("F0F0F0"));
         let bytes = props.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&bytes).unwrap(),
             r#"<w:pPr><w:rPr /><w:shd w:val="clear" w:color="auto" w:fill="F0F0F0" /></w:pPr>"#
         );
@@ -364,7 +364,7 @@ mod tests {
             ..Default::default()
         });
         let bytes = props.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&bytes).unwrap(),
             r#"<w:pPr><w:rPr /><w:sectPr><w:pgSz w:w="11906" w:h="16838" /><w:pgMar w:top="1985" w:right="1701" w:bottom="1701" w:left="1701" w:header="851" w:footer="992" w:gutter="0" /><w:cols w:space="425" w:num="1" /><w:type w:val="nextPage" /></w:sectPr></w:pPr>"#
         )

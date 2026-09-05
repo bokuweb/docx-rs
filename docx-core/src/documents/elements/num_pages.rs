@@ -41,15 +41,15 @@ impl BuildXML for NumPages {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
     fn test_num_pages() {
         let b = NumPages::new().build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:r><w:rPr /><w:fldChar w:fldCharType="begin" w:dirty="false" /><w:instrText>NUMPAGES</w:instrText><w:fldChar w:fldCharType="separate" w:dirty="false" /><w:t xml:space="preserve">1</w:t><w:fldChar w:fldCharType="end" w:dirty="false" /></w:r>"#
         );

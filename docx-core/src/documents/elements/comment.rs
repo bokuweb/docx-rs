@@ -121,8 +121,9 @@ impl BuildXML for Comment {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
     use pretty_assertions::assert_eq;
     use std::str;
 
@@ -138,7 +139,7 @@ mod tests {
     #[test]
     fn test_comment_with_default_paragraph() {
         let b = Comment::new(1).add_paragraph(Paragraph::new()).build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:comment w:id="1" w:author="unnamed" w:date="1970-01-01T00:00:00Z" w:initials=""><w:p w14:paraId="12345678"><w:pPr><w:rPr /></w:pPr></w:p></w:comment>"#
         );

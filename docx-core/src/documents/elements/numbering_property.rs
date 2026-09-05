@@ -72,8 +72,9 @@ impl Serialize for NumberingProperty {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
     use pretty_assertions::assert_eq;
     use std::str;
 
@@ -81,7 +82,7 @@ mod tests {
     fn test_num_property() {
         let c = NumberingProperty::new().add_num(NumberingId::new(0), IndentLevel::new(3));
         let b = c.build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:numPr><w:numId w:val="0" /><w:ilvl w:val="3" /></w:numPr>"#
         );

@@ -65,9 +65,9 @@ impl BuildXML for ParagraphPropertyChange {
 #[cfg(test)]
 mod tests {
 
+    use crate::xml::test_utils::assert_xml_eq;
+
     use super::*;
-    #[cfg(test)]
-    use pretty_assertions::assert_eq;
     use std::str;
 
     #[test]
@@ -75,7 +75,7 @@ mod tests {
         let b = ParagraphPropertyChange::new()
             .property(ParagraphProperty::new())
             .build();
-        assert_eq!(
+        assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:pPrChange w:id="123" w:author="unnamed" w:date="1970-01-01T00:00:00Z"><w:pPr><w:rPr /></w:pPr></w:pPrChange>"#
         );

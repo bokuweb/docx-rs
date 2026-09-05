@@ -193,7 +193,6 @@ impl ElementReader for Run {
 mod tests {
 
     use super::*;
-    #[cfg(test)]
     use pretty_assertions::assert_eq;
 
     #[test]

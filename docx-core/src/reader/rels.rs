@@ -119,7 +119,6 @@ pub fn read_rels_xml<R: Read>(reader: R, dir: impl AsRef<Path>) -> Result<ReadRe
 mod tests {
 
     use super::*;
-    #[cfg(test)]
     use pretty_assertions::assert_eq;
 
     #[test]

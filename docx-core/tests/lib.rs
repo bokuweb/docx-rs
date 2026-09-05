@@ -157,6 +157,20 @@ pub fn table_merged() -> Result<(), DocxError> {
 }
 
 #[test]
+pub fn table_cell_trailing_paragraph() -> Result<(), DocxError> {
+    let path = std::path::Path::new("./tests/output/table_cell_trailing_paragraph.docx");
+    let file = std::fs::File::create(path).unwrap();
+
+    let table = Table::new(vec![TableRow::new(vec![TableCell::new()
+        .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Hello")))
+        .add_table(Table::new(vec![TableRow::new(vec![
+            TableCell::new().add_paragraph(Paragraph::new())
+        ])]))])]);
+    Docx::new().add_table(table).build().pack(file)?;
+    Ok(())
+}
+
+#[test]
 pub fn decoration() -> Result<(), DocxError> {
     let path = std::path::Path::new("./tests/output/decoration.docx");
     let file = std::fs::File::create(path).unwrap();

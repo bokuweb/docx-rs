@@ -157,12 +157,14 @@ impl BuildXML for TableProperty {
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
             .open_table_property()?
+            // If a style is set, it has to come first, otherwise everything
+            // before the style might be ignored by word.
+            .add_optional_child(&self.style)?
             .add_child(&self.width)?
             .add_child(&self.justification)?
             .add_child(&self.borders)?
             .add_optional_child(&self.margins)?
             .add_optional_child(&self.indent)?
-            .add_optional_child(&self.style)?
             .add_optional_child(&self.layout)?
             .add_optional_child(&self.position)?
             .close()?

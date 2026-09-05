@@ -72,11 +72,12 @@ impl Default for EmitterConfig {
 impl EmitterConfig {
     pub fn create_writer<W: Write>(&self, writer: W) -> EventWriter<W> {
         EventWriter {
-            writer: QuickWriter::new(writer),
-            perform_escaping: self.perform_escaping,
-            element_stack: Vec::new(),
-            element_names: Vec::new(),
-            pending_start: SmallVec::new(),
+            inner: Box::new(EventWriterInner {
+                writer: QuickWriter::new(writer),
+                perform_escaping: self.perform_escaping,
+                element_stack: Vec::new(),
+                element_names: Vec::new(),
+            }),
         }
     }
 }
@@ -89,11 +90,14 @@ struct ElementState {
 }
 
 pub struct EventWriter<W: Write> {
+    inner: Box<EventWriterInner<W>>,
+}
+
+struct EventWriterInner<W: Write> {
     writer: QuickWriter<W>,
     perform_escaping: bool,
     element_stack: Vec<ElementState>,
     element_names: Vec<u8>,
-    pending_start: SmallVec<[u8; 128]>,
 }
 
 impl<W: Write> EventWriter<W> {
@@ -109,67 +113,78 @@ impl<W: Write> EventWriter<W> {
             } => {
                 let standalone_text = standalone.map(|flag| if flag { "yes" } else { "no" });
                 let decl = BytesDecl::new(version.as_str(), encoding, standalone_text);
-                self.writer.write_event(Event::Decl(decl))?;
+                self.inner.writer.write_event(Event::Decl(decl))?;
             }
             XmlEvent::StartElement(element) => {
                 self.flush_pending()?;
                 let name = &element.encoded[1..1 + element.name_len];
-                let name_start = self.element_names.len();
-                self.element_names.extend_from_slice(name);
-                self.element_stack.push(ElementState {
+                let name_start = self.inner.element_names.len();
+                self.inner.element_names.extend_from_slice(name);
+                self.inner.element_stack.push(ElementState {
                     name_start,
                     name_len: element.name_len,
                     pending: true,
                 });
-                self.pending_start = element.encoded;
+                self.inner
+                    .writer
+                    .get_mut()
+                    .write_all(&element.encoded)
+                    .map_err(Error::from)?;
             }
             XmlEvent::EndElement => {
-                let state = self.element_stack.pop().ok_or(Error::UnbalancedEndTag)?;
+                let state = self
+                    .inner
+                    .element_stack
+                    .pop()
+                    .ok_or(Error::UnbalancedEndTag)?;
                 if state.pending {
-                    let writer = self.writer.get_mut();
-                    writer.write_all(&self.pending_start).map_err(Error::from)?;
-                    writer.write_all(b" />").map_err(Error::from)?;
-                    self.pending_start.clear();
+                    self.inner
+                        .writer
+                        .get_mut()
+                        .write_all(b" />")
+                        .map_err(Error::from)?;
                 } else {
                     let name_end = state.name_start + state.name_len;
-                    let writer = self.writer.get_mut();
+                    let writer = self.inner.writer.get_mut();
                     writer.write_all(b"</").map_err(Error::from)?;
                     writer
-                        .write_all(&self.element_names[state.name_start..name_end])
+                        .write_all(&self.inner.element_names[state.name_start..name_end])
                         .map_err(Error::from)?;
                     writer.write_all(b">").map_err(Error::from)?;
                 }
-                self.element_names.truncate(state.name_start);
+                self.inner.element_names.truncate(state.name_start);
             }
             XmlEvent::Characters(text) => {
                 self.flush_pending()?;
-                let text_event = if self.perform_escaping {
+                let text_event = if self.inner.perform_escaping {
                     BytesText::new(text.as_ref())
                 } else {
                     BytesText::from_escaped(text.as_ref())
                 };
-                self.writer.write_event(Event::Text(text_event))?;
+                self.inner.writer.write_event(Event::Text(text_event))?;
             }
         }
         Ok(())
     }
 
     pub fn into_inner(self) -> Result<W> {
-        Ok(self.writer.into_inner())
+        let inner = *self.inner;
+        Ok(inner.writer.into_inner())
     }
 
     pub fn inner_mut(&mut self) -> Result<&mut W> {
-        Ok(self.writer.get_mut())
+        Ok(self.inner.writer.get_mut())
     }
 
     fn flush_pending(&mut self) -> Result<()> {
-        if let Some(state) = self.element_stack.last_mut() {
+        if let Some(state) = self.inner.element_stack.last_mut() {
             if state.pending {
                 state.pending = false;
-                let writer = self.writer.get_mut();
-                writer.write_all(&self.pending_start).map_err(Error::from)?;
-                writer.write_all(b">").map_err(Error::from)?;
-                self.pending_start.clear();
+                self.inner
+                    .writer
+                    .get_mut()
+                    .write_all(b">")
+                    .map_err(Error::from)?;
             }
         }
         Ok(())
@@ -178,7 +193,7 @@ impl<W: Write> EventWriter<W> {
 
 #[derive(Clone, Debug)]
 pub struct StartElement<'a> {
-    encoded: SmallVec<[u8; 128]>,
+    encoded: SmallVec<[u8; 64]>,
     name_len: usize,
     _marker: PhantomData<&'a ()>,
 }
@@ -261,7 +276,7 @@ impl<'a> StartElement<'a> {
     }
 }
 
-struct AttributeValueWriter<'a>(&'a mut SmallVec<[u8; 128]>);
+struct AttributeValueWriter<'a>(&'a mut SmallVec<[u8; 64]>);
 
 impl fmt::Write for AttributeValueWriter<'_> {
     fn write_str(&mut self, value: &str) -> fmt::Result {

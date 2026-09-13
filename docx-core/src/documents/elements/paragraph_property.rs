@@ -49,6 +49,8 @@ pub struct ParagraphProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub snap_to_grid: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub contextual_spacing: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub shading: Option<Shading>,
     // read only
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -108,6 +110,11 @@ impl ParagraphProperty {
 
     pub fn snap_to_grid(mut self, v: bool) -> Self {
         self.snap_to_grid = Some(v);
+        self
+    }
+
+    pub fn contextual_spacing(mut self, v: bool) -> Self {
+        self.contextual_spacing = Some(v);
         self
     }
 
@@ -240,6 +247,7 @@ impl BuildXML for ParagraphProperty {
             .add_optional_child(&self.text_alignment)?
             .add_optional_child(&self.adjust_right_ind)?
             .apply_opt(self.snap_to_grid, |v, b| b.snap_to_grid(v))?
+            .apply_opt(self.contextual_spacing, |v, b| b.contextual_spacing(v))?
             .apply_if(self.keep_next, |b| b.keep_next())?
             .apply_if(self.keep_lines, |b| b.keep_lines())?
             .apply_if(self.page_break_before, |b| b.page_break_before())?
@@ -284,6 +292,21 @@ mod tests {
             r#"<w:pPr><w:rPr /><w:bidi /></w:pPr>"#
         );
     }
+    #[test]
+    fn test_contextual_spacing() {
+        let b = ParagraphProperty::new().contextual_spacing(true).build();
+        assert_xml_eq(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:pPr><w:rPr /><w:contextualSpacing w:val="true" /></w:pPr>"#,
+        );
+
+        let b = ParagraphProperty::new().contextual_spacing(false).build();
+        assert_xml_eq(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:pPr><w:rPr /><w:contextualSpacing w:val="false" /></w:pPr>"#,
+        );
+    }
+
     #[test]
     fn test_alignment() {
         let c = ParagraphProperty::new();

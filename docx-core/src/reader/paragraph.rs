@@ -220,6 +220,26 @@ mod tests {
     }
 
     #[test]
+    fn test_read_contextual_spacing() {
+        let read = |ppr: &str| {
+            let c = format!(
+                r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:p><w:pPr>{}</w:pPr></w:p>
+</w:document>"#,
+                ppr
+            );
+            let mut parser = EventReader::new(c.as_bytes());
+            let p = Paragraph::read(&mut parser, &[]).unwrap();
+            p.property.contextual_spacing
+        };
+
+        assert_eq!(read("<w:contextualSpacing/>"), Some(true));
+        assert_eq!(read(r#"<w:contextualSpacing w:val="0"/>"#), Some(false));
+        assert_eq!(read(r#"<w:contextualSpacing w:val="false"/>"#), Some(false));
+        assert_eq!(read(""), None);
+    }
+
+    #[test]
     fn test_read_paragraph_borders() {
         let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <w:p>

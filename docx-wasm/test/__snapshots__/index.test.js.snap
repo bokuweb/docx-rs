@@ -7458,6 +7458,7 @@ Object {
         "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
+          "contextualSpacing": true,
           "lineSpacing": Object {
             "after": 80,
           },
@@ -7961,6 +7962,7 @@ Object {
         "name": "List Paragraph",
         "next": null,
         "paragraphProperty": Object {
+          "contextualSpacing": true,
           "indent": Object {
             "end": null,
             "firstLineChars": null,
@@ -10992,6 +10994,7 @@ Object {
         "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
+          "contextualSpacing": true,
           "lineSpacing": Object {
             "after": 80,
           },
@@ -11495,6 +11498,7 @@ Object {
         "name": "List Paragraph",
         "next": null,
         "paragraphProperty": Object {
+          "contextualSpacing": true,
           "indent": Object {
             "end": null,
             "firstLineChars": null,
@@ -25094,6 +25098,7 @@ Object {
         "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
+          "contextualSpacing": true,
           "lineSpacing": Object {
             "after": 80,
             "line": 240,
@@ -25595,6 +25600,7 @@ Object {
         "name": "List Paragraph",
         "next": null,
         "paragraphProperty": Object {
+          "contextualSpacing": true,
           "indent": Object {
             "end": null,
             "firstLineChars": null,
@@ -45995,6 +46001,7 @@ Object {
         "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
+          "contextualSpacing": true,
           "lineSpacing": Object {
             "after": 80,
           },
@@ -46498,6 +46505,7 @@ Object {
         "name": "List Paragraph",
         "next": null,
         "paragraphProperty": Object {
+          "contextualSpacing": true,
           "indent": Object {
             "end": null,
             "firstLineChars": null,
@@ -151875,6 +151883,7 @@ Object {
         "name": "List Paragraph",
         "next": null,
         "paragraphProperty": Object {
+          "contextualSpacing": true,
           "indent": Object {
             "end": null,
             "firstLineChars": null,
@@ -180693,6 +180702,7 @@ Object {
         "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
+          "contextualSpacing": true,
           "lineSpacing": Object {
             "after": 80,
           },
@@ -181196,6 +181206,7 @@ Object {
         "name": "List Paragraph",
         "next": null,
         "paragraphProperty": Object {
+          "contextualSpacing": true,
           "indent": Object {
             "end": null,
             "firstLineChars": null,

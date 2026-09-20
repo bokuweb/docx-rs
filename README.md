@@ -60,7 +60,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 ### Read a document with Rust
 
 `read_docx` parses a DOCX package into the same `Docx` model used by the writer.
-The model can also be serialized to JSON.
+The model can also be serialized to JSON. Packages whose ASCII ZIP part names
+conflict with their resolved filenames are rejected.
 
 ```rust
 use docx_rs::*;

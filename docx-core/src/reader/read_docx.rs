@@ -100,6 +100,7 @@ pub fn read_docx_with_options(buf: &[u8], options: ReadDocxOptions) -> Result<Do
     let mut docx = Docx::new();
     let cur = Cursor::new(buf);
     let mut archive = zip::ZipArchive::new(cur)?;
+    super::read_zip::validate_ascii_part_names(buf, &mut archive)?;
     // First, the content type for relationship parts and the Main Document part
     // (the only required part) must be defined (physically located at /[Content_Types].xml in the package)
     let _content_types = {

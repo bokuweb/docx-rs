@@ -29,6 +29,11 @@ impl<W: Write> XMLBuilder<W> {
             .close()
     }
 
+    pub(crate) fn contextual_spacing(self, v: bool) -> Result<Self> {
+        self.write(XmlEvent::start_element("w:contextualSpacing").attr_display("w:val", v))?
+            .close()
+    }
+
     #[allow(clippy::too_many_arguments)]
     pub(crate) fn run_fonts(
         self,

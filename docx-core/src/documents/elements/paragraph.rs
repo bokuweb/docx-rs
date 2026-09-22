@@ -268,6 +268,11 @@ impl Paragraph {
         self
     }
 
+    pub fn contextual_spacing(mut self, v: bool) -> Self {
+        self.property = self.property.contextual_spacing(v);
+        self
+    }
+
     pub fn keep_lines(mut self, v: bool) -> Self {
         self.property = self.property.keep_lines(v);
         self

@@ -95,6 +95,9 @@ impl ElementReader for ParagraphProperty {
                             let v = read_bool(&attributes);
                             p.snap_to_grid = Some(v);
                         }
+                        XMLElement::ContextualSpacing => {
+                            p.contextual_spacing = Some(read_bool(&attributes));
+                        }
                         XMLElement::KeepNext => {
                             if read_bool(&attributes) {
                                 p.keep_next = Some(true);

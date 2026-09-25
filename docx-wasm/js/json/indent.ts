@@ -6,7 +6,7 @@ export type IndentJSON = {
     val: number;
   } | null;
   startChars: number | null;
-  // Read only
+  endChars: number | null;
   hangingChars: number | null;
   firstLineChars: number | null;
 };

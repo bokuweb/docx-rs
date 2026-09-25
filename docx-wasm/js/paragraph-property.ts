@@ -11,6 +11,74 @@ export { AlignmentType } from "./json/bindings/AlignmentType";
 
 export type SpecialIndentKind = "firstLine" | "hanging";
 
+/**
+ * Character-unit indents in hundredths of a character (e.g. 400 = 4 chars),
+ * written as w:leftChars / w:rightChars / w:hangingChars / w:firstLineChars.
+ * When present, Word uses these in preference to the absolute (twip) values.
+ */
+export type IndentChars = {
+  startChars?: number;
+  endChars?: number;
+  hangingChars?: number;
+  firstLineChars?: number;
+};
+
+export type Indent = {
+  left: number;
+  specialIndentKind?: SpecialIndentKind;
+  specialIndentSize?: number;
+  right?: number;
+} & IndentChars;
+
+// Sets the absolute indent while keeping any character-unit indents already set.
+export const mergeIndent = (
+  current: Indent | undefined,
+  next: Omit<Indent, keyof IndentChars>
+): Indent => ({
+  startChars: current?.startChars,
+  endChars: current?.endChars,
+  hangingChars: current?.hangingChars,
+  firstLineChars: current?.firstLineChars,
+  ...next,
+});
+
+// Merges character-unit indents into the current indent. Passing `undefined`
+// for a key clears it. Creates `{ left: 0 }` if no indent was set yet.
+export const mergeIndentChars = (
+  current: Indent | undefined,
+  chars: IndentChars
+): Indent => ({ ...(current ?? { left: 0 }), ...chars });
+
+const hasIndentChars = (indent: Indent) =>
+  indent.startChars != null ||
+  indent.endChars != null ||
+  indent.hangingChars != null ||
+  indent.firstLineChars != null;
+
+export const setIndentChars = <
+  T extends {
+    indent_chars(
+      start_chars?: number | null,
+      end_chars?: number | null,
+      hanging_chars?: number | null,
+      first_line_chars?: number | null
+    ): T;
+  }
+>(
+  target: T,
+  indent: Indent
+): T => {
+  if (!hasIndentChars(indent)) {
+    return target;
+  }
+  return target.indent_chars(
+    indent.startChars ?? undefined,
+    indent.endChars ?? undefined,
+    indent.hangingChars ?? undefined,
+    indent.firstLineChars ?? undefined
+  );
+};
+
 export type LineSpacingType = "atLeast" | "auto" | "exact";
 
 export type FrameProperty = {
@@ -66,12 +134,7 @@ export class ParagraphProperty {
   _align?: AlignmentType;
   _textAlignment?: TextAlignmentType;
   styleId?: string;
-  indent?: {
-    left: number;
-    specialIndentKind?: SpecialIndentKind;
-    specialIndentSize?: number;
-    right?: number;
-  };
+  indent?: Indent;
   numbering?: {
     id: number;
     level: number;
@@ -329,6 +392,7 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
       indent.specialIndentSize,
       indent.right
     ) as T;
+    target = setIndentChars(target as wasm.Paragraph, indent) as T;
   }
 
   if (typeof property.numbering !== "undefined") {
@@ -535,6 +599,7 @@ export const createParagraphProperty = (
       }
     }
     p = p.indent(indent.left, kind, indent.specialIndentSize, indent.right);
+    p = setIndentChars(p, indent);
   }
 
   if (typeof property.lineSpacing !== "undefined") {

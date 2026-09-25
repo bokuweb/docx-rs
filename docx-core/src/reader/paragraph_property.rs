@@ -21,9 +21,20 @@ impl ElementReader for ParagraphProperty {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::Indent => {
-                            let (start, end, special, start_chars, hanging_chars, first_line_chars) =
-                                read_indent(&attributes)?;
+                            let (
+                                start,
+                                end,
+                                special,
+                                start_chars,
+                                end_chars,
+                                hanging_chars,
+                                first_line_chars,
+                            ) = read_indent(&attributes)?;
                             p = p.indent(start, special, end, start_chars);
+
+                            if let Some(chars) = end_chars {
+                                p = p.end_chars(chars);
+                            }
 
                             if let Some(chars) = hanging_chars {
                                 p = p.hanging_chars(chars);

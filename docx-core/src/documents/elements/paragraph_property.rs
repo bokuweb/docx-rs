@@ -191,17 +191,31 @@ impl ParagraphProperty {
         self
     }
 
-    pub(crate) fn hanging_chars(mut self, chars: i32) -> Self {
-        if let Some(indent) = self.indent {
-            self.indent = Some(indent.hanging_chars(chars));
-        }
+    // Character-unit indents (hundredths of a character). These keep the
+    // absolute values already set by `indent`, so call `indent` first.
+    // If no indent exists yet, one is created with only the chars value set.
+    pub fn start_chars(mut self, chars: i32) -> Self {
+        self.indent = Some(self.indent.take().unwrap_or_default().start_chars(chars));
         self
     }
 
-    pub(crate) fn first_line_chars(mut self, chars: i32) -> Self {
-        if let Some(indent) = self.indent {
-            self.indent = Some(indent.first_line_chars(chars));
-        }
+    pub fn end_chars(mut self, chars: i32) -> Self {
+        self.indent = Some(self.indent.take().unwrap_or_default().end_chars(chars));
+        self
+    }
+
+    pub fn hanging_chars(mut self, chars: i32) -> Self {
+        self.indent = Some(self.indent.take().unwrap_or_default().hanging_chars(chars));
+        self
+    }
+
+    pub fn first_line_chars(mut self, chars: i32) -> Self {
+        self.indent = Some(
+            self.indent
+                .take()
+                .unwrap_or_default()
+                .first_line_chars(chars),
+        );
         self
     }
 
@@ -353,7 +367,7 @@ mod tests {
         let b = c.indent(Some(20), Some(SpecialIndentType::FirstLine(10)), None, None);
         assert_eq!(
             serde_json::to_string(&b).unwrap(),
-            r#"{"runProperty":{},"indent":{"start":20,"startChars":null,"end":null,"specialIndent":{"type":"firstLine","val":10},"hangingChars":null,"firstLineChars":null},"tabs":[]}"#
+            r#"{"runProperty":{},"indent":{"start":20,"startChars":null,"end":null,"endChars":null,"specialIndent":{"type":"firstLine","val":10},"hangingChars":null,"firstLineChars":null},"tabs":[]}"#
         );
     }
 

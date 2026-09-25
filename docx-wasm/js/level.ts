@@ -3,6 +3,9 @@ import {
   createDefaultParagraphProperty,
   ParagraphProperty,
   SpecialIndentKind,
+  IndentChars,
+  mergeIndent,
+  mergeIndentChars,
 } from "./paragraph-property";
 import {
   createDefaultRunProperty,
@@ -42,11 +45,20 @@ export class Level {
     specialIndentKind?: SpecialIndentKind,
     specialIndentSize?: number
   ) {
-    this.paragraphProperty.indent = {
+    this.paragraphProperty.indent = mergeIndent(this.paragraphProperty.indent, {
       left,
       specialIndentKind,
       specialIndentSize,
-    };
+    });
+    return this;
+  }
+
+  /**
+   * Sets character-unit indents in hundredths of a character (e.g. 400 = 4 chars).
+   * Keeps the absolute values set by `indent()`; pass `undefined` to clear a key.
+   */
+  indentChars(chars: IndentChars) {
+    this.paragraphProperty.indent = mergeIndentChars(this.paragraphProperty.indent, chars);
     return this;
   }
 

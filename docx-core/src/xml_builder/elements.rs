@@ -280,12 +280,16 @@ impl<W: Write> XMLBuilder<W> {
     closed_with_str!(suffix, "w:suff");
 
     // i.e. <w:ind ... >
+    #[allow(clippy::too_many_arguments)]
     pub(crate) fn indent(
         self,
         start: Option<i32>,
         special_indent: Option<SpecialIndentType>,
         end: i32,
         start_chars: Option<i32>,
+        end_chars: Option<i32>,
+        hanging_chars: Option<i32>,
+        first_line_chars: Option<i32>,
     ) -> Result<Self> {
         let mut base = XmlEvent::start_element("w:ind")
             .attr_display("w:left", start.unwrap_or(0))
@@ -293,6 +297,18 @@ impl<W: Write> XMLBuilder<W> {
 
         if let Some(start_chars) = start_chars {
             base = base.attr_display("w:leftChars", start_chars);
+        }
+
+        if let Some(end_chars) = end_chars {
+            base = base.attr_display("w:rightChars", end_chars);
+        }
+
+        if let Some(hanging_chars) = hanging_chars {
+            base = base.attr_display("w:hangingChars", hanging_chars);
+        }
+
+        if let Some(first_line_chars) = first_line_chars {
+            base = base.attr_display("w:firstLineChars", first_line_chars);
         }
 
         match special_indent {

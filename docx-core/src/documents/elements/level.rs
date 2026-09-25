@@ -58,6 +58,26 @@ impl Level {
         self
     }
 
+    pub fn start_chars(mut self, chars: i32) -> Self {
+        self.paragraph_property = self.paragraph_property.start_chars(chars);
+        self
+    }
+
+    pub fn end_chars(mut self, chars: i32) -> Self {
+        self.paragraph_property = self.paragraph_property.end_chars(chars);
+        self
+    }
+
+    pub fn hanging_chars(mut self, chars: i32) -> Self {
+        self.paragraph_property = self.paragraph_property.hanging_chars(chars);
+        self
+    }
+
+    pub fn first_line_chars(mut self, chars: i32) -> Self {
+        self.paragraph_property = self.paragraph_property.first_line_chars(chars);
+        self
+    }
+
     pub fn paragraph_style(mut self, style_id: impl Into<String>) -> Self {
         self.pstyle = Some(ParagraphStyle::new(Some(style_id.into())));
         self
@@ -219,6 +239,25 @@ mod tests {
             r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="320" w:right="0" w:hanging="200" /></w:pPr><w:rPr /></w:lvl>"#
         );
     }
+    #[test]
+    fn test_level_indent_chars() {
+        let b = Level::new(
+            1,
+            Start::new(1),
+            NumberFormat::new("decimal"),
+            LevelText::new("%4."),
+            LevelJc::new("left"),
+        )
+        .indent(Some(840), Some(SpecialIndentType::Hanging(420)), None, None)
+        .start_chars(400)
+        .hanging_chars(200)
+        .build();
+        assert_xml_eq(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:lvl w:ilvl="1"><w:start w:val="1" /><w:numFmt w:val="decimal" /><w:lvlText w:val="%4." /><w:lvlJc w:val="left" /><w:pPr><w:rPr /><w:ind w:left="840" w:right="0" w:leftChars="400" w:hangingChars="200" w:hanging="420" /></w:pPr><w:rPr /></w:lvl>"#
+        );
+    }
+
     #[test]
     fn test_level_with_suff() {
         let b = Level::new(

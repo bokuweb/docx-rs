@@ -321,6 +321,16 @@ impl Paragraph {
         self
     }
 
+    pub fn start_chars(mut self, chars: i32) -> Paragraph {
+        self.property = self.property.start_chars(chars);
+        self
+    }
+
+    pub fn end_chars(mut self, chars: i32) -> Paragraph {
+        self.property = self.property.end_chars(chars);
+        self
+    }
+
     pub fn hanging_chars(mut self, chars: i32) -> Paragraph {
         self.property = self.property.hanging_chars(chars);
         self
@@ -666,6 +676,21 @@ mod tests {
         assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:spacing w:before="20" w:after="30" w:line="200" w:lineRule="auto" /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
+        );
+    }
+
+    #[test]
+    fn test_indent_chars() {
+        let b = Paragraph::new()
+            .add_run(Run::new().add_text("Hello"))
+            .indent(Some(840), None, Some(420), None)
+            .start_chars(400)
+            .end_chars(200)
+            .first_line_chars(100)
+            .build();
+        assert_xml_eq(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:p w14:paraId="12345678"><w:pPr><w:rPr /><w:ind w:left="840" w:right="420" w:leftChars="400" w:rightChars="200" w:firstLineChars="100" /></w:pPr><w:r><w:rPr /><w:t xml:space="preserve">Hello</w:t></w:r></w:p>"#
         );
     }
 

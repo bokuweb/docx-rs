@@ -6,6 +6,9 @@ import {
   LineSpacing,
   AlignmentType,
   SpecialIndentKind,
+  IndentChars,
+  mergeIndent,
+  mergeIndentChars,
   ParagraphPropertyChange,
 } from "./paragraph-property";
 import { Insert } from "./insert";
@@ -125,12 +128,21 @@ export class Paragraph {
     specialIndentSize?: number,
     right?: number
   ) {
-    this.property.indent = {
+    this.property.indent = mergeIndent(this.property.indent, {
       left,
       specialIndentKind,
       specialIndentSize,
       right,
-    };
+    });
+    return this;
+  }
+
+  /**
+   * Sets character-unit indents in hundredths of a character (e.g. 400 = 4 chars).
+   * Keeps the absolute values set by `indent()`; pass `undefined` to clear a key.
+   */
+  indentChars(chars: IndentChars) {
+    this.property.indent = mergeIndentChars(this.property.indent, chars);
     return this;
   }
 

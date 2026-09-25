@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## @0.4.23 (Unreleased)
+
+- Support character-unit indents (`w:leftChars` / `w:rightChars` /
+  `w:hangingChars` / `w:firstLineChars`, in hundredths of a character) for
+  both reading and writing. `Indent` gains `end_chars` and `start_chars` /
+  `end_chars` / `hanging_chars` / `first_line_chars` builders, which are also
+  available on `Paragraph`, `ParagraphProperty`, `Style`, and `Level`. The
+  absolute `w:left` / `w:right` / `w:hanging` / `w:firstLine` values are still
+  written as a fallback, and output is unchanged when no chars are set.
+- Read `w:rightChars` / `w:endChars`, exposed as `endChars` in the indent JSON,
+  and keep `hangingChars` / `firstLineChars` when reading numbering levels.
+- docx-wasm: add `indentChars({ startChars, endChars, hangingChars,
+  firstLineChars })` to `Paragraph`, `Style`, and `Level`.
+
 ## @0.4.22 (21. Jul, 2026)
 
 - Improve DOCX reading and writing performance by reducing XML allocations,

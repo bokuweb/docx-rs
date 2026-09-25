@@ -29,11 +29,30 @@ impl Level {
         special_indent_size: Option<i32>,
     ) -> Self {
         let special_indent = create_special_indent(special_indent_kind, special_indent_size);
-        // end and start_chars is not supported fro wasm for now.
+        // end is not supported for wasm for now. Use `indent_chars` for chars.
         self.0.paragraph_property =
             self.0
                 .paragraph_property
                 .indent(Some(left), special_indent, None, None);
+        self
+    }
+
+    // Character-unit indents in hundredths of a character (e.g. 400 = 4 chars).
+    // Call after `indent`, which resets the whole indent.
+    pub fn indent_chars(
+        mut self,
+        start_chars: Option<i32>,
+        end_chars: Option<i32>,
+        hanging_chars: Option<i32>,
+        first_line_chars: Option<i32>,
+    ) -> Self {
+        self.0.paragraph_property = apply_indent_chars(
+            self.0.paragraph_property,
+            start_chars,
+            end_chars,
+            hanging_chars,
+            first_line_chars,
+        );
         self
     }
 

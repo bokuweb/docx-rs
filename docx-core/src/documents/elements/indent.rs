@@ -11,8 +11,10 @@ pub struct Indent {
     pub start: Option<i32>,
     pub end: Option<i32>,
     pub special_indent: Option<SpecialIndentType>,
+    // Character-unit indents in hundredths of a character (e.g. 400 = 4 chars).
+    // When set, Word uses these in preference to the absolute values above.
     pub start_chars: Option<i32>,
-    // Internal, for reading
+    pub end_chars: Option<i32>,
     pub hanging_chars: Option<i32>,
     pub first_line_chars: Option<i32>,
 }
@@ -29,7 +31,7 @@ impl Indent {
             start_chars,
             end,
             special_indent,
-            // Internal, for reading
+            end_chars: None,
             hanging_chars: None,
             first_line_chars: None,
         }
@@ -37,6 +39,16 @@ impl Indent {
 
     pub fn end(mut self, end: i32) -> Self {
         self.end = Some(end);
+        self
+    }
+
+    pub fn start_chars(mut self, chars: i32) -> Self {
+        self.start_chars = Some(chars);
+        self
+    }
+
+    pub fn end_chars(mut self, chars: i32) -> Self {
+        self.end_chars = Some(chars);
         self
     }
 
@@ -51,6 +63,12 @@ impl Indent {
     }
 }
 
+impl Default for Indent {
+    fn default() -> Self {
+        Indent::new(None, None, None, None)
+    }
+}
+
 impl BuildXML for Indent {
     fn build_to<W: Write>(
         &self,
@@ -62,6 +80,9 @@ impl BuildXML for Indent {
                 self.special_indent,
                 self.end.unwrap_or_default(),
                 self.start_chars,
+                self.end_chars,
+                self.hanging_chars,
+                self.first_line_chars,
             )?
             .into_inner()
     }
@@ -72,10 +93,11 @@ impl Serialize for Indent {
     where
         S: Serializer,
     {
-        let mut t = serializer.serialize_struct("Indent", 3)?;
+        let mut t = serializer.serialize_struct("Indent", 7)?;
         t.serialize_field("start", &self.start)?;
         t.serialize_field("startChars", &self.start_chars)?;
         t.serialize_field("end", &self.end)?;
+        t.serialize_field("endChars", &self.end_chars)?;
         t.serialize_field("specialIndent", &self.special_indent)?;
         t.serialize_field("hangingChars", &self.hanging_chars)?;
         t.serialize_field("firstLineChars", &self.first_line_chars)?;
@@ -114,6 +136,56 @@ mod tests {
         assert_eq!(
             str::from_utf8(&b).unwrap(),
             r#"<w:ind w:left="20" w:right="0" w:hanging="50" />"#
+        );
+    }
+
+    #[test]
+    fn test_start_chars() {
+        let b = Indent::new(Some(840), None, None, Some(400)).build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:ind w:left="840" w:right="0" w:leftChars="400" />"#
+        );
+    }
+
+    #[test]
+    fn test_all_chars_with_hanging() {
+        let b = Indent::new(
+            Some(840),
+            Some(SpecialIndentType::Hanging(210)),
+            Some(420),
+            None,
+        )
+        .start_chars(400)
+        .end_chars(200)
+        .hanging_chars(100)
+        .build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:ind w:left="840" w:right="420" w:leftChars="400" w:rightChars="200" w:hangingChars="100" w:hanging="210" />"#
+        );
+    }
+
+    #[test]
+    fn test_first_line_chars() {
+        let b = Indent::new(None, Some(SpecialIndentType::FirstLine(210)), None, None)
+            .first_line_chars(100)
+            .build();
+        assert_eq!(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:ind w:left="0" w:right="0" w:firstLineChars="100" w:firstLine="210" />"#
+        );
+    }
+
+    #[test]
+    fn test_indent_chars_json() {
+        let i = Indent::new(Some(840), None, None, Some(400))
+            .end_chars(200)
+            .hanging_chars(100)
+            .first_line_chars(0);
+        assert_eq!(
+            serde_json::to_string(&i).unwrap(),
+            r#"{"start":840,"startChars":400,"end":null,"endChars":200,"specialIndent":null,"hangingChars":100,"firstLineChars":0}"#
         );
     }
 }

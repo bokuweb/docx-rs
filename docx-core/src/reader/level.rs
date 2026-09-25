@@ -22,6 +22,9 @@ impl ElementReader for Level {
         let mut special_indent = None;
         let mut indent_end = None;
         let mut start_chars = None;
+        let mut end_chars = None;
+        let mut hanging_chars = None;
+        let mut first_line_chars = None;
         let mut level_restart = None;
         let mut has_indent = false;
         let mut suffix = LevelSuffixType::Tab;
@@ -80,6 +83,9 @@ impl ElementReader for Level {
                             indent_end = i.1;
                             special_indent = i.2;
                             start_chars = i.3;
+                            end_chars = i.4;
+                            hanging_chars = i.5;
+                            first_line_chars = i.6;
                             has_indent = true;
                         }
                         _ => {}
@@ -95,6 +101,15 @@ impl ElementReader for Level {
                         }
                         if has_indent {
                             l = l.indent(indent_start, special_indent, indent_end, start_chars);
+                            if let Some(chars) = end_chars {
+                                l = l.end_chars(chars);
+                            }
+                            if let Some(chars) = hanging_chars {
+                                l = l.hanging_chars(chars);
+                            }
+                            if let Some(chars) = first_line_chars {
+                                l = l.first_line_chars(chars);
+                            }
                         }
                         l.paragraph_property = ppr;
                         l.run_property = rpr;

@@ -189,6 +189,57 @@ mod tests {
     }
 
     #[test]
+    fn test_read_indent_all_chars() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:p>
+        <w:pPr>
+            <w:ind w:leftChars="400" w:left="840" w:rightChars="200.0" w:right="420" w:hangingChars="100" w:hanging="210" w:firstLineChars="0" />
+            <w:rPr></w:rPr>
+        </w:pPr>
+        <w:r>
+            <w:rPr></w:rPr>
+            <w:t>a</w:t>
+        </w:r>
+    </w:p>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
+
+        assert_eq!(
+            p.property.indent,
+            Some(
+                Indent::new(
+                    Some(840),
+                    Some(SpecialIndentType::Hanging(210)),
+                    Some(420),
+                    Some(400),
+                )
+                .end_chars(200)
+                .hanging_chars(100)
+                .first_line_chars(0)
+            )
+        );
+    }
+
+    #[test]
+    fn test_read_indent_end_chars() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:p>
+        <w:pPr>
+            <w:ind w:start="840" w:startChars="400" w:end="420" w:endChars="200" />
+        </w:pPr>
+    </w:p>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let p = Paragraph::read(&mut parser, &[]).unwrap();
+
+        assert_eq!(
+            p.property.indent,
+            Some(Indent::new(Some(840), None, Some(420), Some(400)).end_chars(200))
+        );
+    }
+
+    #[test]
     fn test_read_jc() {
         let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <w:p>

@@ -389,6 +389,83 @@ describe("writer", () => {
     }
   });
 
+  test("should write and read indent chars", () => {
+    const p = new w.Paragraph()
+      .addRun(new w.Run().addText("Hello world!!"))
+      // indentChars can be called before or after indent.
+      .indentChars({ startChars: 400, endChars: 200 })
+      .indent(840, "hanging", 420, 420)
+      .indentChars({ hangingChars: 200 });
+    const plain = new w.Paragraph()
+      .addRun(new w.Run().addText("plain"))
+      .indent(840, "firstLine", 210);
+    const style = new w.Style("Indented", "paragraph")
+      .name("Indented")
+      .indent(840)
+      .indentChars({ startChars: 400, firstLineChars: 100 });
+    const level = new w.Level(0, 1, "decimal", "%1.", "left")
+      .indent(840, "hanging", 420)
+      .indentChars({ startChars: 400, hangingChars: 200 });
+    const buffer = new w.Docx()
+      .addParagraph(p)
+      .addParagraph(plain)
+      .addParagraph(
+        new w.Paragraph().addRun(new w.Run().addText("item")).numbering(1, 0)
+      )
+      .addStyle(style)
+      .addAbstractNumbering(new w.AbstractNumbering(0).addLevel(level))
+      .addNumbering(new w.Numbering(1, 0))
+      .build();
+    writeFileSync("../output/js/indent_chars.docx", buffer);
+
+    const z = new Zip(Buffer.from(buffer));
+    const xml = (name) =>
+      z.readAsText(z.getEntries().find((e) => e.entryName === name));
+    expect(xml("word/document.xml")).toContain(
+      '<w:ind w:left="840" w:right="420" w:leftChars="400" w:rightChars="200" w:hangingChars="200" w:hanging="420" />'
+    );
+    // Without chars, the output is unchanged.
+    expect(xml("word/document.xml")).toContain(
+      '<w:ind w:left="840" w:right="0" w:firstLine="210" />'
+    );
+    expect(xml("word/styles.xml")).toContain(
+      '<w:ind w:left="840" w:right="0" w:leftChars="400" w:firstLineChars="100" />'
+    );
+    expect(xml("word/numbering.xml")).toContain(
+      '<w:ind w:left="840" w:right="0" w:leftChars="400" w:hangingChars="200" w:hanging="420" />'
+    );
+
+    const json = w.readDocx(buffer);
+    expect(json.document.children[0].data.property.indent).toEqual({
+      start: 840,
+      startChars: 400,
+      end: 420,
+      endChars: 200,
+      specialIndent: { type: "hanging", val: 420 },
+      hangingChars: 200,
+      firstLineChars: null,
+    });
+    expect(json.document.children[1].data.property.indent).toEqual({
+      start: 840,
+      startChars: null,
+      end: 0,
+      endChars: null,
+      specialIndent: { type: "firstLine", val: 210 },
+      hangingChars: null,
+      firstLineChars: null,
+    });
+    const styleIndent = json.styles.styles.find(
+      (s) => s.styleId === "Indented"
+    ).paragraphProperty.indent;
+    expect(styleIndent.startChars).toBe(400);
+    expect(styleIndent.firstLineChars).toBe(100);
+    const levelIndent = json.numberings.abstractNums.find((a) => a.id === 0)
+      .levels[0].paragraphProperty.indent;
+    expect(levelIndent.startChars).toBe(400);
+    expect(levelIndent.hangingChars).toBe(200);
+    expect(levelIndent.specialIndent).toEqual({ type: "hanging", val: 420 });
+  });
+
   test("should write align", () => {
     const p = new w.Paragraph()
       .addRun(new w.Run().addText("Hello world!!"))

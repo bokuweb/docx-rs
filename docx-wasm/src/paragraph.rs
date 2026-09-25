@@ -120,6 +120,25 @@ impl Paragraph {
         self
     }
 
+    // Character-unit indents in hundredths of a character (e.g. 400 = 4 chars).
+    // Call after `indent`, which resets the whole indent.
+    pub fn indent_chars(
+        mut self,
+        start_chars: Option<i32>,
+        end_chars: Option<i32>,
+        hanging_chars: Option<i32>,
+        first_line_chars: Option<i32>,
+    ) -> Paragraph {
+        self.0.property = apply_indent_chars(
+            self.0.property,
+            start_chars,
+            end_chars,
+            hanging_chars,
+            first_line_chars,
+        );
+        self
+    }
+
     pub fn numbering(mut self, id: usize, level: usize) -> Self {
         let id = docx_rs::NumberingId::new(id);
         let level = docx_rs::IndentLevel::new(level);

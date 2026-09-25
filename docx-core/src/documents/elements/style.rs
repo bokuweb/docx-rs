@@ -219,6 +219,16 @@ impl Style {
         self
     }
 
+    pub fn start_chars(mut self, chars: i32) -> Self {
+        self.paragraph_property = self.paragraph_property.start_chars(chars);
+        self
+    }
+
+    pub fn end_chars(mut self, chars: i32) -> Self {
+        self.paragraph_property = self.paragraph_property.end_chars(chars);
+        self
+    }
+
     pub fn hanging_chars(mut self, chars: i32) -> Self {
         self.paragraph_property = self.paragraph_property.hanging_chars(chars);
         self

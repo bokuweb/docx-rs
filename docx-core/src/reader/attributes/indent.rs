@@ -6,11 +6,13 @@ use crate::types::*;
 
 use super::super::errors::*;
 
+// (start, end, special_indent, start_chars, end_chars, hanging_chars, first_line_chars)
 pub type ReadIndentResult = Result<
     (
         Option<i32>,
         Option<i32>,
         Option<SpecialIndentType>,
+        Option<i32>,
         Option<i32>,
         Option<i32>,
         Option<i32>,
@@ -24,6 +26,7 @@ pub fn read_indent(attrs: &[OwnedAttribute]) -> ReadIndentResult {
     let mut hanging_chars: Option<i32> = None;
     let mut first_line_chars: Option<i32> = None;
     let mut end: Option<i32> = None;
+    let mut end_chars: Option<i32> = None;
     let mut special: Option<SpecialIndentType> = None;
     for a in attrs {
         let local_name = &a.name.local_name;
@@ -35,6 +38,10 @@ pub fn read_indent(attrs: &[OwnedAttribute]) -> ReadIndentResult {
         } else if local_name == "end" || local_name == "right" {
             let v = super::value_to_dax(&a.value)?;
             end = Some(v);
+        } else if local_name == "rightChars" || local_name == "endChars" {
+            if let Ok(chars) = f64::from_str(&a.value) {
+                end_chars = Some(chars as i32);
+            }
         } else if local_name == "hanging" {
             let v = super::value_to_dax(&a.value)?;
             special = Some(SpecialIndentType::Hanging(v))
@@ -56,6 +63,7 @@ pub fn read_indent(attrs: &[OwnedAttribute]) -> ReadIndentResult {
         end,
         special,
         start_chars,
+        end_chars,
         hanging_chars,
         first_line_chars,
     ))

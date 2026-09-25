@@ -1,5 +1,9 @@
 import { Paragraph } from "./paragraph";
-import { LineSpacing, ParagraphProperty } from "./paragraph-property";
+import {
+  LineSpacing,
+  ParagraphProperty,
+  setIndentChars,
+} from "./paragraph-property";
 import { Table } from "./table";
 import { TableOfContents } from "./table-of-contents";
 import { RunFonts } from "./run-property";
@@ -368,6 +372,7 @@ export class Docx {
         kind,
         l.paragraphProperty.indent.specialIndentSize
       );
+      level = setIndentChars(level, l.paragraphProperty.indent);
     }
     return level;
   }

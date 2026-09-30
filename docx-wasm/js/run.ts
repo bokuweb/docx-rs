@@ -5,6 +5,8 @@ import { DeleteText } from "./delete-text";
 import { Tab } from "./tab";
 import { Break, BreakType } from "./break";
 import { CarriageReturn } from "./carriage-return";
+import { NoBreakHyphen } from "./no-break-hyphen";
+import { SoftHyphen } from "./soft-hyphen";
 import { BorderType } from "./border";
 import { Image } from "./image";
 import { PositionalTab } from "./positional-tab";
@@ -22,6 +24,8 @@ export type RunChild =
   | DeleteText
   | Tab
   | CarriageReturn
+  | NoBreakHyphen
+  | SoftHyphen
   | Break
   | Image
   | PositionalTab
@@ -63,6 +67,16 @@ export class Run {
 
   addCarriageReturn() {
     this.children.push(new CarriageReturn());
+    return this;
+  }
+
+  addNoBreakHyphen() {
+    this.children.push(new NoBreakHyphen());
+    return this;
+  }
+
+  addSoftHyphen() {
+    this.children.push(new SoftHyphen());
     return this;
   }
 
@@ -196,6 +210,10 @@ export class Run {
         run = run.add_tab();
       } else if (child instanceof CarriageReturn) {
         run = run.add_carriage_return();
+      } else if (child instanceof NoBreakHyphen) {
+        run = run.add_no_break_hyphen();
+      } else if (child instanceof SoftHyphen) {
+        run = run.add_soft_hyphen();
       } else if (child instanceof PositionalTab) {
         run = run.add_ptab(child.buildWasmObject());
       } else if (child instanceof Break) {

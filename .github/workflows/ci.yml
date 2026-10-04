@@ -28,13 +28,12 @@ jobs:
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
-      - name: Cache cargo build
-        uses: actions/cache@v6
+      - uses: jdx/mr-boxington-action@v1
         with:
-          path: target
-          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+          cache-key-suffix: ${{ github.job }}
       - name: test
-        run: make test -B # && make vrt -B
+        # same as `make test` (cargo test -- --test-threads=1), via mbx
+        run: mbx test -- --test-threads=1 # && make vrt -B
 
   build:
     runs-on: ubuntu-latest
@@ -54,7 +53,10 @@ jobs:
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
-      - run: cargo build
+      - uses: jdx/mr-boxington-action@v1
+        with:
+          cache-key-suffix: ${{ github.job }}
+      - run: mbx build
 
   build-wasm:
     runs-on: ubuntu-latest

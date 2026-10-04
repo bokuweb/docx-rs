@@ -1,5 +1,6 @@
 use std::collections::VecDeque;
-use std::io::{BufReader, Read};
+use std::io::Read;
+use std::marker::PhantomData;
 
 use quick_xml::encoding::Decoder;
 use quick_xml::escape::unescape;
@@ -58,15 +59,26 @@ pub enum XmlEvent {
 }
 
 pub struct EventReader<R: Read> {
-    reader: Reader<BufReader<R>>,
-    buf: Vec<u8>,
+    // Parses `_data` without copying each event into a buffer. Declared before
+    // `_data` so it is dropped first; the boxed bytes never move or change.
+    reader: Reader<&'static [u8]>,
+    _data: Box<[u8]>,
+    read_error: Option<std::io::Error>,
     pending: VecDeque<XmlEvent>,
     finished: bool,
+    source: PhantomData<R>,
 }
 
 impl<R: Read> EventReader<R> {
-    pub fn new(reader: R) -> Self {
-        let mut reader = Reader::from_reader(BufReader::new(reader));
+    pub fn new(mut source: R) -> Self {
+        let mut data = Vec::new();
+        let read_error = source.read_to_end(&mut data).err();
+        let data = data.into_boxed_slice();
+        // SAFETY: `data` is owned by this reader, is never mutated, and outlives
+        // `reader` (see the field order). Events are converted to owned values
+        // before they leave this module.
+        let bytes: &'static [u8] = unsafe { std::slice::from_raw_parts(data.as_ptr(), data.len()) };
+        let mut reader = Reader::from_reader(bytes);
         {
             let config = reader.config_mut();
             config.trim_text(false);
@@ -75,9 +87,11 @@ impl<R: Read> EventReader<R> {
         }
         Self {
             reader,
-            buf: Vec::new(),
+            _data: data,
+            read_error,
             pending: VecDeque::new(),
             finished: false,
+            source: PhantomData,
         }
     }
 
@@ -90,9 +104,11 @@ impl<R: Read> EventReader<R> {
             return Ok(event);
         }
 
+        if let Some(error) = self.read_error.take() {
+            return Err(quick_xml::Error::Io(error.into()));
+        }
         loop {
-            self.buf.clear();
-            match self.reader.read_event_into(&mut self.buf)? {
+            match self.reader.read_event()? {
                 Event::Start(element) => {
                     let decoder = self.reader.decoder();
                     let event = Self::build_start_event(element, decoder)?;
@@ -136,8 +152,7 @@ impl<R: Read> EventReader<R> {
 
     fn read_text_event(&mut self, mut text: String) -> Result<XmlEvent, quick_xml::Error> {
         loop {
-            self.buf.clear();
-            match self.reader.read_event_into(&mut self.buf)? {
+            match self.reader.read_event()? {
                 Event::Text(next_text) => {
                     text.push_str(&decode_text(next_text)?);
                 }
@@ -261,18 +276,25 @@ fn decode_reference(reference: BytesRef<'_>) -> Result<String, quick_xml::Error>
     Ok(unescape(&escaped)?.into_owned())
 }
 
+fn owned_str(raw: &[u8]) -> String {
+    // Names are almost always short ASCII; avoid the general UTF-8 decoders.
+    if raw.is_ascii() {
+        // SAFETY: ASCII bytes are valid UTF-8.
+        return unsafe { String::from_utf8_unchecked(raw.to_vec()) };
+    }
+    String::from_utf8_lossy(raw).into_owned()
+}
+
 fn split_qname(raw: &[u8]) -> OwnedName {
     if let Some(idx) = raw.iter().position(|byte| *byte == b':') {
-        let prefix = String::from_utf8_lossy(&raw[..idx]).into_owned();
-        let local = String::from_utf8_lossy(&raw[idx + 1..]).into_owned();
         OwnedName {
-            local_name: local,
+            local_name: owned_str(&raw[idx + 1..]),
             namespace: None,
-            prefix: Some(prefix),
+            prefix: Some(owned_str(&raw[..idx])),
         }
     } else {
         OwnedName {
-            local_name: String::from_utf8_lossy(raw).into_owned(),
+            local_name: owned_str(raw),
             namespace: None,
             prefix: None,
         }

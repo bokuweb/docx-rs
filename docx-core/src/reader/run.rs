@@ -97,6 +97,12 @@ impl ElementReader for Run {
                                 XMLElement::CarriageReturn => {
                                     run = run.add_carriage_return();
                                 }
+                                XMLElement::NoBreakHyphen => {
+                                    run = run.add_no_break_hyphen();
+                                }
+                                XMLElement::SoftHyphen => {
+                                    run = run.add_soft_hyphen();
+                                }
                                 XMLElement::Drawing => {
                                     if let Ok(drawing) = Drawing::read(r, &attributes) {
                                         run = run.add_drawing(drawing);
@@ -300,6 +306,27 @@ mod tests {
             run,
             Run {
                 children: vec![RunChild::CarriageReturn(CarriageReturn::new())],
+                run_property: RunProperty::default(),
+            }
+        );
+    }
+
+    #[test]
+    fn test_read_hyphens() {
+        let c = r#"<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:r><w:t>long</w:t><w:noBreakHyphen/><w:t>term</w:t><w:softHyphen/></w:r>
+</w:document>"#;
+        let mut parser = EventReader::new(c.as_bytes());
+        let run = Run::read(&mut parser, &[]).unwrap();
+        assert_eq!(
+            run,
+            Run {
+                children: vec![
+                    RunChild::Text(Text::new("long")),
+                    RunChild::NoBreakHyphen(NoBreakHyphen::new()),
+                    RunChild::Text(Text::new("term")),
+                    RunChild::SoftHyphen(SoftHyphen::new()),
+                ],
                 run_property: RunProperty::default(),
             }
         );

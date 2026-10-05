@@ -722,6 +722,8 @@ export * from "./bookmark-start";
 export * from "./bookmark-end";
 export * from "./break";
 export * from "./carriage-return";
+export * from "./no-break-hyphen";
+export * from "./soft-hyphen";
 export * from "./delete-text";
 export * from "./level";
 export * from "./tab";

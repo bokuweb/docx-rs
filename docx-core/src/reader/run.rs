@@ -45,6 +45,26 @@ fn read_field_char(attributes: &[OwnedAttribute]) -> Result<FieldChar, ReaderErr
     }
 }
 
+// Namespace URIs identify run vocabularies; prefixes are arbitrary and scoped.
+// Keep undeclared conventional prefixes for legacy XML-fragment callers.
+fn has_namespace(name: &OwnedName, namespaces: &[&str], legacy_prefix: &str) -> bool {
+    match name.namespace.as_deref() {
+        Some(namespace) => namespaces.contains(&namespace),
+        None => name.prefix.as_deref() == Some(legacy_prefix),
+    }
+}
+
+fn is_word_name(name: &OwnedName) -> bool {
+    has_namespace(
+        name,
+        &[
+            "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
+            "http://purl.oclc.org/ooxml/wordprocessingml/main",
+        ],
+        "w",
+    )
+}
+
 impl ElementReader for Run {
     fn read<R: Read>(
         r: &mut EventReader<R>,
@@ -58,8 +78,8 @@ impl ElementReader for Run {
                 Ok(XmlEvent::StartElement {
                     attributes, name, ..
                 }) => {
-                    match name.prefix.as_deref() {
-                        Some("w") => {
+                    match () {
+                        _ if is_word_name(&name) => {
                             let e = XMLElement::from_str(&name.local_name).unwrap();
 
                             ignore::ignore_element(e.clone(), XMLElement::RunPropertyChange, r);
@@ -114,7 +134,9 @@ impl ElementReader for Run {
                                             run.children.push(RunChild::InstrTextString(c));
                                             break;
                                         }
-                                        Ok(XmlEvent::EndElement { name, .. }) => {
+                                        Ok(XmlEvent::EndElement { name, .. })
+                                            if is_word_name(&name) =>
+                                        {
                                             let e = XMLElement::from_str(&name.local_name).unwrap();
                                             match e {
                                                 XMLElement::Run => {
@@ -123,6 +145,9 @@ impl ElementReader for Run {
                                                 _ => {}
                                             }
                                         }
+                                        Ok(XmlEvent::EndDocument) => {
+                                            return Err(ReaderError::XMLReadError)
+                                        }
                                         Err(_) => return Err(ReaderError::XMLReadError),
                                         _ => {}
                                     }
@@ -130,7 +155,12 @@ impl ElementReader for Run {
                                 _ => {}
                             }
                         }
-                        Some("mc") => {
+                        _ if has_namespace(
+                            &name,
+                            &["http://schemas.openxmlformats.org/markup-compatibility/2006"],
+                            "mc",
+                        ) =>
+                        {
                             let e = McXMLElement::from_str(&name.local_name).unwrap();
                             match e {
                                 McXMLElement::Fallback => {
@@ -139,7 +169,7 @@ impl ElementReader for Run {
                                 _ => {}
                             }
                         }
-                        Some("v") => {
+                        _ if has_namespace(&name, &["urn:schemas-microsoft-com:vml"], "v") => {
                             let e = VXMLElement::from_str(&name.local_name).unwrap();
                             match e {
                                 // Experimental For now support only imageData in shape
@@ -172,7 +202,7 @@ impl ElementReader for Run {
                     }
                     _ => {}
                 },
-                Ok(XmlEvent::EndElement { name, .. }) => {
+                Ok(XmlEvent::EndElement { name, .. }) if is_word_name(&name) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
                         XMLElement::Run => {
@@ -182,6 +212,7 @@ impl ElementReader for Run {
                         _ => {}
                     }
                 }
+                Ok(XmlEvent::EndDocument) => return Err(ReaderError::XMLReadError),
                 Err(_) => return Err(ReaderError::XMLReadError),
                 _ => {}
             }
@@ -194,6 +225,53 @@ mod tests {
 
     use super::*;
     use pretty_assertions::assert_eq;
+
+    #[test]
+    fn read_run_uses_wordprocessing_namespace_with_any_prefix() {
+        for (opening, prefix) in [
+            (
+                "xmlns:ns0=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"",
+                "ns0:",
+            ),
+            (
+                "xmlns=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"",
+                "",
+            ),
+            (
+                "xmlns:text=\"http://purl.oclc.org/ooxml/wordprocessingml/main\"",
+                "text:",
+            ),
+        ] {
+            let xml = format!("<{prefix}r {opening}><{prefix}rPr><{prefix}b/></{prefix}rPr><{prefix}t>Quarterly report</{prefix}t><{prefix}tab/><{prefix}t>Approved</{prefix}t></{prefix}r>");
+            let mut reader = EventReader::new(xml.as_bytes());
+            let run = Run::read(&mut reader, &[]).unwrap();
+            let expected = Run::new()
+                .bold()
+                .add_text("Quarterly report")
+                .add_tab()
+                .add_text("Approved");
+            assert_eq!(run, expected, "prefix {prefix}");
+        }
+    }
+
+    #[test]
+    fn read_run_ignores_foreign_names_and_restores_scoped_bindings() {
+        let xml = r#"<w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:f="urn:foreign">
+          <w:t>Before</w:t><f:r><f:t>Foreign</f:t></f:r>
+          <w:t xmlns:w="urn:foreign">Shadowed</w:t>
+          <w:t>After</w:t>
+        </w:r>"#;
+        let mut reader = EventReader::new(xml.as_bytes());
+        let run = Run::read(&mut reader, &[]).unwrap();
+        assert_eq!(run, Run::new().add_text("Before").add_text("After"));
+    }
+
+    #[test]
+    fn read_run_rejects_an_unrecognized_root_without_looping_at_eof() {
+        let xml = r#"<f:r xmlns:f="urn:metadata"><f:t>Metadata</f:t></f:r>"#;
+        let mut reader = EventReader::new(xml.as_bytes());
+        assert!(Run::read(&mut reader, &[]).is_err());
+    }
 
     #[test]
     fn test_read_size_color() {

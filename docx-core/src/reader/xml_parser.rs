@@ -5,7 +5,8 @@ use std::marker::PhantomData;
 use quick_xml::encoding::Decoder;
 use quick_xml::escape::unescape;
 use quick_xml::events::{BytesEnd, BytesRef, BytesStart, BytesText, Event};
-use quick_xml::Reader;
+use quick_xml::name::{NamespaceResolver, ResolveResult};
+use quick_xml::reader::NsReader;
 use quick_xml::XmlVersion;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -61,7 +62,7 @@ pub enum XmlEvent {
 pub struct EventReader<R: Read> {
     // Parses `_data` without copying each event into a buffer. Declared before
     // `_data` so it is dropped first; the boxed bytes never move or change.
-    reader: Reader<&'static [u8]>,
+    reader: NsReader<&'static [u8]>,
     _data: Box<[u8]>,
     read_error: Option<std::io::Error>,
     pending: VecDeque<XmlEvent>,
@@ -78,7 +79,7 @@ impl<R: Read> EventReader<R> {
         // `reader` (see the field order). Events are converted to owned values
         // before they leave this module.
         let bytes: &'static [u8] = unsafe { std::slice::from_raw_parts(data.as_ptr(), data.len()) };
-        let mut reader = Reader::from_reader(bytes);
+        let mut reader = NsReader::from_reader(bytes);
         {
             let config = reader.config_mut();
             config.trim_text(false);
@@ -111,12 +112,12 @@ impl<R: Read> EventReader<R> {
             match self.reader.read_event()? {
                 Event::Start(element) => {
                     let decoder = self.reader.decoder();
-                    let event = Self::build_start_event(element, decoder)?;
+                    let event = Self::build_start_event(element, decoder, self.reader.resolver())?;
                     return Ok(event);
                 }
                 Event::Empty(element) => {
                     let decoder = self.reader.decoder();
-                    let event = Self::build_start_event(element, decoder)?;
+                    let event = Self::build_start_event(element, decoder, self.reader.resolver())?;
                     if let XmlEvent::StartElement { name, .. } = &event {
                         self.pending
                             .push_back(XmlEvent::EndElement { name: name.clone() });
@@ -124,7 +125,7 @@ impl<R: Read> EventReader<R> {
                     return Ok(event);
                 }
                 Event::End(element) => {
-                    let name = build_name_from_end(&element)?;
+                    let name = build_name_from_end(&element, self.reader.resolver())?;
                     return Ok(XmlEvent::EndElement { name });
                 }
                 Event::Text(text) => {
@@ -161,13 +162,13 @@ impl<R: Read> EventReader<R> {
                 }
                 Event::Start(element) => {
                     let decoder = self.reader.decoder();
-                    let event = Self::build_start_event(element, decoder)?;
+                    let event = Self::build_start_event(element, decoder, self.reader.resolver())?;
                     self.pending.push_back(event);
                     break;
                 }
                 Event::Empty(element) => {
                     let decoder = self.reader.decoder();
-                    let event = Self::build_start_event(element, decoder)?;
+                    let event = Self::build_start_event(element, decoder, self.reader.resolver())?;
                     let end_event = if let XmlEvent::StartElement { name, .. } = &event {
                         Some(XmlEvent::EndElement { name: name.clone() })
                     } else {
@@ -180,7 +181,7 @@ impl<R: Read> EventReader<R> {
                     break;
                 }
                 Event::End(element) => {
-                    let name = build_name_from_end(&element)?;
+                    let name = build_name_from_end(&element, self.reader.resolver())?;
                     self.pending.push_back(XmlEvent::EndElement { name });
                     break;
                 }
@@ -213,9 +214,10 @@ impl<R: Read> EventReader<R> {
     fn build_start_event(
         element: BytesStart<'_>,
         decoder: Decoder,
+        resolver: &NamespaceResolver,
     ) -> Result<XmlEvent, quick_xml::Error> {
-        let name = build_name_from_start(&element)?;
-        let attributes = build_attributes(&element, decoder)?;
+        let name = build_name_from_start(&element, resolver)?;
+        let attributes = build_attributes(&element, decoder, resolver)?;
         Ok(XmlEvent::StartElement {
             name,
             attributes,
@@ -245,14 +247,26 @@ impl<R: Read> Iterator for EventReader<R> {
     }
 }
 
-fn build_name_from_start(element: &BytesStart<'_>) -> Result<OwnedName, quick_xml::Error> {
+fn build_name_from_start(
+    element: &BytesStart<'_>,
+    resolver: &NamespaceResolver,
+) -> Result<OwnedName, quick_xml::Error> {
     let name = element.name();
-    Ok(split_qname(name.as_ref()))
+    Ok(resolve_name(
+        name.as_ref(),
+        resolver.resolve_element(name).0,
+    ))
 }
 
-fn build_name_from_end(element: &BytesEnd<'_>) -> Result<OwnedName, quick_xml::Error> {
+fn build_name_from_end(
+    element: &BytesEnd<'_>,
+    resolver: &NamespaceResolver,
+) -> Result<OwnedName, quick_xml::Error> {
     let name = element.name();
-    Ok(split_qname(name.as_ref()))
+    Ok(resolve_name(
+        name.as_ref(),
+        resolver.resolve_element(name).0,
+    ))
 }
 
 fn decode_text(text: BytesText<'_>) -> Result<String, quick_xml::Error> {
@@ -285,6 +299,14 @@ fn owned_str(raw: &[u8]) -> String {
     String::from_utf8_lossy(raw).into_owned()
 }
 
+fn resolve_name(raw: &[u8], namespace: ResolveResult<'_>) -> OwnedName {
+    let mut name = split_qname(raw);
+    if let ResolveResult::Bound(namespace) = namespace {
+        name.namespace = Some(owned_str(namespace.as_ref()));
+    }
+    name
+}
+
 fn split_qname(raw: &[u8]) -> OwnedName {
     if let Some(idx) = raw.iter().position(|byte| *byte == b':') {
         OwnedName {
@@ -304,6 +326,7 @@ fn split_qname(raw: &[u8]) -> OwnedName {
 fn build_attributes(
     element: &BytesStart<'_>,
     decoder: Decoder,
+    resolver: &NamespaceResolver,
 ) -> Result<Vec<OwnedAttribute>, quick_xml::Error> {
     let mut raw_attributes = element.attributes();
     let iter = raw_attributes.with_checks(false);
@@ -313,7 +336,7 @@ fn build_attributes(
         let value = attr
             .decoded_and_normalized_value(XmlVersion::Implicit1_0, decoder)?
             .into_owned();
-        let name = split_qname(attr.key.as_ref());
+        let name = resolve_name(attr.key.as_ref(), resolver.resolve_attribute(attr.key).0);
         attributes.push(OwnedAttribute { name, value });
     }
     Ok(attributes)
@@ -322,6 +345,56 @@ fn build_attributes(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn resolves_scoped_element_and_attribute_namespaces() {
+        let xml = r#"<r xmlns="urn:word" xmlns:w="urn:word"><t w:val="Approved" val="plain">Report<t xmlns="urn:foreign" w:val="nested"/></t><t/></r>"#;
+        let mut reader = EventReader::new(xml.as_bytes());
+        let events: Vec<_> = reader.by_ref().map(Result::unwrap).collect();
+        let starts: Vec<_> = events
+            .iter()
+            .filter_map(|event| match event {
+                XmlEvent::StartElement {
+                    name, attributes, ..
+                } => Some((name, attributes)),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(starts.len(), 4);
+        assert_eq!(starts[1].0.namespace.as_deref(), Some("urn:word"));
+        let qualified = starts[1]
+            .1
+            .iter()
+            .find(|a| a.name.prefix.as_deref() == Some("w"))
+            .unwrap();
+        assert_eq!(qualified.name.namespace.as_deref(), Some("urn:word"));
+        let unqualified = starts[1]
+            .1
+            .iter()
+            .find(|a| a.name.local_name == "val" && a.name.prefix.is_none())
+            .unwrap();
+        assert_eq!(unqualified.name.namespace, None);
+        assert_eq!(starts[2].0.namespace.as_deref(), Some("urn:foreign"));
+        assert_eq!(starts[3].0.namespace.as_deref(), Some("urn:word"));
+        let ends: Vec<_> = events
+            .iter()
+            .filter_map(|event| match event {
+                XmlEvent::EndElement { name } => Some(name),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(
+            ends.iter()
+                .map(|name| name.namespace.as_deref())
+                .collect::<Vec<_>>(),
+            [
+                Some("urn:foreign"),
+                Some("urn:word"),
+                Some("urn:word"),
+                Some("urn:word")
+            ]
+        );
+    }
 
     #[test]
     fn decodes_xml_entities_in_text_and_attributes() {

@@ -64,7 +64,7 @@ impl ElementReader for Level {
                             suffix = LevelSuffixType::from_str(&attributes[0].value)?;
                         }
                         XMLElement::IsLgl => {
-                            is_lgl = Some(IsLgl::new());
+                            is_lgl = attributes::read_bool(&attributes).then(IsLgl::new);
                         }
                         XMLElement::LevelText => {
                             level_text = LevelText::new(attributes[0].value.clone());
@@ -121,6 +121,52 @@ impl ElementReader for Level {
                 Err(_) => return Err(ReaderError::XMLReadError),
                 _ => {}
             }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::reader::FromXML;
+
+    #[test]
+    fn read_legal_numbering_on_off_values_in_levels_and_overrides() {
+        for (value, enabled) in [
+            (None, true),
+            (Some("true"), true),
+            (Some("1"), true),
+            (Some("on"), true),
+            (Some("false"), false),
+            (Some("0"), false),
+            (Some("off"), false),
+        ] {
+            let flag = value
+                .map(|value| format!(r#"<w:isLgl w:val="{value}"/>"#))
+                .unwrap_or_else(|| "<w:isLgl/>".to_string());
+            let xml = format!(
+                r#"<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+                <w:abstractNum w:abstractNumId="0"><w:lvl w:ilvl="0">{flag}</w:lvl></w:abstractNum>
+                <w:num w:numId="1"><w:abstractNumId w:val="0"/>
+                <w:lvlOverride w:ilvl="0"><w:lvl w:ilvl="0">{flag}</w:lvl></w:lvlOverride>
+                </w:num></w:numbering>"#
+            );
+            let numberings = Numberings::from_xml(xml.as_bytes()).unwrap();
+            assert_eq!(
+                numberings.abstract_nums[0].levels[0].is_lgl.is_some(),
+                enabled,
+                "abstract level, val={value:?}"
+            );
+            assert_eq!(
+                numberings.numberings[0].level_overrides[0]
+                    .override_level
+                    .as_ref()
+                    .unwrap()
+                    .is_lgl
+                    .is_some(),
+                enabled,
+                "level override, val={value:?}"
+            );
         }
     }
 }

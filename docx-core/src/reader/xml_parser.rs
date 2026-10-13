@@ -5,7 +5,8 @@ use std::marker::PhantomData;
 use quick_xml::encoding::Decoder;
 use quick_xml::escape::unescape;
 use quick_xml::events::{BytesEnd, BytesRef, BytesStart, BytesText, Event};
-use quick_xml::Reader;
+use quick_xml::name::{QName, ResolveResult};
+use quick_xml::reader::NsReader;
 use quick_xml::XmlVersion;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -61,7 +62,7 @@ pub enum XmlEvent {
 pub struct EventReader<R: Read> {
     // Parses `_data` without copying each event into a buffer. Declared before
     // `_data` so it is dropped first; the boxed bytes never move or change.
-    reader: Reader<&'static [u8]>,
+    reader: NsReader<&'static [u8]>,
     _data: Box<[u8]>,
     read_error: Option<std::io::Error>,
     pending: VecDeque<XmlEvent>,
@@ -78,7 +79,7 @@ impl<R: Read> EventReader<R> {
         // `reader` (see the field order). Events are converted to owned values
         // before they leave this module.
         let bytes: &'static [u8] = unsafe { std::slice::from_raw_parts(data.as_ptr(), data.len()) };
-        let mut reader = Reader::from_reader(bytes);
+        let mut reader = NsReader::from_reader(bytes);
         {
             let config = reader.config_mut();
             config.trim_text(false);
@@ -97,6 +98,26 @@ impl<R: Read> EventReader<R> {
 
     pub fn next_event(&mut self) -> Result<XmlEvent, quick_xml::Error> {
         self.read_next()
+    }
+
+    /// Resolve an element on demand without allocating namespace strings for
+    /// every event in documents that only use the existing prefix-based readers.
+    pub(crate) fn namespace_uri(&self, name: &OwnedName) -> Option<String> {
+        let qualified = match &name.prefix {
+            Some(prefix) => format!("{prefix}:{}", name.local_name),
+            None => name.local_name.clone(),
+        };
+        match self
+            .reader
+            .resolver()
+            .resolve_element(QName(qualified.as_bytes()))
+            .0
+        {
+            ResolveResult::Bound(namespace) => {
+                Some(String::from_utf8_lossy(namespace.as_ref()).into_owned())
+            }
+            _ => None,
+        }
     }
 
     fn read_next(&mut self) -> Result<XmlEvent, quick_xml::Error> {

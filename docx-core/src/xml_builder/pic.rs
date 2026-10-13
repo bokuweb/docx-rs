@@ -8,6 +8,7 @@ impl<W: Write> XMLBuilder<W> {
     open!(open_blip_fill, "pic:blipFill");
     closed!(a_blip, "a:blip", "r:embed");
     closed!(a_src_rect, "a:srcRect");
+    closed!(a_src_rect_with_crop, "a:srcRect", "l", "t", "r", "b");
     open!(open_a_stretch, "a:stretch");
     closed!(a_fill_rect, "a:fillRect");
 

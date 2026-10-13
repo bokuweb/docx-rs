@@ -223,6 +223,10 @@ export class Run {
         if (child.rot != null) {
           pic = pic.rotate(child.rot);
         }
+        if (child._crop != null) {
+          const { left, top, right, bottom } = child._crop;
+          pic = pic.crop(left, top, right, bottom);
+        }
         run = run.add_image(pic);
       } else if (child instanceof Tc) {
         run = run.add_tc(

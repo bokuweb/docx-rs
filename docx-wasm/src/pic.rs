@@ -23,6 +23,11 @@ impl Pic {
         self
     }
 
+    pub fn crop(mut self, left: i32, top: i32, right: i32, bottom: i32) -> Self {
+        self.0 = self.0.crop(left, top, right, bottom);
+        self
+    }
+
     pub fn floating(mut self) -> Pic {
         self.0 = self.0.floating();
         self

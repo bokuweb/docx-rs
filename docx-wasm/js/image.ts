@@ -6,6 +6,7 @@ export class Image {
   _offsetX = 0;
   _offsetY = 0;
   rot = 0;
+  _crop: { left: number; top: number; right: number; bottom: number } | null = null;
 
   constructor(data: Uint8Array) {
     this.data = data;
@@ -19,6 +20,12 @@ export class Image {
 
   rotate = (deg: number) => {
     this.rot = deg;
+    return this;
+  };
+
+  /** Source offsets in thousandths of a percent; negative values extend outward. */
+  crop = (left: number, top: number, right: number, bottom: number) => {
+    this._crop = { left, top, right, bottom };
     return this;
   };
 

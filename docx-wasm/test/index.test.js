@@ -35,6 +35,35 @@ describe("snapshot helpers", () => {
 });
 
 describe("reader", () => {
+  test("should preserve source crops on distinct uses of an image", () => {
+    jest.isolateModules(() => {
+      const cropApi = require("../dist/node");
+      const bytes = Uint8Array.from(Buffer.from(encodedCat, "base64"));
+      const paragraph = new cropApi.Paragraph().addRun(
+        new cropApi.Run()
+          .addImage(new cropApi.Image(bytes).size(1714500, 952500).crop(25000, 0, 25000, 0))
+          .addImage(new cropApi.Image(bytes).size(1714500, 952500).crop(-20000, 0, 0, 0))
+          .addImage(new cropApi.Image(bytes).size(1714500, 952500))
+      );
+      const buffer = new cropApi.Docx().addParagraph(paragraph).build();
+      const parsed = cropApi.readDocx(buffer);
+      const pictures = [];
+      const visit = (node) => {
+        if (!node || typeof node !== "object") return;
+        if (node.type === "pic") pictures.push(node.data);
+        Object.values(node).forEach(visit);
+      };
+      visit(parsed.document);
+      expect(pictures).toHaveLength(3);
+      expect(pictures[0].crop).toEqual({ left: 25000, top: 0, right: 25000, bottom: 0 });
+      expect(pictures[1].crop).toEqual({ left: -20000, top: 0, right: 0, bottom: 0 });
+      expect(pictures[2].crop).toBeUndefined();
+      const xml = new Zip(Buffer.from(buffer)).readAsText("word/document.xml");
+      expect(xml).toContain('<a:srcRect l="25000" t="0" r="25000" b="0"');
+      expect(xml).toContain('<a:srcRect l="-20000" t="0" r="0" b="0"');
+    });
+  });
+
   test("should read lvlOverride docx", () => {
     const buffer = readFileSync("../fixtures/lvl_override/override.docx");
     const json = w.readDocx(buffer);

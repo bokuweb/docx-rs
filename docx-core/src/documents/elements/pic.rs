@@ -5,6 +5,18 @@ use crate::documents::*;
 use crate::types::*;
 use crate::xml_builder::*;
 
+/// Source-image offsets in thousandths of a percent (100000 is 100%).
+/// Negative offsets expand the source rectangle beyond the image edges.
+#[derive(Debug, Clone, Copy, Default, Serialize, PartialEq, Eq)]
+#[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", ts(export))]
+pub struct PicCrop {
+    pub left: i32,
+    pub top: i32,
+    pub right: i32,
+    pub bottom: i32,
+}
+
 #[derive(Debug, Clone, Serialize, PartialEq)]
 #[cfg_attr(feature = "wasm", derive(ts_rs::TS))]
 #[cfg_attr(feature = "wasm", ts(export))]
@@ -16,6 +28,9 @@ pub struct Pic {
     pub image: Vec<u8>,
     // (width, height). unit is emu
     pub size: (u32, u32),
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", ts(optional))]
+    pub crop: Option<PicCrop>,
     pub position_type: DrawingPositionType,
     /// Specifies that this object shall be positioned using the positioning information in the
     /// simplePos child element (§20.4.2.13). This positioning, when specified, positions the
@@ -82,6 +97,7 @@ impl Pic {
             id,
             image: buffer,
             size: (from_px(width_px), from_px(height_px)),
+            crop: None,
             position_type: DrawingPositionType::Inline,
             simple_pos: false,
             simple_pos_x: 0,
@@ -106,6 +122,7 @@ impl Pic {
             id: "".to_string(),
             image: vec![],
             size: (0, 0),
+            crop: None,
             position_type: DrawingPositionType::Inline,
             simple_pos: false,
             simple_pos_x: 0,
@@ -133,6 +150,19 @@ impl Pic {
     // unit is emu
     pub fn size(mut self, w_emu: u32, h_emu: u32) -> Pic {
         self.size = (w_emu, h_emu);
+        self
+    }
+
+    /// Select a source rectangle using thousandths of a percent per edge.
+    /// Positive offsets crop inward; negative offsets extend outward.
+    pub fn crop(mut self, left: i32, top: i32, right: i32, bottom: i32) -> Self {
+        let crop = PicCrop {
+            left,
+            top,
+            right,
+            bottom,
+        };
+        self.crop = (crop != PicCrop::default()).then_some(crop);
         self
     }
 
@@ -218,7 +248,7 @@ impl BuildXML for Pic {
         &self,
         stream: crate::xml::writer::EventWriter<W>,
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
-        XMLBuilder::from(stream)
+        let builder = XMLBuilder::from(stream)
             .open_pic("http://schemas.openxmlformats.org/drawingml/2006/picture")?
             .open_pic_nv_pic_pr()?
             .pic_c_nv_pr("0", "")?
@@ -227,8 +257,17 @@ impl BuildXML for Pic {
             .close()?
             .close()?
             .open_blip_fill()?
-            .a_blip(&self.id)?
-            .a_src_rect()?
+            .a_blip(&self.id)?;
+        let builder = match self.crop {
+            Some(crop) => builder.a_src_rect_with_crop(
+                &crop.left.to_string(),
+                &crop.top.to_string(),
+                &crop.right.to_string(),
+                &crop.bottom.to_string(),
+            )?,
+            None => builder.a_src_rect()?,
+        };
+        builder
             .open_a_stretch()?
             .a_fill_rect()?
             .close()?
@@ -260,7 +299,7 @@ mod tests {
         let b = Pic::new_with_dimensions(Vec::new(), 320, 240).build();
         assert_xml_eq(
             str::from_utf8(&b).unwrap(),
-            r#"<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="0" name="" /><pic:cNvPicPr><a:picLocks noChangeAspect="1" noChangeArrowheads="1" /></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed="rIdImage123" /><a:srcRect /><a:stretch><a:fillRect /></a:stretch></pic:blipFill><pic:spPr bwMode="auto"><a:xfrm rot="0"><a:off x="0" y="0" /><a:ext cx="3048000" cy="2286000" /></a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom></pic:spPr></pic:pic>"#
+            r#"<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="0" name="" /><pic:cNvPicPr><a:picLocks noChangeAspect="1" noChangeArrowheads="1" /></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed="rIdImage123" /><a:srcRect /><a:stretch><a:fillRect /></a:stretch></pic:blipFill><pic:spPr bwMode="auto"><a:xfrm rot="0"><a:off x="0" y="0" /><a:ext cx="3048000" cy="2286000" /></a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom></pic:spPr></pic:pic>"#,
         );
     }
 }

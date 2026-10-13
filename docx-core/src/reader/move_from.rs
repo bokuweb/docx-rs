@@ -18,7 +18,7 @@ impl ElementReader for MoveFrom {
                     let e = XMLElement::from_str(&name.local_name)
                         .expect("should convert to XMLElement");
                     match e {
-                        XMLElement::Run => {
+                        XMLElement::Run if super::run::is_word_name(&name) => {
                             mf = mf.add_run(Run::read(r, &attributes)?);
                         }
                         XMLElement::CommentRangeStart => {

@@ -217,11 +217,11 @@ impl<R: Read> EventReader<R> {
         resolver: &NamespaceResolver,
     ) -> Result<XmlEvent, quick_xml::Error> {
         let name = build_name_from_start(&element, resolver)?;
-        let attributes = build_attributes(&element, decoder, resolver)?;
+        let (attributes, namespace) = build_attributes(&element, decoder, resolver)?;
         Ok(XmlEvent::StartElement {
             name,
             attributes,
-            namespace: Namespace::empty(),
+            namespace,
         })
     }
 }
@@ -327,19 +327,31 @@ fn build_attributes(
     element: &BytesStart<'_>,
     decoder: Decoder,
     resolver: &NamespaceResolver,
-) -> Result<Vec<OwnedAttribute>, quick_xml::Error> {
+) -> Result<(Vec<OwnedAttribute>, Namespace), quick_xml::Error> {
     let mut raw_attributes = element.attributes();
     let iter = raw_attributes.with_checks(false);
     let mut attributes = Vec::with_capacity(iter.size_hint().0);
+    let mut namespace = Namespace::empty();
     for attr_result in iter {
         let attr = attr_result.map_err(quick_xml::Error::from)?;
         let value = attr
             .decoded_and_normalized_value(XmlVersion::Implicit1_0, decoder)?
             .into_owned();
+        // Keep declarations for generic XML round-trips, separate from properties.
+        if attr.key.as_ref() == b"xmlns" {
+            namespace.mappings.push((String::new(), value));
+            continue;
+        }
+        if let Some(prefix) = attr.key.as_ref().strip_prefix(b"xmlns:") {
+            namespace
+                .mappings
+                .push((String::from_utf8_lossy(prefix).into_owned(), value));
+            continue;
+        }
         let name = resolve_name(attr.key.as_ref(), resolver.resolve_attribute(attr.key).0);
         attributes.push(OwnedAttribute { name, value });
     }
-    Ok(attributes)
+    Ok((attributes, namespace))
 }
 
 #[cfg(test)]
@@ -361,6 +373,7 @@ mod tests {
             })
             .collect();
         assert_eq!(starts.len(), 4);
+        assert!(starts[0].1.is_empty());
         assert_eq!(starts[1].0.namespace.as_deref(), Some("urn:word"));
         let qualified = starts[1]
             .1

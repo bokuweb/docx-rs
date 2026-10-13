@@ -23,7 +23,7 @@ impl ElementReader for Paragraph {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
 
                     match e {
-                        XMLElement::Run => {
+                        XMLElement::Run if super::run::is_word_name(&name) => {
                             let run = Run::read(r, &attributes)?;
                             p = p.add_run(run);
                             continue;

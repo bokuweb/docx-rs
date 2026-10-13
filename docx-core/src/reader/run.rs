@@ -54,7 +54,7 @@ fn has_namespace(name: &OwnedName, namespaces: &[&str], legacy_prefix: &str) -> 
     }
 }
 
-fn is_word_name(name: &OwnedName) -> bool {
+pub(super) fn is_word_name(name: &OwnedName) -> bool {
     has_namespace(
         name,
         &[
@@ -108,8 +108,13 @@ impl ElementReader for Run {
                                 XMLElement::Text => text_state = TextState::Text,
                                 XMLElement::DeleteText => text_state = TextState::Delete,
                                 XMLElement::Break => {
-                                    if let Some(a) = attributes.first() {
-                                        run = run.add_break(BreakType::from_str(&a.value)?)
+                                    if let Some(attribute) = attributes.iter().find(|attribute| {
+                                        attribute.name.local_name == "type"
+                                            && (is_word_name(&attribute.name)
+                                                || (attribute.name.namespace.is_none()
+                                                    && attribute.name.prefix.is_none()))
+                                    }) {
+                                        run = run.add_break(BreakType::from_str(&attribute.value)?)
                                     } else {
                                         run = run.add_break(BreakType::TextWrapping)
                                     }
@@ -225,6 +230,82 @@ mod tests {
 
     use super::*;
     use pretty_assertions::assert_eq;
+
+    #[test]
+    fn read_word_containers_ignore_math_and_foreign_runs() {
+        for container in ["p", "hyperlink", "ins", "del", "moveFrom", "moveTo", "sdt"] {
+            for prefix in ["w", "text"] {
+                let read_container =
+                    |xml: &str| -> Result<serde_json::Value, ReaderError> {
+                        let mut reader = EventReader::new(xml.as_bytes());
+                        match container {
+                            "p" => Paragraph::read(&mut reader, &[])
+                                .map(|v| serde_json::to_value(v).unwrap()),
+                            "hyperlink" => Hyperlink::read(&mut reader, &[])
+                                .map(|v| serde_json::to_value(v).unwrap()),
+                            "ins" => Insert::read(&mut reader, &[])
+                                .map(|v| serde_json::to_value(v).unwrap()),
+                            "del" => Delete::read(&mut reader, &[])
+                                .map(|v| serde_json::to_value(v).unwrap()),
+                            "moveFrom" => MoveFrom::read(&mut reader, &[])
+                                .map(|v| serde_json::to_value(v).unwrap()),
+                            "moveTo" => MoveTo::read(&mut reader, &[])
+                                .map(|v| serde_json::to_value(v).unwrap()),
+                            "sdt" => StructuredDataTag::read(&mut reader, &[])
+                                .map(|v| serde_json::to_value(v).unwrap()),
+                            _ => unreachable!(),
+                        }
+                    };
+                let before =
+                    format!("<{prefix}:r><{prefix}:t>Before equation</{prefix}:t></{prefix}:r>");
+                let after =
+                    format!("<{prefix}:r><{prefix}:t>After equation</{prefix}:t></{prefix}:r>");
+                let wrap = |middle: &str| {
+                    format!(
+                        r#"<{prefix}:{container} xmlns:{prefix}="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:f="urn:metadata">{before}{middle}{after}</{prefix}:{container}>"#
+                    )
+                };
+                let control = read_container(&wrap("")).unwrap();
+                let math = r#"<m:oMath><m:r><m:t>E=mc</m:t></m:r><m:sSup><m:e><m:r><m:t>x</m:t></m:r></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:oMath><f:r><f:t>Metadata</f:t></f:r>"#;
+                let tail = wrap("").replace(
+                    &format!("</{prefix}:{container}>"),
+                    &format!("{math}</{prefix}:{container}>"),
+                );
+                for xml in [wrap(math), tail] {
+                    let actual = read_container(&xml).unwrap();
+                    assert_eq!(actual, control, "container {container}, prefix {prefix}");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn read_run_keeps_page_breaks_with_local_namespace_declarations() {
+        for prefix in ["text", "type"] {
+            let xml = format!(
+                r#"<w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:t>Before</w:t><{prefix}:br xmlns:{prefix}="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:f="urn:metadata" f:type="column" {prefix}:clear="all" {prefix}:type="page"/><w:t>After</w:t></w:r>"#
+            );
+            let mut reader = EventReader::new(xml.as_bytes());
+            let run = Run::read(&mut reader, &[]).unwrap();
+            assert_eq!(
+                run,
+                Run::new()
+                    .add_text("Before")
+                    .add_break(BreakType::Page)
+                    .add_text("After")
+            );
+        }
+    }
+
+    #[test]
+    fn read_run_local_declarations_do_not_replace_property_values() {
+        let xml = r#"<w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:rPr><val:b xmlns:val="http://schemas.openxmlformats.org/wordprocessingml/2006/main" val:val="0"/></w:rPr><w:t>Regular report text</w:t></w:r>"#;
+        let mut reader = EventReader::new(xml.as_bytes());
+        assert_eq!(
+            Run::read(&mut reader, &[]).unwrap(),
+            Run::new().disable_bold().add_text("Regular report text")
+        );
+    }
 
     #[test]
     fn read_run_uses_wordprocessing_namespace_with_any_prefix() {

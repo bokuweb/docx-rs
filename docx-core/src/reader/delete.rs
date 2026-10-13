@@ -18,7 +18,7 @@ impl ElementReader for Delete {
                     let e = XMLElement::from_str(&name.local_name)
                         .expect("should convert to XMLElement");
                     match e {
-                        XMLElement::Run => {
+                        XMLElement::Run if super::run::is_word_name(&name) => {
                             del = del.add_run(Run::read(r, attrs)?);
                         }
                         XMLElement::CommentRangeStart => {

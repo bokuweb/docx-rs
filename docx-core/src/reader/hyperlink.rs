@@ -37,7 +37,7 @@ impl ElementReader for Hyperlink {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
 
                     match e {
-                        XMLElement::Run => {
+                        XMLElement::Run if super::run::is_word_name(&name) => {
                             if let Ok(run) = Run::read(r, attrs) {
                                 link = link.add_run(run);
                             }

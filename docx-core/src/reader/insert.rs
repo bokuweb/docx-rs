@@ -17,7 +17,9 @@ impl ElementReader for Insert {
                 }) => {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     match e {
-                        XMLElement::Run => ins = ins.add_run(Run::read(r, &attributes)?),
+                        XMLElement::Run if super::run::is_word_name(&name) => {
+                            ins = ins.add_run(Run::read(r, &attributes)?)
+                        }
                         XMLElement::Delete => ins = ins.add_delete(Delete::read(r, &attributes)?),
                         XMLElement::CommentRangeStart => {
                             if let Some(id) = read(&attributes, "id") {

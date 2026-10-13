@@ -67,7 +67,7 @@ impl ElementReader for StructuredDataTag {
                             }
                             continue;
                         }
-                        XMLElement::Run => {
+                        XMLElement::Run if super::run::is_word_name(&name) => {
                             if let Ok(run) = Run::read(r, attrs) {
                                 sdt.children
                                     .push(StructuredDataTagChild::Run(Box::new(run)));

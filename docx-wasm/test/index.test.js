@@ -35,6 +35,28 @@ describe("snapshot helpers", () => {
 });
 
 describe("reader", () => {
+  test("should retain explicit false paragraph pagination flags", () => {
+    const zip = new Zip(Buffer.from(new w.Docx().build()));
+    const flags = ["keepNext", "keepLines", "pageBreakBefore", "widowControl"];
+    const properties = (value) => flags
+      .map((flag) => `<w:${flag} w:val="${value}"/>`)
+      .join("");
+    zip.updateFile("word/document.xml", Buffer.from(
+      '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
+      `<w:body><w:p><w:pPr>${properties("0")}</w:pPr></w:p>` +
+      `<w:p><w:pPr>${properties("1")}</w:pPr></w:p>` +
+      '<w:p/></w:body></w:document>'
+    ));
+
+    const paragraphs = w.readDocx(zip.toBuffer()).document.children;
+    expect(paragraphs).toHaveLength(3);
+    for (const flag of flags) {
+      expect(paragraphs[0].data.property[flag]).toBe(false);
+      expect(paragraphs[1].data.property[flag]).toBe(true);
+      expect(paragraphs[2].data.property[flag]).toBeUndefined();
+    }
+  });
+
   test("should read lvlOverride docx", () => {
     const buffer = readFileSync("../fixtures/lvl_override/override.docx");
     const json = w.readDocx(buffer);

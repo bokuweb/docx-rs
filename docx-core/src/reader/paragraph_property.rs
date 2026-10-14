@@ -110,24 +110,16 @@ impl ElementReader for ParagraphProperty {
                             p.contextual_spacing = Some(read_bool(&attributes));
                         }
                         XMLElement::KeepNext => {
-                            if read_bool(&attributes) {
-                                p.keep_next = Some(true);
-                            }
+                            p.keep_next = Some(read_bool(&attributes));
                         }
                         XMLElement::KeepLines => {
-                            if read_bool(&attributes) {
-                                p.keep_lines = Some(true);
-                            }
+                            p.keep_lines = Some(read_bool(&attributes));
                         }
                         XMLElement::PageBreakBefore => {
-                            if read_bool(&attributes) {
-                                p.page_break_before = Some(true);
-                            }
+                            p.page_break_before = Some(read_bool(&attributes));
                         }
                         XMLElement::WidowControl => {
-                            if read_bool(&attributes) {
-                                p.widow_control = Some(true);
-                            }
+                            p.widow_control = Some(read_bool(&attributes));
                         }
                         XMLElement::ParagraphPropertyChange => {
                             if let Ok(ppr_change) = ParagraphPropertyChange::read(r, &attributes) {
@@ -174,5 +166,98 @@ impl ElementReader for ParagraphProperty {
                 _ => {}
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn parse_properties(body: &str) -> ParagraphProperty {
+        let xml = format!(
+            r#"<w:pPr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">{body}</w:pPr>"#
+        );
+        ParagraphProperty::read(&mut EventReader::new(xml.as_bytes()), &[]).unwrap()
+    }
+
+    fn flags(property: &ParagraphProperty) -> [Option<bool>; 4] {
+        [
+            property.keep_next,
+            property.keep_lines,
+            property.page_break_before,
+            property.widow_control,
+        ]
+    }
+
+    #[test]
+    fn pagination_flags_omitted_remain_unset() {
+        assert_eq!(flags(&parse_properties("")), [None; 4]);
+    }
+
+    #[test]
+    fn pagination_flags_true_forms_are_retained() {
+        for attribute in ["", r#" w:val="1""#, r#" w:val="true""#, r#" w:val="on""#] {
+            let body = ["keepNext", "keepLines", "pageBreakBefore", "widowControl"]
+                .map(|element| format!("<w:{element}{attribute}/>"))
+                .join("");
+            assert_eq!(flags(&parse_properties(&body)), [Some(true); 4], "{body}");
+        }
+    }
+
+    macro_rules! false_pagination_flag_test {
+        ($test:ident, $element:literal, $field:ident) => {
+            #[test]
+            fn $test() {
+                for value in ["0", "false", "off"] {
+                    let body = format!("<w:{} w:val=\"{value}\"/>", $element);
+                    assert_eq!(parse_properties(&body).$field, Some(false), "{body}");
+                }
+            }
+        };
+    }
+
+    false_pagination_flag_test!(pagination_flags_keep_next_false, "keepNext", keep_next);
+    false_pagination_flag_test!(pagination_flags_keep_lines_false, "keepLines", keep_lines);
+    false_pagination_flag_test!(
+        pagination_flags_page_break_before_false,
+        "pageBreakBefore",
+        page_break_before
+    );
+    false_pagination_flag_test!(
+        pagination_flags_widow_control_false,
+        "widowControl",
+        widow_control
+    );
+
+    #[test]
+    fn pagination_flags_later_values_replace_earlier_values() {
+        for (first, last, expected) in [("1", "0", false), ("0", "1", true)] {
+            let body = ["keepNext", "keepLines", "pageBreakBefore", "widowControl"]
+                .map(|element| {
+                    format!("<w:{element} w:val=\"{first}\"/><w:{element} w:val=\"{last}\"/>")
+                })
+                .join("");
+            assert_eq!(
+                flags(&parse_properties(&body)),
+                [Some(expected); 4],
+                "{body}"
+            );
+        }
+    }
+
+    #[test]
+    fn pagination_flags_false_survives_a_named_style() {
+        let xml = r#"<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+          <w:style w:type="paragraph" w:styleId="ClearPagination">
+            <w:pPr><w:keepNext w:val="0"/><w:keepLines w:val="false"/>
+            <w:pageBreakBefore w:val="off"/><w:widowControl w:val="0"/></w:pPr>
+          </w:style>
+        </w:styles>"#;
+        let styles = Styles::from_xml(xml.as_bytes()).unwrap();
+        assert_eq!(styles.styles.len(), 1);
+        assert_eq!(
+            flags(&styles.styles[0].paragraph_property),
+            [Some(false); 4]
+        );
     }
 }

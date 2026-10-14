@@ -85,6 +85,15 @@ impl ElementReader for Run {
                                     let p = RunProperty::read(r, &attributes)?;
                                     run = run.set_property(p);
                                 }
+                                XMLElement::FootnoteReference => {
+                                    if let Some(id) = read(&attributes, "id")
+                                        .and_then(|value| value.parse::<usize>().ok())
+                                    {
+                                        run.children.push(RunChild::FootnoteReference(
+                                            FootnoteReference::new(id),
+                                        ));
+                                    }
+                                }
                                 XMLElement::Text => text_state = TextState::Text,
                                 XMLElement::DeleteText => text_state = TextState::Delete,
                                 XMLElement::Break => {
@@ -194,6 +203,42 @@ mod tests {
 
     use super::*;
     use pretty_assertions::assert_eq;
+
+    #[test]
+    fn test_read_footnote_reference_without_reference_style() {
+        for (id, style) in [(7, ""), (29, "<w:rStyle w:val=\"CustomReference\"/>")] {
+            let xml = format!(
+                r#"<w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:rPr>{style}<w:b/></w:rPr><w:t>Before</w:t><w:footnoteReference w:customMarkFollows="0" w:id="{id}"/><w:t>After</w:t></w:r>"#
+            );
+            let run = Run::read(&mut EventReader::new(xml.as_bytes()), &[]).unwrap();
+            assert_eq!(
+                run.children,
+                vec![
+                    RunChild::Text(Text::new("Before")),
+                    RunChild::FootnoteReference(FootnoteReference::new(id)),
+                    RunChild::Text(Text::new("After"))
+                ]
+            );
+            assert_eq!(run.run_property.bold, Some(Bold::new()));
+        }
+    }
+
+    #[test]
+    fn test_read_footnote_reference_preserves_surrounding_text_with_invalid_id() {
+        for attributes in ["", "w:id=\"invalid\"", "w:id=\"-1\""] {
+            let xml = format!(
+                r#"<w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:t>Before</w:t><w:footnoteReference {attributes}/><w:t>After</w:t></w:r>"#
+            );
+            let run = Run::read(&mut EventReader::new(xml.as_bytes()), &[]).unwrap();
+            assert_eq!(
+                run.children,
+                vec![
+                    RunChild::Text(Text::new("Before")),
+                    RunChild::Text(Text::new("After"))
+                ]
+            );
+        }
+    }
 
     #[test]
     fn test_read_size_color() {

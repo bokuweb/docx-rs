@@ -783,9 +783,16 @@ impl<W: Write> XMLBuilder<W> {
 
     // FootnoteReference
     // w:footnoteReference w:id="1"
-    pub(crate) fn footnote_reference(self, id: usize) -> Result<Self> {
-        self.write(XmlEvent::start_element("w:footnoteReference").attr_display("w:id", id))?
-            .close()
+    pub(crate) fn footnote_reference(
+        self,
+        id: usize,
+        custom_mark_follows: Option<bool>,
+    ) -> Result<Self> {
+        let mut element = XmlEvent::start_element("w:footnoteReference").attr_display("w:id", id);
+        if let Some(value) = custom_mark_follows {
+            element = element.attr("w:customMarkFollows", if value { "1" } else { "0" });
+        }
+        self.write(element)?.close()
     }
 
     // Footnotes
@@ -877,7 +884,7 @@ mod tests {
     #[test]
     fn test_footnote_reference() -> Result<()> {
         let b = XMLBuilder::new(Vec::new());
-        let r = b.footnote_reference(1)?.into_inner()?.into_inner()?;
+        let r = b.footnote_reference(1, None)?.into_inner()?.into_inner()?;
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:footnoteReference w:id="1" />"#

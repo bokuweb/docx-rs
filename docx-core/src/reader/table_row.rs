@@ -17,6 +17,7 @@ impl ElementReader for TableRow {
         let mut del = None;
         let mut ins = None;
         let mut height_rule = None;
+        let mut cant_split = false;
         loop {
             let e = r.next_event();
             match e {
@@ -28,6 +29,9 @@ impl ElementReader for TableRow {
                     ignore::ignore_element(e.clone(), XMLElement::TableRowPropertyChange, r);
 
                     match e {
+                        XMLElement::CantSplit => {
+                            cant_split = read_bool(&attributes);
+                        }
                         XMLElement::TableCell => {
                             cells.push(TableCell::read(r, &attributes)?);
                             continue;
@@ -84,6 +88,9 @@ impl ElementReader for TableRow {
                     let e = XMLElement::from_str(&name.local_name).unwrap();
                     if e == XMLElement::TableRow {
                         let mut row = TableRow::new(cells);
+                        if cant_split {
+                            row = row.cant_split();
+                        }
                         if let Some(grid_after) = grid_after {
                             row = row.grid_after(grid_after);
                         }
@@ -123,5 +130,75 @@ impl ElementReader for TableRow {
                 _ => {}
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn read_row(properties: &str, cells: &str) -> TableRow {
+        let xml = format!(
+            r#"<w:tr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:trPr>{properties}</w:trPr>{cells}</w:tr>"#
+        );
+        TableRow::read(&mut EventReader::new(xml.as_bytes()), &[]).unwrap()
+    }
+
+    #[test]
+    fn cant_split_reader_preserves_the_empty_enabled_element() {
+        let row = read_row("<w:cantSplit/>", "<w:tc><w:p/></w:tc>");
+        assert_eq!(row.property.cant_split, Some(CantSplit::default()));
+        assert_eq!(row.cells.len(), 1);
+        assert_eq!(
+            serde_json::to_value(&row.property).unwrap()["cantSplit"],
+            "cantSplit"
+        );
+    }
+
+    #[test]
+    fn cant_split_reader_recognizes_enabled_boolean_spellings() {
+        for value in ["1", "true", "on"] {
+            let row = read_row(&format!(r#"<w:cantSplit w:val="{value}"/>"#), "");
+            assert_eq!(
+                row.property.cant_split,
+                Some(CantSplit::default()),
+                "{value}"
+            );
+        }
+    }
+
+    #[test]
+    fn cant_split_reader_leaves_false_and_absent_constraints_disabled() {
+        for value in ["0", "false", "off"] {
+            let row = read_row(&format!(r#"<w:cantSplit w:val="{value}"/>"#), "");
+            assert_eq!(row.property.cant_split, None, "{value}");
+        }
+        assert_eq!(read_row("", "").property.cant_split, None);
+    }
+
+    #[test]
+    fn cant_split_reader_ignores_historical_row_properties() {
+        let old = r#"<w:trPrChange w:id="1" w:author="Example"><w:trPr><w:cantSplit/></w:trPr></w:trPrChange>"#;
+        assert_eq!(read_row(old, "").property.cant_split, None);
+        let current = format!("<w:cantSplit/>{old}");
+        assert_eq!(
+            read_row(&current, "").property.cant_split,
+            Some(CantSplit::default())
+        );
+    }
+
+    #[test]
+    fn cant_split_reader_keeps_nested_row_constraints_local() {
+        let row = read_row(
+            "",
+            "<w:tc><w:tbl><w:tr><w:trPr><w:cantSplit/></w:trPr><w:tc><w:p/></w:tc></w:tr></w:tbl><w:p/></w:tc>",
+        );
+        assert_eq!(row.property.cant_split, None);
+        let TableRowChild::TableCell(cell) = &row.cells[0];
+        let TableCellContent::Table(table) = &cell.children[0] else {
+            panic!("the nested table must remain present");
+        };
+        let TableChild::TableRow(nested_row) = &table.rows[0];
+        assert_eq!(nested_row.property.cant_split, Some(CantSplit::default()));
     }
 }

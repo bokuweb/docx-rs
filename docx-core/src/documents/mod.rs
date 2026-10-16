@@ -3054,7 +3054,7 @@ mod emf_reader_tests {
     fn build_docx_with_emf() -> Vec<u8> {
         let buf = std::io::Cursor::new(Vec::<u8>::new());
         let mut zip = zip::ZipWriter::new(buf);
-        let opts: zip::write::FileOptions<'_, ()> =
+        let opts: zip::write::FileOptions<'_, '_, ()> =
             zip::write::FileOptions::default().compression_method(zip::CompressionMethod::Deflated);
 
         let content_types = r#"<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

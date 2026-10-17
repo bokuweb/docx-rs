@@ -434,6 +434,8 @@ impl<W: Write> XMLBuilder<W> {
 
     closed!(br, "w:br", "w:type");
     closed!(cr, "w:cr");
+    closed!(no_break_hyphen, "w:noBreakHyphen");
+    closed!(soft_hyphen, "w:softHyphen");
     closed!(sym, "w:sym", "w:font", "w:char");
     closed!(zoom, "w:zoom", "w:percent");
     closed_with_usize!(default_tab_stop, "w:defaultTabStop");

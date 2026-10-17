@@ -33,6 +33,8 @@ pub enum RunChild {
     PTab(PositionalTab),
     Break(Break),
     CarriageReturn(CarriageReturn),
+    NoBreakHyphen(NoBreakHyphen),
+    SoftHyphen(SoftHyphen),
     Drawing(Box<Drawing>),
     Shape(Box<Shape>),
     CommentStart(Box<CommentRangeStart>),
@@ -90,6 +92,16 @@ impl Serialize for RunChild {
             RunChild::CarriageReturn(_) => {
                 let mut t = serializer.serialize_struct("CarriageReturn", 1)?;
                 t.serialize_field("type", "carriageReturn")?;
+                t.end()
+            }
+            RunChild::NoBreakHyphen(_) => {
+                let mut t = serializer.serialize_struct("NoBreakHyphen", 1)?;
+                t.serialize_field("type", "noBreakHyphen")?;
+                t.end()
+            }
+            RunChild::SoftHyphen(_) => {
+                let mut t = serializer.serialize_struct("SoftHyphen", 1)?;
+                t.serialize_field("type", "softHyphen")?;
                 t.end()
             }
             RunChild::Drawing(ref s) => {
@@ -255,6 +267,17 @@ impl Run {
         self
     }
 
+    pub fn add_no_break_hyphen(mut self) -> Run {
+        self.children
+            .push(RunChild::NoBreakHyphen(NoBreakHyphen::new()));
+        self
+    }
+
+    pub fn add_soft_hyphen(mut self) -> Run {
+        self.children.push(RunChild::SoftHyphen(SoftHyphen::new()));
+        self
+    }
+
     pub fn add_sym(mut self, sym: Sym) -> Run {
         self.children.push(RunChild::Sym(sym));
         self
@@ -389,6 +412,8 @@ impl BuildXML for RunChild {
             RunChild::PTab(t) => t.build_to(stream),
             RunChild::Break(t) => t.build_to(stream),
             RunChild::CarriageReturn(t) => t.build_to(stream),
+            RunChild::NoBreakHyphen(t) => t.build_to(stream),
+            RunChild::SoftHyphen(t) => t.build_to(stream),
             RunChild::Drawing(t) => t.build_to(stream),
             RunChild::Shape(_t) => {
                 todo!("Support shape writer.")
@@ -456,6 +481,20 @@ mod tests {
         assert_xml_eq(
             str::from_utf8(&b).unwrap(),
             r#"<w:r><w:rPr><w:strike /></w:rPr><w:t xml:space="preserve">Hello</w:t></w:r>"#
+        );
+    }
+
+    #[test]
+    fn test_hyphens() {
+        let b = Run::new()
+            .add_text("long")
+            .add_no_break_hyphen()
+            .add_text("term")
+            .add_soft_hyphen()
+            .build();
+        assert_xml_eq(
+            str::from_utf8(&b).unwrap(),
+            r#"<w:r><w:rPr /><w:t xml:space="preserve">long</w:t><w:noBreakHyphen /><w:t xml:space="preserve">term</w:t><w:softHyphen /></w:r>"#
         );
     }
 

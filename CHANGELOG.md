@@ -18,6 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and keep `hangingChars` / `firstLineChars` when reading numbering levels.
 - docx-wasm: add `indentChars({ startChars, endChars, hangingChars,
   firstLineChars })` to `Paragraph`, `Style`, and `Level`.
+- Support non-breaking and soft hyphens (`w:noBreakHyphen` / `w:softHyphen`)
+  for both reading and writing. They were previously dropped on read, so
+  "long‑term" was read as "longterm". `Run` gains `add_no_break_hyphen` /
+  `add_soft_hyphen`, and `Paragraph::raw_text` returns them as U+2011 /
+  U+00AD.
+- docx-wasm: add `addNoBreakHyphen()` / `addSoftHyphen()` to `Run`.
 
 ## @0.4.22 (21. Jul, 2026)
 

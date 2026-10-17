@@ -13,9 +13,14 @@ fn document_with_unicode_names(overrides: &[(&str, &str)]) -> Vec<u8> {
     let mut parts = Vec::new();
     for index in 0..source.len() {
         let mut entry = source.by_index(index).unwrap();
+        let entry_name = if let Some(name) = entry.enclosed_name() {
+            name.to_string_lossy().to_string()
+        } else {
+            continue;
+        };
         let mut contents = Vec::new();
         entry.read_to_end(&mut contents).unwrap();
-        parts.push((entry.name().to_owned(), contents));
+        parts.push((entry_name, contents));
     }
     let document = parts
         .iter()
@@ -24,7 +29,7 @@ fn document_with_unicode_names(overrides: &[(&str, &str)]) -> Vec<u8> {
     let alternate = String::from_utf8(document.1.clone())
         .unwrap()
         .replace("Original document", "Alternate document");
-    parts.push(("word/alternate.xml".to_owned(), alternate.into_bytes()));
+    parts.push(("word/alternate.xml".into(), alternate.into_bytes()));
     let mut writer = zip::ZipWriter::new(Cursor::new(Vec::new()));
     for (name, contents) in parts {
         let mut options = FullFileOptions::default();
@@ -32,7 +37,7 @@ fn document_with_unicode_names(overrides: &[(&str, &str)]) -> Vec<u8> {
             let mut extra = vec![1];
             extra.extend_from_slice(&crc32fast::hash(name.as_bytes()).to_le_bytes());
             extra.extend_from_slice(unicode_name.as_bytes());
-            options.add_extra_data(0xfffe, extra, false).unwrap();
+            options.add_extra_field(0xfffe, extra, false).unwrap();
         }
         writer.start_file(name, options).unwrap();
         writer.write_all(&contents).unwrap();

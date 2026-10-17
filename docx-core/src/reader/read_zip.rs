@@ -49,7 +49,7 @@ pub(crate) fn validate_ascii_part_names(
             let raw_name = header
                 .get(name_offset..name_offset + name_length)
                 .ok_or_else(invalid_header)?;
-            if raw_name.is_ascii() && raw_name != entry.name().as_bytes() {
+            if raw_name.is_ascii() && raw_name != entry.name()?.as_bytes() {
                 return Err(zip::result::ZipError::InvalidArchive(
                     "ASCII ZIP part name disagrees with resolved filename".into(),
                 )

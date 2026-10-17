@@ -35,6 +35,42 @@ describe("snapshot helpers", () => {
 });
 
 describe("reader", () => {
+  test("should retain unstyled footnote IDs between run text children", () => {
+    for (const id of [7, 29]) {
+      const zip = new Zip(readFileSync("../fixtures/footnotes/footnotes.docx"));
+      zip.updateFile("word/document.xml", Buffer.from(
+        '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
+          '<w:body><w:p><w:r><w:rPr><w:b/></w:rPr><w:t>Before</w:t>' +
+          `<w:footnoteReference w:customMarkFollows="0" w:id="${id}"/>` +
+          '<w:t>After</w:t></w:r></w:p></w:body></w:document>'
+      ));
+      const json = w.readDocx(zip.toBuffer());
+      const run = json.document.children[0].data.children[0].data;
+      expect(run.children.map((child) => [child.type, child.data.text ?? child.data.id])).toEqual([
+        ["text", "Before"],
+        ["footnoteReference", id],
+        ["text", "After"],
+      ]);
+      expect(run.runProperty.bold).toBe(true);
+      expect(run.children[1].data.customMarkFollows).toBe(false);
+    }
+  });
+
+  test("should preserve custom footnote mark flags without consuming text", () => {
+    for (const [attribute, expected] of [["1", true], ["on", true], ["off", false], [null, undefined]]) {
+      const zip = new Zip(readFileSync("../fixtures/footnotes/footnotes.docx"));
+      const customMark = attribute === null ? "" : ` w:customMarkFollows="${attribute}"`;
+      zip.updateFile("word/document.xml", Buffer.from(
+        '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
+        `<w:body><w:p><w:r><w:t>Before</w:t><w:footnoteReference w:id="29"${customMark}/>` +
+        '<w:t>**</w:t><w:t>After</w:t></w:r></w:p></w:body></w:document>'
+      ));
+      const run = w.readDocx(zip.toBuffer()).document.children[0].data.children[0].data;
+      expect(run.children.map((child) => child.data.text ?? child.data.id)).toEqual(["Before", 29, "**", "After"]);
+      expect(run.children[1].data.customMarkFollows).toBe(expected);
+    }
+  });
+
   test("should read lvlOverride docx", () => {
     const buffer = readFileSync("../fixtures/lvl_override/override.docx");
     const json = w.readDocx(buffer);

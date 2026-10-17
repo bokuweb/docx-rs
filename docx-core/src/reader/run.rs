@@ -85,6 +85,33 @@ impl ElementReader for Run {
                                     let p = RunProperty::read(r, &attributes)?;
                                     run = run.set_property(p);
                                 }
+                                XMLElement::FootnoteReference => {
+                                    // The current XML reader does not resolve namespace URIs;
+                                    // use its conventional Word prefix until that reader is repaired.
+                                    let word_attribute = |local_name: &str| {
+                                        attributes
+                                            .iter()
+                                            .find(|attribute| {
+                                                let word_namespace = attribute.name.namespace.as_deref()
+                                                    == Some("http://schemas.openxmlformats.org/wordprocessingml/2006/main");
+                                                let conventional_prefix = attribute.name.namespace.is_none()
+                                                    && matches!(attribute.name.prefix.as_deref(), None | Some("w"));
+                                                attribute.name.local_name == local_name
+                                                    && (word_namespace || conventional_prefix)
+                                            })
+                                            .map(|attribute| attribute.value.as_str())
+                                    };
+                                    if let Some(id) = word_attribute("id")
+                                        .and_then(|value| value.parse::<usize>().ok())
+                                    {
+                                        let mut reference = FootnoteReference::new(id);
+                                        if let Some(value) = word_attribute("customMarkFollows") {
+                                            reference =
+                                                reference.custom_mark_follows(!is_false(value));
+                                        }
+                                        run.children.push(RunChild::FootnoteReference(reference));
+                                    }
+                                }
                                 XMLElement::Text => text_state = TextState::Text,
                                 XMLElement::DeleteText => text_state = TextState::Delete,
                                 XMLElement::Break => {
@@ -194,6 +221,95 @@ mod tests {
 
     use super::*;
     use pretty_assertions::assert_eq;
+
+    #[test]
+    fn test_read_footnote_reference_without_reference_style() {
+        for (id, style) in [(7, ""), (29, "<w:rStyle w:val=\"CustomReference\"/>")] {
+            let xml = format!(
+                r#"<w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:rPr>{style}<w:b/></w:rPr><w:t>Before</w:t><w:footnoteReference w:customMarkFollows="0" w:id="{id}"/><w:t>After</w:t></w:r>"#
+            );
+            let run = Run::read(&mut EventReader::new(xml.as_bytes()), &[]).unwrap();
+            assert_eq!(
+                run.children,
+                vec![
+                    RunChild::Text(Text::new("Before")),
+                    RunChild::FootnoteReference(
+                        FootnoteReference::new(id).custom_mark_follows(false)
+                    ),
+                    RunChild::Text(Text::new("After"))
+                ]
+            );
+            assert_eq!(run.run_property.bold, Some(Bold::new()));
+        }
+    }
+
+    #[test]
+    fn test_read_footnote_reference_retains_custom_mark_on_off() {
+        for (value, expected) in [
+            ("1", true),
+            ("true", true),
+            ("on", true),
+            ("0", false),
+            ("false", false),
+            ("off", false),
+        ] {
+            let xml = format!(
+                r#"<w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:t>Before</w:t><w:footnoteReference w:customMarkFollows="{value}" w:id="7"/><w:t>**</w:t></w:r>"#
+            );
+            let run = Run::read(&mut EventReader::new(xml.as_bytes()), &[]).unwrap();
+            assert_eq!(run.children.len(), 3);
+            let RunChild::FootnoteReference(reference) = &run.children[1] else {
+                panic!("reference stays between its text siblings")
+            };
+            let value = serde_json::to_value(reference).unwrap();
+            assert_eq!(value["customMarkFollows"], expected);
+            assert_eq!(reference.id, 7);
+            assert_eq!(run.children[2], RunChild::Text(Text::new("**")));
+        }
+    }
+
+    #[test]
+    fn test_read_footnote_reference_custom_mark_ignores_extension_prefix() {
+        for (attributes, expected) in [
+            (r#"w:customMarkFollows="on""#, Some(true)),
+            (
+                r#"x:customMarkFollows="on" w:customMarkFollows="off""#,
+                Some(false),
+            ),
+            (r#"x:customMarkFollows="on""#, None),
+            (r#"customMarkFollows="on""#, Some(true)),
+        ] {
+            let xml = format!(
+                r#"<w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:x="urn:foreign"><w:footnoteReference {attributes} w:id="29"/></w:r>"#
+            );
+            let run = Run::read(&mut EventReader::new(xml.as_bytes()), &[]).unwrap();
+            let RunChild::FootnoteReference(reference) = &run.children[0] else {
+                panic!("reference")
+            };
+            let value = serde_json::to_value(reference).unwrap();
+            assert_eq!(
+                value.get("customMarkFollows").cloned(),
+                expected.map(serde_json::Value::Bool)
+            );
+        }
+    }
+
+    #[test]
+    fn test_read_footnote_reference_preserves_surrounding_text_with_invalid_id() {
+        for attributes in ["", "w:id=\"invalid\"", "w:id=\"-1\""] {
+            let xml = format!(
+                r#"<w:r xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:t>Before</w:t><w:footnoteReference {attributes}/><w:t>After</w:t></w:r>"#
+            );
+            let run = Run::read(&mut EventReader::new(xml.as_bytes()), &[]).unwrap();
+            assert_eq!(
+                run.children,
+                vec![
+                    RunChild::Text(Text::new("Before")),
+                    RunChild::Text(Text::new("After"))
+                ]
+            );
+        }
+    }
 
     #[test]
     fn test_read_size_color() {

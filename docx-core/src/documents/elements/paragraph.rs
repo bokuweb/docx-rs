@@ -273,6 +273,36 @@ impl Paragraph {
         self
     }
 
+    pub fn kinsoku(mut self, v: bool) -> Self {
+        self.property = self.property.kinsoku(v);
+        self
+    }
+
+    pub fn word_wrap(mut self, v: bool) -> Self {
+        self.property = self.property.word_wrap(v);
+        self
+    }
+
+    pub fn overflow_punct(mut self, v: bool) -> Self {
+        self.property = self.property.overflow_punct(v);
+        self
+    }
+
+    pub fn top_line_punct(mut self, v: bool) -> Self {
+        self.property = self.property.top_line_punct(v);
+        self
+    }
+
+    pub fn auto_space_de(mut self, v: bool) -> Self {
+        self.property = self.property.auto_space_de(v);
+        self
+    }
+
+    pub fn auto_space_dn(mut self, v: bool) -> Self {
+        self.property = self.property.auto_space_dn(v);
+        self
+    }
+
     pub fn outline_lvl(mut self, v: usize) -> Self {
         self.property = self.property.outline_lvl(v);
         self

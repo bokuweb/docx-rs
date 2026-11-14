@@ -95,6 +95,24 @@ impl ElementReader for ParagraphProperty {
                             let v = read_bool(&attributes);
                             p.snap_to_grid = Some(v);
                         }
+                        XMLElement::Kinsoku => {
+                            p.kinsoku = Some(read_bool(&attributes));
+                        }
+                        XMLElement::WordWrap => {
+                            p.word_wrap = Some(read_bool(&attributes));
+                        }
+                        XMLElement::OverflowPunct => {
+                            p.overflow_punct = Some(read_bool(&attributes));
+                        }
+                        XMLElement::TopLinePunct => {
+                            p.top_line_punct = Some(read_bool(&attributes));
+                        }
+                        XMLElement::AutoSpaceDN => {
+                            p.auto_space_dn = Some(read_bool(&attributes));
+                        }
+                        XMLElement::AutoSpaceDE => {
+                            p.auto_space_de = Some(read_bool(&attributes));
+                        }
                         XMLElement::KeepNext => {
                             if read_bool(&attributes) {
                                 p.keep_next = Some(true);
@@ -159,6 +177,56 @@ impl ElementReader for ParagraphProperty {
                 Err(_) => return Err(ReaderError::XMLReadError),
                 _ => {}
             }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::documents::BuildXML;
+
+    #[test]
+    fn reads_and_writes_east_asian_typography() {
+        let xml = r#"<w:pPr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:kinsoku/><w:wordWrap w:val="0"/>
+            <w:overflowPunct w:val="false"/><w:topLinePunct w:val="on"/>
+            <w:autoSpaceDE/><w:autoSpaceDN w:val="off"/><w:textAlignment w:val="center"/></w:pPr>"#;
+        let property = ParagraphProperty::read(&mut EventReader::new(xml.as_bytes()), &[]).unwrap();
+        assert_eq!(property.auto_space_de, Some(true));
+        assert_eq!(property.auto_space_dn, Some(false));
+
+        let json = serde_json::to_value(&property).unwrap();
+        assert_eq!(json["kinsoku"], true);
+        assert_eq!(json["wordWrap"], false);
+        assert_eq!(json["overflowPunct"], false);
+        assert_eq!(json["topLinePunct"], true);
+        assert_eq!(json["textAlignment"], "center");
+        assert_eq!(json["autoSpaceDE"], true);
+        assert_eq!(json["autoSpaceDN"], false);
+
+        let output = String::from_utf8(property.build()).unwrap();
+        assert!(output.contains(r#"<w:kinsoku w:val="1" />"#));
+        assert!(output.contains(r#"<w:wordWrap w:val="0" />"#));
+        assert!(output.contains(r#"<w:overflowPunct w:val="0" />"#));
+        assert!(output.contains(r#"<w:topLinePunct w:val="1" />"#));
+        assert!(output.contains(r#"<w:textAlignment w:val="center" />"#));
+        assert!(output.contains(r#"<w:autoSpaceDE w:val="1" />"#));
+        assert!(output.contains(r#"<w:autoSpaceDN w:val="0" />"#));
+
+        let default = ParagraphProperty::new();
+        let json = serde_json::to_value(&default).unwrap();
+        let output = String::from_utf8(default.build()).unwrap();
+        for key in [
+            "kinsoku",
+            "wordWrap",
+            "overflowPunct",
+            "topLinePunct",
+            "autoSpaceDE",
+            "autoSpaceDN",
+            "textAlignment",
+        ] {
+            assert!(json.get(key).is_none());
+            assert!(!output.contains(key));
         }
     }
 }

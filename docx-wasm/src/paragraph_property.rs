@@ -78,6 +78,36 @@ impl ParagraphProperty {
         self
     }
 
+    pub fn kinsoku(mut self, v: bool) -> Self {
+        self.0 = self.0.kinsoku(v);
+        self
+    }
+
+    pub fn word_wrap(mut self, v: bool) -> Self {
+        self.0 = self.0.word_wrap(v);
+        self
+    }
+
+    pub fn overflow_punct(mut self, v: bool) -> Self {
+        self.0 = self.0.overflow_punct(v);
+        self
+    }
+
+    pub fn top_line_punct(mut self, v: bool) -> Self {
+        self.0 = self.0.top_line_punct(v);
+        self
+    }
+
+    pub fn auto_space_de(mut self, v: bool) -> Self {
+        self.0 = self.0.auto_space_de(v);
+        self
+    }
+
+    pub fn auto_space_dn(mut self, v: bool) -> Self {
+        self.0 = self.0.auto_space_dn(v);
+        self
+    }
+
     pub fn snap_to_grid(mut self, v: bool) -> Self {
         self.0 = self.0.snap_to_grid(v);
         self

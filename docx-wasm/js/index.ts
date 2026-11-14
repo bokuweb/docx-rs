@@ -1,5 +1,9 @@
 import { Paragraph } from "./paragraph";
-import { LineSpacing, ParagraphProperty } from "./paragraph-property";
+import {
+  createParagraphProperty,
+  LineSpacing,
+  ParagraphProperty,
+} from "./paragraph-property";
 import { Table } from "./table";
 import { TableOfContents } from "./table-of-contents";
 import { RunFonts } from "./run-property";
@@ -607,14 +611,21 @@ export class Docx {
         }
       }
 
-      if (this.styles.docDefaults.paragraphProperty) {
-        if (this.styles.docDefaults.paragraphProperty.lineSpacing) {
-          const spacing = this.buildLineSpacing(
-            this.styles.docDefaults.paragraphProperty
-          );
-          if (spacing) {
-            docx = docx.default_line_spacing(spacing);
-          }
+      const property = this.styles.docDefaults.paragraphProperty;
+      if (
+        property?._kinsoku != null ||
+        property?._wordWrap != null ||
+        property?._overflowPunct != null ||
+        property?._topLinePunct != null ||
+        property?._autoSpaceDE != null ||
+        property?._autoSpaceDN != null ||
+        property?._textAlignment != null
+      ) {
+        docx = docx.default_paragraph_property(createParagraphProperty(property));
+      } else if (property?.lineSpacing) {
+        const spacing = this.buildLineSpacing(property);
+        if (spacing) {
+          docx = docx.default_line_spacing(spacing);
         }
       }
     }

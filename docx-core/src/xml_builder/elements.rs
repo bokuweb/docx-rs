@@ -171,6 +171,12 @@ impl<W: Write> XMLBuilder<W> {
     // i.e. <w:szCs ... >
     closed_with_usize!(sz_cs, "w:szCs");
     closed_with_isize!(adjust_right_ind, "w:adjustRightInd");
+    closed_with_str!(kinsoku, "w:kinsoku");
+    closed_with_str!(word_wrap, "w:wordWrap");
+    closed_with_str!(overflow_punct, "w:overflowPunct");
+    closed_with_str!(top_line_punct, "w:topLinePunct");
+    closed_with_str!(auto_space_dn, "w:autoSpaceDN");
+    closed_with_str!(auto_space_de, "w:autoSpaceDE");
     closed_with_str!(text_alignment, "w:textAlignment");
 
     closed!(field_character, "w:fldChar", "w:fldCharType", "w:dirty");

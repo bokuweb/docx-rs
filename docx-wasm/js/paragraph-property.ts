@@ -147,6 +147,12 @@ export class ParagraphProperty {
   widowControl: boolean;
   paragraphPropertyChange?: ParagraphPropertyChange;
   outlineLvl?: number | null;
+  _kinsoku?: boolean;
+  _wordWrap?: boolean;
+  _overflowPunct?: boolean;
+  _topLinePunct?: boolean;
+  _autoSpaceDE?: boolean;
+  _autoSpaceDN?: boolean;
   _snapToGrid?: boolean;
   _adjustRightInd?: number;
   _tabs?: Tab[];
@@ -177,6 +183,36 @@ export class ParagraphProperty {
 
   adjustRightInd(v: number) {
     this._adjustRightInd = v;
+    return this;
+  }
+
+  kinsoku(v: boolean) {
+    this._kinsoku = v;
+    return this;
+  }
+
+  wordWrap(v: boolean) {
+    this._wordWrap = v;
+    return this;
+  }
+
+  overflowPunct(v: boolean) {
+    this._overflowPunct = v;
+    return this;
+  }
+
+  topLinePunct(v: boolean) {
+    this._topLinePunct = v;
+    return this;
+  }
+
+  autoSpaceDE(v: boolean) {
+    this._autoSpaceDE = v;
+    return this;
+  }
+
+  autoSpaceDN(v: boolean) {
+    this._autoSpaceDN = v;
     return this;
   }
 
@@ -371,6 +407,30 @@ export const setParagraphProperty = <T extends wasm.Paragraph | wasm.Style>(
 
   if (property._adjustRightInd != null) {
     target = target.adjust_right_ind(property._adjustRightInd) as T;
+  }
+
+  if (property._kinsoku != null) {
+    target = target.kinsoku(property._kinsoku) as T;
+  }
+
+  if (property._wordWrap != null) {
+    target = target.word_wrap(property._wordWrap) as T;
+  }
+
+  if (property._overflowPunct != null) {
+    target = target.overflow_punct(property._overflowPunct) as T;
+  }
+
+  if (property._topLinePunct != null) {
+    target = target.top_line_punct(property._topLinePunct) as T;
+  }
+
+  if (property._autoSpaceDN != null) {
+    target = target.auto_space_dn(property._autoSpaceDN) as T;
+  }
+
+  if (property._autoSpaceDE != null) {
+    target = target.auto_space_de(property._autoSpaceDE) as T;
   }
 
   if (typeof property.indent !== "undefined") {
@@ -583,6 +643,30 @@ export const createParagraphProperty = (
 
   if (property._adjustRightInd != null) {
     p = p.adjust_right_ind(property._adjustRightInd);
+  }
+
+  if (property._kinsoku != null) {
+    p = p.kinsoku(property._kinsoku);
+  }
+
+  if (property._wordWrap != null) {
+    p = p.word_wrap(property._wordWrap);
+  }
+
+  if (property._overflowPunct != null) {
+    p = p.overflow_punct(property._overflowPunct);
+  }
+
+  if (property._topLinePunct != null) {
+    p = p.top_line_punct(property._topLinePunct);
+  }
+
+  if (property._autoSpaceDN != null) {
+    p = p.auto_space_dn(property._autoSpaceDN);
+  }
+
+  if (property._autoSpaceDE != null) {
+    p = p.auto_space_de(property._autoSpaceDE);
   }
 
   if (typeof property.indent !== "undefined") {

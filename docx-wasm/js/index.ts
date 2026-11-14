@@ -1,5 +1,6 @@
 import { Paragraph } from "./paragraph";
 import {
+  createParagraphProperty,
   LineSpacing,
   ParagraphProperty,
   setIndentChars,
@@ -612,14 +613,21 @@ export class Docx {
         }
       }
 
-      if (this.styles.docDefaults.paragraphProperty) {
-        if (this.styles.docDefaults.paragraphProperty.lineSpacing) {
-          const spacing = this.buildLineSpacing(
-            this.styles.docDefaults.paragraphProperty
-          );
-          if (spacing) {
-            docx = docx.default_line_spacing(spacing);
-          }
+      const property = this.styles.docDefaults.paragraphProperty;
+      if (
+        property?._kinsoku != null ||
+        property?._wordWrap != null ||
+        property?._overflowPunct != null ||
+        property?._topLinePunct != null ||
+        property?._autoSpaceDE != null ||
+        property?._autoSpaceDN != null ||
+        property?._textAlignment != null
+      ) {
+        docx = docx.default_paragraph_property(createParagraphProperty(property));
+      } else if (property?.lineSpacing) {
+        const spacing = this.buildLineSpacing(property);
+        if (spacing) {
+          docx = docx.default_line_spacing(spacing);
         }
       }
     }

@@ -33,6 +33,11 @@ impl Styles {
         self
     }
 
+    pub fn default_paragraph_property(mut self, property: ParagraphProperty) -> Self {
+        self.doc_defaults = self.doc_defaults.paragraph_property(property);
+        self
+    }
+
     pub fn default_line_spacing(mut self, spacing: LineSpacing) -> Self {
         self.doc_defaults = self.doc_defaults.line_spacing(spacing);
         self

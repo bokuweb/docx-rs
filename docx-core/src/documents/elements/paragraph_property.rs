@@ -51,6 +51,18 @@ pub struct ParagraphProperty {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub contextual_spacing: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub kinsoku: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub word_wrap: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub overflow_punct: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub top_line_punct: Option<bool>,
+    #[serde(rename = "autoSpaceDN", skip_serializing_if = "Option::is_none")]
+    pub auto_space_dn: Option<bool>,
+    #[serde(rename = "autoSpaceDE", skip_serializing_if = "Option::is_none")]
+    pub auto_space_de: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub shading: Option<Shading>,
     // read only
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -65,6 +77,36 @@ pub struct ParagraphProperty {
 impl ParagraphProperty {
     pub fn new() -> ParagraphProperty {
         Default::default()
+    }
+
+    pub fn kinsoku(mut self, v: bool) -> Self {
+        self.kinsoku = Some(v);
+        self
+    }
+
+    pub fn word_wrap(mut self, v: bool) -> Self {
+        self.word_wrap = Some(v);
+        self
+    }
+
+    pub fn overflow_punct(mut self, v: bool) -> Self {
+        self.overflow_punct = Some(v);
+        self
+    }
+
+    pub fn top_line_punct(mut self, v: bool) -> Self {
+        self.top_line_punct = Some(v);
+        self
+    }
+
+    pub fn auto_space_dn(mut self, v: bool) -> Self {
+        self.auto_space_dn = Some(v);
+        self
+    }
+
+    pub fn auto_space_de(mut self, v: bool) -> Self {
+        self.auto_space_de = Some(v);
+        self
     }
 
     pub fn align(mut self, alignment_type: AlignmentType) -> Self {
@@ -258,6 +300,22 @@ impl BuildXML for ParagraphProperty {
             .add_optional_child(&self.paragraph_property_change)?
             .add_optional_child(&self.borders)?
             .add_optional_child(&self.shading)?
+            .apply_opt(self.kinsoku, |v, b| b.kinsoku(if v { "1" } else { "0" }))?
+            .apply_opt(self.word_wrap, |v, b| {
+                b.word_wrap(if v { "1" } else { "0" })
+            })?
+            .apply_opt(self.overflow_punct, |v, b| {
+                b.overflow_punct(if v { "1" } else { "0" })
+            })?
+            .apply_opt(self.top_line_punct, |v, b| {
+                b.top_line_punct(if v { "1" } else { "0" })
+            })?
+            .apply_opt(self.auto_space_de, |v, b| {
+                b.auto_space_de(if v { "1" } else { "0" })
+            })?
+            .apply_opt(self.auto_space_dn, |v, b| {
+                b.auto_space_dn(if v { "1" } else { "0" })
+            })?
             .add_optional_child(&self.text_alignment)?
             .add_optional_child(&self.adjust_right_ind)?
             .apply_opt(self.snap_to_grid, |v, b| b.snap_to_grid(v))?

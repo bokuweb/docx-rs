@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## @0.4.23 (Unreleased)
 
+- Preserve run character scaling (`w:w`) when reading, using the existing
+  `RunProperty::stretch` field and builder.
 - Support character-unit indents (`w:leftChars` / `w:rightChars` /
   `w:hangingChars` / `w:firstLineChars`, in hundredths of a character) for
   both reading and writing. `Indent` gains `end_chars` and `start_chars` /

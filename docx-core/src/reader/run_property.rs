@@ -138,6 +138,13 @@ impl ElementReader for RunProperty {
                                 }
                             }
                         }
+                        XMLElement::W => {
+                            if let Some(v) = read_val(&attributes) {
+                                if let Ok(scale) = i32::from_str(&v) {
+                                    rp = rp.stretch(scale);
+                                }
+                            }
+                        }
                         XMLElement::FitText => {
                             if let Some(v) = read_val(&attributes) {
                                 if let Ok(val) = usize::from_str(&v) {
@@ -201,6 +208,51 @@ impl ElementReader for RunProperty {
                 Err(_) => return Err(ReaderError::XMLReadError),
                 _ => {}
             }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn read_properties(children: &str) -> RunProperty {
+        let xml = format!(
+            r#"<w:rPr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">{children}</w:rPr>"#
+        );
+        RunProperty::read(&mut EventReader::new(xml.as_bytes()), &[]).unwrap()
+    }
+
+    #[test]
+    fn read_character_stretch_preserves_compression_neutral_and_expansion() {
+        for scale in [75, 100, 125, 160] {
+            let properties = read_properties(&format!(
+                r#"<w:color w:val="123456"/><w:w w:val="{scale}"/><w:b/>"#
+            ));
+            assert_eq!(properties.stretch, Some(Stretch::new(scale)));
+            assert_eq!(properties.color, Some(Color::new("123456")));
+            assert_eq!(properties.bold, Some(Bold::new()));
+        }
+    }
+
+    #[test]
+    fn read_character_stretch_finds_value_after_other_attributes() {
+        let properties = read_properties(r#"<w:w w:unused="ignored" w:val="125"/>"#);
+        assert_eq!(properties.stretch, Some(Stretch::new(125)));
+    }
+
+    #[test]
+    fn read_character_stretch_ignores_absent_or_invalid_values() {
+        for element in [
+            "",
+            "<w:w/>",
+            r#"<w:w w:val="invalid"/>"#,
+            r#"<w:w w:val="125.5"/>"#,
+            r#"<w:w w:val="2147483648"/>"#,
+        ] {
+            let properties = read_properties(&format!("{element}<w:i/>"));
+            assert_eq!(properties.stretch, None);
+            assert_eq!(properties.italic, Some(Italic::new()));
         }
     }
 }

@@ -75,7 +75,7 @@ jobs:
           profile: minimal
           inherit-toolchain: true
           targets: wasm32-unknown-unknown
-          bins: wasm-pack@0.13.1
+      - run: cargo install wasm-pack --version 0.13.1 --locked
       - run: corepack enable
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:ci

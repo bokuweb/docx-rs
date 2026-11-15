@@ -623,6 +623,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -3543,6 +3544,7 @@ Object {
           },
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -3635,6 +3637,7 @@ Object {
           },
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -4641,6 +4644,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -5649,6 +5653,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -9192,6 +9197,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -13846,6 +13852,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -15202,6 +15209,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -18246,6 +18254,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -19152,6 +19161,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -20804,6 +20814,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -22377,6 +22388,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -23304,6 +23316,7 @@ Object {
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -35855,6 +35868,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -39856,6 +39870,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -41748,6 +41763,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -42067,6 +42083,7 @@ Object {
           "outlineLvl": 2,
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -42165,6 +42182,7 @@ Object {
           "outlineLvl": 3,
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -42266,6 +42284,7 @@ Object {
           "outlineLvl": 4,
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -42364,6 +42383,7 @@ Object {
           "outlineLvl": 5,
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -44429,6 +44449,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -48651,6 +48672,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -105731,6 +105753,7 @@ Object {
           "runProperty": Object {},
           "tabs": Array [],
           "textAlignment": "baseline",
+          "widowControl": false,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -114508,6 +114531,7 @@ Object {
             },
           ],
           "textAlignment": "baseline",
+          "widowControl": false,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -119200,6 +119224,7 @@ Object {
           "autoSpaceDN": false,
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {
           "color": "000000",
@@ -121533,6 +121558,8 @@ Object {
           "id": "0CBFAF4E",
           "property": Object {
             "alignment": "both",
+            "keepLines": false,
+            "keepNext": false,
             "runProperty": Object {
               "specVanish": true,
               "vanish": true,
@@ -121768,6 +121795,8 @@ Object {
           "id": "706B5A04",
           "property": Object {
             "alignment": "both",
+            "keepLines": false,
+            "keepNext": false,
             "runProperty": Object {
               "specVanish": true,
               "vanish": true,
@@ -122119,6 +122148,8 @@ Object {
           "id": "4EFE88B8",
           "property": Object {
             "alignment": "both",
+            "keepLines": false,
+            "keepNext": false,
             "runProperty": Object {
               "specVanish": true,
               "vanish": true,
@@ -122477,6 +122508,8 @@ Object {
           "id": "15CFE95E",
           "property": Object {
             "alignment": "both",
+            "keepLines": false,
+            "keepNext": false,
             "runProperty": Object {
               "specVanish": true,
               "vanish": true,
@@ -122861,6 +122894,8 @@ Object {
           "id": "64386B8D",
           "property": Object {
             "alignment": "both",
+            "keepLines": false,
+            "keepNext": false,
             "runProperty": Object {
               "specVanish": true,
               "vanish": true,
@@ -123132,6 +123167,8 @@ Object {
           "id": "6382E719",
           "property": Object {
             "alignment": "both",
+            "keepLines": false,
+            "keepNext": false,
             "runProperty": Object {
               "specVanish": true,
               "vanish": true,
@@ -123306,6 +123343,8 @@ Object {
           "id": "2FE892FC",
           "property": Object {
             "alignment": "both",
+            "keepLines": false,
+            "keepNext": false,
             "runProperty": Object {
               "specVanish": true,
               "vanish": true,
@@ -123820,6 +123859,8 @@ Object {
           "id": "085B8C6A",
           "property": Object {
             "alignment": "both",
+            "keepLines": false,
+            "keepNext": false,
             "runProperty": Object {
               "specVanish": true,
               "vanish": true,
@@ -125022,6 +125063,8 @@ Object {
           "id": "3B268132",
           "property": Object {
             "alignment": "both",
+            "keepLines": false,
+            "keepNext": false,
             "runProperty": Object {
               "specVanish": true,
               "vanish": true,
@@ -125462,6 +125505,8 @@ Object {
           "id": "4F3727F7",
           "property": Object {
             "alignment": "both",
+            "keepLines": false,
+            "keepNext": false,
             "runProperty": Object {
               "specVanish": true,
               "vanish": true,
@@ -125868,6 +125913,8 @@ Object {
           "id": "30B7C9BA",
           "property": Object {
             "alignment": "both",
+            "keepLines": false,
+            "keepNext": false,
             "runProperty": Object {
               "specVanish": true,
               "vanish": true,
@@ -128935,6 +128982,7 @@ Object {
               "val": "right",
             },
           ],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "TOC1",
@@ -129039,6 +129087,7 @@ Object {
               "val": "right",
             },
           ],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "TOC2",
@@ -133906,6 +133955,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -145915,6 +145965,7 @@ Object {
             "start": 907,
             "startChars": null,
           },
+          "keepNext": false,
           "lineSpacing": Object {
             "before": 60,
           },
@@ -146434,6 +146485,7 @@ Object {
         "name": "toc 8",
         "next": null,
         "paragraphProperty": Object {
+          "keepNext": false,
           "runProperty": Object {},
           "tabs": Array [],
         },
@@ -146509,6 +146561,7 @@ Object {
         "name": "toc 9",
         "next": null,
         "paragraphProperty": Object {
+          "keepNext": false,
           "runProperty": Object {},
           "tabs": Array [],
         },
@@ -149268,6 +149321,7 @@ Object {
             "start": 0,
             "startChars": null,
           },
+          "keepLines": false,
           "lineSpacing": Object {
             "before": 8640,
           },
@@ -149530,6 +149584,7 @@ Object {
         "name": "Figure Caption",
         "next": null,
         "paragraphProperty": Object {
+          "keepNext": false,
           "lineSpacing": Object {
             "after": 120,
           },
@@ -150461,6 +150516,7 @@ Object {
             "start": 0,
             "startChars": null,
           },
+          "keepLines": false,
           "lineSpacing": Object {
             "before": 0,
           },
@@ -150857,6 +150913,7 @@ Object {
             "start": -284,
             "startChars": null,
           },
+          "keepLines": false,
           "lineSpacing": Object {
             "before": 1440,
           },
@@ -153090,6 +153147,7 @@ Object {
             "start": 851,
             "startChars": null,
           },
+          "keepLines": false,
           "runProperty": Object {},
           "tabs": Array [],
         },
@@ -153257,6 +153315,7 @@ Object {
             "start": 0,
             "startChars": null,
           },
+          "keepNext": false,
           "lineSpacing": Object {
             "before": 200,
             "line": 240,
@@ -153572,6 +153631,7 @@ Object {
             "start": 0,
             "startChars": null,
           },
+          "keepLines": false,
           "lineSpacing": Object {
             "after": 160,
             "before": 0,
@@ -153696,6 +153756,7 @@ Object {
             "start": 0,
             "startChars": null,
           },
+          "keepLines": false,
           "lineSpacing": Object {
             "after": 160,
             "before": 0,
@@ -153731,6 +153792,7 @@ Object {
             },
           ],
           "textAlignment": "baseline",
+          "widowControl": false,
         },
         "runProperty": Object {
           "characterSpacing": 0,
@@ -153815,6 +153877,7 @@ Object {
             "start": 0,
             "startChars": null,
           },
+          "keepLines": false,
           "lineSpacing": Object {
             "after": 160,
             "before": 0,
@@ -153850,6 +153913,7 @@ Object {
             },
           ],
           "textAlignment": "baseline",
+          "widowControl": false,
         },
         "runProperty": Object {
           "characterSpacing": 0,
@@ -154090,6 +154154,7 @@ Object {
             "start": 0,
             "startChars": null,
           },
+          "keepLines": false,
           "lineSpacing": Object {
             "after": 80,
             "before": 80,
@@ -155270,6 +155335,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -156305,6 +156371,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -157693,6 +157760,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -161195,6 +161263,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -165918,6 +165987,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",
@@ -176758,6 +176828,7 @@ Object {
           "alignment": "both",
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {
           "sz": 21,
@@ -178129,6 +178200,7 @@ Object {
           },
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
           "wordWrap": false,
         },
         "runProperty": Object {},
@@ -181297,6 +181369,7 @@ Object {
         "paragraphProperty": Object {
           "runProperty": Object {},
           "tabs": Array [],
+          "widowControl": false,
         },
         "runProperty": Object {},
         "styleId": "a",

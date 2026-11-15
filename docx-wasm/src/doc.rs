@@ -163,6 +163,11 @@ impl Docx {
         self
     }
 
+    pub fn default_paragraph_property(mut self, property: ParagraphProperty) -> Self {
+        self.0.styles = self.0.styles.default_paragraph_property(property.take());
+        self
+    }
+
     pub fn default_line_spacing(mut self, spacing: LineSpacing) -> Self {
         self.0.styles = self.0.styles.default_line_spacing(spacing.take());
         self

@@ -1635,6 +1635,85 @@ describe("writer", () => {
     }
   });
 
+  test("should write and read East Asian typography paragraph properties", () => {
+    const docx = new w.Docx()
+      .addStyle(
+        new w.Style("DateStyle", "paragraph").paragraphProperty(
+          new w.ParagraphProperty().kinsoku(true).autoSpaceDN(true)
+        )
+      )
+      .addParagraph(
+        new w.Paragraph()
+          .style("DateStyle")
+          .kinsoku(false)
+          .wordWrap(false)
+          .overflowPunct(false)
+          .topLinePunct(true)
+          .autoSpaceDE(false)
+          .autoSpaceDN(false)
+          .addRun(new w.Run().addText("2026年11月14日"))
+      )
+      .addParagraph(new w.Paragraph().addRun(new w.Run().addText("plain")));
+    docx.styles.docDefaults.paragraphProperty
+      .autoSpaceDE(false)
+      .autoSpaceDN(false)
+      .textAlignment("center");
+    const buffer = docx.build();
+
+    const z = new Zip(Buffer.from(buffer));
+    const read = (name) =>
+      z.readAsText(z.getEntries().find((e) => e.entryName === name));
+    const documentXml = read("word/document.xml");
+    for (const element of [
+      '<w:kinsoku w:val="0" />',
+      '<w:wordWrap w:val="0" />',
+      '<w:overflowPunct w:val="0" />',
+      '<w:topLinePunct w:val="1" />',
+      '<w:autoSpaceDE w:val="0" />',
+      '<w:autoSpaceDN w:val="0" />',
+    ]) {
+      expect(documentXml).toContain(element);
+    }
+    const stylesXml = read("word/styles.xml");
+    expect(stylesXml).toContain('<w:kinsoku w:val="1" />');
+    expect(stylesXml).toContain('<w:autoSpaceDN w:val="1" />');
+    expect(stylesXml).toContain('<w:autoSpaceDE w:val="0" />');
+    expect(stylesXml).toContain('<w:autoSpaceDN w:val="0" />');
+    expect(stylesXml).toContain('<w:textAlignment w:val="center" />');
+
+    const json = w.readDocx(buffer);
+    const [dated, plain] = json.document.children;
+    expect(dated.data.property).toMatchObject({
+      kinsoku: false,
+      wordWrap: false,
+      overflowPunct: false,
+      topLinePunct: true,
+      autoSpaceDE: false,
+      autoSpaceDN: false,
+    });
+    for (const key of [
+      "kinsoku",
+      "wordWrap",
+      "overflowPunct",
+      "topLinePunct",
+      "autoSpaceDE",
+      "autoSpaceDN",
+    ]) {
+      expect(plain.data.property).not.toHaveProperty(key);
+    }
+    expect(
+      json.styles.docDefaults.paragraphPropertyDefault.paragraphProperty
+    ).toMatchObject({
+      autoSpaceDE: false,
+      autoSpaceDN: false,
+      textAlignment: "center",
+    });
+    expect(
+      json.styles.styles.find((s) => s.styleId === "DateStyle")
+        .paragraphProperty
+    ).toMatchObject({ kinsoku: true, autoSpaceDN: true });
+  });
+
   test("should ignore RunPropertyChange in RunProperty", () => {
     const buffer = readFileSync("../fixtures/run_property_change/ignore.docx");
     const json = w.readDocx(buffer);

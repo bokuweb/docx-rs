@@ -66,6 +66,12 @@ export type ParagraphPropertyJSON = {
   keepNext?: boolean;
   keepLines?: boolean;
   snapToGrid?: boolean;
+  kinsoku?: boolean;
+  wordWrap?: boolean;
+  overflowPunct?: boolean;
+  topLinePunct?: boolean;
+  autoSpaceDN?: boolean;
+  autoSpaceDE?: boolean;
   contextualSpacing?: boolean;
   pageBreakBefore?: boolean;
   widowControl?: boolean;

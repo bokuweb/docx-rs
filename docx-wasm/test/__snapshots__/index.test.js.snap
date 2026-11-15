@@ -3528,6 +3528,8 @@ Object {
         "next": null,
         "paragraphProperty": Object {
           "adjustRightInd": 0,
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "indent": Object {
             "end": null,
             "endChars": null,
@@ -3619,6 +3621,8 @@ Object {
         "next": null,
         "paragraphProperty": Object {
           "adjustRightInd": 0,
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "indent": Object {
             "end": null,
             "endChars": null,
@@ -107214,6 +107218,8 @@ Object {
         "name": "Body Text Indent",
         "next": null,
         "paragraphProperty": Object {
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "indent": Object {
             "end": null,
             "endChars": null,
@@ -107823,6 +107829,8 @@ Object {
         "name": "名詞句",
         "next": null,
         "paragraphProperty": Object {
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "indent": Object {
             "end": null,
             "endChars": null,
@@ -109526,6 +109534,8 @@ Object {
         "name": "参照1",
         "next": null,
         "paragraphProperty": Object {
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "lineSpacing": Object {
             "before": 120,
             "line": 280,
@@ -109903,6 +109913,8 @@ Object {
         "name": "名詞句並列1",
         "next": null,
         "paragraphProperty": Object {
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "indent": Object {
             "end": null,
             "endChars": null,
@@ -112296,6 +112308,8 @@ Object {
         "name": "並列",
         "next": null,
         "paragraphProperty": Object {
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "indent": Object {
             "end": null,
             "endChars": null,
@@ -112571,6 +112585,8 @@ Object {
         "next": null,
         "paragraphProperty": Object {
           "alignment": "left",
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "indent": Object {
             "end": null,
             "endChars": null,
@@ -112583,12 +112599,15 @@ Object {
             "start": 3060,
             "startChars": null,
           },
+          "kinsoku": false,
           "lineSpacing": Object {
             "line": 240,
             "lineRule": "auto",
           },
+          "overflowPunct": false,
           "runProperty": Object {},
           "tabs": Array [],
+          "wordWrap": false,
         },
         "runProperty": Object {
           "fonts": Object {
@@ -112667,6 +112686,8 @@ Object {
         "name": "本文ｲﾝﾃﾞﾝﾄ2",
         "next": null,
         "paragraphProperty": Object {
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "indent": Object {
             "end": null,
             "endChars": null,
@@ -112843,6 +112864,8 @@ Object {
         "name": "Reference",
         "next": null,
         "paragraphProperty": Object {
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "numberingProperty": Object {
             "id": 28,
             "level": null,
@@ -112929,6 +112952,8 @@ Object {
         "next": null,
         "paragraphProperty": Object {
           "alignment": "center",
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "lineSpacing": Object {
             "line": 240,
             "lineRule": "auto",
@@ -113019,10 +113044,12 @@ Object {
           "lineSpacing": Object {
             "after": 120,
           },
+          "overflowPunct": false,
           "runProperty": Object {},
           "tabs": Array [],
           "textAlignment": "baseline",
           "widowControl": true,
+          "wordWrap": false,
         },
         "runProperty": Object {
           "bold": true,
@@ -114435,6 +114462,10 @@ Object {
         "next": null,
         "paragraphProperty": Object {
           "adjustRightInd": 0,
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
+          "kinsoku": false,
+          "overflowPunct": false,
           "runProperty": Object {},
           "snapToGrid": false,
           "tabs": Array [
@@ -117298,6 +117329,8 @@ Object {
         "name": "Body Text First Indent 2",
         "next": null,
         "paragraphProperty": Object {
+          "autoSpaceDE": true,
+          "autoSpaceDN": true,
           "indent": Object {
             "end": null,
             "endChars": null,
@@ -119187,6 +119220,8 @@ Object {
         "next": null,
         "paragraphProperty": Object {
           "adjustRightInd": 0,
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "runProperty": Object {},
           "tabs": Array [],
           "widowControl": false,
@@ -153585,6 +153620,8 @@ Object {
         "paragraphProperty": Object {
           "adjustRightInd": 0,
           "alignment": "left",
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "indent": Object {
             "end": 0,
             "endChars": null,
@@ -178155,6 +178192,8 @@ Object {
         "paragraphProperty": Object {
           "adjustRightInd": 0,
           "alignment": "both",
+          "autoSpaceDE": false,
+          "autoSpaceDN": false,
           "lineSpacing": Object {
             "line": 340,
             "lineRule": "atLeast",
@@ -178162,6 +178201,7 @@ Object {
           "runProperty": Object {},
           "tabs": Array [],
           "widowControl": false,
+          "wordWrap": false,
         },
         "runProperty": Object {},
         "styleId": "a9",

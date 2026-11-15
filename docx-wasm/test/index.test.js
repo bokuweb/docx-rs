@@ -57,6 +57,42 @@ describe("reader", () => {
     }
   });
 
+  test("should retain unstyled footnote IDs between run text children", () => {
+    for (const id of [7, 29]) {
+      const zip = new Zip(readFileSync("../fixtures/footnotes/footnotes.docx"));
+      zip.updateFile("word/document.xml", Buffer.from(
+        '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
+          '<w:body><w:p><w:r><w:rPr><w:b/></w:rPr><w:t>Before</w:t>' +
+          `<w:footnoteReference w:customMarkFollows="0" w:id="${id}"/>` +
+          '<w:t>After</w:t></w:r></w:p></w:body></w:document>'
+      ));
+      const json = w.readDocx(zip.toBuffer());
+      const run = json.document.children[0].data.children[0].data;
+      expect(run.children.map((child) => [child.type, child.data.text ?? child.data.id])).toEqual([
+        ["text", "Before"],
+        ["footnoteReference", id],
+        ["text", "After"],
+      ]);
+      expect(run.runProperty.bold).toBe(true);
+      expect(run.children[1].data.customMarkFollows).toBe(false);
+    }
+  });
+
+  test("should preserve custom footnote mark flags without consuming text", () => {
+    for (const [attribute, expected] of [["1", true], ["on", true], ["off", false], [null, undefined]]) {
+      const zip = new Zip(readFileSync("../fixtures/footnotes/footnotes.docx"));
+      const customMark = attribute === null ? "" : ` w:customMarkFollows="${attribute}"`;
+      zip.updateFile("word/document.xml", Buffer.from(
+        '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
+        `<w:body><w:p><w:r><w:t>Before</w:t><w:footnoteReference w:id="29"${customMark}/>` +
+        '<w:t>**</w:t><w:t>After</w:t></w:r></w:p></w:body></w:document>'
+      ));
+      const run = w.readDocx(zip.toBuffer()).document.children[0].data.children[0].data;
+      expect(run.children.map((child) => child.data.text ?? child.data.id)).toEqual(["Before", 29, "**", "After"]);
+      expect(run.children[1].data.customMarkFollows).toBe(expected);
+    }
+  });
+
   test("should read lvlOverride docx", () => {
     const buffer = readFileSync("../fixtures/lvl_override/override.docx");
     const json = w.readDocx(buffer);
@@ -1619,6 +1655,85 @@ describe("writer", () => {
         expect(z.readAsText(e)).toMatchSnapshot();
       }
     }
+  });
+
+  test("should write and read East Asian typography paragraph properties", () => {
+    const docx = new w.Docx()
+      .addStyle(
+        new w.Style("DateStyle", "paragraph").paragraphProperty(
+          new w.ParagraphProperty().kinsoku(true).autoSpaceDN(true)
+        )
+      )
+      .addParagraph(
+        new w.Paragraph()
+          .style("DateStyle")
+          .kinsoku(false)
+          .wordWrap(false)
+          .overflowPunct(false)
+          .topLinePunct(true)
+          .autoSpaceDE(false)
+          .autoSpaceDN(false)
+          .addRun(new w.Run().addText("2026年11月14日"))
+      )
+      .addParagraph(new w.Paragraph().addRun(new w.Run().addText("plain")));
+    docx.styles.docDefaults.paragraphProperty
+      .autoSpaceDE(false)
+      .autoSpaceDN(false)
+      .textAlignment("center");
+    const buffer = docx.build();
+
+    const z = new Zip(Buffer.from(buffer));
+    const read = (name) =>
+      z.readAsText(z.getEntries().find((e) => e.entryName === name));
+    const documentXml = read("word/document.xml");
+    for (const element of [
+      '<w:kinsoku w:val="0" />',
+      '<w:wordWrap w:val="0" />',
+      '<w:overflowPunct w:val="0" />',
+      '<w:topLinePunct w:val="1" />',
+      '<w:autoSpaceDE w:val="0" />',
+      '<w:autoSpaceDN w:val="0" />',
+    ]) {
+      expect(documentXml).toContain(element);
+    }
+    const stylesXml = read("word/styles.xml");
+    expect(stylesXml).toContain('<w:kinsoku w:val="1" />');
+    expect(stylesXml).toContain('<w:autoSpaceDN w:val="1" />');
+    expect(stylesXml).toContain('<w:autoSpaceDE w:val="0" />');
+    expect(stylesXml).toContain('<w:autoSpaceDN w:val="0" />');
+    expect(stylesXml).toContain('<w:textAlignment w:val="center" />');
+
+    const json = w.readDocx(buffer);
+    const [dated, plain] = json.document.children;
+    expect(dated.data.property).toMatchObject({
+      kinsoku: false,
+      wordWrap: false,
+      overflowPunct: false,
+      topLinePunct: true,
+      autoSpaceDE: false,
+      autoSpaceDN: false,
+    });
+    for (const key of [
+      "kinsoku",
+      "wordWrap",
+      "overflowPunct",
+      "topLinePunct",
+      "autoSpaceDE",
+      "autoSpaceDN",
+    ]) {
+      expect(plain.data.property).not.toHaveProperty(key);
+    }
+    expect(
+      json.styles.docDefaults.paragraphPropertyDefault.paragraphProperty
+    ).toMatchObject({
+      autoSpaceDE: false,
+      autoSpaceDN: false,
+      textAlignment: "center",
+    });
+    expect(
+      json.styles.styles.find((s) => s.styleId === "DateStyle")
+        .paragraphProperty
+    ).toMatchObject({ kinsoku: true, autoSpaceDN: true });
   });
 
   test("should ignore RunPropertyChange in RunProperty", () => {

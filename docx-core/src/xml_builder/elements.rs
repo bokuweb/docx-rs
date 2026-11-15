@@ -176,6 +176,12 @@ impl<W: Write> XMLBuilder<W> {
     // i.e. <w:szCs ... >
     closed_with_usize!(sz_cs, "w:szCs");
     closed_with_isize!(adjust_right_ind, "w:adjustRightInd");
+    closed_with_str!(kinsoku, "w:kinsoku");
+    closed_with_str!(word_wrap, "w:wordWrap");
+    closed_with_str!(overflow_punct, "w:overflowPunct");
+    closed_with_str!(top_line_punct, "w:topLinePunct");
+    closed_with_str!(auto_space_dn, "w:autoSpaceDN");
+    closed_with_str!(auto_space_de, "w:autoSpaceDE");
     closed_with_str!(text_alignment, "w:textAlignment");
 
     closed!(field_character, "w:fldChar", "w:fldCharType", "w:dirty");
@@ -434,6 +440,8 @@ impl<W: Write> XMLBuilder<W> {
 
     closed!(br, "w:br", "w:type");
     closed!(cr, "w:cr");
+    closed!(no_break_hyphen, "w:noBreakHyphen");
+    closed!(soft_hyphen, "w:softHyphen");
     closed!(sym, "w:sym", "w:font", "w:char");
     closed!(zoom, "w:zoom", "w:percent");
     closed_with_usize!(default_tab_stop, "w:defaultTabStop");
@@ -783,9 +791,16 @@ impl<W: Write> XMLBuilder<W> {
 
     // FootnoteReference
     // w:footnoteReference w:id="1"
-    pub(crate) fn footnote_reference(self, id: usize) -> Result<Self> {
-        self.write(XmlEvent::start_element("w:footnoteReference").attr_display("w:id", id))?
-            .close()
+    pub(crate) fn footnote_reference(
+        self,
+        id: usize,
+        custom_mark_follows: Option<bool>,
+    ) -> Result<Self> {
+        let mut element = XmlEvent::start_element("w:footnoteReference").attr_display("w:id", id);
+        if let Some(value) = custom_mark_follows {
+            element = element.attr("w:customMarkFollows", if value { "1" } else { "0" });
+        }
+        self.write(element)?.close()
     }
 
     // Footnotes
@@ -877,7 +892,7 @@ mod tests {
     #[test]
     fn test_footnote_reference() -> Result<()> {
         let b = XMLBuilder::new(Vec::new());
-        let r = b.footnote_reference(1)?.into_inner()?.into_inner()?;
+        let r = b.footnote_reference(1, None)?.into_inner()?.into_inner()?;
         assert_eq!(
             str::from_utf8(&r).unwrap(),
             r#"<w:footnoteReference w:id="1" />"#

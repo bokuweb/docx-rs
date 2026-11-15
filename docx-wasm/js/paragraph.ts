@@ -167,6 +167,36 @@ export class Paragraph {
     return this;
   }
 
+  autoSpaceDN(v: boolean) {
+    this.property.autoSpaceDN(v);
+    return this;
+  }
+
+  kinsoku(v: boolean) {
+    this.property.kinsoku(v);
+    return this;
+  }
+
+  wordWrap(v: boolean) {
+    this.property.wordWrap(v);
+    return this;
+  }
+
+  overflowPunct(v: boolean) {
+    this.property.overflowPunct(v);
+    return this;
+  }
+
+  topLinePunct(v: boolean) {
+    this.property.topLinePunct(v);
+    return this;
+  }
+
+  autoSpaceDE(v: boolean) {
+    this.property.autoSpaceDE(v);
+    return this;
+  }
+
   keepNext(v: boolean) {
     this.property.keepNext = v;
     return this;

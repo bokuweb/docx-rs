@@ -57,6 +57,16 @@ impl Run {
         self
     }
 
+    pub fn add_no_break_hyphen(mut self) -> Run {
+        self.0 = self.0.add_no_break_hyphen();
+        self
+    }
+
+    pub fn add_soft_hyphen(mut self) -> Run {
+        self.0 = self.0.add_soft_hyphen();
+        self
+    }
+
     pub fn add_tc(
         mut self,
         text: &str,

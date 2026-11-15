@@ -139,6 +139,10 @@ The WebAssembly package exposes document generation and DOCX-to-JSON parsing for
 browser and Node.js applications. OOXML is a large specification, so support is
 not exhaustive.
 
+Footnote reference parsing preserves `w:id` and optional `w:customMarkFollows`
+without consuming adjacent text. The Rust `FootnoteReference::custom_mark_follows`
+builder writes the flag; JSON includes `customMarkFollows` only when specified.
+
 See the [Rust API documentation](https://docs.rs/docx-rs) and
 [examples directory](https://github.com/bokuweb/docx-rs/tree/main/docx-core/examples)
 for the full API and focused examples.

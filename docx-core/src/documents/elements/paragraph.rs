@@ -278,6 +278,36 @@ impl Paragraph {
         self
     }
 
+    pub fn kinsoku(mut self, v: bool) -> Self {
+        self.property = self.property.kinsoku(v);
+        self
+    }
+
+    pub fn word_wrap(mut self, v: bool) -> Self {
+        self.property = self.property.word_wrap(v);
+        self
+    }
+
+    pub fn overflow_punct(mut self, v: bool) -> Self {
+        self.property = self.property.overflow_punct(v);
+        self
+    }
+
+    pub fn top_line_punct(mut self, v: bool) -> Self {
+        self.property = self.property.top_line_punct(v);
+        self
+    }
+
+    pub fn auto_space_de(mut self, v: bool) -> Self {
+        self.property = self.property.auto_space_de(v);
+        self
+    }
+
+    pub fn auto_space_dn(mut self, v: bool) -> Self {
+        self.property = self.property.auto_space_dn(v);
+        self
+    }
+
     pub fn outline_lvl(mut self, v: usize) -> Self {
         self.property = self.property.outline_lvl(v);
         self
@@ -434,6 +464,12 @@ impl Paragraph {
                                     RunChild::CarriageReturn(_cr) => {
                                         s.push('\n');
                                     }
+                                    RunChild::NoBreakHyphen(_h) => {
+                                        s.push('\u{2011}');
+                                    }
+                                    RunChild::SoftHyphen(_h) => {
+                                        s.push('\u{00AD}');
+                                    }
                                     _ => {}
                                 }
                             }
@@ -457,6 +493,12 @@ impl Paragraph {
                             }
                             RunChild::CarriageReturn(_cr) => {
                                 s.push('\n');
+                            }
+                            RunChild::NoBreakHyphen(_h) => {
+                                s.push('\u{2011}');
+                            }
+                            RunChild::SoftHyphen(_h) => {
+                                s.push('\u{00AD}');
                             }
                             _ => {}
                         }
@@ -723,6 +765,22 @@ mod tests {
             .add_delete(Delete::new().add_run(Run::new().add_delete_text("!!!!!")))
             .raw_text();
         assert_eq!(b, "HelloWorld".to_owned());
+    }
+
+    #[test]
+    fn test_raw_text_hyphens() {
+        let b = Paragraph::new()
+            .add_run(
+                Run::new()
+                    .add_text("long")
+                    .add_no_break_hyphen()
+                    .add_text("term"),
+            )
+            .add_insert(Insert::new(
+                Run::new().add_text("hy").add_soft_hyphen().add_text("phen"),
+            ))
+            .raw_text();
+        assert_eq!(b, "long\u{2011}termhy\u{00AD}phen".to_owned());
     }
 
     #[test]

@@ -224,6 +224,8 @@ fn visit_run(run: &mut Run, visitor: &mut impl DocumentTreeVisitor) {
             | RunChild::PTab(_)
             | RunChild::Break(_)
             | RunChild::CarriageReturn(_)
+            | RunChild::NoBreakHyphen(_)
+            | RunChild::SoftHyphen(_)
             | RunChild::Shape(_)
             | RunChild::CommentStart(_)
             | RunChild::CommentEnd(_)

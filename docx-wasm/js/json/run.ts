@@ -72,6 +72,8 @@ export type RunChildJSON =
   | DeleteTextJSON
   | TabJSON
   | CarriageReturnJSON
+  | NoBreakHyphenJSON
+  | SoftHyphenJSON
   | BreakJSON
   | DrawingJSON
   | PtabJSON
@@ -120,6 +122,14 @@ export type TabJSON = {
 
 export type CarriageReturnJSON = {
   type: "carriageReturn";
+};
+
+export type NoBreakHyphenJSON = {
+  type: "noBreakHyphen";
+};
+
+export type SoftHyphenJSON = {
+  type: "softHyphen";
 };
 
 export type BreakJSON = {

@@ -3,7 +3,7 @@ use serde::Deserialize;
 use std::io::Write;
 
 use crate::documents::BuildXML;
-use crate::escape::escape_owned;
+use crate::escape::escape;
 use crate::xml_builder::*;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
@@ -15,13 +15,6 @@ pub struct Text {
 
 impl Text {
     pub fn new(text: impl Into<String>) -> Text {
-        Text {
-            text: escape_owned(text.into()),
-            preserve_space: true,
-        }
-    }
-
-    pub(crate) fn without_escape(text: impl Into<String>) -> Text {
         Text {
             text: text.into(),
             preserve_space: true,
@@ -35,7 +28,7 @@ impl BuildXML for Text {
         stream: crate::xml::writer::EventWriter<W>,
     ) -> crate::xml::writer::Result<crate::xml::writer::EventWriter<W>> {
         XMLBuilder::from(stream)
-            .text(&self.text, true)?
+            .text(&escape(&self.text), true)?
             .into_inner()
     }
 }

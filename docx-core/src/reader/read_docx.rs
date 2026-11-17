@@ -233,8 +233,10 @@ pub fn read_docx_with_options(buf: &[u8], options: ReadDocxOptions) -> Result<Do
     // assign headers
     if let Some(h) = docx.document.section_property.header_reference.clone() {
         if let Some((header, rels)) = headers.get(&h.id) {
-            docx.document = docx.document.header(header.clone(), &h.id);
             let count = docx.document_rels.header_count + 1;
+            docx.document = docx
+                .document
+                .header(header.clone(), &create_header_rid(count));
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
             // Read media
@@ -249,10 +251,10 @@ pub fn read_docx_with_options(buf: &[u8], options: ReadDocxOptions) -> Result<Do
         .clone()
     {
         if let Some((header, rels)) = headers.get(&h.id) {
+            let count = docx.document_rels.header_count + 1;
             docx.document = docx
                 .document
-                .first_header_without_title_pg(header.clone(), &h.id);
-            let count = docx.document_rels.header_count + 1;
+                .first_header_without_title_pg(header.clone(), &create_header_rid(count));
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
             // Read media
@@ -262,8 +264,10 @@ pub fn read_docx_with_options(buf: &[u8], options: ReadDocxOptions) -> Result<Do
     }
     if let Some(ref h) = docx.document.section_property.even_header_reference.clone() {
         if let Some((header, rels)) = headers.get(&h.id) {
-            docx.document = docx.document.even_header(header.clone(), &h.id);
             let count = docx.document_rels.header_count + 1;
+            docx.document = docx
+                .document
+                .even_header(header.clone(), &create_header_rid(count));
             docx.document_rels.header_count = count;
             docx.content_type = docx.content_type.add_header();
 
@@ -276,8 +280,10 @@ pub fn read_docx_with_options(buf: &[u8], options: ReadDocxOptions) -> Result<Do
     // assign footers
     if let Some(f) = docx.document.section_property.footer_reference.clone() {
         if let Some((footer, rels)) = footers.get(&f.id) {
-            docx.document = docx.document.footer(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
+            docx.document = docx
+                .document
+                .footer(footer.clone(), &create_footer_rid(count));
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
 
@@ -294,10 +300,10 @@ pub fn read_docx_with_options(buf: &[u8], options: ReadDocxOptions) -> Result<Do
         .clone()
     {
         if let Some((footer, rels)) = footers.get(&f.id) {
+            let count = docx.document_rels.footer_count + 1;
             docx.document = docx
                 .document
-                .first_footer_without_title_pg(footer.clone(), &f.id);
-            let count = docx.document_rels.footer_count + 1;
+                .first_footer_without_title_pg(footer.clone(), &create_footer_rid(count));
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
 
@@ -308,8 +314,10 @@ pub fn read_docx_with_options(buf: &[u8], options: ReadDocxOptions) -> Result<Do
     }
     if let Some(ref f) = docx.document.section_property.even_footer_reference.clone() {
         if let Some((footer, rels)) = footers.get(&f.id) {
-            docx.document = docx.document.even_footer(footer.clone(), &f.id);
             let count = docx.document_rels.footer_count + 1;
+            docx.document = docx
+                .document
+                .even_footer(footer.clone(), &create_footer_rid(count));
             docx.document_rels.footer_count = count;
             docx.content_type = docx.content_type.add_footer();
 

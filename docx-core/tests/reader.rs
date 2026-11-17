@@ -23,6 +23,33 @@ pub fn read_and_build_document_with_instr_text() {
 }
 
 #[test]
+pub fn read_and_build_keeps_header_and_footer_references() {
+    let input = include_bytes!("../../fixtures/header_footer/header_footer.docx");
+    let document = read_docx(input).unwrap();
+    let mut output = Cursor::new(Vec::new());
+
+    document.build().pack(&mut output).unwrap();
+
+    let mut archive = zip::ZipArchive::new(output).unwrap();
+    let mut rels = String::new();
+    archive
+        .by_name("word/_rels/document.xml.rels")
+        .unwrap()
+        .read_to_string(&mut rels)
+        .unwrap();
+    let mut doc = String::new();
+    archive
+        .by_name("word/document.xml")
+        .unwrap()
+        .read_to_string(&mut doc)
+        .unwrap();
+    assert!(doc.contains(r#"<w:headerReference w:type="default" r:id="rIdHeader1" />"#));
+    assert!(rels.contains(r#"Id="rIdHeader1""#));
+    assert!(doc.contains(r#"<w:footerReference w:type="default" r:id="rIdFooter1" />"#));
+    assert!(rels.contains(r#"Id="rIdFooter1""#));
+}
+
+#[test]
 pub fn read_hello() {
     let mut file = File::open("../fixtures/hello_world/hello_world.docx").unwrap();
     let mut buf = vec![];

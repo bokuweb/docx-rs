@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## @0.4.23 (Unreleased)
 
+- Fix `&`, `<` and `>` in text being written unescaped after reading a document,
+  which produced a file Word could not open. `Text` and `DeleteText` now keep
+  plain text and escape it when writing.
 - Preserve run character scaling (`w:w`) when reading, using the existing
   `RunProperty::stretch` field and builder.
 - Support character-unit indents (`w:leftChars` / `w:rightChars` /

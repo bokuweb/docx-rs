@@ -23,6 +23,29 @@ pub fn read_and_build_document_with_instr_text() {
 }
 
 #[test]
+pub fn read_and_build_escapes_text() {
+    let mut input = Cursor::new(Vec::new());
+    Docx::new()
+        .add_paragraph(Paragraph::new().add_run(Run::new().add_text("Tom & Jerry <3 &amp;")))
+        .build()
+        .pack(&mut input)
+        .unwrap();
+    let document = read_docx(input.get_ref()).unwrap();
+    let mut output = Cursor::new(Vec::new());
+
+    document.build().pack(&mut output).unwrap();
+
+    let mut archive = zip::ZipArchive::new(output).unwrap();
+    let mut doc = String::new();
+    archive
+        .by_name("word/document.xml")
+        .unwrap()
+        .read_to_string(&mut doc)
+        .unwrap();
+    assert!(doc.contains(">Tom &amp; Jerry &lt;3 &amp;amp;</w:t>"));
+}
+
+#[test]
 pub fn read_hello() {
     let mut file = File::open("../fixtures/hello_world/hello_world.docx").unwrap();
     let mut buf = vec![];

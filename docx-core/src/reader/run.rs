@@ -5,7 +5,6 @@ use std::str::FromStr;
 
 use super::Run;
 
-use crate::escape::replace_escaped;
 use crate::types::BreakType;
 use crate::{reader::*, FieldCharType};
 
@@ -189,19 +188,19 @@ impl ElementReader for Run {
                 }
                 Ok(XmlEvent::Characters(c)) => match text_state {
                     TextState::Delete => {
-                        run = run.add_delete_text_without_escape(replace_escaped(&c));
+                        run = run.add_delete_text(c);
                     }
                     TextState::Text => {
-                        run = run.add_text_without_escape(replace_escaped(&c));
+                        run = run.add_text(c);
                     }
                     _ => {}
                 },
                 Ok(XmlEvent::Whitespace(c)) => match text_state {
                     TextState::Delete => {
-                        run = run.add_delete_text_without_escape(replace_escaped(&c));
+                        run = run.add_delete_text(c);
                     }
                     TextState::Text => {
-                        run = run.add_text_without_escape(replace_escaped(&c));
+                        run = run.add_text(c);
                     }
                     _ => {}
                 },
